@@ -254,9 +254,11 @@ void ZmqIrcLog::runSphinx()
     m_proc->start(prog, args);
     m_proc->waitForFinished(-1);
 
-    disconnect(m_proc, SIGNAL(readyRead()), this, SLOT(slotReadStdErrOut()));
-    delete m_proc;
-    m_proc = 0;
+    if (m_proc) {
+        disconnect(m_proc, SIGNAL(readyRead()), this, SLOT(slotReadStdErrOut()));
+        delete m_proc;
+        m_proc = 0;
+    }
 
     qDebug() << "runSphinx() completed..";
 }
@@ -309,7 +311,7 @@ void ZmqIrcLog::moveHtmlToGhPages()
     QStringList exceptioins;
     exceptioins << readMeFilePath << gitFilePath;
     fs.cleanTheDirectory(m_repoDirPath, exceptioins);
-    fs.moveDirectoryContents(m_tmpHtmlDirPath, m_repoDirPath);
+    fs.copyDirectoryContents(m_tmpHtmlDirPath, m_repoDirPath);
 
     qDebug() << "moveHtmlToGhPages() completed..";
 }
@@ -331,9 +333,11 @@ void ZmqIrcLog::pushGhPagesToGitHub()
     args << "master";
     m_git->checkout(args);
 
-    delete m_proc;
-    m_proc = 0;
-    disconnect(m_proc, SIGNAL(readyRead()), this, SLOT(slotReadStdErrAndOut()));
+    if (m_proc) {
+        delete m_proc;
+        m_proc = 0;
+        disconnect(m_proc, SIGNAL(readyRead()), this, SLOT(slotReadStdErrAndOut()));
+    }
 
     qDebug() << "pushGhPagesToGitHub() completed..";
 }
