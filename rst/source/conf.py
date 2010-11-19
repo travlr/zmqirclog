@@ -40,7 +40,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'ZeroMq IRC LoLog'
+project = u'ZeroMq IRC Log'
 copyright = u'2010, Peter Alexander'
 
 # The version info for the project you're documenting, acts as replacement for

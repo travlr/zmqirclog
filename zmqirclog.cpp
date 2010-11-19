@@ -46,8 +46,8 @@ void ZmqIrcLog::moveZmqLogToMonthly()
     // rename the orig log file
     QDateTime dt = QDateTime::currentDateTime();
     QString dtString = dt.toString().replace(" ", "_");
-    logFile.rename(m_logFilePath + "/zeromq" + "-" + dtString + ".log");
-
+    if (logFile.copy(m_logFilePath + "/zeromq" + "-" + dtString + ".log"))
+        QFile::remove(m_logFilePath);
     QString comparativeMonth = QString();
     QString currentMonth = QString();
     QString year = QString();
@@ -66,6 +66,8 @@ void ZmqIrcLog::moveZmqLogToMonthly()
 
     // parse the lines
     foreach (QString line, lines) {
+        if ((line.contains("] Join")) || (line.contains("] Quit")))
+            continue;
         QString tmpYear = extractYearFromLine(line);
         currentMonth = extractMonthFromLine(line, extractYearFromLine(line));
 
