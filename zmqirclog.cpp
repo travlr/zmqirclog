@@ -236,19 +236,18 @@ void ZmqIrcLog::addTocToRstIndexFile()
 void ZmqIrcLog::runSphinx()
 {
     qDebug() << "Starting runSphinx()..";
-    QProcess* proc = new QProcess();
-//    connect(proc, SIGNAL(readyReadStandardError()), this, SLOT(slotReadStdErr()));
-//    connect(proc, SIGNAL(readyReadStandardOutput()), this, SLOT(slotReadStdOut()));
+    m_proc = new QProcess();
+    m_proc->setProcessChannelMode(QProcess::MergedChannels);
+    connect(m_proc, SIGNAL(readyRead()), this, SLOT(slotReadStdErrAndOut()));
     QString prog("make");
     QStringList args(QString("html"));
-    proc->setWorkingDirectory(m_rstDirPath);
-    proc->start(prog, args);
-    proc->waitForFinished(-1);
+    m_proc->setWorkingDirectory(m_rstDirPath);
+    m_proc->start(prog, args);
+    m_proc->waitForFinished(-1);
 
-//    disconnect(proc, SIGNAL(readyReadStandardError()), this, SLOT(slotReadStdErr()));
-//    disconnect(proc, SIGNAL(readyReadStandardOutput()), this, SLOT(slotReadStdOut()));
-//    delete proc;
-//    proc = 0;
+    disconnect(m_proc, SIGNAL(readyRead()), this, SLOT(slotReadStdErrOut()));
+    delete m_proc;
+    m_proc = 0;
 
     qDebug() << "runSphinx() completed..";
 }
@@ -270,9 +269,10 @@ void ZmqIrcLog::checkoutGhPages()
     QStringList args;
     // first create the git instance
     m_git = new travlr::Git(m_repoDirPath, this);
-    m_gitProc = m_git->process();
-//    connect(m_gitProc, SIGNAL(readyReadStandardError()), this, SLOT(slotReadStdErr()));
-//    connect(m_gitProc, SIGNAL(readyReadStandardOutput()), this, SLOT(slotReadStdOut()));
+    m_proc = m_git->process();
+    m_proc->setProcessChannelMode(QProcess::MergedChannels);
+    connect(m_proc, SIGNAL(readyRead()), this, SLOT(slotReadStdErrAndOut()));
+
 
     // clean up the repo by pushing master
     args << ".";
@@ -371,15 +371,11 @@ void ZmqIrcLog::addHeaderToRstFile(QStringList &lines, const QString &fileName)
 
 // slots
 
-void ZmqIrcLog::slotReadStdErr()
+void ZmqIrcLog::slotReadStdErrAndOut()
 {
-    qDebug() << m_gitProc->readAllStandardError();
+    qDebug() << m_proc->readAllStandardOutput();
 }
 
-void ZmqIrcLog::slotReadStdOut()
-{
-    qDebug() << m_gitProc->readAllStandardOutput();
-}
 
 
 

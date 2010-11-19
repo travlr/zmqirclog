@@ -19,8 +19,7 @@ public slots:
     void run();
 
 private slots:
-    void slotReadStdErr();
-    void slotReadStdOut();
+    void slotReadStdErrAndOut();
 
 private:
     // types
@@ -59,7 +58,7 @@ private:
     QStringList m_newTocTitles;
     State m_state;
     travlr::Git* m_git;
-    QProcess* m_gitProc;
+    QProcess* m_proc;
 };
 
 #endif // ZMQIRCLOG_H
