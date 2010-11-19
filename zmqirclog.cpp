@@ -66,7 +66,13 @@ void ZmqIrcLog::moveZmqLogToMonthly()
 
     // parse the lines
     foreach (QString line, lines) {
-        if ((line.contains("] Join")) || (line.contains("] Quit")))
+        if ((line.contains("] Join"))
+                || (line.contains("] Quit"))
+                || (line.contains("] Topic"))
+                || (line.contains("] Created"))
+                || (line.contains("] Mode"))
+                || (line.contains("] Part"))
+                || (line.contains("] Nick")))
             continue;
         QString tmpYear = extractYearFromLine(line);
         currentMonth = extractMonthFromLine(line, extractYearFromLine(line));
@@ -316,6 +322,15 @@ void ZmqIrcLog::pushGhPagesToGitHub()
     args.clear();
     args << "origin" << "gh-pages";
     m_git->push(args);
+    if (QFile::exists(m_repoDirPath + "/zmqirclog.pro.user"))
+        QFile::remove(m_repoDirPath + "/zmqirclog.pro.user");
+    args.clear();
+    args << "master";
+    m_git->checkout(args);
+
+    delete m_proc;
+    m_proc = 0;
+    disconnect(m_proc, SIGNAL(readyRead()), this, SLOT(slotReadStdErrAndOut()));
 
     qDebug() << "pushGhPagesToGitHub() completed..";
 }
