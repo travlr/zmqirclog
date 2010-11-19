@@ -7,7 +7,7 @@
 #include <QDate>
 #include <QDateTime>
 #include <QProcess>
-
+#include <QDebug>
 
 ZmqIrcLog::ZmqIrcLog(QObject *parent)
     : QObject(parent)
@@ -161,6 +161,7 @@ void ZmqIrcLog::moveMonthlyToRstSrc()
             rstFile.close();
         }
     }
+    qDebug() << "moveZmqLogToMonthly() completed..";
 }
 
 void ZmqIrcLog::addTocToRstIndexFile()
@@ -208,6 +209,8 @@ void ZmqIrcLog::addTocToRstIndexFile()
     idxFile.open(QIODevice::WriteOnly);
     idxFile.write(newLines.join("\n").toLocal8Bit());
     idxFile.close();
+
+    qDebug() << "addTocToRstIndexFile() completed..";
 }
 
 void ZmqIrcLog::runSphinx()
@@ -218,6 +221,8 @@ void ZmqIrcLog::runSphinx()
     proc->setWorkingDirectory(m_rstDirPath);
     proc->start(prog, args);
     proc->waitForFinished(-1);
+
+    qDebug() << "runSphinx() completed..";
 }
 
 void ZmqIrcLog::moveHtmlToTmp()
@@ -229,6 +234,8 @@ void ZmqIrcLog::moveHtmlToTmp()
     else
         tmpHtmlDir.mkpath(m_tmpHtmlDirPath);
     fs.moveDirectoryContents(m_rstHtmlDirPath, m_tmpHtmlDirPath);
+
+    qDebug() << "moveHtmlToTmp() completed..";
 }
 
 void ZmqIrcLog::checkoutGhPages()
@@ -236,6 +243,9 @@ void ZmqIrcLog::checkoutGhPages()
     QStringList args;
     // first create the git instance
     m_git = new travlr::Git(m_repoDirPath, this);
+    m_gitProc = m_git->process();
+    connect(m_gitProc, SIGNAL(readyReadStandardError()), this, SLOT(slotReadStdErr()));
+    connect(m_gitProc, SIGNAL(readyReadStandardOutput()), this, SLOT(slotReadStdOut()));
 
     // clean up the repo by pushing master
     args << ".";
@@ -251,6 +261,8 @@ void ZmqIrcLog::checkoutGhPages()
     args.clear();
     args << "gh-pages";
     m_git->checkout(args);
+
+    qDebug() << "checkoutGhPages() completed..";
 }
 
 void ZmqIrcLog::moveHtmlToGhPages()
@@ -262,6 +274,8 @@ void ZmqIrcLog::moveHtmlToGhPages()
     exceptioins << readMeFilePath << gitFilePath;
     fs.cleanTheDirectory(m_repoDirPath, exceptioins);
     fs.moveDirectoryContents(m_tmpHtmlDirPath, m_repoDirPath);
+
+    qDebug() << "moveHtmlToGhPages() completed..";
 }
 
 void ZmqIrcLog::pushGhPagesToGitHub()
@@ -276,6 +290,7 @@ void ZmqIrcLog::pushGhPagesToGitHub()
     args << "origin" << "gh-pages";
     m_git->push(args);
 
+    qDebug() << "pushGhPagesToGitHub() completed..";
 }
 
 
@@ -322,6 +337,21 @@ void ZmqIrcLog::addHeaderToRstFile(QStringList &lines, const QString &fileName)
     lines.prepend("===============\n");
     lines.prepend(fileName.split(".").at(0));
     lines.prepend("===============");
+}
+
+
+
+
+// slots
+
+void ZmqIrcLog::slotReadStdErr()
+{
+    qDebug() << m_gitProc->readAllStandardError();
+}
+
+void ZmqIrcLog::slotReadStdOut()
+{
+    qDebug() << m_gitProc->readAllStandardOutput();
 }
 
 

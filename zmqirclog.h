@@ -6,6 +6,7 @@
 #include <QString>
 #include <QStringList>
 
+class QProcess;
 
 class ZmqIrcLog : public QObject
 {
@@ -16,6 +17,10 @@ public:
 
 public slots:
     void run();
+
+private slots:
+    void slotReadStdErr();
+    void slotReadStdOut();
 
 private:
     // types
@@ -53,6 +58,7 @@ private:
     QStringList m_newTocTitles;
     State m_state;
     travlr::Git* m_git;
+    QProcess* m_gitProc;
 };
 
 #endif // ZMQIRCLOG_H
