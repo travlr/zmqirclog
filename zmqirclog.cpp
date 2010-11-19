@@ -152,7 +152,10 @@ void ZmqIrcLog::moveMonthlyToRstSrc()
             QStringList lines = QString(monthlyLogFile.readAll()).split("\n");
             monthlyLogFile.close();
             convertLogLinesToRstLines(lines);
-            addHeaderToRstFile(lines, alteredFileName);
+//            addHeaderToRstFile(lines, alteredFileName);
+            lines.prepend("===============\n");
+            lines.prepend(alteredFileName);
+            lines.prepend("===============");
             QFile newRstFile(m_rstSrcDirPath + "/" + alteredFileName + ".rst");
             newRstFile.open(QIODevice::WriteOnly);
             newRstFile.write(lines.join("\n").toLocal8Bit());
@@ -357,7 +360,7 @@ void ZmqIrcLog::convertLogLinesToRstLines(QStringList &lines)
 void ZmqIrcLog::addHeaderToRstFile(QStringList &lines, const QString &fileName)
 {
     lines.prepend("===============\n");
-    lines.prepend(fileName.split(".").at(0));
+    lines.prepend(fileName);
     lines.prepend("===============");
 }
 
