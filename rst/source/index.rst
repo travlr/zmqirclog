@@ -29,7 +29,7 @@ Indices and tables
 
 * :ref:`search`
 
-.. note:: You Can Help :)
+.. note:: You Can Help
 
-   You'll notice that we are missing some log entries (one big hole in around june), so if you have kept a log please
-   let us know. I can be reached on the #zeromq irc channel as `travlr`. Or, just send an email to the list.. Thanks!
+    We have some dates and times missing in our log archive. If you have kept a log, please let us know so another
+    may bennefit from the wealth of info that's in them. Thanks!
