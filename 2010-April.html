@@ -84,21 +84,21 @@
 <div class="line">[Thursday 01 April 2010] [05:50:14] &lt;sustrik&gt;   rather than establishing and tearing the connection all the time</div>
 <div class="line">[Thursday 01 April 2010] [05:51:42] &lt;mikko&gt; sustrik: that should not really be hard</div>
 <div class="line">[Thursday 01 April 2010] [05:53:02] &lt;mikko&gt; sustrik: i&#8217;ll take a peek at the mailing-lists</div>
-<div class="line">[Thursday 01 April 2010] [06:02:52] &lt;<a href="#id207"><span class="problematic" id="id208">ud_</span></a>&gt;   hi</div>
-<div class="line">[Thursday 01 April 2010] [06:03:04] &lt;<a href="#id209"><span class="problematic" id="id210">ud_</span></a>&gt;   Why PGM may loss messages ?</div>
+<div class="line">[Thursday 01 April 2010] [06:02:52] &lt;<a href="#id95"><span class="problematic" id="id96">ud_</span></a>&gt;   hi</div>
+<div class="line">[Thursday 01 April 2010] [06:03:04] &lt;<a href="#id97"><span class="problematic" id="id98">ud_</span></a>&gt;   Why PGM may loss messages ?</div>
 <div class="line">[Thursday 01 April 2010] [06:10:09] &lt;sjampoo&gt;   ud, it might be that you are sending the messages from one context and that all your sends have finished but ZMQ is still pushing them to the network (because of the multicast rate). However, if you close the context before that is finished the rest of your message will never arrive.</div>
-<div class="line">[Thursday 01 April 2010] [06:24:45] &lt;sustrik&gt;   <a href="#id211"><span class="problematic" id="id212">ud_</span></a>: also there&#8217;s a problem of the finite retransmit window</div>
+<div class="line">[Thursday 01 April 2010] [06:24:45] &lt;sustrik&gt;   <a href="#id99"><span class="problematic" id="id100">ud_</span></a>: also there&#8217;s a problem of the finite retransmit window</div>
 <div class="line">[Thursday 01 April 2010] [06:25:05] &lt;sustrik&gt;   sender may store at most that much data</div>
 <div class="line">[Thursday 01 April 2010] [06:25:46] &lt;sustrik&gt;   thus is receiver requests retransmission of data that were already dropped by the sender</div>
 <div class="line">[Thursday 01 April 2010] [06:25:59] &lt;sustrik&gt;   sender has no way to retransmit</div>
-<div class="line">[Thursday 01 April 2010] [06:36:50] &lt;<a href="#id213"><span class="problematic" id="id214">ud_</span></a>&gt;   Also, somtimes I handle this: Assertion failed: it != peers.end () (pgm_receiver.cpp:161)</div>
-<div class="line">[Thursday 01 April 2010] [06:39:48] &lt;sustrik&gt;   <a href="#id215"><span class="problematic" id="id216">ud_</span></a>: let me see</div>
-<div class="line">[Thursday 01 April 2010] [06:40:56] &lt;sustrik&gt;   <a href="#id217"><span class="problematic" id="id218">ud_</span></a>: there have been a bug in OpenPGM lately</div>
+<div class="line">[Thursday 01 April 2010] [06:36:50] &lt;<a href="#id101"><span class="problematic" id="id102">ud_</span></a>&gt;   Also, somtimes I handle this: Assertion failed: it != peers.end () (pgm_receiver.cpp:161)</div>
+<div class="line">[Thursday 01 April 2010] [06:39:48] &lt;sustrik&gt;   <a href="#id103"><span class="problematic" id="id104">ud_</span></a>: let me see</div>
+<div class="line">[Thursday 01 April 2010] [06:40:56] &lt;sustrik&gt;   <a href="#id105"><span class="problematic" id="id106">ud_</span></a>: there have been a bug in OpenPGM lately</div>
 <div class="line">[Thursday 01 April 2010] [06:41:04] &lt;sustrik&gt;   this looks like it may be the consequence</div>
 <div class="line">[Thursday 01 April 2010] [06:41:46] &lt;sustrik&gt;   however, if you don&#8217;t overload your network, you shouldn&#8217;t hit the problem</div>
 <div class="line">[Thursday 01 April 2010] [06:42:12] &lt;sustrik&gt;   anyway, the original bug will be solved in next release (2.0.7)</div>
-<div class="line">[Thursday 01 April 2010] [06:46:07] &lt;<a href="#id219"><span class="problematic" id="id220">ud_</span></a>&gt;   ok, when will the next release ? :)</div>
-<div class="line">[Thursday 01 April 2010] [07:08:22] &lt;sustrik&gt;   <a href="#id221"><span class="problematic" id="id222">ud_</span></a>: couple of weeks from now</div>
+<div class="line">[Thursday 01 April 2010] [06:46:07] &lt;<a href="#id107"><span class="problematic" id="id108">ud_</span></a>&gt;   ok, when will the next release ? :)</div>
+<div class="line">[Thursday 01 April 2010] [07:08:22] &lt;sustrik&gt;   <a href="#id109"><span class="problematic" id="id110">ud_</span></a>: couple of weeks from now</div>
 <div class="line">[Thursday 01 April 2010] [07:09:19] &lt;sjampoo&gt;   ud, i got the same message when closing the context prematurely and then firing up a different context.</div>
 <div class="line">[Thursday 01 April 2010] [07:12:57] &lt;sustrik&gt;   sjampoo: that&#8217;s interesting</div>
 <div class="line">[Thursday 01 April 2010] [07:13:11] &lt;sustrik&gt;   i can imagine a way how that could happen</div>
@@ -343,10 +343,6 @@
 <div class="line">[Thursday 01 April 2010] [14:29:31] &lt;mikko&gt; thanks a lot</div>
 <div class="line">[Thursday 01 April 2010] [16:35:06] &lt;sustrik&gt;   mikko: still there?</div>
 <div class="line">[Thursday 01 April 2010] [16:41:19] &lt;mikko&gt; sustrik: yes</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id1"><span class="problematic" id="id2">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id3"><span class="problematic" id="id4">**</span></a>* on Thu Apr 1 16:43:40 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Thursday 01 April 2010] [18:15:00] &lt;mikko&gt; initial round on docs <a class="reference external" href="http://www.zeromq.org/bindings:php">http://www.zeromq.org/bindings:php</a></div>
 <div class="line">[Thursday 01 April 2010] [18:15:20] &lt;mikko&gt; at least doesnt say py0MQ anymore :)</div>
 <div class="line">[Thursday 01 April 2010] [18:15:50] &lt;Skaag&gt; awesome work</div>
@@ -465,7 +461,7 @@
 <div class="line">[Thursday 01 April 2010] [22:17:21] &lt;mikko&gt; normally the PHP stuff is under PHP license</div>
 <div class="line">[Thursday 01 April 2010] [22:17:44] &lt;mikko&gt; the stuff in php.net at least</div>
 <div class="line">[Thursday 01 April 2010] [22:18:23] &lt;dermoth&gt;   and it  that more like LGPL?</div>
-<div class="line">[Thursday 01 April 2010] [22:19:16] &lt;mikko&gt; <a class="reference external" href="http://en.wikipedia.org/wiki/BSD_licenses#3">http://en.wikipedia.org/wiki/BSD_licenses#3</a>-<a href="#id223"><span class="problematic" id="id224">clause_license_</span></a>.28.22New_BSD_License.22.29</div>
+<div class="line">[Thursday 01 April 2010] [22:19:16] &lt;mikko&gt; <a class="reference external" href="http://en.wikipedia.org/wiki/BSD_licenses#3">http://en.wikipedia.org/wiki/BSD_licenses#3</a>-<a href="#id111"><span class="problematic" id="id112">clause_license_</span></a>.28.22New_BSD_License.22.29</div>
 <div class="line">[Thursday 01 April 2010] [22:19:29] &lt;dermoth&gt;   no, the php license</div>
 <div class="line">[Thursday 01 April 2010] [22:19:51] &lt;mikko&gt; the only difference between PHP license and BSD license is that PHP license has a naming clause</div>
 <div class="line">[Thursday 01 April 2010] [22:20:07] &lt;mikko&gt; <a class="reference external" href="http://www.php.net/license/3_01.txt">http://www.php.net/license/3_01.txt</a></div>
@@ -684,33 +680,25 @@
 <div class="line">[Friday 02 April 2010] [08:37:58] &lt;FlaPer87&gt;    hey guys, are there some guidlines to install 0mq on windows?</div>
 <div class="line">[Friday 02 April 2010] [08:38:37] &lt;FlaPer87&gt;    I built it with visual studio but I can&#8217;t find the zeromq_server command, how do I start the server?</div>
 <div class="line">[Friday 02 April 2010] [09:37:47] &lt;FlaPer87&gt;    is there a sample configuration file somewhere?</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id5"><span class="problematic" id="id6">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id7"><span class="problematic" id="id8">**</span></a>* on Fri Apr 2 16:35:01 2010</div>
-<div class="line"><br /></div>
-<div class="line">[Friday 02 April 2010] [17:51:30] &lt;<a href="#id225"><span class="problematic" id="id226">jomofo_</span></a>&gt; Any pointers for troubleshooting UnsatisfiedLinkError (no jzmq on java.library.path) on 64-bit Ubuntu 9.10 ?  I installed both libzmq and libjzmq to /usr/local/lib, ran ldconfig, set java.library.path and go, but no luck</div>
+<div class="line">[Friday 02 April 2010] [17:51:30] &lt;<a href="#id113"><span class="problematic" id="id114">jomofo_</span></a>&gt; Any pointers for troubleshooting UnsatisfiedLinkError (no jzmq on java.library.path) on 64-bit Ubuntu 9.10 ?  I installed both libzmq and libjzmq to /usr/local/lib, ran ldconfig, set java.library.path and go, but no luck</div>
 <div class="line">[Friday 02 April 2010] [23:01:34] &lt;old_sound&gt;   hi, I&#8217;ve just cloned the github repo, but I can&#8217;t find instructions on how to build it, there&#8217;s no INSTALL file as reported in the README</div>
 <div class="line">[Friday 02 April 2010] [23:03:22] &lt;old_sound&gt;   OK, found it, had to run ./autogen.sh</div>
 <div class="line">[Saturday 03 April 2010] [02:14:15] &lt;dermoth&gt;   old_sound, I&#8217;ve heard the master is a bit unstable, so unless you&#8217;re doing development you should use the latest release instead</div>
 <div class="line">[Saturday 03 April 2010] [02:14:30] &lt;old_sound&gt; ok</div>
-<div class="line">[Saturday 03 April 2010] [12:47:44] &lt;<a href="#id227"><span class="problematic" id="id228">jomofo_</span></a>&gt;   Any pointers for troubleshooting UnsatisfiedLinkError (no jzmq on java.library.path) on 64-bit Ubuntu 9.10 ?  I installed both libzmq and libjzmq to /usr/local/lib, ran ldconfig, set java.library.path and go, but no luck</div>
-<div class="line">[Saturday 03 April 2010] [13:17:45] &lt;<a href="#id229"><span class="problematic" id="id230">jomofo_</span></a>&gt;   I think I found my problem I was setting java.library.path correctly, but wasn&#8217;t setting LD_LIBRARY_PATH.  I guess libjzmq wasn&#8217;t able to load libzmq because of that.  Thanks for listening to me ramble</div>
-<div class="line">[Saturday 03 April 2010] [13:42:11] &lt;<a href="#id231"><span class="problematic" id="id232">jomofo_</span></a>&gt;   Just out of curiosity, why is the Java namespace org.zmq instead of org.zeromq?  If I visit zmq.org I get a parking lot</div>
+<div class="line">[Saturday 03 April 2010] [12:47:44] &lt;<a href="#id115"><span class="problematic" id="id116">jomofo_</span></a>&gt;   Any pointers for troubleshooting UnsatisfiedLinkError (no jzmq on java.library.path) on 64-bit Ubuntu 9.10 ?  I installed both libzmq and libjzmq to /usr/local/lib, ran ldconfig, set java.library.path and go, but no luck</div>
+<div class="line">[Saturday 03 April 2010] [13:17:45] &lt;<a href="#id117"><span class="problematic" id="id118">jomofo_</span></a>&gt;   I think I found my problem I was setting java.library.path correctly, but wasn&#8217;t setting LD_LIBRARY_PATH.  I guess libjzmq wasn&#8217;t able to load libzmq because of that.  Thanks for listening to me ramble</div>
+<div class="line">[Saturday 03 April 2010] [13:42:11] &lt;<a href="#id119"><span class="problematic" id="id120">jomofo_</span></a>&gt;   Just out of curiosity, why is the Java namespace org.zmq instead of org.zeromq?  If I visit zmq.org I get a parking lot</div>
 <div class="line">[Saturday 03 April 2010] [16:36:44] &lt;mikko&gt; good evening</div>
-<div class="line">[Saturday 03 April 2010] [16:37:43] &lt;mikko&gt; <a href="#id233"><span class="problematic" id="id234">jomofo_</span></a>: do you have /usr/local/lib in ld.so.conf ?</div>
-<div class="line">[Saturday 03 April 2010] [16:37:52] &lt;mikko&gt; <a href="#id235"><span class="problematic" id="id236">jomofo_</span></a>: does ldconfig &#8211;print | grep zmq show the library?</div>
-<div class="line">[Saturday 03 April 2010] [16:45:34] &lt;<a href="#id237"><span class="problematic" id="id238">jomofo_</span></a>&gt;   mikki, yes, both libzmq and libjzmq are there</div>
-<div class="line">[Saturday 03 April 2010] [16:46:33] &lt;<a href="#id239"><span class="problematic" id="id240">jomofo_</span></a>&gt;   mikko: oops, %s/mikki/mikko/</div>
-<div class="line">[Saturday 03 April 2010] [16:55:57] &lt;<a href="#id241"><span class="problematic" id="id242">jomofo_</span></a>&gt;   mikko: and /usr/local/lib is in /etc/ld.so.conf.d/libc.conf which is included by /etc/ld.so.conf</div>
-<div class="line">[Saturday 03 April 2010] [16:56:35] &lt;<a href="#id243"><span class="problematic" id="id244">jomofo_</span></a>&gt;   mikko: If I define $LD_LIBRARY_PATH as /usr/local/lib it works, but not without it</div>
-<div class="line">[Saturday 03 April 2010] [17:52:43] &lt;mikko&gt; <a href="#id245"><span class="problematic" id="id246">jomofo_</span></a>: does the java program you start override LD_LIBRARY_PATH?</div>
-<div class="line">[Saturday 03 April 2010] [18:02:43] &lt;<a href="#id247"><span class="problematic" id="id248">jomofo_</span></a>&gt;   mikko: I don&#8217;t believe so.  It&#8217;s just a simple unit test to see if I can use the jzmq bindings, but I am running it via Maven2</div>
+<div class="line">[Saturday 03 April 2010] [16:37:43] &lt;mikko&gt; <a href="#id121"><span class="problematic" id="id122">jomofo_</span></a>: do you have /usr/local/lib in ld.so.conf ?</div>
+<div class="line">[Saturday 03 April 2010] [16:37:52] &lt;mikko&gt; <a href="#id123"><span class="problematic" id="id124">jomofo_</span></a>: does ldconfig &#8211;print | grep zmq show the library?</div>
+<div class="line">[Saturday 03 April 2010] [16:45:34] &lt;<a href="#id125"><span class="problematic" id="id126">jomofo_</span></a>&gt;   mikki, yes, both libzmq and libjzmq are there</div>
+<div class="line">[Saturday 03 April 2010] [16:46:33] &lt;<a href="#id127"><span class="problematic" id="id128">jomofo_</span></a>&gt;   mikko: oops, %s/mikki/mikko/</div>
+<div class="line">[Saturday 03 April 2010] [16:55:57] &lt;<a href="#id129"><span class="problematic" id="id130">jomofo_</span></a>&gt;   mikko: and /usr/local/lib is in /etc/ld.so.conf.d/libc.conf which is included by /etc/ld.so.conf</div>
+<div class="line">[Saturday 03 April 2010] [16:56:35] &lt;<a href="#id131"><span class="problematic" id="id132">jomofo_</span></a>&gt;   mikko: If I define $LD_LIBRARY_PATH as /usr/local/lib it works, but not without it</div>
+<div class="line">[Saturday 03 April 2010] [17:52:43] &lt;mikko&gt; <a href="#id133"><span class="problematic" id="id134">jomofo_</span></a>: does the java program you start override LD_LIBRARY_PATH?</div>
+<div class="line">[Saturday 03 April 2010] [18:02:43] &lt;<a href="#id135"><span class="problematic" id="id136">jomofo_</span></a>&gt;   mikko: I don&#8217;t believe so.  It&#8217;s just a simple unit test to see if I can use the jzmq bindings, but I am running it via Maven2</div>
 <div class="line">[Saturday 03 April 2010] [18:07:24] &lt;mikko&gt; have you tried mvn -X ?</div>
 <div class="line">[Saturday 03 April 2010] [18:07:31] &lt;mikko&gt; it might give more insight (or not)</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id9"><span class="problematic" id="id10">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id11"><span class="problematic" id="id12">**</span></a>* on Sat Apr 3 20:58:08 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Sunday 04 April 2010] [08:24:27] &lt;mikko&gt;   good morning</div>
 <div class="line">[Sunday 04 April 2010] [08:34:37] &lt;Skaag&gt;   good morning mikko</div>
 <div class="line">[Sunday 04 April 2010] [08:34:39] &lt;Skaag&gt;   :-)</div>
@@ -721,11 +709,7 @@
 <div class="line">[Sunday 04 April 2010] [08:56:48] &lt;mikko&gt;   now, time to head out to see tiergarten and brandenburg tor</div>
 <div class="line">[Sunday 04 April 2010] [08:56:50] &lt;mikko&gt;   laters</div>
 <div class="line">[Sunday 04 April 2010] [09:45:47] &lt;Skaag&gt;   tiergarten or biergarten?! :-)</div>
-<div class="line">[Sunday 04 April 2010] [12:31:31] &lt;<a href="#id249"><span class="problematic" id="id250">jomofo_</span></a>&gt; If I want to create a new language binding for 0MQ, should I use the LGPL? The language is friendlier toward the Eclipse license, but I think either would work.</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id13"><span class="problematic" id="id14">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id15"><span class="problematic" id="id16">**</span></a>* on Sun Apr 4 13:51:37 2010</div>
-<div class="line"><br /></div>
+<div class="line">[Sunday 04 April 2010] [12:31:31] &lt;<a href="#id137"><span class="problematic" id="id138">jomofo_</span></a>&gt; If I want to create a new language binding for 0MQ, should I use the LGPL? The language is friendlier toward the Eclipse license, but I think either would work.</div>
 <div class="line">[Sunday 04 April 2010] [14:10:40] &lt;desrt&gt;   sustrik: hey</div>
 <div class="line">[Sunday 04 April 2010] [14:12:03] &lt;sustrik&gt; desrt: hi</div>
 <div class="line">[Sunday 04 April 2010] [14:13:20] &lt;desrt&gt;   sustrik: are you a zmq developer?</div>
@@ -735,9 +719,9 @@
 <div class="line">[Sunday 04 April 2010] [14:13:56] &lt;desrt&gt;   cool</div>
 <div class="line">[Sunday 04 April 2010] [14:14:12] &lt;desrt&gt;   a few questions</div>
 <div class="line">[Sunday 04 April 2010] [14:14:28] &lt;desrt&gt;   1) is there any chance of some convenience additions/cleanups to some of the APIs?</div>
-<div class="line">[Sunday 04 April 2010] [14:14:46] &lt;sustrik&gt; <a href="#id251"><span class="problematic" id="id252">jomofo_</span></a>: you can use any license that suits you</div>
+<div class="line">[Sunday 04 April 2010] [14:14:46] &lt;sustrik&gt; <a href="#id139"><span class="problematic" id="id140">jomofo_</span></a>: you can use any license that suits you</div>
 <div class="line">[Sunday 04 April 2010] [14:15:02] &lt;desrt&gt;   like maybe using opaque structure types zmq_socket_t, zmq_context_t instead of void*</div>
-<div class="line">[Sunday 04 April 2010] [14:15:16] &lt;desrt&gt;   and having all methods on sockets start like <a href="#id253"><span class="problematic" id="id254">zmq_socket_</span></a> {send, recv, whatever}</div>
+<div class="line">[Sunday 04 April 2010] [14:15:16] &lt;desrt&gt;   and having all methods on sockets start like <a href="#id141"><span class="problematic" id="id142">zmq_socket_</span></a> {send, recv, whatever}</div>
 <div class="line">[Sunday 04 April 2010] [14:15:35] &lt;desrt&gt;   (note: zmq_msg follows this convention, but not socket and context)</div>
 <div class="line">[Sunday 04 April 2010] [14:15:38] &lt;sustrik&gt; desrt: the method names are based on POSIX socket API</div>
 <div class="line">[Sunday 04 April 2010] [14:15:51] &lt;desrt&gt;   ah.  interesting.</div>
@@ -1003,14 +987,6 @@
 <div class="line">[Monday 05 April 2010] [10:37:31] &lt;mikko&gt;   i&#8217;m gonna take a short nap, been touring around berlin all day</div>
 <div class="line">[Monday 05 April 2010] [10:37:32] &lt;mikko&gt;   laters</div>
 <div class="line">[Monday 05 April 2010] [10:52:20] &lt;sustrik&gt; see you</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id17"><span class="problematic" id="id18">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id19"><span class="problematic" id="id20">**</span></a>* on Mon Apr 5 16:55:40 2010</div>
-<div class="line"><br /></div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id21"><span class="problematic" id="id22">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id23"><span class="problematic" id="id24">**</span></a>* on Tue Apr 6 00:58:42 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Tuesday 06 April 2010] [01:34:20] &lt;CIA-5&gt;  zeromq2: 03Martin Sustrik 07master * r0777567 10/ doc/zmq_bind.txt : ENODEV from zmq_bind error described - <a class="reference external" href="http://bit.ly/bvC4mu">http://bit.ly/bvC4mu</a></div>
 <div class="line">[Tuesday 06 April 2010] [09:23:34] &lt;CIA-5&gt;  zeromq2: 03Martin Lucina 07master * ra7973a2 10/ (doc/zmq_bind.txt doc/zmq_setsockopt.txt): Documentation fixes - <a class="reference external" href="http://bit.ly/b03kAA">http://bit.ly/b03kAA</a></div>
 <div class="line">[Tuesday 06 April 2010] [09:27:06] &lt;jldupont&gt;   hi - where is the wire-format for 0mq?  I&#8217;d like to build an Erlang binding for it.</div>
@@ -1082,9 +1058,9 @@
 <div class="line">[Tuesday 06 April 2010] [13:57:03] &lt;BusError&gt;   thanks for your help too</div>
 <div class="line">[Tuesday 06 April 2010] [13:57:09] &lt;sustrik&gt;    you are welcome</div>
 <div class="line">[Tuesday 06 April 2010] [13:57:23] &lt;BusError&gt;   well if I get desperate with my system, I&#8217;ll keep it in mind :-)</div>
-<div class="line">[Tuesday 06 April 2010] [17:47:43] &lt;<a href="#id167"><span class="problematic" id="id168">|flyte|</span></a>&gt;    hornetQ vs 0MQ.... FIGTH!</div>
-<div class="line">[Tuesday 06 April 2010] [17:47:46] &lt;<a href="#id169"><span class="problematic" id="id170">|flyte|</span></a>&gt;    heh.</div>
-<div class="line">[Tuesday 06 April 2010] [17:47:49] &lt;<a href="#id171"><span class="problematic" id="id172">|flyte|</span></a>&gt;    hornetQ vs 0MQ.... FIGHT</div>
+<div class="line">[Tuesday 06 April 2010] [17:47:43] &lt;<a href="#id55"><span class="problematic" id="id56">|flyte|</span></a>&gt;    hornetQ vs 0MQ.... FIGTH!</div>
+<div class="line">[Tuesday 06 April 2010] [17:47:46] &lt;<a href="#id57"><span class="problematic" id="id58">|flyte|</span></a>&gt;    heh.</div>
+<div class="line">[Tuesday 06 April 2010] [17:47:49] &lt;<a href="#id59"><span class="problematic" id="id60">|flyte|</span></a>&gt;    hornetQ vs 0MQ.... FIGHT</div>
 <div class="line">[Wednesday 07 April 2010] [02:21:22] &lt;CIA-5&gt;    zeromq2: 03Jon Dyte 07master * redfd05d 10/ (13 files in 5 dirs): devices can be created via API - <a class="reference external" href="http://bit.ly/dhJb8o">http://bit.ly/dhJb8o</a></div>
 <div class="line">[Wednesday 07 April 2010] [02:21:24] &lt;CIA-5&gt;    zeromq2: 03Martin Sustrik 07master * r065e4d0 10/ (doc/zmq_bind.txt doc/zmq_setsockopt.txt): Merge branch &#8216;master&#8217; of <a class="reference external" href="mailto:git&#37;&#52;&#48;github&#46;com">git<span>&#64;</span>github<span>&#46;</span>com</a>:sustrik/zeromq2 - <a class="reference external" href="http://bit.ly/brkzAh">http://bit.ly/brkzAh</a></div>
 <div class="line">[Wednesday 07 April 2010] [04:41:39] &lt;CIA-5&gt;    zeromq2: 03Martin Sustrik 07master * rb0250cc 10/ builds/msvc/libzmq/libzmq.vcproj : Win32 build fixed - <a class="reference external" href="http://bit.ly/9F6ImT">http://bit.ly/9F6ImT</a></div>
@@ -1172,7 +1148,7 @@
 <div class="line">[Wednesday 07 April 2010] [15:54:13] &lt;sustrik&gt;  looks like it has to do with closing an unconnected socket...</div>
 <div class="line">[Wednesday 07 April 2010] [15:54:23] &lt;sustrik&gt;  i&#8217;ll give it a closer look tomorrow</div>
 <div class="line">[Wednesday 07 April 2010] [15:54:41] &lt;mikko&gt;    you are right</div>
-<div class="line">[Wednesday 07 April 2010] [16:03:03] &lt;mikko&gt;    Assertion failed: !sending_reply || !more || reply_pipe != <a href="#id255"><span class="problematic" id="id256">pipe_</span></a> (rep.cpp:96)</div>
+<div class="line">[Wednesday 07 April 2010] [16:03:03] &lt;mikko&gt;    Assertion failed: !sending_reply || !more || reply_pipe != <a href="#id143"><span class="problematic" id="id144">pipe_</span></a> (rep.cpp:96)</div>
 <div class="line">[Wednesday 07 April 2010] [16:03:04] &lt;mikko&gt;    Aborted</div>
 <div class="line">[Wednesday 07 April 2010] [16:03:08] &lt;mikko&gt;    this is interesting as well</div>
 <div class="line">[Wednesday 07 April 2010] [17:38:32] &lt;lvh&gt;  Hello.</div>
@@ -1181,14 +1157,14 @@
 <div class="line">[Wednesday 07 April 2010] [17:40:54] &lt;lvh&gt;  For persistence, I&#8217;d like something with load balancing and possibly failover (if possible), but the COMET part is special: out of all the persisters, only one of them needs to be pushed to, but all of the COMET listeners need to be pushed to.</div>
 <div class="line">[Wednesday 07 April 2010] [17:41:13] &lt;lvh&gt;  Can I do that without sending a message twice?</div>
 <div class="line">[Wednesday 07 April 2010] [17:41:30] &lt;lvh&gt;  Can I send a message twice into two exchanges?</div>
-<div class="line">[Thursday 08 April 2010] [01:03:45] &lt;sustrik&gt;   mikko: Assertion failed: !sending_reply || !more || reply_pipe != <a href="#id257"><span class="problematic" id="id258">pipe_</span></a> (rep.cpp:96)</div>
+<div class="line">[Thursday 08 April 2010] [01:03:45] &lt;sustrik&gt;   mikko: Assertion failed: !sending_reply || !more || reply_pipe != <a href="#id145"><span class="problematic" id="id146">pipe_</span></a> (rep.cpp:96)</div>
 <div class="line">[Thursday 08 April 2010] [01:03:53] &lt;sustrik&gt;   are you playing with multi-part messages?</div>
 <div class="line">[Thursday 08 April 2010] [02:34:34] &lt;CIA-5&gt; zeromq2: 03Martin Sustrik 07master * r38e9103 10/ src/object.cpp : issue 13 (Assertion failed: load.get () == 0 (epoll.cpp:49)) fixed - http://bit.ly/b86MQU</div>
 <div class="line">[Thursday 08 April 2010] [03:20:53] &lt;mikko&gt; sustrik: nope</div>
 <div class="line">[Thursday 08 April 2010] [03:22:42] &lt;mikko&gt; normal request reply</div>
 <div class="line">[Thursday 08 April 2010] [04:15:06] &lt;mikko&gt; sustrik: although i still can&#8217;t get gdb to work</div>
 <div class="line">[Thursday 08 April 2010] [04:19:14] &lt;sustrik&gt;   mikko: i&#8217;ve fixed thr load.get () == 0 problem</div>
-<div class="line">[Thursday 08 April 2010] [04:19:29] &lt;sustrik&gt;   now looking at !sending_reply || !more || reply_pipe != <a href="#id259"><span class="problematic" id="id260">pipe_</span></a> (rep.cpp:96)</div>
+<div class="line">[Thursday 08 April 2010] [04:19:29] &lt;sustrik&gt;   now looking at !sending_reply || !more || reply_pipe != <a href="#id147"><span class="problematic" id="id148">pipe_</span></a> (rep.cpp:96)</div>
 <div class="line">[Thursday 08 April 2010] [04:19:31] &lt;mikko&gt; sustrik: nice!</div>
 <div class="line">[Thursday 08 April 2010] [04:23:53] &lt;mikko&gt; i wonder what&#8217;s going on now</div>
 <div class="line">[Thursday 08 April 2010] [04:24:24] &lt;mikko&gt; <a class="reference external" href="http://pastie.org/908956">http://pastie.org/908956</a></div>
@@ -1233,7 +1209,7 @@
 <div class="line">[Thursday 08 April 2010] [04:50:42] &lt;sustrik&gt;   hm, given that gdb doesn&#8217;t work for you, there&#8217;s no chance of getting a backtrace, right?</div>
 <div class="line">[Thursday 08 April 2010] [04:51:23] &lt;mikko&gt; i can test on more stable environment later</div>
 <div class="line">[Thursday 08 April 2010] [04:52:51] &lt;sustrik&gt;   ok</div>
-<div class="line">[Thursday 08 April 2010] [04:53:08] &lt;sustrik&gt;   now for the !sending_reply || !more || reply_pipe != <a href="#id261"><span class="problematic" id="id262">pipe_</span></a> (rep.cpp:96) problem</div>
+<div class="line">[Thursday 08 April 2010] [04:53:08] &lt;sustrik&gt;   now for the !sending_reply || !more || reply_pipe != <a href="#id149"><span class="problematic" id="id150">pipe_</span></a> (rep.cpp:96) problem</div>
 <div class="line">[Thursday 08 April 2010] [04:53:31] &lt;sustrik&gt;   it looks like there must be multipart message involved somehow</div>
 <div class="line">[Thursday 08 April 2010] [04:53:33] &lt;sustrik&gt;   strange</div>
 <div class="line">[Thursday 08 April 2010] [04:53:40] &lt;sustrik&gt;   is it php or c test?</div>
@@ -1263,7 +1239,7 @@
 <div class="line">[Thursday 08 April 2010] [05:26:59] &lt;mikko&gt; that is tcpdump -vvv -w comm.pcap -i lo port 5555</div>
 <div class="line">[Thursday 08 April 2010] [05:38:46] &lt;olivier_c&gt; sustrik, i&#8217;ve a little question about the behavior of sub multiple sockets.</div>
 <div class="line">[Thursday 08 April 2010] [05:38:55] &lt;sustrik&gt;   sure</div>
-<div class="line">[Thursday 08 April 2010] [05:38:58] &lt;olivier_c&gt; <a href="#id25"><span class="problematic" id="id26">*</span></a>multiple sub</div>
+<div class="line">[Thursday 08 April 2010] [05:38:58] &lt;olivier_c&gt; <a href="#id1"><span class="problematic" id="id2">*</span></a>multiple sub</div>
 <div class="line">[Thursday 08 April 2010] [05:39:07] &lt;sustrik&gt;   mikko: (inspecting the pcap)</div>
 <div class="line">[Thursday 08 April 2010] [05:39:43] &lt;olivier_c&gt;  if i create 2 sub sockets (in different threads), and send messages on them, the reception is &#8220;alternate&#8221;.  i-e socket_one receive a message, then zmq is waiting on socket_two, and ignore messages arriving on socket_one.</div>
 <div class="line">[Thursday 08 April 2010] [05:39:54] &lt;olivier_c&gt; multiple sub sockets can&#8217;t receive messages simultaneously ?</div>
@@ -1285,7 +1261,7 @@
 <div class="line">[Thursday 08 April 2010] [05:44:48] &lt;sustrik&gt;   ?</div>
 <div class="line">[Thursday 08 April 2010] [05:44:58] &lt;sustrik&gt;   olivier_c: please, do</div>
 <div class="line">[Thursday 08 April 2010] [05:46:04] &lt;sustrik&gt;   the on one of them &#8220;hello there!&#8221; message is sent</div>
-<div class="line">[Thursday 08 April 2010] [05:50:40] &lt;sustrik&gt;   mikko: a double check - the pcap you&#8217;ve sent caused the !sending_reply || !more || reply_pipe != <a href="#id263"><span class="problematic" id="id264">pipe_</span></a> (rep.cpp:96) assertion, right?</div>
+<div class="line">[Thursday 08 April 2010] [05:50:40] &lt;sustrik&gt;   mikko: a double check - the pcap you&#8217;ve sent caused the !sending_reply || !more || reply_pipe != <a href="#id151"><span class="problematic" id="id152">pipe_</span></a> (rep.cpp:96) assertion, right?</div>
 <div class="line">[Thursday 08 April 2010] [05:52:42] &lt;mikko&gt; sustrik: yes</div>
 <div class="line">[Thursday 08 April 2010] [05:52:56] &lt;sustrik&gt;   ok</div>
 <div class="line">[Thursday 08 April 2010] [06:03:01] &lt;sustrik&gt;   mikko: hm, there seems to be no way how this can heppen :(</div>
@@ -1344,7 +1320,7 @@
 <div class="line">[Thursday 08 April 2010] [06:18:31] &lt;mikko&gt; if you rerun the same thing and exit client with ctrl c</div>
 <div class="line">[Thursday 08 April 2010] [06:18:32] &lt;sustrik&gt;   right?</div>
 <div class="line">[Thursday 08 April 2010] [06:18:38] &lt;mikko&gt; Received message: hello there!</div>
-<div class="line">[Thursday 08 April 2010] [06:18:39] &lt;mikko&gt; Assertion failed: !sending_reply || !more || reply_pipe != <a href="#id265"><span class="problematic" id="id266">pipe_</span></a> (rep.cpp:96)</div>
+<div class="line">[Thursday 08 April 2010] [06:18:39] &lt;mikko&gt; Assertion failed: !sending_reply || !more || reply_pipe != <a href="#id153"><span class="problematic" id="id154">pipe_</span></a> (rep.cpp:96)</div>
 <div class="line">[Thursday 08 April 2010] [06:18:39] &lt;mikko&gt; Aborted</div>
 <div class="line">[Thursday 08 April 2010] [06:18:40] &lt;mikko&gt; yep</div>
 <div class="line">[Thursday 08 April 2010] [06:18:56] &lt;mikko&gt; if the client goes away that assertion should appear</div>
@@ -1378,11 +1354,11 @@
 <div class="line">[Thursday 08 April 2010] [07:43:52] &lt;sustrik&gt;   olivier_c: ok, got it</div>
 <div class="line">[Thursday 08 April 2010] [07:43:59] &lt;sustrik&gt;   i&#8217;ll open a ticket</div>
 <div class="line">[Thursday 08 April 2010] [07:44:24] &lt;sustrik&gt;   btw, if you clone the repo using standard git clone, you won&#8217;t get the error</div>
-<div class="line">[Thursday 08 April 2010] [07:44:52] &lt;<a href="#id267"><span class="problematic" id="id268">olivier_c_</span></a>&gt;    re :/</div>
+<div class="line">[Thursday 08 April 2010] [07:44:52] &lt;<a href="#id155"><span class="problematic" id="id156">olivier_c_</span></a>&gt;    re :/</div>
 <div class="line">[Thursday 08 April 2010] [07:45:56] &lt;sustrik&gt;   &lt;sustrik&gt; olivier_c: ok, got it</div>
 <div class="line">[Thursday 08 April 2010] [07:45:56] &lt;sustrik&gt;   &lt;sustrik&gt; i&#8217;ll open a ticket</div>
 <div class="line">[Thursday 08 April 2010] [07:45:56] &lt;sustrik&gt;   &lt;sustrik&gt; btw, if you clone the repo using standard git clone, you won&#8217;t get the error</div>
-<div class="line">[Thursday 08 April 2010] [07:46:22] &lt;<a href="#id269"><span class="problematic" id="id270">olivier_c_</span></a>&gt;    ok</div>
+<div class="line">[Thursday 08 April 2010] [07:46:22] &lt;<a href="#id157"><span class="problematic" id="id158">olivier_c_</span></a>&gt;    ok</div>
 <div class="line">[Thursday 08 April 2010] [08:01:44] &lt;keenerd&gt;   Hi.</div>
 <div class="line">[Thursday 08 April 2010] [08:02:07] &lt;keenerd&gt;   Another makefile question</div>
 <div class="line">[Thursday 08 April 2010] [08:03:04] &lt;keenerd&gt;   libzmq.la gets make install&#8217;d, and it seems like it should not be</div>
@@ -1463,21 +1439,9 @@
 <div class="line">[Thursday 08 April 2010] [12:56:40] &lt;sophacles&gt; ok, thanks for the tip... ill let you know how that works once i get the stuff pushed to all the right places :</div>
 <div class="line">[Thursday 08 April 2010] [13:05:23] &lt;CIA-5&gt; zeromq2: 03Martin Sustrik 07master * r5cd9f74 10/ src/rep.cpp : few fixed related to multi-part messages in REP socket - <a class="reference external" href="http://bit.ly/aMGndT">http://bit.ly/aMGndT</a></div>
 <div class="line">[Thursday 08 April 2010] [13:21:39] &lt;CIA-5&gt; zeromq2: 03Martin Sustrik 07master * r027bb1d 10/ src/zmq.cpp : issue 10 - zmq_strerror problem on Windows - <a class="reference external" href="http://bit.ly/d8SQ7M">http://bit.ly/d8SQ7M</a></div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id27"><span class="problematic" id="id28">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id29"><span class="problematic" id="id30">**</span></a>* on Thu Apr 8 16:50:51 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Thursday 08 April 2010] [17:08:00] &lt;sophacles&gt; sustrik: so, with the latest zeromq2 stuff debian packaging should probably be cleaned up to not include all the language bindings, correct?</div>
 <div class="line">[Thursday 08 April 2010] [18:37:01] &lt;dirtmcgirt&gt;    hi all. getting a &#8220;Exception in thread &#8220;main&#8221; java.lang.UnsatisfiedLinkError: /usr/local/lib/libjzmq.0.dylib:  no suitable image found.&#8221; with the latest checkout of jzmq</div>
 <div class="line">[Thursday 08 April 2010] [18:37:17] &lt;dirtmcgirt&gt;    trying the test program: &#8220;java -Djava.library.path=/usr/local/lib -classpath ../src/Zmq.jar:. local_lat <a class="reference external" href="tcp://127.0.0.1:5555">tcp://127.0.0.1:5555</a> 1 100&#8221;</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id31"><span class="problematic" id="id32">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id33"><span class="problematic" id="id34">**</span></a>* on Thu Apr 8 19:12:50 2010</div>
-<div class="line"><br /></div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id35"><span class="problematic" id="id36">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id37"><span class="problematic" id="id38">**</span></a>* on Fri Apr 9 09:46:50 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Friday 09 April 2010] [09:52:06] &lt;mikko&gt;   sustrik: thanks for r716f4ac!</div>
 <div class="line">[Friday 09 April 2010] [09:59:21] &lt;sustrik&gt; np, i wanted to implement it anyway :)</div>
 <div class="line">[Friday 09 April 2010] [09:59:50] &lt;mikko&gt;   i&#8217;ll add it to the php extension soon</div>
@@ -1699,10 +1663,10 @@
 <div class="line">[Saturday 10 April 2010] [05:51:16] &lt;mato&gt;  (that in adrian&#8217;s hg repository)</div>
 <div class="line">[Saturday 10 April 2010] [05:51:21] &lt;mato&gt;  in terms of actual packages built</div>
 <div class="line">[Saturday 10 April 2010] [05:51:29] &lt;mato&gt;  you want something equivalent to:</div>
-<div class="line">[Saturday 10 April 2010] [05:51:34] &lt;mato&gt;  dpkg-deb: building package <a href="#id39"><span class="problematic" id="id40">`</span></a>libzmq0&#8217; in <a href="#id41"><span class="problematic" id="id42">`</span></a>../libzmq0_2.0.6beta.dfsg-2_amd64.deb&#8217;.</div>
-<div class="line">[Saturday 10 April 2010] [05:51:34] &lt;mato&gt;  dpkg-deb: building package <a href="#id43"><span class="problematic" id="id44">`</span></a>zeromq-bin&#8217; in <a href="#id45"><span class="problematic" id="id46">`</span></a>../zeromq-bin_2.0.6beta.dfsg-2_amd64.deb&#8217;.</div>
-<div class="line">[Saturday 10 April 2010] [05:51:37] &lt;mato&gt;  dpkg-deb: building package <a href="#id47"><span class="problematic" id="id48">`</span></a>libzmq-dev&#8217; in <a href="#id49"><span class="problematic" id="id50">`</span></a>../libzmq-dev_2.0.6beta.dfsg-2_amd64.deb&#8217;.</div>
-<div class="line">[Saturday 10 April 2010] [05:51:40] &lt;mato&gt;  dpkg-deb: building package <a href="#id51"><span class="problematic" id="id52">`</span></a>libzmq-dbg&#8217; in <a href="#id53"><span class="problematic" id="id54">`</span></a>../libzmq-dbg_2.0.6beta.dfsg-2_amd64.deb&#8217;.</div>
+<div class="line">[Saturday 10 April 2010] [05:51:34] &lt;mato&gt;  dpkg-deb: building package <a href="#id3"><span class="problematic" id="id4">`</span></a>libzmq0&#8217; in <a href="#id5"><span class="problematic" id="id6">`</span></a>../libzmq0_2.0.6beta.dfsg-2_amd64.deb&#8217;.</div>
+<div class="line">[Saturday 10 April 2010] [05:51:34] &lt;mato&gt;  dpkg-deb: building package <a href="#id7"><span class="problematic" id="id8">`</span></a>zeromq-bin&#8217; in <a href="#id9"><span class="problematic" id="id10">`</span></a>../zeromq-bin_2.0.6beta.dfsg-2_amd64.deb&#8217;.</div>
+<div class="line">[Saturday 10 April 2010] [05:51:37] &lt;mato&gt;  dpkg-deb: building package <a href="#id11"><span class="problematic" id="id12">`</span></a>libzmq-dev&#8217; in <a href="#id13"><span class="problematic" id="id14">`</span></a>../libzmq-dev_2.0.6beta.dfsg-2_amd64.deb&#8217;.</div>
+<div class="line">[Saturday 10 April 2010] [05:51:40] &lt;mato&gt;  dpkg-deb: building package <a href="#id15"><span class="problematic" id="id16">`</span></a>libzmq-dbg&#8217; in <a href="#id17"><span class="problematic" id="id18">`</span></a>../libzmq-dbg_2.0.6beta.dfsg-2_amd64.deb&#8217;.</div>
 <div class="line">[Saturday 10 April 2010] [06:11:59] &lt;mikko&gt; hmm.. testing the spec file and i didn&#8217;t have &#8216;g++&#8217; but configure still passes</div>
 <div class="line">[Saturday 10 April 2010] [06:13:11] &lt;mato&gt;  that&#8217;s strange :) I&#8217;ve not tried on a machine w/o g++</div>
 <div class="line">[Saturday 10 April 2010] [06:33:20] &lt;mikko&gt; does &#8211;with-pgm add additional dependencies?</div>
@@ -1753,7 +1717,7 @@
 <div class="line">[Saturday 10 April 2010] [10:22:05] &lt;CIA-5&gt; zeromq2: Isolate GCC-isms inside checks that we are actually using GCC/G++.</div>
 <div class="line">[Saturday 10 April 2010] [10:22:05] &lt;CIA-5&gt; zeromq2: Only check for -lstdc++ when on GCC and doing static linking. - <a class="reference external" href="http://bit.ly/bvl9cL">http://bit.ly/bvl9cL</a></div>
 <div class="line">[Saturday 10 April 2010] [10:27:12] &lt;CIA-5&gt; zeromq2: 03Martin Sustrik 07master * rc214a24 10/ (src/forwarder.cpp src/queue.cpp src/streamer.cpp): fix for Sun C++ 5.8 - <a class="reference external" href="http://bit.ly/9gea7k">http://bit.ly/9gea7k</a></div>
-<div class="line">[Saturday 10 April 2010] [10:33:38] &lt;mikko&gt; make[2]: <a href="#id55"><span class="problematic" id="id56">**</span></a>* No rule to make target <a href="#id57"><span class="problematic" id="id58">`</span></a>zmq_forwarder.1&#8217;, needed by <a href="#id59"><span class="problematic" id="id60">`</span></a>dist-hook&#8217;.  Stop.</div>
+<div class="line">[Saturday 10 April 2010] [10:33:38] &lt;mikko&gt; make[2]: <a href="#id19"><span class="problematic" id="id20">**</span></a>* No rule to make target <a href="#id21"><span class="problematic" id="id22">`</span></a>zmq_forwarder.1&#8217;, needed by <a href="#id23"><span class="problematic" id="id24">`</span></a>dist-hook&#8217;.  Stop.</div>
 <div class="line">[Saturday 10 April 2010] [10:33:43] &lt;mikko&gt; during make dist</div>
 <div class="line">[Saturday 10 April 2010] [10:33:48] &lt;mikko&gt; do i need to do something special?</div>
 <div class="line">[Saturday 10 April 2010] [10:34:02] &lt;mato&gt;  make dist generates documentation</div>
@@ -1847,10 +1811,6 @@
 <div class="line">[Saturday 10 April 2010] [11:26:02] &lt;mato&gt;  i&#8217;m off into town</div>
 <div class="line">[Saturday 10 April 2010] [11:26:02] &lt;mato&gt;  bbl</div>
 <div class="line">[Saturday 10 April 2010] [11:32:15] &lt;sustrik&gt;   cyl</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id61"><span class="problematic" id="id62">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id63"><span class="problematic" id="id64">**</span></a>* on Sun Apr 11 01:13:47 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Sunday 11 April 2010] [01:59:12] &lt;CIA-5&gt;   zeromq2: 03Martin Sustrik 07master * r6fea422 10/ include/zmq.hpp : getsockopt added to c++ binding - <a class="reference external" href="http://bit.ly/aWN1od">http://bit.ly/aWN1od</a></div>
 <div class="line">[Sunday 11 April 2010] [04:08:32] &lt;mikko&gt;   sustrik: pretty early commit, huh</div>
 <div class="line">[Sunday 11 April 2010] [04:08:50] &lt;mikko&gt;   (assuming you are somewhat close to GMT)</div>
@@ -2054,10 +2014,6 @@
 <div class="line">[Sunday 11 April 2010] [12:01:17] &lt;mikko&gt;   im gonna hit the gym</div>
 <div class="line">[Sunday 11 April 2010] [12:01:18] &lt;mikko&gt;   bbl</div>
 <div class="line">[Sunday 11 April 2010] [14:47:01] &lt;mikko&gt;   back</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id65"><span class="problematic" id="id66">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id67"><span class="problematic" id="id68">**</span></a>* on Sun Apr 11 19:12:59 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Monday 12 April 2010] [03:25:14] &lt;CIA-5&gt;   zeromq2: 03Martin Sustrik 07master * r3236cb1 10/ (7 files): ETERM is accounted for in the documentation - <a class="reference external" href="http://bit.ly/9KxYaI">http://bit.ly/9KxYaI</a></div>
 <div class="line">[Monday 12 April 2010] [03:57:45] &lt;CIA-5&gt;   zeromq2: 03Martin Sustrik 07master * r7668e79 10/ (doc/zmq_socket.txt src/zmq.cpp): zmq_poll returns ETERM in case of context termination - <a class="reference external" href="http://bit.ly/br7liv">http://bit.ly/br7liv</a></div>
 <div class="line">[Monday 12 April 2010] [04:05:39] &lt;CIA-5&gt;   zeromq2: 03Martin Sustrik 07master * r3496476 10/ (4 files in 4 dirs): MSVC perf build fixed - <a class="reference external" href="http://bit.ly/aF5lWU">http://bit.ly/aF5lWU</a></div>
@@ -2070,7 +2026,7 @@
 <div class="line">[Monday 12 April 2010] [07:47:08] &lt;sustrik&gt; it&#8217;s an unexpected result code from OpenPGM library</div>
 <div class="line">[Monday 12 April 2010] [07:47:21] &lt;sustrik&gt; can you check what exact error are you getting?</div>
 <div class="line">[Monday 12 April 2010] [07:47:35] &lt;sustrik&gt; (both domain and code)</div>
-<div class="line">[Monday 12 April 2010] [07:49:41] &lt;<a href="#id271"><span class="problematic" id="id272">olivier_c_</span></a>&gt;  ok I&#8217;m going to have a look on it</div>
+<div class="line">[Monday 12 April 2010] [07:49:41] &lt;<a href="#id159"><span class="problematic" id="id160">olivier_c_</span></a>&gt;  ok I&#8217;m going to have a look on it</div>
 <div class="line">[Monday 12 April 2010] [07:49:55] &lt;sustrik&gt; thanks</div>
 <div class="line">[Monday 12 April 2010] [08:24:52] &lt;olivier_c&gt;   so. i just get &#8220;Assertion failed: false (pgm_socket.cpp line 130). Aborted.  i&#8217;m just trying to connect a SUB socket to &#8220;epgm://eth0;224.0.0.1:5555&#8221;. does it mean that pgm isn&#8217;t supported ?</div>
 <div class="line">[Monday 12 April 2010] [08:41:31] &lt;sustrik&gt; olivier_c: no, it means that OpenPGM returned unexpected error</div>
@@ -2313,7 +2269,7 @@
 <div class="line">[Monday 12 April 2010] [10:48:03] &lt;mato&gt;    sustrik: 2) then when you have time retest the MSVC builds to make sure they still work (they should, but we need to be sure)</div>
 <div class="line">[Monday 12 April 2010] [10:48:26] &lt;sustrik&gt; ok, commit it and I change MSVC build</div>
 <div class="line">[Monday 12 April 2010] [10:48:37] &lt;sustrik&gt; however, are you sure about DLL_EXPORT</div>
-<div class="line">[Monday 12 April 2010] [10:48:42] &lt;sustrik&gt; no <a href="#id273"><span class="problematic" id="id274">ZMQ_</span></a> prefix?</div>
+<div class="line">[Monday 12 April 2010] [10:48:42] &lt;sustrik&gt; no <a href="#id161"><span class="problematic" id="id162">ZMQ_</span></a> prefix?</div>
 <div class="line">[Monday 12 April 2010] [10:48:44] &lt;mato&gt;    sustrik: yes, don&#8217;t ask</div>
 <div class="line">[Monday 12 April 2010] [10:49:18] &lt;sustrik&gt; no possible collisions with other projects?</div>
 <div class="line">[Monday 12 April 2010] [10:49:49] &lt;mato&gt;    it shouldn&#8217;t matter right now, if someone complains i&#8217;ll do something else</div>
@@ -2332,10 +2288,6 @@
 <div class="line">[Monday 12 April 2010] [13:49:13] &lt;lvh&gt; sophacles: ?</div>
 <div class="line">[Monday 12 April 2010] [14:18:34] &lt;sophacles&gt;   sorry typo</div>
 <div class="line">[Monday 12 April 2010] [15:45:51] &lt;lvh&gt; Hello.</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id69"><span class="problematic" id="id70">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id71"><span class="problematic" id="id72">**</span></a>* on Mon Apr 12 16:45:53 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Monday 12 April 2010] [21:08:10] &lt;iFire&gt;   mato, sustrik if I decide to make a custom udp layer for game communication i.e. custom (reliability, ordered) where should I start?</div>
 <div class="line">[Monday 12 April 2010] [21:27:51] &lt;iFire&gt;   i.e. making 0mq do that</div>
 <div class="line">[Monday 12 April 2010] [23:06:38] &lt;enki&gt;    yo, i&#8217;m sure you guys are biased - but any opinions on beanstalkd?</div>
@@ -2749,15 +2701,7 @@
 <div class="line">[Tuesday 13 April 2010] [14:09:58] &lt;mikko&gt;  evhttp i think it&#8217;s called</div>
 <div class="line">[Tuesday 13 April 2010] [14:10:05] &lt;dirtmcgirt&gt; yes, we are using that</div>
 <div class="line">[Tuesday 13 April 2010] [14:10:08] &lt;dirtmcgirt&gt; it&#8217;s great</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id73"><span class="problematic" id="id74">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id75"><span class="problematic" id="id76">**</span></a>* on Tue Apr 13 16:44:35 2010</div>
-<div class="line"><br /></div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id77"><span class="problematic" id="id78">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id79"><span class="problematic" id="id80">**</span></a>* on Tue Apr 13 16:51:55 2010</div>
-<div class="line"><br /></div>
-<div class="line">[Wednesday 14 April 2010] [13:35:48] &lt;jomofo&gt;   When I try to build libzmq from master I get this error (Linux x86) :  make[1]: <a href="#id81"><span class="problematic" id="id82">**</span></a>* No rule to make target <a href="#id83"><span class="problematic" id="id84">`</span></a>local_lat.c&#8217;, needed by <a href="#id85"><span class="problematic" id="id86">`</span></a>local_lat.o&#8217;.  Stop.</div>
+<div class="line">[Wednesday 14 April 2010] [13:35:48] &lt;jomofo&gt;   When I try to build libzmq from master I get this error (Linux x86) :  make[1]: <a href="#id25"><span class="problematic" id="id26">**</span></a>* No rule to make target <a href="#id27"><span class="problematic" id="id28">`</span></a>local_lat.c&#8217;, needed by <a href="#id29"><span class="problematic" id="id30">`</span></a>local_lat.o&#8217;.  Stop.</div>
 <div class="line">[Wednesday 14 April 2010] [13:37:01] &lt;jomofo&gt;   Guessing it&#8217;s a makefile issue, but don&#8217;t have enough experience with automake to solve on my own.  Any hints?  Thanks</div>
 <div class="line">[Wednesday 14 April 2010] [14:16:06] &lt;mikko&gt;    jomofo: lemme test</div>
 <div class="line">[Wednesday 14 April 2010] [14:16:07] &lt;mikko&gt;    sec</div>
@@ -2776,7 +2720,7 @@
 <div class="line">[Wednesday 14 April 2010] [15:00:59] &lt;sustrik&gt;  jomofo: the files in question were renamed</div>
 <div class="line">[Wednesday 14 April 2010] [15:01:13] &lt;sustrik&gt;  automake has problem couping with it</div>
 <div class="line">[Wednesday 14 April 2010] [15:01:26] &lt;sustrik&gt;  in any case, fresh copy solves it</div>
-<div class="line">[Wednesday 14 April 2010] [15:07:51] &lt;sophacles&gt;    sustrik: a few days back you mentioned to me using <a href="#id87"><span class="problematic" id="id88">*</span></a>_thr for some throughput testing using very large numbers for message sizes.  its strange when I do that remote_thr quits fairly soon and local_thr doesn&#8217;t ever finish.</div>
+<div class="line">[Wednesday 14 April 2010] [15:07:51] &lt;sophacles&gt;    sustrik: a few days back you mentioned to me using <a href="#id31"><span class="problematic" id="id32">*</span></a>_thr for some throughput testing using very large numbers for message sizes.  its strange when I do that remote_thr quits fairly soon and local_thr doesn&#8217;t ever finish.</div>
 <div class="line">[Wednesday 14 April 2010] [15:07:58] &lt;sophacles&gt;    any thoughts as to why?</div>
 <div class="line">[Wednesday 14 April 2010] [15:08:20] &lt;sustrik&gt;  there&#8217;s sleep(10) hardcoded in the sender</div>
 <div class="line">[Wednesday 14 April 2010] [15:08:47] &lt;sustrik&gt;  it transmission takes more than that, the sender quits in the middle of the transmission</div>
@@ -2801,7 +2745,7 @@
 <div class="line">[Wednesday 14 April 2010] [15:35:57] &lt;sustrik&gt;  jomofo: any chance the old version of jzmq is being loaded?</div>
 <div class="line">[Wednesday 14 April 2010] [15:38:46] &lt;jomofo&gt;   sustrik: I don&#8217;t believe so, but I&#8217;ve done crazier things.  I will wipe /usr/local/lib, verify it breaks my test, then build again</div>
 <div class="line">[Wednesday 14 April 2010] [15:39:40] &lt;sustrik&gt;  the code looks more or less correct:</div>
-<div class="line">[Wednesday 14 April 2010] [15:39:41] &lt;sustrik&gt;  JNIEXPORT void JNICALL Java_org_zeromq_ZMQ_00024Context_construct (JNIEnv <a href="#id89"><span class="problematic" id="id90">*</span></a>env,</div>
+<div class="line">[Wednesday 14 April 2010] [15:39:41] &lt;sustrik&gt;  JNIEXPORT void JNICALL Java_org_zeromq_ZMQ_00024Context_construct (JNIEnv <a href="#id33"><span class="problematic" id="id34">*</span></a>env,</div>
 <div class="line">[Wednesday 14 April 2010] [15:39:41] &lt;sustrik&gt;                                                                     jobject obj,</div>
 <div class="line">[Wednesday 14 April 2010] [15:39:41] &lt;sustrik&gt;                                                                     jint app_threads,</div>
 <div class="line">[Wednesday 14 April 2010] [15:39:41] &lt;sustrik&gt;                                                                     jint io_threads,</div>
@@ -2818,11 +2762,11 @@
 <div class="line">[Wednesday 14 April 2010] [15:44:01] &lt;sustrik&gt;  is it the same?</div>
 <div class="line">[Wednesday 14 April 2010] [15:44:28] &lt;sustrik&gt;  org_zeromq_ZMQ_Context.h</div>
 <div class="line">[Wednesday 14 April 2010] [15:44:47] &lt;jomofo&gt;   JNIEXPORT void JNICALL Java_org_zeromq_ZMQ_00024Context_construct</div>
-<div class="line">[Wednesday 14 April 2010] [15:44:47] &lt;jomofo&gt;     (JNIEnv <a href="#id91"><span class="problematic" id="id92">*</span></a>, jobject, jint, jint, jint);</div>
+<div class="line">[Wednesday 14 April 2010] [15:44:47] &lt;jomofo&gt;     (JNIEnv <a href="#id35"><span class="problematic" id="id36">*</span></a>, jobject, jint, jint, jint);</div>
 <div class="line">[Wednesday 14 April 2010] [15:46:07] &lt;sustrik&gt;  hm</div>
 <div class="line">[Wednesday 14 April 2010] [15:46:33] &lt;sustrik&gt;  let me try here</div>
 <div class="line">[Wednesday 14 April 2010] [15:49:02] &lt;sustrik&gt;  yuck, i cannot even build it</div>
-<div class="line">[Wednesday 14 April 2010] [15:49:09] &lt;sustrik&gt;  /usr/bin/ld: /usr/local/lib/libzmq.a(libzmq_la-zmq.o): relocation R_X86_64_32 against <a href="#id93"><span class="problematic" id="id94">`</span></a>.rodata&#8217; can not be used when making a shared object; recompile with -fPIC</div>
+<div class="line">[Wednesday 14 April 2010] [15:49:09] &lt;sustrik&gt;  /usr/bin/ld: /usr/local/lib/libzmq.a(libzmq_la-zmq.o): relocation R_X86_64_32 against <a href="#id37"><span class="problematic" id="id38">`</span></a>.rodata&#8217; can not be used when making a shared object; recompile with -fPIC</div>
 <div class="line">[Wednesday 14 April 2010] [15:49:09] &lt;sustrik&gt;  /usr/local/lib/libzmq.a: could not read symbols: Bad value</div>
 <div class="line">[Wednesday 14 April 2010] [15:51:18] &lt;sophacles&gt;    so with p2p sockets, do i bind/connect or...? (wierd segfaulting issues)</div>
 <div class="line">[Wednesday 14 April 2010] [15:51:52] &lt;jomofo&gt;   sustrik: eek, I don&#8217;t get that ... I can build it on Ubuntu 9.04 32-bit and 64-bit</div>
@@ -2847,10 +2791,6 @@
 <div class="line">[Wednesday 14 April 2010] [16:20:19] &lt;sustrik&gt;  sophacles: created new issue for that (no. 18)</div>
 <div class="line">[Wednesday 14 April 2010] [16:20:47] &lt;sustrik&gt;  as for now you&#8217;ll have to do with manually tweaking the sleep(10) thing :(</div>
 <div class="line">[Wednesday 14 April 2010] [16:23:37] &lt;sophacles&gt;    before anyone spends too much effort on that issue, it is linked against 2.0.6, which is hte current debian packaged version in Adrian&#8217;s repo. If relevant work has been done since then i can build the latest git repo and try that</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id95"><span class="problematic" id="id96">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id97"><span class="problematic" id="id98">**</span></a>* on Wed Apr 14 16:40:05 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Wednesday 14 April 2010] [17:43:56] &lt;sophacles&gt;    sustrik: i forgot to mention, thanks for the tip about remote_thr/local_thr w/ big message sizes, they fill the pipe w/out maxin the cpu :)</div>
 <div class="line">[Wednesday 14 April 2010] [18:07:09] &lt;jomofo&gt;   sustrik: do you use Sun JDK or OpenJDK or ... ?  I don&#8217;t think it matters much, but don&#8217;t want to introduce more variables than I have to</div>
 <div class="line">[Wednesday 14 April 2010] [18:07:55] &lt;jomofo&gt;   P.S. I kept saying Ubuntu 9.04 earlier, but it is 9.10 which looks like what you&#8217;re running</div>
@@ -2859,7 +2799,7 @@
 <div class="line">[Thursday 15 April 2010] [01:49:48] &lt;CIA-5&gt; clrzmq: 03Martin Sustrik 07master * r360286b 10/ clrzmq/zmq.cs : zmq_msg_t size if estimated correctly idependent on microarchitecture used - <a class="reference external" href="http://bit.ly/bDlyVB">http://bit.ly/bDlyVB</a></div>
 <div class="line">[Thursday 15 April 2010] [10:42:12] &lt;sophacles&gt; do the latest versions of 0mq compile with -g automatically or something, im suddenly getting glibc backtraces when I blow stuff up.</div>
 <div class="line">[Thursday 15 April 2010] [10:56:08] &lt;sustrik&gt;   hm, doesn&#8217;t seem to happen here</div>
-<div class="line">[Thursday 15 April 2010] [10:56:09] &lt;sustrik&gt;   /bin/bash ../libtool  &#8211;tag=CXX   &#8211;mode=compile g++ -DHAVE_CONFIG_H -I.   -Werror -pedantic -Wall -D_GNU_SOURCE -D_REENTRANT -D_THREAD_SAFE   -fPIC -MT libzmq_la-downstream.lo -MD -MP -MF .deps/libzmq_la-downstream.Tpo -c -o libzmq_la-downstream.lo <a href="#id99"><span class="problematic" id="id100">`</span></a>test -f &#8216;downstream.cpp&#8217; || echo &#8216;./&#8217;<a href="#id101"><span class="problematic" id="id102">`</span></a>downstream.cpp</div>
+<div class="line">[Thursday 15 April 2010] [10:56:09] &lt;sustrik&gt;   /bin/bash ../libtool  &#8211;tag=CXX   &#8211;mode=compile g++ -DHAVE_CONFIG_H -I.   -Werror -pedantic -Wall -D_GNU_SOURCE -D_REENTRANT -D_THREAD_SAFE   -fPIC -MT libzmq_la-downstream.lo -MD -MP -MF .deps/libzmq_la-downstream.Tpo -c -o libzmq_la-downstream.lo <a href="#id39"><span class="problematic" id="id40">`</span></a>test -f &#8216;downstream.cpp&#8217; || echo &#8216;./&#8217;<a href="#id41"><span class="problematic" id="id42">`</span></a>downstream.cpp</div>
 <div class="line">[Thursday 15 April 2010] [10:59:33] &lt;sophacles&gt; hmm. must be some wierd debian thing then.</div>
 <div class="line">[Thursday 15 April 2010] [10:59:47] &lt;sophacles&gt; there are definately a lot of those :)</div>
 <div class="line">[Thursday 15 April 2010] [11:02:51] &lt;sustrik&gt;   do you see the -g option when you compile it?</div>
@@ -2925,10 +2865,6 @@
 <div class="line">[Thursday 15 April 2010] [13:23:08] &lt;sustrik&gt;   i&#8217;ll put it on my todo list</div>
 <div class="line">[Thursday 15 April 2010] [13:23:28] &lt;mato&gt;  that&#8217;s always a good way of resolving &#8220;work&#8221; :-)</div>
 <div class="line">[Thursday 15 April 2010] [13:24:05] &lt;mato&gt;  anyway, let&#8217;s wait and see what proposal ph comes up with for the zeromq.org page, he has been promising something</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id103"><span class="problematic" id="id104">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id105"><span class="problematic" id="id106">**</span></a>* on Thu Apr 15 15:14:59 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Thursday 15 April 2010] [18:31:10] &lt;mikko&gt; a lot of changes going into 2.0.7 which also break bwc in places</div>
 <div class="line">[Thursday 15 April 2010] [18:31:19] &lt;mikko&gt; should it really be 2.1.0 or 3.0.0?</div>
 <div class="line">[Thursday 15 April 2010] [19:00:08] &lt;mato&gt;  mikko: nope, this is why 2.0.6 is still called &#8220;Beta&#8221;</div>
@@ -2936,10 +2872,6 @@
 <div class="line">[Thursday 15 April 2010] [19:09:03] &lt;mikko&gt; mato: just to check, this is correct format: <a class="reference external" href="http://valokuva.org/~mikko/0001-Import-redhat-packaging.patch">http://valokuva.org/~mikko/0001-Import-redhat-packaging.patch</a> ?</div>
 <div class="line">[Thursday 15 April 2010] [19:23:36] &lt;mikko&gt; im going to sleep for a while</div>
 <div class="line">[Thursday 15 April 2010] [19:23:38] &lt;mikko&gt; -&gt;</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id107"><span class="problematic" id="id108">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id109"><span class="problematic" id="id110">**</span></a>* on Thu Apr 15 23:58:07 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Friday 16 April 2010] [03:53:49] &lt;CIA-5&gt;   zeromq2: 03Martin Sustrik 07master * rd524c4e 10/ doc/zmq_setsockopt.txt : fix of documentation typo - <a class="reference external" href="http://bit.ly/cawYnX">http://bit.ly/cawYnX</a></div>
 <div class="line">[Friday 16 April 2010] [04:21:06] &lt;mato&gt;    mikko: that patch looks good to me, yes</div>
 <div class="line">[Friday 16 April 2010] [04:21:39] &lt;mikko&gt;   mato: is sed -i portable?</div>
@@ -3028,10 +2960,6 @@
 <div class="line">[Friday 16 April 2010] [11:07:39] &lt;sustrik&gt; yep, but i&#8217;m not the right person to ask, i have very little security experience</div>
 <div class="line">[Friday 16 April 2010] [11:07:52] &lt;sustrik&gt; maybe discussing it on list would help?</div>
 <div class="line">[Friday 16 April 2010] [11:08:42] &lt;jomofo&gt;  sure, i&#8217;ll send something to the list</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id111"><span class="problematic" id="id112">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id113"><span class="problematic" id="id114">**</span></a>* on Fri Apr 16 16:22:17 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Saturday 17 April 2010] [03:44:54] &lt;guido_g&gt;   just compild 0mq, tried epgm, doesn&#8217;t work <em>grml</em></div>
 <div class="line">[Saturday 17 April 2010] [03:55:18] &lt;guido_g&gt;   <a class="reference external" href="mailto:guido&#37;&#52;&#48;nathan">guido<span>&#64;</span>nathan</a>:~/prog/apps/zmq-trunk/perf$ ./local_thr epgm://eth0;239.1.1.1:5000 800 1000000</div>
 <div class="line">[Saturday 17 April 2010] [03:55:18] &lt;guido_g&gt;   Assertion failed: false (pgm_socket.cpp:130)</div>
@@ -3053,7 +2981,7 @@
 <div class="line">[Saturday 17 April 2010] [04:56:21] &lt;guido_g&gt;   starting</div>
 <div class="line">[Saturday 17 April 2010] [04:56:22] &lt;guido_g&gt;   msg_count: 10000</div>
 <div class="line">[Saturday 17 April 2010] [04:56:24] &lt;guido_g&gt;   msg_count: 20000</div>
-<div class="line">[Saturday 17 April 2010] [04:56:26] &lt;guido_g&gt;   <strong>* glibc detected *</strong> /home/guido/prog/apps/zmq-trunk/perf/.libs/lt-local_thr: malloc(): memory corruption: 0xb7205100 <a href="#id115"><span class="problematic" id="id116">**</span></a><a href="#id117"><span class="problematic" id="id118">*</span></a></div>
+<div class="line">[Saturday 17 April 2010] [04:56:26] &lt;guido_g&gt;   <strong>* glibc detected *</strong> /home/guido/prog/apps/zmq-trunk/perf/.libs/lt-local_thr: malloc(): memory corruption: 0xb7205100 <a href="#id43"><span class="problematic" id="id44">**</span></a><a href="#id45"><span class="problematic" id="id46">*</span></a></div>
 <div class="line">[Saturday 17 April 2010] [04:56:29] &lt;guido_g&gt;   message of incorrect size received</div>
 <div class="line">[Saturday 17 April 2010] [04:56:31] &lt;guido_g&gt;   ======= Backtrace: =========</div>
 <div class="line">[Saturday 17 April 2010] [04:56:33] &lt;guido_g&gt;   /lib/i686/cmov/libc.so.6[0xb7c7e824]</div>
@@ -3075,14 +3003,6 @@
 <div class="line">[Saturday 17 April 2010] [05:19:27] &lt;guido_g&gt;   mean throughput: 388.350 [Mb/s]</div>
 <div class="line">[Saturday 17 April 2010] [05:20:43] &lt;sustrik&gt;   :)</div>
 <div class="line">[Saturday 17 April 2010] [05:21:24]      * guido_g is happy</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id119"><span class="problematic" id="id120">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id121"><span class="problematic" id="id122">**</span></a>* on Sat Apr 17 11:29:21 2010</div>
-<div class="line"><br /></div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id123"><span class="problematic" id="id124">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id125"><span class="problematic" id="id126">**</span></a>* on Sun Apr 18 15:51:01 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Tuesday 20 April 2010] [06:58:26] &lt;sjampoo&gt;    Quick question, zmq_msg_init_data(3) is relatively cheap to call right?</div>
 <div class="line">[Tuesday 20 April 2010] [06:59:44] &lt;sjampoo&gt;    run in to the following issue, while working with Python bindings and non-copy. I want resend a message received with zmq_recv, but i think i have to reinit that with zmq_msg_init_data to get access to the callback</div>
 <div class="line">[Tuesday 20 April 2010] [07:01:34] &lt;sjampoo&gt;    Because if i just resend the received message again without explicitly closing+reinitiazing it i can run in all sorts of problems.</div>
@@ -3129,9 +3049,9 @@
 <div class="line">[Tuesday 20 April 2010] [10:16:58] &lt;sophacles&gt;  the downside to mpi is that unless you really need the features for parallel computing, it is way too complex.</div>
 <div class="line">[Tuesday 20 April 2010] [10:41:26] &lt;pieter_hintjens&gt;    sophacles: thanks, this is helpful</div>
 <div class="line">[Tuesday 20 April 2010] [10:43:52] &lt;sophacles&gt;  y/w</div>
-<div class="line">[Tuesday 20 April 2010] [12:13:26] &lt;<a href="#id173"><span class="problematic" id="id174">mikko__</span></a>&gt;    hello</div>
+<div class="line">[Tuesday 20 April 2010] [12:13:26] &lt;<a href="#id61"><span class="problematic" id="id62">mikko__</span></a>&gt;    hello</div>
 <div class="line">[Tuesday 20 April 2010] [12:13:38] &lt;sophacles&gt;  oh cool: talk tomorrow titled: Towards Secure Message Systems. ill send the list my notes :) (also if anyone is in the middle of illinois i can send you details)</div>
-<div class="line">[Tuesday 20 April 2010] [12:15:31] &lt;sustrik&gt;    <a href="#id173"><span class="problematic" id="id175">mikko__</span></a>: hi</div>
+<div class="line">[Tuesday 20 April 2010] [12:15:31] &lt;sustrik&gt;    <a href="#id61"><span class="problematic" id="id63">mikko__</span></a>: hi</div>
 <div class="line">[Tuesday 20 April 2010] [12:15:51] &lt;sustrik&gt;    sophacles: sounds interesting</div>
 <div class="line">[Tuesday 20 April 2010] [12:25:14] &lt;sophacles&gt;  yeah the abstract is a little.. er.. abstrct, so im only 50% on if it actually applies to 0mq but there is also pizza there, so i figured at worst i still get lunch out of it.</div>
 <div class="line">[Wednesday 21 April 2010] [06:22:28] &lt;sjampoo&gt;  awesome, got PyZMQ working without message copying, even with acquiring and releasing the GIL it isn&#8217;t slower on small messages and about twice as fast on messages larger than 512K</div>
@@ -3183,22 +3103,6 @@
 <div class="line">[Wednesday 21 April 2010] [11:48:45] &lt;sjampoo&gt;  I wonder if Message is the right name</div>
 <div class="line">[Wednesday 21 April 2010] [11:49:42] &lt;sjampoo&gt;  On the one hand, if you send a message you do not really have it anymore</div>
 <div class="line">[Wednesday 21 April 2010] [11:50:38] &lt;sjampoo&gt;  just as in real life, but it might be a little bit counter intuitive if you come across it for the first time in the object sense</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id127"><span class="problematic" id="id128">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id129"><span class="problematic" id="id130">**</span></a>* on Wed Apr 21 19:52:12 2010</div>
-<div class="line"><br /></div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id131"><span class="problematic" id="id132">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id133"><span class="problematic" id="id134">**</span></a>* on Wed Apr 21 20:02:00 2010</div>
-<div class="line"><br /></div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id135"><span class="problematic" id="id136">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id137"><span class="problematic" id="id138">**</span></a>* on Thu Apr 22 00:20:04 2010</div>
-<div class="line"><br /></div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id139"><span class="problematic" id="id140">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id141"><span class="problematic" id="id142">**</span></a>* on Wed Apr 21 20:29:52 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Thursday 22 April 2010] [06:06:30] &lt;sjampoo&gt;   Lets say I have multiple servers and i want to simulate the multicast bus, would it make sense to have them discover each other by using multicast and then have all the servers connect to each other?</div>
 <div class="line">[Thursday 22 April 2010] [06:09:09] &lt;sjampoo&gt;   Now, if i also want to have several &#8216;message groups&#8217; (in a pub/sub setting) i can set the message filter with setsockopt. But i will have to do this for all the server it subscribes to, right?</div>
 <div class="line">[Thursday 22 April 2010] [07:48:36] &lt;b0gg1e&gt;    Hello!</div>
@@ -3213,10 +3117,6 @@
 <div class="line">[Friday 23 April 2010] [15:32:20] &lt;sophacles&gt;   (i finally cornered some people if you couldn&#8217;t tell &#8211; i now hate the all-hands meetings slightly less)</div>
 <div class="line">[Friday 23 April 2010] [17:07:04] &lt;jomofo&gt;  are there any known race conditions in zeromq2 HEAD for TCP transport over REQ/REP sockets?</div>
 <div class="line">[Friday 23 April 2010] [17:08:55] &lt;jomofo&gt;  I have a single-threaded server, multi-threaded client using jzmq ... Can both crash and deadlock JVM pretty consistently against HEAD, but not against 2.0.6 release</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id143"><span class="problematic" id="id144">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id145"><span class="problematic" id="id146">**</span></a>* on Fri Apr 23 19:02:19 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Saturday 24 April 2010] [16:42:13] &lt;unomystEz&gt; hey all</div>
 <div class="line">[Saturday 24 April 2010] [16:42:41] &lt;unomystEz&gt; anyone here developing ultra high-frequency pipelines with zeromq?</div>
 <div class="line">[Saturday 24 April 2010] [18:20:38] &lt;sustrik&gt;   hi</div>
@@ -3228,15 +3128,11 @@
 <div class="line">[Saturday 24 April 2010] [18:22:25] &lt;sustrik&gt;   or open an issue at github</div>
 <div class="line">[Saturday 24 April 2010] [18:30:45] &lt;jomofo&gt;    sustrik: I think I will just build on top of 2.0.6 and wait for your next beta/RC before bug testing it ... Problem is, I&#8217;m sort of learning the Linux C++ toolchain on the fly here, so I don&#8217;t want to bother you with issues with my setup</div>
 <div class="line">[Saturday 24 April 2010] [18:31:17] &lt;jomofo&gt;    PS, welcome back. Where did you go?</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id147"><span class="problematic" id="id148">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id149"><span class="problematic" id="id150">**</span></a>* on Sat Apr 24 21:02:00 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Saturday 24 April 2010] [21:33:05] &lt;unomystEz&gt; hey guys</div>
 <div class="line">[Saturday 24 April 2010] [21:33:49] &lt;unomystEz&gt; anyone know of a good document that describes low-latency networking at the kernel level? ie, packet comes in the NIC, through the driver, in the kernel, etc..</div>
 <div class="line">[Sunday 25 April 2010] [01:39:14] &lt;sustrik&gt; jomofo: ok, it&#8217;s your call</div>
 <div class="line">[Sunday 25 April 2010] [01:39:26] &lt;sustrik&gt; back from london</div>
-<div class="line">[Sunday 25 April 2010] [01:39:56] &lt;sustrik&gt; <a href="#id173"><span class="problematic" id="id176">mikko__</span></a>: sorry, it was just a roundtrip, no evening spare for having a beer</div>
+<div class="line">[Sunday 25 April 2010] [01:39:56] &lt;sustrik&gt; <a href="#id61"><span class="problematic" id="id64">mikko__</span></a>: sorry, it was just a roundtrip, no evening spare for having a beer</div>
 <div class="line">[Sunday 25 April 2010] [01:40:22] &lt;sustrik&gt; unomystEz: it depends on operating system</div>
 <div class="line">[Sunday 25 April 2010] [01:42:01] &lt;sustrik&gt; for Linux there&#8217;s say &#8220;TCP/IP architecture, design and Implementation in Linux&#8221; book</div>
 <div class="line">[Sunday 25 April 2010] [01:42:05] &lt;sustrik&gt; etc.</div>
@@ -3291,7 +3187,7 @@
 <div class="line">[Sunday 25 April 2010] [10:28:10] &lt;unomystEz&gt;   which were pretty good</div>
 <div class="line">[Sunday 25 April 2010] [10:28:26] &lt;sustrik&gt; a bit messy and uncomplete though</div>
 <div class="line">[Sunday 25 April 2010] [10:28:51] &lt;sustrik&gt; anyway, good resource are hard to be found in the area</div>
-<div class="line">[Sunday 25 April 2010] [19:25:16] &lt;<a href="#id173"><span class="problematic" id="id177">mikko__</span></a>&gt; sustrik: ah, i guessed you are busy when visiting</div>
+<div class="line">[Sunday 25 April 2010] [19:25:16] &lt;<a href="#id61"><span class="problematic" id="id65">mikko__</span></a>&gt; sustrik: ah, i guessed you are busy when visiting</div>
 <div class="line">[Monday 26 April 2010] [02:33:13] &lt;sjampoo&gt; Hmm, i&#8217;m looking at pub.cpp. Shouldn&#8217;t the message flushing come before closing all the message objects? What if the ffn callback from zmq_msg_close clears the data?</div>
 <div class="line">[Monday 26 April 2010] [02:47:34] &lt;sjampoo&gt; Ah got it, please ignore that last question.</div>
 <div class="line">[Monday 26 April 2010] [03:28:01] &lt;sustrik&gt; sjampoo: :)</div>
@@ -3313,36 +3209,36 @@
 <div class="line">[Monday 26 April 2010] [10:59:04] &lt;CIA-5&gt;   zeromq2: 03Martin Sustrik 07master * r1ad6ade 10/ builds/msvc/libzmq/libzmq.vcproj : MSVC build fixed - <a class="reference external" href="http://bit.ly/cLmsJP">http://bit.ly/cLmsJP</a></div>
 <div class="line">[Monday 26 April 2010] [11:42:09] &lt;CIA-5&gt;   rbzmq: 03Martin Sustrik 07master * r9f1b337 10/ (perf/local_lat.rb rbzmq.cpp): P2P renamed to PAIR - <a class="reference external" href="http://bit.ly/bs1QwB">http://bit.ly/bs1QwB</a></div>
 <div class="line">[Monday 26 April 2010] [11:49:01] &lt;CIA-5&gt;   clrzmq: 03Martin Sustrik 07master * r52a9158 10/ clrzmq/zmq.cs : P2P renamed to PAIR - <a class="reference external" href="http://bit.ly/9fOAUO">http://bit.ly/9fOAUO</a></div>
-<div class="line">[Monday 26 April 2010] [12:17:49] &lt;<a href="#id173"><span class="problematic" id="id178">mikko__</span></a>&gt; sustrik: there?</div>
-<div class="line">[Monday 26 April 2010] [12:18:14] &lt;sustrik&gt; <a href="#id173"><span class="problematic" id="id179">nikko__</span></a>: yes, hi</div>
-<div class="line">[Monday 26 April 2010] [12:18:27] &lt;<a href="#id173"><span class="problematic" id="id180">mikko__</span></a>&gt; <a class="reference external" href="http://valokuva.org/~mikko/iothreads/">http://valokuva.org/~mikko/iothreads/</a></div>
-<div class="line">[Monday 26 April 2010] [12:18:31] &lt;<a href="#id173"><span class="problematic" id="id181">mikko__</span></a>&gt; might not be C++ish</div>
-<div class="line">[Monday 26 April 2010] [12:18:50] &lt;<a href="#id173"><span class="problematic" id="id182">mikko__</span></a>&gt; noticed a TODO item</div>
+<div class="line">[Monday 26 April 2010] [12:17:49] &lt;<a href="#id61"><span class="problematic" id="id66">mikko__</span></a>&gt; sustrik: there?</div>
+<div class="line">[Monday 26 April 2010] [12:18:14] &lt;sustrik&gt; <a href="#id61"><span class="problematic" id="id67">nikko__</span></a>: yes, hi</div>
+<div class="line">[Monday 26 April 2010] [12:18:27] &lt;<a href="#id61"><span class="problematic" id="id68">mikko__</span></a>&gt; <a class="reference external" href="http://valokuva.org/~mikko/iothreads/">http://valokuva.org/~mikko/iothreads/</a></div>
+<div class="line">[Monday 26 April 2010] [12:18:31] &lt;<a href="#id61"><span class="problematic" id="id69">mikko__</span></a>&gt; might not be C++ish</div>
+<div class="line">[Monday 26 April 2010] [12:18:50] &lt;<a href="#id61"><span class="problematic" id="id70">mikko__</span></a>&gt; noticed a TODO item</div>
 <div class="line">[Monday 26 April 2010] [12:19:23] &lt;sustrik&gt; ah, i see</div>
 <div class="line">[Monday 26 April 2010] [12:19:44] &lt;sustrik&gt; the ugly thing about it is that is has to be done at 3 places</div>
-<div class="line">[Monday 26 April 2010] [12:20:25] &lt;<a href="#id173"><span class="problematic" id="id183">mikko__</span></a>&gt; yeah</div>
+<div class="line">[Monday 26 April 2010] [12:20:25] &lt;<a href="#id61"><span class="problematic" id="id71">mikko__</span></a>&gt; yeah</div>
 <div class="line">[Monday 26 April 2010] [12:20:32] &lt;sustrik&gt; jon dyte is working on merging all 3 devices into a single executable which would allow for having it at a single place</div>
-<div class="line">[Monday 26 April 2010] [12:20:32] &lt;<a href="#id173"><span class="problematic" id="id184">mikko__</span></a>&gt; i guess it would be easy to write a macro</div>
-<div class="line">[Monday 26 April 2010] [12:20:34] &lt;<a href="#id173"><span class="problematic" id="id185">mikko__</span></a>&gt; or something</div>
-<div class="line">[Monday 26 April 2010] [12:20:44] &lt;<a href="#id173"><span class="problematic" id="id186">mikko__</span></a>&gt; that works as well</div>
+<div class="line">[Monday 26 April 2010] [12:20:32] &lt;<a href="#id61"><span class="problematic" id="id72">mikko__</span></a>&gt; i guess it would be easy to write a macro</div>
+<div class="line">[Monday 26 April 2010] [12:20:34] &lt;<a href="#id61"><span class="problematic" id="id73">mikko__</span></a>&gt; or something</div>
+<div class="line">[Monday 26 April 2010] [12:20:44] &lt;<a href="#id61"><span class="problematic" id="id74">mikko__</span></a>&gt; that works as well</div>
 <div class="line">[Monday 26 April 2010] [12:21:22] &lt;sustrik&gt; you may want to synchronise with him</div>
 <div class="line">[Monday 26 April 2010] [12:21:38] &lt;sustrik&gt; he seems busy so we would surely appreciate patches like this one</div>
-<div class="line">[Monday 26 April 2010] [12:21:55] &lt;<a href="#id173"><span class="problematic" id="id187">mikko__</span></a>&gt; im not sure how you are supposed to cast in C++</div>
+<div class="line">[Monday 26 April 2010] [12:21:55] &lt;<a href="#id61"><span class="problematic" id="id75">mikko__</span></a>&gt; im not sure how you are supposed to cast in C++</div>
 <div class="line">[Monday 26 April 2010] [12:22:01] &lt;sustrik&gt; ()</div>
 <div class="line">[Monday 26 April 2010] [12:22:04] &lt;sustrik&gt; (int) x</div>
-<div class="line">[Monday 26 April 2010] [12:22:08] &lt;<a href="#id173"><span class="problematic" id="id188">mikko__</span></a>&gt; with const_cast, static_cast and reinterpret_cast</div>
+<div class="line">[Monday 26 April 2010] [12:22:08] &lt;<a href="#id61"><span class="problematic" id="id76">mikko__</span></a>&gt; with const_cast, static_cast and reinterpret_cast</div>
 <div class="line">[Monday 26 April 2010] [12:22:24] &lt;sustrik&gt; well, you mostly don&#8217;t need those</div>
-<div class="line">[Monday 26 April 2010] [12:22:36] &lt;<a href="#id173"><span class="problematic" id="id189">mikko__</span></a>&gt; was reading about casts last night in C++</div>
-<div class="line">[Monday 26 April 2010] [12:22:43] &lt;<a href="#id173"><span class="problematic" id="id190">mikko__</span></a>&gt; seems a lot more confusing than C :)</div>
+<div class="line">[Monday 26 April 2010] [12:22:36] &lt;<a href="#id61"><span class="problematic" id="id77">mikko__</span></a>&gt; was reading about casts last night in C++</div>
+<div class="line">[Monday 26 April 2010] [12:22:43] &lt;<a href="#id61"><span class="problematic" id="id78">mikko__</span></a>&gt; seems a lot more confusing than C :)</div>
 <div class="line">[Monday 26 April 2010] [12:22:49] &lt;sustrik&gt; they are useful only for casting types with virtual function tables</div>
 <div class="line">[Monday 26 April 2010] [12:23:05] &lt;sustrik&gt; ah, not so for const_cast</div>
 <div class="line">[Monday 26 April 2010] [12:23:43] &lt;sustrik&gt; anyway, I would stick to (int) x</div>
-<div class="line">[Monday 26 April 2010] [12:24:38] &lt;<a href="#id173"><span class="problematic" id="id191">mikko__</span></a>&gt; you can cast const char * with (int) ?</div>
+<div class="line">[Monday 26 April 2010] [12:24:38] &lt;<a href="#id61"><span class="problematic" id="id79">mikko__</span></a>&gt; you can cast const char * with (int) ?</div>
 <div class="line">[Monday 26 April 2010] [12:24:48] &lt;sustrik&gt; i mean (type) x</div>
 <div class="line">[Monday 26 April 2010] [12:25:10] &lt;sustrik&gt; braces syntax</div>
-<div class="line">[Monday 26 April 2010] [12:25:13] &lt;<a href="#id173"><span class="problematic" id="id192">mikko__</span></a>&gt; const char <a href="#id151"><span class="problematic" id="id152">*</span></a>foo = &#8220;123412423&#8221;; int x = (int) foo; ?</div>
+<div class="line">[Monday 26 April 2010] [12:25:13] &lt;<a href="#id61"><span class="problematic" id="id80">mikko__</span></a>&gt; const char <a href="#id47"><span class="problematic" id="id48">*</span></a>foo = &#8220;123412423&#8221;; int x = (int) foo; ?</div>
 <div class="line">[Monday 26 April 2010] [12:25:42] &lt;sustrik&gt; you&#8217;ll get numeric representation of the pointer to the string :)</div>
-<div class="line">[Monday 26 April 2010] [12:26:01] &lt;<a href="#id173"><span class="problematic" id="id193">mikko__</span></a>&gt; yeah, that&#8217;s what i expected</div>
+<div class="line">[Monday 26 April 2010] [12:26:01] &lt;<a href="#id61"><span class="problematic" id="id81">mikko__</span></a>&gt; yeah, that&#8217;s what i expected</div>
 <div class="line">[Monday 26 April 2010] [12:26:22] &lt;sustrik&gt; atoi is OK</div>
 <div class="line">[Monday 26 April 2010] [12:26:42] &lt;sustrik&gt; anyway, to give you some context</div>
 <div class="line">[Monday 26 April 2010] [12:27:00] &lt;sustrik&gt; the xml files for devices should define a lot of properties</div>
@@ -3351,17 +3247,17 @@
 <div class="line">[Monday 26 April 2010] [12:27:50] &lt;sustrik&gt; thus having it 3x in the codebase seems to be a bad idea</div>
 <div class="line">[Monday 26 April 2010] [12:28:05] &lt;sustrik&gt; that&#8217;s why I would prefer to have devices merged first</div>
 <div class="line">[Monday 26 April 2010] [12:28:19] &lt;sustrik&gt; then add the property-managing code</div>
-<div class="line">[Monday 26 April 2010] [13:01:42] &lt;impl&gt;    <a href="#id173"><span class="problematic" id="id194">mikko__</span></a>: you should use intptr_t for that though</div>
+<div class="line">[Monday 26 April 2010] [13:01:42] &lt;impl&gt;    <a href="#id61"><span class="problematic" id="id82">mikko__</span></a>: you should use intptr_t for that though</div>
 <div class="line">[Monday 26 April 2010] [13:04:48] &lt;sustrik&gt; impl: i think this is only a theoretical discussion, no need for that kind of thing in the code</div>
 <div class="line">[Monday 26 April 2010] [13:05:02] &lt;impl&gt;    ah</div>
-<div class="line">[Monday 26 April 2010] [13:09:26] &lt;<a href="#id173"><span class="problematic" id="id195">mikko__</span></a>&gt; impl: i&#8217;m not storing a pointer</div>
-<div class="line">[Monday 26 April 2010] [13:09:36] &lt;<a href="#id173"><span class="problematic" id="id196">mikko__</span></a>&gt; just casting const char * to integer</div>
-<div class="line">[Monday 26 April 2010] [13:09:59] &lt;<a href="#id173"><span class="problematic" id="id197">mikko__</span></a>&gt; or i was wondering how do you cast that in C++</div>
-<div class="line">[Monday 26 April 2010] [13:10:03] &lt;<a href="#id173"><span class="problematic" id="id198">mikko__</span></a>&gt; if there was some magic</div>
+<div class="line">[Monday 26 April 2010] [13:09:26] &lt;<a href="#id61"><span class="problematic" id="id83">mikko__</span></a>&gt; impl: i&#8217;m not storing a pointer</div>
+<div class="line">[Monday 26 April 2010] [13:09:36] &lt;<a href="#id61"><span class="problematic" id="id84">mikko__</span></a>&gt; just casting const char * to integer</div>
+<div class="line">[Monday 26 April 2010] [13:09:59] &lt;<a href="#id61"><span class="problematic" id="id85">mikko__</span></a>&gt; or i was wondering how do you cast that in C++</div>
+<div class="line">[Monday 26 April 2010] [13:10:03] &lt;<a href="#id61"><span class="problematic" id="id86">mikko__</span></a>&gt; if there was some magic</div>
 <div class="line">[Monday 26 April 2010] [17:02:45] &lt;ADruz&gt;   Can zeromq serve as a job queue system?</div>
-<div class="line">[Monday 26 April 2010] [17:03:45] &lt;<a href="#id173"><span class="problematic" id="id199">mikko__</span></a>&gt; not really without added application logic</div>
-<div class="line">[Monday 26 April 2010] [17:04:42] &lt;<a href="#id173"><span class="problematic" id="id200">mikko__</span></a>&gt; take a look at gearman or citrine scheduler if you want job queue / scheduling functionality</div>
-<div class="line">[Monday 26 April 2010] [20:37:18] &lt;ADruz&gt;   <a href="#id173"><span class="problematic" id="id201">mikko__</span></a>: thanks</div>
+<div class="line">[Monday 26 April 2010] [17:03:45] &lt;<a href="#id61"><span class="problematic" id="id87">mikko__</span></a>&gt; not really without added application logic</div>
+<div class="line">[Monday 26 April 2010] [17:04:42] &lt;<a href="#id61"><span class="problematic" id="id88">mikko__</span></a>&gt; take a look at gearman or citrine scheduler if you want job queue / scheduling functionality</div>
+<div class="line">[Monday 26 April 2010] [20:37:18] &lt;ADruz&gt;   <a href="#id61"><span class="problematic" id="id89">mikko__</span></a>: thanks</div>
 <div class="line">[Monday 26 April 2010] [21:12:56] &lt;mike8901&gt;    How should I go about determining the proper value of io_threads?</div>
 <div class="line">[Monday 26 April 2010] [21:47:57] &lt;mike8901&gt;    Is there any way to have multiple clients connect to a single TCP port(but be represented by multiple unicast sockets) with zmq?</div>
 <div class="line">[Tuesday 27 April 2010] [00:31:14] &lt;rmancy&gt; Is this the best place to ask for help with my zeromq app?</div>
@@ -3427,11 +3323,11 @@
 <div class="line">[Tuesday 27 April 2010] [18:22:02] &lt;CIA-15&gt; pyzmq: 03Brian E. Granger 07master * r5177246 10/ (5 files in 2 dirs): Finish renaming of P2P -&gt; PAIR in filenames. - <a class="reference external" href="http://bit.ly/92CZZQ">http://bit.ly/92CZZQ</a></div>
 <div class="line">[Tuesday 27 April 2010] [18:36:39] &lt;CIA-15&gt; pyzmq: 03Brian E. Granger 07master * rbb7c339 10/ (zmq/_zmq.c zmq/_zmq.pyx zmq/tests/test_poll.py): Removed stopwatch stuff and fixed select. - <a class="reference external" href="http://bit.ly/9GT4M8">http://bit.ly/9GT4M8</a></div>
 <div class="line">[Tuesday 27 April 2010] [18:39:53] &lt;CIA-15&gt; pyzmq: 03Brian E. Granger 07master * r16b0c20 10/ setup.py : Adding zmq.tests to setup.py packages. - <a class="reference external" href="http://bit.ly/ceobEw">http://bit.ly/ceobEw</a></div>
-<div class="line">[Tuesday 27 April 2010] [19:26:10] &lt;<a href="#id173"><span class="problematic" id="id202">mikko__</span></a>&gt;    sustrik: hi</div>
-<div class="line">[Tuesday 27 April 2010] [19:26:20] &lt;<a href="#id173"><span class="problematic" id="id203">mikko__</span></a>&gt;    <a class="reference external" href="http://pastie.org/938296">http://pastie.org/938296</a></div>
-<div class="line">[Tuesday 27 April 2010] [19:26:28] &lt;<a href="#id173"><span class="problematic" id="id204">mikko__</span></a>&gt;    ending up to this with git HEAD</div>
-<div class="line">[Tuesday 27 April 2010] [19:31:30] &lt;<a href="#id173"><span class="problematic" id="id205">mikko__</span></a>&gt;    ah</div>
-<div class="line">[Tuesday 27 April 2010] [19:31:32] &lt;<a href="#id173"><span class="problematic" id="id206">mikko__</span></a>&gt;    my mistake</div>
+<div class="line">[Tuesday 27 April 2010] [19:26:10] &lt;<a href="#id61"><span class="problematic" id="id90">mikko__</span></a>&gt;    sustrik: hi</div>
+<div class="line">[Tuesday 27 April 2010] [19:26:20] &lt;<a href="#id61"><span class="problematic" id="id91">mikko__</span></a>&gt;    <a class="reference external" href="http://pastie.org/938296">http://pastie.org/938296</a></div>
+<div class="line">[Tuesday 27 April 2010] [19:26:28] &lt;<a href="#id61"><span class="problematic" id="id92">mikko__</span></a>&gt;    ending up to this with git HEAD</div>
+<div class="line">[Tuesday 27 April 2010] [19:31:30] &lt;<a href="#id61"><span class="problematic" id="id93">mikko__</span></a>&gt;    ah</div>
+<div class="line">[Tuesday 27 April 2010] [19:31:32] &lt;<a href="#id61"><span class="problematic" id="id94">mikko__</span></a>&gt;    my mistake</div>
 <div class="line">[Tuesday 27 April 2010] [20:28:20] &lt;mike8901&gt;   Is it possible to do a read and a write simultaneously to a socket without breaking anything?</div>
 <div class="line">[Tuesday 27 April 2010] [20:31:16] &lt;mike8901&gt;   I am doing nonblocking reads, if that makes any difference.</div>
 <div class="line">[Tuesday 27 April 2010] [22:00:38] &lt;CIA-15&gt; pyzmq: 03Brian E. Granger 07master * rb0352c8 10/ (zmq/_zmq.c zmq/_zmq.pyx):</div>
@@ -3441,7 +3337,7 @@
 <div class="line">[Tuesday 27 April 2010] [22:12:32] &lt;rmancy&gt; Hi, does anyone know of a c++ example using ZMQ_REP ?</div>
 <div class="line">[Tuesday 27 April 2010] [22:13:47] &lt;rmancy&gt; I was able to get the ZMQ_REP/ZMQ_REQ example using C/C++ fine, but looking for a C++ example using ZMQ_REP so I can find out what I&#8217;m doing wrong</div>
 <div class="line">[Tuesday 27 April 2010] [22:31:07] &lt;mike8901&gt;   What&#8217;s the best way to have a vector of zmq::socket_t&#8217;s? Just have pointers to the vectors?</div>
-<div class="line">[Tuesday 27 April 2010] [22:31:11] &lt;mike8901&gt;   <a href="#id153"><span class="problematic" id="id154">**</span></a>pointers to the sockets</div>
+<div class="line">[Tuesday 27 April 2010] [22:31:11] &lt;mike8901&gt;   <a href="#id49"><span class="problematic" id="id50">**</span></a>pointers to the sockets</div>
 <div class="line">[Tuesday 27 April 2010] [22:31:15] &lt;mike8901&gt;   (or smart pointers)</div>
 <div class="line">[Tuesday 27 April 2010] [23:47:01] &lt;CIA-15&gt; pyzmq: 03Brian E. Granger 07master * r792a621 10/ (zmq/_zmq.c zmq/_zmq.pyx): Added support for getsockopt and multipart messages. - <a class="reference external" href="http://bit.ly/cgZOqv">http://bit.ly/cgZOqv</a></div>
 <div class="line">[Wednesday 28 April 2010] [01:42:31] &lt;sustrik&gt;  re</div>
@@ -3482,23 +3378,23 @@
 <div class="line">[Wednesday 28 April 2010] [02:02:00] &lt;sustrik&gt;  anyway, if it&#8217;s their policy, there&#8217;s little to do at the moment</div>
 <div class="line">[Wednesday 28 April 2010] [02:02:31] &lt;sustrik&gt;  you&#8217;ll have to keep the patch out of the tree</div>
 <div class="line">[Wednesday 28 April 2010] [02:02:35] &lt;mike8901&gt; ok, I guess I&#8217;ll stick with zmq now, and hopefully by the time to patch back to mainline comes, zmq will be licensed for the process :)</div>
-<div class="line">[Wednesday 28 April 2010] [02:02:50] &lt;mike8901&gt; <a href="#id155"><span class="problematic" id="id156">*</span></a>licensed using BSD</div>
+<div class="line">[Wednesday 28 April 2010] [02:02:50] &lt;mike8901&gt; <a href="#id51"><span class="problematic" id="id52">*</span></a>licensed using BSD</div>
 <div class="line">[Wednesday 28 April 2010] [02:03:50] &lt;sustrik&gt;  hm, btw, what good is messaging layer in a compiler?</div>
-<div class="line">[Wednesday 28 April 2010] [02:05:45] &lt;<a href="#id275"><span class="problematic" id="id276">rmancy_</span></a>&gt;  I&#8217;m sure this is a silly Q. Can I make zmq libs from the git repo? I checked it out the other day, but didn&#8217;t have much luck.</div>
-<div class="line">[Wednesday 28 April 2010] [02:06:16] &lt;sustrik&gt;  <a href="#id277"><span class="problematic" id="id278">rmancy_</span></a>: what went wrong?</div>
-<div class="line">[Wednesday 28 April 2010] [02:06:59] &lt;<a href="#id279"><span class="problematic" id="id280">rmancy_</span></a>&gt;  sustrik, first off I&#8217;m not too ofey with C Makefiles. It&#8217;s Been a while. Well there didn&#8217;t seem to be a configure script, so I just did autoconfigure. Is this right ?</div>
+<div class="line">[Wednesday 28 April 2010] [02:05:45] &lt;<a href="#id163"><span class="problematic" id="id164">rmancy_</span></a>&gt;  I&#8217;m sure this is a silly Q. Can I make zmq libs from the git repo? I checked it out the other day, but didn&#8217;t have much luck.</div>
+<div class="line">[Wednesday 28 April 2010] [02:06:16] &lt;sustrik&gt;  <a href="#id165"><span class="problematic" id="id166">rmancy_</span></a>: what went wrong?</div>
+<div class="line">[Wednesday 28 April 2010] [02:06:59] &lt;<a href="#id167"><span class="problematic" id="id168">rmancy_</span></a>&gt;  sustrik, first off I&#8217;m not too ofey with C Makefiles. It&#8217;s Been a while. Well there didn&#8217;t seem to be a configure script, so I just did autoconfigure. Is this right ?</div>
 <div class="line">[Wednesday 28 April 2010] [02:07:13] &lt;sustrik&gt;  yes</div>
 <div class="line">[Wednesday 28 April 2010] [02:07:23] &lt;sustrik&gt;  the script is generated so it&#8217;s not stored in git</div>
 <div class="line">[Wednesday 28 April 2010] [02:07:38] &lt;sustrik&gt;  ./autogen.sh</div>
 <div class="line">[Wednesday 28 April 2010] [02:07:43] &lt;sustrik&gt;  ./configure</div>
 <div class="line">[Wednesday 28 April 2010] [02:07:47] &lt;sustrik&gt;  make</div>
-<div class="line">[Wednesday 28 April 2010] [02:08:24] &lt;<a href="#id281"><span class="problematic" id="id282">rmancy_</span></a>&gt;  sustrik, excellent. Thanks so much.</div>
+<div class="line">[Wednesday 28 April 2010] [02:08:24] &lt;<a href="#id169"><span class="problematic" id="id170">rmancy_</span></a>&gt;  sustrik, excellent. Thanks so much.</div>
 <div class="line">[Wednesday 28 April 2010] [02:08:32] &lt;sustrik&gt;  np</div>
-<div class="line">[Wednesday 28 April 2010] [02:31:44] &lt;<a href="#id283"><span class="problematic" id="id284">rmancy_</span></a>&gt;  sustrik, I&#8217;ve been having a problem with a very simple ZMQ_REP/ZMQ_REQ app. Can you recommend a good ZMQ_REP example in c++ (I just converted the Server example from the 0mq site that was in C) ?</div>
+<div class="line">[Wednesday 28 April 2010] [02:31:44] &lt;<a href="#id171"><span class="problematic" id="id172">rmancy_</span></a>&gt;  sustrik, I&#8217;ve been having a problem with a very simple ZMQ_REP/ZMQ_REQ app. Can you recommend a good ZMQ_REP example in c++ (I just converted the Server example from the 0mq site that was in C) ?</div>
 <div class="line">[Wednesday 28 April 2010] [02:32:22] &lt;sustrik&gt;  what was the problem?</div>
-<div class="line">[Wednesday 28 April 2010] [02:33:22] &lt;<a href="#id285"><span class="problematic" id="id286">rmancy_</span></a>&gt;  Well, the ZMQ_REP (server) gets the recv() and then _appears_ to send(), but the ZMQ_REQ (client) does not get the response. the client code works fine with the example written in C.</div>
+<div class="line">[Wednesday 28 April 2010] [02:33:22] &lt;<a href="#id173"><span class="problematic" id="id174">rmancy_</span></a>&gt;  Well, the ZMQ_REP (server) gets the recv() and then _appears_ to send(), but the ZMQ_REQ (client) does not get the response. the client code works fine with the example written in C.</div>
 <div class="line">[Wednesday 28 April 2010] [02:34:29] &lt;sustrik&gt;  send the test program to the mailing list</div>
-<div class="line">[Wednesday 28 April 2010] [02:37:29] &lt;<a href="#id287"><span class="problematic" id="id288">rmancy_</span></a>&gt;  sustrik, ok cheers. I&#8217;m sure it&#8217;s an obvious problem to most other people. I&#8217;m brand new to C++ and it&#8217;s been over 4 years since I&#8217;ve even done C.</div>
+<div class="line">[Wednesday 28 April 2010] [02:37:29] &lt;<a href="#id175"><span class="problematic" id="id176">rmancy_</span></a>&gt;  sustrik, ok cheers. I&#8217;m sure it&#8217;s an obvious problem to most other people. I&#8217;m brand new to C++ and it&#8217;s been over 4 years since I&#8217;ve even done C.</div>
 <div class="line">[Wednesday 28 April 2010] [03:02:13] &lt;mike8901&gt; sustrik: I&#8217;m building a distributed compiler</div>
 <div class="line">[Wednesday 28 April 2010] [03:02:37] &lt;mike8901&gt; similar to distcc, but much more efficient</div>
 <div class="line">[Wednesday 28 April 2010] [03:10:46] &lt;sustrik&gt;  aha, interesting</div>
@@ -3562,7 +3458,7 @@
 <div class="line">[Wednesday 28 April 2010] [16:44:32] &lt;mike8901&gt; right now, we&#8217;re just doing basic point-to-point communication between nodes</div>
 <div class="line">[Wednesday 28 April 2010] [16:45:25] &lt;mike8901&gt; it might be better to do a multicast setup so work-stealing can be done without rebroadcasting the data(i.e. slaves maintain a cache of files sent out to other slaves so they can steal work from another slave without asking for the data to be sent out again)</div>
 <div class="line">[Wednesday 28 April 2010] [16:46:23] &lt;mike8901&gt; It&#8217;s a shame we have a deadline in 2.5 weeks, so we&#8217;re basocally racing to finish this, and can&#8217;t do too many interesting optimizations</div>
-<div class="line">[Wednesday 28 April 2010] [16:46:27] &lt;mike8901&gt; <a href="#id157"><span class="problematic" id="id158">*</span></a>basically</div>
+<div class="line">[Wednesday 28 April 2010] [16:46:27] &lt;mike8901&gt; <a href="#id53"><span class="problematic" id="id54">*</span></a>basically</div>
 <div class="line">[Wednesday 28 April 2010] [16:51:30] &lt;CIA-15&gt;   pyzmq: 03Brian E. Granger 07master * r6ff6da2 10/ README.rst : Edits to the README.rst. - <a class="reference external" href="http://bit.ly/dmPyGi">http://bit.ly/dmPyGi</a></div>
 <div class="line">[Wednesday 28 April 2010] [17:27:29] &lt;mike8901&gt; sustrik: I ran into an issue where error_t was being defined by one(I don&#8217;t know which) of the headers included... I had to #undef error_t to use zmq.hpp.</div>
 <div class="line">[Wednesday 28 April 2010] [17:27:35] &lt;mike8901&gt; Is that a known issue?</div>
@@ -3580,10 +3476,6 @@
 <div class="line">[Thursday 29 April 2010] [05:59:33] Notice  -ChanServ- [#qt-labs] Welcome to the Qt developers public hideout. Qt Development Frameworks personnel will have Voice status, so they should be easy to pinpoint in the crowd. Please do not paste large blocks of code in the channel, but rather use a pastebin site.</div>
 <div class="line">[Thursday 29 April 2010] [05:59:33] Notice  -ChanServ- [#rekonq] welcome to rekonq, webkit KDE browser, channel</div>
 <div class="line">[Thursday 29 April 2010] [05:59:33] Notice  -ChanServ- [#qt] Here are the rules for #qt: (1) Don&#8217;t just join, ask, and quit - stay around and answer questions yourself! (2) Be patient, people may not see your question right away.</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id159"><span class="problematic" id="id160">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id161"><span class="problematic" id="id162">**</span></a>* on Thu Apr 29 08:01:12 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Thursday 29 April 2010] [11:20:16] &lt;CIA-15&gt;    zeromq2: 03Martin Sustrik 07master * rc193fd1 10/ (18 files in 3 dirs): lock-free polling removed; ZMQ_POLL flag removed - <a class="reference external" href="http://bit.ly/csD6bs">http://bit.ly/csD6bs</a></div>
 <div class="line">[Thursday 29 April 2010] [11:31:50] &lt;CIA-15&gt;    zeromq2: 03Martin Sustrik 07master * r37128b7 10/ (10 files): fd_signaler_t renamed to signaler_t - <a class="reference external" href="http://bit.ly/d8kupZ">http://bit.ly/d8kupZ</a></div>
 <div class="line">[Thursday 29 April 2010] [11:46:01] &lt;bgranger&gt;  sustrik:  I am back, I might have found a bug with the new XREP/XREQ stuff, but I am not sure.</div>
@@ -3637,7 +3529,7 @@
 <div class="line">[Thursday 29 April 2010] [11:55:06] &lt;sustrik&gt;   if there&#8217;s no such peer, the reply is dropped</div>
 <div class="line">[Thursday 29 April 2010] [11:55:16] &lt;bgranger&gt;  Right, we had that working fine before the multipart message stuff.</div>
 <div class="line">[Thursday 29 April 2010] [11:55:28] &lt;sustrik&gt;   once again, the prefix should not be visible on the wire</div>
-<div class="line">[Thursday 29 April 2010] [11:55:50] &lt;sustrik&gt;   also, you should receive the reply _w/<a href="#id289"><span class="problematic" id="id290">o_</span></a> the prefix</div>
+<div class="line">[Thursday 29 April 2010] [11:55:50] &lt;sustrik&gt;   also, you should receive the reply _w/<a href="#id177"><span class="problematic" id="id178">o_</span></a> the prefix</div>
 <div class="line">[Thursday 29 April 2010] [11:55:53] &lt;sustrik&gt;   that&#8217;s it</div>
 <div class="line">[Thursday 29 April 2010] [11:55:58] &lt;bgranger&gt;  Right</div>
 <div class="line">[Thursday 29 April 2010] [11:56:04] &lt;bgranger&gt;  Here is what we are seeing now:</div>
@@ -3703,10 +3595,6 @@
 <div class="line">[Thursday 29 April 2010] [13:59:49] &lt;bgranger&gt;  Seems like a good trade off.  I like simplicity :)</div>
 <div class="line">[Thursday 29 April 2010] [14:34:38] &lt;CIA-15&gt;    zeromq2: 03Martin Sustrik 07master * rae93ed3 10/ (12 files): signaler rewritten in such a way that any number (&gt;64) of threads can be used - <a class="reference external" href="http://bit.ly/chon4a">http://bit.ly/chon4a</a></div>
 <div class="line">[Thursday 29 April 2010] [14:53:41] &lt;CIA-15&gt;    zeromq2: 03Martin Sustrik 07master * rbeb4da3 10/ (builds/msvc/libzmq/libzmq.vcproj src/signaler.cpp): windows port fixed - <a class="reference external" href="http://bit.ly/9BogHN">http://bit.ly/9BogHN</a></div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id163"><span class="problematic" id="id164">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id165"><span class="problematic" id="id166">**</span></a>* on Thu Apr 29 18:27:19 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Thursday 29 April 2010] [22:54:17] &lt;CIA-15&gt;    zeromq2: 03Martin Sustrik 07master * racfd0f8 10/ src/xrep.cpp : prefix in XREP recv&#8217;d message misses MORE flag - <a class="reference external" href="http://bit.ly/aPynXa">http://bit.ly/aPynXa</a></div>
 <div class="line">[Thursday 29 April 2010] [22:54:17] &lt;CIA-15&gt;    zeromq2: 03Martin Sustrik 07master * r4a6bac1 10/ (builds/msvc/libzmq/libzmq.vcproj src/signaler.cpp): Merge branch &#8216;master&#8217; of <a class="reference external" href="mailto:git&#37;&#52;&#48;github&#46;com">git<span>&#64;</span>github<span>&#46;</span>com</a>:sustrik/zeromq2 - <a class="reference external" href="http://bit.ly/axsva4">http://bit.ly/axsva4</a></div>
 <div class="line">[Thursday 29 April 2010] [22:54:25] &lt;sustrik&gt;   bgranger: try now</div>

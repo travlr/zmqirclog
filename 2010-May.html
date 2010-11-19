@@ -68,18 +68,6 @@
 <div class="line">[Saturday 01 May 2010] [02:06:25] &lt;bgranger&gt;    Let me look a bit more at this.</div>
 <div class="line">[Saturday 01 May 2010] [02:06:35] &lt;bgranger&gt;    Let me port your test to Python real quick</div>
 <div class="line">[Saturday 01 May 2010] [02:06:54] &lt;sustrik&gt; ack</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id1"><span class="problematic" id="id2">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id3"><span class="problematic" id="id4">**</span></a>* on Sat May 1 02:25:17 2010</div>
-<div class="line"><br /></div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id5"><span class="problematic" id="id6">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id7"><span class="problematic" id="id8">**</span></a>* on Mon May 3 12:33:27 2010</div>
-<div class="line"><br /></div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id9"><span class="problematic" id="id10">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id11"><span class="problematic" id="id12">**</span></a>* on Tue May 4 03:29:16 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Tuesday 04 May 2010] [04:22:19] &lt;CIA-15&gt;   zeromq2: 03Martin Sustrik 07master * r235ed3a 10/ (10 files): signaler transports commands per se rather than one-bit signals - <a class="reference external" href="http://bit.ly/aQglHI">http://bit.ly/aQglHI</a></div>
 <div class="line">[Tuesday 04 May 2010] [04:37:04] &lt;CIA-15&gt;   zeromq2: 03Martin Sustrik 07master * r3f5465a 10/ src/signaler.cpp : Windows port fixed - <a class="reference external" href="http://bit.ly/aJDsub">http://bit.ly/aJDsub</a></div>
 <div class="line">[Tuesday 04 May 2010] [15:27:43] &lt;sustrik&gt;  cremes: do you understand what&#8217;s Matt is actually asking for?</div>
@@ -376,10 +364,10 @@
 <div class="line">[Friday 07 May 2010] [14:15:49] &lt;cornbread&gt; sounds good</div>
 <div class="line">[Friday 07 May 2010] [14:18:56] &lt;cornbread&gt; So which class would the priority value be placed in?  I see a reader_t has a reference to an i_endpoint</div>
 <div class="line">[Friday 07 May 2010] [14:19:15] &lt;sustrik&gt;   let me see...</div>
-<div class="line">[Friday 07 May 2010] [14:19:43] &lt;sustrik&gt;   have a look at this function: void zmq::fq_t::attach (reader_t <a href="#id13"><span class="problematic" id="id14">*</span></a><a href="#id128"><span class="problematic" id="id129">pipe_</span></a>)</div>
+<div class="line">[Friday 07 May 2010] [14:19:43] &lt;sustrik&gt;   have a look at this function: void zmq::fq_t::attach (reader_t <a href="#id1"><span class="problematic" id="id2">*</span></a><a href="#id24"><span class="problematic" id="id25">pipe_</span></a>)</div>
 <div class="line">[Friday 07 May 2010] [14:19:56] &lt;sustrik&gt;   that&#8217;s when new pipe is attached to the scheduler</div>
 <div class="line">[Friday 07 May 2010] [14:20:06] &lt;sustrik&gt;   what if it was modified like this:</div>
-<div class="line">[Friday 07 May 2010] [14:20:18] &lt;sustrik&gt;   zmq::fq_t::attach (reader_t <a href="#id15"><span class="problematic" id="id16">*</span></a><a href="#id130"><span class="problematic" id="id131">pipe_</span></a>, int <a href="#id132"><span class="problematic" id="id133">priority_</span></a>)</div>
+<div class="line">[Friday 07 May 2010] [14:20:18] &lt;sustrik&gt;   zmq::fq_t::attach (reader_t <a href="#id3"><span class="problematic" id="id4">*</span></a><a href="#id26"><span class="problematic" id="id27">pipe_</span></a>, int <a href="#id28"><span class="problematic" id="id29">priority_</span></a>)</div>
 <div class="line">[Friday 07 May 2010] [14:20:21] &lt;sustrik&gt;   ?</div>
 <div class="line">[Friday 07 May 2010] [14:21:36] &lt;cornbread&gt; Sure.  So you think the fq_t should be modified, or a new scheduler be created?  What if you just want to use the fair queue</div>
 <div class="line">[Friday 07 May 2010] [14:21:59] &lt;sustrik&gt;   it should be modified imp</div>
@@ -446,30 +434,22 @@
 <div class="line">[Friday 07 May 2010] [15:49:55] &lt;sustrik&gt;   oki, let me fix the docs</div>
 <div class="line">[Friday 07 May 2010] [15:50:06] &lt;cremes&gt;    ok</div>
 <div class="line">[Friday 07 May 2010] [15:54:14] &lt;CIA-15&gt;    zeromq2: 03Martin Sustrik 07master * r4d33c43 10/ (3 files): caution about zmq_msg_init_* functions added to the docs - <a class="reference external" href="http://bit.ly/cvOC5r">http://bit.ly/cvOC5r</a></div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id17"><span class="problematic" id="id18">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id19"><span class="problematic" id="id20">**</span></a>* on Fri May 7 23:02:02 2010</div>
-<div class="line"><br /></div>
-<div class="line">[Saturday 08 May 2010] [13:08:19] &lt;<a href="#id134"><span class="problematic" id="id135">xla_</span></a>&gt;    hej</div>
-<div class="line">[Saturday 08 May 2010] [13:08:35] &lt;<a href="#id136"><span class="problematic" id="id137">xla_</span></a>&gt;    is there a resource for installing zeromq on ec2?</div>
+<div class="line">[Saturday 08 May 2010] [13:08:19] &lt;<a href="#id30"><span class="problematic" id="id31">xla_</span></a>&gt;    hej</div>
+<div class="line">[Saturday 08 May 2010] [13:08:35] &lt;<a href="#id32"><span class="problematic" id="id33">xla_</span></a>&gt;    is there a resource for installing zeromq on ec2?</div>
 <div class="line">[Saturday 08 May 2010] [13:10:00] &lt;mikko&gt;   what is different on ec2 installation that others?</div>
 <div class="line">[Saturday 08 May 2010] [13:10:32] &lt;mikko&gt;   compared to others*</div>
-<div class="line">[Saturday 08 May 2010] [13:11:48] &lt;<a href="#id138"><span class="problematic" id="id139">xla_</span></a>&gt;    nothing running a normal ubuntu 9.10, but can&#8217;t find zeromq in universe</div>
+<div class="line">[Saturday 08 May 2010] [13:11:48] &lt;<a href="#id34"><span class="problematic" id="id35">xla_</span></a>&gt;    nothing running a normal ubuntu 9.10, but can&#8217;t find zeromq in universe</div>
 <div class="line">[Saturday 08 May 2010] [13:12:58] &lt;mikko&gt;   you probably have to build yourself</div>
-<div class="line">[Saturday 08 May 2010] [13:13:38] &lt;<a href="#id140"><span class="problematic" id="id141">xla_</span></a>&gt;    anything I have to be aware of? or the normal build process: configure + make + make install?</div>
+<div class="line">[Saturday 08 May 2010] [13:13:38] &lt;<a href="#id36"><span class="problematic" id="id37">xla_</span></a>&gt;    anything I have to be aware of? or the normal build process: configure + make + make install?</div>
 <div class="line">[Saturday 08 May 2010] [13:14:03] &lt;mikko&gt;   you can either build debian packages yourself and install</div>
 <div class="line">[Saturday 08 May 2010] [13:14:10] &lt;mikko&gt;   or just normal configure + make + make install</div>
-<div class="line">[Saturday 08 May 2010] [13:16:21] &lt;<a href="#id142"><span class="problematic" id="id143">xla_</span></a>&gt;    mikko: many thx</div>
-<div class="line">[Saturday 08 May 2010] [13:20:26] &lt;<a href="#id144"><span class="problematic" id="id145">xla_</span></a>&gt;    hmm, think I missing something getting this error for zmq_forwarder:</div>
-<div class="line">[Saturday 08 May 2010] [13:20:26] &lt;<a href="#id146"><span class="problematic" id="id147">xla_</span></a>&gt;    zmq_forwarder: error while loading shared libraries: libzmq.so.0: cannot open shared object file: No such file or directory</div>
+<div class="line">[Saturday 08 May 2010] [13:16:21] &lt;<a href="#id38"><span class="problematic" id="id39">xla_</span></a>&gt;    mikko: many thx</div>
+<div class="line">[Saturday 08 May 2010] [13:20:26] &lt;<a href="#id40"><span class="problematic" id="id41">xla_</span></a>&gt;    hmm, think I missing something getting this error for zmq_forwarder:</div>
+<div class="line">[Saturday 08 May 2010] [13:20:26] &lt;<a href="#id42"><span class="problematic" id="id43">xla_</span></a>&gt;    zmq_forwarder: error while loading shared libraries: libzmq.so.0: cannot open shared object file: No such file or directory</div>
 <div class="line">[Saturday 08 May 2010] [13:21:09] &lt;mikko&gt;   run &#8216;ldconfig&#8217; and retry</div>
-<div class="line">[Saturday 08 May 2010] [13:21:42] &lt;<a href="#id148"><span class="problematic" id="id149">xla_</span></a>&gt;    nice, thx again :)</div>
+<div class="line">[Saturday 08 May 2010] [13:21:42] &lt;<a href="#id44"><span class="problematic" id="id45">xla_</span></a>&gt;    nice, thx again :)</div>
 <div class="line">[Saturday 08 May 2010] [13:21:58] &lt;mikko&gt;   every time you install something by hand you need to update runtime linkers cache</div>
-<div class="line">[Saturday 08 May 2010] [13:33:30] &lt;<a href="#id150"><span class="problematic" id="id151">xla_</span></a>&gt;    will keep that in mind for the next time</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id21"><span class="problematic" id="id22">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id23"><span class="problematic" id="id24">**</span></a>* on Sun May 9 05:37:49 2010</div>
-<div class="line"><br /></div>
+<div class="line">[Saturday 08 May 2010] [13:33:30] &lt;<a href="#id46"><span class="problematic" id="id47">xla_</span></a>&gt;    will keep that in mind for the next time</div>
 <div class="line">[Sunday 09 May 2010] [10:59:45] &lt;CIA-15&gt;    zeromq2: 03Martin Sustrik 07master * ra25414e 10/ src/zmq.cpp : Fix in zmq_poll (Windows version) - <a class="reference external" href="http://bit.ly/axwsgk">http://bit.ly/axwsgk</a></div>
 <div class="line">[Sunday 09 May 2010] [20:51:18] &lt;cremes&gt;    sustrik: go ahead and link the ruby-ffi page; i have updated it</div>
 <div class="line">[Monday 10 May 2010] [01:33:33] &lt;sustrik&gt;   cremes: liked from the frontpage</div>
@@ -518,10 +498,6 @@
 <div class="line">[Monday 10 May 2010] [17:27:09] &lt;mike8901&gt;  exception: No such device, to be specific</div>
 <div class="line">[Monday 10 May 2010] [17:40:25] &lt;mikko&gt; try 127.0.0.1 instead of localhost</div>
 <div class="line">[Monday 10 May 2010] [17:44:28] &lt;mike8901&gt;  same issue with 127.0.0.1</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id25"><span class="problematic" id="id26">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id27"><span class="problematic" id="id28">**</span></a>* on Mon May 10 22:37:12 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Tuesday 11 May 2010] [02:36:05] &lt;sjampoo&gt;  Hmmm i think i&#8217;m having a problem with issue-18 as well (segfault on PAIR sockets). I think it is caused by a problem on the receiving end where zmq_recv sometimes does not correctly initialize the data or the length</div>
 <div class="line">[Tuesday 11 May 2010] [02:38:09] &lt;sjampoo&gt;  sometime the received message contains something completely irrelevant such as &#8216;stdout...&#8217; other times it returns some trailing characters on the message data</div>
 <div class="line">[Tuesday 11 May 2010] [02:45:58] &lt;sustrik&gt;  sjampoo: please, report the problem</div>
@@ -565,25 +541,21 @@
 <div class="line">[Tuesday 11 May 2010] [10:22:41] &lt;sjampoo&gt;  but i removed my comment</div>
 <div class="line">[Tuesday 11 May 2010] [10:23:50] &lt;sustrik&gt;  ah, sorry</div>
 <div class="line">[Tuesday 11 May 2010] [13:53:49] &lt;CIA-15&gt;   jzmq: 03Martin Sustrik 07master * r556eac8 10/ src/Socket.cpp : memleak in recv fixed - <a class="reference external" href="http://bit.ly/cZR4HX">http://bit.ly/cZR4HX</a></div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id29"><span class="problematic" id="id30">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id31"><span class="problematic" id="id32">**</span></a>* on Tue May 11 20:16:41 2010</div>
-<div class="line"><br /></div>
-<div class="line">[Wednesday 12 May 2010] [01:01:56] &lt;<a href="#id117"><span class="problematic" id="id118">joshua__</span></a>&gt;   hi</div>
-<div class="line">[Wednesday 12 May 2010] [01:02:15] &lt;<a href="#id117"><span class="problematic" id="id119">joshua__</span></a>&gt;   I&#8217;ve been having trouble using ZMQ_P2P socket types</div>
-<div class="line">[Wednesday 12 May 2010] [01:02:51] &lt;<a href="#id117"><span class="problematic" id="id120">joshua__</span></a>&gt;   are there any examples around that use it successfully?</div>
+<div class="line">[Wednesday 12 May 2010] [01:01:56] &lt;<a href="#id13"><span class="problematic" id="id14">joshua__</span></a>&gt;   hi</div>
+<div class="line">[Wednesday 12 May 2010] [01:02:15] &lt;<a href="#id13"><span class="problematic" id="id15">joshua__</span></a>&gt;   I&#8217;ve been having trouble using ZMQ_P2P socket types</div>
+<div class="line">[Wednesday 12 May 2010] [01:02:51] &lt;<a href="#id13"><span class="problematic" id="id16">joshua__</span></a>&gt;   are there any examples around that use it successfully?</div>
 <div class="line">[Wednesday 12 May 2010] [01:19:19] &lt;guido_g&gt;    try to specify an ip address on both sides</div>
 <div class="line">[Wednesday 12 May 2010] [01:19:56] &lt;guido_g&gt;    you gave the interface to bind on the server side</div>
 <div class="line">[Wednesday 12 May 2010] [01:20:06] &lt;guido_g&gt;    just an idea, of course :)</div>
-<div class="line">[Wednesday 12 May 2010] [01:26:10] &lt;<a href="#id117"><span class="problematic" id="id121">joshua__</span></a>&gt;   so for the server, instead of &#8220;<a class="reference external" href="tcp://lo:5555">tcp://lo:5555</a>&#8221; bind &#8220;<a class="reference external" href="tcp://127.0.0.1:5555">tcp://127.0.0.1:5555</a>&#8221;?</div>
+<div class="line">[Wednesday 12 May 2010] [01:26:10] &lt;<a href="#id13"><span class="problematic" id="id17">joshua__</span></a>&gt;   so for the server, instead of &#8220;<a class="reference external" href="tcp://lo:5555">tcp://lo:5555</a>&#8221; bind &#8220;<a class="reference external" href="tcp://127.0.0.1:5555">tcp://127.0.0.1:5555</a>&#8221;?</div>
 <div class="line">[Wednesday 12 May 2010] [01:32:07] &lt;guido_g&gt;    yes</div>
-<div class="line">[Wednesday 12 May 2010] [01:40:16] &lt;<a href="#id117"><span class="problematic" id="id122">joshua__</span></a>&gt;   hmm, it only works if I do send/receive pairs</div>
-<div class="line">[Wednesday 12 May 2010] [01:40:48] &lt;<a href="#id117"><span class="problematic" id="id123">joshua__</span></a>&gt;   I can&#8217;t get just one to send something to the other</div>
-<div class="line">[Wednesday 12 May 2010] [01:42:04] &lt;sustrik&gt;    <a href="#id117"><span class="problematic" id="id124">joshua__</span></a>: presumably, that&#8217;s because you close the sender app before it has chance to send the data</div>
-<div class="line">[Wednesday 12 May 2010] [01:42:26] &lt;<a href="#id117"><span class="problematic" id="id125">joshua__</span></a>&gt;   ah, the sender doesn&#8217;t block?</div>
+<div class="line">[Wednesday 12 May 2010] [01:40:16] &lt;<a href="#id13"><span class="problematic" id="id18">joshua__</span></a>&gt;   hmm, it only works if I do send/receive pairs</div>
+<div class="line">[Wednesday 12 May 2010] [01:40:48] &lt;<a href="#id13"><span class="problematic" id="id19">joshua__</span></a>&gt;   I can&#8217;t get just one to send something to the other</div>
+<div class="line">[Wednesday 12 May 2010] [01:42:04] &lt;sustrik&gt;    <a href="#id13"><span class="problematic" id="id20">joshua__</span></a>: presumably, that&#8217;s because you close the sender app before it has chance to send the data</div>
+<div class="line">[Wednesday 12 May 2010] [01:42:26] &lt;<a href="#id13"><span class="problematic" id="id21">joshua__</span></a>&gt;   ah, the sender doesn&#8217;t block?</div>
 <div class="line">[Wednesday 12 May 2010] [01:42:49] &lt;sustrik&gt;    no, it&#8217;s async</div>
 <div class="line">[Wednesday 12 May 2010] [01:42:57] &lt;sustrik&gt;    that&#8217;s what MQ means</div>
-<div class="line">[Wednesday 12 May 2010] [01:43:28] &lt;<a href="#id117"><span class="problematic" id="id126">joshua__</span></a>&gt;   :D</div>
+<div class="line">[Wednesday 12 May 2010] [01:43:28] &lt;<a href="#id13"><span class="problematic" id="id22">joshua__</span></a>&gt;   :D</div>
 <div class="line">[Wednesday 12 May 2010] [02:47:53] &lt;sjampoo&gt;    morning!</div>
 <div class="line">[Wednesday 12 May 2010] [03:22:24] &lt;sustrik&gt;    morning!</div>
 <div class="line">[Wednesday 12 May 2010] [04:00:12] &lt;mike&gt;   sustrik: ping</div>
@@ -591,7 +563,7 @@
 <div class="line">[Wednesday 12 May 2010] [04:01:18] &lt;mike8901&gt;   hey - I&#8217;m working with joshua on a project - I know you guys talked a bit. Is it possible to block until all sends have completed?</div>
 <div class="line">[Wednesday 12 May 2010] [04:01:41] &lt;mike8901&gt;   joshua discovered the hard way that zmq won&#8217;t keep your program alive</div>
 <div class="line">[Wednesday 12 May 2010] [04:04:25] &lt;sustrik&gt;    no, there&#8217;s no way to do so &#8211; it would result in deadlock if the peer in unavailable</div>
-<div class="line">[Wednesday 12 May 2010] [04:04:43] &lt;<a href="#id117"><span class="problematic" id="id127">joshua__</span></a>&gt;   fun</div>
+<div class="line">[Wednesday 12 May 2010] [04:04:43] &lt;<a href="#id13"><span class="problematic" id="id23">joshua__</span></a>&gt;   fun</div>
 <div class="line">[Wednesday 12 May 2010] [04:04:48] &lt;sustrik&gt;    you have to send acknowledgement by hand</div>
 <div class="line">[Wednesday 12 May 2010] [04:04:49] &lt;mike8901&gt;   so what is the recommended way to deal with the situation in which a client sends messages to a server, then exits?</div>
 <div class="line">[Wednesday 12 May 2010] [04:05:02] &lt;mike8901&gt;   hm</div>
@@ -648,7 +620,7 @@
 <div class="line">[Wednesday 12 May 2010] [04:50:13] &lt;mike8901&gt;   or rather</div>
 <div class="line">[Wednesday 12 May 2010] [04:50:14] &lt;sustrik&gt;    via address</div>
 <div class="line">[Wednesday 12 May 2010] [04:50:20] &lt;mike8901&gt;   but how do you specify the address?</div>
-<div class="line">[Wednesday 12 May 2010] [04:50:28] &lt;mike8901&gt;   <a href="#id33"><span class="problematic" id="id34">*</span></a>addresses</div>
+<div class="line">[Wednesday 12 May 2010] [04:50:28] &lt;mike8901&gt;   <a href="#id5"><span class="problematic" id="id6">*</span></a>addresses</div>
 <div class="line">[Wednesday 12 May 2010] [04:50:38] &lt;mike8901&gt;   the connect function takes in a single address</div>
 <div class="line">[Wednesday 12 May 2010] [04:50:54] &lt;sustrik&gt;    yes, the connecting side speaks to a single peer</div>
 <div class="line">[Wednesday 12 May 2010] [04:51:03] &lt;sustrik&gt;    the binding side speaks to multiple peers</div>
@@ -848,7 +820,7 @@
 <div class="line">[Friday 14 May 2010] [07:37:49] &lt;dodobas&gt;   &#8216;almost&#8217;</div>
 <div class="line">[Friday 14 May 2010] [07:39:53] &lt;dodobas&gt;   i&#8217;ve found this short message <a class="reference external" href="http://is.gd/c8EF6">http://is.gd/c8EF6</a></div>
 <div class="line">[Friday 14 May 2010] [07:40:31] &lt;dodobas&gt;   it doesn&#8217;t really matter, thanks guido_g for clalification</div>
-<div class="line">[Friday 14 May 2010] [07:40:35] &lt;dodobas&gt;   <a href="#id35"><span class="problematic" id="id36">*</span></a>clarification</div>
+<div class="line">[Friday 14 May 2010] [07:40:35] &lt;dodobas&gt;   <a href="#id7"><span class="problematic" id="id8">*</span></a>clarification</div>
 <div class="line">[Friday 14 May 2010] [07:54:43] &lt;sustrik&gt;   the AMQP issue is explained in FAQs</div>
 <div class="line">[Friday 14 May 2010] [07:55:00] &lt;sustrik&gt;   not sure what else can be done...</div>
 <div class="line">[Friday 14 May 2010] [10:29:42] &lt;cremes&gt;    sustrik: any plans for a flush command on sockets to remove all queued messages?</div>
@@ -885,10 +857,6 @@
 <div class="line">[Friday 14 May 2010] [18:19:39] &lt;CIA-15&gt;    pyzmq: 03Brian Granger 07testing * r6441176 10/ zmq/tests/test_context.py : Finish cleaning up after merge. - <a class="reference external" href="http://bit.ly/bs4HBR">http://bit.ly/bs4HBR</a></div>
 <div class="line">[Friday 14 May 2010] [18:20:07] &lt;CIA-15&gt;    pyzmq: 03Brian Granger 07master * rc4bdbab 10/ (11 files in 4 dirs): Trying to get out of jail. - <a class="reference external" href="http://bit.ly/bQ3QjY">http://bit.ly/bQ3QjY</a></div>
 <div class="line">[Friday 14 May 2010] [18:20:08] &lt;CIA-15&gt;    pyzmq: 03Brian Granger 07master * r6441176 10/ zmq/tests/test_context.py : Finish cleaning up after merge. - <a class="reference external" href="http://bit.ly/bs4HBR">http://bit.ly/bs4HBR</a></div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id37"><span class="problematic" id="id38">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id39"><span class="problematic" id="id40">**</span></a>* on Fri May 14 21:32:54 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Saturday 15 May 2010] [05:04:34] &lt;fishinz&gt; hey</div>
 <div class="line">[Saturday 15 May 2010] [05:04:46] &lt;fishinz&gt; I&#8217;m a little confused about zmq::context_t</div>
 <div class="line">[Saturday 15 May 2010] [05:04:52] &lt;fishinz&gt; what&#8217;s that all about?</div>
@@ -910,10 +878,6 @@
 <div class="line">[Saturday 15 May 2010] [06:38:09] &lt;CIA-15&gt;  zeromq2: 03Jon Dyte 07master * rf40ce4e 10/ (Makefile.am configure.in zmqd/Makefile.am zmqd/zmqd.cpp): single 0MQ daemon (zmqd) - initial version - <a class="reference external" href="http://bit.ly/9B6UHe">http://bit.ly/9B6UHe</a></div>
 <div class="line">[Saturday 15 May 2010] [13:29:20]    * LowRider Brand New!Notebooks and LCD TVs.Discounts up to 30%. The newest electronics only <a class="reference external" href="http://www.elplace.com/">http://www.elplace.com/</a></div>
 <div class="line">[Saturday 15 May 2010] [18:28:34]    * Sergeo22 Discounts!! Our Special Limited Time Offers Up To May,22!!!New BranD!! Notebooks,Plasma and LCD TV&#8217;s.Buy your electronic needs at our unique prices. Laptop Sony VAIO VGN-FW590FFD-575,57$!!!Apple MacBook Air MC234LL/A-695,27$!!! <a class="reference external" href="http://www.elplace.com/">http://www.elplace.com/</a></div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id41"><span class="problematic" id="id42">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id43"><span class="problematic" id="id44">**</span></a>* on Sun May 16 00:14:54 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Sunday 16 May 2010] [02:36:20] &lt;mesamino&gt;  hi</div>
 <div class="line">[Sunday 16 May 2010] [02:36:46] &lt;mesamino&gt;  I&#8217;m having trouble getting UPSTREAM and DOWNSTREAM processes to communicate</div>
 <div class="line">[Sunday 16 May 2010] [02:38:22] &lt;mesamino&gt;  a thread with a downstream socket should connect to a socket that&#8217;s upstream?</div>
@@ -934,7 +898,7 @@
 <div class="line">[Sunday 16 May 2010] [02:58:55] &lt;mesamino&gt;  and then sends a message</div>
 <div class="line">[Sunday 16 May 2010] [02:59:11] &lt;mesamino&gt;  and the first thread never gets that message</div>
 <div class="line">[Sunday 16 May 2010] [02:59:26] &lt;guido_g&gt;   try th reverse the process</div>
-<div class="line">[Sunday 16 May 2010] [02:59:35] &lt;guido_g&gt;   <a href="#id45"><span class="problematic" id="id46">*</span></a>to</div>
+<div class="line">[Sunday 16 May 2010] [02:59:35] &lt;guido_g&gt;   <a href="#id9"><span class="problematic" id="id10">*</span></a>to</div>
 <div class="line">[Sunday 16 May 2010] [03:00:05] &lt;mesamino&gt;  connect to the socket before creating it?</div>
 <div class="line">[Sunday 16 May 2010] [03:00:25] &lt;mesamino&gt;  errr</div>
 <div class="line">[Sunday 16 May 2010] [03:00:25] &lt;guido_g&gt;   <em>sigh</em></div>
@@ -955,20 +919,12 @@
 <div class="line">[Sunday 16 May 2010] [03:37:42] &lt;guido_g&gt;   the flow is: send -&gt; omponent -&gt; [more components -&gt;] receive</div>
 <div class="line">[Sunday 16 May 2010] [07:09:15] &lt;pennysworth&gt;   hello</div>
 <div class="line">[Sunday 16 May 2010] [07:09:49] &lt;pennysworth&gt;   can one bind a remote socket with zeromq, or should you only connect remotely?</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id47"><span class="problematic" id="id48">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id49"><span class="problematic" id="id50">**</span></a>* on Sun May 16 09:08:53 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Sunday 16 May 2010] [13:17:00] &lt;CIA-15&gt;    pyzmq: 03Brian Granger 07master * raf88bf5 10/ (11 files in 4 dirs): Updating examples to new APIs. - <a class="reference external" href="http://bit.ly/9paeDK">http://bit.ly/9paeDK</a></div>
 <div class="line">[Sunday 16 May 2010] [14:28:02] &lt;versificateur&gt; hello everyone</div>
 <div class="line">[Sunday 16 May 2010] [14:42:11] &lt;CIA-15&gt;    pyzmq: 03Brian Granger 07master * r75f61fa 10/ (examples/kernel/kernel.py examples/kernel/session.py): Updated kernel example to new APIs. - <a class="reference external" href="http://bit.ly/aknf4N">http://bit.ly/aknf4N</a></div>
 <div class="line">[Sunday 16 May 2010] [15:52:50] &lt;versificateur&gt; hello</div>
 <div class="line">[Sunday 16 May 2010] [16:07:31] &lt;versificateur&gt; hello</div>
 <div class="line">[Sunday 16 May 2010] [17:08:23] &lt;CIA-15&gt;    pyzmq: 03Brian Granger 07nocopy * rbe0d6c8 10/ (perf/local_lat.py perf/remote_lat.py zmq/_zmq.c zmq/_zmq.pyx): New basic version of non-copying send using just strings. - <a class="reference external" href="http://bit.ly/96s6V2">http://bit.ly/96s6V2</a></div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id51"><span class="problematic" id="id52">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id53"><span class="problematic" id="id54">**</span></a>* on Sun May 16 23:15:02 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Monday 17 May 2010] [03:24:40] &lt;mike8901&gt;  what&#8217;s the prefered way to typeset zeromq in LaTex? :) varnothing?</div>
 <div class="line">[Monday 17 May 2010] [03:38:44] &lt;sustrik&gt;   :)</div>
 <div class="line">[Monday 17 May 2010] [03:39:04] &lt;sustrik&gt;   i personally prefer varnothing</div>
@@ -1331,34 +1287,26 @@
 <div class="line">[Tuesday 18 May 2010] [18:28:13] &lt;CIA-15&gt;   pyzmq:  perf/remote_lat.py - <a class="reference external" href="http://bit.ly/aj7iyy">http://bit.ly/aj7iyy</a></div>
 <div class="line">[Tuesday 18 May 2010] [18:28:13] &lt;CIA-15&gt;   pyzmq: 03Brian Granger 07nocopy * r1c8fb86 10/ (4 files): Updating perf tests with copy/no-copy options and new API. - <a class="reference external" href="http://bit.ly/9Nf8pL">http://bit.ly/9Nf8pL</a></div>
 <div class="line">[Wednesday 19 May 2010] [00:32:19] &lt;CIA-15&gt; zeromq2: 03Martin Sustrik 07master * r89783c3 10/ (src/pipe.cpp src/ypipe.hpp): incomplete messages can be stored in ypipe - <a class="reference external" href="http://bit.ly/cFTaHn">http://bit.ly/cFTaHn</a></div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id55"><span class="problematic" id="id56">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id57"><span class="problematic" id="id58">**</span></a>* on Thu May 20 05:19:16 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Thursday 20 May 2010] [08:55:11] &lt;iFire&gt;   windows IPC doesn&#8217;t exist right?</div>
 <div class="line">[Thursday 20 May 2010] [09:50:19] &lt;mikko&gt;   Your membership in the mailing list zeromq-dev has been disabled due</div>
 <div class="line">[Thursday 20 May 2010] [09:50:20] &lt;mikko&gt;   to excessive bounces</div>
 <div class="line">[Thursday 20 May 2010] [09:50:24] &lt;mikko&gt;   thats rather interesting</div>
-<div class="line">[Thursday 20 May 2010] [10:51:25] &lt;<a href="#id152"><span class="problematic" id="id153">sustrik_</span></a>&gt;    mikko: seen that on my side as well</div>
-<div class="line">[Thursday 20 May 2010] [10:51:36] &lt;<a href="#id154"><span class="problematic" id="id155">sustrik_</span></a>&gt;    iFire: right</div>
-<div class="line">[Thursday 20 May 2010] [10:51:50] &lt;<a href="#id156"><span class="problematic" id="id157">sustrik_</span></a>&gt;    mikko: let me try to send you a test email</div>
-<div class="line">[Thursday 20 May 2010] [10:52:07] &lt;<a href="#id158"><span class="problematic" id="id159">sustrik_</span></a>&gt;    mikko: done</div>
-<div class="line">[Thursday 20 May 2010] [10:59:07] &lt;mikko&gt;   <a href="#id160"><span class="problematic" id="id161">sustrik_</span></a>: came through</div>
+<div class="line">[Thursday 20 May 2010] [10:51:25] &lt;<a href="#id48"><span class="problematic" id="id49">sustrik_</span></a>&gt;    mikko: seen that on my side as well</div>
+<div class="line">[Thursday 20 May 2010] [10:51:36] &lt;<a href="#id50"><span class="problematic" id="id51">sustrik_</span></a>&gt;    iFire: right</div>
+<div class="line">[Thursday 20 May 2010] [10:51:50] &lt;<a href="#id52"><span class="problematic" id="id53">sustrik_</span></a>&gt;    mikko: let me try to send you a test email</div>
+<div class="line">[Thursday 20 May 2010] [10:52:07] &lt;<a href="#id54"><span class="problematic" id="id55">sustrik_</span></a>&gt;    mikko: done</div>
+<div class="line">[Thursday 20 May 2010] [10:59:07] &lt;mikko&gt;   <a href="#id56"><span class="problematic" id="id57">sustrik_</span></a>: came through</div>
 <div class="line">[Thursday 20 May 2010] [10:59:09] &lt;mikko&gt;   no problem</div>
 <div class="line">[Thursday 20 May 2010] [10:59:23] &lt;mikko&gt;   i wonder why the mailing list thinks i am bouncing a lot</div>
-<div class="line">[Thursday 20 May 2010] [11:02:04] &lt;<a href="#id162"><span class="problematic" id="id163">sustrik_</span></a>&gt;    let me unblock you</div>
-<div class="line">[Thursday 20 May 2010] [11:04:41] &lt;<a href="#id164"><span class="problematic" id="id165">sustrik_</span></a>&gt;    done</div>
+<div class="line">[Thursday 20 May 2010] [11:02:04] &lt;<a href="#id58"><span class="problematic" id="id59">sustrik_</span></a>&gt;    let me unblock you</div>
+<div class="line">[Thursday 20 May 2010] [11:04:41] &lt;<a href="#id60"><span class="problematic" id="id61">sustrik_</span></a>&gt;    done</div>
 <div class="line">[Thursday 20 May 2010] [11:07:11] &lt;cremes&gt;  what is the syntax for bind/connect when using ipc?</div>
 <div class="line">[Thursday 20 May 2010] [11:07:19] &lt;cremes&gt;  &#8220;ipc://&lt;what goes here?&gt;&#8221;</div>
 <div class="line">[Thursday 20 May 2010] [11:11:38] &lt;guido_g&gt; <a class="reference external" href="http://api.zeromq.org/zmq_ipc.html">http://api.zeromq.org/zmq_ipc.html</a> &lt;- described there</div>
-<div class="line">[Thursday 20 May 2010] [11:26:59] &lt;mikko&gt;   <a href="#id166"><span class="problematic" id="id167">sustrik_</span></a>: thanks</div>
-<div class="line">[Thursday 20 May 2010] [11:27:08] &lt;<a href="#id168"><span class="problematic" id="id169">sustrik_</span></a>&gt;    np</div>
+<div class="line">[Thursday 20 May 2010] [11:26:59] &lt;mikko&gt;   <a href="#id62"><span class="problematic" id="id63">sustrik_</span></a>: thanks</div>
+<div class="line">[Thursday 20 May 2010] [11:27:08] &lt;<a href="#id64"><span class="problematic" id="id65">sustrik_</span></a>&gt;    np</div>
 <div class="line">[Thursday 20 May 2010] [12:02:52] &lt;CIA-15&gt;  zeromq2: 03Martin Sustrik 07master * r091e92a 10/ AUTHORS : Pieter Hintjens added to AUTHORS file - <a class="reference external" href="http://bit.ly/dtIybP">http://bit.ly/dtIybP</a></div>
 <div class="line">[Thursday 20 May 2010] [12:02:53] &lt;CIA-15&gt;  zeromq2: 03Martin Sustrik 07master * r7773fdd 10/ (src/pipe.cpp src/ypipe.hpp): Merge branch &#8216;master&#8217; of <a class="reference external" href="mailto:git&#37;&#52;&#48;github&#46;com">git<span>&#64;</span>github<span>&#46;</span>com</a>:sustrik/zeromq2 - <a class="reference external" href="http://bit.ly/avqvTc">http://bit.ly/avqvTc</a></div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id59"><span class="problematic" id="id60">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id61"><span class="problematic" id="id62">**</span></a>* on Thu May 20 17:53:38 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Thursday 20 May 2010] [19:08:56] &lt;CIA-15&gt;  pyzmq: 03Brian Granger 07nocopy * r0ab9c93 10/ (zmq/_zmq.c zmq/_zmq.pyx zmq/tests/test_message.py): Initial implementation of smart Message object. - <a class="reference external" href="http://bit.ly/dwm066">http://bit.ly/dwm066</a></div>
 <div class="line">[Friday 21 May 2010] [00:30:07] &lt;CIA-15&gt;    pyzmq: 03Brian Granger 07nocopy * r6250cb5 10/ (zmq/_zmq.c zmq/_zmq.pyx): Adding support for full non-copy send/recv using Message. - <a class="reference external" href="http://bit.ly/aoi0LX">http://bit.ly/aoi0LX</a></div>
 <div class="line">[Friday 21 May 2010] [05:59:34] &lt;vincent00&gt; hi all</div>
@@ -1366,58 +1314,58 @@
 <div class="line">[Friday 21 May 2010] [06:00:53] &lt;vincent00&gt; is it recommended to create a socket for each rpc call or is it better to maintain connections to each service and use them when you need to?</div>
 <div class="line">[Friday 21 May 2010] [06:02:07] &lt;vincent00&gt; I&#8217;m thinking of wrapping the most used messages (protocol buffers) as python functions so they can easily be reused by the applications that are built by the researchers we support</div>
 <div class="line">[Friday 21 May 2010] [06:03:17] &lt;vincent00&gt; that would be significantly easier if i could just create a req socket each time i want to send a message</div>
-<div class="line">[Friday 21 May 2010] [06:08:17] &lt;<a href="#id170"><span class="problematic" id="id171">sustrik_</span></a>&gt;  vincent: you can do that</div>
-<div class="line">[Friday 21 May 2010] [06:08:44] &lt;<a href="#id172"><span class="problematic" id="id173">sustrik_</span></a>&gt;  but obviously, you shouldn&#8217;t expect it to be very efficient</div>
-<div class="line">[Friday 21 May 2010] [06:09:08] &lt;vincent00&gt; hi <a href="#id174"><span class="problematic" id="id175">sustrik_</span></a></div>
+<div class="line">[Friday 21 May 2010] [06:08:17] &lt;<a href="#id66"><span class="problematic" id="id67">sustrik_</span></a>&gt;  vincent: you can do that</div>
+<div class="line">[Friday 21 May 2010] [06:08:44] &lt;<a href="#id68"><span class="problematic" id="id69">sustrik_</span></a>&gt;  but obviously, you shouldn&#8217;t expect it to be very efficient</div>
+<div class="line">[Friday 21 May 2010] [06:09:08] &lt;vincent00&gt; hi <a href="#id70"><span class="problematic" id="id71">sustrik_</span></a></div>
 <div class="line">[Friday 21 May 2010] [06:09:29] &lt;vincent00&gt; so an option i should think about is some way of managing connections?</div>
 <div class="line">[Friday 21 May 2010] [06:09:37] &lt;vincent00&gt; indexed by service</div>
-<div class="line">[Friday 21 May 2010] [06:09:58] &lt;<a href="#id176"><span class="problematic" id="id177">sustrik_</span></a>&gt;  what are you trying to build</div>
-<div class="line">[Friday 21 May 2010] [06:10:00] &lt;<a href="#id178"><span class="problematic" id="id179">sustrik_</span></a>&gt;  SOA?</div>
+<div class="line">[Friday 21 May 2010] [06:09:58] &lt;<a href="#id72"><span class="problematic" id="id73">sustrik_</span></a>&gt;  what are you trying to build</div>
+<div class="line">[Friday 21 May 2010] [06:10:00] &lt;<a href="#id74"><span class="problematic" id="id75">sustrik_</span></a>&gt;  SOA?</div>
 <div class="line">[Friday 21 May 2010] [06:10:07] &lt;vincent00&gt; yes :)</div>
-<div class="line">[Friday 21 May 2010] [06:10:26] &lt;<a href="#id180"><span class="problematic" id="id181">sustrik_</span></a>&gt;  ok, then you need a shared queue in the middle</div>
-<div class="line">[Friday 21 May 2010] [06:10:39] &lt;mato&gt;  <a href="#id182"><span class="problematic" id="id183">sustrik_</span></a>: yo</div>
+<div class="line">[Friday 21 May 2010] [06:10:26] &lt;<a href="#id76"><span class="problematic" id="id77">sustrik_</span></a>&gt;  ok, then you need a shared queue in the middle</div>
+<div class="line">[Friday 21 May 2010] [06:10:39] &lt;mato&gt;  <a href="#id78"><span class="problematic" id="id79">sustrik_</span></a>: yo</div>
 <div class="line">[Friday 21 May 2010] [06:10:45] &lt;vincent00&gt; we have some services that process and generate sound</div>
-<div class="line">[Friday 21 May 2010] [06:10:47] &lt;<a href="#id184"><span class="problematic" id="id185">sustrik_</span></a>&gt;  mato: hi</div>
-<div class="line">[Friday 21 May 2010] [06:10:58] &lt;mato&gt;  <a href="#id186"><span class="problematic" id="id187">sustrik_</span></a>: you&#8217;re not watching your messages...</div>
-<div class="line">[Friday 21 May 2010] [06:11:05] &lt;<a href="#id188"><span class="problematic" id="id189">sustrik_</span></a>&gt;  what messages?</div>
-<div class="line">[Friday 21 May 2010] [06:11:05] &lt;mato&gt;  <a href="#id190"><span class="problematic" id="id191">sustrik_</span></a>: can i drop by to discuss some business stuff?</div>
-<div class="line">[Friday 21 May 2010] [06:11:13] &lt;mato&gt;  <a href="#id192"><span class="problematic" id="id193">sustrik_</span></a>: private messages on irc</div>
-<div class="line">[Friday 21 May 2010] [06:11:20] &lt;vincent00&gt; <a href="#id194"><span class="problematic" id="id195">sustrik_</span></a>: so no direct connections to the services?</div>
-<div class="line">[Friday 21 May 2010] [06:11:31] &lt;<a href="#id196"><span class="problematic" id="id197">sustrik_</span></a>&gt;  a-ha, sure, drop by</div>
-<div class="line">[Friday 21 May 2010] [06:11:41] &lt;mato&gt;  <a href="#id198"><span class="problematic" id="id199">sustrik_</span></a>: when? isn&#8217;t your sister arriving today?</div>
-<div class="line">[Friday 21 May 2010] [06:11:57] &lt;<a href="#id200"><span class="problematic" id="id201">sustrik_</span></a>&gt;  vincent: you can do that but that&#8217;s not what&#8217;s normally understood under the term &#8220;SOA&#8221;</div>
-<div class="line">[Friday 21 May 2010] [06:12:03] &lt;<a href="#id202"><span class="problematic" id="id203">sustrik_</span></a>&gt;  mato: tomorrow</div>
-<div class="line">[Friday 21 May 2010] [06:12:09] &lt;<a href="#id204"><span class="problematic" id="id205">sustrik_</span></a>&gt;  i&#8217;m at home today</div>
-<div class="line">[Friday 21 May 2010] [06:12:34] &lt;mato&gt;  <a href="#id206"><span class="problematic" id="id207">sustrik_</span></a>: ok, good, then i&#8217;ll have lunch and go to your place...</div>
-<div class="line">[Friday 21 May 2010] [06:12:40] &lt;<a href="#id208"><span class="problematic" id="id209">sustrik_</span></a>&gt;  ok</div>
-<div class="line">[Friday 21 May 2010] [06:12:40] &lt;mato&gt;  <a href="#id210"><span class="problematic" id="id211">sustrik_</span></a>: in an hour or so</div>
-<div class="line">[Friday 21 May 2010] [06:13:40] &lt;<a href="#id212"><span class="problematic" id="id213">sustrik_</span></a>&gt;  vincent: the best way is to think a bit about what you want to achieve</div>
-<div class="line">[Friday 21 May 2010] [06:14:05] &lt;<a href="#id214"><span class="problematic" id="id215">sustrik_</span></a>&gt;  and put that down on paper</div>
-<div class="line">[Friday 21 May 2010] [06:14:29] &lt;<a href="#id216"><span class="problematic" id="id217">sustrik_</span></a>&gt;  then decide on setup of the network</div>
-<div class="line">[Friday 21 May 2010] [06:14:49] &lt;<a href="#id218"><span class="problematic" id="id219">sustrik_</span></a>&gt;  and finally map the setup diagram to 0MQ concepts</div>
-<div class="line">[Friday 21 May 2010] [06:17:52] &lt;vincent00&gt; <a href="#id220"><span class="problematic" id="id221">sustrik_</span></a>: ok, the design is ready to be mapped to zmq concepts i think, i&#8217;ll take that approach :) thanks</div>
-<div class="line">[Friday 21 May 2010] [06:18:11] &lt;<a href="#id222"><span class="problematic" id="id223">sustrik_</span></a>&gt;  have a block diagram?</div>
-<div class="line">[Friday 21 May 2010] [06:18:18] &lt;<a href="#id224"><span class="problematic" id="id225">sustrik_</span></a>&gt;  is there a node in the middle?</div>
-<div class="line">[Friday 21 May 2010] [06:18:40] &lt;<a href="#id226"><span class="problematic" id="id227">sustrik_</span></a>&gt;  or are clients connected to services directly</div>
-<div class="line">[Friday 21 May 2010] [06:18:41] &lt;<a href="#id228"><span class="problematic" id="id229">sustrik_</span></a>&gt;  ?</div>
+<div class="line">[Friday 21 May 2010] [06:10:47] &lt;<a href="#id80"><span class="problematic" id="id81">sustrik_</span></a>&gt;  mato: hi</div>
+<div class="line">[Friday 21 May 2010] [06:10:58] &lt;mato&gt;  <a href="#id82"><span class="problematic" id="id83">sustrik_</span></a>: you&#8217;re not watching your messages...</div>
+<div class="line">[Friday 21 May 2010] [06:11:05] &lt;<a href="#id84"><span class="problematic" id="id85">sustrik_</span></a>&gt;  what messages?</div>
+<div class="line">[Friday 21 May 2010] [06:11:05] &lt;mato&gt;  <a href="#id86"><span class="problematic" id="id87">sustrik_</span></a>: can i drop by to discuss some business stuff?</div>
+<div class="line">[Friday 21 May 2010] [06:11:13] &lt;mato&gt;  <a href="#id88"><span class="problematic" id="id89">sustrik_</span></a>: private messages on irc</div>
+<div class="line">[Friday 21 May 2010] [06:11:20] &lt;vincent00&gt; <a href="#id90"><span class="problematic" id="id91">sustrik_</span></a>: so no direct connections to the services?</div>
+<div class="line">[Friday 21 May 2010] [06:11:31] &lt;<a href="#id92"><span class="problematic" id="id93">sustrik_</span></a>&gt;  a-ha, sure, drop by</div>
+<div class="line">[Friday 21 May 2010] [06:11:41] &lt;mato&gt;  <a href="#id94"><span class="problematic" id="id95">sustrik_</span></a>: when? isn&#8217;t your sister arriving today?</div>
+<div class="line">[Friday 21 May 2010] [06:11:57] &lt;<a href="#id96"><span class="problematic" id="id97">sustrik_</span></a>&gt;  vincent: you can do that but that&#8217;s not what&#8217;s normally understood under the term &#8220;SOA&#8221;</div>
+<div class="line">[Friday 21 May 2010] [06:12:03] &lt;<a href="#id98"><span class="problematic" id="id99">sustrik_</span></a>&gt;  mato: tomorrow</div>
+<div class="line">[Friday 21 May 2010] [06:12:09] &lt;<a href="#id100"><span class="problematic" id="id101">sustrik_</span></a>&gt;  i&#8217;m at home today</div>
+<div class="line">[Friday 21 May 2010] [06:12:34] &lt;mato&gt;  <a href="#id102"><span class="problematic" id="id103">sustrik_</span></a>: ok, good, then i&#8217;ll have lunch and go to your place...</div>
+<div class="line">[Friday 21 May 2010] [06:12:40] &lt;<a href="#id104"><span class="problematic" id="id105">sustrik_</span></a>&gt;  ok</div>
+<div class="line">[Friday 21 May 2010] [06:12:40] &lt;mato&gt;  <a href="#id106"><span class="problematic" id="id107">sustrik_</span></a>: in an hour or so</div>
+<div class="line">[Friday 21 May 2010] [06:13:40] &lt;<a href="#id108"><span class="problematic" id="id109">sustrik_</span></a>&gt;  vincent: the best way is to think a bit about what you want to achieve</div>
+<div class="line">[Friday 21 May 2010] [06:14:05] &lt;<a href="#id110"><span class="problematic" id="id111">sustrik_</span></a>&gt;  and put that down on paper</div>
+<div class="line">[Friday 21 May 2010] [06:14:29] &lt;<a href="#id112"><span class="problematic" id="id113">sustrik_</span></a>&gt;  then decide on setup of the network</div>
+<div class="line">[Friday 21 May 2010] [06:14:49] &lt;<a href="#id114"><span class="problematic" id="id115">sustrik_</span></a>&gt;  and finally map the setup diagram to 0MQ concepts</div>
+<div class="line">[Friday 21 May 2010] [06:17:52] &lt;vincent00&gt; <a href="#id116"><span class="problematic" id="id117">sustrik_</span></a>: ok, the design is ready to be mapped to zmq concepts i think, i&#8217;ll take that approach :) thanks</div>
+<div class="line">[Friday 21 May 2010] [06:18:11] &lt;<a href="#id118"><span class="problematic" id="id119">sustrik_</span></a>&gt;  have a block diagram?</div>
+<div class="line">[Friday 21 May 2010] [06:18:18] &lt;<a href="#id120"><span class="problematic" id="id121">sustrik_</span></a>&gt;  is there a node in the middle?</div>
+<div class="line">[Friday 21 May 2010] [06:18:40] &lt;<a href="#id122"><span class="problematic" id="id123">sustrik_</span></a>&gt;  or are clients connected to services directly</div>
+<div class="line">[Friday 21 May 2010] [06:18:41] &lt;<a href="#id124"><span class="problematic" id="id125">sustrik_</span></a>&gt;  ?</div>
 <div class="line">[Friday 21 May 2010] [06:19:02] &lt;vincent00&gt; right now clients are connected directly to services, rpc style</div>
 <div class="line">[Friday 21 May 2010] [06:19:31] &lt;vincent00&gt; between the task scheduler and the workers we have a different approach</div>
-<div class="line">[Friday 21 May 2010] [06:20:07] &lt;<a href="#id230"><span class="problematic" id="id231">sustrik_</span></a>&gt;  so there&#8217;s only one app instance for each server, right?</div>
-<div class="line">[Friday 21 May 2010] [06:20:39] &lt;<a href="#id232"><span class="problematic" id="id233">sustrik_</span></a>&gt;  no load-balancing</div>
-<div class="line">[Friday 21 May 2010] [06:20:44] &lt;<a href="#id234"><span class="problematic" id="id235">sustrik_</span></a>&gt;  no failover</div>
+<div class="line">[Friday 21 May 2010] [06:20:07] &lt;<a href="#id126"><span class="problematic" id="id127">sustrik_</span></a>&gt;  so there&#8217;s only one app instance for each server, right?</div>
+<div class="line">[Friday 21 May 2010] [06:20:39] &lt;<a href="#id128"><span class="problematic" id="id129">sustrik_</span></a>&gt;  no load-balancing</div>
+<div class="line">[Friday 21 May 2010] [06:20:44] &lt;<a href="#id130"><span class="problematic" id="id131">sustrik_</span></a>&gt;  no failover</div>
 <div class="line">[Friday 21 May 2010] [06:21:29] &lt;vincent00&gt; multiple apps can be running on the same node, but never the same app twice on the network for now (except worker nodes, but we have that figured out, clients don&#8217;t connect to them)</div>
 <div class="line">[Friday 21 May 2010] [06:21:32] &lt;vincent00&gt; nope</div>
-<div class="line">[Friday 21 May 2010] [06:21:50] &lt;<a href="#id236"><span class="problematic" id="id237">sustrik_</span></a>&gt;  then it&#8217;s easy</div>
-<div class="line">[Friday 21 May 2010] [06:21:56] &lt;<a href="#id238"><span class="problematic" id="id239">sustrik_</span></a>&gt;  REP socket in each service</div>
-<div class="line">[Friday 21 May 2010] [06:22:05] &lt;<a href="#id240"><span class="problematic" id="id241">sustrik_</span></a>&gt;  REQ socket in each client</div>
-<div class="line">[Friday 21 May 2010] [06:22:26] &lt;<a href="#id242"><span class="problematic" id="id243">sustrik_</span></a>&gt;  clients may close the socket after each RPC call</div>
-<div class="line">[Friday 21 May 2010] [06:22:44] &lt;<a href="#id244"><span class="problematic" id="id245">sustrik_</span></a>&gt;  however, if you want to do lot of RPC calls efficiently</div>
-<div class="line">[Friday 21 May 2010] [06:22:53] &lt;<a href="#id246"><span class="problematic" id="id247">sustrik_</span></a>&gt;  it&#8217;s better to leave the connection open</div>
-<div class="line">[Friday 21 May 2010] [06:23:07] &lt;<a href="#id248"><span class="problematic" id="id249">sustrik_</span></a>&gt;  rather than reopening it each time it&#8217;s needed</div>
+<div class="line">[Friday 21 May 2010] [06:21:50] &lt;<a href="#id132"><span class="problematic" id="id133">sustrik_</span></a>&gt;  then it&#8217;s easy</div>
+<div class="line">[Friday 21 May 2010] [06:21:56] &lt;<a href="#id134"><span class="problematic" id="id135">sustrik_</span></a>&gt;  REP socket in each service</div>
+<div class="line">[Friday 21 May 2010] [06:22:05] &lt;<a href="#id136"><span class="problematic" id="id137">sustrik_</span></a>&gt;  REQ socket in each client</div>
+<div class="line">[Friday 21 May 2010] [06:22:26] &lt;<a href="#id138"><span class="problematic" id="id139">sustrik_</span></a>&gt;  clients may close the socket after each RPC call</div>
+<div class="line">[Friday 21 May 2010] [06:22:44] &lt;<a href="#id140"><span class="problematic" id="id141">sustrik_</span></a>&gt;  however, if you want to do lot of RPC calls efficiently</div>
+<div class="line">[Friday 21 May 2010] [06:22:53] &lt;<a href="#id142"><span class="problematic" id="id143">sustrik_</span></a>&gt;  it&#8217;s better to leave the connection open</div>
+<div class="line">[Friday 21 May 2010] [06:23:07] &lt;<a href="#id144"><span class="problematic" id="id145">sustrik_</span></a>&gt;  rather than reopening it each time it&#8217;s needed</div>
 <div class="line">[Friday 21 May 2010] [06:23:44] &lt;vincent00&gt; ok, that was what i wondering about, whether it was ok to create sockets on the fly many times over, i guess it&#8217;s to be decided on a case by case basis</div>
 <div class="line">[Friday 21 May 2010] [06:24:21] &lt;vincent00&gt; thanks :) very helpful :)</div>
 <div class="line">[Friday 21 May 2010] [12:45:16] &lt;mikko&gt; got the php extension windows builds in a minute</div>
-<div class="line">[Friday 21 May 2010] [12:59:09] &lt;<a href="#id250"><span class="problematic" id="id251">sustrik_</span></a>&gt;  !</div>
+<div class="line">[Friday 21 May 2010] [12:59:09] &lt;<a href="#id146"><span class="problematic" id="id147">sustrik_</span></a>&gt;  !</div>
 <div class="line">[Friday 21 May 2010] [13:27:09] &lt;mikko&gt; trying to script up the whole process</div>
 <div class="line">[Friday 21 May 2010] [13:27:18] &lt;mikko&gt; but windows batch is not the most pleasant scripting language</div>
 <div class="line">[Friday 21 May 2010] [13:40:10] &lt;mikko&gt; <a class="reference external" href="http://valokuva.org/~mikko/builds/">http://valokuva.org/~mikko/builds/</a></div>
@@ -1428,35 +1376,19 @@
 <div class="line">[Friday 21 May 2010] [15:31:14] &lt;CIA-17&gt;    pyzmq: 03Brian Granger 07nocopy * reb61ac5 10/ (perf/local_lat.py perf/local_thr.py perf/remote_lat.py): Adding non-copy capability for recv&#8217;s in perf tests. - <a class="reference external" href="http://bit.ly/aAsfvh">http://bit.ly/aAsfvh</a></div>
 <div class="line">[Friday 21 May 2010] [16:03:54] &lt;CIA-17&gt;    pyzmq: 03Brian Granger 07nocopy * r42903ba 10/ (perf/remote_lat.py zmq/_zmq.c zmq/_zmq.pyx): Adding back Stopwatch for perf tests and modified lat test to use. - <a class="reference external" href="http://bit.ly/c9dOZ2">http://bit.ly/c9dOZ2</a></div>
 <div class="line">[Friday 21 May 2010] [16:30:30] &lt;CIA-17&gt;    pyzmq: 03Brian Granger 07nocopy * r8d32972 10/ (zmq/_zmq.c zmq/_zmq.pyx): Fixing old memory leak in Stopwatch. - <a class="reference external" href="http://bit.ly/98nJmz">http://bit.ly/98nJmz</a></div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id63"><span class="problematic" id="id64">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id65"><span class="problematic" id="id66">**</span></a>* on Fri May 21 19:15:50 2010</div>
-<div class="line"><br /></div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id67"><span class="problematic" id="id68">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id69"><span class="problematic" id="id70">**</span></a>* on Sat May 22 12:46:25 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Saturday 22 May 2010] [14:25:33] &lt;mikko&gt;   <a class="reference external" href="http://valokuva.org/builds/">http://valokuva.org/builds/</a> zmq for php windows builds</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id71"><span class="problematic" id="id72">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id73"><span class="problematic" id="id74">**</span></a>* on Sat May 22 17:54:49 2010</div>
-<div class="line"><br /></div>
-<div class="line">[Sunday 23 May 2010] [03:51:10] &lt;<a href="#id252"><span class="problematic" id="id253">sustrik_</span></a>&gt;  mikko: what about announcing the builds on the mailing list?</div>
-<div class="line">[Sunday 23 May 2010] [07:18:30] &lt;mikko&gt; <a href="#id254"><span class="problematic" id="id255">sustrik_</span></a>: done</div>
+<div class="line">[Sunday 23 May 2010] [03:51:10] &lt;<a href="#id148"><span class="problematic" id="id149">sustrik_</span></a>&gt;  mikko: what about announcing the builds on the mailing list?</div>
+<div class="line">[Sunday 23 May 2010] [07:18:30] &lt;mikko&gt; <a href="#id150"><span class="problematic" id="id151">sustrik_</span></a>: done</div>
 <div class="line">[Sunday 23 May 2010] [12:03:16] &lt;postmodern&gt;    wow awesome you have a irc channel</div>
 <div class="line">[Sunday 23 May 2010] [12:03:38] &lt;postmodern&gt;    so question, is it possible to have two different sockets share the same physical socket?</div>
 <div class="line">[Sunday 23 May 2010] [12:04:07] &lt;postmodern&gt;    such as having a REQ/RESP share the same connection with a PUB/SUB?</div>
-<div class="line">[Sunday 23 May 2010] [12:26:23] &lt;<a href="#id256"><span class="problematic" id="id257">cremes_</span></a>&gt;   postmodern: 0mq may use more than one tcp socket per 0mq socket; it depends on how many times you bind/connect to addresses</div>
-<div class="line">[Sunday 23 May 2010] [12:27:03] &lt;<a href="#id258"><span class="problematic" id="id259">cremes_</span></a>&gt;   i don&#8217;t know if it shares tcp sockets to the same src/dst but i really doubt it</div>
+<div class="line">[Sunday 23 May 2010] [12:26:23] &lt;<a href="#id152"><span class="problematic" id="id153">cremes_</span></a>&gt;   postmodern: 0mq may use more than one tcp socket per 0mq socket; it depends on how many times you bind/connect to addresses</div>
+<div class="line">[Sunday 23 May 2010] [12:27:03] &lt;<a href="#id154"><span class="problematic" id="id155">cremes_</span></a>&gt;   i don&#8217;t know if it shares tcp sockets to the same src/dst but i really doubt it</div>
 <div class="line">[Sunday 23 May 2010] [12:30:05] &lt;postmodern&gt;    ah ok</div>
 <div class="line">[Sunday 23 May 2010] [12:30:40] &lt;postmodern&gt;    im just making sure i would not have to bind to another port, just to do PUB/SUB</div>
 <div class="line">[Sunday 23 May 2010] [12:34:25] &lt;postmodern&gt;    also is it possible to have a server that is set to SUB mode</div>
 <div class="line">[Sunday 23 May 2010] [12:34:41] &lt;postmodern&gt;    and have clients that connect in that are in PUB mode</div>
 <div class="line">[Sunday 23 May 2010] [12:52:04] &lt;postmodern&gt;    bbl, getting some rest</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id75"><span class="problematic" id="id76">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id77"><span class="problematic" id="id78">**</span></a>* on Sun May 23 18:00:00 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Sunday 23 May 2010] [19:40:25] &lt;hassox&gt;    hey guys</div>
 <div class="line">[Sunday 23 May 2010] [19:40:42] &lt;hassox&gt;    anyone got some good blog posts to help me get started with 0mq?</div>
 <div class="line">[Sunday 23 May 2010] [19:41:05]      * hassox has used a bit of amqp but looking for an alternative</div>
@@ -1464,34 +1396,34 @@
 <div class="line">[Sunday 23 May 2010] [21:34:33] &lt;postmodern&gt;    im a bit confused how zmq routes messages through sockets with multiple end-points?</div>
 <div class="line">[Sunday 23 May 2010] [21:34:47] &lt;postmodern&gt;    does it just fan-out?</div>
 <div class="line">[Sunday 23 May 2010] [21:34:55] &lt;postmodern&gt;    or is it load-balanced?</div>
-<div class="line">[Sunday 23 May 2010] [23:25:09] &lt;<a href="#id260"><span class="problematic" id="id261">cremes_</span></a>&gt;   postmodern: it depends on the socket type; i don&#8217;t know for certain, but in some cases it uses round-robin and in other fair-balance queueing meaning...</div>
+<div class="line">[Sunday 23 May 2010] [23:25:09] &lt;<a href="#id156"><span class="problematic" id="id157">cremes_</span></a>&gt;   postmodern: it depends on the socket type; i don&#8217;t know for certain, but in some cases it uses round-robin and in other fair-balance queueing meaning...</div>
 <div class="line">[Sunday 23 May 2010] [23:25:29] &lt;postmodern&gt;    ah interesting</div>
-<div class="line">[Sunday 23 May 2010] [23:25:29] &lt;<a href="#id262"><span class="problematic" id="id263">cremes_</span></a>&gt;   that it sends messages based on its internal knowledge of queue lengths</div>
-<div class="line">[Sunday 23 May 2010] [23:25:52] &lt;<a href="#id264"><span class="problematic" id="id265">cremes_</span></a>&gt;   i suggest asking on the list for a breakdown of queueing algorithms by socket</div>
-<div class="line">[Monday 24 May 2010] [01:46:41] &lt;<a href="#id266"><span class="problematic" id="id267">sustrik_</span></a>&gt;  hassox: <a class="reference external" href="http://lwn.net/Articles/370307/">http://lwn.net/Articles/370307/</a></div>
-<div class="line">[Monday 24 May 2010] [01:47:15] &lt;<a href="#id268"><span class="problematic" id="id269">sustrik_</span></a>&gt;  postmodern: each socket type does what you would expect it to do</div>
-<div class="line">[Monday 24 May 2010] [01:47:38] &lt;<a href="#id270"><span class="problematic" id="id271">sustrik_</span></a>&gt;  requests are load balanced between services</div>
-<div class="line">[Monday 24 May 2010] [01:47:56] &lt;<a href="#id272"><span class="problematic" id="id273">sustrik_</span></a>&gt;  while publishes are distributed to every subscriber</div>
-<div class="line">[Monday 24 May 2010] [01:48:20] &lt;postmodern&gt;    <a href="#id274"><span class="problematic" id="id275">sustrik_</span></a>, also there is no restriction on which direction the connection was made from, for pub/sub?</div>
-<div class="line">[Monday 24 May 2010] [01:49:04] &lt;postmodern&gt;    <a href="#id276"><span class="problematic" id="id277">sustrik_</span></a>, for instance i could connect into each subscriber socket, and publish to them</div>
-<div class="line">[Monday 24 May 2010] [01:49:17] &lt;postmodern&gt;    <a href="#id278"><span class="problematic" id="id279">sustrik_</span></a>, instead of binding to a port, and waiting for the subscribers to connect in</div>
-<div class="line">[Monday 24 May 2010] [01:56:43] &lt;hassox&gt;    <a href="#id280"><span class="problematic" id="id281">sustrik_</span></a>: churs</div>
-<div class="line">[Monday 24 May 2010] [01:57:24] &lt;hassox&gt;    <a href="#id282"><span class="problematic" id="id283">sustrik_</span></a>: is 0mq able to work with threadless evented systems like ruby EventMachine and Node.js?</div>
-<div class="line">[Monday 24 May 2010] [02:05:08] &lt;<a href="#id284"><span class="problematic" id="id285">sustrik_</span></a>&gt;  postmodern: no restriction</div>
+<div class="line">[Sunday 23 May 2010] [23:25:29] &lt;<a href="#id158"><span class="problematic" id="id159">cremes_</span></a>&gt;   that it sends messages based on its internal knowledge of queue lengths</div>
+<div class="line">[Sunday 23 May 2010] [23:25:52] &lt;<a href="#id160"><span class="problematic" id="id161">cremes_</span></a>&gt;   i suggest asking on the list for a breakdown of queueing algorithms by socket</div>
+<div class="line">[Monday 24 May 2010] [01:46:41] &lt;<a href="#id162"><span class="problematic" id="id163">sustrik_</span></a>&gt;  hassox: <a class="reference external" href="http://lwn.net/Articles/370307/">http://lwn.net/Articles/370307/</a></div>
+<div class="line">[Monday 24 May 2010] [01:47:15] &lt;<a href="#id164"><span class="problematic" id="id165">sustrik_</span></a>&gt;  postmodern: each socket type does what you would expect it to do</div>
+<div class="line">[Monday 24 May 2010] [01:47:38] &lt;<a href="#id166"><span class="problematic" id="id167">sustrik_</span></a>&gt;  requests are load balanced between services</div>
+<div class="line">[Monday 24 May 2010] [01:47:56] &lt;<a href="#id168"><span class="problematic" id="id169">sustrik_</span></a>&gt;  while publishes are distributed to every subscriber</div>
+<div class="line">[Monday 24 May 2010] [01:48:20] &lt;postmodern&gt;    <a href="#id170"><span class="problematic" id="id171">sustrik_</span></a>, also there is no restriction on which direction the connection was made from, for pub/sub?</div>
+<div class="line">[Monday 24 May 2010] [01:49:04] &lt;postmodern&gt;    <a href="#id172"><span class="problematic" id="id173">sustrik_</span></a>, for instance i could connect into each subscriber socket, and publish to them</div>
+<div class="line">[Monday 24 May 2010] [01:49:17] &lt;postmodern&gt;    <a href="#id174"><span class="problematic" id="id175">sustrik_</span></a>, instead of binding to a port, and waiting for the subscribers to connect in</div>
+<div class="line">[Monday 24 May 2010] [01:56:43] &lt;hassox&gt;    <a href="#id176"><span class="problematic" id="id177">sustrik_</span></a>: churs</div>
+<div class="line">[Monday 24 May 2010] [01:57:24] &lt;hassox&gt;    <a href="#id178"><span class="problematic" id="id179">sustrik_</span></a>: is 0mq able to work with threadless evented systems like ruby EventMachine and Node.js?</div>
+<div class="line">[Monday 24 May 2010] [02:05:08] &lt;<a href="#id180"><span class="problematic" id="id181">sustrik_</span></a>&gt;  postmodern: no restriction</div>
 <div class="line">[Monday 24 May 2010] [02:05:20] &lt;postmodern&gt;    excellent</div>
-<div class="line">[Monday 24 May 2010] [02:05:58] &lt;<a href="#id286"><span class="problematic" id="id287">sustrik_</span></a>&gt;  hassox: no idea, depends of what kind of requirements the two systems have</div>
-<div class="line">[Monday 24 May 2010] [02:06:08] &lt;hassox&gt;    <a href="#id288"><span class="problematic" id="id289">sustrik_</span></a>: they&#8217;re not threaded</div>
-<div class="line">[Monday 24 May 2010] [02:06:21] &lt;<a href="#id290"><span class="problematic" id="id291">sustrik_</span></a>&gt;  single-thread?</div>
+<div class="line">[Monday 24 May 2010] [02:05:58] &lt;<a href="#id182"><span class="problematic" id="id183">sustrik_</span></a>&gt;  hassox: no idea, depends of what kind of requirements the two systems have</div>
+<div class="line">[Monday 24 May 2010] [02:06:08] &lt;hassox&gt;    <a href="#id184"><span class="problematic" id="id185">sustrik_</span></a>: they&#8217;re not threaded</div>
+<div class="line">[Monday 24 May 2010] [02:06:21] &lt;<a href="#id186"><span class="problematic" id="id187">sustrik_</span></a>&gt;  single-thread?</div>
 <div class="line">[Monday 24 May 2010] [02:06:26] &lt;hassox&gt;    event loop</div>
 <div class="line">[Monday 24 May 2010] [02:06:37] &lt;hassox&gt;    yeah single thread, but they live in an event loop</div>
 <div class="line">[Monday 24 May 2010] [02:06:40] &lt;hassox&gt;    so async style</div>
-<div class="line">[Monday 24 May 2010] [02:06:52] &lt;<a href="#id292"><span class="problematic" id="id293">sustrik_</span></a>&gt;  what do you have to conform to register to the event loop?</div>
+<div class="line">[Monday 24 May 2010] [02:06:52] &lt;<a href="#id188"><span class="problematic" id="id189">sustrik_</span></a>&gt;  what do you have to conform to register to the event loop?</div>
 <div class="line">[Monday 24 May 2010] [02:07:08] &lt;hassox&gt;    sorry my train has just arrived I&#8217;ll be back on later</div>
 <div class="line">[Monday 24 May 2010] [02:07:20] &lt;hassox&gt;    not sure what that means but I&#8217;ll jump on when I get back</div>
-<div class="line">[Monday 24 May 2010] [05:30:33] &lt;hassox&gt;    <a href="#id294"><span class="problematic" id="id295">sustrik_</span></a>: still here mate?</div>
-<div class="line">[Monday 24 May 2010] [05:30:43] &lt;<a href="#id296"><span class="problematic" id="id297">sustrik_</span></a>&gt;  yup</div>
-<div class="line">[Monday 24 May 2010] [05:31:18] &lt;<a href="#id298"><span class="problematic" id="id299">sustrik_</span></a>&gt;  how do you add event sources to your event loop?</div>
-<div class="line">[Monday 24 May 2010] [05:31:29] &lt;<a href="#id300"><span class="problematic" id="id301">sustrik_</span></a>&gt;  what does the event source have to conform to?</div>
+<div class="line">[Monday 24 May 2010] [05:30:33] &lt;hassox&gt;    <a href="#id190"><span class="problematic" id="id191">sustrik_</span></a>: still here mate?</div>
+<div class="line">[Monday 24 May 2010] [05:30:43] &lt;<a href="#id192"><span class="problematic" id="id193">sustrik_</span></a>&gt;  yup</div>
+<div class="line">[Monday 24 May 2010] [05:31:18] &lt;<a href="#id194"><span class="problematic" id="id195">sustrik_</span></a>&gt;  how do you add event sources to your event loop?</div>
+<div class="line">[Monday 24 May 2010] [05:31:29] &lt;<a href="#id196"><span class="problematic" id="id197">sustrik_</span></a>&gt;  what does the event source have to conform to?</div>
 <div class="line">[Monday 24 May 2010] [05:49:35] &lt;hassox&gt;    so</div>
 <div class="line">[Monday 24 May 2010] [05:49:40] &lt;hassox&gt;    with event machine for eg</div>
 <div class="line">[Monday 24 May 2010] [05:49:54] &lt;hassox&gt;    you create a socket, and when an event occurs, i.e. some data is received</div>
@@ -1504,50 +1436,50 @@
 <div class="line">[Monday 24 May 2010] [05:51:36] &lt;mikko&gt; other than fds</div>
 <div class="line">[Monday 24 May 2010] [05:51:38] &lt;hassox&gt;    what do you mean</div>
 <div class="line">[Monday 24 May 2010] [05:51:55] &lt;hassox&gt;    manually put things onto the event queue?</div>
-<div class="line">[Monday 24 May 2010] [05:52:34] &lt;<a href="#id302"><span class="problematic" id="id303">sustrik_</span></a>&gt;  no, you put a socket into the event loop, right? can you put something else there?</div>
+<div class="line">[Monday 24 May 2010] [05:52:34] &lt;<a href="#id198"><span class="problematic" id="id199">sustrik_</span></a>&gt;  no, you put a socket into the event loop, right? can you put something else there?</div>
 <div class="line">[Monday 24 May 2010] [05:52:57] &lt;hassox&gt;    the whole application lives in the event loop</div>
 <div class="line">[Monday 24 May 2010] [05:53:24] &lt;hassox&gt;    so you can have many sockets, tcp connections database connections, or just have your application setting things up to do and executing them</div>
-<div class="line">[Monday 24 May 2010] [05:53:45] &lt;<a href="#id304"><span class="problematic" id="id305">sustrik_</span></a>&gt;  how does the loop know what sockets to inspect?</div>
+<div class="line">[Monday 24 May 2010] [05:53:45] &lt;<a href="#id200"><span class="problematic" id="id201">sustrik_</span></a>&gt;  how does the loop know what sockets to inspect?</div>
 <div class="line">[Monday 24 May 2010] [05:54:10] &lt;hassox&gt;    I&#8217;m not sure of the underlying system calls that are made...</div>
 <div class="line">[Monday 24 May 2010] [05:54:20] &lt;hassox&gt;    I usually live a little higher up the stack</div>
-<div class="line">[Monday 24 May 2010] [05:54:46] &lt;<a href="#id306"><span class="problematic" id="id307">sustrik_</span></a>&gt;  you create a connection to database</div>
+<div class="line">[Monday 24 May 2010] [05:54:46] &lt;<a href="#id202"><span class="problematic" id="id203">sustrik_</span></a>&gt;  you create a connection to database</div>
 <div class="line">[Monday 24 May 2010] [05:54:55] &lt;mikko&gt; like for example libev&#8217;s case <a class="reference external" href="http://pod.tst.eu/http://cvs.schmorp.de/libev/ev.pod#Examples-8">http://pod.tst.eu/http://cvs.schmorp.de/libev/ev.pod#Examples-8</a></div>
-<div class="line">[Monday 24 May 2010] [05:54:58] &lt;<a href="#id308"><span class="problematic" id="id309">sustrik_</span></a>&gt;  how do you integrate it with the loop?</div>
+<div class="line">[Monday 24 May 2010] [05:54:58] &lt;<a href="#id204"><span class="problematic" id="id205">sustrik_</span></a>&gt;  how do you integrate it with the loop?</div>
 <div class="line">[Monday 24 May 2010] [05:55:52] &lt;hassox&gt;    lemme see if I can find someone who will be able to talk at the right level</div>
 <div class="line">[Monday 24 May 2010] [05:56:53] &lt;hassox&gt;    I just grab a socket</div>
 <div class="line">[Monday 24 May 2010] [05:57:03] &lt;hassox&gt;    but not sure underneath at the c level what it&#8217;s actually doing</div>
 <div class="line">[Monday 24 May 2010] [05:57:10] &lt;hassox&gt;    they don&#8217;t look like they&#8217;re about</div>
 <div class="line">[Monday 24 May 2010] [05:58:13]      * hassox is looking</div>
-<div class="line">[Monday 24 May 2010] [05:58:35] &lt;<a href="#id310"><span class="problematic" id="id311">sustrik_</span></a>&gt;  example:</div>
-<div class="line">[Monday 24 May 2010] [05:58:43] &lt;<a href="#id312"><span class="problematic" id="id313">sustrik_</span></a>&gt;  s = create_socket (...);</div>
-<div class="line">[Monday 24 May 2010] [05:58:51] &lt;<a href="#id314"><span class="problematic" id="id315">sustrik_</span></a>&gt;  loop.register (s);</div>
-<div class="line">[Monday 24 May 2010] [05:59:00] &lt;<a href="#id316"><span class="problematic" id="id317">sustrik_</span></a>&gt;  does you use it in a similar way?</div>
+<div class="line">[Monday 24 May 2010] [05:58:35] &lt;<a href="#id206"><span class="problematic" id="id207">sustrik_</span></a>&gt;  example:</div>
+<div class="line">[Monday 24 May 2010] [05:58:43] &lt;<a href="#id208"><span class="problematic" id="id209">sustrik_</span></a>&gt;  s = create_socket (...);</div>
+<div class="line">[Monday 24 May 2010] [05:58:51] &lt;<a href="#id210"><span class="problematic" id="id211">sustrik_</span></a>&gt;  loop.register (s);</div>
+<div class="line">[Monday 24 May 2010] [05:59:00] &lt;<a href="#id212"><span class="problematic" id="id213">sustrik_</span></a>&gt;  does you use it in a similar way?</div>
 <div class="line">[Monday 24 May 2010] [05:59:56] &lt;hassox&gt;    <a class="reference external" href="http://github.com/eventmachine/eventmachine/blob/650ff5e19ee87c0bceba46e5961c415d64e6e519/lib/em/protocols/socks4.rb">http://github.com/eventmachine/eventmachine/blob/650ff5e19ee87c0bceba46e5961c415d64e6e519/lib/em/protocols/socks4.rb</a></div>
 <div class="line">[Monday 24 May 2010] [05:59:58] &lt;hassox&gt;    there&#8217;s an example</div>
 <div class="line">[Monday 24 May 2010] [06:00:48] &lt;hassox&gt;    here&#8217;s the underlying class</div>
 <div class="line">[Monday 24 May 2010] [06:00:48] &lt;hassox&gt;    <a class="reference external" href="http://github.com/eventmachine/eventmachine/blob/master/lib/em/connection.rb">http://github.com/eventmachine/eventmachine/blob/master/lib/em/connection.rb</a></div>
 <div class="line">[Monday 24 May 2010] [06:02:15] &lt;hassox&gt;    all the c is in <a class="reference external" href="http://github.com/eventmachine/eventmachine/tree/master/ext/">http://github.com/eventmachine/eventmachine/tree/master/ext/</a></div>
 <div class="line">[Monday 24 May 2010] [06:02:18] &lt;hassox&gt;    i&#8217;ll brb</div>
-<div class="line">[Monday 24 May 2010] [06:02:48] &lt;<a href="#id318"><span class="problematic" id="id319">sustrik_</span></a>&gt;  i don&#8217;t speak ruby, sorry, can you point me to the line where you open the socket?</div>
-<div class="line">[Monday 24 May 2010] [06:32:59] &lt;hassox&gt;    <a href="#id320"><span class="problematic" id="id321">sustrik_</span></a>: an http connection <a class="reference external" href="http://github.com/eventmachine/eventmachine/blob/fb11a41671b5bc1b15372d319280cecf086c9104/lib/eventmachine.rb#L578">http://github.com/eventmachine/eventmachine/blob/fb11a41671b5bc1b15372d319280cecf086c9104/lib/eventmachine.rb#L578</a></div>
+<div class="line">[Monday 24 May 2010] [06:02:48] &lt;<a href="#id214"><span class="problematic" id="id215">sustrik_</span></a>&gt;  i don&#8217;t speak ruby, sorry, can you point me to the line where you open the socket?</div>
+<div class="line">[Monday 24 May 2010] [06:32:59] &lt;hassox&gt;    <a href="#id216"><span class="problematic" id="id217">sustrik_</span></a>: an http connection <a class="reference external" href="http://github.com/eventmachine/eventmachine/blob/fb11a41671b5bc1b15372d319280cecf086c9104/lib/eventmachine.rb#L578">http://github.com/eventmachine/eventmachine/blob/fb11a41671b5bc1b15372d319280cecf086c9104/lib/eventmachine.rb#L578</a></div>
 <div class="line">[Monday 24 May 2010] [06:33:41] &lt;hassox&gt;    not sure what c is going on underneath</div>
-<div class="line">[Monday 24 May 2010] [06:36:34] &lt;<a href="#id322"><span class="problematic" id="id323">sustrik_</span></a>&gt;  hassox: forget about c</div>
-<div class="line">[Monday 24 May 2010] [06:36:42] &lt;<a href="#id324"><span class="problematic" id="id325">sustrik_</span></a>&gt;  what are you doing in ruby?</div>
+<div class="line">[Monday 24 May 2010] [06:36:34] &lt;<a href="#id218"><span class="problematic" id="id219">sustrik_</span></a>&gt;  hassox: forget about c</div>
+<div class="line">[Monday 24 May 2010] [06:36:42] &lt;<a href="#id220"><span class="problematic" id="id221">sustrik_</span></a>&gt;  what are you doing in ruby?</div>
 <div class="line">[Monday 24 May 2010] [06:36:55] &lt;hassox&gt;    I use the higer level stuff</div>
-<div class="line">[Monday 24 May 2010] [06:37:04] &lt;<a href="#id326"><span class="problematic" id="id327">sustrik_</span></a>&gt;  and that&#8217;s?</div>
+<div class="line">[Monday 24 May 2010] [06:37:04] &lt;<a href="#id222"><span class="problematic" id="id223">sustrik_</span></a>&gt;  and that&#8217;s?</div>
 <div class="line">[Monday 24 May 2010] [06:37:10] &lt;hassox&gt;    I just fire up an http server, or smtp server</div>
 <div class="line">[Monday 24 May 2010] [06:37:18] &lt;hassox&gt;    or both</div>
-<div class="line">[Monday 24 May 2010] [06:37:33] &lt;<a href="#id328"><span class="problematic" id="id329">sustrik_</span></a>&gt;  and?</div>
+<div class="line">[Monday 24 May 2010] [06:37:33] &lt;<a href="#id224"><span class="problematic" id="id225">sustrik_</span></a>&gt;  and?</div>
 <div class="line">[Monday 24 May 2010] [06:37:36] &lt;hassox&gt;    I&#8217;m trying to find someone who can talk at the right level</div>
 <div class="line">[Monday 24 May 2010] [06:37:37] &lt;hassox&gt;    well</div>
 <div class="line">[Monday 24 May 2010] [06:37:42] &lt;hassox&gt;    when ythe connection receives data</div>
 <div class="line">[Monday 24 May 2010] [06:37:50] &lt;hassox&gt;    EM calls receive_data(data)</div>
 <div class="line">[Monday 24 May 2010] [06:37:54] &lt;hassox&gt;    so you react to the event</div>
 <div class="line">[Monday 24 May 2010] [06:38:02] &lt;hassox&gt;    I&#8217;m not describing this well :(</div>
-<div class="line">[Monday 24 May 2010] [06:38:06] &lt;<a href="#id330"><span class="problematic" id="id331">sustrik_</span></a>&gt;  that&#8217;s inside HTTP server?</div>
+<div class="line">[Monday 24 May 2010] [06:38:06] &lt;<a href="#id226"><span class="problematic" id="id227">sustrik_</span></a>&gt;  that&#8217;s inside HTTP server?</div>
 <div class="line">[Monday 24 May 2010] [06:38:12] &lt;hassox&gt;    maybe the concept will be easier to talk over node</div>
-<div class="line">[Monday 24 May 2010] [06:38:17] &lt;mikko&gt; <a href="#id332"><span class="problematic" id="id333">sustrik_</span></a>: its probably like libevent http</div>
-<div class="line">[Monday 24 May 2010] [06:38:41] &lt;mikko&gt; <a href="#id334"><span class="problematic" id="id335">sustrik_</span></a>: similar concept to <a class="reference external" href="http://3.rdrail.net/blog/libevent-webserver-in-40-lines-of-c/">http://3.rdrail.net/blog/libevent-webserver-in-40-lines-of-c/</a></div>
+<div class="line">[Monday 24 May 2010] [06:38:17] &lt;mikko&gt; <a href="#id228"><span class="problematic" id="id229">sustrik_</span></a>: its probably like libevent http</div>
+<div class="line">[Monday 24 May 2010] [06:38:41] &lt;mikko&gt; <a href="#id230"><span class="problematic" id="id231">sustrik_</span></a>: similar concept to <a class="reference external" href="http://3.rdrail.net/blog/libevent-webserver-in-40-lines-of-c/">http://3.rdrail.net/blog/libevent-webserver-in-40-lines-of-c/</a></div>
 <div class="line">[Monday 24 May 2010] [06:38:45] &lt;mikko&gt; unless i am wrong</div>
 <div class="line">[Monday 24 May 2010] [06:38:58] &lt;mikko&gt; underneath it uses normal event loop</div>
 <div class="line">[Monday 24 May 2010] [06:39:00] &lt;hassox&gt;    the docs are better for node</div>
@@ -1559,18 +1491,18 @@
 <div class="line">[Monday 24 May 2010] [06:39:32] &lt;hassox&gt;    damn I suck at talking about this</div>
 <div class="line">[Monday 24 May 2010] [06:39:36] &lt;hassox&gt;    I&#8217;m sorry lads</div>
 <div class="line">[Monday 24 May 2010] [06:39:47] &lt;hassox&gt;    I&#8217;m not familiar with territory this low down</div>
-<div class="line">[Monday 24 May 2010] [06:40:02] &lt;<a href="#id336"><span class="problematic" id="id337">sustrik_</span></a>&gt;  np, can you check the mikko&#8217;s link?</div>
-<div class="line">[Monday 24 May 2010] [06:40:09] &lt;<a href="#id338"><span class="problematic" id="id339">sustrik_</span></a>&gt;  are you doing something similar?</div>
+<div class="line">[Monday 24 May 2010] [06:40:02] &lt;<a href="#id232"><span class="problematic" id="id233">sustrik_</span></a>&gt;  np, can you check the mikko&#8217;s link?</div>
+<div class="line">[Monday 24 May 2010] [06:40:09] &lt;<a href="#id234"><span class="problematic" id="id235">sustrik_</span></a>&gt;  are you doing something similar?</div>
 <div class="line">[Monday 24 May 2010] [06:41:31] &lt;hassox&gt;    I don&#8217;t know C but the concept seems about right</div>
-<div class="line">[Monday 24 May 2010] [06:42:02] &lt;<a href="#id340"><span class="problematic" id="id341">sustrik_</span></a>&gt;  so you launch a http server in your process</div>
+<div class="line">[Monday 24 May 2010] [06:42:02] &lt;<a href="#id236"><span class="problematic" id="id237">sustrik_</span></a>&gt;  so you launch a http server in your process</div>
 <div class="line">[Monday 24 May 2010] [06:42:04] &lt;mikko&gt; it&#8217;s a higher level abstraction where you talk &#8216;http concepts&#8217; rather than raw sockets</div>
-<div class="line">[Monday 24 May 2010] [06:42:10] &lt;<a href="#id342"><span class="problematic" id="id343">sustrik_</span></a>&gt;  and supply it a callback function</div>
+<div class="line">[Monday 24 May 2010] [06:42:10] &lt;<a href="#id238"><span class="problematic" id="id239">sustrik_</span></a>&gt;  and supply it a callback function</div>
 <div class="line">[Monday 24 May 2010] [06:42:11] &lt;mikko&gt; but in the end its just an event loop</div>
 <div class="line">[Monday 24 May 2010] [06:42:15] &lt;hassox&gt;    yeah</div>
 <div class="line">[Monday 24 May 2010] [06:42:30] &lt;hassox&gt;    EventMachine and Node.js are both event loops at their hearts</div>
 <div class="line">[Monday 24 May 2010] [06:43:02] &lt;hassox&gt;    but all the 0mq stuff I&#8217;ve seen talks about requiring 2 or more threads</div>
-<div class="line">[Monday 24 May 2010] [06:43:03] &lt;<a href="#id344"><span class="problematic" id="id345">sustrik_</span></a>&gt;  hassox: ok, then you need to check your documentation whether there are extension points in the library you are using</div>
-<div class="line">[Monday 24 May 2010] [06:43:44] &lt;<a href="#id346"><span class="problematic" id="id347">sustrik_</span></a>&gt;  i.e. ways to plug-in non-HTTP entities to the even loop</div>
+<div class="line">[Monday 24 May 2010] [06:43:03] &lt;<a href="#id240"><span class="problematic" id="id241">sustrik_</span></a>&gt;  hassox: ok, then you need to check your documentation whether there are extension points in the library you are using</div>
+<div class="line">[Monday 24 May 2010] [06:43:44] &lt;<a href="#id242"><span class="problematic" id="id243">sustrik_</span></a>&gt;  i.e. ways to plug-in non-HTTP entities to the even loop</div>
 <div class="line">[Monday 24 May 2010] [06:44:04] &lt;mikko&gt; hassox: <a class="reference external" href="http://www.igvita.com/2008/05/27/ruby-eventmachine-the-speed-demon/">http://www.igvita.com/2008/05/27/ruby-eventmachine-the-speed-demon/</a></div>
 <div class="line">[Monday 24 May 2010] [06:44:10] &lt;mikko&gt; sometghing like that might be relevant to you</div>
 <div class="line">[Monday 24 May 2010] [06:44:46] &lt;hassox&gt;    yeah that&#8217;s just doing http servers</div>
@@ -1583,18 +1515,18 @@
 <div class="line">[Monday 24 May 2010] [06:47:34] &lt;mikko&gt; ideally your event loop such as event machine would support &#8220;polling&#8221; a callback for events</div>
 <div class="line">[Monday 24 May 2010] [06:47:59] &lt;mikko&gt; i would imagine it would be possible to create a struct with necessary io abstraction that would work with any data provider including zeromq</div>
 <div class="line">[Monday 24 May 2010] [06:48:06] &lt;mikko&gt; whether event machine does that i dont know</div>
-<div class="line">[Monday 24 May 2010] [06:49:32] &lt;mikko&gt; <a href="#id348"><span class="problematic" id="id349">sustrik_</span></a>: isn&#8217;t XREQ / XREP non-blocking?</div>
+<div class="line">[Monday 24 May 2010] [06:49:32] &lt;mikko&gt; <a href="#id244"><span class="problematic" id="id245">sustrik_</span></a>: isn&#8217;t XREQ / XREP non-blocking?</div>
 <div class="line">[Monday 24 May 2010] [06:50:32] &lt;mikko&gt; (sorry if im confusing the issue more)</div>
 <div class="line">[Monday 24 May 2010] [06:50:43] &lt;hassox&gt;    np</div>
 <div class="line">[Monday 24 May 2010] [06:50:54] &lt;hassox&gt;    I&#8217;m just in really unfamiliar territory :(</div>
-<div class="line">[Monday 24 May 2010] [06:53:08] &lt;<a href="#id350"><span class="problematic" id="id351">sustrik_</span></a>&gt;  mikko: any 0mq socket can be either blocking or non-blocking</div>
-<div class="line">[Monday 24 May 2010] [06:53:16] &lt;<a href="#id352"><span class="problematic" id="id353">sustrik_</span></a>&gt;  s.recv (&amp;msg);</div>
-<div class="line">[Monday 24 May 2010] [06:53:18] &lt;<a href="#id354"><span class="problematic" id="id355">sustrik_</span></a>&gt;  vs.</div>
-<div class="line">[Monday 24 May 2010] [06:53:23] &lt;<a href="#id356"><span class="problematic" id="id357">sustrik_</span></a>&gt;  s.recv (&amp;msg, ZMQ_NOBLOCK);</div>
+<div class="line">[Monday 24 May 2010] [06:53:08] &lt;<a href="#id246"><span class="problematic" id="id247">sustrik_</span></a>&gt;  mikko: any 0mq socket can be either blocking or non-blocking</div>
+<div class="line">[Monday 24 May 2010] [06:53:16] &lt;<a href="#id248"><span class="problematic" id="id249">sustrik_</span></a>&gt;  s.recv (&amp;msg);</div>
+<div class="line">[Monday 24 May 2010] [06:53:18] &lt;<a href="#id250"><span class="problematic" id="id251">sustrik_</span></a>&gt;  vs.</div>
+<div class="line">[Monday 24 May 2010] [06:53:23] &lt;<a href="#id252"><span class="problematic" id="id253">sustrik_</span></a>&gt;  s.recv (&amp;msg, ZMQ_NOBLOCK);</div>
 <div class="line">[Monday 24 May 2010] [06:53:32] &lt;mikko&gt; so the end result would be: you want to embed zmq into node.js/eventmachine loop and receive events and have the events fire the callbacks</div>
 <div class="line">[Monday 24 May 2010] [06:53:49] &lt;hassox&gt;    that sounds like what I want</div>
 <div class="line">[Monday 24 May 2010] [06:53:52] &lt;mikko&gt; this functionality depends on whether your event loop allows you to register custom resources with the loop</div>
-<div class="line">[Monday 24 May 2010] [06:53:54] &lt;<a href="#id358"><span class="problematic" id="id359">sustrik_</span></a>&gt;  the XREP/XREQ allows you to have multiple request in the air at the same time</div>
+<div class="line">[Monday 24 May 2010] [06:53:54] &lt;<a href="#id254"><span class="problematic" id="id255">sustrik_</span></a>&gt;  the XREP/XREQ allows you to have multiple request in the air at the same time</div>
 <div class="line">[Monday 24 May 2010] [06:54:03] &lt;mikko&gt; as 0MQ does not expose the underlying sockets directly</div>
 <div class="line">[Monday 24 May 2010] [06:55:19] &lt;hassox&gt;    mikko: but you connect to the 0MQ service via  a socket yeah?</div>
 <div class="line">[Monday 24 May 2010] [06:55:38] &lt;mikko&gt; the socket 0MQ gives you is an abstraction</div>
@@ -1640,18 +1572,14 @@
 <div class="line">[Monday 24 May 2010] [07:53:52] &lt;hassox&gt;    but rather it&#8217;s a parallell event loop in the same process</div>
 <div class="line">[Monday 24 May 2010] [07:56:43] &lt;cremes&gt;    hassox: yes, it is completely independent of EM; they can&#8217;t work together</div>
 <div class="line">[Monday 24 May 2010] [07:57:32] &lt;hassox&gt;    :(</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id79"><span class="problematic" id="id80">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id81"><span class="problematic" id="id82">**</span></a>* on Tue May 25 01:47:37 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Tuesday 25 May 2010] [03:04:25] &lt;jugg&gt; <a class="reference external" href="http://www.zeromq.org/docs:cookbook">http://www.zeromq.org/docs:cookbook</a> has been a great resource, however are there any open source programs out there extensively using 0mq?  I&#8217;d like to jump in on a functional code base and start playing around.</div>
 <div class="line">[Tuesday 25 May 2010] [03:05:18] &lt;jugg&gt; (preferably c/c++ code base)</div>
-<div class="line">[Tuesday 25 May 2010] [03:09:09] &lt;<a href="#id360"><span class="problematic" id="id361">sustrik_</span></a>&gt; jugg: there are projects out there</div>
-<div class="line">[Tuesday 25 May 2010] [03:09:16] &lt;<a href="#id362"><span class="problematic" id="id363">sustrik_</span></a>&gt; try asking on the mailing list</div>
-<div class="line">[Tuesday 25 May 2010] [03:09:32] &lt;<a href="#id364"><span class="problematic" id="id365">sustrik_</span></a>&gt; some projects would definitely appreciate help</div>
+<div class="line">[Tuesday 25 May 2010] [03:09:09] &lt;<a href="#id256"><span class="problematic" id="id257">sustrik_</span></a>&gt; jugg: there are projects out there</div>
+<div class="line">[Tuesday 25 May 2010] [03:09:16] &lt;<a href="#id258"><span class="problematic" id="id259">sustrik_</span></a>&gt; try asking on the mailing list</div>
+<div class="line">[Tuesday 25 May 2010] [03:09:32] &lt;<a href="#id260"><span class="problematic" id="id261">sustrik_</span></a>&gt; some projects would definitely appreciate help</div>
 <div class="line">[Tuesday 25 May 2010] [04:58:58] &lt;CIA-17&gt;   zeromq2: 03Martin Sustrik 07master * rf34a468 10/ zmqd/zmqd.cpp : coding style fixed in zmqd -</div>
 <div class="line">[Tuesday 25 May 2010] [09:05:00] &lt;CIA-17&gt;   zeromq2: 03Martin Sustrik 07master * r8408ae0 10/ (9 files in 3 dirs): LWM is computed rather than explicitly specified by user - <a class="reference external" href="http://bit.ly/bHVtfR">http://bit.ly/bHVtfR</a></div>
-<div class="line">[Tuesday 25 May 2010] [11:22:22] &lt;mikko&gt;    <a href="#id366"><span class="problematic" id="id367">sustrik_</span></a>: again excessive bounces</div>
+<div class="line">[Tuesday 25 May 2010] [11:22:22] &lt;mikko&gt;    <a href="#id262"><span class="problematic" id="id263">sustrik_</span></a>: again excessive bounces</div>
 <div class="line">[Tuesday 25 May 2010] [11:22:27] &lt;mikko&gt;    re-enabled</div>
 <div class="line">[Tuesday 25 May 2010] [12:21:02] &lt;Skaag1&gt;   excuse me for the completely noobish question - but once zeromq is compiled, how do I start it?! :-)</div>
 <div class="line">[Tuesday 25 May 2010] [12:21:10] &lt;Skaag1&gt;   no mention of that in the INSTALL file</div>
@@ -1673,8 +1601,8 @@
 <div class="line">[Tuesday 25 May 2010] [13:06:33] &lt;cremes&gt;   i think there are php bindings available up on github; i suggest looking at those and any sample code that ships with them</div>
 <div class="line">[Tuesday 25 May 2010] [13:06:44] &lt;cremes&gt;   a little code is the best way to demystify how 0mq works</div>
 <div class="line">[Tuesday 25 May 2010] [13:09:23] &lt;Skaag1&gt;   yes I know, I tested the php bindings</div>
-<div class="line">[Tuesday 25 May 2010] [16:39:15] &lt;<a href="#id368"><span class="problematic" id="id369">sustrik_</span></a>&gt; mikko: is it ok now?</div>
-<div class="line">[Tuesday 25 May 2010] [16:51:05] &lt;cremes&gt;   <a href="#id370"><span class="problematic" id="id371">sustrik_</span></a>: any chance you could give me a quick hand in building 0mq master? i run into a problem with configure:  <a class="reference external" href="http://pastie.org/976939">http://pastie.org/976939</a></div>
+<div class="line">[Tuesday 25 May 2010] [16:39:15] &lt;<a href="#id264"><span class="problematic" id="id265">sustrik_</span></a>&gt; mikko: is it ok now?</div>
+<div class="line">[Tuesday 25 May 2010] [16:51:05] &lt;cremes&gt;   <a href="#id266"><span class="problematic" id="id267">sustrik_</span></a>: any chance you could give me a quick hand in building 0mq master? i run into a problem with configure:  <a class="reference external" href="http://pastie.org/976939">http://pastie.org/976939</a></div>
 <div class="line">[Tuesday 25 May 2010] [16:51:11] &lt;cremes&gt;   this is on osx intel</div>
 <div class="line">[Tuesday 25 May 2010] [16:56:12] &lt;mato&gt; cremes: do you have pkg-config installed? that problem looks like you either don&#8217;t have it or autoconf doesn&#8217;t know about it</div>
 <div class="line">[Tuesday 25 May 2010] [16:57:01] &lt;cremes&gt;   mato: i have version 0.23 installed</div>
@@ -1719,79 +1647,63 @@
 <div class="line">[Tuesday 25 May 2010] [17:08:58] &lt;mato&gt; update the faq if you like, but put in something about complaining to your aclocal vendor :-)</div>
 <div class="line">[Tuesday 25 May 2010] [17:09:12] &lt;mato&gt; please</div>
 <div class="line">[Tuesday 25 May 2010] [17:09:13] &lt;cremes&gt;   ok</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id83"><span class="problematic" id="id84">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id85"><span class="problematic" id="id86">**</span></a>* on Tue May 25 18:07:37 2010</div>
-<div class="line"><br /></div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id87"><span class="problematic" id="id88">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id89"><span class="problematic" id="id90">**</span></a>* on Tue May 25 18:13:12 2010</div>
-<div class="line"><br /></div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id91"><span class="problematic" id="id92">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id93"><span class="problematic" id="id94">**</span></a>* on Tue May 25 18:55:12 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Tuesday 25 May 2010] [22:09:01] &lt;jugg&gt; is there any documentation/threads discussing the choice of lgpl3 for zeromq?</div>
-<div class="line">[Wednesday 26 May 2010] [00:25:53] &lt;<a href="#id372"><span class="problematic" id="id373">sustrik_</span></a>&gt;   cremes: by all means update the faq</div>
-<div class="line">[Wednesday 26 May 2010] [00:26:19] &lt;<a href="#id374"><span class="problematic" id="id375">sustrik_</span></a>&gt;   jugg: what exactly are you interested in?</div>
-<div class="line">[Wednesday 26 May 2010] [00:26:26] &lt;<a href="#id376"><span class="problematic" id="id377">sustrik_</span></a>&gt;   lgpl vs. proprietary?</div>
+<div class="line">[Wednesday 26 May 2010] [00:25:53] &lt;<a href="#id268"><span class="problematic" id="id269">sustrik_</span></a>&gt;   cremes: by all means update the faq</div>
+<div class="line">[Wednesday 26 May 2010] [00:26:19] &lt;<a href="#id270"><span class="problematic" id="id271">sustrik_</span></a>&gt;   jugg: what exactly are you interested in?</div>
+<div class="line">[Wednesday 26 May 2010] [00:26:26] &lt;<a href="#id272"><span class="problematic" id="id273">sustrik_</span></a>&gt;   lgpl vs. proprietary?</div>
 <div class="line">[Wednesday 26 May 2010] [00:30:55] &lt;jugg&gt;   v3 is pretty invasive, so before bringing up any concerns, I&#8217;m interested in previous discussion to avoid re-hashing those issues/concerns.</div>
-<div class="line">[Wednesday 26 May 2010] [00:32:45] &lt;<a href="#id378"><span class="problematic" id="id379">sustrik_</span></a>&gt;   invasive? it&#8217;s lgpl not gpl</div>
-<div class="line">[Wednesday 26 May 2010] [00:32:51] &lt;<a href="#id380"><span class="problematic" id="id381">sustrik_</span></a>&gt;   what are you trying to do?</div>
+<div class="line">[Wednesday 26 May 2010] [00:32:45] &lt;<a href="#id274"><span class="problematic" id="id275">sustrik_</span></a>&gt;   invasive? it&#8217;s lgpl not gpl</div>
+<div class="line">[Wednesday 26 May 2010] [00:32:51] &lt;<a href="#id276"><span class="problematic" id="id277">sustrik_</span></a>&gt;   what are you trying to do?</div>
 <div class="line">[Wednesday 26 May 2010] [00:33:21] &lt;jugg&gt;   lgplv3 is gplv3 with certain exceptions made.</div>
-<div class="line">[Wednesday 26 May 2010] [00:33:56] &lt;<a href="#id382"><span class="problematic" id="id383">sustrik_</span></a>&gt;   yup, the exceptions result in &#8220;you can do whatever you want with the application using the library&#8221;</div>
+<div class="line">[Wednesday 26 May 2010] [00:33:56] &lt;<a href="#id278"><span class="problematic" id="id279">sustrik_</span></a>&gt;   yup, the exceptions result in &#8220;you can do whatever you want with the application using the library&#8221;</div>
 <div class="line">[Wednesday 26 May 2010] [00:35:09] &lt;zedas&gt;  hey, on linux I&#8217;m finding zmq_poll kills my app thread, but i can&#8217;t quite find out why.  here&#8217;s the code: <a class="reference external" href="http://mulletdb.com/artifact?name=35bf3679dcef35fdefbfe19130a9d5abe1d4ee03">http://mulletdb.com/artifact?name=35bf3679dcef35fdefbfe19130a9d5abe1d4ee03</a></div>
 <div class="line">[Wednesday 26 May 2010] [00:35:43] &lt;zedas&gt;  it&#8217;s just one thread running a poll loop, but gdb shows that the thread running zmq_poll exits while the two running epoll donot</div>
-<div class="line">[Wednesday 26 May 2010] [00:36:51] &lt;<a href="#id384"><span class="problematic" id="id385">sustrik_</span></a>&gt;   zedas: looks like the only way to exit the loop is through the die message</div>
+<div class="line">[Wednesday 26 May 2010] [00:36:51] &lt;<a href="#id280"><span class="problematic" id="id281">sustrik_</span></a>&gt;   zedas: looks like the only way to exit the loop is through the die message</div>
 <div class="line">[Wednesday 26 May 2010] [00:37:44] &lt;zedas&gt;  <a class="reference external" href="http://dpaste.de/dYJs/">http://dpaste.de/dYJs/</a>  heres&#8217; the backtrace in the threads</div>
-<div class="line">[Wednesday 26 May 2010] [00:38:12] &lt;<a href="#id386"><span class="problematic" id="id387">sustrik_</span></a>&gt;   aha, or zmq_poll can return error</div>
-<div class="line">[Wednesday 26 May 2010] [00:38:13] &lt;zedas&gt;  <a href="#id388"><span class="problematic" id="id389">sustrik_</span></a>: i thought too, but the thread exits immediately, it doesn&#8217;t return back to the caller of zmq_poll.</div>
+<div class="line">[Wednesday 26 May 2010] [00:38:12] &lt;<a href="#id282"><span class="problematic" id="id283">sustrik_</span></a>&gt;   aha, or zmq_poll can return error</div>
+<div class="line">[Wednesday 26 May 2010] [00:38:13] &lt;zedas&gt;  <a href="#id284"><span class="problematic" id="id285">sustrik_</span></a>: i thought too, but the thread exits immediately, it doesn&#8217;t return back to the caller of zmq_poll.</div>
 <div class="line">[Wednesday 26 May 2010] [00:38:13] &lt;jugg&gt;   The main concern with v3 is that it controls the hardware system.  If, for instance, I wanted to lease/sell a hw system (box), and do so at a low cost because support contracts would be put in place - but including a v3 (lgpl/gpl) piece of software prevents me from locking down the software that is run on the box.  I&#8217;m happy to provide the source to said software, but I&#8217;m not happy to allow other uses of said box.  The v3 specfi</div>
 <div class="line">[Wednesday 26 May 2010] [00:38:13] &lt;jugg&gt;   cally tries to prevent this (tivo).   So, using zeromq in such a platform is not possible.</div>
-<div class="line">[Wednesday 26 May 2010] [00:38:22] &lt;<a href="#id390"><span class="problematic" id="id391">sustrik_</span></a>&gt;   then the loop would exit</div>
-<div class="line">[Wednesday 26 May 2010] [00:38:30] &lt;<a href="#id392"><span class="problematic" id="id393">sustrik_</span></a>&gt;   can you check the actual error code?</div>
+<div class="line">[Wednesday 26 May 2010] [00:38:22] &lt;<a href="#id286"><span class="problematic" id="id287">sustrik_</span></a>&gt;   then the loop would exit</div>
+<div class="line">[Wednesday 26 May 2010] [00:38:30] &lt;<a href="#id288"><span class="problematic" id="id289">sustrik_</span></a>&gt;   can you check the actual error code?</div>
 <div class="line">[Wednesday 26 May 2010] [00:38:31] &lt;zedas&gt;  yep, but i don&#8217;t get an exit</div>
 <div class="line">[Wednesday 26 May 2010] [00:38:55] &lt;zedas&gt;  so i put break points right after the zmq_poll call, also tried getting the return value</div>
 <div class="line">[Wednesday 26 May 2010] [00:39:04] &lt;zedas&gt;  and not getting it.  just boom.</div>
 <div class="line">[Wednesday 26 May 2010] [00:39:19] &lt;zedas&gt;  so, insize zmq.cpp there&#8217;s code that gets the app_thread</div>
-<div class="line">[Wednesday 26 May 2010] [00:39:38] &lt;<a href="#id394"><span class="problematic" id="id395">sustrik_</span></a>&gt;   hm, the backtrace looks like it&#8217;s still inside zmq_poll</div>
-<div class="line">[Wednesday 26 May 2010] [00:39:53] &lt;<a href="#id396"><span class="problematic" id="id397">sustrik_</span></a>&gt;   blocked maybe?</div>
+<div class="line">[Wednesday 26 May 2010] [00:39:38] &lt;<a href="#id290"><span class="problematic" id="id291">sustrik_</span></a>&gt;   hm, the backtrace looks like it&#8217;s still inside zmq_poll</div>
+<div class="line">[Wednesday 26 May 2010] [00:39:53] &lt;<a href="#id292"><span class="problematic" id="id293">sustrik_</span></a>&gt;   blocked maybe?</div>
 <div class="line">[Wednesday 26 May 2010] [00:40:08] &lt;zedas&gt;  oh i stopped it</div>
 <div class="line">[Wednesday 26 May 2010] [00:40:21] &lt;zedas&gt;  right at the poll so i can see what thread is dying</div>
 <div class="line">[Wednesday 26 May 2010] [00:40:32] &lt;zedas&gt;  so basically i run that for a while, then pound it with a client</div>
 <div class="line">[Wednesday 26 May 2010] [00:40:55] &lt;zedas&gt;  works fine but after a few thousand iterations that thread just exits right after the poll and doesn&#8217;t come back to the caller</div>
-<div class="line">[Wednesday 26 May 2010] [00:41:05] &lt;<a href="#id398"><span class="problematic" id="id399">sustrik_</span></a>&gt;   strange</div>
+<div class="line">[Wednesday 26 May 2010] [00:41:05] &lt;<a href="#id294"><span class="problematic" id="id295">sustrik_</span></a>&gt;   strange</div>
 <div class="line">[Wednesday 26 May 2010] [00:41:16] &lt;zedas&gt;  so, i&#8217;m wondering if i wanted to try to catch that where would i breakpoint?  inside zmq.cpp?</div>
-<div class="line">[Wednesday 26 May 2010] [00:42:13] &lt;<a href="#id400"><span class="problematic" id="id401">sustrik_</span></a>&gt;   what about stepping through the zmq_poll implementation and checking where exactly it exists?</div>
+<div class="line">[Wednesday 26 May 2010] [00:42:13] &lt;<a href="#id296"><span class="problematic" id="id297">sustrik_</span></a>&gt;   what about stepping through the zmq_poll implementation and checking where exactly it exists?</div>
 <div class="line">[Wednesday 26 May 2010] [00:42:14] &lt;zedas&gt;  i&#8217;m thinking that it might actually be exiting, but g++ might optimizing out the actual exit</div>
-<div class="line">[Wednesday 26 May 2010] [00:42:36] &lt;<a href="#id402"><span class="problematic" id="id403">sustrik_</span></a>&gt;   zedas, by all means compile with CXXFLAGS=&#8221;-g -O0&#8221;</div>
+<div class="line">[Wednesday 26 May 2010] [00:42:36] &lt;<a href="#id298"><span class="problematic" id="id299">sustrik_</span></a>&gt;   zedas, by all means compile with CXXFLAGS=&#8221;-g -O0&#8221;</div>
 <div class="line">[Wednesday 26 May 2010] [00:42:37] &lt;zedas&gt;  well, i have to run it a shitload :-)</div>
 <div class="line">[Wednesday 26 May 2010] [00:42:45] &lt;zedas&gt;  so it&#8217;d be a lot of stepping</div>
-<div class="line">[Wednesday 26 May 2010] [00:43:05] &lt;<a href="#id404"><span class="problematic" id="id405">sustrik_</span></a>&gt;   try turning the optimisation off first</div>
+<div class="line">[Wednesday 26 May 2010] [00:43:05] &lt;<a href="#id300"><span class="problematic" id="id301">sustrik_</span></a>&gt;   try turning the optimisation off first</div>
 <div class="line">[Wednesday 26 May 2010] [00:43:17] &lt;zedas&gt;  yep doing that</div>
 <div class="line">[Wednesday 26 May 2010] [00:43:25] &lt;zedas&gt;  also, maybe strace?</div>
-<div class="line">[Wednesday 26 May 2010] [00:44:28] &lt;<a href="#id406"><span class="problematic" id="id407">sustrik_</span></a>&gt;   jugg: i am not a IP lawyer :) please, do post your question to the mailing list</div>
-<div class="line">[Wednesday 26 May 2010] [00:44:36] &lt;<a href="#id408"><span class="problematic" id="id409">sustrik_</span></a>&gt;   imatix should answer this</div>
-<div class="line">[Wednesday 26 May 2010] [00:44:58] &lt;<a href="#id410"><span class="problematic" id="id411">sustrik_</span></a>&gt;   zedas: possibly</div>
+<div class="line">[Wednesday 26 May 2010] [00:44:28] &lt;<a href="#id302"><span class="problematic" id="id303">sustrik_</span></a>&gt;   jugg: i am not a IP lawyer :) please, do post your question to the mailing list</div>
+<div class="line">[Wednesday 26 May 2010] [00:44:36] &lt;<a href="#id304"><span class="problematic" id="id305">sustrik_</span></a>&gt;   imatix should answer this</div>
+<div class="line">[Wednesday 26 May 2010] [00:44:58] &lt;<a href="#id306"><span class="problematic" id="id307">sustrik_</span></a>&gt;   zedas: possibly</div>
 <div class="line">[Wednesday 26 May 2010] [00:45:05] &lt;jugg&gt;   ok</div>
-<div class="line">[Wednesday 26 May 2010] [01:01:35] &lt;zedas&gt;  <a href="#id412"><span class="problematic" id="id413">sustrik_</span></a>: nope still doing it</div>
-<div class="line">[Wednesday 26 May 2010] [01:03:11] &lt;<a href="#id414"><span class="problematic" id="id415">sustrik_</span></a>&gt;   zedas: it&#8217;s really strange, i cannot think of thread unexpectedly exiting aside of some serious stack overwrite</div>
-<div class="line">[Wednesday 26 May 2010] [01:03:14] &lt;<a href="#id416"><span class="problematic" id="id417">sustrik_</span></a>&gt;   anyway</div>
-<div class="line">[Wednesday 26 May 2010] [01:03:37] &lt;<a href="#id418"><span class="problematic" id="id419">sustrik_</span></a>&gt;   sanity check: can you add a printf after the loop?</div>
-<div class="line">[Wednesday 26 May 2010] [01:03:59] &lt;<a href="#id420"><span class="problematic" id="id421">sustrik_</span></a>&gt;   just to be 100% sure that the thread disappers rather then exits?</div>
-<div class="line">[Wednesday 26 May 2010] [01:05:35] &lt;zedas&gt;  <a href="#id422"><span class="problematic" id="id423">sustrik_</span></a>: exactly,</div>
-<div class="line">[Wednesday 26 May 2010] [01:05:57] &lt;zedas&gt;  <a href="#id424"><span class="problematic" id="id425">sustrik_</span></a>: yep done that, breakpoints, everything.  i&#8217;m now thinking memory/stack overflow</div>
+<div class="line">[Wednesday 26 May 2010] [01:01:35] &lt;zedas&gt;  <a href="#id308"><span class="problematic" id="id309">sustrik_</span></a>: nope still doing it</div>
+<div class="line">[Wednesday 26 May 2010] [01:03:11] &lt;<a href="#id310"><span class="problematic" id="id311">sustrik_</span></a>&gt;   zedas: it&#8217;s really strange, i cannot think of thread unexpectedly exiting aside of some serious stack overwrite</div>
+<div class="line">[Wednesday 26 May 2010] [01:03:14] &lt;<a href="#id312"><span class="problematic" id="id313">sustrik_</span></a>&gt;   anyway</div>
+<div class="line">[Wednesday 26 May 2010] [01:03:37] &lt;<a href="#id314"><span class="problematic" id="id315">sustrik_</span></a>&gt;   sanity check: can you add a printf after the loop?</div>
+<div class="line">[Wednesday 26 May 2010] [01:03:59] &lt;<a href="#id316"><span class="problematic" id="id317">sustrik_</span></a>&gt;   just to be 100% sure that the thread disappers rather then exits?</div>
+<div class="line">[Wednesday 26 May 2010] [01:05:35] &lt;zedas&gt;  <a href="#id318"><span class="problematic" id="id319">sustrik_</span></a>: exactly,</div>
+<div class="line">[Wednesday 26 May 2010] [01:05:57] &lt;zedas&gt;  <a href="#id320"><span class="problematic" id="id321">sustrik_</span></a>: yep done that, breakpoints, everything.  i&#8217;m now thinking memory/stack overflow</div>
 <div class="line">[Wednesday 26 May 2010] [01:06:17] &lt;zedas&gt;  doing one more thing next.  i do a while(true) so it never exits and see what i get</div>
-<div class="line">[Wednesday 26 May 2010] [01:07:48] &lt;zedas&gt;  <a href="#id426"><span class="problematic" id="id427">sustrik_</span></a>: you&#8217;re right, this <em>has</em> to be a stack overflow.  i shall valgrind it.</div>
-<div class="line">[Wednesday 26 May 2010] [01:08:09] &lt;<a href="#id428"><span class="problematic" id="id429">sustrik_</span></a>&gt;   try that &#8211; i really haven&#8217;t seen it behave like this</div>
-<div class="line">[Wednesday 26 May 2010] [01:08:15] &lt;<a href="#id430"><span class="problematic" id="id431">sustrik_</span></a>&gt;   something strange going on</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id95"><span class="problematic" id="id96">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id97"><span class="problematic" id="id98">**</span></a>* on Wed May 26 01:25:27 2010</div>
-<div class="line"><br /></div>
-<div class="line">[Wednesday 26 May 2010] [01:42:08] &lt;zedas&gt;  <a href="#id432"><span class="problematic" id="id433">sustrik_</span></a>: yep, stack smash.  there&#8217;s a piece of another library i&#8217;m using that had a stray free where it didn&#8217;t belong.</div>
+<div class="line">[Wednesday 26 May 2010] [01:07:48] &lt;zedas&gt;  <a href="#id322"><span class="problematic" id="id323">sustrik_</span></a>: you&#8217;re right, this <em>has</em> to be a stack overflow.  i shall valgrind it.</div>
+<div class="line">[Wednesday 26 May 2010] [01:08:09] &lt;<a href="#id324"><span class="problematic" id="id325">sustrik_</span></a>&gt;   try that &#8211; i really haven&#8217;t seen it behave like this</div>
+<div class="line">[Wednesday 26 May 2010] [01:08:15] &lt;<a href="#id326"><span class="problematic" id="id327">sustrik_</span></a>&gt;   something strange going on</div>
+<div class="line">[Wednesday 26 May 2010] [01:42:08] &lt;zedas&gt;  <a href="#id328"><span class="problematic" id="id329">sustrik_</span></a>: yep, stack smash.  there&#8217;s a piece of another library i&#8217;m using that had a stray free where it didn&#8217;t belong.</div>
 <div class="line">[Wednesday 26 May 2010] [01:42:31] &lt;zedas&gt;  removed it and so far it seems to be stable, although leaking.  i&#8217;ll let you know if it holds true</div>
-<div class="line">[Wednesday 26 May 2010] [01:43:29] &lt;<a href="#id434"><span class="problematic" id="id435">sustrik_</span></a>&gt;   zedas: great, thanks</div>
+<div class="line">[Wednesday 26 May 2010] [01:43:29] &lt;<a href="#id330"><span class="problematic" id="id331">sustrik_</span></a>&gt;   zedas: great, thanks</div>
 <div class="line">[Wednesday 26 May 2010] [07:08:22] &lt;sjampoo&gt;    have been lurking on the mailinglist, zmq_wait_fd looks REALLY useful. Just to make sure i understand this correct. I can poll on the fd with just regular EPOLL and when something is ready i can just call zmq_recv, right?</div>
 <div class="line">[Wednesday 26 May 2010] [07:14:08] &lt;sustrik&gt;    sjampoo: it&#8217;s a bit more complex</div>
 <div class="line">[Wednesday 26 May 2010] [07:14:22] &lt;sustrik&gt;    when fd is ready</div>
@@ -2005,7 +1917,7 @@
 <div class="line">[Wednesday 26 May 2010] [09:25:00] &lt;jugg&gt;   trying to processing too much info :)</div>
 <div class="line">[Wednesday 26 May 2010] [09:26:05] &lt;jugg&gt;   sustrik: thanks for the summary above</div>
 <div class="line">[Wednesday 26 May 2010] [09:26:32] &lt;sustrik&gt;    jugg: feel free to submit documentation patches</div>
-<div class="line">[Wednesday 26 May 2010] [09:28:11] &lt;jugg&gt;   I assume the docs on the website correspond to the zeromq2/docs/<a href="#id99"><span class="problematic" id="id100">*</span></a>.txt  (I&#8217;ve been reading the website)</div>
+<div class="line">[Wednesday 26 May 2010] [09:28:11] &lt;jugg&gt;   I assume the docs on the website correspond to the zeromq2/docs/<a href="#id11"><span class="problematic" id="id12">*</span></a>.txt  (I&#8217;ve been reading the website)</div>
 <div class="line">[Wednesday 26 May 2010] [09:28:59] &lt;jugg&gt;   and it looks like patches should be sent to the mailing list vs pull requests via github?</div>
 <div class="line">[Wednesday 26 May 2010] [09:29:29] &lt;sustrik&gt;    via mailing list, stating it&#8217;s submitted under MIT license</div>
 <div class="line">[Wednesday 26 May 2010] [09:29:50] &lt;sustrik&gt;    pieter: the people who join the wiki cannot edit pages</div>
@@ -2322,10 +2234,6 @@
 <div class="line">[Wednesday 26 May 2010] [17:10:31] &lt;sustrik&gt;    etc.</div>
 <div class="line">[Wednesday 26 May 2010] [17:21:16] &lt;mikko&gt;  would be cool to create such a system</div>
 <div class="line">[Wednesday 26 May 2010] [17:21:24] &lt;mikko&gt;  and use apache zookeeper for syncing</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id101"><span class="problematic" id="id102">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id103"><span class="problematic" id="id104">**</span></a>* on Wed May 26 20:48:39 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Thursday 27 May 2010] [02:42:43] &lt;umesh&gt;   Hi</div>
 <div class="line">[Thursday 27 May 2010] [02:42:53] &lt;umesh&gt;   I am newbie to zeromq</div>
 <div class="line">[Thursday 27 May 2010] [02:43:27] &lt;umesh&gt;   I have a simple question that ... how we can use the zeromq with the XML-RPC ?</div>
@@ -2683,10 +2591,6 @@
 <div class="line">[Thursday 27 May 2010] [17:29:06] &lt;cremes&gt;  mato: sounds better than what is there</div>
 <div class="line">[Thursday 27 May 2010] [17:29:17] &lt;cremes&gt;  as usual, code is the best documentation</div>
 <div class="line">[Thursday 27 May 2010] [17:29:42] &lt;mato&gt;    goodo</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id105"><span class="problematic" id="id106">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id107"><span class="problematic" id="id108">**</span></a>* on Thu May 27 18:48:41 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Thursday 27 May 2010] [18:49:01] &lt;CIA-17&gt;  pyzmq: 03Brian Granger 07master * r88a07bb 10/ (README.rst setup.cfg.template): Updating README.rst and setup.cfg.template. - <a class="reference external" href="http://bit.ly/9dVTj5">http://bit.ly/9dVTj5</a></div>
 <div class="line">[Thursday 27 May 2010] [18:59:46] &lt;CIA-17&gt;  zeromq2: 03Martin Lucina 07master * r5219e4c 10/ (doc/zmq.txt doc/zmq_setsockopt.txt doc/zmq_socket.txt): Clarify socket types in documentation, reinstate ZMQ_PAIR - <a class="reference external" href="http://bit.ly/9JerN2">http://bit.ly/9JerN2</a></div>
 <div class="line">[Thursday 27 May 2010] [18:59:47] &lt;CIA-17&gt;  zeromq2: 03Mikko Koppanen 07master * r8bd3f74 10/ builds/redhat/zeromq.spec : Import redhat packaging - <a class="reference external" href="http://bit.ly/drWjGK">http://bit.ly/drWjGK</a></div>
@@ -2699,105 +2603,97 @@
 <div class="line">[Thursday 27 May 2010] [19:39:31] &lt;CIA-17&gt;  zeromq2: Clarify zmq_bind/zmq_connect</div>
 <div class="line">[Thursday 27 May 2010] [19:39:31] &lt;CIA-17&gt;  zeromq2: Use the term &#8216;endpoint&#8217; correctly, and drop the nonsense about local/remote addresses which doesn&#8217;t clearly explain what is going on - <a class="reference external" href="http://bit.ly/d3A9wD">http://bit.ly/d3A9wD</a></div>
 <div class="line">[Thursday 27 May 2010] [20:56:35] &lt;jugg&gt;    are there any online logs of this channel?</div>
-<div class="line">[Friday 28 May 2010] [08:27:02] &lt;<a href="#id436"><span class="problematic" id="id437">Guest1_</span></a>&gt;   hi there, I saw the impressive throughput using tcp. On my mac I&#8217;m getting over 1million messages per sec, 1 byte. Sounds nuts. What is the difference in terms of architecture between zeromq and something like Rabbit MQ which can only do a few thousands?</div>
+<div class="line">[Friday 28 May 2010] [08:27:02] &lt;<a href="#id332"><span class="problematic" id="id333">Guest1_</span></a>&gt;   hi there, I saw the impressive throughput using tcp. On my mac I&#8217;m getting over 1million messages per sec, 1 byte. Sounds nuts. What is the difference in terms of architecture between zeromq and something like Rabbit MQ which can only do a few thousands?</div>
 <div class="line">[Friday 28 May 2010] [08:31:22] &lt;sjampoo&gt;   0MQ is lighter, not only the protocol (binary instead fo AMQP) but it also has less machinery overhead.</div>
 <div class="line">[Friday 28 May 2010] [08:31:38] &lt;sustrik&gt;   sjampoo is right</div>
 <div class="line">[Friday 28 May 2010] [08:32:00] &lt;sustrik&gt;   however, the actual algorithm that allows this thing is called &#8216;message batching&#8217;</div>
-<div class="line">[Friday 28 May 2010] [08:32:01] &lt;<a href="#id438"><span class="problematic" id="id439">Guest1_</span></a>&gt;   ah is it because the size of the payload is upfront</div>
+<div class="line">[Friday 28 May 2010] [08:32:01] &lt;<a href="#id334"><span class="problematic" id="id335">Guest1_</span></a>&gt;   ah is it because the size of the payload is upfront</div>
 <div class="line">[Friday 28 May 2010] [08:32:21] &lt;sustrik&gt;   it means that you send many messages using a single OS call</div>
-<div class="line">[Friday 28 May 2010] [08:32:24] &lt;<a href="#id440"><span class="problematic" id="id441">Guest1_</span></a>&gt;   message batching is like socket nodelay = false on sockets?</div>
+<div class="line">[Friday 28 May 2010] [08:32:24] &lt;<a href="#id336"><span class="problematic" id="id337">Guest1_</span></a>&gt;   message batching is like socket nodelay = false on sockets?</div>
 <div class="line">[Friday 28 May 2010] [08:32:32] &lt;sustrik&gt;   exactly</div>
-<div class="line">[Friday 28 May 2010] [08:32:39] &lt;<a href="#id442"><span class="problematic" id="id443">Guest1_</span></a>&gt;   so do the messages get released after a timeout?</div>
-<div class="line">[Friday 28 May 2010] [08:32:42] &lt;<a href="#id444"><span class="problematic" id="id445">Guest1_</span></a>&gt;   I think sockets is 200ms</div>
+<div class="line">[Friday 28 May 2010] [08:32:39] &lt;<a href="#id338"><span class="problematic" id="id339">Guest1_</span></a>&gt;   so do the messages get released after a timeout?</div>
+<div class="line">[Friday 28 May 2010] [08:32:42] &lt;<a href="#id340"><span class="problematic" id="id341">Guest1_</span></a>&gt;   I think sockets is 200ms</div>
 <div class="line">[Friday 28 May 2010] [08:32:58] &lt;sustrik&gt;   what exactly do you mean by released?</div>
-<div class="line">[Friday 28 May 2010] [08:33:21] &lt;<a href="#id446"><span class="problematic" id="id447">Guest1_</span></a>&gt;   if messages are batched, and a listener is waiting for a message</div>
+<div class="line">[Friday 28 May 2010] [08:33:21] &lt;<a href="#id342"><span class="problematic" id="id343">Guest1_</span></a>&gt;   if messages are batched, and a listener is waiting for a message</div>
 <div class="line">[Friday 28 May 2010] [08:33:28] &lt;sustrik&gt;   aha</div>
 <div class="line">[Friday 28 May 2010] [08:34:07] &lt;sustrik&gt;   it&#8217;s answered in faq</div>
 <div class="line">[Friday 28 May 2010] [08:34:11] &lt;sustrik&gt;   but here you go:</div>
 <div class="line">[Friday 28 May 2010] [08:34:12] &lt;sustrik&gt;   When sending messages in batches you have to wait for the last one to send the whole batch. This would make the latency of the first message in the batch much worse, wouldn&#8217;t it?</div>
 <div class="line">[Friday 28 May 2010] [08:34:12] &lt;sustrik&gt;   MQ batches messages in opportunistic manner. Rather than waiting for a predefined number of messages and/or predefined time interval, it sends all the messages available at the moment in one go. Imagine the network interface card is busy sending data. Once it is ready to send more data it asks MQ for new messages. MQ sends all the messages available at the moment. Does it harm the latency of the first message in the batch? No. The mes</div>
 <div class="line">[Friday 28 May 2010] [08:34:12] &lt;sustrik&gt;   sage won&#8217;t be sent earlier anyway because the networking card was busy. On the contrary, latency of subsequent messages will be improved because sending single batch to the card is faster then sending lot of small messages. On the other hand, if network card isn&#8217;t busy, the message is sent straight away without waiting for following messages. Thus it&#8217;ll have the best possible latency.</div>
-<div class="line">[Friday 28 May 2010] [08:35:04] &lt;<a href="#id448"><span class="problematic" id="id449">Guest1_</span></a>&gt;   ah makes sense!</div>
-<div class="line">[Friday 28 May 2010] [08:35:22] &lt;<a href="#id450"><span class="problematic" id="id451">Guest1_</span></a>&gt;   its true that sending a each message asap is slow</div>
-<div class="line">[Friday 28 May 2010] [08:35:32] &lt;<a href="#id452"><span class="problematic" id="id453">Guest1_</span></a>&gt;   batching makes sense</div>
-<div class="line">[Friday 28 May 2010] [08:35:43] &lt;<a href="#id454"><span class="problematic" id="id455">Guest1_</span></a>&gt;   nice</div>
+<div class="line">[Friday 28 May 2010] [08:35:04] &lt;<a href="#id344"><span class="problematic" id="id345">Guest1_</span></a>&gt;   ah makes sense!</div>
+<div class="line">[Friday 28 May 2010] [08:35:22] &lt;<a href="#id346"><span class="problematic" id="id347">Guest1_</span></a>&gt;   its true that sending a each message asap is slow</div>
+<div class="line">[Friday 28 May 2010] [08:35:32] &lt;<a href="#id348"><span class="problematic" id="id349">Guest1_</span></a>&gt;   batching makes sense</div>
+<div class="line">[Friday 28 May 2010] [08:35:43] &lt;<a href="#id350"><span class="problematic" id="id351">Guest1_</span></a>&gt;   nice</div>
 <div class="line">[Friday 28 May 2010] [08:35:47] &lt;sustrik&gt;   :)</div>
-<div class="line">[Friday 28 May 2010] [08:36:36] &lt;<a href="#id456"><span class="problematic" id="id457">Guest1_</span></a>&gt;   last question, I know you guys must be busy, do you use something like libevent? I quickly scanned the code and it looks like you may be using regular sockets</div>
-<div class="line">[Friday 28 May 2010] [08:37:12] &lt;<a href="#id458"><span class="problematic" id="id459">Guest1_</span></a>&gt;   I was then thinking you might be using a thread per socket connection</div>
+<div class="line">[Friday 28 May 2010] [08:36:36] &lt;<a href="#id352"><span class="problematic" id="id353">Guest1_</span></a>&gt;   last question, I know you guys must be busy, do you use something like libevent? I quickly scanned the code and it looks like you may be using regular sockets</div>
+<div class="line">[Friday 28 May 2010] [08:37:12] &lt;<a href="#id354"><span class="problematic" id="id355">Guest1_</span></a>&gt;   I was then thinking you might be using a thread per socket connection</div>
 <div class="line">[Friday 28 May 2010] [08:37:42] &lt;sustrik&gt;   no libevent, 0mq has almost zero dependencies to make it as portable as possible</div>
 <div class="line">[Friday 28 May 2010] [08:38:04] &lt;sustrik&gt;   as for the threading, there&#8217;s a thread pool</div>
 <div class="line">[Friday 28 May 2010] [08:38:17] &lt;sustrik&gt;   you can assign one thread to one connection</div>
 <div class="line">[Friday 28 May 2010] [08:38:42] &lt;sustrik&gt;   but in default case the connections are simply load balanced evenly within the thread pool</div>
-<div class="line">[Friday 28 May 2010] [08:39:05] &lt;<a href="#id460"><span class="problematic" id="id461">Guest1_</span></a>&gt;   were you able to benchmark number of possible connections, should I look in performance section?</div>
-<div class="line">[Friday 28 May 2010] [08:39:27] &lt;<a href="#id462"><span class="problematic" id="id463">Guest1_</span></a>&gt;   reason being I&#8217;m an architect/engineer for a mobile application</div>
-<div class="line">[Friday 28 May 2010] [08:39:42] &lt;<a href="#id464"><span class="problematic" id="id465">Guest1_</span></a>&gt;   we have an application that requires 30k concurrent connections</div>
-<div class="line">[Friday 28 May 2010] [08:39:56] &lt;<a href="#id466"><span class="problematic" id="id467">Guest1_</span></a>&gt;   with a throughput of 10k messages per second</div>
+<div class="line">[Friday 28 May 2010] [08:39:05] &lt;<a href="#id356"><span class="problematic" id="id357">Guest1_</span></a>&gt;   were you able to benchmark number of possible connections, should I look in performance section?</div>
+<div class="line">[Friday 28 May 2010] [08:39:27] &lt;<a href="#id358"><span class="problematic" id="id359">Guest1_</span></a>&gt;   reason being I&#8217;m an architect/engineer for a mobile application</div>
+<div class="line">[Friday 28 May 2010] [08:39:42] &lt;<a href="#id360"><span class="problematic" id="id361">Guest1_</span></a>&gt;   we have an application that requires 30k concurrent connections</div>
+<div class="line">[Friday 28 May 2010] [08:39:56] &lt;<a href="#id362"><span class="problematic" id="id363">Guest1_</span></a>&gt;   with a throughput of 10k messages per second</div>
 <div class="line">[Friday 28 May 2010] [08:40:06] &lt;sustrik&gt;   for each connection?</div>
-<div class="line">[Friday 28 May 2010] [08:40:18] &lt;<a href="#id468"><span class="problematic" id="id469">Guest1_</span></a>&gt;   not for each connection</div>
+<div class="line">[Friday 28 May 2010] [08:40:18] &lt;<a href="#id364"><span class="problematic" id="id365">Guest1_</span></a>&gt;   not for each connection</div>
 <div class="line">[Friday 28 May 2010] [08:40:24] &lt;sustrik&gt;   altogether</div>
 <div class="line">[Friday 28 May 2010] [08:40:26] &lt;sustrik&gt;   ok</div>
-<div class="line">[Friday 28 May 2010] [08:40:26] &lt;<a href="#id470"><span class="problematic" id="id471">Guest1_</span></a>&gt;   yes</div>
+<div class="line">[Friday 28 May 2010] [08:40:26] &lt;<a href="#id366"><span class="problematic" id="id367">Guest1_</span></a>&gt;   yes</div>
 <div class="line">[Friday 28 May 2010] [08:40:38] &lt;sustrik&gt;   it should work, but we haven&#8217;t really tested with 10k&#8217;s of connections</div>
 <div class="line">[Friday 28 May 2010] [08:40:57] &lt;sustrik&gt;   what&#8217;s done however, is:</div>
-<div class="line">[Friday 28 May 2010] [08:41:03] &lt;<a href="#id472"><span class="problematic" id="id473">Guest1_</span></a>&gt;   thanks for being honest, I will have a look at doing this</div>
+<div class="line">[Friday 28 May 2010] [08:41:03] &lt;<a href="#id368"><span class="problematic" id="id369">Guest1_</span></a>&gt;   thanks for being honest, I will have a look at doing this</div>
 <div class="line">[Friday 28 May 2010] [08:41:31] &lt;sustrik&gt;   1. underlying polling mechanism is epoll/devpoll/kqueue &#8211; if available on the platform</div>
-<div class="line">[Friday 28 May 2010] [08:41:44] &lt;<a href="#id474"><span class="problematic" id="id475">Guest1_</span></a>&gt;   at the moment we&#8217;re playing with libevent, but getting a max throughput of 5k messages per second (non batched) over 1Gbps network for 9k connections</div>
+<div class="line">[Friday 28 May 2010] [08:41:44] &lt;<a href="#id370"><span class="problematic" id="id371">Guest1_</span></a>&gt;   at the moment we&#8217;re playing with libevent, but getting a max throughput of 5k messages per second (non batched) over 1Gbps network for 9k connections</div>
 <div class="line">[Friday 28 May 2010] [08:42:01] &lt;sustrik&gt;   2. scheduling algorithms are O(1) with respect to numer of connections</div>
-<div class="line">[Friday 28 May 2010] [08:42:02] &lt;<a href="#id476"><span class="problematic" id="id477">Guest1_</span></a>&gt;   ah cool using kqueue if available</div>
-<div class="line">[Friday 28 May 2010] [08:42:07] &lt;<a href="#id478"><span class="problematic" id="id479">Guest1_</span></a>&gt;   nice</div>
-<div class="line">[Friday 28 May 2010] [08:42:56] &lt;<a href="#id480"><span class="problematic" id="id481">Guest1_</span></a>&gt;   are you guys the developers?</div>
+<div class="line">[Friday 28 May 2010] [08:42:02] &lt;<a href="#id372"><span class="problematic" id="id373">Guest1_</span></a>&gt;   ah cool using kqueue if available</div>
+<div class="line">[Friday 28 May 2010] [08:42:07] &lt;<a href="#id374"><span class="problematic" id="id375">Guest1_</span></a>&gt;   nice</div>
+<div class="line">[Friday 28 May 2010] [08:42:56] &lt;<a href="#id376"><span class="problematic" id="id377">Guest1_</span></a>&gt;   are you guys the developers?</div>
 <div class="line">[Friday 28 May 2010] [08:43:08] &lt;sustrik&gt;   yup</div>
-<div class="line">[Friday 28 May 2010] [08:43:21] &lt;<a href="#id482"><span class="problematic" id="id483">Guest1_</span></a>&gt;   neato</div>
-<div class="line">[Friday 28 May 2010] [08:44:01] &lt;sustrik&gt;   <a href="#id484"><span class="problematic" id="id485">Guest1_</span></a>: if you do the test with 30k connections it would be great if you can shared the results</div>
-<div class="line">[Friday 28 May 2010] [08:45:20] &lt;<a href="#id486"><span class="problematic" id="id487">Guest1_</span></a>&gt;   shall do</div>
-<div class="line">[Friday 28 May 2010] [08:45:41] &lt;<a href="#id488"><span class="problematic" id="id489">Guest1_</span></a>&gt;   do you have a roadmap btw?</div>
-<div class="line">[Friday 28 May 2010] [08:46:01] &lt;<a href="#id490"><span class="problematic" id="id491">Guest1_</span></a>&gt;   for example are you planning to go towards being an ESB?</div>
-<div class="line">[Friday 28 May 2010] [08:46:29] &lt;<a href="#id492"><span class="problematic" id="id493">Guest1_</span></a>&gt;   or being the best multi-platform &amp; language queuing platform?</div>
+<div class="line">[Friday 28 May 2010] [08:43:21] &lt;<a href="#id378"><span class="problematic" id="id379">Guest1_</span></a>&gt;   neato</div>
+<div class="line">[Friday 28 May 2010] [08:44:01] &lt;sustrik&gt;   <a href="#id380"><span class="problematic" id="id381">Guest1_</span></a>: if you do the test with 30k connections it would be great if you can shared the results</div>
+<div class="line">[Friday 28 May 2010] [08:45:20] &lt;<a href="#id382"><span class="problematic" id="id383">Guest1_</span></a>&gt;   shall do</div>
+<div class="line">[Friday 28 May 2010] [08:45:41] &lt;<a href="#id384"><span class="problematic" id="id385">Guest1_</span></a>&gt;   do you have a roadmap btw?</div>
+<div class="line">[Friday 28 May 2010] [08:46:01] &lt;<a href="#id386"><span class="problematic" id="id387">Guest1_</span></a>&gt;   for example are you planning to go towards being an ESB?</div>
+<div class="line">[Friday 28 May 2010] [08:46:29] &lt;<a href="#id388"><span class="problematic" id="id389">Guest1_</span></a>&gt;   or being the best multi-platform &amp; language queuing platform?</div>
 <div class="line">[Friday 28 May 2010] [08:46:48] &lt;sustrik&gt;   it can be used in ESB way</div>
 <div class="line">[Friday 28 May 2010] [08:47:18] &lt;sustrik&gt;   the functionality is somehow constrained when compared to enterprise solutions</div>
 <div class="line">[Friday 28 May 2010] [08:47:26] &lt;sustrik&gt;   but that&#8217;s by design</div>
-<div class="line">[Friday 28 May 2010] [08:47:40] &lt;<a href="#id494"><span class="problematic" id="id495">Guest1_</span></a>&gt;   just the queue management, orchestration and message mapping would be great</div>
+<div class="line">[Friday 28 May 2010] [08:47:40] &lt;<a href="#id390"><span class="problematic" id="id391">Guest1_</span></a>&gt;   just the queue management, orchestration and message mapping would be great</div>
 <div class="line">[Friday 28 May 2010] [08:47:45] &lt;sustrik&gt;   &#8220;get rid of bells and whistles&#8221;</div>
-<div class="line">[Friday 28 May 2010] [08:47:49] &lt;<a href="#id496"><span class="problematic" id="id497">Guest1_</span></a>&gt;   yep</div>
-<div class="line">[Friday 28 May 2010] [08:47:58] &lt;<a href="#id498"><span class="problematic" id="id499">Guest1_</span></a>&gt;   just a thought for you, if you were bored</div>
+<div class="line">[Friday 28 May 2010] [08:47:49] &lt;<a href="#id392"><span class="problematic" id="id393">Guest1_</span></a>&gt;   yep</div>
+<div class="line">[Friday 28 May 2010] [08:47:58] &lt;<a href="#id394"><span class="problematic" id="id395">Guest1_</span></a>&gt;   just a thought for you, if you were bored</div>
 <div class="line">[Friday 28 May 2010] [08:48:19] &lt;sustrik&gt;   queue management = monitoring number of messages in queues?</div>
-<div class="line">[Friday 28 May 2010] [08:48:28] &lt;<a href="#id500"><span class="problematic" id="id501">Guest1_</span></a>&gt;   yes</div>
-<div class="line">[Friday 28 May 2010] [08:48:37] &lt;<a href="#id502"><span class="problematic" id="id503">Guest1_</span></a>&gt;   and configuring such as security</div>
+<div class="line">[Friday 28 May 2010] [08:48:28] &lt;<a href="#id396"><span class="problematic" id="id397">Guest1_</span></a>&gt;   yes</div>
+<div class="line">[Friday 28 May 2010] [08:48:37] &lt;<a href="#id398"><span class="problematic" id="id399">Guest1_</span></a>&gt;   and configuring such as security</div>
 <div class="line">[Friday 28 May 2010] [08:49:07] &lt;sustrik&gt;   what about message mapping?</div>
-<div class="line">[Friday 28 May 2010] [08:49:08] &lt;<a href="#id504"><span class="problematic" id="id505">Guest1_</span></a>&gt;   also massive bonus if you built connectors to mobile phone stacks like J2ME and iPhone/ObjectiveC</div>
-<div class="line">[Friday 28 May 2010] [08:49:32] &lt;<a href="#id506"><span class="problematic" id="id507">Guest1_</span></a>&gt;   message mapping is taking the raw message such as JSON/XML and mapping it to another structure which is JSON/XML</div>
+<div class="line">[Friday 28 May 2010] [08:49:08] &lt;<a href="#id400"><span class="problematic" id="id401">Guest1_</span></a>&gt;   also massive bonus if you built connectors to mobile phone stacks like J2ME and iPhone/ObjectiveC</div>
+<div class="line">[Friday 28 May 2010] [08:49:32] &lt;<a href="#id402"><span class="problematic" id="id403">Guest1_</span></a>&gt;   message mapping is taking the raw message such as JSON/XML and mapping it to another structure which is JSON/XML</div>
 <div class="line">[Friday 28 May 2010] [08:49:45] &lt;sustrik&gt;   ah transformation</div>
-<div class="line">[Friday 28 May 2010] [08:49:48] &lt;<a href="#id508"><span class="problematic" id="id509">Guest1_</span></a>&gt;   aye</div>
+<div class="line">[Friday 28 May 2010] [08:49:48] &lt;<a href="#id404"><span class="problematic" id="id405">Guest1_</span></a>&gt;   aye</div>
 <div class="line">[Friday 28 May 2010] [08:49:49] &lt;sustrik&gt;   can be built on top</div>
-<div class="line">[Friday 28 May 2010] [08:49:52] &lt;<a href="#id510"><span class="problematic" id="id511">Guest1_</span></a>&gt;   yep</div>
+<div class="line">[Friday 28 May 2010] [08:49:52] &lt;<a href="#id406"><span class="problematic" id="id407">Guest1_</span></a>&gt;   yep</div>
 <div class="line">[Friday 28 May 2010] [08:49:54] &lt;sustrik&gt;   not my concern :)</div>
 <div class="line">[Friday 28 May 2010] [08:50:29] &lt;sustrik&gt;   i am not a java developer, but shouldn&#8217;t java binding work for j2me?</div>
-<div class="line">[Friday 28 May 2010] [08:50:55] &lt;<a href="#id512"><span class="problematic" id="id513">Guest1_</span></a>&gt;   no, not J2SE standard</div>
-<div class="line">[Friday 28 May 2010] [08:51:05] &lt;<a href="#id514"><span class="problematic" id="id515">Guest1_</span></a>&gt;   you have to use the J2ME socket library</div>
-<div class="line">[Friday 28 May 2010] [08:51:21] &lt;<a href="#id516"><span class="problematic" id="id517">Guest1_</span></a>&gt;   also, when you detect blackberry you have do a special switch</div>
+<div class="line">[Friday 28 May 2010] [08:50:55] &lt;<a href="#id408"><span class="problematic" id="id409">Guest1_</span></a>&gt;   no, not J2SE standard</div>
+<div class="line">[Friday 28 May 2010] [08:51:05] &lt;<a href="#id410"><span class="problematic" id="id411">Guest1_</span></a>&gt;   you have to use the J2ME socket library</div>
+<div class="line">[Friday 28 May 2010] [08:51:21] &lt;<a href="#id412"><span class="problematic" id="id413">Guest1_</span></a>&gt;   also, when you detect blackberry you have do a special switch</div>
 <div class="line">[Friday 28 May 2010] [08:51:22] &lt;sustrik&gt;   the java binding is just a wrapper on top of c library</div>
 <div class="line">[Friday 28 May 2010] [08:51:33] &lt;sustrik&gt;   all you need from JDK is JNI</div>
-<div class="line">[Friday 28 May 2010] [08:51:33] &lt;<a href="#id518"><span class="problematic" id="id519">Guest1_</span></a>&gt;   no C library access on J2ME phone</div>
-<div class="line">[Friday 28 May 2010] [08:51:43] &lt;<a href="#id520"><span class="problematic" id="id521">Guest1_</span></a>&gt;   you can&#8217;t access it, sandboxed</div>
+<div class="line">[Friday 28 May 2010] [08:51:33] &lt;<a href="#id414"><span class="problematic" id="id415">Guest1_</span></a>&gt;   no C library access on J2ME phone</div>
+<div class="line">[Friday 28 May 2010] [08:51:43] &lt;<a href="#id416"><span class="problematic" id="id417">Guest1_</span></a>&gt;   you can&#8217;t access it, sandboxed</div>
 <div class="line">[Friday 28 May 2010] [08:51:43] &lt;sustrik&gt;   aha, then no luck</div>
-<div class="line">[Friday 28 May 2010] [08:52:16] &lt;<a href="#id522"><span class="problematic" id="id523">Guest1_</span></a>&gt;   so we have ported to 13 Nokia models and Blackberry. Luckily 99% the same socket code</div>
-<div class="line">[Friday 28 May 2010] [08:52:24] &lt;<a href="#id524"><span class="problematic" id="id525">Guest1_</span></a>&gt;   just a suggestion for you</div>
-<div class="line">[Friday 28 May 2010] [08:52:36] &lt;<a href="#id526"><span class="problematic" id="id527">Guest1_</span></a>&gt;   I will leave you in peace, thanks for talking to me</div>
+<div class="line">[Friday 28 May 2010] [08:52:16] &lt;<a href="#id418"><span class="problematic" id="id419">Guest1_</span></a>&gt;   so we have ported to 13 Nokia models and Blackberry. Luckily 99% the same socket code</div>
+<div class="line">[Friday 28 May 2010] [08:52:24] &lt;<a href="#id420"><span class="problematic" id="id421">Guest1_</span></a>&gt;   just a suggestion for you</div>
+<div class="line">[Friday 28 May 2010] [08:52:36] &lt;<a href="#id422"><span class="problematic" id="id423">Guest1_</span></a>&gt;   I will leave you in peace, thanks for talking to me</div>
 <div class="line">[Friday 28 May 2010] [08:52:43] &lt;sustrik&gt;   no problem</div>
 <div class="line">[Friday 28 May 2010] [08:52:46] &lt;sustrik&gt;   bye</div>
-<div class="line">[Friday 28 May 2010] [08:52:49] &lt;<a href="#id528"><span class="problematic" id="id529">Guest1_</span></a>&gt;   cya</div>
+<div class="line">[Friday 28 May 2010] [08:52:49] &lt;<a href="#id424"><span class="problematic" id="id425">Guest1_</span></a>&gt;   cya</div>
 <div class="line">[Friday 28 May 2010] [16:59:17] &lt;truelyky1e&gt;    help</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id109"><span class="problematic" id="id110">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id111"><span class="problematic" id="id112">**</span></a>* on Fri May 28 18:31:31 2010</div>
-<div class="line"><br /></div>
 <div class="line">[Saturday 29 May 2010] [04:38:54] &lt;truelykyle&gt;  leave</div>
-<div class="line">[Saturday 29 May 2010] [18:11:25] &lt;<a href="#id530"><span class="problematic" id="id531">bert_</span></a>&gt;   hello</div>
-<div class="line">[Saturday 29 May 2010] [18:13:54] &lt;<a href="#id532"><span class="problematic" id="id533">bert_</span></a>&gt;   just trying to find some info about 0mq</div>
-<div class="line"><br /></div>
-<div class="line"><a href="#id113"><span class="problematic" id="id114">**</span></a>* Logfile started</div>
-<div class="line"><a href="#id115"><span class="problematic" id="id116">**</span></a>* on Sun May 30 07:43:06 2010</div>
-<div class="line"><br /></div>
+<div class="line">[Saturday 29 May 2010] [18:11:25] &lt;<a href="#id426"><span class="problematic" id="id427">bert_</span></a>&gt;   hello</div>
+<div class="line">[Saturday 29 May 2010] [18:13:54] &lt;<a href="#id428"><span class="problematic" id="id429">bert_</span></a>&gt;   just trying to find some info about 0mq</div>
 <div class="line">[Sunday 30 May 2010] [14:24:37] &lt;zedas&gt; sustrik: so i tried building my stuff on netbsd today.  looks like the kevent call complete chokes after a few runs of zmq_poll</div>
 <div class="line">[Sunday 30 May 2010] [14:24:50] &lt;sustrik&gt;   hi</div>
 <div class="line">[Sunday 30 May 2010] [14:24:58] &lt;sustrik&gt;   what happens exactly?</div>

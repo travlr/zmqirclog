@@ -31,5 +31,5 @@ Indices and tables
 
 .. note:: You Can Help
 
-    We have some dates and times missing in our log archive. If you have kept a log, please let us know so another
-    may bennefit from the wealth of info that's in them. Thanks!
+    We have some dates and times missing in our log archive. If you have kept a log, please let us know so that another
+    may benefit from the wealth of info that's in them. Thanks!
