@@ -9,7 +9,7 @@ int main(int argc, char *argv[])
     QCoreApplication a(argc, argv);
 
     if (argc != 3) {
-        fprintf(stderr, "Usage: %s <logDirPath> <repoDirPath>", argv[0]);
+        fprintf(stderr, "\nUsage: %s <logDirPath> <repoDirPath>\n\n", argv[0]);
         exit(1);
     }
     ZmqIrcLog zil;

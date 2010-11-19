@@ -37,7 +37,7 @@ private:
     void pushGhPagesToGitHub();
 
     // helper methods
-    QString extractMonthFromLine(const QString & line);
+    QString extractMonthFromLine(const QString & line, const QString & year);
     QString extractYearFromLine(const QString & line);
     void convertLogLinesToRstLines(QStringList & lines);
     void addHeaderToRstFile(QStringList & lines, const QString & fileName);
@@ -54,6 +54,7 @@ private:
     QString m_tmpHtmlDirPath;
 
     QStringList m_years;
+    QString m_year;
     QStringList m_alteredFileNames;
     QStringList m_newTocTitles;
     State m_state;

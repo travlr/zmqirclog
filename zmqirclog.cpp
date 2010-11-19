@@ -28,11 +28,13 @@ void ZmqIrcLog::run()
 {
     moveZmqLogToMonthly();
     moveMonthlyToRstSrc();
+    addTocToRstIndexFile();
     runSphinx();
     moveHtmlToTmp();
     checkoutGhPages();
     moveHtmlToGhPages();
-//    pushHtmlToGitHub();
+    pushGhPagesToGitHub();
+    qApp->exit(0);
 }
 
 void ZmqIrcLog::moveZmqLogToMonthly()
@@ -43,43 +45,50 @@ void ZmqIrcLog::moveZmqLogToMonthly()
     logFile.close();
     // rename the orig log file
     QDateTime dt = QDateTime::currentDateTime();
-    QString dtString = dt.toString();
-    logFile.rename(logFile.fileName() + "-" + dtString);
+    QString dtString = dt.toString().replace(" ", "_");
+    logFile.rename(m_logFilePath + "/zeromq" + "-" + dtString + ".log");
+
     QString comparativeMonth = QString();
     QString currentMonth = QString();
     QString year = QString();
+    QString month = QString();
 
     // get comparativeMonth
     foreach (QString line, lines) {
-        comparativeMonth = extractMonthFromLine(line);
-        if (!comparativeMonth.isNull())
+        comparativeMonth = extractMonthFromLine(line, extractYearFromLine(line));
+        if (!comparativeMonth.isNull()) {
+            qDebug() << "The comparative month is: " << comparativeMonth;
             break;
+        }
     }
 
     QStringList monthLines;
 
     // parse the lines
-//    QString year;
-//    QString month;
     foreach (QString line, lines) {
-        currentMonth = extractMonthFromLine(line);
         QString tmpYear = extractYearFromLine(line);
-        if (!tmpYear.isNull())
-            year = tmpYear;
-        if (currentMonth.isNull() || currentMonth == comparativeMonth)
+        currentMonth = extractMonthFromLine(line, extractYearFromLine(line));
+
+//        qDebug() << comparativeMonth << currentMonth << year;
+        if (tmpYear.isNull() || currentMonth.isNull() || currentMonth == comparativeMonth) {
             monthLines.append(line);
-        else if (!currentMonth.isNull() && currentMonth != comparativeMonth) {
-            currentMonth = comparativeMonth;
-            QString month = comparativeMonth;
+            continue;
+        }
+        year = tmpYear;
+        if (currentMonth != comparativeMonth) {
+            qDebug() << "Time to change a file. The comparative month is: " << comparativeMonth << " and the current month is: " << currentMonth;
+            month = comparativeMonth;
             // see if there is alread a file for this year-month
-            QString fileName = year + "-" + month;
-            m_alteredFileNames.append(fileName);
+            QString fileName = year + "-" + month + ".log";
+            m_alteredFileNames.append(fileName.split(".").first());
             QFile monthFile(m_zmqLogDirPath + "/" + fileName);
+
             if (!monthFile.exists()) {
                 // create a new month file
                 monthFile.open(QIODevice::WriteOnly);
                 monthFile.write(monthLines.join("\n").toLocal8Bit());
                 monthFile.close();
+                qDebug() << "Created a new zeromq log monthly file: " << monthFile.fileName();
             }
             else {
                 // append to existing month file
@@ -87,25 +96,28 @@ void ZmqIrcLog::moveZmqLogToMonthly()
                 QStringList oldLines = QString(monthFile.readAll()).split("\n");
                 monthFile.close();
                 monthFile.remove();
-                foreach (QString line, monthLines)
-                    oldLines.append(line);
+                oldLines += monthLines;
                 monthFile.open(QIODevice::WriteOnly);
                 monthFile.write(oldLines.join("\n").toLocal8Bit());
                 monthFile.close();
+                qDebug() << "Appended log lines to an already existing zeromq monthly log file: " << monthFile.fileName();
             }
+            comparativeMonth = currentMonth;
+            monthLines.clear();
         }
     }
     // we need to do this one more time for that last set of month lines
-    QString month = comparativeMonth;
+    month = comparativeMonth;
     // see if there is alread a file for this year-month
-    QString fileName = year + "-" + month;
-    m_alteredFileNames.append(fileName);
+    QString fileName = year + "-" + month + ".log";
+    m_alteredFileNames.append(fileName.split(".").first());
     QFile monthFile(m_zmqLogDirPath + "/" + fileName);
     if (!monthFile.exists()) {
         // create a new month file
         monthFile.open(QIODevice::WriteOnly);
         monthFile.write(monthLines.join("\n").toLocal8Bit());
         monthFile.close();
+        qDebug() << "Created a new zeromq log monthly file: " << monthFile.fileName();
     }
     else {
         // append to existing month file
@@ -118,6 +130,7 @@ void ZmqIrcLog::moveZmqLogToMonthly()
         monthFile.open(QIODevice::WriteOnly);
         monthFile.write(oldLines.join("\n").toLocal8Bit());
         monthFile.close();
+        qDebug() << "Appended log lines to an already existing zeromq monthly log file: " << monthFile.fileName();
     }
 }
 
@@ -129,30 +142,32 @@ void ZmqIrcLog::moveMonthlyToRstSrc()
     nameFilters << "*.rst";
     QDir::Filters filters = QDir::Files;
     rstFileNames = rstSrcDir.entryList(nameFilters, filters);
+    qDebug() << m_alteredFileNames;
+    qDebug() << rstFileNames;
     foreach (QString alteredFileName, m_alteredFileNames) {
-        if (!rstFileNames.contains(alteredFileName)) {
+        if (!rstFileNames.contains(alteredFileName + ".rst")) {
             // just add the new file
-            QFile monthlyLogFile(m_zmqLogDirPath + "/" + alteredFileName);
+            QFile monthlyLogFile(m_zmqLogDirPath + "/" + alteredFileName + ".log");
             monthlyLogFile.open(QIODevice::ReadOnly);
             QStringList lines = QString(monthlyLogFile.readAll()).split("\n");
             monthlyLogFile.close();
             convertLogLinesToRstLines(lines);
             addHeaderToRstFile(lines, alteredFileName);
-            QFile newRstFile(m_rstSrcDirPath + "/" + alteredFileName);
+            QFile newRstFile(m_rstSrcDirPath + "/" + alteredFileName + ".rst");
             newRstFile.open(QIODevice::WriteOnly);
             newRstFile.write(lines.join("\n").toLocal8Bit());
             newRstFile.close();
             // add new Rst file to toc list
-            m_newTocTitles.append(newRstFile.fileName().split("/").last().split(".").first());
+            m_newTocTitles.append(alteredFileName);
         }
         else {
             // append the new lines to the old rst file
-            QFile monthlyLogFile(m_zmqLogDirPath + "/" + alteredFileName);
+            QFile monthlyLogFile(m_zmqLogDirPath + "/" + alteredFileName + ".log");
             monthlyLogFile.open(QIODevice::ReadOnly);
             QStringList logLines = QString(monthlyLogFile.readAll()).split("\n");
             monthlyLogFile.close();
             convertLogLinesToRstLines(logLines);
-            QFile rstFile(m_rstSrcDirPath + "/" + alteredFileName);
+            QFile rstFile(m_rstSrcDirPath + "/" + alteredFileName + ".rst");
             QStringList rstLines = QString(rstFile.readAll()).split("\n");
             rstLines += logLines;
             rstFile.remove();
@@ -195,7 +210,7 @@ void ZmqIrcLog::addTocToRstIndexFile()
             newLines.append(line);
             state = INDICES;
         }
-        else if ((state == MAXDEPTH_PLUS_ONE) && (!extractMonthFromLine(line).isNull()))
+        else if ((state == MAXDEPTH_PLUS_ONE) && (!extractMonthFromLine(line, extractYearFromLine(line)).isNull()))
             state = TOC;
         else if ((state == TOC) && (line == QString(""))) {
             foreach (QString tocTitle, m_newTocTitles)
@@ -215,12 +230,20 @@ void ZmqIrcLog::addTocToRstIndexFile()
 
 void ZmqIrcLog::runSphinx()
 {
+    qDebug() << "Starting runSphinx()..";
     QProcess* proc = new QProcess();
+//    connect(proc, SIGNAL(readyReadStandardError()), this, SLOT(slotReadStdErr()));
+//    connect(proc, SIGNAL(readyReadStandardOutput()), this, SLOT(slotReadStdOut()));
     QString prog("make");
     QStringList args(QString("html"));
     proc->setWorkingDirectory(m_rstDirPath);
     proc->start(prog, args);
     proc->waitForFinished(-1);
+
+//    disconnect(proc, SIGNAL(readyReadStandardError()), this, SLOT(slotReadStdErr()));
+//    disconnect(proc, SIGNAL(readyReadStandardOutput()), this, SLOT(slotReadStdOut()));
+//    delete proc;
+//    proc = 0;
 
     qDebug() << "runSphinx() completed..";
 }
@@ -233,8 +256,7 @@ void ZmqIrcLog::moveHtmlToTmp()
         fs.cleanTheDirectory(m_tmpHtmlDirPath);
     else
         tmpHtmlDir.mkpath(m_tmpHtmlDirPath);
-    fs.moveDirectoryContents(m_rstHtmlDirPath, m_tmpHtmlDirPath);
-
+    fs.copyDirectoryContents(m_rstHtmlDirPath, m_tmpHtmlDirPath);
     qDebug() << "moveHtmlToTmp() completed..";
 }
 
@@ -244,8 +266,8 @@ void ZmqIrcLog::checkoutGhPages()
     // first create the git instance
     m_git = new travlr::Git(m_repoDirPath, this);
     m_gitProc = m_git->process();
-    connect(m_gitProc, SIGNAL(readyReadStandardError()), this, SLOT(slotReadStdErr()));
-    connect(m_gitProc, SIGNAL(readyReadStandardOutput()), this, SLOT(slotReadStdOut()));
+//    connect(m_gitProc, SIGNAL(readyReadStandardError()), this, SLOT(slotReadStdErr()));
+//    connect(m_gitProc, SIGNAL(readyReadStandardOutput()), this, SLOT(slotReadStdOut()));
 
     // clean up the repo by pushing master
     args << ".";
@@ -303,12 +325,12 @@ void ZmqIrcLog::pushGhPagesToGitHub()
 //
 
 /// returns the month contained in the line or NULL if nonexistent.
-QString ZmqIrcLog::extractMonthFromLine(const QString & line)
+QString ZmqIrcLog::extractMonthFromLine(const QString & line, const QString & year)
 {
     QString month;
     for (int i=1;i<13;++i) {
         month = QDate::longMonthName(i);
-        if (line.contains(month))
+        if (line.contains(month + " " + year))
             return month;
     }
     return QString();

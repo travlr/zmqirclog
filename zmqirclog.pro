@@ -30,3 +30,5 @@ LIBS += -L/$$(HOME)/lib -ltravlrsutils
 OTHER_FILES += \
     rst/source/conf.py \
     rst/source/index.rst
+
+INSTALLS += target
