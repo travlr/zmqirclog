@@ -13,10 +13,9 @@ class ZmqIrcLog : public QObject
 
 public:
     explicit ZmqIrcLog(QObject *parent = 0);
+
+public slots:
     void run();
-
-
-private slots:
 
 private:
     // types
