@@ -72,7 +72,10 @@ void ZmqIrcLog::moveZmqLogToMonthly()
                 || (line.contains("] Created"))
                 || (line.contains("] Mode"))
                 || (line.contains("] Part"))
-                || (line.contains("] Nick")))
+                || (line.contains("] Nick"))
+                || (line.contains("*** Logfile"))
+                || (line.contains("*** on"))
+                || (line == QString("")))
             continue;
         QString tmpYear = extractYearFromLine(line);
         currentMonth = extractMonthFromLine(line, extractYearFromLine(line));
