@@ -256,7 +256,11 @@ void ZmqIrcLog::checkoutGhPages()
 void ZmqIrcLog::moveHtmlToGhPages()
 {
     travlr::FileSystem fs;
-    fs.cleanTheDirectory(m_repoDirPath);
+    QString readMeFilePath(m_repoDirPath + "/README.rst");
+    QString gitFilePath(m_repoDirPath + "/.git");
+    QStringList exceptioins;
+    exceptioins << readMeFilePath << gitFilePath;
+    fs.cleanTheDirectory(m_repoDirPath, exceptioins);
     fs.moveDirectoryContents(m_tmpHtmlDirPath, m_repoDirPath);
 }
 
