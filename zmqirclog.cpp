@@ -255,7 +255,7 @@ void ZmqIrcLog::runSphinx()
     m_proc->waitForFinished(-1);
 
     if (m_proc) {
-        disconnect(m_proc, SIGNAL(readyRead()), this, SLOT(slotReadStdErrOut()));
+        disconnect(m_proc, SIGNAL(readyRead()), this, SLOT(slotReadStdErrAndOut()));
         delete m_proc;
         m_proc = 0;
     }
