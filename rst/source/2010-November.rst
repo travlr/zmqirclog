@@ -5699,3 +5699,79 @@
 | [Saturday 20 November 2010] [13:27:15] <cremes>	bfrog: fyi, the FD & EVENTS opts were added *specifically* to allow for 0mq socket integration with other event loops
 | [Saturday 20 November 2010] [13:27:29] <cremes>	if you find a case where they are inadequate, please speak up
 | [Saturday 20 November 2010] [14:26:36] <rgl>	hi
+| [Sunday 21 November 2010] [05:14:35] <mikko>	sustrik: http://build.valokuva.org/job/ZeroMQ2-core-master_SunStudio/70/console
+| [Sunday 21 November 2010] [05:14:45] <mikko>	this time with sun studio
+| [Sunday 21 November 2010] [05:14:56] <sustrik>	mikko: let me see
+| [Sunday 21 November 2010] [05:15:55] <sustrik>	still the same bug
+| [Sunday 21 November 2010] [05:16:43] <sustrik>	dhammika seems to understand what's going on
+| [Sunday 21 November 2010] [05:16:51] 	 * sustrik is struggling to make sense of it
+| [Sunday 21 November 2010] [05:39:10] <mikko>	sustrik: it's a lot harder to reproduce with debug build
+| [Sunday 21 November 2010] [05:51:10] <sustrik>	ack
+| [Sunday 21 November 2010] [05:58:33] <mikko>	https://gist.github.com/6d2c9eb0b3efc2afd9a8
+| [Sunday 21 November 2010] [05:58:38] <mikko>	backtrace with symbols
+| [Sunday 21 November 2010] [05:59:20] <mikko>	the crash is in #0  zmq::object_t::get_tid (this=0xb1c088c8) at object.cpp:47
+| [Sunday 21 November 2010] [06:09:32] <sustrik>	mikko: that's maint?
+| [Sunday 21 November 2010] [06:10:02] <sustrik>	nope, it's master
+| [Sunday 21 November 2010] [06:11:24] <mikko>	master
+| [Sunday 21 November 2010] [06:11:52] <mikko>	ran while [ 1 = 1 ]; do ./test_shutdown_stress ; echo "x"; done until it crashed
+| [Sunday 21 November 2010] [06:13:18] <sustrik>	hm, looks like some kind of stack overwrite
+| [Sunday 21 November 2010] [06:13:35] <sustrik>	the error actually emerges in the test program, not 0mq core...
+| [Sunday 21 November 2010] [06:14:12] <sustrik>	strange
+| [Sunday 21 November 2010] [06:17:29] <sustrik>	hm, cannot reproduce on my box
+| [Sunday 21 November 2010] [06:20:04] <mikko>	takes anything between 10 to 100 runs here
+| [Sunday 21 November 2010] [06:20:08] <mikko>	until it crahes
+| [Sunday 21 November 2010] [06:29:17] <sustrik>	on my box it runs ~30 times
+| [Sunday 21 November 2010] [06:29:27] <sustrik>	then the test slows down considerably
+| [Sunday 21 November 2010] [06:29:45] <sustrik>	(too much open sockets?)
+| [Sunday 21 November 2010] [06:29:52] <sustrik>	anyway, it doesn't fail
+| [Sunday 21 November 2010] [06:35:41] <sustrik>	mikko: can you possibly check the patch proposed in my last email?
+| [Sunday 21 November 2010] [06:36:32] <sustrik>	it's probably a different problem, but there's a chance that it's actually a different manifestation of the same bug...
+| [Sunday 21 November 2010] [06:37:34] <sustrik>	just add the two lines into zmq_engine.cpp
+| [Sunday 21 November 2010] [06:42:24] <mikko>	line 155?
+| [Sunday 21 November 2010] [06:48:10] <sustrik>	mikko: yes
+| [Sunday 21 November 2010] [06:49:25] <mikko>	*** glibc detected *** /tmp/zeromq2/tests/.libs/lt-test_shutdown_stress: corrupted double-linked list: 0xb0b058c8 ***
+| [Sunday 21 November 2010] [06:49:30] <mikko>	after ~50 runs
+| [Sunday 21 November 2010] [06:50:34] <mikko>	https://gist.github.com/0707e21ec88f54822fd3
+| [Sunday 21 November 2010] [06:50:35] <mikko>	bt
+| [Sunday 21 November 2010] [06:50:45] <mikko>	let me do thread apply all bt
+| [Sunday 21 November 2010] [06:51:16] <mikko>	https://gist.github.com/a87f11557fee4c7617aa
+| [Sunday 21 November 2010] [06:52:50] <sustrik>	hm, probably the same problem
+| [Sunday 21 November 2010] [07:21:22] <rgl>	are there any plans to properly support a 64 bit build on windows?
+| [Sunday 21 November 2010] [07:26:00] <Guthur>	rgl: what happens with a 64bit build?
+| [Sunday 21 November 2010] [07:26:13] <Guthur>	I tried it briefly and it seemed ok?
+| [Sunday 21 November 2010] [07:26:55] <rgl>	Guthur, windows uses a different model for 64-bit than common linuxes; eg. on windows a long is not 64 bit.
+| [Sunday 21 November 2010] [07:27:53] <rgl>	Guthur, which means that some code on ZMQ does not correctly build (well, it build, but with warnings that do not seem ok to ignore)
+| [Sunday 21 November 2010] [07:28:28] <Guthur>	ok, seems fair enough, I didn't really test or watch thoroughly the build
+| [Sunday 21 November 2010] [07:29:04] <mikko>	rgl: are you building with mingw or msvc?
+| [Sunday 21 November 2010] [07:29:07] <rgl>	the C data model on windows is LLP64 but on linux its LP64
+| [Sunday 21 November 2010] [07:29:33] <rgl>	mikko, it does not matter. mingw uses the normal windows data model.
+| [Sunday 21 November 2010] [07:29:44] <mikko>	rgl: it seems to be a bit different
+| [Sunday 21 November 2010] [07:29:45] <rgl>	mikko, but, I'm using msvc *G*
+| [Sunday 21 November 2010] [07:29:54] <mikko>	__int64_t is defined as long long on mingw32
+| [Sunday 21 November 2010] [07:30:34] <rgl>	lemme put the msvc compiler logs somewhere.
+| [Sunday 21 November 2010] [07:30:38] <mikko>	rgl: i thought zeromq uses fixed size ints everywhere
+| [Sunday 21 November 2010] [07:31:17] <Guthur>	I know in some of my builds i see warnings about casting size_t to unsigned int
+| [Sunday 21 November 2010] [07:31:45] <Guthur>	not directly related, more in reply to the fixed size ints
+| [Sunday 21 November 2010] [07:32:19] <mikko>	Guthur: is that zeromq core or binding code?
+| [Sunday 21 November 2010] [07:32:27] <mikko>	i think i need to do MSVC build at some point
+| [Sunday 21 November 2010] [07:32:28] <Guthur>	mikko, core
+| [Sunday 21 November 2010] [07:34:07] <rgl>	http://pastie.org/pastes/1315022/text
+| [Sunday 21 November 2010] [07:35:12] <mikko>	rgl: can you try the same build with master?
+| [Sunday 21 November 2010] [07:35:33] <rgl>	I can. I just have to get the repo.
+| [Sunday 21 November 2010] [07:40:44] <rgl>	its more-or-less the same http://pastie.org/pastes/1315029/text
+| [Sunday 21 November 2010] [07:51:06] <Guthur>	lot's of size_t conversions
+| [Sunday 21 November 2010] [07:51:35] <Guthur>	size_t is very troublesome, especially for bindings
+| [Sunday 21 November 2010] [08:00:49] <rgl>	can we safely ignore them?
+| [Sunday 21 November 2010] [08:21:47] <mikko>	size_t to int isn't really a safe conversion
+| [Sunday 21 November 2010] [08:22:36] <mikko>	it would require bounds checking
+| [Sunday 21 November 2010] [08:23:23] <mikko>	not sure why the array index isn't size_t there
+| [Sunday 21 November 2010] [08:24:14] <mikko>	most of those looks pretty safe casts
+| [Sunday 21 November 2010] [08:37:17] <rgl>	humm tried to run remote_thr.exe tcp://127.0.0.1:56789 3000 1234567 and it completly spiked the memory usage to 4G *G*
+| [Sunday 21 November 2010] [08:37:48] <rgl>	is this supposed to happen when no watermark is set on the socket?
+| [Sunday 21 November 2010] [10:46:26] <Guthur>	Is size_t really a requirement?
+| [Sunday 21 November 2010] [10:46:55] <Guthur>	It's very bothersome for bindings like said, because it is hard to be sure what size it really is
+| [Sunday 21 November 2010] [10:47:20] <Guthur>	primitive or explicit types are easier
+| [Sunday 21 November 2010] [10:57:41] <sustrik>	Guthur: checked POSIX SO_SNDBUF which is kind of similar
+| [Sunday 21 November 2010] [10:57:57] <sustrik>	and it is indeed "int" rather than "size_t"
+| [Sunday 21 November 2010] [10:58:11] <sustrik>	on the other hand, int is not a fixed-size interger either
+| [Sunday 21 November 2010] [11:42:43] <sustrik>	rgl: yes, it's supposed to happen
