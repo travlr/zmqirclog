@@ -21,14 +21,14 @@ SOURCES += main.cpp \
 HEADERS += \
     zmqirclog.h
 
-target.path = $$(HOME)/bin
+#target.path = $$(HOME)/bin
 
 INCLUDEPATH += $$(HOME)/include
 
 LIBS += -L/$$(HOME)/lib -ltravlrsutils
 
-OTHER_FILES += \
-    rst/source/conf.py \
-    rst/source/index.rst
+#OTHER_FILES += \
+#    rst/source/conf.py \
+#    rst/source/index.rst
 
-INSTALLS += target
+#INSTALLS += target

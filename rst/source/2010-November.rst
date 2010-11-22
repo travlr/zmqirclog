@@ -5775,3 +5775,97 @@
 | [Sunday 21 November 2010] [10:57:57] <sustrik>	and it is indeed "int" rather than "size_t"
 | [Sunday 21 November 2010] [10:58:11] <sustrik>	on the other hand, int is not a fixed-size interger either
 | [Sunday 21 November 2010] [11:42:43] <sustrik>	rgl: yes, it's supposed to happen
+| [Sunday 21 November 2010] [12:45:16] <Guthur>	sustrik, I have a bad feeling my attempts at cross platform (x86/-64) support with clrzmq2 are possibly not going to stand up, needs more testing really 
+| [Sunday 21 November 2010] [13:04:15] <sustrik>	Guthur: sure, that's how it goes with cross-platform support
+| [Sunday 21 November 2010] [13:04:34] <sustrik>	in most cases you cannot do all the work yourself
+| [Sunday 21 November 2010] [13:04:58] <sustrik>	you have to rely on people who actually own and understand the OSes in question
+| [Sunday 21 November 2010] [13:05:50] <Guthur>	I'll certainly be keeping an eye out for feedback
+| [Sunday 21 November 2010] [13:27:02] <rgl>	Guthur, I have one request. Maybe it does not make much sense, but It would be great to choose (at runtime) the version of libzmq do use, say, if the os is 32-bit. use the 32-version, otherwise use the 64 bit version.
+| [Sunday 21 November 2010] [13:28:20] <Guthur>	well as far as clrzmq2 goes, I have used preprocessor directives
+| [Sunday 21 November 2010] [13:29:01] <Guthur>	It would not be impossible to do it at runtime, not sure of benefits though
+| [Sunday 21 November 2010] [13:31:18] <rgl>	just more convinient. you just need to drop both versions of the native library and the whole application will work on either 32 or 64 bit.
+| [Sunday 21 November 2010] [13:38:13] <Guthur>	Might as well drop both clrzmq.dll as well then though
+| [Sunday 21 November 2010] [13:38:45] <Guthur>	and then have the application decide
+| [Sunday 21 November 2010] [13:39:29] <Guthur>	that's not generally the approach of Linux, you tend to have either discrete packages or build from source
+| [Sunday 21 November 2010] [13:40:41] <Guthur>	rgl: Reasonable enough thought, just in imho it's something that should be delegated to the application provider
+| [Sunday 21 November 2010] [13:41:50] <rgl>	ah yes. indeed. it could be delegated to the app. point taken :D
+| [Sunday 21 November 2010] [15:33:20] <mikko>	mato: is there a reason why on HP UX the CPPFLAGS are overriden completely?
+| [Sunday 21 November 2010] [15:33:22] <mikko>	CPPFLAGS="-D_POSIX_C_SOURCE=200112L"
+| [Sunday 21 November 2010] [16:57:25] Notice	-ChanServ- [#qt] Here are the rules for #qt: (1) Don't just join, ask, and quit - stay around and answer questions yourself! (2) Be patient, people may not see your question right away.
+| [Sunday 21 November 2010] [21:58:44] <Steve-o>	that was Linux to FreeBSD though, I'm just testing Linux to Linux to see if the graph changes
+| [Sunday 21 November 2010] [22:02:28] <Steve-o>	the goal is to find out if anything special is causing Windows performance to be ass
+| [Sunday 21 November 2010] [22:06:57] <doug>	what are you measuring?
+| [Sunday 21 November 2010] [22:07:20] <doug>	and what makes you think it might be in your critical path?
+| [Sunday 21 November 2010] [22:08:18] <Steve-o>	I send a packet from one host to another, which then sends it back, I'm measuring the latency from the first second to the last receive
+| [Sunday 21 November 2010] [22:08:51] <Steve-o>	I'm trying to rule out all controllable issues that can affect the critical path
+| [Sunday 21 November 2010] [22:10:20] <Steve-o>	performance testing is always overly subject to errors in the testing method and framework
+| [Sunday 21 November 2010] [22:11:35] <Steve-o>	you always get developers complaining they cannot achieve reported performance figures, etc
+| [Monday 22 November 2010] [03:13:23] <sustrik>	mikko: yes
+| [Monday 22 November 2010] [03:13:36] <sustrik>	HP-UX is broken in this respect
+| [Monday 22 November 2010] [03:14:52] <sustrik>	IIRC
+| [Monday 22 November 2010] [03:14:56] <sustrik>	mato may know more
+| [Monday 22 November 2010] [04:10:17] <demmonoid_>	Hi. I'm trying to use Erlang 0mq plugin on Mac OS X, but the build fails. It seems that the C driver needs to be built as a bundle rather than a dynamic library.
+| [Monday 22 November 2010] [04:10:37] <demmonoid_>	The problem is that all 0mq libraries are built as dynamic libraries as well
+| [Monday 22 November 2010] [04:10:49] <demmonoid_>	Is there a way to work this out?
+| [Monday 22 November 2010] [04:16:06] <sustrik>	demmonoid_: there are some OSX related issues in the bug tracker
+| [Monday 22 November 2010] [04:16:11] <sustrik>	have a look there
+| [Monday 22 November 2010] [04:20:35] <demmonoid_>	sustrik, yes, I saw them but they are like 3 months old and with no response...
+| [Monday 22 November 2010] [04:21:11] <demmonoid_>	To be more exact, one of them is still with no response, just that I described here...
+| [Monday 22 November 2010] [04:22:04] <sustrik>	well, you can try to fix the problem yourself then
+| [Monday 22 November 2010] [04:26:34] <demmonoid_>	That's what I've tried to do but it looks like 0mq doesn't work when it's libraries are just build with -bundle instead of -dynamiclib :)
+| [Monday 22 November 2010] [04:26:53] <demmonoid_>	*its libraries
+| [Monday 22 November 2010] [04:32:48] <mikko>	sustrik: but that deletes the -g -O2 flags as well
+| [Monday 22 November 2010] [04:33:50] <sustrik>	mikko: probably a bug
+| [Monday 22 November 2010] [04:34:08] <sustrik>	i have no idea about how the build system works though
+| [Monday 22 November 2010] [04:35:36] <sustrik>	demmonoid_: what exactly is the problem, does if fail? what's the error?
+| [Monday 22 November 2010] [04:35:52] <mikko>	sustrik: i got a couple patches coming soonish
+| [Monday 22 November 2010] [04:36:00] <sustrik>	mikko: ok
+| [Monday 22 November 2010] [04:36:03] <mikko>	sustrik: is there a reason why i cant send pull requests in github?
+| [Monday 22 November 2010] [04:36:10] <mikko>	would make the development flow a bit more fluent
+| [Monday 22 November 2010] [04:36:20] <sustrik>	matter of process
+| [Monday 22 November 2010] [04:36:32] <sustrik>	we should do it in a well defined way
+| [Monday 22 November 2010] [04:36:47] <sustrik>	pull requests are problematic for people on exotic platforms
+| [Monday 22 November 2010] [04:37:05] <mikko>	why is that?
+| [Monday 22 November 2010] [04:37:08] <sustrik>	NO GIT
+| [Monday 22 November 2010] [04:37:11] <mikko>	if they come through github
+| [Monday 22 November 2010] [04:37:12] <sustrik>	no git
+| [Monday 22 November 2010] [04:37:23] <sustrik>	you need git client though
+| [Monday 22 November 2010] [04:37:34] <mikko>	you need a git client to format-patch as well
+| [Monday 22 November 2010] [04:37:48] <sustrik>	all you need is diff
+| [Monday 22 November 2010] [04:38:01] <sustrik>	patches don't have to be strictly formatted
+| [Monday 22 November 2010] [04:38:13] <sustrik>	just and diff and a sign-off
+| [Monday 22 November 2010] [04:43:59] <demmonoid_>	sustrik, it gives the error "i686-apple-darwin10-g++-4.2.1: -compatibility_version only allowed with -dynamiclib" upon build
+| [Monday 22 November 2010] [04:46:40] <demmonoid_>	I removed this flag from libtool, as well as install_name which is also incompatible with -bundle
+| [Monday 22 November 2010] [04:46:49] <demmonoid_>	Will see if this works
+| [Monday 22 November 2010] [04:46:59] <mikko>	demmonoid_: osx build for erlzmq is broken?
+| [Monday 22 November 2010] [04:47:22] <demmonoid_>	Yes, it is
+| [Monday 22 November 2010] [04:47:47] <demmonoid_>	Looks like it's broken for OS X for a long time...
+| [Monday 22 November 2010] [04:48:03] <demmonoid_>	At least for Snow Leopard
+| [Monday 22 November 2010] [05:02:07] <demmonoid_>	So, I rebuilt 0mq with -bundle, edited erlzmq's configs so it will compile with -bundle instead of -dynamiclib, but I still get the same error: "i686-apple-darwin10-g++-4.2.1: -bundle not allowed with -dynamiclib"
+| [Monday 22 November 2010] [05:02:32] <demmonoid_>	It appears that zeromq libs were built with -dynamiclib anyway
+| [Monday 22 November 2010] [05:03:22] <mikko>	sustrik: i added --enable-debug flag to builds
+| [Monday 22 November 2010] [05:03:32] <mikko>	sustrik: do you think something like this is useful?
+| [Monday 22 November 2010] [05:06:50] <mikko>	as currently it's not possible to really set debug flags
+| [Monday 22 November 2010] [05:07:00] <mikko>	-O2 will be in the build line in any case
+| [Monday 22 November 2010] [05:07:23] <sustrik>	what I do is:
+| [Monday 22 November 2010] [05:07:32] <sustrik>	export CXXFLAGS="-g -O0"
+| [Monday 22 November 2010] [05:07:46] <sustrik>	./configure --disable-shared
+| [Monday 22 November 2010] [05:07:59] <mikko>	you need to do CPPFLAGS and CFLAGS as well, if building with pgm
+| [Monday 22 November 2010] [05:08:05] <sustrik>	right
+| [Monday 22 November 2010] [05:08:11] <mikko>	for normal user maybe ./configure --enable-debug might be easier
+| [Monday 22 November 2010] [05:08:30] <sustrik>	right, you want to merge all three into s single flag
+| [Monday 22 November 2010] [05:08:32] <sustrik>	1. -g
+| [Monday 22 November 2010] [05:08:35] <sustrik>	2. -O0
+| [Monday 22 November 2010] [05:08:42] <sustrik>	3. --disable-shared
+| [Monday 22 November 2010] [05:09:22] <mikko>	i will look into adding --disable-shared as well
+| [Monday 22 November 2010] [05:09:29] <sustrik>	it helps
+| [Monday 22 November 2010] [05:09:38] <mikko>	the problem is that i am not 100% convinced if this is really needed
+| [Monday 22 November 2010] [05:09:51] <mikko>	as for example with sun studio the debug flag is -g0
+| [Monday 22 November 2010] [05:09:51] <sustrik>	as if it's not set, the tests are built with a different name
+| [Monday 22 November 2010] [05:10:04] <sustrik>	and then there's a wrapper script to launch them
+| [Monday 22 November 2010] [05:10:16] <sustrik>	thus launching it within bebugger
+| [Monday 22 November 2010] [05:10:22] <sustrik>	actually debugs the shell
+| [Monday 22 November 2010] [05:10:28] <sustrik>	not the test program
+| [Monday 22 November 2010] [05:10:42] <sustrik>	mikko: i would appreciate it
+| [Monday 22 November 2010] [05:10:57] <sustrik>	it saves some time when debuging
+| [Monday 22 November 2010] [05:12:51] <mikko>	sustrik: ok, will add
