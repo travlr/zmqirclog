@@ -5971,6 +5971,45 @@
 <div class="line">[Tuesday 23 November 2010] [02:50:53] &lt;sustrik&gt;       and close the ticket</div>
 <div class="line">[Tuesday 23 November 2010] [02:51:00] &lt;Guthur&gt;        ack</div>
 <div class="line">[Tuesday 23 November 2010] [02:51:22] &lt;travlr&gt;        martin, the assert was somehow my mistake.. sorry for disturbing you for nothing.. it seems</div>
+<div class="line">[Tuesday 23 November 2010] [02:55:03] &lt;sustrik&gt;       ok</div>
+<div class="line">[Tuesday 23 November 2010] [04:17:43] &lt;mikko&gt; good morning</div>
+<div class="line">[Tuesday 23 November 2010] [04:48:12] &lt;sustrik&gt;       morning</div>
+<div class="line">[Tuesday 23 November 2010] [06:38:56] &lt;migmir&gt;        hello everyone</div>
+<div class="line">[Tuesday 23 November 2010] [09:45:31] &lt;Guthur&gt;        I want to request a limited stream of data, what would be decent strategy?</div>
+<div class="line">[Tuesday 23 November 2010] [09:46:21] &lt;Guthur&gt;        The scenario is that multiple client will come along and request a stream of data for a period of time then stop</div>
+<div class="line">[Tuesday 23 November 2010] [09:46:56] &lt;Guthur&gt;        sorry stream is not really the right description</div>
+<div class="line">[Tuesday 23 November 2010] [09:47:13] &lt;Guthur&gt;        it will be a set of updates at non-deterministic intervals</div>
+<div class="line">[Tuesday 23 November 2010] [09:51:38] &lt;lantins&gt;       REQ/REP? guess it would depend on what kind of interval your looking at</div>
+<div class="line">[Tuesday 23 November 2010] [09:55:58] &lt;sustrik&gt;       Guthur: ZMQ_SUBSCRIBE/ZMQ_UNSUBSCRIBE</div>
+<div class="line">[Tuesday 23 November 2010] [09:56:26] &lt;sustrik&gt;       or simply close the socket when you don&#8217;t want to receive more updates</div>
+<div class="line">[Tuesday 23 November 2010] [09:59:12] &lt;CIA-20&gt;        jzmq: 03Gonzalo Diethelm 07master * r431fb23 10/ src/org/zeromq/ZMQ.java : Made Poller constants POLL{IN,OUT,ERR} into public. - <a class="reference external" href="http://bit.ly/eRnY5q">http://bit.ly/eRnY5q</a></div>
+<div class="line">[Tuesday 23 November 2010] [10:07:07] &lt;Guthur&gt;        I will investigate those options, really need to prototype I suppose</div>
+<div class="line">[Tuesday 23 November 2010] [12:28:03] &lt;Guthur&gt;        is there a nice way to make the last message on a publisher persistent</div>
+<div class="line">[Tuesday 23 November 2010] [12:28:29] &lt;Guthur&gt;        So that if a subscriber comes along later it will receive that last message</div>
+<div class="line">[Tuesday 23 November 2010] [12:31:54] &lt;sustrik&gt;       Guthur: what you want is last value cache afaiu</div>
+<div class="line">[Tuesday 23 November 2010] [12:32:04] &lt;sustrik&gt;       it has to be built on top of 0mq</div>
+<div class="line">[Tuesday 23 November 2010] [12:33:43] &lt;Guthur&gt;        sustrik: I was thinking might have to be</div>
+<div class="line">[Tuesday 23 November 2010] [12:34:17] &lt;Guthur&gt;        would one just publish every tick</div>
+<div class="line">[Tuesday 23 November 2010] [12:34:31] &lt;Guthur&gt;        ie some arbitrary time interval</div>
+<div class="line">[Tuesday 23 November 2010] [12:35:15] &lt;sustrik&gt;       in that case most subscribers would get the same message multiple times</div>
+<div class="line">[Tuesday 23 November 2010] [12:35:27] &lt;sustrik&gt;       every second or so, depending on the interval</div>
+<div class="line">[Tuesday 23 November 2010] [12:35:47] &lt;sustrik&gt;       i would probably go for using 2 sockets</div>
+<div class="line">[Tuesday 23 November 2010] [12:35:48] &lt;Guthur&gt;        umm yeah, then I would need a timestamp or something</div>
+<div class="line">[Tuesday 23 November 2010] [12:36:04] &lt;Guthur&gt;        yeah 2 sockets was my other thought</div>
+<div class="line">[Tuesday 23 November 2010] [12:36:06] &lt;sustrik&gt;       PUB/SUB for bradcasting the feed</div>
+<div class="line">[Tuesday 23 November 2010] [12:36:18] &lt;sustrik&gt;       REQ/REP for asking for a last snapshot</div>
+<div class="line">[Tuesday 23 November 2010] [12:36:54] &lt;Guthur&gt;        ok, cheers sustrik</div>
+<div class="line">[Tuesday 23 November 2010] [12:38:56] &lt;Guthur&gt;        back in a bit</div>
+<div class="line">[Tuesday 23 November 2010] [13:40:32] &lt;Guthur&gt;        sustrik, With the discussion earlier can the pub/sub and req/rep, both go through the same port?</div>
+<div class="line">[Tuesday 23 November 2010] [13:41:37] &lt;sustrik&gt;       no, you cannot bind two sockets to the same port</div>
+<div class="line">[Tuesday 23 November 2010] [13:54:59] &lt;Guthur&gt;        wishful thinking</div>
+<div class="line">[Tuesday 23 November 2010] [14:46:14] &lt;tupshin1&gt;      what do I need to get device support in java? I built the bluig forg of jzmq, but I get an unsatisfiedlinkerror for ZMQ$Device.construct</div>
+<div class="line">[Tuesday 23 November 2010] [14:46:21] &lt;tupshin1&gt;      s/forg/fork/</div>
+<div class="line">[Tuesday 23 November 2010] [15:01:03] &lt;tupshin1&gt;      alternatively, is there a good way of implementing a multi-threaded java zmq server that doesn&#8217;t use device? as opposed to this one: <a class="reference external" href="https://github.com/imatix/zguide/blob/master/examples/Java/mtserver.java">https://github.com/imatix/zguide/blob/master/examples/Java/mtserver.java</a></div>
+<div class="line">[Tuesday 23 November 2010] [15:04:55] &lt;tupshin1&gt;      scenario is that i&#8217;m looking to build a multi-threaded java daemon that is able to listen for messages from many different processes, and respond to whichever process sent it a message. can&#8217;t seem to find a good/working jzmq pattern for this.</div>
+<div class="line">[Tuesday 23 November 2010] [15:08:35] &lt;tupshin1&gt;      bah...nm. mismatch between my jzmq jar and libs. got it. :)</div>
+<div class="line">[Tuesday 23 November 2010] [16:31:25] &lt;josh&gt;  So, I&#8217;m working on a completely managed build of zmq (compiled with very small changes using MS C++/CLI)</div>
+<div class="line">[Tuesday 23 November 2010] [16:31:56] &lt;josh&gt;  Has anyone messed with doing something like this yet? I don&#8217;t want to repeat someone elses work...</div>
 </div>
 </div>
 

@@ -5926,3 +5926,42 @@
 | [Tuesday 23 November 2010] [02:50:53] <sustrik>	and close the ticket
 | [Tuesday 23 November 2010] [02:51:00] <Guthur>	ack
 | [Tuesday 23 November 2010] [02:51:22] <travlr>	martin, the assert was somehow my mistake.. sorry for disturbing you for nothing.. it seems
+| [Tuesday 23 November 2010] [02:55:03] <sustrik>	ok
+| [Tuesday 23 November 2010] [04:17:43] <mikko>	good morning
+| [Tuesday 23 November 2010] [04:48:12] <sustrik>	morning
+| [Tuesday 23 November 2010] [06:38:56] <migmir>	hello everyone
+| [Tuesday 23 November 2010] [09:45:31] <Guthur>	I want to request a limited stream of data, what would be decent strategy?
+| [Tuesday 23 November 2010] [09:46:21] <Guthur>	The scenario is that multiple client will come along and request a stream of data for a period of time then stop
+| [Tuesday 23 November 2010] [09:46:56] <Guthur>	sorry stream is not really the right description
+| [Tuesday 23 November 2010] [09:47:13] <Guthur>	it will be a set of updates at non-deterministic intervals
+| [Tuesday 23 November 2010] [09:51:38] <lantins>	REQ/REP? guess it would depend on what kind of interval your looking at
+| [Tuesday 23 November 2010] [09:55:58] <sustrik>	Guthur: ZMQ_SUBSCRIBE/ZMQ_UNSUBSCRIBE
+| [Tuesday 23 November 2010] [09:56:26] <sustrik>	or simply close the socket when you don't want to receive more updates
+| [Tuesday 23 November 2010] [09:59:12] <CIA-20>	jzmq: 03Gonzalo Diethelm 07master * r431fb23 10/ src/org/zeromq/ZMQ.java : Made Poller constants POLL{IN,OUT,ERR} into public. - http://bit.ly/eRnY5q
+| [Tuesday 23 November 2010] [10:07:07] <Guthur>	I will investigate those options, really need to prototype I suppose
+| [Tuesday 23 November 2010] [12:28:03] <Guthur>	is there a nice way to make the last message on a publisher persistent
+| [Tuesday 23 November 2010] [12:28:29] <Guthur>	So that if a subscriber comes along later it will receive that last message
+| [Tuesday 23 November 2010] [12:31:54] <sustrik>	Guthur: what you want is last value cache afaiu
+| [Tuesday 23 November 2010] [12:32:04] <sustrik>	it has to be built on top of 0mq
+| [Tuesday 23 November 2010] [12:33:43] <Guthur>	sustrik: I was thinking might have to be
+| [Tuesday 23 November 2010] [12:34:17] <Guthur>	would one just publish every tick
+| [Tuesday 23 November 2010] [12:34:31] <Guthur>	ie some arbitrary time interval
+| [Tuesday 23 November 2010] [12:35:15] <sustrik>	in that case most subscribers would get the same message multiple times
+| [Tuesday 23 November 2010] [12:35:27] <sustrik>	every second or so, depending on the interval
+| [Tuesday 23 November 2010] [12:35:47] <sustrik>	i would probably go for using 2 sockets
+| [Tuesday 23 November 2010] [12:35:48] <Guthur>	umm yeah, then I would need a timestamp or something
+| [Tuesday 23 November 2010] [12:36:04] <Guthur>	yeah 2 sockets was my other thought
+| [Tuesday 23 November 2010] [12:36:06] <sustrik>	PUB/SUB for bradcasting the feed
+| [Tuesday 23 November 2010] [12:36:18] <sustrik>	REQ/REP for asking for a last snapshot
+| [Tuesday 23 November 2010] [12:36:54] <Guthur>	ok, cheers sustrik 
+| [Tuesday 23 November 2010] [12:38:56] <Guthur>	back in a bit
+| [Tuesday 23 November 2010] [13:40:32] <Guthur>	sustrik, With the discussion earlier can the pub/sub and req/rep, both go through the same port?
+| [Tuesday 23 November 2010] [13:41:37] <sustrik>	no, you cannot bind two sockets to the same port
+| [Tuesday 23 November 2010] [13:54:59] <Guthur>	wishful thinking
+| [Tuesday 23 November 2010] [14:46:14] <tupshin1>	what do I need to get device support in java? I built the bluig forg of jzmq, but I get an unsatisfiedlinkerror for ZMQ$Device.construct
+| [Tuesday 23 November 2010] [14:46:21] <tupshin1>	s/forg/fork/
+| [Tuesday 23 November 2010] [15:01:03] <tupshin1>	alternatively, is there a good way of implementing a multi-threaded java zmq server that doesn't use device? as opposed to this one: https://github.com/imatix/zguide/blob/master/examples/Java/mtserver.java
+| [Tuesday 23 November 2010] [15:04:55] <tupshin1>	scenario is that i'm looking to build a multi-threaded java daemon that is able to listen for messages from many different processes, and respond to whichever process sent it a message. can't seem to find a good/working jzmq pattern for this.
+| [Tuesday 23 November 2010] [15:08:35] <tupshin1>	bah...nm. mismatch between my jzmq jar and libs. got it. :)
+| [Tuesday 23 November 2010] [16:31:25] <josh>	So, I'm working on a completely managed build of zmq (compiled with very small changes using MS C++/CLI)
+| [Tuesday 23 November 2010] [16:31:56] <josh>	Has anyone messed with doing something like this yet? I don't want to repeat someone elses work...
