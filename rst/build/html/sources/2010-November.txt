@@ -5869,3 +5869,60 @@
 | [Monday 22 November 2010] [05:10:42] <sustrik>	mikko: i would appreciate it
 | [Monday 22 November 2010] [05:10:57] <sustrik>	it saves some time when debuging
 | [Monday 22 November 2010] [05:12:51] <mikko>	sustrik: ok, will add
+| [Monday 22 November 2010] [10:06:51] <CIA-20>	zeromq2: 03Martin Sustrik 07maint * r83d9af9 10/ MAINTAINERS : 
+| [Monday 22 November 2010] [10:06:51] <CIA-20>	zeromq2: Mikko Koppanen becomes a maintainer of the build system.
+| [Monday 22 November 2010] [10:06:51] <CIA-20>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/9gV5IU
+| [Monday 22 November 2010] [10:07:31] <CIA-20>	zeromq2: 03Martin Sustrik 07master * r83d9af9 10/ MAINTAINERS : 
+| [Monday 22 November 2010] [10:07:31] <CIA-20>	zeromq2: Mikko Koppanen becomes a maintainer of the build system.
+| [Monday 22 November 2010] [10:07:31] <CIA-20>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/9gV5IU
+| [Monday 22 November 2010] [10:07:37] <CIA-20>	zeromq2: 03Martin Sustrik 07master * ra689047 10/ MAINTAINERS : 
+| [Monday 22 November 2010] [10:07:37] <CIA-20>	zeromq2: Merge branch 'maint'
+| [Monday 22 November 2010] [10:07:37] <CIA-20>	zeromq2: * maint:
+| [Monday 22 November 2010] [10:07:37] <CIA-20>	zeromq2:  Mikko Koppanen becomes a maintainer of the build system. - http://bit.ly/aqtmfh
+| [Monday 22 November 2010] [11:11:09] Notice	-NickServ- travlr_ is not a registered nickname.
+| [Monday 22 November 2010] [11:11:09] CTCP	Received Version request from frigg.
+| [Monday 22 November 2010] [12:19:54] 435	travlr_ travlr #gentoo-qt Cannot change nickname while banned on channel
+| [Monday 22 November 2010] [12:20:22] 435	travlr_ travlr #gentoo-qt Cannot change nickname while banned on channel
+| [Monday 22 November 2010] [12:20:30] 435	travlr_ travlr #gentoo-kde Cannot change nickname while banned on channel
+| [Monday 22 November 2010] [12:20:39] Notice	-NickServ- This nickname is registered. Please choose a different nickname, or identify via /msg NickServ identify <password>.
+| [Monday 22 November 2010] [14:08:33] <cremes>	anybody seeing this assertion failure against latest master?
+| [Monday 22 November 2010] [14:08:34] <cremes>	Assertion failed: !more || pipes [current] != pipe_ (fq.cpp:61)
+| [Monday 22 November 2010] [14:09:04] <cremes>	i'm trying to get a small reproducible case but have so far been unsuccessful
+| [Monday 22 November 2010] [14:09:22] <cremes>	would a backtrace be useful in the absence of reproducible code?
+| [Monday 22 November 2010] [14:27:22] <sustrik>	cremes: yes, back trace is always helpful
+| [Monday 22 November 2010] [14:45:05] <cremes>	https://github.com/zeromq/zeromq2/issues/issue/119
+| [Monday 22 November 2010] [21:08:40] <quentusrex>	I don't see any documentation on the wiki for subscriptions
+| [Monday 22 November 2010] [21:09:02] <quentusrex>	I see a reference to it here: http://api.zeromq.org/zmq.html but no page about it.
+| [Monday 22 November 2010] [22:08:18] <josh>	What service does the context provide?
+| [Monday 22 November 2010] [22:08:50] <josh>	Working on a wrapper and just wondering if there's a practical way to elide the context creation
+| [Monday 22 November 2010] [23:52:39] <quentusrex>	Anyone know if there is work on a server side subscription for the pub/sub ?
+| [Monday 22 November 2010] [23:52:49] <quentusrex>	so that bandwidth usage is reduced?
+| [Tuesday 23 November 2010] [01:54:42] <sustrik>	josh: context holds all the global variables
+| [Tuesday 23 November 2010] [01:55:51] <sustrik>	if your language supports a native mechanism for a libraries to hold two separate sets of global variables when a library is initialised twice, use that instead of contexts
+| [Tuesday 23 November 2010] [01:56:37] <sustrik>	quantusrex: there have been couple of threads about server-side subscriptions ("subscription forwarding") on the mailing list
+| [Tuesday 23 November 2010] [01:56:41] <sustrik>	check the archives
+| [Tuesday 23 November 2010] [02:04:00] <travlr>	how's master running for others? I'm getting an assert failure now with send(..).
+| [Tuesday 23 November 2010] [02:10:12] <travlr>	oops, i mean zmq_send(...)
+| [Tuesday 23 November 2010] [02:11:28] <sustrik>	travlr: mostly it works ok
+| [Tuesday 23 November 2010] [02:11:33] <sustrik>	what's the assert?
+| [Tuesday 23 November 2010] [02:13:20] <travlr>	i'm using zhelpers.h which raises an assert with the return from the call to zmq_send(...)
+| [Tuesday 23 November 2010] [02:13:39] <travlr>	up to date master
+| [Tuesday 23 November 2010] [02:13:45] <sustrik>	what assert?
+| [Tuesday 23 November 2010] [02:14:01] <travlr>	Assertion `!rc' failed
+| [Tuesday 23 November 2010] [02:14:27] <sustrik>	probably a bug in zhelpers.h
+| [Tuesday 23 November 2010] [02:14:51] <travlr>	hmm, ok. i'll lose it.. thanks.
+| [Tuesday 23 November 2010] [02:15:19] <sustrik>	the thing is 0MQ returns an error
+| [Tuesday 23 November 2010] [02:15:23] <sustrik>	which is ok
+| [Tuesday 23 November 2010] [02:15:28] <sustrik>	it doesn't fail or something
+| [Tuesday 23 November 2010] [02:15:46] <travlr>	right let me see what the call actually returns then..
+| [Tuesday 23 November 2010] [02:15:53] <sustrik>	ack
+| [Tuesday 23 November 2010] [02:15:56] <travlr>	thanks again
+| [Tuesday 23 November 2010] [02:48:59] <Guthur>	sustrik, ping
+| [Tuesday 23 November 2010] [02:49:12] <sustrik>	pong
+| [Tuesday 23 November 2010] [02:49:40] <Guthur>	Did you see that ticket raised regarding ruleset serialization in clrzmq]
+| [Tuesday 23 November 2010] [02:50:19] <Guthur>	I was just going to tell him briefly it's not a clrzmq issue, sound ok?
+| [Tuesday 23 November 2010] [02:50:26] <Guthur>	and close the ticket
+| [Tuesday 23 November 2010] [02:50:49] <sustrik>	no point in doing other people's homework, just point him to the guide
+| [Tuesday 23 November 2010] [02:50:53] <sustrik>	and close the ticket
+| [Tuesday 23 November 2010] [02:51:00] <Guthur>	ack
+| [Tuesday 23 November 2010] [02:51:22] <travlr>	martin, the assert was somehow my mistake.. sorry for disturbing you for nothing.. it seems
