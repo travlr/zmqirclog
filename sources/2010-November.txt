@@ -5965,3 +5965,37 @@
 | [Tuesday 23 November 2010] [15:08:35] <tupshin1>	bah...nm. mismatch between my jzmq jar and libs. got it. :)
 | [Tuesday 23 November 2010] [16:31:25] <josh>	So, I'm working on a completely managed build of zmq (compiled with very small changes using MS C++/CLI)
 | [Tuesday 23 November 2010] [16:31:56] <josh>	Has anyone messed with doing something like this yet? I don't want to repeat someone elses work...
+| [Tuesday 23 November 2010] [16:48:36] <tupshin1>	is IPC generally the fastest way to use zeromq to pass messages between processes on linux? (php and java in this case)
+| [Tuesday 23 November 2010] [21:16:31] <travlr>	d797sd9885765sdf879g79dfg
+| [Tuesday 23 November 2010] [21:16:47] <travlr>	oops :P
+| [Wednesday 24 November 2010] [06:48:09] <drbobbeaty>	Is there any feeling for the timing of the release of ZeroMQ 2.1? I ask because I'm hitting a slight memory leak in 2.0.10 using epgm:// and I'm hoping that the new version of OpenPGM in 2.1 - as well as all the other fixes in 2.1, is going to help me out.
+| [Wednesday 24 November 2010] [06:48:52] <sustrik>	drbobbeaty: this week
+| [Wednesday 24 November 2010] [06:49:09] <drbobbeaty>	Fantastic! Very much appreciated.
+| [Wednesday 24 November 2010] [06:51:50] <sustrik>	you are welcome
+| [Wednesday 24 November 2010] [06:52:10] <sustrik>	in any case you can check the 2.1 version even today
+| [Wednesday 24 November 2010] [06:52:23] <sustrik>	just get it from the master on github
+| [Wednesday 24 November 2010] [07:15:12] <Guthur>	sustrik: Will 2.1 have many changes requiring updates to bindings?
+| [Wednesday 24 November 2010] [07:19:46] <sustrik>	Guthur: it is backward compatible
+| [Wednesday 24 November 2010] [07:20:05] <sustrik>	some new socket options add added
+| [Wednesday 24 November 2010] [07:20:34] <sustrik>	but the bindings can implement those gradually
+| [Wednesday 24 November 2010] [07:24:28] <Guthur>	ok, I'll keep an eye out
+| [Wednesday 24 November 2010] [07:24:40] <Guthur>	will the updates be clearly documented
+| [Wednesday 24 November 2010] [07:26:25] <sustrik>	yes, there's a NEWS file in the main directory
+| [Wednesday 24 November 2010] [07:26:37] <sustrik>	annoncement email will be sent to the ML as well
+| [Wednesday 24 November 2010] [09:11:01] <toni_>	hey there. Does a REQ socket connected to n XREP sockets do load balancing?
+| [Wednesday 24 November 2010] [09:16:56] <sustrik>	yes
+| [Wednesday 24 November 2010] [09:22:17] <toni_>	sustrik: thanks!
+| [Wednesday 24 November 2010] [09:22:51] <sustrik>	np
+| [Wednesday 24 November 2010] [09:44:01] <CIA-20>	jzmq: 03Alexey Ermakov 07master * r4341426 10/ src/org/zeromq/ZMQ.java : Fixed javadocs for Poller#getTimeout and Poller#setTimeout (zmq_poll timeout is in microseconds, not milliseconds). - http://bit.ly/gGhqUd
+| [Wednesday 24 November 2010] [09:56:55] <Guthur>	sustrik: How likely is it that zeromq might offer HTTP as a transport at some point
+| [Wednesday 24 November 2010] [09:57:25] <sustrik>	Guthur: as likely as that someone would write the transport :)
+| [Wednesday 24 November 2010] [09:57:47] <sustrik>	the codebase is open to adding new transports
+| [Wednesday 24 November 2010] [09:58:28] <sustrik>	one of the things i would like to do in the future would be to make transport as simple as possible
+| [Wednesday 24 November 2010] [09:58:40] <sustrik>	transport plugins...
+| [Wednesday 24 November 2010] [09:59:01] <sustrik>	anyway, I don't plan to write HTTP transport myself
+| [Wednesday 24 November 2010] [10:58:20] <mikko>	what kind of http transport?
+| [Wednesday 24 November 2010] [10:58:28] <mikko>	i think http should be a device maybe
+| [Wednesday 24 November 2010] [19:06:57] <quentusrex>	Is there a particular socket type that would be best for Request-reply type messages, but from one server to each of the many clients? 
+| [Wednesday 24 November 2010] [19:12:06] <lestrrat>	is there a working code example for ZMQ_FD ?
+| [Wednesday 24 November 2010] [19:40:08] <mgc>	hi all.  apologies for a drive by question:  load testing the latest from zeromq2/master I am hitting "Assertion failed: inpipes [current_in].active (xrep.cpp:229)".  Any suggestions? 
+| [Wednesday 24 November 2010] [19:40:50] <mgc>	looks like the pipe suddenly goes away while getting a multi part message?

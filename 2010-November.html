@@ -6010,6 +6010,40 @@
 <div class="line">[Tuesday 23 November 2010] [15:08:35] &lt;tupshin1&gt;      bah...nm. mismatch between my jzmq jar and libs. got it. :)</div>
 <div class="line">[Tuesday 23 November 2010] [16:31:25] &lt;josh&gt;  So, I&#8217;m working on a completely managed build of zmq (compiled with very small changes using MS C++/CLI)</div>
 <div class="line">[Tuesday 23 November 2010] [16:31:56] &lt;josh&gt;  Has anyone messed with doing something like this yet? I don&#8217;t want to repeat someone elses work...</div>
+<div class="line">[Tuesday 23 November 2010] [16:48:36] &lt;tupshin1&gt;      is IPC generally the fastest way to use zeromq to pass messages between processes on linux? (php and java in this case)</div>
+<div class="line">[Tuesday 23 November 2010] [21:16:31] &lt;travlr&gt;        d797sd9885765sdf879g79dfg</div>
+<div class="line">[Tuesday 23 November 2010] [21:16:47] &lt;travlr&gt;        oops :P</div>
+<div class="line">[Wednesday 24 November 2010] [06:48:09] &lt;drbobbeaty&gt;  Is there any feeling for the timing of the release of ZeroMQ 2.1? I ask because I&#8217;m hitting a slight memory leak in 2.0.10 using epgm:// and I&#8217;m hoping that the new version of OpenPGM in 2.1 - as well as all the other fixes in 2.1, is going to help me out.</div>
+<div class="line">[Wednesday 24 November 2010] [06:48:52] &lt;sustrik&gt;     drbobbeaty: this week</div>
+<div class="line">[Wednesday 24 November 2010] [06:49:09] &lt;drbobbeaty&gt;  Fantastic! Very much appreciated.</div>
+<div class="line">[Wednesday 24 November 2010] [06:51:50] &lt;sustrik&gt;     you are welcome</div>
+<div class="line">[Wednesday 24 November 2010] [06:52:10] &lt;sustrik&gt;     in any case you can check the 2.1 version even today</div>
+<div class="line">[Wednesday 24 November 2010] [06:52:23] &lt;sustrik&gt;     just get it from the master on github</div>
+<div class="line">[Wednesday 24 November 2010] [07:15:12] &lt;Guthur&gt;      sustrik: Will 2.1 have many changes requiring updates to bindings?</div>
+<div class="line">[Wednesday 24 November 2010] [07:19:46] &lt;sustrik&gt;     Guthur: it is backward compatible</div>
+<div class="line">[Wednesday 24 November 2010] [07:20:05] &lt;sustrik&gt;     some new socket options add added</div>
+<div class="line">[Wednesday 24 November 2010] [07:20:34] &lt;sustrik&gt;     but the bindings can implement those gradually</div>
+<div class="line">[Wednesday 24 November 2010] [07:24:28] &lt;Guthur&gt;      ok, I&#8217;ll keep an eye out</div>
+<div class="line">[Wednesday 24 November 2010] [07:24:40] &lt;Guthur&gt;      will the updates be clearly documented</div>
+<div class="line">[Wednesday 24 November 2010] [07:26:25] &lt;sustrik&gt;     yes, there&#8217;s a NEWS file in the main directory</div>
+<div class="line">[Wednesday 24 November 2010] [07:26:37] &lt;sustrik&gt;     annoncement email will be sent to the ML as well</div>
+<div class="line">[Wednesday 24 November 2010] [09:11:01] &lt;<a href="#id1094"><span class="problematic" id="id1095">toni_</span></a>&gt;       hey there. Does a REQ socket connected to n XREP sockets do load balancing?</div>
+<div class="line">[Wednesday 24 November 2010] [09:16:56] &lt;sustrik&gt;     yes</div>
+<div class="line">[Wednesday 24 November 2010] [09:22:17] &lt;<a href="#id1096"><span class="problematic" id="id1097">toni_</span></a>&gt;       sustrik: thanks!</div>
+<div class="line">[Wednesday 24 November 2010] [09:22:51] &lt;sustrik&gt;     np</div>
+<div class="line">[Wednesday 24 November 2010] [09:44:01] &lt;CIA-20&gt;      jzmq: 03Alexey Ermakov 07master * r4341426 10/ src/org/zeromq/ZMQ.java : Fixed javadocs for Poller#getTimeout and Poller#setTimeout (zmq_poll timeout is in microseconds, not milliseconds). - <a class="reference external" href="http://bit.ly/gGhqUd">http://bit.ly/gGhqUd</a></div>
+<div class="line">[Wednesday 24 November 2010] [09:56:55] &lt;Guthur&gt;      sustrik: How likely is it that zeromq might offer HTTP as a transport at some point</div>
+<div class="line">[Wednesday 24 November 2010] [09:57:25] &lt;sustrik&gt;     Guthur: as likely as that someone would write the transport :)</div>
+<div class="line">[Wednesday 24 November 2010] [09:57:47] &lt;sustrik&gt;     the codebase is open to adding new transports</div>
+<div class="line">[Wednesday 24 November 2010] [09:58:28] &lt;sustrik&gt;     one of the things i would like to do in the future would be to make transport as simple as possible</div>
+<div class="line">[Wednesday 24 November 2010] [09:58:40] &lt;sustrik&gt;     transport plugins...</div>
+<div class="line">[Wednesday 24 November 2010] [09:59:01] &lt;sustrik&gt;     anyway, I don&#8217;t plan to write HTTP transport myself</div>
+<div class="line">[Wednesday 24 November 2010] [10:58:20] &lt;mikko&gt;       what kind of http transport?</div>
+<div class="line">[Wednesday 24 November 2010] [10:58:28] &lt;mikko&gt;       i think http should be a device maybe</div>
+<div class="line">[Wednesday 24 November 2010] [19:06:57] &lt;quentusrex&gt;  Is there a particular socket type that would be best for Request-reply type messages, but from one server to each of the many clients?</div>
+<div class="line">[Wednesday 24 November 2010] [19:12:06] &lt;lestrrat&gt;    is there a working code example for ZMQ_FD ?</div>
+<div class="line">[Wednesday 24 November 2010] [19:40:08] &lt;mgc&gt; hi all.  apologies for a drive by question:  load testing the latest from zeromq2/master I am hitting &#8220;Assertion failed: inpipes [current_in].active (xrep.cpp:229)&#8221;.  Any suggestions?</div>
+<div class="line">[Wednesday 24 November 2010] [19:40:50] &lt;mgc&gt; looks like the pipe suddenly goes away while getting a multi part message?</div>
 </div>
 </div>
 
