@@ -5999,3 +5999,120 @@
 | [Wednesday 24 November 2010] [19:12:06] <lestrrat>	is there a working code example for ZMQ_FD ?
 | [Wednesday 24 November 2010] [19:40:08] <mgc>	hi all.  apologies for a drive by question:  load testing the latest from zeromq2/master I am hitting "Assertion failed: inpipes [current_in].active (xrep.cpp:229)".  Any suggestions? 
 | [Wednesday 24 November 2010] [19:40:50] <mgc>	looks like the pipe suddenly goes away while getting a multi part message?
+| [Thursday 25 November 2010] [02:47:30] <sustrik>	lestrrat: look at implementation of zmq_poll in src/zmq.cpp
+| [Thursday 25 November 2010] [02:49:03] <sustrik>	mgc: looks like an bug. can you report it and provide a simple test program to reproduce it?
+| [Thursday 25 November 2010] [02:49:15] <sustrik>	quentusrex: hm, doesn't make much sense to me
+| [Thursday 25 November 2010] [02:51:38] <guido_g>	sustrik: nice support for the mq :) http://swtch.com/~rsc/talks/threads07/
+| [Thursday 25 November 2010] [02:51:58] <guido_g>	ok, it's from 2007, but we can ignore that
+| [Thursday 25 November 2010] [02:53:27] <sustrik>	yep, i've seen that presentation before
+| [Thursday 25 November 2010] [02:53:35] <sustrik>	or maybe a very similar one
+| [Thursday 25 November 2010] [02:54:19] <guido_g>	ah ok
+| [Thursday 25 November 2010] [03:04:14] <sustrik>	guido_g: if you believe it's interesting for general audience, just send a link to the mailing list
+| [Thursday 25 November 2010] [03:56:54] <quentusrex>	sustrik, basically I have a single server that will accept event notifications from many clients,
+| [Thursday 25 November 2010] [03:57:11] <quentusrex>	and the server needs to respond to the client to let them know if the work was accepted.
+| [Thursday 25 November 2010] [03:58:13] <quentusrex>	I don't see anything that mentions how to determine from which client connection each message came from.
+| [Thursday 25 November 2010] [03:59:12] <sustrik>	how is that different from standard REQ/REP?
+| [Thursday 25 November 2010] [03:59:51] <quentusrex>	In my case the delay is ~30 seconds until we know if the results are accepted,
+| [Thursday 25 November 2010] [04:00:10] <sustrik>	if you need something like, delayed replying, use XREQ/XREP
+| [Thursday 25 November 2010] [04:00:57] <quentusrex>	so I was looking in the documentation and examples for something that would allow me to send a response back to the client from which the message came from. 
+| [Thursday 25 November 2010] [04:01:06] <quentusrex>	I'll dig into the XREP more.
+| [Thursday 25 November 2010] [04:01:49] <sustrik>	yes, that'll help you
+| [Thursday 25 November 2010] [04:01:55] <sustrik>	check the guide for examples
+| [Thursday 25 November 2010] [04:03:52] <quentusrex>	aah, that is exactly what I was looking for.
+| [Thursday 25 November 2010] [04:04:09] <quentusrex>	thanks sustrik 
+| [Thursday 25 November 2010] [04:04:19] <sustrik>	np
+| [Thursday 25 November 2010] [05:34:47] <CIA-20>	jzmq: 03Gonzalo Diethelm 07master * ra97e15a 10/ (src/Socket.cpp src/org/zeromq/ZMQ.java): (log message trimmed)
+| [Thursday 25 November 2010] [05:34:47] <CIA-20>	jzmq: Changes to better handle poller timeouts and the C glue code.
+| [Thursday 25 November 2010] [05:34:47] <CIA-20>	jzmq: The flags parameter to send / receive were assigned to a long
+| [Thursday 25 November 2010] [05:34:47] <CIA-20>	jzmq: variable, which was received in the C glue code as a jlong,
+| [Thursday 25 November 2010] [05:34:47] <CIA-20>	jzmq: which was finally cast to an int when being passed into
+| [Thursday 25 November 2010] [05:34:47] <CIA-20>	jzmq: zmq_send() and zmq_recv(). I changed them into int / jint and
+| [Thursday 25 November 2010] [05:34:48] <CIA-20>	jzmq: got rid of the cast.
+| [Thursday 25 November 2010] [08:06:13] <CIA-20>	zeromq2: 03Sebastian Otaegui 07master * r92618fd 10/ builds/redhat/zeromq.spec : 
+| [Thursday 25 November 2010] [08:06:13] <CIA-20>	zeromq2: Small fix for the rhel6 spec
+| [Thursday 25 November 2010] [08:06:13] <CIA-20>	zeromq2: Signed-off-by: Sebastian Otaegui <feniix@gmail.com> - http://bit.ly/eqVjjF
+| [Thursday 25 November 2010] [08:06:16] <CIA-20>	zeromq2: 03Martin Sustrik 07master * r734624b 10/ src/i_engine.hpp : 
+| [Thursday 25 November 2010] [08:06:17] <CIA-20>	zeromq2: Typo fixed in a comment.
+| [Thursday 25 November 2010] [08:06:17] <CIA-20>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/h89opD
+| [Thursday 25 November 2010] [09:22:17] <mato>	mikko: hi, are you around?
+| [Thursday 25 November 2010] [11:13:00] <mato>	sustrik: could you add the individual test executables in tests/ to .gitignore at the top level please?
+| [Thursday 25 November 2010] [11:13:12] <mato>	sustrik: (this is not worth making a patch to the ML...)
+| [Thursday 25 November 2010] [11:13:33] <CIA-20>	zeromq2: 03Martin Lucina 07master * rc958409 10/ (5 files in 3 dirs): 
+| [Thursday 25 November 2010] [11:13:33] <CIA-20>	zeromq2: Control symbol exports using -fvisibility
+| [Thursday 25 November 2010] [11:13:33] <CIA-20>	zeromq2: On systems using GCC 4.0 or newer which support symbol visibility in shared
+| [Thursday 25 November 2010] [11:13:33] <CIA-20>	zeromq2: libraries, use -fvisibility=hidden and only export explict API functions
+| [Thursday 25 November 2010] [11:13:33] <CIA-20>	zeromq2: defined in zmq.cpp. We do not enable -fvisibility on MinGW since this uses a
+| [Thursday 25 November 2010] [11:13:33] <CIA-20>	zeromq2: separate mechanism (__declspec).
+| [Thursday 25 November 2010] [11:13:34] <CIA-20>	zeromq2: Signed-off-by: Martin Lucina <mato@kotelna.sk> - http://bit.ly/i2lvb2
+| [Thursday 25 November 2010] [11:36:48] <mato>	sustrik: ping?
+| [Thursday 25 November 2010] [11:55:16] <mikko>	mato: yes]
+| [Thursday 25 November 2010] [11:55:19] <mikko>	am now
+| [Thursday 25 November 2010] [11:58:07] <mato>	mikko: I wanted some advice on how to check for -fvisibility support, but have that solved now
+| [Thursday 25 November 2010] [11:58:53] <mato>	mikko: (see my patch on the ml. sustrik has applied it
+| [Thursday 25 November 2010] [11:59:03] <mato>	mikko: how often do the autobuilders wake up?
+| [Thursday 25 November 2010] [11:59:44] <mikko>	mato: 5 am and 5 pm GMT
+| [Thursday 25 November 2010] [11:59:53] <mikko>	in a minute is the next build
+| [Thursday 25 November 2010] [12:00:33] <mato>	oh, good, i can see hopefully that i've not broken anything
+| [Thursday 25 November 2010] [12:00:47] <mikko>	i got a couple of patches waiting as well
+| [Thursday 25 November 2010] [12:00:52] <mikko>	need to have some time to send them
+| [Thursday 25 November 2010] [12:00:59] <mikko>	--enable-debug switch and a couple others
+| [Thursday 25 November 2010] [12:01:04] <mikko>	i had a question for you btw
+| [Thursday 25 November 2010] [12:01:23] <mikko>	for hp ux in configure.in: CPPFLAGS="-D_POSIX_C_SOURCE=200112L"
+| [Thursday 25 November 2010] [12:01:33] <mikko>	is there a reason why $CPPFLAGS is not appended to that?
+| [Thursday 25 November 2010] [12:01:44] <mato>	mikko: send them soonish if you want them in the 2.1.0 release, I think we'll get that out Monday
+| [Thursday 25 November 2010] [12:02:12] <mato>	mikko: no reason, it's a typo
+| [Thursday 25 November 2010] [12:02:22] <mikko>	ok
+| [Thursday 25 November 2010] [12:02:26] <mikko>	my patch fixes that
+| [Thursday 25 November 2010] [12:02:44] <mikko>	after these patches user can override all build flags
+| [Thursday 25 November 2010] [12:02:54] <mato>	good
+| [Thursday 25 November 2010] [12:03:50] <mikko>	daily build running now
+| [Thursday 25 November 2010] [12:15:28] <mikko>	sent
+| [Thursday 25 November 2010] [12:15:31] <mikko>	bbl ->
+| [Thursday 25 November 2010] [13:17:18] <mikko>	mato: currently i get this from autoreconf
+| [Thursday 25 November 2010] [13:17:19] <mikko>	configure.in:9: warning: AC_INIT: not a literal: m4_esyscmd(./version.sh | tr -d '\n')
+| [Thursday 25 November 2010] [13:17:26] <mikko>	i assume this is not an issue?
+| [Thursday 25 November 2010] [13:17:32] <mato>	mikko: dunno, I've not seen it
+| [Thursday 25 November 2010] [13:17:52] <mato>	mikko: I got that incantation off the autoconf mailing list so it should be ok...
+| [Thursday 25 November 2010] [13:18:35] <sustrik>	mato: hi
+| [Thursday 25 November 2010] [13:18:36] <sustrik>	ok
+| [Thursday 25 November 2010] [13:21:40] <mato>	sustrik: hi, um, i was asking if you could update .gitignore to include tests/(the executables)
+| [Thursday 25 November 2010] [13:21:49] <mato>	sustrik: so that "git status" is clean after a build
+| [Thursday 25 November 2010] [13:22:01] <mato>	sustrik: didn't seem worth mailing a patch for administrivia
+| [Thursday 25 November 2010] [13:22:10] <sustrik>	mato: yes
+| [Thursday 25 November 2010] [13:22:12] <sustrik>	i'll do that
+| [Thursday 25 November 2010] [13:22:15] <mato>	thx
+| [Thursday 25 November 2010] [13:22:39] <sustrik>	the annoying part it has to be done on file-by-file basis
+| [Thursday 25 November 2010] [13:22:42] <mikko>	i'll amend the patches
+| [Thursday 25 November 2010] [13:22:50] <sustrik>	as executables have no common extension
+| [Thursday 25 November 2010] [13:23:01] <mikko>	so apart from DISABLE_SHARED they are OK?
+| [Thursday 25 November 2010] [13:23:11] <mato>	sustrik: yeah, well, when you add a test, update .gitignore, no problem...
+| [Thursday 25 November 2010] [13:23:19] <mato>	mikko: yeah, i'm happy, thanks
+| [Thursday 25 November 2010] [13:26:30] <mato>	mikko: one thing with --enable-debug...
+| [Thursday 25 November 2010] [13:26:37] <mato>	mikko: not sure if it's useful, but.
+| [Thursday 25 November 2010] [13:26:56] <mato>	mikko: at the moment default behaviour is to build with -O2 -g (say for GCC)
+| [Thursday 25 November 2010] [13:27:11] <mato>	mikko: --enable-debug changes that to -O0 -g
+| [Thursday 25 November 2010] [13:27:46] <mato>	mikko: I'm wondering whether or not there should also be a --disable-debug/--enable-release or something that disables -g entirely and/or in future adds more agressive optimizations
+| [Thursday 25 November 2010] [13:27:56] <mato>	mikko: but that's just a thought, no need to deal with that now
+| [Thursday 25 November 2010] [13:30:02] <mikko>	yes, i think that would make sense
+| [Thursday 25 November 2010] [13:30:41] <mikko>	do we not want -g on releases?
+| [Thursday 25 November 2010] [13:30:48] <mikko>	makes backtraces quite useless 
+| [Thursday 25 November 2010] [13:31:16] <mikko>	i see your point
+| [Thursday 25 November 2010] [13:31:29] <mikko>	use can then build with --enable-debug and provide a backtrace if it comes to that
+| [Thursday 25 November 2010] [13:32:08] <mato>	well, i don't think the default should be w/o -g
+| [Thursday 25 November 2010] [13:32:12] <mikko>	i managed to amend the patch without much hacking
+| [Thursday 25 November 2010] [13:32:19] <mikko>	i think my git foo is getting stronger
+| [Thursday 25 November 2010] [13:32:30] <mato>	since that will precisely cause newbiews to report problems with no backtrace at all
+| [Thursday 25 November 2010] [13:32:41] <mikko>	i did git reset HEAD~4, git am for the two first patches, git apply for the third, edited the lines and committed
+| [Thursday 25 November 2010] [13:32:48] <mikko>	is that the best way to amend a patch?
+| [Thursday 25 November 2010] [13:32:53] <mato>	all i'm saying is it might be useful in future to provide an "optimized, no debug" build
+| [Thursday 25 November 2010] [13:33:03] <mikko>	yes, i think we can easily provide that
+| [Thursday 25 November 2010] [13:33:41] <mikko>	and it does make sense. if for example someone figures out a compiler flag for sun studio that speeds up things a lot we can easily share that to everyone
+| [Thursday 25 November 2010] [13:34:11] <mato>	yeah, for example stuff like -xtarget=native on SPARC
+| [Thursday 25 November 2010] [13:34:23] <mato>	and/or -fast
+| [Thursday 25 November 2010] [13:35:14] <mikko>	hmm
+| [Thursday 25 November 2010] [13:35:21] <mikko>	i might've messed my local build
+| [Thursday 25 November 2010] [13:35:22] <mikko>	./configure: line 22683: syntax error near unexpected token `if'
+| [Thursday 25 November 2010] [13:35:22] <mikko>	./configure: line 22683: `_LT_COMPILER_OPTION(if $compiler supports -fvisibility=hidden,'
+| [Thursday 25 November 2010] [13:37:23] <mato>	ok, i have to go
+| [Thursday 25 November 2010] [13:37:25] <mato>	bbl maybe
+| [Thursday 25 November 2010] [16:29:25] <mikko>	mato: did you come back?
