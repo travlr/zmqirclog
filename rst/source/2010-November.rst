@@ -6273,3 +6273,219 @@
 | [Saturday 27 November 2010] [20:32:33] <mikko>	well, PAIR is 1:1
 | [Saturday 27 November 2010] [20:33:27] <shaun510>	yeah, I saw that, but it seems like those are missing some of the nicer bits (I think the zguide mentioned something about no auto reconnection, for instance)
 | [Saturday 27 November 2010] [20:37:38] <shaun510>	I might just need to rethink how these components are talking to each other.  1:1 streaming makes sense if you're limited to TCP connections, but maybe it would be better to use one of the other patterns.  
+| [Sunday 28 November 2010] [05:56:43] <Steve-o>	looks like I'd better cut a new PGM 5.0 if you want a master release on monday
+| [Sunday 28 November 2010] [05:57:04] <Steve-o>	backport the rate limiter fix from 5.1
+| [Sunday 28 November 2010] [09:05:52] <Gekz>	hi guys.
+| [Sunday 28 November 2010] [09:06:17] <Gekz>	I'm using pyzmq, and I'm getting an error when attempting the following
+| [Sunday 28 November 2010] [09:06:31] <Gekz>	socket.connect("epgm://foo.bar:34343")
+| [Sunday 28 November 2010] [09:06:40] <Gekz>	  File "socket.pyx", line 342, in zmq.core.socket.Socket.connect (zmq/core/socket.c:3304)
+| [Sunday 28 November 2010] [09:06:40] <Gekz>	zmq.core.error.ZMQError: Invalid argument
+| [Sunday 28 November 2010] [09:08:33] <Gekz>	socket.bind("pgm://foo.bar:34343") on the other server works though 
+| [Sunday 28 November 2010] [09:08:39] <Gekz>	the host
+| [Sunday 28 November 2010] [09:08:45] <Gekz>	the client is spitting the error.
+| [Sunday 28 November 2010] [09:09:00] <Gekz>	it makes no difference whterh I use pgm or epgm.
+| [Sunday 28 November 2010] [09:13:39] <sustrik__>	you are specifying a wrong connection string
+| [Sunday 28 November 2010] [09:14:27] <sustrik__>	Gekz: check zmq_pgm(7)
+| [Sunday 28 November 2010] [09:14:31] <Gekz>	I have tried specifying an interface, such as epgm://eth0;foo.bar:34343
+| [Sunday 28 November 2010] [09:14:37] <Gekz>	it gives me the same error >_>
+| [Sunday 28 November 2010] [09:14:46] <sustrik__>	what's foo.bar?
+| [Sunday 28 November 2010] [09:14:56] <sustrik__>	there should be a multicast group there
+| [Sunday 28 November 2010] [09:15:03] <Gekz>	a hostname.
+| [Sunday 28 November 2010] [09:15:19] <sustrik__>	you probably want to use TCP, not PGM
+| [Sunday 28 November 2010] [09:15:46] <Gekz>	I'm writing a server/client to distribute 70Gb from one server to approximately 100 computers.
+| [Sunday 28 November 2010] [09:16:04] <Gekz>	I'm thinking TCP wont suffice for that.
+| [Sunday 28 November 2010] [09:16:22] <sustrik__>	on LAN?
+| [Sunday 28 November 2010] [09:16:53] <Gekz>	on LAN.
+| [Sunday 28 November 2010] [09:17:20] <Gekz>	oh, I totally misunderstood how multicasting works.
+| [Sunday 28 November 2010] [09:17:28] <Gekz>	I didn't realise there was an IP range specifically for it.
+| [Sunday 28 November 2010] [09:17:35] <sustrik__>	you should read some introductry article first
+| [Sunday 28 November 2010] [09:18:00] <sustrik__>	http://en.wikipedia.org/wiki/IP_multicast
+| [Sunday 28 November 2010] [09:18:00] <Gekz>	haha, I did, I just _missed_ that integral part.
+| [Sunday 28 November 2010] [09:21:26] <Gekz>	sustrik__: before I make another stupid rookie error, as I said, I will be broadcasting large amounts of data. Will using ZMQ_SNDMORE suffice, or will I need to implement my own checks?
+| [Sunday 28 November 2010] [09:22:09] <sustrik__>	you want to send only a single message?
+| [Sunday 28 November 2010] [09:22:51] <Gekz>	well, I need to send it in chunks, in order, to write a file in order.
+| [Sunday 28 November 2010] [09:23:37] <sustrik__>	do so then
+| [Sunday 28 November 2010] [09:23:51] <sustrik__>	PUB/SUB paradigm
+| [Sunday 28 November 2010] [09:23:55] <Gekz>	what I'm asking is whether or not using ZMQ_SNDMORE will affect that 
+| [Sunday 28 November 2010] [09:23:59] <Gekz>	yeah, I'm using PUB/SUB
+| [Sunday 28 November 2010] [09:24:40] <sustrik__>	SNDMORE sends only a single message, the only difference is you can compose it in chunks
+| [Sunday 28 November 2010] [09:24:54] <sustrik__>	thus the whole message must fit into memory etc.
+| [Sunday 28 November 2010] [09:24:57] <Gekz>	oh ok
+| [Sunday 28 November 2010] [09:25:03] <Gekz>	so the other side receives one message
+| [Sunday 28 November 2010] [09:25:09] <Gekz>	but you're concatenating multiple into one on the host
+| [Sunday 28 November 2010] [09:25:12] <Gekz>	I understand now.
+| [Sunday 28 November 2010] [09:25:16] <sustrik__>	right
+| [Sunday 28 November 2010] [09:25:30] <Gekz>	do I need to do any checks to ensure the packets are received in order?
+| [Sunday 28 November 2010] [09:25:42] <sustrik__>	order should be ok
+| [Sunday 28 November 2010] [09:25:50] <Gekz>	that was my basic worry.
+| [Sunday 28 November 2010] [09:25:52] <sustrik__>	what you need to check is whether packets are missing
+| [Sunday 28 November 2010] [09:26:00] <Gekz>	ah.
+| [Sunday 28 November 2010] [09:26:23] <sustrik__>	when network is overloaded, some of them may be dropped
+| [Sunday 28 November 2010] [09:26:34] <sustrik__>	but you can set the reliability parameters for PGM
+| [Sunday 28 November 2010] [09:26:49] <sustrik__>	check ZMQ_RATE, ZMQ_REOCVERY_IVL socket options
+| [Sunday 28 November 2010] [09:27:00] <Gekz>	if they're dropped, does it NAK and request a resend?
+| [Sunday 28 November 2010] [09:27:25] <sustrik__>	that's happening behind the scenes automatically
+| [Sunday 28 November 2010] [09:27:30] <sustrik__>	when you see packet missing
+| [Sunday 28 November 2010] [09:27:39] <Gekz>	yeah, that's what I'm asking
+| [Sunday 28 November 2010] [09:27:52] <sustrik__>	what happened was that the congestion was that bad there was no way to repair
+| [Sunday 28 November 2010] [09:28:04] <Gekz>	so I should do non-blocking recv and check for errors?
+| [Sunday 28 November 2010] [09:28:27] <sustrik__>	no, just number the messages and check for missing messages then
+| [Sunday 28 November 2010] [09:28:35] <sustrik__>	do not ask for resend on the application level
+| [Sunday 28 November 2010] [09:28:36] <Gekz>	ok
+| [Sunday 28 November 2010] [09:29:16] <sustrik__>	if message is missing the state of network is so bad that trying to recover would actually make the congestion even worse
+| [Sunday 28 November 2010] [09:29:26] <Gekz>	so I need to know how it recovers. let's say it sends 1234, and the receiver receives 124.
+| [Sunday 28 November 2010] [09:29:37] <sustrik__>	?
+| [Sunday 28 November 2010] [09:29:44] <Gekz>	I'd have implemented something that noticed that 4 is in fact not after 3 
+| [Sunday 28 November 2010] [09:30:03] <sustrik__>	yes
+| [Sunday 28 November 2010] [09:30:03] <Gekz>	would the third packet be resent?
+| [Sunday 28 November 2010] [09:30:10] <Gekz>	or am I simply aware of the failure
+| [Sunday 28 November 2010] [09:30:13] <Gekz>	and need to start again?
+| [Sunday 28 November 2010] [09:30:13] <sustrik__>	behind the scenes
+| [Sunday 28 November 2010] [09:30:17] <sustrik__>	you won't see that
+| [Sunday 28 November 2010] [09:30:19] <Gekz>	ok
+| [Sunday 28 November 2010] [09:30:26] <Gekz>	so it just drops 4, and waits to see 3?
+| [Sunday 28 November 2010] [09:30:26] <sustrik__>	if packet is missing
+| [Sunday 28 November 2010] [09:30:32] <sustrik__>	something went terribly wrong
+| [Sunday 28 November 2010] [09:30:43] <sustrik__>	you alert the admin then
+| [Sunday 28 November 2010] [09:30:49] <sustrik__>	blow the siren
+| [Sunday 28 November 2010] [09:31:01] <sustrik__>	start the red alert mode
+| [Sunday 28 November 2010] [09:31:05] <sustrik__>	auto-destruct
+| [Sunday 28 November 2010] [09:31:07] <sustrik__>	watever
+| [Sunday 28 November 2010] [09:31:39] <Gekz>	lol
+| [Sunday 28 November 2010] [09:31:45] <Gekz>	so basically, that should never happen
+| [Sunday 28 November 2010] [09:31:57] <Gekz>	I should catch the error, abort, and work out the problem before attempting again?
+| [Sunday 28 November 2010] [09:31:57] <sustrik__>	it can, but there's no way to recover from it
+| [Sunday 28 November 2010] [09:32:17] <sustrik__>	for example, if the consumer is too slow
+| [Sunday 28 November 2010] [09:32:26] <sustrik__>	it cannot keep with the publisher
+| [Sunday 28 November 2010] [09:32:32] <sustrik__>	and finally blows up
+| [Sunday 28 November 2010] [09:32:45] <sustrik__>	the problem is there's no way to solve the problem
+| [Sunday 28 November 2010] [09:32:46] <Gekz>	yep 
+| [Sunday 28 November 2010] [09:33:01] <sustrik__>	maybe buy better box or something
+| [Sunday 28 November 2010] [09:33:03] <Gekz>	so basically, dont publish at 1Gbit if you have 100Mbit subscribers haha 
+| [Sunday 28 November 2010] [09:33:11] <sustrik__>	exactly
+| [Sunday 28 November 2010] [09:33:45] <Gekz>	I'm actually trying to rig up a small application to distribute hdd images for a small job I have.
+| [Sunday 28 November 2010] [09:34:00] <sustrik__>	try with TCP first
+| [Sunday 28 November 2010] [09:34:05] <Gekz>	I'm currently using novell zenworks, but that is just not feasible right now.
+| [Sunday 28 November 2010] [09:34:08] <sustrik__>	multicast is a complex topic
+| [Sunday 28 November 2010] [09:34:27] <Gekz>	multicast is indeed more complex than I had expected.
+| [Sunday 28 November 2010] [09:34:34] <Gekz>	but I was told that using TCP was a no-no for this.
+| [Sunday 28 November 2010] [09:34:40] <sustrik__>	you haven't heard all yet :)
+| [Sunday 28 November 2010] [09:34:52] <sustrik__>	you need adequate network hardware to deal with it
+| [Sunday 28 November 2010] [09:35:01] <sustrik__>	otherwise you can kill your network with it
+| [Sunday 28 November 2010] [09:35:05] <Gekz>	many procurve switches >_>
+| [Sunday 28 November 2010] [09:35:09] <Gekz>	many 1GBit switches
+| [Sunday 28 November 2010] [09:35:10] <sustrik__>	also, the network has to be set up correctly
+| [Sunday 28 November 2010] [09:35:12] <sustrik__>	etc.
+| [Sunday 28 November 2010] [09:35:33] <Gekz>	but yes, I'm not in control of the infrastructure (which based on my experience, is probably a good thing :P)
+| [Sunday 28 November 2010] [09:35:40] <Gekz>	but sadly, the guy in charge seems to know less
+| [Sunday 28 November 2010] [09:35:44] <Gekz>	which is a scarier though 
+| [Sunday 28 November 2010] [09:35:45] <Gekz>	thought*
+| [Sunday 28 November 2010] [09:35:53] <sustrik__>	anyway, start with TCP
+| [Sunday 28 November 2010] [09:36:07] <sustrik__>	use multicast only if you are 100% sure the TCP won't fly
+| [Sunday 28 November 2010] [09:36:28] <Gekz>	let me pastebin the code I have for my host, I'm not entirely sure if it's right
+| [Sunday 28 November 2010] [09:36:40] <Gekz>	because when I test it with the client, it gets approximately half the packets before it just stops receiving.
+| [Sunday 28 November 2010] [09:39:52] <Gekz>	http://paste2.org/p/1114829
+| [Sunday 28 November 2010] [09:39:56] <Gekz>	sustrik__: ^
+| [Sunday 28 November 2010] [09:40:16] <Gekz>	erm, except change epgm to tcp, I forgot to change it back xD
+| [Sunday 28 November 2010] [09:42:46] <sustrik__>	it's ok
+| [Sunday 28 November 2010] [09:43:12] <sustrik__>	keep in mind though that the subscribers may miss the beginning of the transmission
+| [Sunday 28 November 2010] [09:43:27] <sustrik__>	it they are started after it have begun
+| [Sunday 28 November 2010] [09:44:37] <Gekz>	I start them first, this is just a test app 
+| [Sunday 28 November 2010] [09:45:36] <sustrik__>	but it takes some time to connect
+| [Sunday 28 November 2010] [09:45:44] <sustrik__>	so you start the publisher
+| [Sunday 28 November 2010] [09:45:51] <sustrik__>	it starts publishing
+| [Sunday 28 November 2010] [09:46:03] <sustrik__>	the subscribers connect after 1/100 sec
+| [Sunday 28 November 2010] [09:46:11] <sustrik__>	but they've missed some messages already
+| [Sunday 28 November 2010] [09:46:17] <Gekz>	no no
+| [Sunday 28 November 2010] [09:46:35] <Gekz>	I bind on the server, then I start the client, then I hit enter on the server to start sending
+| [Sunday 28 November 2010] [09:46:50] <sustrik__>	then it should work fine
+| [Sunday 28 November 2010] [09:46:57] <Gekz>	but it doesnt :<
+| [Sunday 28 November 2010] [09:47:04] <sustrik__>	then report a bug
+| [Sunday 28 November 2010] [09:47:10] <Gekz>	I'm not sure where the bug is 
+| [Sunday 28 November 2010] [09:47:16] <Gekz>	because it stops printing numbers part way
+| [Sunday 28 November 2010] [09:47:23] <Gekz>	280 281 282 28
+| [Sunday 28 November 2010] [09:47:30] <Gekz>	it never prints the 3 in 283 which confuses me.
+| [Sunday 28 November 2010] [09:47:35] <sustrik__>	heh
+| [Sunday 28 November 2010] [09:47:52] <sustrik__>	a deadlock in python?
+| [Sunday 28 November 2010] [09:48:13] <sustrik__>	report the bug to pyzmq project IMO
+| [Sunday 28 November 2010] [09:50:14] <Gekz>	I changed how I test it
+| [Sunday 28 November 2010] [09:50:44] <Gekz>	and it worked.
+| [Sunday 28 November 2010] [09:50:52] <Gekz>	I made it send a count, instead of counting itself.
+| [Sunday 28 November 2010] [09:51:03] <Gekz>	ie, filled the buffer with 1 to 9999
+| [Sunday 28 November 2010] [09:51:08] <Gekz>	it worked.
+| [Sunday 28 November 2010] [09:51:41] <Gekz>	so it's probably just a crappy python bug
+| [Sunday 28 November 2010] [09:52:38] <Gekz>	haha that crashed my terminal
+| [Sunday 28 November 2010] [09:52:47] <Gekz>	damn you python, you're ruining my day 
+| [Sunday 28 November 2010] [09:53:17] <Gekz>	haha, it's still sending packets
+| [Sunday 28 November 2010] [09:59:05] <Gekz>	anyway, thanks very much sustrik__
+| [Sunday 28 November 2010] [09:59:16] <Gekz>	you've guided my efforts well :P
+| [Sunday 28 November 2010] [09:59:16] <Gekz>	and now i shall sleep.
+| [Sunday 28 November 2010] [11:09:27] <mikko>	sustrik__: http://build.valokuva.org/job/ZeroMQ2-core-master_mingw32/28/console
+| [Sunday 28 November 2010] [11:52:36] <sustrik__>	mikko: yes, seen it
+| [Sunday 28 November 2010] [11:52:37] <sustrik__>	sorry
+| [Sunday 28 November 2010] [13:31:36] <magicblaze007>	will there be a zeromq python installation system for windows (.msi/.exe) sometime?
+| [Sunday 28 November 2010] [13:33:41] <magicblaze007>	seems like there used to be an msi installer -- http://lists.zeromq.org/pipermail/zeromq-dev/2009-January/000321.html (but the link doesnt have anything)
+| [Sunday 28 November 2010] [13:43:37] <Guthur>	magicblaze007, Probably a matter of no one being willing to maintain it
+| [Sunday 28 November 2010] [13:43:58] <Guthur>	you could ask on the mailing list and maybe volunteer
+| [Sunday 28 November 2010] [13:44:27] <sustrik__>	Guthur: right
+| [Sunday 28 November 2010] [13:44:41] <sustrik__>	it's just a matter of someone actually doing it :)
+| [Sunday 28 November 2010] [13:46:11] <Guthur>	mikko, The building of clrzmq2 seems to be stuck
+| [Sunday 28 November 2010] [13:46:44] <Guthur>	says that it has taken over 2.5 days so fatr
+| [Sunday 28 November 2010] [13:46:47] <Guthur>	far*
+| [Sunday 28 November 2010] [13:47:11] <Guthur>	http://build.valokuva.org/
+| [Sunday 28 November 2010] [13:50:31] <mikko>	added a timeout
+| [Sunday 28 November 2010] [13:50:35] <mikko>	it now fails after 5 mins
+| [Sunday 28 November 2010] [13:57:31] <magicblaze007>	Guthur: are these zeromq builds that are maintained regularly?
+| [Sunday 28 November 2010] [13:58:05] <magicblaze007>	I guess i should be looking at this: http://build.valokuva.org/view/pyzmq/?
+| [Sunday 28 November 2010] [13:58:54] <mikko>	magicblaze007: those are daily builds for zeromq and bindings
+| [Sunday 28 November 2010] [13:59:02] <mikko>	magicblaze007: MSI installer is slightly different
+| [Sunday 28 November 2010] [14:00:13] <magicblaze007>	all thats stopping me from using zeromq in my project is a windows msi installer.  I wish i was any good in writing installers..
+| [Sunday 28 November 2010] [14:00:41] <Guthur>	magicblaze007, You could just build it...
+| [Sunday 28 November 2010] [14:01:05] <magicblaze007>	Guthur: I tried. I guess I only have VS 2010. Didnt work
+| [Sunday 28 November 2010] [14:01:09] <mikko>	magicblaze007: why do you need msi installer?
+| [Sunday 28 November 2010] [14:01:27] <magicblaze007>	because my users can easily install it?
+| [Sunday 28 November 2010] [14:01:34] <Guthur>	magicblaze007, build instructions are here [
+| [Sunday 28 November 2010] [14:01:36] <Guthur>	oops
+| [Sunday 28 November 2010] [14:01:39] <mikko>	why dont you ship it with your project?
+| [Sunday 28 November 2010] [14:01:43] <Guthur>	here http://www.zeromq.org/bindings:python
+| [Sunday 28 November 2010] [14:02:18] <magicblaze007>	Guthur: for pyzmq installation, zmq should be installed...which is the problem
+| [Sunday 28 November 2010] [14:03:12] <Guthur>	It seemed to mention building libzmq from scratch
+| [Sunday 28 November 2010] [14:03:32] <mikko>	magicblaze007: you can ship the .dlls with your project
+| [Sunday 28 November 2010] [14:03:38] <mikko>	i dont think anything prevents you from doing that
+| [Sunday 28 November 2010] [14:04:13] <mikko>	libzmq.dll should be enough afaik
+| [Sunday 28 November 2010] [14:04:30] <magicblaze007>	so pyzmq just needs one dll file? 
+| [Sunday 28 November 2010] [14:10:20] <sustrik__>	i think so
+| [Sunday 28 November 2010] [14:19:12] <andrewvc>	cremes: you around at all?
+| [Sunday 28 November 2010] [14:19:40] <andrewvc>	or I guess actually someone else might, know, I've got a question about zmq fds
+| [Sunday 28 November 2010] [14:20:20] <andrewvc>	basically, http://www.mail-archive.com/zeromq-dev@lists.zeromq.org/msg03131.html
+| [Sunday 28 November 2010] [14:20:52] <andrewvc>	says that you'd monitor the file descriptor you get with ZMQ_FD, and figure out what to do based on ZMQ_EVENTS
+| [Sunday 28 November 2010] [14:21:19] <andrewvc>	but, if you're using the FD with say 'select', should readable and writable be determined by select
+| [Sunday 28 November 2010] [14:21:24] <andrewvc>	why do you need ZMQ_EVENTS ?
+| [Sunday 28 November 2010] [15:03:06] <cremes>	andrewvc: i'm around for a bit...
+| [Sunday 28 November 2010] [15:03:19] <cremes>	i don't have an answer for your question ^^
+| [Sunday 28 November 2010] [15:03:43] <cremes>	i spent a *lot* of time messing around with 0mq FDs yesterday in Ruby and had very little luck treating it like a real FD
+| [Sunday 28 November 2010] [15:04:04] <cremes>	btw, jruby returns EBADF for 0mq FDs
+| [Sunday 28 November 2010] [15:06:00] <mikko>	andrewvc: because a full message might not be there
+| [Sunday 28 November 2010] [15:06:22] <mikko>	andrewvc: 0mq handles "messages" and activity on the socket doesn't mean that a message is ready
+| [Sunday 28 November 2010] [15:15:50] <andrewvc>	hi
+| [Sunday 28 November 2010] [15:15:55] <andrewvc>	ah, gotcha
+| [Sunday 28 November 2010] [15:16:10] <andrewvc>	yeah, the FDs are problematic as real FDs
+| [Sunday 28 November 2010] [15:16:16] <andrewvc>	jruby doesn't like them instantiated as IOs
+| [Sunday 28 November 2010] [15:16:25] <andrewvc>	but EM doesn't mind being passed the raw FD
+| [Sunday 28 November 2010] [15:16:50] <cremes>	interesting
+| [Sunday 28 November 2010] [15:17:09] <andrewvc>	yeah, I got issues instantiated FDs as IOs as well
+| [Sunday 28 November 2010] [15:17:16] <andrewvc>	*instantiating
+| [Sunday 28 November 2010] [15:17:30] <andrewvc>	mikko: thanks btw
+| [Sunday 28 November 2010] [15:17:37] <cremes>	yeah, i'm trying to cook up another way of confirming the FD is good in the ruby env
+| [Sunday 28 November 2010] [15:17:44] <cremes>	no luck so far
+| [Sunday 28 November 2010] [15:22:33] Notice	-NickServ- travlr_ is not a registered nickname.
+| [Sunday 28 November 2010] [15:22:33] CTCP	Received Version request from frigg.
+| [Sunday 28 November 2010] [15:22:57] <cremes>	andrewvc: that might be a bug
+| [Sunday 28 November 2010] [15:22:58] <andrewvc>	cremes: thanks. Can do
+| [Sunday 28 November 2010] [15:23:53] <cremes>	andrewvc: want to collaborate on zmqmachine too? alternately, once EM goes 1.0 we might be able to get 0mq sockets into it and then i can drop the zmqmachine project
+| [Sunday 28 November 2010] [15:24:03] <andrewvc>	sure, definitely, was working on adding EM support to it today
+| [Sunday 28 November 2010] [15:24:23] <andrewvc>	had rudimentary, support kinda working
+| [Sunday 28 November 2010] [15:24:34] <andrewvc>	brb, gtg for ~ 45 min
+| [Sunday 28 November 2010] [15:24:38] <cremes>	neat!
+| [Sunday 28 November 2010] [15:24:50] <cremes>	ttyl; i'm out the remainder of the day
+| [Sunday 28 November 2010] [16:13:32] <mgc>	Hmm, doing pub/sub with epgm, when a subscriber gets too far behind it get permanently blacklisted.  Is there any way to handle/recover from this other than just consuming faster and manually reconnecting?
