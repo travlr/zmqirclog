@@ -6116,3 +6116,160 @@
 | [Thursday 25 November 2010] [13:37:23] <mato>	ok, i have to go
 | [Thursday 25 November 2010] [13:37:25] <mato>	bbl maybe
 | [Thursday 25 November 2010] [16:29:25] <mikko>	mato: did you come back?
+| [Friday 26 November 2010] [05:24:06] <mikko>	sustrik: here?
+| [Friday 26 November 2010] [09:26:19] <mikko>	mato: let me know if you pop in
+| [Friday 26 November 2010] [11:05:40] <apexi200sx>	Hi
+| [Friday 26 November 2010] [11:08:21] <mikko>	hi
+| [Friday 26 November 2010] [16:49:11] <mikko>	howdy 
+| [Friday 26 November 2010] [21:52:15] <foca>	hi all :) is there a way to, using pubsub, have the SUB subscribe to multiple queues? ideally some sort of wildcard?
+| [Saturday 27 November 2010] [06:52:19] <CIA-20>	zeromq2: 03Martin Sustrik 07master * r0bc2a05 10/ .gitignore : 
+| [Saturday 27 November 2010] [06:52:19] <CIA-20>	zeromq2: .gitignore modified to ignore test executables
+| [Saturday 27 November 2010] [06:52:19] <CIA-20>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/eSO8gq
+| [Saturday 27 November 2010] [08:17:38] <mikko>	good morning
+| [Saturday 27 November 2010] [08:17:46] <mikko>	or well, more like afternoon
+| [Saturday 27 November 2010] [08:48:59] <sustrik>	mikko: good afternoon
+| [Saturday 27 November 2010] [09:08:31] <mikko>	https://gist.github.com/42c775a7b6b9f67ed04f
+| [Saturday 27 November 2010] [09:08:33] <mikko>	getting there
+| [Saturday 27 November 2010] [09:12:45] <sustrik>	what's that?
+| [Saturday 27 November 2010] [09:14:06] <mikko>	adding sun studio flags for -pedantic, -Werror and -Wall
+| [Saturday 27 November 2010] [09:14:24] <mikko>	they have their own way to do the flags
+| [Saturday 27 November 2010] [09:15:52] <mikko>	sun studio is actually a pretty good compiler
+| [Saturday 27 November 2010] [09:16:02] <mikko>	seems to be a lot stricter about things than the others
+| [Saturday 27 November 2010] [09:17:07] <sustrik>	aha, i see
+| [Saturday 27 November 2010] [09:17:58] <mikko>	although it complains about things such as: "pub.cpp", line 68: Warning: Conversion of 64 bit type value to "int" causes truncation.
+| [Saturday 27 November 2010] [09:18:10] <mikko>	maybe have to disable -Werror for now
+| [Saturday 27 November 2010] [09:29:29] <Guthur>	msvc complains about those 64bit conversions as well
+| [Saturday 27 November 2010] [09:32:19] <sustrik>	mikko: yes, possibly
+| [Saturday 27 November 2010] [09:32:33] <sustrik>	in the long term the warnings should be fixed though
+| [Saturday 27 November 2010] [09:32:41] <sustrik>	Guthur: that's win64, right?
+| [Saturday 27 November 2010] [09:34:27] <Guthur>	sustrik, Yeah on win64
+| [Saturday 27 November 2010] [09:35:02] <Guthur>	But even when compiling a 32bit binary iirc
+| [Saturday 27 November 2010] [09:35:19] <Guthur>	it was saying possible conversion i think
+| [Saturday 27 November 2010] [09:35:21] <sustrik>	i don't see the warning on my win32
+| [Saturday 27 November 2010] [09:35:23] <Guthur>	let me check here
+| [Saturday 27 November 2010] [09:35:59] <Guthur>	will just take a minute (or ten) to fire up the VM and VS2010
+| [Saturday 27 November 2010] [09:36:52] <mikko>	hm
+| [Saturday 27 November 2010] [09:36:53] <mikko>	i wonder if it would be easy to automate MSVC builds
+| [Saturday 27 November 2010] [09:39:02] <sustrik>	mikko: dunno, but you would at least need win VM
+| [Saturday 27 November 2010] [09:39:43] <sustrik>	does hudson allow to run remote builds?
+| [Saturday 27 November 2010] [09:41:45] <mikko>	yeah
+| [Saturday 27 November 2010] [09:41:52] <mikko>	not sure how easy MSVC is to automate
+| [Saturday 27 November 2010] [09:42:07] <mikko>	and the current build box is ia32
+| [Saturday 27 November 2010] [09:42:15] <mikko>	so win64 issues wouldnt be visible
+| [Saturday 27 November 2010] [09:42:28] <mikko>	it's ESX so it could run a windows vm in theory
+| [Saturday 27 November 2010] [09:43:51] <sustrik>	well, if it's possible to automate it i'd be willing to donate some money to buy a win license for the build machine
+| [Saturday 27 November 2010] [09:45:37] <Guthur>	sustrik, Yeah it is only x64 builds
+| [Saturday 27 November 2010] [09:45:42] <Guthur>	on MSVS
+| [Saturday 27 November 2010] [10:06:27] <mikko>	sustrik: there is a small typo in MAINTAINERS
+| [Saturday 27 November 2010] [10:06:30] <mikko>	"Component: Application Threads and Differnet Socket Types"
+| [Saturday 27 November 2010] [10:06:37] <mikko>	Different*
+| [Saturday 27 November 2010] [10:29:42] <smandy>	Hi all, have a very noob question. On stackoverflow someone mentioned using omq as an in-process message queue, i.e. to replace traditional threads'n'locks synchronization. would this make appropriate? what cuold you send between producers/consumers? - pointers? data? 
+| [Saturday 27 November 2010] [10:29:58] <smandy>	^make^be^
+| [Saturday 27 November 2010] [10:30:17] <smandy>	or would that be considered overkill?
+| [Saturday 27 November 2010] [10:32:34] <mikko>	smandy: you cand pointers inside the process
+| [Saturday 27 November 2010] [10:32:40] <mikko>	smandy: and not overkill at all
+| [Saturday 27 November 2010] [10:33:07] <mikko>	smandy: you might find this interesting: http://www.zeromq.org/blog:multithreading-magic
+| [Saturday 27 November 2010] [10:33:19] <smandy>	mikko: thanks
+| [Saturday 27 November 2010] [10:33:43] <mikko>	smandy: 0MQ suits very well for threaded programming if there is a need to share data
+| [Saturday 27 November 2010] [10:34:23] <mikko>	rather than lock and syncronise etc etc send messages between threads
+| [Saturday 27 November 2010] [10:34:49] <smandy>	I'm a bit of a java guy and I've been looking for an 'actor-like' framework for C/C++ ( along the lines of scala or erlang, actors). Looks like zeromqs abstractions are similar - would that be a reasonable statement to make?
+| [Saturday 27 November 2010] [10:35:44] <mikko>	smandy: yes, i think that is a fair statement
+| [Saturday 27 November 2010] [10:36:18] <mikko>	and with 0MQ you can distribute your process fairly easily as well
+| [Saturday 27 November 2010] [10:36:31] <mikko>	changing from inproc:// to tcp:// should be fairly trivial
+| [Saturday 27 November 2010] [10:37:01] <mikko>	naturally you need to marshall the data using tcp but apart from that it should be just switching the transport
+| [Saturday 27 November 2010] [10:37:11] <smandy>	so inproc you would share pointers, out of proc you need to have a serialization framework of some sort. Is there a 'sanctioned' way of doing this or do you call out to something like protocol buffers/thrift.
+| [Saturday 27 November 2010] [10:38:30] <mikko>	smandy: 0MQ doesn't have serialisation built-in
+| [Saturday 27 November 2010] [10:38:58] <mikko>	i remember someone talking about protobuffs
+| [Saturday 27 November 2010] [10:39:08] <mikko>	but any serialisation framework should work fine
+| [Saturday 27 November 2010] [10:42:06] <smandy>	got it. Thanks a lot for your quick and helpful answers :-)
+| [Saturday 27 November 2010] [10:43:34] <Guthur>	if you you are sharing pointers you are probably sharing global state, which kind of negates the message passing benefits
+| [Saturday 27 November 2010] [10:44:00] <Guthur>	unless you are letting go of the pointer on one end, I suppose
+| [Saturday 27 November 2010] [10:47:25] <mikko>	it depends on the situation as well
+| [Saturday 27 November 2010] [10:48:54] <smandy>	Guthur: right, could a smart pointer be passed around maybe? The intention would be to use the system in an erlang style - i.e. don't access global state, but if you're in the same address space, marshalling the data seems wasteful.
+| [Saturday 27 November 2010] [10:49:59] <mikko>	smandy: i don't know much about C++ tbh
+| [Saturday 27 November 2010] [10:50:45] <mikko>	smandy: the problematic thing is that if you give the pointer to N threads and each one of them write to it
+| [Saturday 27 November 2010] [10:51:39] <mikko>	smandy: naturally you can hand the ownership of the pointer to a thread that you hand it over to
+| [Saturday 27 November 2010] [10:51:47] <smandy>	mikko: I see, i think the intention would be to pass around immutable data, or at least have the contract be that the receiving threads can't muck around with what they've been passed...
+| [Saturday 27 November 2010] [10:52:24] <mikko>	i guess something like reference counting works well for that scenario
+| [Saturday 27 November 2010] [10:52:39] <smandy>	mikko: my thoughts exactly :-)
+| [Saturday 27 November 2010] [10:53:36] <smandy>	so to pass a pointer you just write the bytes of the pointer to the socket?
+| [Saturday 27 November 2010] [10:54:16] <mikko>	smandy: you wrap the pointer to a zeromq message
+| [Saturday 27 November 2010] [12:48:58] <cremes>	i see that the new LINGER, RECONNECT_IVL and BACKLOG sockopts are ints...
+| [Saturday 27 November 2010] [12:49:22] <cremes>	can we just make them int64s so that we don't have to worry about varying sizes of ints on different platforms?
+| [Saturday 27 November 2010] [12:54:27] <mikko>	cremes: we should
+| [Saturday 27 November 2010] [12:54:54] <cremes>	mikko: i'll open a ticket
+| [Saturday 27 November 2010] [12:55:16] <mikko>	although is the different int sizes a problem?
+| [Saturday 27 November 2010] [12:55:28] <mikko>	as you would have a binary for the platform
+| [Saturday 27 November 2010] [12:55:35] <mikko>	in which scenario would this cause problems?
+| [Saturday 27 November 2010] [12:55:42] <cremes>	it is a problem when running inside of a scripting environment
+| [Saturday 27 November 2010] [12:55:45] <mikko>	binding compiled on 64bit and libzmq on 32bit?
+| [Saturday 27 November 2010] [12:56:03] <mikko>	cremes: what do you mean by that?
+| [Saturday 27 November 2010] [12:56:58] <cremes>	a scripting environment can represent integers however it likes, so even on a 64-bit build it could use 32-bit integers for numbers smaller than 2^32
+| [Saturday 27 November 2010] [12:57:14] <cremes>	so imagine this...
+| [Saturday 27 November 2010] [12:57:18] <cremes>	libzmq is built 64-bit
+| [Saturday 27 November 2010] [12:57:25] <cremes>	the scripting runtime is also built 64-bit
+| [Saturday 27 November 2010] [12:57:36] <mikko>	but surely you would cast the given integer to int before passing to libzmq
+| [Saturday 27 November 2010] [12:57:37] <cremes>	the scripting environment uses 32-bit integers
+| [Saturday 27 November 2010] [12:58:00] <cremes>	passing an integer from that environment to the 64-bit library will mismatch
+| [Saturday 27 November 2010] [12:58:33] <cremes>	why should i have to cast? just define the parameter properly so that there is *no* question
+| [Saturday 27 November 2010] [12:58:39] <mikko>	it the scripting engine is built as 64 then sizeof(int) == sizeof(int)
+| [Saturday 27 November 2010] [12:59:00] <cremes>	internally yes, but who knows how it will represent the values to its FFI library?
+| [Saturday 27 November 2010] [12:59:12] <mikko>	if the scripting engine uses 32bit integer (such as int32_t) you still have to case when passing to int64_t
+| [Saturday 27 November 2010] [12:59:13] <cremes>	this is a potential bug; that's all i'm saying
+| [Saturday 27 November 2010] [12:59:27] <cremes>	yes
+| [Saturday 27 November 2010] [13:00:13] <mikko>	isn't this problem present with any integer type then?
+| [Saturday 27 November 2010] [13:01:42] <cremes>	mikko: it's only a problem for those options that can change depending on how the library was built
+| [Saturday 27 November 2010] [13:01:54] <cremes>	we can avoid all of this by just defining it as int64_t
+| [Saturday 27 November 2010] [13:02:52] <cremes>	if you look at the other sockopts, they are all defined specifically as uint64_t or int64_t
+| [Saturday 27 November 2010] [13:02:57] <cremes>	this is likely an oversight
+| [Saturday 27 November 2010] [13:03:48] <mikko>	i think it is
+| [Saturday 27 November 2010] [13:09:41] <Guthur>	For clrzmq2 I definitely prefer to see int64_t as opposed int
+| [Saturday 27 November 2010] [13:38:19] error	Closing Link: 69.254.38.65 (Connection timed out)
+| [Saturday 27 November 2010] [13:40:18] Notice	-NickServ- travlr_ is not a registered nickname.
+| [Saturday 27 November 2010] [13:40:35] CTCP	Received Version request from frigg.
+| [Saturday 27 November 2010] [16:21:05] <CIA-20>	zeromq2: 03Martin Sustrik 07master * r325dd2f 10/ (src/thread.cpp src/thread.hpp tests/test_shutdown_stress.cpp): 
+| [Saturday 27 November 2010] [16:21:05] <CIA-20>	zeromq2: Functions passed to pthread_create are declared as extern "C"
+| [Saturday 27 November 2010] [16:21:05] <CIA-20>	zeromq2: So far these were declared as C++ static functions which
+| [Saturday 27 November 2010] [16:21:05] <CIA-20>	zeromq2: was incorrect and caused warnings with SunStudio.
+| [Saturday 27 November 2010] [16:21:05] <CIA-20>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/i1JeTr
+| [Saturday 27 November 2010] [16:49:19] <mikko>	sustrik_: thanks!
+| [Saturday 27 November 2010] [17:20:26] <shaun510>	newbie question: I have a system I'd like to convert over to zeromq (currently it's using a hand-rolled tcp connection management system), however...
+| [Saturday 27 November 2010] [17:20:51] <shaun510>	the components each maintain a tcp connection and stream data back and forth bidirectionally.
+| [Saturday 27 November 2010] [17:21:03] <shaun510>	which doesn't really fit the 1:1 request/response model.
+| [Saturday 27 November 2010] [17:21:16] <shaun510>	most messages don't require a response, for instance.
+| [Saturday 27 November 2010] [17:22:02] <shaun510>	what messaging model in zeromq fits this type of usage?
+| [Saturday 27 November 2010] [17:42:23] <mikko>	shaun510: do you need occasional responses?
+| [Saturday 27 November 2010] [17:42:40] <shaun510>	in a sense, yes
+| [Saturday 27 November 2010] [17:42:56] <mikko>	have you looked at XREQ/XREP?
+| [Saturday 27 November 2010] [17:43:02] <shaun510>	the components will be sending data back and forth, but that data might be unrelated.
+| [Saturday 27 November 2010] [17:43:10] <mikko>	hmm
+| [Saturday 27 November 2010] [17:43:20] <mikko>	maybe two sockets in that case?
+| [Saturday 27 November 2010] [17:43:28] <mikko>	PUSH/PULL to both directions
+| [Saturday 27 November 2010] [17:43:30] <shaun510>	this might be more of an architecture problem... yeah, two sockets would make more sense.
+| [Saturday 27 November 2010] [17:43:49] <shaun510>	one socket for outbound, one for inbound, then.
+| [Saturday 27 November 2010] [17:43:52] <mikko>	what does the application do?
+| [Saturday 27 November 2010] [17:44:06] <shaun510>	it's a jabber/XMPP server
+| [Saturday 27 November 2010] [17:44:25] <shaun510>	a pretty far-removed variant of jabberd2, specifically.
+| [Saturday 27 November 2010] [17:45:32] <mikko>	http://www.mail-archive.com/zeromq-dev@lists.zeromq.org/msg02501.html
+| [Saturday 27 November 2010] [17:45:41] <mikko>	does this describe the use-case even remotely?
+| [Saturday 27 November 2010] [17:47:19] <shaun510>	oooo..
+| [Saturday 27 November 2010] [17:47:38] <shaun510>	yes.
+| [Saturday 27 November 2010] [17:49:13] <shaun510>	I was wondering about doing that with XREQ/XREP pairs, but it seemed a bit counter to what they were designed for.
+| [Saturday 27 November 2010] [17:49:13] <shaun510>	which made a bit nervous.
+| [Saturday 27 November 2010] [17:49:36] <mikko>	maybe do a small prototype?
+| [Saturday 27 November 2010] [17:49:48] <mikko>	you should get a prototype running in no time
+| [Saturday 27 November 2010] [18:03:54] <shaun510>	building a prototype right now. :)
+| [Saturday 27 November 2010] [18:04:23] <shaun510>	I'll let you know how it goes, assuming my internet keeps working (which is looking unlikley)
+| [Saturday 27 November 2010] [18:06:21] <mikko>	cool
+| [Saturday 27 November 2010] [18:59:54] 435	travlr_ travlr #gentoo-qt Cannot change nickname while banned on channel
+| [Saturday 27 November 2010] [18:59:58] 435	travlr_ travlr #gentoo-qt Cannot change nickname while banned on channel
+| [Saturday 27 November 2010] [20:24:10] <shaun510>	mikko: got a prototype running using XREP/XREQ.  It was a little trickier than expected, mainly due to leaving out the empty frame indicating the end of the addressing frames
+| [Saturday 27 November 2010] [20:24:24] <shaun510>	otherwise, fairly painless.
+| [Saturday 27 November 2010] [20:26:01] <mikko>	are you reading the zguide?
+| [Saturday 27 November 2010] [20:26:08] <mikko>	and good news
+| [Saturday 27 November 2010] [20:26:13] <mikko>	thats quick movement
+| [Saturday 27 November 2010] [20:29:18] <shaun510>	yeah, the zguide is pretty awesome.
+| [Saturday 27 November 2010] [20:30:49] <shaun510>	anyway, I'm not entirely sure if the XREQ/XREP pair is the path I want to take on this.  It seems like 1:1 bidirectional streaming might be a pattern common enough to formalize.
+| [Saturday 27 November 2010] [20:32:33] <mikko>	well, PAIR is 1:1
+| [Saturday 27 November 2010] [20:33:27] <shaun510>	yeah, I saw that, but it seems like those are missing some of the nicer bits (I think the zguide mentioned something about no auto reconnection, for instance)
+| [Saturday 27 November 2010] [20:37:38] <shaun510>	I might just need to rethink how these components are talking to each other.  1:1 streaming makes sense if you're limited to TCP connections, but maybe it would be better to use one of the other patterns.  
