@@ -6489,3 +6489,45 @@
 | [Sunday 28 November 2010] [15:24:38] <cremes>	neat!
 | [Sunday 28 November 2010] [15:24:50] <cremes>	ttyl; i'm out the remainder of the day
 | [Sunday 28 November 2010] [16:13:32] <mgc>	Hmm, doing pub/sub with epgm, when a subscriber gets too far behind it get permanently blacklisted.  Is there any way to handle/recover from this other than just consuming faster and manually reconnecting?
+| [Sunday 28 November 2010] [18:11:37] <Guthur>	mgc: I assume you can set a higher ZMQ_RECOVERY_IVL
+| [Sunday 28 November 2010] [18:12:26] <Guthur>	that has memory issues though see -> http://api.zeromq.org/zmq_setsockopt.html
+| [Sunday 28 November 2010] [18:19:25] <mgc>	I've tried that, but no luck.  I think I'm being bitten by https://github.com/zeromq/zeromq2/issues#issue/104
+| [Sunday 28 November 2010] [18:19:45] <mgc>	I only see the subscribers dropping off when they are all on the same box
+| [Sunday 28 November 2010] [18:20:01] <mgc>	when I load test between two boxes it doesnt seem to happen
+| [Sunday 28 November 2010] [18:20:57] <mgc>	so I tried delaying the subscriber connects, but no luck. 
+| [Sunday 28 November 2010] [18:24:36] <magicblaze007>	how is activemq different from zeromq? 
+| [Sunday 28 November 2010] [18:27:58] <mgc>	magicblaze007: http://stackoverflow.com/questions/731233/activemq-or-rabbitmq-or-zeromq-or
+| [Sunday 28 November 2010] [18:29:16] <magicblaze007>	thanks
+| [Sunday 28 November 2010] [18:30:45] <magicblaze007>	where can i find the zeromq-dll for windows for download. Cant compile the source on windows
+| [Sunday 28 November 2010] [18:35:29] <mgc>	http://www.coastrd.com/download/ZMQClientServer.zip?attredirects=0
+| [Sunday 28 November 2010] [18:38:00] <magicblaze007>	thanks mgc
+| [Sunday 28 November 2010] [18:38:27] <magicblaze007>	now does anyone know how i can use this dll file and use pyzeromq on a windows machine? 
+| [Sunday 28 November 2010] [18:40:19] <mgc>	sorry :)
+| [Sunday 28 November 2010] [18:42:14] <mgc>	Guthur: ugh, nevermind, I get the dead subscriber then between two boxes as well.  4,000 msgs/s, hwm recoveryivl buffer sizes all cranked way up, after several minutes one or more subscribers just stops getting messages.
+| [Sunday 28 November 2010] [18:42:51] <Guthur>	mgc: Sorry I had tuned out there
+| [Sunday 28 November 2010] [18:42:58] <Guthur>	just reading the backlog
+| [Sunday 28 November 2010] [22:09:41] <Steve-o>	master is broken in msvc2010
+| [Sunday 28 November 2010] [23:26:47] <mgc>	Steve-o: ping
+| [Sunday 28 November 2010] [23:55:04] <swills>	hi, i'm trying to port the perl bindings for zeromq to FreeBSD, but make test is failing:
+| [Sunday 28 November 2010] [23:55:11] <swills>	#     Error:  Can't load '/usr/local/tinderbox/portstrees/FreeBSD/ports/net/p5-ZeroMQ/work/ZeroMQ-0.02_02/blib/arch/auto/ZeroMQ/ZeroMQ.so' for module ZeroMQ: /usr/local/lib/libzmq.so.0: Undefined symbol "pthread_create" at /usr/local/lib/perl5/5.10.1/mach/DynaLoader.pm line 200.
+| [Sunday 28 November 2010] [23:55:16] <swills>	pardon the aweful paths...
+| [Sunday 28 November 2010] [23:55:40] <swills>	so i'm guessing my problem is zmq is built threaded but my perl isn't. that sound right?
+| [Monday 29 November 2010] [00:00:21] <Steve-o>	you need -pthread on the ZeroMQ.so build?
+| [Monday 29 November 2010] [00:01:07] <Steve-o>	mgc: pong
+| [Monday 29 November 2010] [00:01:28] <mgc>	Steve-o: what do the symptoms of https://github.com/zeromq/zeromq2/issues#issue/128  and https://github.com/zeromq/zeromq2/issues#issue/104 look like?  
+| [Monday 29 November 2010] [00:01:55] <mgc>	am seeing epgm subscribers dying under load
+| [Monday 29 November 2010] [00:02:03] <mgc>	and/or losing my mind
+| [Monday 29 November 2010] [00:02:28] <Steve-o>	128 is pretty bad if you have a low rate limit
+| [Monday 29 November 2010] [00:02:45] <Steve-o>	I saw performance drop from say 80mb/s to 800kb/s
+| [Monday 29 November 2010] [00:03:11] <swills>	ah, yes -lpthread makes the test work much better, thanks.
+| [Monday 29 November 2010] [00:03:38] <Steve-o>	104 is to cover a special case if you have multiple senders on one host, it is impossible for them both to receive unicast NAKs
+| [Monday 29 November 2010] [00:04:10] <Steve-o>	so you end up with unrecoverable data loss
+| [Monday 29 November 2010] [00:04:31] <Steve-o>	if you actually see any data loss that is
+| [Monday 29 November 2010] [00:04:34] <mgc>	do things continue working after unrecoverable loss?
+| [Monday 29 November 2010] [00:05:00] <mgc>	I see data loss, but then it is like the subscriber has been blacklisted
+| [Monday 29 November 2010] [00:05:06] <mgc>	and it never gets anything ever again
+| [Monday 29 November 2010] [00:05:09] <mgc>	even if the load subsides
+| [Monday 29 November 2010] [00:11:05] <Steve-o>	zeromq will close the socket and try reconnecting later similar to TCP
+| [Monday 29 November 2010] [00:13:22] <Steve-o>	if the receiver is too slow you are pretty much never going to see anything
+| [Monday 29 November 2010] [00:30:36] <swills>	and the make test just hangs... great...
+| [Monday 29 November 2010] [00:31:41] <swills>	and the version from github needs a bunch of additional modules just to build... oh well..
