@@ -6534,6 +6534,48 @@
 <div class="line">[Sunday 28 November 2010] [15:24:38] &lt;cremes&gt; neat!</div>
 <div class="line">[Sunday 28 November 2010] [15:24:50] &lt;cremes&gt; ttyl; i&#8217;m out the remainder of the day</div>
 <div class="line">[Sunday 28 November 2010] [16:13:32] &lt;mgc&gt;    Hmm, doing pub/sub with epgm, when a subscriber gets too far behind it get permanently blacklisted.  Is there any way to handle/recover from this other than just consuming faster and manually reconnecting?</div>
+<div class="line">[Sunday 28 November 2010] [18:11:37] &lt;Guthur&gt; mgc: I assume you can set a higher ZMQ_RECOVERY_IVL</div>
+<div class="line">[Sunday 28 November 2010] [18:12:26] &lt;Guthur&gt; that has memory issues though see -&gt; <a class="reference external" href="http://api.zeromq.org/zmq_setsockopt.html">http://api.zeromq.org/zmq_setsockopt.html</a></div>
+<div class="line">[Sunday 28 November 2010] [18:19:25] &lt;mgc&gt;    I&#8217;ve tried that, but no luck.  I think I&#8217;m being bitten by <a class="reference external" href="https://github.com/zeromq/zeromq2/issues#issue/104">https://github.com/zeromq/zeromq2/issues#issue/104</a></div>
+<div class="line">[Sunday 28 November 2010] [18:19:45] &lt;mgc&gt;    I only see the subscribers dropping off when they are all on the same box</div>
+<div class="line">[Sunday 28 November 2010] [18:20:01] &lt;mgc&gt;    when I load test between two boxes it doesnt seem to happen</div>
+<div class="line">[Sunday 28 November 2010] [18:20:57] &lt;mgc&gt;    so I tried delaying the subscriber connects, but no luck.</div>
+<div class="line">[Sunday 28 November 2010] [18:24:36] &lt;magicblaze007&gt;  how is activemq different from zeromq?</div>
+<div class="line">[Sunday 28 November 2010] [18:27:58] &lt;mgc&gt;    magicblaze007: <a class="reference external" href="http://stackoverflow.com/questions/731233/activemq-or-rabbitmq-or-zeromq-or">http://stackoverflow.com/questions/731233/activemq-or-rabbitmq-or-zeromq-or</a></div>
+<div class="line">[Sunday 28 November 2010] [18:29:16] &lt;magicblaze007&gt;  thanks</div>
+<div class="line">[Sunday 28 November 2010] [18:30:45] &lt;magicblaze007&gt;  where can i find the zeromq-dll for windows for download. Cant compile the source on windows</div>
+<div class="line">[Sunday 28 November 2010] [18:35:29] &lt;mgc&gt;    <a class="reference external" href="http://www.coastrd.com/download/ZMQClientServer.zip?attredirects=0">http://www.coastrd.com/download/ZMQClientServer.zip?attredirects=0</a></div>
+<div class="line">[Sunday 28 November 2010] [18:38:00] &lt;magicblaze007&gt;  thanks mgc</div>
+<div class="line">[Sunday 28 November 2010] [18:38:27] &lt;magicblaze007&gt;  now does anyone know how i can use this dll file and use pyzeromq on a windows machine?</div>
+<div class="line">[Sunday 28 November 2010] [18:40:19] &lt;mgc&gt;    sorry :)</div>
+<div class="line">[Sunday 28 November 2010] [18:42:14] &lt;mgc&gt;    Guthur: ugh, nevermind, I get the dead subscriber then between two boxes as well.  4,000 msgs/s, hwm recoveryivl buffer sizes all cranked way up, after several minutes one or more subscribers just stops getting messages.</div>
+<div class="line">[Sunday 28 November 2010] [18:42:51] &lt;Guthur&gt; mgc: Sorry I had tuned out there</div>
+<div class="line">[Sunday 28 November 2010] [18:42:58] &lt;Guthur&gt; just reading the backlog</div>
+<div class="line">[Sunday 28 November 2010] [22:09:41] &lt;Steve-o&gt;        master is broken in msvc2010</div>
+<div class="line">[Sunday 28 November 2010] [23:26:47] &lt;mgc&gt;    Steve-o: ping</div>
+<div class="line">[Sunday 28 November 2010] [23:55:04] &lt;swills&gt; hi, i&#8217;m trying to port the perl bindings for zeromq to FreeBSD, but make test is failing:</div>
+<div class="line">[Sunday 28 November 2010] [23:55:11] &lt;swills&gt; #     Error:  Can&#8217;t load &#8216;/usr/local/tinderbox/portstrees/FreeBSD/ports/net/p5-ZeroMQ/work/ZeroMQ-0.02_02/blib/arch/auto/ZeroMQ/ZeroMQ.so&#8217; for module ZeroMQ: /usr/local/lib/libzmq.so.0: Undefined symbol &#8220;pthread_create&#8221; at /usr/local/lib/perl5/5.10.1/mach/DynaLoader.pm line 200.</div>
+<div class="line">[Sunday 28 November 2010] [23:55:16] &lt;swills&gt; pardon the aweful paths...</div>
+<div class="line">[Sunday 28 November 2010] [23:55:40] &lt;swills&gt; so i&#8217;m guessing my problem is zmq is built threaded but my perl isn&#8217;t. that sound right?</div>
+<div class="line">[Monday 29 November 2010] [00:00:21] &lt;Steve-o&gt;        you need -pthread on the ZeroMQ.so build?</div>
+<div class="line">[Monday 29 November 2010] [00:01:07] &lt;Steve-o&gt;        mgc: pong</div>
+<div class="line">[Monday 29 November 2010] [00:01:28] &lt;mgc&gt;    Steve-o: what do the symptoms of <a class="reference external" href="https://github.com/zeromq/zeromq2/issues#issue/128">https://github.com/zeromq/zeromq2/issues#issue/128</a>  and <a class="reference external" href="https://github.com/zeromq/zeromq2/issues#issue/104">https://github.com/zeromq/zeromq2/issues#issue/104</a> look like?</div>
+<div class="line">[Monday 29 November 2010] [00:01:55] &lt;mgc&gt;    am seeing epgm subscribers dying under load</div>
+<div class="line">[Monday 29 November 2010] [00:02:03] &lt;mgc&gt;    and/or losing my mind</div>
+<div class="line">[Monday 29 November 2010] [00:02:28] &lt;Steve-o&gt;        128 is pretty bad if you have a low rate limit</div>
+<div class="line">[Monday 29 November 2010] [00:02:45] &lt;Steve-o&gt;        I saw performance drop from say 80mb/s to 800kb/s</div>
+<div class="line">[Monday 29 November 2010] [00:03:11] &lt;swills&gt; ah, yes -lpthread makes the test work much better, thanks.</div>
+<div class="line">[Monday 29 November 2010] [00:03:38] &lt;Steve-o&gt;        104 is to cover a special case if you have multiple senders on one host, it is impossible for them both to receive unicast NAKs</div>
+<div class="line">[Monday 29 November 2010] [00:04:10] &lt;Steve-o&gt;        so you end up with unrecoverable data loss</div>
+<div class="line">[Monday 29 November 2010] [00:04:31] &lt;Steve-o&gt;        if you actually see any data loss that is</div>
+<div class="line">[Monday 29 November 2010] [00:04:34] &lt;mgc&gt;    do things continue working after unrecoverable loss?</div>
+<div class="line">[Monday 29 November 2010] [00:05:00] &lt;mgc&gt;    I see data loss, but then it is like the subscriber has been blacklisted</div>
+<div class="line">[Monday 29 November 2010] [00:05:06] &lt;mgc&gt;    and it never gets anything ever again</div>
+<div class="line">[Monday 29 November 2010] [00:05:09] &lt;mgc&gt;    even if the load subsides</div>
+<div class="line">[Monday 29 November 2010] [00:11:05] &lt;Steve-o&gt;        zeromq will close the socket and try reconnecting later similar to TCP</div>
+<div class="line">[Monday 29 November 2010] [00:13:22] &lt;Steve-o&gt;        if the receiver is too slow you are pretty much never going to see anything</div>
+<div class="line">[Monday 29 November 2010] [00:30:36] &lt;swills&gt; and the make test just hangs... great...</div>
+<div class="line">[Monday 29 November 2010] [00:31:41] &lt;swills&gt; and the version from github needs a bunch of additional modules just to build... oh well..</div>
 </div>
 </div>
 
