@@ -6531,3 +6531,268 @@
 | [Monday 29 November 2010] [00:13:22] <Steve-o>	if the receiver is too slow you are pretty much never going to see anything
 | [Monday 29 November 2010] [00:30:36] <swills>	and the make test just hangs... great...
 | [Monday 29 November 2010] [00:31:41] <swills>	and the version from github needs a bunch of additional modules just to build... oh well..
+| [Monday 29 November 2010] [04:39:43] <mikko>	howdy
+| [Monday 29 November 2010] [04:39:47] <mikko>	mato: there?
+| [Monday 29 November 2010] [04:41:31] <sustrik__>	mikko: btw, the patch you've sent some time ago
+| [Monday 29 November 2010] [04:41:42] <sustrik__>	there was some discussion about it
+| [Monday 29 November 2010] [04:41:51] <mikko>	sustrik__: yes, still going on
+| [Monday 29 November 2010] [04:41:57] <sustrik__>	ah, good
+| [Monday 29 November 2010] [04:41:58] <mikko>	sustrik__: i've been refactoring some stuff lately
+| [Monday 29 November 2010] [04:42:00] <sustrik__>	i was not sure
+| [Monday 29 November 2010] [04:42:06] <mikko>	sustrik__: waiting for mato to look if he is ok
+| [Monday 29 November 2010] [04:42:21] <mikko>	sustrik__: the patch for checking if compiler supports visibility breaks in my local env
+| [Monday 29 November 2010] [04:42:41] <sustrik__>	ok, i won't apply it
+| [Monday 29 November 2010] [04:42:47] <mikko>	i just need to figure out a way to break this refactoring into patches
+| [Monday 29 November 2010] [04:43:03] <mikko>	https://github.com/mkoppanen/zeromq2/commit/b797da17f788534298e7cb6101c9c7dccb006ee5
+| [Monday 29 November 2010] [04:43:12] <mikko>	currently it's one large blob of misc stuff
+| [Monday 29 November 2010] [04:43:34] <mato>	mikko: yes?
+| [Monday 29 November 2010] [04:43:55] <mikko>	mato: the LT_COMPILER_FLAG breaks here for some reason
+| [Monday 29 November 2010] [04:44:04] <mikko>	maybe autoconf version differences
+| [Monday 29 November 2010] [04:44:15] <mato>	mikko: autoconf or libtool, it's possible
+| [Monday 29 November 2010] [04:44:17] <mikko>	i had two days off last week and i wrote a couple of macros 
+| [Monday 29 November 2010] [04:44:21] <mato>	mikko: but the autobuilds work ...
+| [Monday 29 November 2010] [04:44:34] <mato>	mikko: so what system does it break for you on?
+| [Monday 29 November 2010] [04:44:42] <mikko>	mato: debian stable
+| [Monday 29 November 2010] [04:44:46] <mikko>	daily builds are on debian testing
+| [Monday 29 November 2010] [04:44:50] <mato>	mikko: oh, interesting
+| [Monday 29 November 2010] [04:45:00] <mikko>	mato: take a look at this https://github.com/mkoppanen/zeromq2/commit/b797da17f788534298e7cb6101c9c7dccb006ee5#diff-1
+| [Monday 29 November 2010] [04:45:03] <mato>	mikko: i'm also on debian stable, but have a backported libtool 2.x
+| [Monday 29 November 2010] [04:45:12] <mikko>	i added a couple of maybe useful macros
+| [Monday 29 November 2010] [04:45:23] <mikko>	AC_ZMQ_CHECK_LANG_FLAG checks if compiler supports given flag
+| [Monday 29 November 2010] [04:45:33] <mikko>	AC_ZMQ_CHECK_LANG_PRAGMA checks if compiler supports given pragma
+| [Monday 29 November 2010] [04:45:56] <mikko>	AC_ZMQ_CHECK_LANG_FLAG_PREPEND is same as AC_ZMQ_CHECK_LANG_FLAG but it prepends to CFLAGS or CPPFLAGS
+| [Monday 29 November 2010] [04:46:42] <mikko>	also added macros for WERROR and WALL for different compilers
+| [Monday 29 November 2010] [04:49:32] <mato>	mikko: wow, that looks good
+| [Monday 29 November 2010] [04:49:49] <mato>	mikko: one problem
+| [Monday 29 November 2010] [04:49:53] <mikko>	mato: it moves things more into direction that it checks if the flag is supported
+| [Monday 29 November 2010] [04:50:00] <mikko>	rather than just adding
+| [Monday 29 November 2010] [04:50:04] <mato>	mikko: your changes to zmq.h/zmq_utils.h don't make sense
+| [Monday 29 November 2010] [04:50:24] <mato>	mikko: because a) ZMQ_HAVE_<anything> is not present and can't be tested against in zmq.h/zmq_utils.h
+| [Monday 29 November 2010] [04:50:32] <mikko>	mato: i can revert that 
+| [Monday 29 November 2010] [04:50:42] <mikko>	mato: that breaks clang on daily builds
+| [Monday 29 November 2010] [04:50:45] <mikko>	the visibility
+| [Monday 29 November 2010] [04:50:48] <mato>	i know
+| [Monday 29 November 2010] [04:50:52] <mato>	the problem is...
+| [Monday 29 November 2010] [04:50:58] <mikko>	it poses as gcc
+| [Monday 29 November 2010] [04:51:02] <mikko>	without supporting gcc things
+| [Monday 29 November 2010] [04:51:04] <mato>	yes, and does a bad job :-)
+| [Monday 29 November 2010] [04:51:30] <mikko>	clang 2.2+ supports visibility ok 
+| [Monday 29 November 2010] [04:51:33] <mato>	well, the problem is, AFAIK the visibility bits should be in the function declarations also
+| [Monday 29 November 2010] [04:51:44] <mikko>	i wonder if this is a non-issue
+| [Monday 29 November 2010] [04:52:01] <mikko>	the daily builds run with clang 1.1 (age old debian shipped version)
+| [Monday 29 November 2010] [04:52:01] <mato>	I'm not 100% sure about it, but Drepper's piece on shared libraries claims so and so does MSFT for __declspec
+| [Monday 29 November 2010] [04:52:10] <mato>	I reckon it's a non-issue
+| [Monday 29 November 2010] [04:52:19] <mikko>	i could upgrade clang on daily build box
+| [Monday 29 November 2010] [04:52:23] <mato>	If clang is posing as GCC, then it better do that properly
+| [Monday 29 November 2010] [04:52:30] <mikko>	to a version from this century :)
+| [Monday 29 November 2010] [04:52:34] <mato>	yeah
+| [Monday 29 November 2010] [04:53:06] <CIA-20>	zeromq2: 03Steven McCoy 07master * r28db150 10/ src/thread.cpp : 
+| [Monday 29 November 2010] [04:53:06] <CIA-20>	zeromq2: Fix thread thunker scope for MSVC.
+| [Monday 29 November 2010] [04:53:06] <CIA-20>	zeromq2: Signed-off-by: Steven McCoy <steven.mccoy@miru.hk> - http://bit.ly/hIM3js
+| [Monday 29 November 2010] [04:53:09] <mikko>	so, only check for -fvisibility compiler flag is needed
+| [Monday 29 November 2010] [04:53:13] <mato>	anyhow, I like the overall idea (test for XXXX being supported, rather than enumerating all the combinations where it might/might not work)
+| [Monday 29 November 2010] [04:53:46] <mikko>	i wrote a bashrc for myself to switch compilers / build zeromq for testing :)
+| [Monday 29 November 2010] [04:53:54] <mikko>	built probably 100+ times during the weekend
+| [Monday 29 November 2010] [04:53:58] <mato>	reading further thru the patch ...
+| [Monday 29 November 2010] [04:54:17] <mato>	it's not obvious what the default outcome (and others) of AC_ZMQ_CHECK_ENABLE_DEBUG
+| [Monday 29 November 2010] [04:54:21] <mato>	is
+| [Monday 29 November 2010] [04:54:42] <mato>	i.e. the comment block should probably say what the intended result is with the various autoconf settings that may affect that
+| [Monday 29 November 2010] [04:55:13] <mikko>	it should also support [action-if-true], [action-if-false]
+| [Monday 29 November 2010] [04:55:26] <mikko>	just for reusability
+| [Monday 29 November 2010] [04:55:38] <mikko>	so that these macros can be used for example in ZFL build as well
+| [Monday 29 November 2010] [04:55:45] <mato>	sure
+| [Monday 29 November 2010] [04:56:22] <mato>	there's some bogus indentation in AC_ZMQ_CHECK_COMPILERS
+| [Monday 29 November 2010] [04:57:21] <mato>	why the different CHECK_LANG_FLAG and CHECK_LANG_FLAG_PREPEND?
+| [Monday 29 November 2010] [04:57:49] <mikko>	mato: becuase the former takes a copy of CFLAGS 
+| [Monday 29 November 2010] [04:57:53] <mato>	and there's a typo in the comment on line 370
+| [Monday 29 November 2010] [04:58:06] <mikko>	if you modify them in action-if-found its hard to know what flags have been modified
+| [Monday 29 November 2010] [04:58:25] <mato>	well, you say in the comment blocks to both not to do that anyway :-)
+| [Monday 29 November 2010] [04:58:45] <mikko>	yeah, thats why there is the prepend on 
+| [Monday 29 November 2010] [04:58:52] <mikko>	allows you to prepend to flags easily
+| [Monday 29 November 2010] [04:59:18] <mato>	um, so the non-prepend just checks for support but leaves the resulting flags alone?
+| [Monday 29 November 2010] [04:59:26] <mikko>	yes
+| [Monday 29 November 2010] [04:59:29] <mato>	vs. the prepend that actually changes the resulting flags?
+| [Monday 29 November 2010] [04:59:41] <mikko>	yes, it prepends to CFLAGS or CPPFLAGS
+| [Monday 29 November 2010] [04:59:56] <mato>	ok, that was not obvious from reading the comment block or the function name
+| [Monday 29 November 2010] [04:59:56] <mikko>	whatever is the given language 
+| [Monday 29 November 2010] [05:00:12] <mikko>	i think i need to comment them all more clearly
+| [Monday 29 November 2010] [05:00:18] <mato>	I haven't had enough coffee to attempt reading the actual Autoconf code :-)
+| [Monday 29 November 2010] [05:01:54] <mato>	anyway, thanks for this, your patience with autoconf is impressive 
+| [Monday 29 November 2010] [05:02:12] <mato>	mikko: i'd say just submit the whole lot as a single patch once you're done reviewing
+| [Monday 29 November 2010] [05:02:26] <mato>	mikko: just list all the separate bits in the commit message
+| [Monday 29 November 2010] [05:02:30] <mikko>	mato: ok
+| [Monday 29 November 2010] [05:02:45] <mato>	it's all build-related anyway, so no point in splitting it up
+| [Monday 29 November 2010] [05:03:07] <mikko>	cool, i'll form a patch during today
+| [Monday 29 November 2010] [05:04:05] <mikko>	im beginning to like sun studio as a compiler
+| [Monday 29 November 2010] [05:04:11] <mikko>	it seems to be the strictest of them all
+| [Monday 29 November 2010] [05:04:38] <mikko>	when you enable -compat=5 +w -errwarn=%all (equals to -pedantic -Wall -Werror)
+| [Monday 29 November 2010] [05:10:05] <sustrik__>	mato: what about the DSO visibility patch?
+| [Monday 29 November 2010] [05:10:08] <sustrik__>	should i apply it?
+| [Monday 29 November 2010] [05:11:09] <mato>	sustrik__: mikko's work in progress supersedes that
+| [Monday 29 November 2010] [05:11:41] <sustrik__>	ok
+| [Monday 29 November 2010] [05:12:27] <mato>	mikko: although... regarding the visibility stuff, we still have no way of testing ZMQ_HAVE_VISIBILITY in zmq.h
+| [Monday 29 November 2010] [05:13:15] <mikko>	mato: i think we can remove that part
+| [Monday 29 November 2010] [05:13:24] <mikko>	and just check for -fvisibility and rely on gcc version
+| [Monday 29 November 2010] [05:13:37] <mikko>	clang 2.2+ handles that properly
+| [Monday 29 November 2010] [05:13:46] <mato>	mikko: yup, but keep the AC_ZMQ_CHECK_LANG_PRAGMA macro around anyway, it'll come in handy
+| [Monday 29 November 2010] [05:14:07] <mikko>	mato: yeah, i thought that too
+| [Monday 29 November 2010] [05:14:08] <mato>	mikko: incidentally, if you look in the openpgm source it also does symbol visibility for sun studio using their syntax
+| [Monday 29 November 2010] [05:14:16] <mato>	mikko: so you can try and make that work if you feel like it
+| [Monday 29 November 2010] [05:14:31] <mikko>	mato: sure, i am getting into this autoconf stuff
+| [Monday 29 November 2010] [05:14:34] <mato>	mikko: the objective is that the DSO only exports the actual zmq_* API functions and nothing else.
+| [Monday 29 November 2010] [05:15:07] <mato>	mikko: there are also various other ways to do it, but they're all more annoying (linker map files, etc.) so I picked -fvisibility as the least invasive approach for now
+| [Monday 29 November 2010] [05:17:10] <mikko>	mato: http://developers.sun.com/solaris/articles/symbol_scope.html
+| [Monday 29 November 2010] [05:18:18] <mikko>	i think i need to define ZMQ_EXPORT to __global using sun studio
+| [Monday 29 November 2010] [05:18:25] <mato>	mikko: hmm, right
+| [Monday 29 November 2010] [05:19:18] <mato>	mikko: in that case, we could skip the pragma and use the __attribute__ ((visibility("default")))
+| [Monday 29 November 2010] [05:19:24] <mato>	mikko: (for GCC)
+| [Monday 29 November 2010] [05:19:35] <mato>	mikko: see e.g. http://gcc.gnu.org/wiki/Visibility
+| [Monday 29 November 2010] [05:20:05] <mato>	mikko: anyhow, you can verify the result both by running nm src/.libs/libzmq.so | grep ' T '
+| [Monday 29 November 2010] [05:20:22] <mato>	mikko: which should show only zmq_* (plus the _init , _fini and internal bits)
+| [Monday 29 November 2010] [05:23:36] <mato>	mikko: and/or readelf --use-dynamic --syms src/.libs/libzmq.so 
+| [Monday 29 November 2010] [05:23:50] <mikko>	i think -fvisibility=hidden works with ICC as well
+| [Monday 29 November 2010] [05:24:32] <mikko>	http://software.intel.com/sites/products/documentation/studio/composer/en-us/2011/compiler_c/optaps/common/optaps_cmp_visib.htm
+| [Monday 29 November 2010] [05:24:46] <mikko>	it also supports __attribute__ ((visibility ("default")));
+| [Monday 29 November 2010] [06:21:18] <kobus_>	Hi, I would appreciate some pointers on problem troubleshooting. I'm running the weather update server and client (C++ code) and the server is sending, but the client is not receiving any messages.
+| [Monday 29 November 2010] [06:21:59] <kobus_>	I'm building the code on Windows with MinGW
+| [Monday 29 November 2010] [06:35:18] <mikko>	kobus_: sure
+| [Monday 29 November 2010] [06:35:34] <mikko>	kobus_: is this PUB/SUB?
+| [Monday 29 November 2010] [06:36:26] <kobus_>	mikko: Yes. I couldn't get my code to work, so I resorted to getting samples to work.
+| [Monday 29 November 2010] [06:38:00] <mikko>	kobus_: did you remember to subscribe to topics on the SUB side?
+| [Monday 29 November 2010] [06:42:36] <kobus_>	The client conneccts directly to the server. https://github.com/imatix/zguide/blob/master/examples/C%2B%2B/wuclient.cpp
+| [Monday 29 November 2010] [06:42:51] <kobus_>	mikko: I think...
+| [Monday 29 November 2010] [06:43:14] <mikko>	kobus_: are you publishing in the topic ?
+| [Monday 29 November 2010] [06:48:12] <kobus_>	mikko: it is a client-server example
+| [Monday 29 November 2010] [06:57:16] <kobus_>	mikko: I'm not sure how you publish in a topic. This example doesn't make use of a broker; looks like a tcp client & server to me
+| [Monday 29 November 2010] [07:10:24] <kobus_>	mikko: as I understand this is the subscription: subscriber.setsockopt(ZMQ_SUBSCRIBE, filter, strlen (filter));
+| [Monday 29 November 2010] [07:14:51] <mikko>	kobus_: yes
+| [Monday 29 November 2010] [07:15:01] <mikko>	kobus_: the message you publish needs to start with that prefix
+| [Monday 29 November 2010] [07:19:54] <kobus_>	mikko: I changed the server to prefix the message with the same "zipcode" as the client subscribes to and now it works. Thanks!
+| [Monday 29 November 2010] [07:24:23] <mikko>	kobus_: no problem
+| [Monday 29 November 2010] [17:33:34] <magicblaze0071>	I'm trying to get a file transferred between two machines behind nat (without loading up a central server too much). Can this be done using zeromq?
+| [Monday 29 November 2010] [17:34:01] <magicblaze0071>	is anyone here using zeromq on windows with python?
+| [Monday 29 November 2010] [18:08:40] <mikko>	magicblaze0071: your question is one layer below zeromq
+| [Monday 29 November 2010] [18:09:04] <mikko>	magicblaze0071: it sounds more like a routing/networking questions
+| [Monday 29 November 2010] [18:09:20] <mikko>	magicblaze0071: if you use tcp:// transport for example the semantics for the transfer are the same as with tcp socket
+| [Monday 29 November 2010] [18:09:29] <mikko>	magicblaze0071: not sure about windows python zmq users
+| [Monday 29 November 2010] [18:09:36] <mikko>	do you have a specific problem?
+| [Monday 29 November 2010] [18:38:13] <magicblaze0071>	mikko: My first problem is installation on a windows 7 machine
+| [Monday 29 November 2010] [18:38:50] <magicblaze0071>	I tried to copy the dll file in src\zmq directory and then point setup.cfg into that directory...but couldnt compile it.
+| [Monday 29 November 2010] [18:39:10] <magicblaze0071>	I would prefer to get a copy that I dont have to compile myself, because i've to ship code to my users who cant compile things
+| [Monday 29 November 2010] [18:41:23] <Guthur>	magicblaze0071, you get the dll from the zmq/lib directory
+| [Monday 29 November 2010] [18:41:54] <Guthur>	follow the instructions for building libzmq
+| [Monday 29 November 2010] [18:42:11] <Guthur>	then grab the dll, and follow the instructions for building pyzmq
+| [Monday 29 November 2010] [18:42:51] <Guthur>	I haven't used the pyzmq binding so beyond that I can't say
+| [Monday 29 November 2010] [18:43:55] <Guthur>	There should be no reason for you to require your users to install libzmq, the dll is all you need
+| [Monday 29 November 2010] [18:47:08] <magicblaze0071>	Guthur: what I dont know is, once i get the .dll file, how to import it in python...can i just say "import zmq"?
+| [Monday 29 November 2010] [18:47:50] <Guthur>	I'm not sure of pythons exact process for foreign func calls
+| [Monday 29 November 2010] [18:48:02] <Guthur>	but pyzmq 'should' take care of it
+| [Monday 29 November 2010] [18:48:22] <magicblaze0071>	it seems that pyzmq needs a C/cpp compiler to link the dll to something else perhaps?
+| [Monday 29 November 2010] [18:48:41] <magicblaze0071>	I've the pyzmq and the dll in the pyzmq src/zmq directory.
+| [Monday 29 November 2010] [18:48:53] <magicblaze0071>	It seems pyzmq install needs the compilers as well...
+| [Monday 29 November 2010] [18:48:56] <Guthur>	have you built pyzmq?
+| [Monday 29 November 2010] [18:49:05] <magicblaze0071>	no
+| [Monday 29 November 2010] [18:49:30] <magicblaze0071>	but if i build it, wont i have to build it on my users machines as well? or can i copy some files ?
+| [Monday 29 November 2010] [18:49:30] <Guthur>	well then you aren't going to get very far, hehe
+| [Monday 29 November 2010] [18:49:35] <Guthur>	you need to build it
+| [Monday 29 November 2010] [18:49:54] <Guthur>	nope you should get some sort of python lib I would imagine
+| [Monday 29 November 2010] [18:50:01] <magicblaze0071>	k, say i am able to build it, how do i ship the built copy? 
+| [Monday 29 November 2010] [18:50:30] <Guthur>	it should be just a python lib, and you would most likely need to include the libzmq.dll as well
+| [Monday 29 November 2010] [18:50:36] <magicblaze0071>	Hasnt anyone here done that already? built pyzmq on windows? I was hoping to get the prebuilt files so that i cud ship the same thing to my users.
+| [Monday 29 November 2010] [18:51:35] <Guthur>	to be honest I'm surprised you haven't built it already
+| [Monday 29 November 2010] [18:52:44] <magicblaze0071>	k, lemme build it
+| [Monday 29 November 2010] [18:52:56] <Guthur>	that's the spirit, hehe
+| [Monday 29 November 2010] [21:46:38] <xunker>	the 0mq.org page recommended I ask questions where if they aren't made clear in the docs, I've got one.  I can't find somewhere where it says, yes or no, if you can use topics with something other than PUB/SUB sockets.  Can I use 'topics' with say, PUSH/PULL socket pairs?
+| [Tuesday 30 November 2010] [09:32:16] Notice	-NickServ- This nickname is registered. Please choose a different nickname, or identify via /msg NickServ identify <password>.
+| [Tuesday 30 November 2010] [09:32:16] Notice	-NickServ- You are now identified for travlr.
+| [Tuesday 30 November 2010] [09:32:16] CTCP	Received Version request from frigg.
+| [Tuesday 30 November 2010] [10:15:04] <mikko>	mato: are you applying against master?
+| [Tuesday 30 November 2010] [10:15:14] <mikko>	mato: it complains about whitespace but applies here
+| [Tuesday 30 November 2010] [10:15:55] <mato>	mikko: yup, master
+| [Tuesday 30 November 2010] [10:16:11] <mato>	mikko: hmm, just looking at my git log
+| [Tuesday 30 November 2010] [10:16:19] <mikko>	mato: because i took a fresh git clone
+| [Tuesday 30 November 2010] [10:16:21] <mikko>	and it applies
+| [Tuesday 30 November 2010] [10:16:27] <mato>	mikko: looks like my master branch may have diverged, damn....
+| [Tuesday 30 November 2010] [10:16:56] <mato>	let me try and fix this...
+| [Tuesday 30 November 2010] [10:17:02] <mikko>	http://valokuva.org/~mikko/0001-Prefix-all-custom-macros-with-AC_ZMQ_.patch
+| [Tuesday 30 November 2010] [10:17:08] <mikko>	there it is with whitespace cleaned
+| [Tuesday 30 November 2010] [10:17:26] <mikko>	it's a bit heavy to send to mailing-list (>40k patch)
+| [Tuesday 30 November 2010] [10:18:06] <mato>	mikko: ok, it was some divergence on my master branch
+| [Tuesday 30 November 2010] [10:18:16] <mato>	mikko: sorry for the confusion...
+| [Tuesday 30 November 2010] [10:18:21] <mato>	am going to test it now
+| [Tuesday 30 November 2010] [10:18:26] <mikko>	no problem
+| [Tuesday 30 November 2010] [10:18:41] <mato>	by the way, we can remove the check for pkg-config in autogen.sh too I guess
+| [Tuesday 30 November 2010] [10:19:03] <mato>	all the pkg-config stuff was there due to the OpenPGM 2.x build depending on it
+| [Tuesday 30 November 2010] [10:19:28] <mikko>	ok
+| [Tuesday 30 November 2010] [10:34:58] <mato>	mikko: you wouldn't happen to have an oldish RHEL/CentOS installation lying around?
+| [Tuesday 30 November 2010] [10:35:40] <mikko>	i got centos 5.5 here
+| [Tuesday 30 November 2010] [10:35:41] <mato>	mikko: say some 5.x or 4.x? I'd like to see if this last set of changes breaks/fixes anything
+| [Tuesday 30 November 2010] [10:36:03] <mikko>	32 or 64 ?
+| [Tuesday 30 November 2010] [10:36:06] <mato>	can you try a random out-of-the-box build on it just to sanity check it works?
+| [Tuesday 30 November 2010] [10:36:08] <mikko>	or makes no difference
+| [Tuesday 30 November 2010] [10:36:12] <mato>	no difference
+| [Tuesday 30 November 2010] [10:36:22] <mikko>	gimme a min
+| [Tuesday 30 November 2010] [10:36:28] <mikko>	need to make dist on a newer machine
+| [Tuesday 30 November 2010] [10:36:36] <mato>	oh, and try --with-pgm as well if you can
+| [Tuesday 30 November 2010] [10:36:47] <mato>	if all that works then i think we're good to go
+| [Tuesday 30 November 2010] [10:42:18] <mato>	mikko: This isn't right:
+| [Tuesday 30 November 2010] [10:42:26] <mato>	checking for asciidoc... no
+| [Tuesday 30 November 2010] [10:42:26] <mato>	checking for xmlto... no
+| [Tuesday 30 November 2010] [10:42:26] <mato>	checking whether to build documentation... yes
+| [Tuesday 30 November 2010] [10:42:44] <mato>	this is on some FreeBSD box w/o asciidoc on it, building from a "make dist" with your patch
+| [Tuesday 30 November 2010] [10:43:02] <mato>	obviously fails later on because it tries to use asciidoc
+| [Tuesday 30 November 2010] [10:44:28] <mato>	oh, typo in your patch
+| [Tuesday 30 November 2010] [10:45:54] <mato>	fixing....
+| [Tuesday 30 November 2010] [10:48:30] <mikko>	builds on 5.5 with and without pgm
+| [Tuesday 30 November 2010] [10:48:34] <mato>	good
+| [Tuesday 30 November 2010] [10:49:59] <mikko>	yes
+| [Tuesday 30 November 2010] [10:50:00] <mikko>	+        if test "x$ac_zmq_cv_have_asciidoc" = "xno" -o "x$ac_zmq_cv_have_xmlto" = "xno"; then
+| [Tuesday 30 November 2010] [10:50:06] <mato>	yup
+| [Tuesday 30 November 2010] [10:50:06] <mikko>	cv is too much
+| [Tuesday 30 November 2010] [10:50:19] <mato>	by the way, which variables are supposed to have _cv_ and which arent?
+| [Tuesday 30 November 2010] [10:50:47] <mato>	http://pastebin.com/cGqKqavz
+| [Tuesday 30 November 2010] [10:50:54] <mato>	this should make it work, am going to test
+| [Tuesday 30 November 2010] [10:52:45] <mikko>	cv are ones that are cached
+| [Tuesday 30 November 2010] [10:53:03] <mikko>	i named most of the publicly visible ones "_cv_ because it's easier to add caching to them later
+| [Tuesday 30 November 2010] [10:53:12] <mikko>	cv = cache value
+| [Tuesday 30 November 2010] [10:53:18] <mato>	right
+| [Tuesday 30 November 2010] [10:53:56] <mato>	checking whether C compiler supports -fvisibility=hidden... no
+| [Tuesday 30 November 2010] [10:53:56] <mato>	checking whether C compiler supports "-xldscope=hidden"... no
+| [Tuesday 30 November 2010] [10:53:56] <mato>	checking whether C++ compiler supports -fvisibility=hidden... no
+| [Tuesday 30 November 2010] [10:53:56] <mato>	checking whether C++ compiler supports "-xldscope=hidden"... no
+| [Tuesday 30 November 2010] [10:53:56] <mato>	checking whether C++ compiler supports -mcpu=v9... yes
+| [Tuesday 30 November 2010] [10:54:06] <mato>	are those quotation marks supposed to be there?
+| [Tuesday 30 November 2010] [10:54:18] <mato>	(this is GCC 3.4.3 on Solaris 10 SPARC)
+| [Tuesday 30 November 2010] [10:54:35] <mato>	not that I expect it to support visibility, but the quotes look weird
+| [Tuesday 30 November 2010] [10:54:41] <mikko>	the quotes can be removed
+| [Tuesday 30 November 2010] [10:54:51] <mikko>	they shouldn't make a difference, looks cleaner without them
+| [Tuesday 30 November 2010] [10:55:09] <mato>	up to you, I think I have Sun CC on here as well so will try with that oo
+| [Tuesday 30 November 2010] [10:55:10] <mato>	too
+| [Tuesday 30 November 2010] [10:55:11] <mikko>	as those go into compiler line gcc "-xldscope=hidden" == gcc -xldscope=hidden
+| [Tuesday 30 November 2010] [10:55:16] <mato>	right
+| [Tuesday 30 November 2010] [10:55:23] <mikko>	better put them off
+| [Tuesday 30 November 2010] [11:01:46] <mato>	sustrik__: Assertion failed: nbytes == sizeof (command_t) (mailbox.cpp:193)
+| [Tuesday 30 November 2010] [11:01:57] <mato>	sustrik__: in test_reqrep_tcp
+| [Tuesday 30 November 2010] [11:02:23] <mato>	sustrik__: looks like the auto-resizing code in mailbox.cpp is completely bogus on FreeBSD too :-(
+| [Tuesday 30 November 2010] [11:02:46] <mato>	sustrik__: anyway, not something I want to solve now, but it seems that the auto-resizing approach is no good...
+| [Tuesday 30 November 2010] [11:03:04] <mato>	let's see if the tests pass on Solaris at least...
+| [Tuesday 30 November 2010] [11:03:42] <mato>	hmm, Too many open files :-)
+| [Tuesday 30 November 2010] [11:04:54] <mato>	ok, the tests pass if I raise the # of open files to 1024 from Solaris' default 256
+| [Tuesday 30 November 2010] [11:06:30] <mikko>	mato: valokuva.org/~mikko/0001-Prefix-variables-with-ac_zmq_.patch
+| [Tuesday 30 November 2010] [11:06:37] <mikko>	mato: autogen check for pkg-config removed
+| [Tuesday 30 November 2010] [11:06:42] <mikko>	fixed the variable name typos
+| [Tuesday 30 November 2010] [11:07:01] <mato>	great
+| [Tuesday 30 November 2010] [11:07:11] <mato>	building with Sun C on Solaris 10 SPARC now....
+| [Tuesday 30 November 2010] [11:13:53] <mato>	and it all works, nice ...
+| [Tuesday 30 November 2010] [11:18:34] <mikko>	there should be some macros that can be used in the future
+| [Tuesday 30 November 2010] [11:18:56] <mato>	yes... this is really good work, thanks!
+| [Tuesday 30 November 2010] [11:19:12] <mato>	just trying -xtarget=native -fast with Sun C for good measure
+| [Tuesday 30 November 2010] [11:19:34] <mato>	and to see if we still honor CFLAGS/CXXFLAGS correctly
+| [Tuesday 30 November 2010] [11:31:24] <mato>	mikko: ok, so the current version on valokuva.org is the latest?
+| [Tuesday 30 November 2010] [11:41:20] <mikko>	y
+| [Tuesday 30 November 2010] [11:45:22] <mato>	mikko: ok, great, it all checks out...
+| [Tuesday 30 November 2010] [11:45:39] <mato>	mikko: Please send the latest version to the ML, I'll reply to it that it's the correct version that Martin should apply.
+| [Tuesday 30 November 2010] [11:46:16] <mato>	mikko: The plan is to make a first release of master tomorrow (2.1.0).
+| [Tuesday 30 November 2010] [11:58:41] <mikko>	mato: ill mail a link to it
+| [Tuesday 30 November 2010] [11:58:55] <mikko>	it's a bit big to spam to everyones mailbox
+| [Tuesday 30 November 2010] [11:59:51] <mato>	mikko: ok, sure
