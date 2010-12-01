@@ -122,3 +122,151 @@
 | [Wednesday 01 December 2010] [01:13:36] <Nate75Sanders>	haha
 | [Wednesday 01 December 2010] [01:13:38] <Nate75Sanders>	nice
 | [Wednesday 01 December 2010] [01:16:06] <guido_g>	i'd have a project using all this fun stuff -- if i would be better sales guy
+| [Wednesday 01 December 2010] [04:21:15] <mikko>	good morning
+| [Wednesday 01 December 2010] [04:27:55] <CIA-20>	zeromq2: 03Martin Lucina 07maint * r289b1f5 10/ src/kqueue.cpp : 
+| [Wednesday 01 December 2010] [04:27:55] <CIA-20>	zeromq2: Remove unnecessary cast in kevent_delete
+| [Wednesday 01 December 2010] [04:27:55] <CIA-20>	zeromq2: Fixes the build on NetBSD where the compiler complains about casting NULL
+| [Wednesday 01 December 2010] [04:27:55] <CIA-20>	zeromq2: to (int).
+| [Wednesday 01 December 2010] [04:27:55] <CIA-20>	zeromq2: Signed-off-by: Martin Lucina <mato@kotelna.sk> - http://bit.ly/esACki
+| [Wednesday 01 December 2010] [04:27:56] <CIA-20>	zeromq2: 03Martin Lucina 07master * r289b1f5 10/ src/kqueue.cpp : 
+| [Wednesday 01 December 2010] [04:27:56] <CIA-20>	zeromq2: Remove unnecessary cast in kevent_delete
+| [Wednesday 01 December 2010] [04:27:57] <CIA-20>	zeromq2: Fixes the build on NetBSD where the compiler complains about casting NULL
+| [Wednesday 01 December 2010] [04:27:57] <CIA-20>	zeromq2: to (int).
+| [Wednesday 01 December 2010] [04:27:58] <CIA-20>	zeromq2: Signed-off-by: Martin Lucina <mato@kotelna.sk> - http://bit.ly/esACki
+| [Wednesday 01 December 2010] [04:27:58] <CIA-20>	zeromq2: 03Martin Sustrik 07master * r17d7e6e 10/ src/kqueue.cpp : 
+| [Wednesday 01 December 2010] [04:27:59] <CIA-20>	zeromq2: Merge branch 'maint'
+| [Wednesday 01 December 2010] [04:28:53] <CIA-20>	zeromq2:  Remove unnecessary cast in kevent_delete
+| [Wednesday 01 December 2010] [04:28:53] <CIA-20>	zeromq2: Conflicts:
+| [Wednesday 01 December 2010] [04:28:53] <CIA-20>	zeromq2:  src/kqueue.cpp
+| [Wednesday 01 December 2010] [04:28:53] <CIA-20>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/gqsKEN
+| [Wednesday 01 December 2010] [04:34:02] <CIA-20>	zeromq2: 03Mikko Koppanen 07master * r5bb0a33 10/ (5 files in 2 dirs): (log message trimmed)
+| [Wednesday 01 December 2010] [04:34:02] <CIA-20>	zeromq2: Prefix variables with "ac_zmq_"
+| [Wednesday 01 December 2010] [04:34:02] <CIA-20>	zeromq2:  - Added a macro for checking clang compiler
+| [Wednesday 01 December 2010] [04:34:02] <CIA-20>	zeromq2:  - Moved basic compiler checks to a macro
+| [Wednesday 01 December 2010] [04:34:02] <CIA-20>	zeromq2:  - Added a macro for checking if compiler supports a flag
+| [Wednesday 01 December 2010] [04:34:02] <CIA-20>	zeromq2:  - Added --enable-debug flag
+| [Wednesday 01 December 2010] [04:34:03] <CIA-20>	zeromq2:  - Added a macro for running normal autoconf check with compiler flags
+| [Wednesday 01 December 2010] [04:47:39] <m_>	exit
+| [Wednesday 01 December 2010] [04:58:17] <CIA-20>	zeromq2: 03Martin Lucina 07master * rb70d628 10/ (11 files): 
+| [Wednesday 01 December 2010] [04:58:18] <CIA-20>	zeromq2: Documentation updates for 2.1
+| [Wednesday 01 December 2010] [04:58:18] <CIA-20>	zeromq2: - Clarify ZMQ_LINGER, zmq_close (), zmq_term () relationship
+| [Wednesday 01 December 2010] [04:58:18] <CIA-20>	zeromq2: - New socket options
+| [Wednesday 01 December 2010] [04:58:18] <CIA-20>	zeromq2: - Clarify thread safety of sockets and migration between threads
+| [Wednesday 01 December 2010] [04:58:18] <CIA-20>	zeromq2: - Other minor and spelling fixes
+| [Wednesday 01 December 2010] [04:58:18] <CIA-20>	zeromq2: Signed-off-by: Martin Lucina <mato@kotelna.sk> - http://bit.ly/hV39nD
+| [Wednesday 01 December 2010] [05:12:05] <CIA-20>	zeromq2: 03Martin Lucina 07master * r520d621 10/ configure.in : 
+| [Wednesday 01 December 2010] [05:12:05] <CIA-20>	zeromq2: Bump ABI version to 1:0:0 for ZeroMQ 2.1.0 release
+| [Wednesday 01 December 2010] [05:12:05] <CIA-20>	zeromq2: Signed-off-by: Martin Lucina <mato@kotelna.sk> - http://bit.ly/h94kRn
+| [Wednesday 01 December 2010] [05:34:28] <vaadim>	Hello, all.
+| [Wednesday 01 December 2010] [05:34:57] <vaadim>	Anybody can to help me?
+| [Wednesday 01 December 2010] [05:35:26] <vaadim>	I have a critical error in object.cpp file.
+| [Wednesday 01 December 2010] [05:35:41] <mikko>	vaadim: what is the error?
+| [Wednesday 01 December 2010] [05:36:01] <vaadim>	Version 2.0.10 for windows.
+| [Wednesday 01 December 2010] [05:37:11] <vaadim>	I write test project for client and server applications. Run zmq::queue() function.
+| [Wednesday 01 December 2010] [05:37:57] <mikko>	what is the actual error?
+| [Wednesday 01 December 2010] [05:38:15] <vaadim>	This function call zmq_poll->zmq::app_thread_t::process_commands->process_bind and
+| [Wednesday 01 December 2010] [05:38:45] <vaadim>	in  case command_t::bind:  process_bind (cmd_.args.bind.in_pipe, cmd_.args.bind.out_pipe,             blob_t (cmd_.args.bind.peer_identity,             cmd_.args.bind.peer_identity_size));
+| [Wednesday 01 December 2010] [05:39:20] <vaadim>	and cmd_.args.bind.peer_identity have a Bad Ptr == 0x0000000
+| [Wednesday 01 December 2010] [05:39:26] <vaadim>	crash
+| [Wednesday 01 December 2010] [05:40:22] <mikko>	does the same thing happen with github master?
+| [Wednesday 01 December 2010] [05:40:27] <mikko>	can you test?
+| [Wednesday 01 December 2010] [05:40:38] <mikko>	and is this easy to reproduce?
+| [Wednesday 01 December 2010] [05:42:28] <vaadim>	I was try latest version in github, but this version have another problems, and i revert to version 2.0.10 back
+| [Wednesday 01 December 2010] [05:42:45] <vaadim>	I can show my test project
+| [Wednesday 01 December 2010] [05:42:59] <mikko>	what is the problem you had with the latest version?
+| [Wednesday 01 December 2010] [05:44:34] <vaadim>	Current version in github is stable ? I need stable version for commercial project.
+| [Wednesday 01 December 2010] [05:45:28] <mikko>	what i am intersted in what are the problems you are seeing so that they can be fixed
+| [Wednesday 01 December 2010] [05:45:44] <mikko>	i would like you to test the github master to see if the issue with the null pointer has been fixed already
+| [Wednesday 01 December 2010] [05:47:32] <vaadim>	OK. I will try master from github again. And I will come back with another bag's :)
+| [Wednesday 01 December 2010] [05:47:52] <vaadim>	Thank you for help :)
+| [Wednesday 01 December 2010] [05:52:53] <CIA-20>	zeromq2: 03Steven McCoy 07master * r4a3ed39 10/ (3 files in 2 dirs): 
+| [Wednesday 01 December 2010] [05:52:53] <CIA-20>	zeromq2: Bump OpenPGM to 5.0.92.
+| [Wednesday 01 December 2010] [05:52:53] <CIA-20>	zeromq2: Signed-off-by: Steven McCoy <steven.mccoy@miru.hk> - http://bit.ly/fLKN5H
+| [Wednesday 01 December 2010] [05:57:05] <Steve-o>	thx Mato
+| [Wednesday 01 December 2010] [05:57:31] <CIA-20>	zeromq2: 03Martin Lucina 07master * rabc8b5e 10/ NEWS : 
+| [Wednesday 01 December 2010] [05:57:31] <CIA-20>	zeromq2: Update NEWS file for 2.1.0 release
+| [Wednesday 01 December 2010] [05:57:31] <CIA-20>	zeromq2: Signed-off-by: Martin Lucina <mato@kotelna.sk> - http://bit.ly/hXdp5N
+| [Wednesday 01 December 2010] [06:16:40] <rgl>	w00t 2.1 has hit the streets?
+| [Wednesday 01 December 2010] [06:16:48] <mato>	almost
+| [Wednesday 01 December 2010] [06:16:59] <mato>	due to DNS issues the announcement will go out this evening
+| [Wednesday 01 December 2010] [06:17:06] <mato>	but it's in Git anyhow :-)
+| [Wednesday 01 December 2010] [06:18:57] <mikko>	ill run daily builds now just to see that everything works
+| [Wednesday 01 December 2010] [06:19:03] <rgl>	:)
+| [Wednesday 01 December 2010] [06:19:28] <mikko>	building now
+| [Wednesday 01 December 2010] [06:19:38] <rgl>	I just noticed Sockets may now be migrated between OS threads, as long as the
+| [Wednesday 01 December 2010] [06:19:38] <rgl>	 application ensures that a full memory barrier is issued.  ... are there any examples how to do it?
+| [Wednesday 01 December 2010] [06:21:02] <mikko>	is 2.1.0 going out as alpha or beta?
+| [Wednesday 01 December 2010] [06:22:38] <rgl>	from the NEWS files its Beta
+| [Wednesday 01 December 2010] [06:24:19] <sustrik>	rgl: when you migrate a thread you have no notify the other thread somehow
+| [Wednesday 01 December 2010] [06:24:42] <sustrik>	the mechanism you use for the notfication will execute the barrier
+| [Wednesday 01 December 2010] [06:24:53] <sustrik>	unless you are doing some black magic
+| [Wednesday 01 December 2010] [06:26:08] <rgl>	I see. alright :D
+| [Wednesday 01 December 2010] [06:33:07] <mikko>	success on all builds this far
+| [Wednesday 01 December 2010] [06:33:33] <sustrik>	goodo
+| [Wednesday 01 December 2010] [06:34:20] <mikko>	icc failed
+| [Wednesday 01 December 2010] [06:34:22] <mikko>	let's see
+| [Wednesday 01 December 2010] [06:34:37] <mikko>	it might be the shutdown stress test failing
+| [Wednesday 01 December 2010] [06:34:55] <mikko>	Bad file descriptor
+| [Wednesday 01 December 2010] [06:34:55] <mikko>	nbytes != -1 (tcp_socket.cpp:197)
+| [Wednesday 01 December 2010] [06:34:56] <mikko>	yes
+| [Wednesday 01 December 2010] [06:35:58] <sustrik>	yep, known issue
+| [Wednesday 01 December 2010] [06:36:53] <rgl>	mikko, where is the build system? got url?
+| [Wednesday 01 December 2010] [06:37:03] <mikko>	http://build.valokuva.org/
+| [Wednesday 01 December 2010] [06:38:12] <mikko>	i got my eye on sunfire server on ebay
+| [Wednesday 01 December 2010] [06:38:18] <mikko>	to add sparc into the build system
+| [Wednesday 01 December 2010] [06:38:36] <Steve-o>	incredibly cheap these days, ~US$100
+| [Wednesday 01 December 2010] [06:39:00] <Steve-o>	but also slow as lard, 100mb NICs often
+| [Wednesday 01 December 2010] [06:39:20] <mikko>	this one is Dual 1.3Ghz Processors
+| [Wednesday 01 December 2010] [06:39:29] <mikko>	i don't mind 100mb nic as it's just for building
+| [Wednesday 01 December 2010] [06:39:32] <mikko>	not really for testing
+| [Wednesday 01 December 2010] [06:40:17] <rgl>	mikko, no msvc build?
+| [Wednesday 01 December 2010] [06:40:26] <Steve-o>	memory is the most important though, don't skimp on that
+| [Wednesday 01 December 2010] [06:40:33] <mikko>	rgl: haven't got a windows running
+| [Wednesday 01 December 2010] [06:40:41] <mikko>	Steve-o: it comes with 4GB
+| [Wednesday 01 December 2010] [06:40:55] <vaadim>	Hello, I am here again.
+| [Wednesday 01 December 2010] [06:41:07] <mikko>	the annoyance is that the build machines are running in finland
+| [Wednesday 01 December 2010] [06:41:10] <mikko>	and i live in london
+| [Wednesday 01 December 2010] [06:41:18] <mikko>	need to either host it here or ship it over
+| [Wednesday 01 December 2010] [06:41:42] <sustrik>	does it make any difference?
+| [Wednesday 01 December 2010] [06:41:43] <rgl>	mikko, http://build.valokuva.org/view/clrzmq/ is using mono then?
+| [Wednesday 01 December 2010] [06:41:51] <mikko>	rgl: yes
+| [Wednesday 01 December 2010] [06:41:51] <vaadim>	mikko: i try the current version from github in my test project
+| [Wednesday 01 December 2010] [06:41:59] <mikko>	vaadim: ok
+| [Wednesday 01 December 2010] [06:42:12] <mikko>	sustrik: i got free hosting in finland
+| [Wednesday 01 December 2010] [06:42:16] <mikko>	that's the only difference
+| [Wednesday 01 December 2010] [06:42:42] <sustrik>	i see
+| [Wednesday 01 December 2010] [06:43:09] <rgl>	mikko, can you add clrmq2 into the clrmq tab too?
+| [Wednesday 01 December 2010] [06:43:32] <mikko>	rgl: done
+| [Wednesday 01 December 2010] [06:43:42] <mikko>	the regex for adding jobs there was outdated
+| [Wednesday 01 December 2010] [06:43:45] <vaadim>	My server stoped with error while i try break zmq_device by call zmq_term() for kill context
+| [Wednesday 01 December 2010] [06:43:46] <mikko>	clrzmq-.*
+| [Wednesday 01 December 2010] [06:43:53] <rgl>	thanks :)
+| [Wednesday 01 December 2010] [06:44:10] <mikko>	sustrik: what is the clean way to stop zmq device?
+| [Wednesday 01 December 2010] [06:44:24] <mikko>	vaadim: i am not sure if that is the way to stop a device
+| [Wednesday 01 December 2010] [06:46:21] <sustrik>	mikko: Ctrl+C?
+| [Wednesday 01 December 2010] [06:46:33] <sustrik>	there's no remote management for devices yet
+| [Wednesday 01 December 2010] [06:46:40] <vaadim>	I read this way in your mailing list archiew
+| [Wednesday 01 December 2010] [06:47:00] <vaadim>	wait a moment...
+| [Wednesday 01 December 2010] [06:47:51] <vaadim>	http://thread.gmane.org/gmane.network.zeromq.devel/2338/focus=2340
+| [Wednesday 01 December 2010] [06:48:30] <sustrik>	vaadim: the devices are dumb pieces of code
+| [Wednesday 01 December 2010] [06:48:43] <sustrik>	basically just a loop that reads from one socket and writes to another one
+| [Wednesday 01 December 2010] [06:49:00] <sustrik>	if you want a better functionality, like a remote management
+| [Wednesday 01 December 2010] [06:49:08] <sustrik>	you can add it there
+| [Wednesday 01 December 2010] [06:51:42] <vaadim>	Sorry, i'm not understand, how to stop loop in device. I need to stop both sockets ?
+| [Wednesday 01 December 2010] [06:52:51] <sustrik>	you just break out of the loop
+| [Wednesday 01 December 2010] [06:53:01] <sustrik>	that's it
+| [Wednesday 01 December 2010] [06:53:16] <vaadim>	How? Kill thread?
+| [Wednesday 01 December 2010] [06:53:37] <sustrik>	while (true) {
+| [Wednesday 01 December 2010] [06:53:39] <sustrik>	...
+| [Wednesday 01 December 2010] [06:53:50] <sustrik>	    if (...)
+| [Wednesday 01 December 2010] [06:53:52] <sustrik>	       break;
+| [Wednesday 01 December 2010] [06:53:55] <sustrik>	...
+| [Wednesday 01 December 2010] [06:53:55] <sustrik>	}
+| [Wednesday 01 December 2010] [06:55:11] <vaadim>	But zmq_device(ZMQ_QUEUE, clients, workers); bon't return control, and i can't make loop myself.
+| [Wednesday 01 December 2010] [06:55:26] <sustrik>	have a look at the source code
+| [Wednesday 01 December 2010] [06:55:27] <mikko>	vaadim: have you looked at the device code?
+| [Wednesday 01 December 2010] [06:55:47] <sustrik>	you just create your own device
+| [Wednesday 01 December 2010] [06:55:55] <sustrik>	and modify it in any way you want
+| [Wednesday 01 December 2010] [06:57:38] <vaadim>	Yeah, well, I'm gonna go build my own device, with blackjack and hookers. In fact, forget the device! :)
+| [Wednesday 01 December 2010] [06:59:54] <vaadim>	Ok, i can append third parameter to my_zmq_device with stop socket.
+| [Wednesday 01 December 2010] [07:00:25] <vaadim>	Thank's.
