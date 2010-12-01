@@ -270,3 +270,87 @@
 | [Wednesday 01 December 2010] [06:57:38] <vaadim>	Yeah, well, I'm gonna go build my own device, with blackjack and hookers. In fact, forget the device! :)
 | [Wednesday 01 December 2010] [06:59:54] <vaadim>	Ok, i can append third parameter to my_zmq_device with stop socket.
 | [Wednesday 01 December 2010] [07:00:25] <vaadim>	Thank's.
+| [Wednesday 01 December 2010] [11:06:31] <Remoun>	hi
+| [Wednesday 01 December 2010] [11:06:36] <Remoun>	I'm perusing the guide right now, but I thought I'd ask ahead: Can I overlay some sort of authentication mechanism for workers in a 0MQ-based system?
+| [Wednesday 01 December 2010] [11:07:01] <mikko>	Remoun: i don't see why what would prevent you from doing that
+| [Wednesday 01 December 2010] [11:07:29] <Remoun>	I don't see any reason, either; I just have no idea how yet
+| [Wednesday 01 December 2010] [11:07:41] <Remoun>	But it should be doable (in a transparent manner), right?
+| [Wednesday 01 December 2010] [11:07:52] <mikko>	what do you mean by transparent?
+| [Wednesday 01 December 2010] [11:07:59] <mikko>	you would need to implement it in your code
+| [Wednesday 01 December 2010] [11:08:06] <Remoun>	of course
+| [Wednesday 01 December 2010] [11:08:43] <Remoun>	basically, layering the auth on top of the sockets
+| [Wednesday 01 December 2010] [11:08:59] <Remoun>	So that I don't have to decorate every bit of code using 0MQ sockets with auth handling
+| [Wednesday 01 December 2010] [11:09:32] <mikko>	there are plenty of ways to approach the problem
+| [Wednesday 01 December 2010] [11:09:33] <Remoun>	... Does that make sense?
+| [Wednesday 01 December 2010] [11:09:44] <mikko>	you could do a small device that handles the authentication
+| [Wednesday 01 December 2010] [11:09:51] <mikko>	and forwards the messages using inproc
+| [Wednesday 01 December 2010] [11:10:21] <mikko>	so your client code would communicate with inproc and the device decorates with authentication info and forwards the messages
+| [Wednesday 01 December 2010] [11:13:51] <Remoun>	sounds good
+| [Wednesday 01 December 2010] [11:13:54] <Remoun>	thanks mikko 
+| [Wednesday 01 December 2010] [11:24:14] <shales>	hi, has anyone used eventlet with zmq? I'm wondering if or how eventlet works with zmq.REP sockets or do I have to switch to XREP sockets to avoid the state kept in the REP socket from messing up with multiple threads?
+| [Wednesday 01 December 2010] [11:30:02] <mikko>	shales: sorry, no idea what eventlet is 
+| [Wednesday 01 December 2010] [11:30:06] <mikko>	shales: is it ruby?
+| [Wednesday 01 December 2010] [11:31:00] <mikko>	ah, python
+| [Wednesday 01 December 2010] [11:31:03] <shales>	python
+| [Wednesday 01 December 2010] [11:31:40] <shales>	it's ok, someone on #eventlet just gave me an easy workaround
+| [Wednesday 01 December 2010] [11:31:58] <shales>	just give each greenthread its own REP socket
+| [Wednesday 01 December 2010] [13:47:25] <jhawk28>	Hello. Congrats on the 2.1.0 beta!
+| [Wednesday 01 December 2010] [14:58:58] <mikko>	mato: hmm, does 3.4.6 report that it supports dso visibility?
+| [Wednesday 01 December 2010] [15:00:04] <mikko>	#   elif (defined __GNUC__ && __GNUC__ >= 4) || defined __INTEL_COMPILER
+| [Wednesday 01 December 2010] [15:00:09] <mikko>	this error reported makes no sense
+| [Wednesday 01 December 2010] [15:00:21] <mato>	mikko: it shouldn't, i'm just replying asking for more info
+| [Wednesday 01 December 2010] [15:00:47] <mato>	unless RHAT borked it of course :-)
+| [Wednesday 01 December 2010] [15:01:00] <mikko>	but in any case it should not pass __GNUC__ >= 4
+| [Wednesday 01 December 2010] [15:01:13] <mato>	ISTR some problems related to OpenPGM use of __attribute__((visibility)) on old RHAT also
+| [Wednesday 01 December 2010] [15:01:36] <mikko>	downloading centos4 now
+| [Wednesday 01 December 2010] [15:01:42] <mato>	:-)
+| [Wednesday 01 December 2010] [15:01:59] 	 * mato is not at the office, no VM-capable hardware here ...
+| [Wednesday 01 December 2010] [15:02:38] <mikko>	http://cgi.ebay.co.uk/SUN-MICRO-SUNFIRE-V210-RACKMOUNT-SERVER-/230553957004?pt=UK_Computing_Networking_SM&hash=item35ae16328c
+| [Wednesday 01 December 2010] [15:02:41] <mikko>	i got my eye on that
+| [Wednesday 01 December 2010] [15:02:44] <mikko>	to add to build cluster
+| [Wednesday 01 December 2010] [15:02:57] <mikko>	if the price doesn't go up much i'll try to snatch it
+| [Wednesday 01 December 2010] [15:04:31] <prokos>	does ZMQ_SUBSCRIBE filter on the client side or the server side? 
+| [Wednesday 01 December 2010] [15:04:49] <mikko>	prokos: client side
+| [Wednesday 01 December 2010] [15:05:00] <mato>	heh, I got offered a Sun Fire 15k for free some time ago, declined on the grounds that I don't have an empty data center and free electricity to run it...
+| [Wednesday 01 December 2010] [15:05:04] <mikko>	if by client you mean the subscriber
+| [Wednesday 01 December 2010] [15:05:28] <mikko>	mato: i'm hoping to put this in the server room at work
+| [Wednesday 01 December 2010] [15:05:36] <mikko>	and as a backup plan im gonna ship it to finland
+| [Wednesday 01 December 2010] [15:06:02] <mato>	well, 50 GBP is damn cheap
+| [Wednesday 01 December 2010] [15:06:33] <prokos>	yes i mean the subscriber.. Is there a reason to not filter on the publisher side?
+| [Wednesday 01 December 2010] [15:07:00] <mikko>	prokos: it's very complicated to implement but i think it's on the list of things to do
+| [Wednesday 01 December 2010] [15:11:13] <jhawk28>	has anyone seen this: http://sna-projects.com/kafka/
+| [Wednesday 01 December 2010] [15:20:02] <mato>	mikko: I've forwarded you the outputs Chris Patti sent me just now
+| [Wednesday 01 December 2010] [15:20:30] <mato>	mikko: It looks to me like his GCC claims to support -fvisibility=hidden but the results are completely bogus
+| [Wednesday 01 December 2010] [15:20:54] <mato>	mikko: the symbol table in libzmq.so is missing anything which would normally be hidden
+| [Wednesday 01 December 2010] [15:21:17] <mikko>	mato: yes
+| [Wednesday 01 December 2010] [15:21:34] <mato>	mikko: looks like we need an autoconf check for "Checking to see if g++ -fvisibility=hidden actually works" :-)
+| [Wednesday 01 December 2010] [15:21:36] <mikko>	i got centos4 running soon
+| [Wednesday 01 December 2010] [15:22:23] <mato>	no point in fighting with getting it to work on buggy/old compilers, but it shouldn't break completely...
+| [Wednesday 01 December 2010] [15:23:42] <mikko>	mato: does it support the pragma?
+| [Wednesday 01 December 2010] [15:23:48] <mikko>	if it supports -fvisibility
+| [Wednesday 01 December 2010] [15:24:11] <mato>	probably not
+| [Wednesday 01 December 2010] [15:24:23] <mato>	or it's some bastardized RHAT version
+| [Wednesday 01 December 2010] [15:26:06] <mikko>	got centos4 running now
+| [Wednesday 01 December 2010] [15:27:36] <mikko>	yum is _slow_ on centos4
+| [Wednesday 01 December 2010] [15:36:37] <mikko>	mato: gcc version 3.4.6 20060404 (Red Hat 3.4.6-11)
+| [Wednesday 01 December 2010] [15:36:43] <mikko>	visibility works
+| [Wednesday 01 December 2010] [15:36:52] <mikko>	no wait
+| [Wednesday 01 December 2010] [15:36:58] <mikko>	it supports -fvisibility
+| [Wednesday 01 December 2010] [15:37:04] <mikko>	but ignores the attribute
+| [Wednesday 01 December 2010] [15:37:40] <mato>	geez
+| [Wednesday 01 December 2010] [15:37:46] <mikko>	hmm
+| [Wednesday 01 December 2010] [15:37:50] <mikko>	thats not completely true
+| [Wednesday 01 December 2010] [15:38:00] <mikko>	https://gist.github.com/b2f2ef8f5bc92d2688b3
+| [Wednesday 01 December 2010] [15:38:51] <mato>	well, in any case, we can't detect this case in zmq.h sanely
+| [Wednesday 01 December 2010] [15:39:03] <mato>	so we need to account for it in the autoconf tests somehowe
+| [Wednesday 01 December 2010] [15:40:06] <mato>	I reckon for now the easiest thing is to explicitly check the GCC version
+| [Wednesday 01 December 2010] [15:40:23] <mato>	and not enable -fvisibility if it's < 4
+| [Wednesday 01 December 2010] [15:40:28] <mikko>	yes, i was thinking the same
+| [Wednesday 01 December 2010] [15:40:35] <mikko>	let me wrap a macro for that
+| [Wednesday 01 December 2010] [15:55:12] <mikko>	brb
+| [Wednesday 01 December 2010] [16:17:51] <prokos>	f
+| [Wednesday 01 December 2010] [17:10:04] <mikko>	mato: take a look at http://valokuva.org/~mikko/visibility.patch when you got time
+| [Wednesday 01 December 2010] [17:41:25] <jhawk28_>	hey sustrik
+| [Wednesday 01 December 2010] [17:43:24] <sustrik>	hi
+| [Wednesday 01 December 2010] [17:47:32] <Guthur>	is there tests for the new features?
+| [Wednesday 01 December 2010] [17:47:38] <Guthur>	in 2.1.0
