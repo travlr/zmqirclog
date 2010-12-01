@@ -315,6 +315,90 @@
 <div class="line">[Wednesday 01 December 2010] [06:57:38] &lt;vaadim&gt;      Yeah, well, I&#8217;m gonna go build my own device, with blackjack and hookers. In fact, forget the device! :)</div>
 <div class="line">[Wednesday 01 December 2010] [06:59:54] &lt;vaadim&gt;      Ok, i can append third parameter to my_zmq_device with stop socket.</div>
 <div class="line">[Wednesday 01 December 2010] [07:00:25] &lt;vaadim&gt;      Thank&#8217;s.</div>
+<div class="line">[Wednesday 01 December 2010] [11:06:31] &lt;Remoun&gt;      hi</div>
+<div class="line">[Wednesday 01 December 2010] [11:06:36] &lt;Remoun&gt;      I&#8217;m perusing the guide right now, but I thought I&#8217;d ask ahead: Can I overlay some sort of authentication mechanism for workers in a 0MQ-based system?</div>
+<div class="line">[Wednesday 01 December 2010] [11:07:01] &lt;mikko&gt;       Remoun: i don&#8217;t see why what would prevent you from doing that</div>
+<div class="line">[Wednesday 01 December 2010] [11:07:29] &lt;Remoun&gt;      I don&#8217;t see any reason, either; I just have no idea how yet</div>
+<div class="line">[Wednesday 01 December 2010] [11:07:41] &lt;Remoun&gt;      But it should be doable (in a transparent manner), right?</div>
+<div class="line">[Wednesday 01 December 2010] [11:07:52] &lt;mikko&gt;       what do you mean by transparent?</div>
+<div class="line">[Wednesday 01 December 2010] [11:07:59] &lt;mikko&gt;       you would need to implement it in your code</div>
+<div class="line">[Wednesday 01 December 2010] [11:08:06] &lt;Remoun&gt;      of course</div>
+<div class="line">[Wednesday 01 December 2010] [11:08:43] &lt;Remoun&gt;      basically, layering the auth on top of the sockets</div>
+<div class="line">[Wednesday 01 December 2010] [11:08:59] &lt;Remoun&gt;      So that I don&#8217;t have to decorate every bit of code using 0MQ sockets with auth handling</div>
+<div class="line">[Wednesday 01 December 2010] [11:09:32] &lt;mikko&gt;       there are plenty of ways to approach the problem</div>
+<div class="line">[Wednesday 01 December 2010] [11:09:33] &lt;Remoun&gt;      ... Does that make sense?</div>
+<div class="line">[Wednesday 01 December 2010] [11:09:44] &lt;mikko&gt;       you could do a small device that handles the authentication</div>
+<div class="line">[Wednesday 01 December 2010] [11:09:51] &lt;mikko&gt;       and forwards the messages using inproc</div>
+<div class="line">[Wednesday 01 December 2010] [11:10:21] &lt;mikko&gt;       so your client code would communicate with inproc and the device decorates with authentication info and forwards the messages</div>
+<div class="line">[Wednesday 01 December 2010] [11:13:51] &lt;Remoun&gt;      sounds good</div>
+<div class="line">[Wednesday 01 December 2010] [11:13:54] &lt;Remoun&gt;      thanks mikko</div>
+<div class="line">[Wednesday 01 December 2010] [11:24:14] &lt;shales&gt;      hi, has anyone used eventlet with zmq? I&#8217;m wondering if or how eventlet works with zmq.REP sockets or do I have to switch to XREP sockets to avoid the state kept in the REP socket from messing up with multiple threads?</div>
+<div class="line">[Wednesday 01 December 2010] [11:30:02] &lt;mikko&gt;       shales: sorry, no idea what eventlet is</div>
+<div class="line">[Wednesday 01 December 2010] [11:30:06] &lt;mikko&gt;       shales: is it ruby?</div>
+<div class="line">[Wednesday 01 December 2010] [11:31:00] &lt;mikko&gt;       ah, python</div>
+<div class="line">[Wednesday 01 December 2010] [11:31:03] &lt;shales&gt;      python</div>
+<div class="line">[Wednesday 01 December 2010] [11:31:40] &lt;shales&gt;      it&#8217;s ok, someone on #eventlet just gave me an easy workaround</div>
+<div class="line">[Wednesday 01 December 2010] [11:31:58] &lt;shales&gt;      just give each greenthread its own REP socket</div>
+<div class="line">[Wednesday 01 December 2010] [13:47:25] &lt;jhawk28&gt;     Hello. Congrats on the 2.1.0 beta!</div>
+<div class="line">[Wednesday 01 December 2010] [14:58:58] &lt;mikko&gt;       mato: hmm, does 3.4.6 report that it supports dso visibility?</div>
+<div class="line">[Wednesday 01 December 2010] [15:00:04] &lt;mikko&gt;       #   elif (defined __GNUC__ &amp;&amp; __GNUC__ &gt;= 4) || defined __INTEL_COMPILER</div>
+<div class="line">[Wednesday 01 December 2010] [15:00:09] &lt;mikko&gt;       this error reported makes no sense</div>
+<div class="line">[Wednesday 01 December 2010] [15:00:21] &lt;mato&gt;        mikko: it shouldn&#8217;t, i&#8217;m just replying asking for more info</div>
+<div class="line">[Wednesday 01 December 2010] [15:00:47] &lt;mato&gt;        unless RHAT borked it of course :-)</div>
+<div class="line">[Wednesday 01 December 2010] [15:01:00] &lt;mikko&gt;       but in any case it should not pass __GNUC__ &gt;= 4</div>
+<div class="line">[Wednesday 01 December 2010] [15:01:13] &lt;mato&gt;        ISTR some problems related to OpenPGM use of __attribute__((visibility)) on old RHAT also</div>
+<div class="line">[Wednesday 01 December 2010] [15:01:36] &lt;mikko&gt;       downloading centos4 now</div>
+<div class="line">[Wednesday 01 December 2010] [15:01:42] &lt;mato&gt;        :-)</div>
+<div class="line">[Wednesday 01 December 2010] [15:01:59]        * mato is not at the office, no VM-capable hardware here ...</div>
+<div class="line">[Wednesday 01 December 2010] [15:02:38] &lt;mikko&gt;       <a class="reference external" href="http://cgi.ebay.co.uk/SUN-MICRO-SUNFIRE-V210-RACKMOUNT-SERVER-/230553957004?pt=UK_Computing_Networking_SM&amp;hash=item35ae16328c">http://cgi.ebay.co.uk/SUN-MICRO-SUNFIRE-V210-RACKMOUNT-SERVER-/230553957004?pt=UK_Computing_Networking_SM&amp;hash=item35ae16328c</a></div>
+<div class="line">[Wednesday 01 December 2010] [15:02:41] &lt;mikko&gt;       i got my eye on that</div>
+<div class="line">[Wednesday 01 December 2010] [15:02:44] &lt;mikko&gt;       to add to build cluster</div>
+<div class="line">[Wednesday 01 December 2010] [15:02:57] &lt;mikko&gt;       if the price doesn&#8217;t go up much i&#8217;ll try to snatch it</div>
+<div class="line">[Wednesday 01 December 2010] [15:04:31] &lt;prokos&gt;      does ZMQ_SUBSCRIBE filter on the client side or the server side?</div>
+<div class="line">[Wednesday 01 December 2010] [15:04:49] &lt;mikko&gt;       prokos: client side</div>
+<div class="line">[Wednesday 01 December 2010] [15:05:00] &lt;mato&gt;        heh, I got offered a Sun Fire 15k for free some time ago, declined on the grounds that I don&#8217;t have an empty data center and free electricity to run it...</div>
+<div class="line">[Wednesday 01 December 2010] [15:05:04] &lt;mikko&gt;       if by client you mean the subscriber</div>
+<div class="line">[Wednesday 01 December 2010] [15:05:28] &lt;mikko&gt;       mato: i&#8217;m hoping to put this in the server room at work</div>
+<div class="line">[Wednesday 01 December 2010] [15:05:36] &lt;mikko&gt;       and as a backup plan im gonna ship it to finland</div>
+<div class="line">[Wednesday 01 December 2010] [15:06:02] &lt;mato&gt;        well, 50 GBP is damn cheap</div>
+<div class="line">[Wednesday 01 December 2010] [15:06:33] &lt;prokos&gt;      yes i mean the subscriber.. Is there a reason to not filter on the publisher side?</div>
+<div class="line">[Wednesday 01 December 2010] [15:07:00] &lt;mikko&gt;       prokos: it&#8217;s very complicated to implement but i think it&#8217;s on the list of things to do</div>
+<div class="line">[Wednesday 01 December 2010] [15:11:13] &lt;jhawk28&gt;     has anyone seen this: <a class="reference external" href="http://sna-projects.com/kafka/">http://sna-projects.com/kafka/</a></div>
+<div class="line">[Wednesday 01 December 2010] [15:20:02] &lt;mato&gt;        mikko: I&#8217;ve forwarded you the outputs Chris Patti sent me just now</div>
+<div class="line">[Wednesday 01 December 2010] [15:20:30] &lt;mato&gt;        mikko: It looks to me like his GCC claims to support -fvisibility=hidden but the results are completely bogus</div>
+<div class="line">[Wednesday 01 December 2010] [15:20:54] &lt;mato&gt;        mikko: the symbol table in libzmq.so is missing anything which would normally be hidden</div>
+<div class="line">[Wednesday 01 December 2010] [15:21:17] &lt;mikko&gt;       mato: yes</div>
+<div class="line">[Wednesday 01 December 2010] [15:21:34] &lt;mato&gt;        mikko: looks like we need an autoconf check for &#8220;Checking to see if g++ -fvisibility=hidden actually works&#8221; :-)</div>
+<div class="line">[Wednesday 01 December 2010] [15:21:36] &lt;mikko&gt;       i got centos4 running soon</div>
+<div class="line">[Wednesday 01 December 2010] [15:22:23] &lt;mato&gt;        no point in fighting with getting it to work on buggy/old compilers, but it shouldn&#8217;t break completely...</div>
+<div class="line">[Wednesday 01 December 2010] [15:23:42] &lt;mikko&gt;       mato: does it support the pragma?</div>
+<div class="line">[Wednesday 01 December 2010] [15:23:48] &lt;mikko&gt;       if it supports -fvisibility</div>
+<div class="line">[Wednesday 01 December 2010] [15:24:11] &lt;mato&gt;        probably not</div>
+<div class="line">[Wednesday 01 December 2010] [15:24:23] &lt;mato&gt;        or it&#8217;s some bastardized RHAT version</div>
+<div class="line">[Wednesday 01 December 2010] [15:26:06] &lt;mikko&gt;       got centos4 running now</div>
+<div class="line">[Wednesday 01 December 2010] [15:27:36] &lt;mikko&gt;       yum is _slow_ on centos4</div>
+<div class="line">[Wednesday 01 December 2010] [15:36:37] &lt;mikko&gt;       mato: gcc version 3.4.6 20060404 (Red Hat 3.4.6-11)</div>
+<div class="line">[Wednesday 01 December 2010] [15:36:43] &lt;mikko&gt;       visibility works</div>
+<div class="line">[Wednesday 01 December 2010] [15:36:52] &lt;mikko&gt;       no wait</div>
+<div class="line">[Wednesday 01 December 2010] [15:36:58] &lt;mikko&gt;       it supports -fvisibility</div>
+<div class="line">[Wednesday 01 December 2010] [15:37:04] &lt;mikko&gt;       but ignores the attribute</div>
+<div class="line">[Wednesday 01 December 2010] [15:37:40] &lt;mato&gt;        geez</div>
+<div class="line">[Wednesday 01 December 2010] [15:37:46] &lt;mikko&gt;       hmm</div>
+<div class="line">[Wednesday 01 December 2010] [15:37:50] &lt;mikko&gt;       thats not completely true</div>
+<div class="line">[Wednesday 01 December 2010] [15:38:00] &lt;mikko&gt;       <a class="reference external" href="https://gist.github.com/b2f2ef8f5bc92d2688b3">https://gist.github.com/b2f2ef8f5bc92d2688b3</a></div>
+<div class="line">[Wednesday 01 December 2010] [15:38:51] &lt;mato&gt;        well, in any case, we can&#8217;t detect this case in zmq.h sanely</div>
+<div class="line">[Wednesday 01 December 2010] [15:39:03] &lt;mato&gt;        so we need to account for it in the autoconf tests somehowe</div>
+<div class="line">[Wednesday 01 December 2010] [15:40:06] &lt;mato&gt;        I reckon for now the easiest thing is to explicitly check the GCC version</div>
+<div class="line">[Wednesday 01 December 2010] [15:40:23] &lt;mato&gt;        and not enable -fvisibility if it&#8217;s &lt; 4</div>
+<div class="line">[Wednesday 01 December 2010] [15:40:28] &lt;mikko&gt;       yes, i was thinking the same</div>
+<div class="line">[Wednesday 01 December 2010] [15:40:35] &lt;mikko&gt;       let me wrap a macro for that</div>
+<div class="line">[Wednesday 01 December 2010] [15:55:12] &lt;mikko&gt;       brb</div>
+<div class="line">[Wednesday 01 December 2010] [16:17:51] &lt;prokos&gt;      f</div>
+<div class="line">[Wednesday 01 December 2010] [17:10:04] &lt;mikko&gt;       mato: take a look at <a class="reference external" href="http://valokuva.org/~mikko/visibility.patch">http://valokuva.org/~mikko/visibility.patch</a> when you got time</div>
+<div class="line">[Wednesday 01 December 2010] [17:41:25] &lt;<a href="#id15"><span class="problematic" id="id16">jhawk28_</span></a>&gt;    hey sustrik</div>
+<div class="line">[Wednesday 01 December 2010] [17:43:24] &lt;sustrik&gt;     hi</div>
+<div class="line">[Wednesday 01 December 2010] [17:47:32] &lt;Guthur&gt;      is there tests for the new features?</div>
+<div class="line">[Wednesday 01 December 2010] [17:47:38] &lt;Guthur&gt;      in 2.1.0</div>
 </div>
 </div>
 
