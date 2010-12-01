@@ -6796,3 +6796,221 @@
 | [Tuesday 30 November 2010] [11:58:41] <mikko>	mato: ill mail a link to it
 | [Tuesday 30 November 2010] [11:58:55] <mikko>	it's a bit big to spam to everyones mailbox
 | [Tuesday 30 November 2010] [11:59:51] <mato>	mikko: ok, sure
+| [Tuesday 30 November 2010] [12:56:56] <mato>	mikko: any reason you've not yet sent the final patch? something left to do?
+| [Tuesday 30 November 2010] [13:00:09] <mikko>	mato: work stuff 
+| [Tuesday 30 November 2010] [13:00:25] <mato>	mikko: ah, ok, no worries... just checking :)
+| [Tuesday 30 November 2010] [13:00:33] <mikko>	sent now
+| [Tuesday 30 November 2010] [13:08:32] <mato>	thx
+| [Tuesday 30 November 2010] [13:40:45] <mikko>	i need to talk to pieterh at some point as well
+| [Tuesday 30 November 2010] [13:40:45] <mikko>	ZFL on win32 + generic build cleanups
+| [Tuesday 30 November 2010] [15:52:26] <boothead_>	can anyone give me a hand handling messages in c++?
+| [Tuesday 30 November 2010] [15:52:37] <boothead_>	(i'm a c++ newb i'm afraid)
+| [Tuesday 30 November 2010] [15:56:32] <drbobbeaty>	I'll try... what are you looking to do?
+| [Tuesday 30 November 2010] [15:58:00] <boothead_>	i'm recieving a message from a SUB socket which is the sub string and then a video frame 480*640
+| [Tuesday 30 November 2010] [15:58:41] <boothead_>	what i'm trying to do is get just that video frame into some other data structure i can use (I'm using opencv for the frame eventually)
+| [Tuesday 30 November 2010] [15:59:18] <boothead_>	drbobbeaty, here's the line that gets the message:
+| [Tuesday 30 November 2010] [15:59:20] <boothead_>	depth_socket.recv(&depth_msg, ZMQ_NOBLOCK);
+| [Tuesday 30 November 2010] [16:00:15] <boothead_>	what I want to do is drop the first 6 characters from the message and use the remainder, but I don't know the best (or actually any) way to do that
+| [Tuesday 30 November 2010] [16:00:24] <drbobbeaty>	OK... I've not used the ZMQ_NOBLOCK as typically I have a very tight thread/loop that takes data off the socket and puts it into a single-producer/single-consumer lockless queue.
+| [Tuesday 30 November 2010] [16:00:40] <boothead_>	it would be depth_msg[6:] in python :-)
+| [Tuesday 30 November 2010] [16:01:19] <drbobbeaty>	But you should be getting data into the zmq::message_t depth_msg.
+| [Tuesday 30 November 2010] [16:01:24] <drbobbeaty>	Are you?
+| [Tuesday 30 November 2010] [16:01:40] <drbobbeaty>	What's the depth_msg.size() after the recv() call?
+| [Tuesday 30 November 2010] [16:01:46] <boothead_>	the NOBLOCK is a bit of a red herring there - recieving the message is fine, i just don't know enough c++ to deal with the message afterward
+| [Tuesday 30 November 2010] [16:01:57] <drbobbeaty>	OH... now I get it.
+| [Tuesday 30 November 2010] [16:02:18] <boothead_>	zmq::message_t depth_msg; is the line before that one
+| [Tuesday 30 November 2010] [16:02:21] <drbobbeaty>	OK... what do you want to put it into? What C/C++ datastructure - specifically?
+| [Tuesday 30 November 2010] [16:02:30] <drbobbeaty>	std::string? or something else?
+| [Tuesday 30 November 2010] [16:02:59] <boothead_>	well I need a pointer to the data part with I will pass to opencv's cv::Mat class
+| [Tuesday 30 November 2010] [16:03:23] <drbobbeaty>	Then you need to use depth_msg.data() -- it returns a (char *) to the data in the message
+| [Tuesday 30 November 2010] [16:03:31] <boothead_>	it's a 480*640 array of uint_16
+| [Tuesday 30 November 2010] [16:03:40] <drbobbeaty>	depth_msg.size() is the number of bytes in the "payload" of the message.
+| [Tuesday 30 November 2010] [16:03:41] <boothead_>	what i'm trying is this:
+| [Tuesday 30 November 2010] [16:04:59] <kisielk>	sounds like you just need to offset the pointer by 6
+| [Tuesday 30 November 2010] [16:05:11] <boothead_>	here's what I have so far:
+| [Tuesday 30 November 2010] [16:05:12] <boothead_>	https://gist.github.com/722397
+| [Tuesday 30 November 2010] [16:05:43] <boothead_>	kisielk, how would i then use the rest of the data as a uint_16?
+| [Tuesday 30 November 2010] [16:05:46] <kisielk>	okay, I see you have a struct for the message type already
+| [Tuesday 30 November 2010] [16:06:08] <kisielk>	you should be able to cast the message to a DepthMsg struct
+| [Tuesday 30 November 2010] [16:06:16] <kisielk>	and then just read the frame member from it
+| [Tuesday 30 November 2010] [16:06:36] <boothead_>	i don't necessarily want to use that struct, i was scratching around trying to get somewhere!
+| [Tuesday 30 November 2010] [16:06:52] <kisielk>	sure, but having a type for your messages is not a bad way to  do it
+| [Tuesday 30 November 2010] [16:07:04] <boothead_>	kisielk, how do i do the cast?
+| [Tuesday 30 November 2010] [16:07:23] <boothead_>	glad to hear that I'm not totally barking up the wrong tree!
+| [Tuesday 30 November 2010] [16:08:00] <drbobbeaty>	DepthMsg  *depth_payload = (DepthMsg *)depth_msg.data();
+| [Tuesday 30 November 2010] [16:08:34] <drbobbeaty>	should work for casting the data in the message to the struct you have. The question is - is it the right struct? Don't know.
+| [Tuesday 30 November 2010] [16:08:45] <kisielk>	yeah, depends what you plan to do with your messages
+| [Tuesday 30 November 2010] [16:09:29] <drbobbeaty>	But if you want to do anything with it, you need to copy that data out and then put it in a queue for processing so you can receive the next message. Assuming speed is important.
+| [Tuesday 30 November 2010] [16:10:35] <drbobbeaty>	Also, I would not do anything if the depth_msg.size() == 0 -- there's nothing there, so why do anything. You have the "if" message... just put the processing in there - or a return to skip the rest of the processing on an empty message.
+| [Tuesday 30 November 2010] [16:10:43] <boothead_>	excellent it runs... but the line:
+| [Tuesday 30 November 2010] [16:10:44] <boothead_>	LOGM(MO_DEBUG, "depth msg address: " << depth_payload->address << "end");
+| [Tuesday 30 November 2010] [16:11:28] <boothead_>	is spitting binary data onto the screen... i thought address would only be 6 chars?
+| [Tuesday 30 November 2010] [16:11:56] <kisielk>	is it null-terminated?
+| [Tuesday 30 November 2010] [16:12:07] <kisielk>	like, is it 6 real chars? or 6 chars including null?
+| [Tuesday 30 November 2010] [16:12:14] <drbobbeaty>	That binary data doesn't surprise me... you're asking it to print whatever it has - and if it's not ASCII, then it's binary junk.
+| [Tuesday 30 November 2010] [16:12:21] <boothead_>	what needs to happen is all the stuff in the commented section from the gist - although I think that the cv::Mat class has logic to do most of it.
+| [Tuesday 30 November 2010] [16:12:24] <drbobbeaty>	You might want to format that nicer.
+| [Tuesday 30 November 2010] [16:12:54] <drbobbeaty>	... like 6 hex values - or something. Up to you, but it sounds like it's working.
+| [Tuesday 30 November 2010] [16:13:11] <boothead_>	basically i need to convert the 16 bit image data to 8 bit and then send it along to an out buffer
+| [Tuesday 30 November 2010] [16:13:23] <kisielk>	hard to say what the format is without seeing the sender side
+| [Tuesday 30 November 2010] [16:13:38] <drbobbeaty>	agreed - the format of the sender is crucial.
+| [Tuesday 30 November 2010] [16:15:51] <boothead_>	the format of the sender is the string 'depth ' and then a matrix of 480*640 uint_16
+| [Tuesday 30 November 2010] [16:16:09] <boothead_>	here's a working recieve side in python: https://github.com/boothead/zmqnect/blob/master/zmqnect/sub.py
+| [Tuesday 30 November 2010] [16:17:24] <boothead_>	it's the depth stuff i'm interested in at the moment
+| [Tuesday 30 November 2010] [16:20:04] <drbobbeaty>	I'm not a Python expert, but it appears that this 'cv' module is doing a lot of work for you. I think you have the data from the message just fine, but to get it to an image seems to belong to the 'cv' module. In C++, I have no idea what simple libraries there are for this kind of graphics work. Sorry.
+| [Tuesday 30 November 2010] [16:20:30] <boothead_>	shouldn't my log message be printing "depth msg address: depthend"?
+| [Tuesday 30 November 2010] [16:21:41] <kisielk>	where is the code for the sender?
+| [Tuesday 30 November 2010] [16:21:45] <boothead_>	drbobbeaty, yes the cv module will be doing the heavy lifting cv::Mat had a constructor that you give a width, a height, a type and a pointer to the data and it's the pointer to the data that I'm trying to get here
+| [Tuesday 30 November 2010] [16:22:09] <boothead_>	kisielk, https://github.com/boothead/zmqnect/blob/master/zmqnect/pub.py
+| [Tuesday 30 November 2010] [16:22:35] <kisielk>	okay, and how do you know what length the "channel" portion of the string is?
+| [Tuesday 30 November 2010] [16:22:39] <drbobbeaty>	Your Python code appears to be explicitly skipping the first 6 bytes in the message's payload - and those are the one that 'address' maps to. So while those first 6 bytes MIGHT be 'depth', it's possible that the sender is not sending ASCII, or maybe the first 6 bytes aren't 'depth '... Don't know.
+| [Tuesday 30 November 2010] [16:23:25] <kisielk>	if it can be either "depth" or "rgb", then you can't just offset by 6 bytes
+| [Tuesday 30 November 2010] [16:23:48] <drbobbeaty>	What happens if you skip the depth_payload->address and just use the depth_payload->frame pointer for the data?
+| [Tuesday 30 November 2010] [16:24:17] <boothead_>	drbobbeaty, fair point, kisielk the socket that I'm recieving from is sub'd to 'depth' i will have a similar set up for 'rgb' but a different processing pipeline
+| [Tuesday 30 November 2010] [16:24:44] <kisielk>	yes, but the code to receive the messages should presumably be the same
+| [Tuesday 30 November 2010] [16:24:47] <kisielk>	otherwise it's not very robust
+| [Tuesday 30 November 2010] [16:25:54] <kisielk>	if you want to just stick with creating your own message protocol, you should use http://docs.python.org/library/struct.html to do things on the Python side
+| [Tuesday 30 November 2010] [16:26:06] <boothead_>	drbobbeaty,  if i do depth_payload->frame i get: depth msg address: 1end
+| [Tuesday 30 November 2010] [16:26:10] <kisielk>	then you can be sure you'll get the same size/layout of struct in both Python and C++
+| [Tuesday 30 November 2010] [16:26:30] <kisielk>	so basically you'd create a struct in Python, pack it with the appropriate data, and then have the same struct layout defined in C++
+| [Tuesday 30 November 2010] [16:27:17] <boothead_>	kisielk, the python stuff is just a quick proof of concept to get it up and running - I'll switch it over to c/c++ when I get the recv side working
+| [Tuesday 30 November 2010] [16:28:23] <kisielk>	well, it would certainly be easier if you had a consistent definition of your messages, which you currently do not
+| [Tuesday 30 November 2010] [16:28:34] <kisielk>	the message you are sending is not the same as what you are receiving
+| [Tuesday 30 November 2010] [16:29:56] <drbobbeaty>	I wasn't suggesting that you print it out, but here's an idea - you need to be able to print out the hex data that's in that message. Here's a very simple method that will print out the hex contents of the zmq::message_t. I would suggest that you put this into your code and then see what the entire message is really saying. Then, you can see the first six bytes as well as all the others. (writing it now... give me a minute)
+| [Tuesday 30 November 2010] [16:32:44] <boothead_>	ok thanks drbobbeaty
+| [Tuesday 30 November 2010] [16:33:32] <boothead_>	kisielk, can you explain what you mean by that? it's the same enough that the python stuff works, is it different underneath in c++?
+| [Tuesday 30 November 2010] [16:34:07] <kisielk>	what you're sending in Python isn't consistent. When you do "%s %s", the first string is variable length and not terminated
+| [Tuesday 30 November 2010] [16:34:20] <kisielk>	which makes it hard to determine from the C++ code where the first field of the message ends
+| [Tuesday 30 November 2010] [16:35:03] <kisielk>	the reason you probably get a bunch of binary data
+| [Tuesday 30 November 2010] [16:35:28] <kisielk>	is you're copying the first 6 chars in to the first field of the message, which in your case are "depth "
+| [Tuesday 30 November 2010] [16:35:54] <kisielk>	there's no \0 to terminate the string, so when you print it out, the stream doesn't know where to stop so just keeps right on going in to the second field of the struct
+| [Tuesday 30 November 2010] [16:36:37] <kisielk>	so one way to fix it would be to make the first field 7 characters, and ensure the 7th is \0, but that's still a hack
+| [Tuesday 30 November 2010] [16:38:26] <boothead_>	ah i see - but if i use struct then i get the null termination
+| [Tuesday 30 November 2010] [16:38:50] <boothead_>	doesn't char address [6] say give me the first 6 characters?
+| [Tuesday 30 November 2010] [16:41:43] <drbobbeaty>	https://gist.github.com/722469
+| [Tuesday 30 November 2010] [16:42:30] <drbobbeaty>	This is something I just whipped up... I haven't even tried to compile it - but I think it's going to work. If you run into issues, let me know. It's going to generate a lot of data for that message, but it's going to give you the best view inside the message's contents.
+| [Tuesday 30 November 2010] [16:42:39] <drbobbeaty>	Far better than the std::cout you were using.
+| [Tuesday 30 November 2010] [16:42:56] <boothead_>	wow... you just wrote all that?!
+| [Tuesday 30 November 2010] [16:43:12] <drbobbeaty>	Yeah, I had to answer a few emails too... sorry it took so long
+| [Tuesday 30 November 2010] [16:43:47] <drbobbeaty>	I couldn't use tabs for indentation as it was the gist web page, but you get the idea.
+| [Tuesday 30 November 2010] [16:45:16] <boothead_>	drbobbeaty, i guess you've been doing this a slightly longer time than me!!
+| [Tuesday 30 November 2010] [16:45:24] <boothead_>	here are a few problems:
+| [Tuesday 30 November 2010] [16:45:25] <boothead_>	error: passing 'const zmq::message_t' as 'this' argument of 'void* zmq::message_t::data()' discards qualifiers
+| [Tuesday 30 November 2010] [16:46:10] <boothead_>	this line (10 in the gist) const char *buff = aMessage.data();
+| [Tuesday 30 November 2010] [16:47:35] <drbobbeaty>	hold on a sec...
+| [Tuesday 30 November 2010] [16:51:09] <drbobbeaty>	updated... there's a (const char *) in front of the call.
+| [Tuesday 30 November 2010] [16:51:31] <drbobbeaty>	SHould compile OK now... sorry for the work you're doing, I just don't have the tools on this machine to do the work.
+| [Tuesday 30 November 2010] [16:51:59] <boothead_>	no appologies - can't thank you enough for your help!!
+| [Tuesday 30 November 2010] [16:52:39] <boothead_>	same deal: error: passing 'const zmq::message_t' as 'this' argument of 'void* zmq::message_t::data()' discards qualifiers
+| [Tuesday 30 November 2010] [16:52:48] <boothead_>	not complaining about the types anymore
+| [Tuesday 30 November 2010] [16:53:06] <boothead_>	what does that actually mean?
+| [Tuesday 30 November 2010] [16:53:52] <boothead_>	there's the same error message for the next line too for int size = aMessage.size();
+| [Tuesday 30 November 2010] [16:56:22] <mikko>	boothead_: const zmq::message_t & aMessage
+| [Tuesday 30 November 2010] [16:57:34] <mikko>	you are passing a const and you are calling a method that is not declared as const
+| [Tuesday 30 November 2010] [16:57:38] <mikko>	so the compiler complains
+| [Tuesday 30 November 2010] [16:58:15] <boothead_>	mikko, ah i see... should i just remove the const?
+| [Tuesday 30 November 2010] [16:58:46] <mikko>	boothead_: either remove the const or make a local copy of it
+| [Tuesday 30 November 2010] [16:58:54] <drbobbeaty>	You can remove the const on the arg if you want - that will simplify things, but allow you  to mess with the message. It's a simple method, so go ahead.
+| [Tuesday 30 November 2010] [16:59:12] <mikko>	drbobbeaty: but ->data() is declared as non const method
+| [Tuesday 30 November 2010] [16:59:37] <mikko>	you can't call that as aMessage is const
+| [Tuesday 30 November 2010] [16:59:52] <mikko>	as far as i understand C++
+| [Tuesday 30 November 2010] [17:00:02] <drbobbeaty>	Fair enough. I've updated my gist to cast the message to a non-const. Some don't like that - up to you.
+| [Tuesday 30 November 2010] [17:00:28] <drbobbeaty>	Gotta run - be back in a little bit
+| [Tuesday 30 November 2010] [17:00:43] <mikko>	why is the parameter passed as const?
+| [Tuesday 30 November 2010] [17:01:06] <mikko>	it's used as non const in the method so i would assume passing it as normal argument would make sense
+| [Tuesday 30 November 2010] [17:07:13] <mikko>	https://gist.github.com/722469#comments
+| [Tuesday 30 November 2010] [17:07:22] <mikko>	i added a comment there but formatting messed up
+| [Tuesday 30 November 2010] [17:17:15] <boothead_>	https://gist.github.com/722518 i added a little bit to be able to cut down on the size of the dump - it segfaults
+| [Tuesday 30 November 2010] [17:17:27] <boothead_>	can anyone see anything glaring?
+| [Tuesday 30 November 2010] [17:21:15] <mikko>	got a backtrace?
+| [Tuesday 30 November 2010] [17:21:20] <mikko>	compile with -O0 -g
+| [Tuesday 30 November 2010] [17:21:27] <mikko>	gdb --args ./yourprog
+| [Tuesday 30 November 2010] [17:21:28] <mikko>	run
+| [Tuesday 30 November 2010] [17:21:35] <mikko>	and when it crashes "bt"
+| [Tuesday 30 November 2010] [17:26:13] <boothead_>	it drops me straight into gdb... is that right? sorry - I'm a total newb at the c stuff
+| [Tuesday 30 November 2010] [17:26:41] <mikko>	yes
+| [Tuesday 30 November 2010] [17:26:48] <mikko>	now type 'run'
+| [Tuesday 30 November 2010] [17:26:50] <mikko>	and press enter
+| [Tuesday 30 November 2010] [17:32:31] <boothead_>	ok i got snprintf(hex, 3, "%02x", (uint8_t)(*p));
+| [Tuesday 30 November 2010] [17:32:40] <boothead_>	as the place where it crashed
+| [Tuesday 30 November 2010] [17:39:20] <mikko>	boothead_: works here
+| [Tuesday 30 November 2010] [17:39:25] <mikko>	boothead_: in an isolated test case
+| [Tuesday 30 November 2010] [17:41:05] <mikko>	boothead_: https://gist.github.com/68a12c20ecf80f759f03
+| [Tuesday 30 November 2010] [17:41:09] <mikko>	if you test that alone
+| [Tuesday 30 November 2010] [17:44:47] <boothead_>	oh.
+| [Tuesday 30 November 2010] [17:44:52] <boothead_>	yep that works fine for me
+| [Tuesday 30 November 2010] [17:45:31] <mikko>	can you show me the full code?
+| [Tuesday 30 November 2010] [17:49:42] <boothead_>	https://github.com/boothead/Movid/blob/zmq-broken/src/modules/moKinectZMQModule.cpp
+| [Tuesday 30 November 2010] [17:49:48] <boothead_>	thanks man!
+| [Tuesday 30 November 2010] [17:52:10] <mikko>	you are initializing const char * inside a scope
+| [Tuesday 30 November 2010] [17:52:22] <mikko>	that would leave end in the outer scope uninitialized
+| [Tuesday 30 November 2010] [17:52:31] <boothead_>	ah...
+| [Tuesday 30 November 2010] [17:52:36] <mikko>	lines 64, 66, 70
+| [Tuesday 30 November 2010] [17:53:03] <mikko>	your inner variable hides the one in the outer scope
+| [Tuesday 30 November 2010] [17:53:20] <boothead_>	so how should i do this part? just do const char end* = _end; after all of the if(num) stuff?
+| [Tuesday 30 November 2010] [17:53:38] <mikko>	no
+| [Tuesday 30 November 2010] [17:53:43] <mikko>	remove declaration and just assign
+| [Tuesday 30 November 2010] [17:53:51] <mikko>	on line 64 end = _end;
+| [Tuesday 30 November 2010] [17:53:57] <mikko>	instead of const char *end = _end;
+| [Tuesday 30 November 2010] [17:55:46] <boothead_>	i didn't realize you could assign to a const? though you had to do it when initializing..
+| [Tuesday 30 November 2010] [17:57:28] <drbobbeaty>	I removed the const from the method signature... and the size() call... I'm not sure if there are any lingering problems, but I think you're on your way.
+| [Tuesday 30 November 2010] [17:58:03] <boothead_>	it's working now... and look what's in the message: 65 70 74 68 20 bb 03 bc 03 bc 03 bc 03 bd 03 be 03 bf  depth .............
+| [Tuesday 30 November 2010] [17:58:21] <boothead_>	i was expecting depth to be the first characters
+| [Tuesday 30 November 2010] [17:58:27] <drbobbeaty>	Yup... there you go - hex and asci data side-by-side.
+| [Tuesday 30 November 2010] [17:58:45] <boothead_>	wft?!
+| [Tuesday 30 November 2010] [17:58:50] <drbobbeaty>	Good... it sounds like you have found the problem.
+| [Tuesday 30 November 2010] [17:58:50] <boothead_>	wtf even!
+| [Tuesday 30 November 2010] [17:59:27] <drbobbeaty>	I was just noticing that the hex data was on the left and the ascii on the right - meaning I didn't mess up the code that bad. (const-ness aside)
+| [Tuesday 30 November 2010] [17:59:40] <mikko>	boothead_: with const char *p you cannot modify where p points to but you can change where it points to
+| [Tuesday 30 November 2010] [17:59:56] <mikko>	boothead_: with const char * const p you cannot modify the pointer or where it points to
+| [Tuesday 30 November 2010] [18:01:47] <mikko>	i need to head to bed
+| [Tuesday 30 November 2010] [18:01:50] <mikko>	good night all
+| [Tuesday 30 November 2010] [18:01:59] <drbobbeaty>	mikko's right -- technically, the 'const' is supposed to mean "can't change". In linux on x86, it's not strictly enforced, but on the likes of Sun hardware, it is.
+| [Tuesday 30 November 2010] [18:02:00] <boothead_>	thanks a lot for your help mikko!
+| [Tuesday 30 November 2010] [18:02:54] <drbobbeaty>	I've removed all the const-ness on my little gist as it's just causing too many issues. My point was only to give you a simple tool to inspect the data in the message without any formatting bias. Sorry if it caused more grief than it was worth.
+| [Tuesday 30 November 2010] [18:03:40] <boothead_>	so - going back to my struct - if i change the start of my message to 'depth\0<rest of the data>' then my struc will have address == depth and frame == the rest of the data?
+| [Tuesday 30 November 2010] [18:03:51] <mikko>	drbobbeaty: yes, it seems sun pro compiler is a lot stricter about it
+| [Tuesday 30 November 2010] [18:03:57] <boothead_>	drbobbeaty, not at all - it's been an education!
+| [Tuesday 30 November 2010] [18:04:16] <boothead_>	will frame be a pointer to the start of the data?
+| [Tuesday 30 November 2010] [18:04:22] <mikko>	no, wait
+| [Tuesday 30 November 2010] [18:04:41] <mikko>	https://gist.github.com/53728e300262c4b2bd9f
+| [Tuesday 30 November 2010] [18:04:50] <mikko>	compiles without errors or warnings with sun pro
+| [Tuesday 30 November 2010] [18:04:51] <drbobbeaty>	mikko, it's also the hardware - SPARC uses a wonderful MMU that strictly enforces read-only sections of memory where all const variables reside. 
+| [Tuesday 30 November 2010] [18:05:02] <mikko>	drbobbeaty: ah
+| [Tuesday 30 November 2010] [18:05:13] <mikko>	drbobbeaty: but technically the pointer itself is not modified
+| [Tuesday 30 November 2010] [18:05:33] <mikko>	drbobbeaty: sounds like SPARC would go against standard?
+| [Tuesday 30 November 2010] [18:06:26] <drbobbeaty>	mikko, I honestly think that linux/x86 is too liberal, and leads to the possibility that you make serious errors. However, it's where all development is headed (at least for my little world), so I go with it.
+| [Tuesday 30 November 2010] [18:07:00] <mikko>	drbobbeaty: but it's const char *x; x = "test"; legal according to standard?
+| [Tuesday 30 November 2010] [18:07:16] <drbobbeaty>	mikko, I think if you try to do a: p[3] = 'x'; in your code, Sun would not like it at runtime. It might compile, but it would not run.
+| [Tuesday 30 November 2010] [18:07:18] <mikko>	const char * const x; x = "test"; shoudl generate error
+| [Tuesday 30 November 2010] [18:07:28] <mikko>	drbobbeaty: it wont compile
+| [Tuesday 30 November 2010] [18:07:38] <mikko>	drbobbeaty: as you are modifying where p points to 
+| [Tuesday 30 November 2010] [18:07:43] <mikko>	rather than the pointer istself
+| [Tuesday 30 November 2010] [18:08:07] <mikko>	const char * const p; p = "test"; won't compile either
+| [Tuesday 30 November 2010] [18:08:14] <drbobbeaty>	mikko, I'm not 100% sure - the second form may be considered the 'creation' point as opposed to the 'definition'. I'm not that strong on the standard.
+| [Tuesday 30 November 2010] [18:10:11] <mikko>	the first one marks where the pointer points to as read-only location
+| [Tuesday 30 November 2010] [18:10:50] <mikko>	https://gist.github.com/6adb476a4c2f11408f21
+| [Tuesday 30 November 2010] [18:11:13] <mikko>	line 7 is actually the error reported on line 8
+| [Tuesday 30 November 2010] [18:11:35] <drbobbeaty>	mikko: yeah... can't modify it. Nice to know. Have a good evening.
+| [Tuesday 30 November 2010] [19:03:38] <Nate75Sanders>	I'm using python (I don't think that would matter, but thought I'd mention) and when I use a PUSH/PULL pair _without_ HWM, the send() calls do not block when there is no PULLer.  Is this correct behavior?
+| [Tuesday 30 November 2010] [19:04:22] <Nate75Sanders>	manpage for zmq_socket reads to me like it should block when there is no downstream node
+| [Tuesday 30 November 2010] [19:31:21] <kisielk>	hm I don't have a ZMQ install here where I can test that, but according to the docs you are correct
+| [Tuesday 30 November 2010] [19:34:56] <Nate75Sanders>	the messages queue up and are delivered later....but there's no blocking behavior
+| [Tuesday 30 November 2010] [19:35:09] <Nate75Sanders>	to me block means "i'm going to sleep until there's a receiver"
+| [Tuesday 30 November 2010] [19:45:17] <kisielk>	agreed
+| [Tuesday 30 November 2010] [19:46:34] <kisielk>	it's either a bug in the code or documentation
+| [Tuesday 30 November 2010] [19:46:39] <kisielk>	you should report it
+| [Tuesday 30 November 2010] [19:48:06] <Nate75Sanders>	I should probably take a look at the mailing list....or bug tracker if that's public
+| [Tuesday 30 November 2010] [19:48:20] <Nate75Sanders>	I haven't followed their dev process/mailing list/etc very closely....mostly just playing around
+| [Tuesday 30 November 2010] [19:49:25] <kisielk>	https://github.com/zeromq/zeromq2/issues
+| [Tuesday 30 November 2010] [19:49:53] <kisielk>	file a bug there with example code
+| [Tuesday 30 November 2010] [19:50:07] <Nate75Sanders>	thanks
+| [Tuesday 30 November 2010] [19:55:54] <Nate75Sanders>	going to make _sure_ that I'm using latest stuff, etc first, though
+| [Tuesday 30 November 2010] [20:00:46] <kisielk>	yeah that's a good idea
+| [Tuesday 30 November 2010] [20:01:40] <kisielk>	although I don't see any closed issues related to push blocking
+| [Tuesday 30 November 2010] [20:18:47] <Nate75Sanders>	heh, i have some serious formatting problems
+| [Tuesday 30 November 2010] [20:19:02] <Nate75Sanders>	editing the issue
+| [Tuesday 30 November 2010] [20:21:05] <Nate75Sanders>	.....and I don't get GitHub's markup
+| [Tuesday 30 November 2010] [20:21:06] <Nate75Sanders>	ugh
+| [Tuesday 30 November 2010] [23:16:24] <Nate75Sanders>	anybody here?
+| [Tuesday 30 November 2010] [23:18:25] <Nate75Sanders>	appreciate it if someone would take a look at https://github.com/zeromq/zeromq2/issues#issue/130 and see if I'm crazy or not
