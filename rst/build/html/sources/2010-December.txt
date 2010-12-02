@@ -354,3 +354,26 @@
 | [Wednesday 01 December 2010] [17:43:24] <sustrik>	hi
 | [Wednesday 01 December 2010] [17:47:32] <Guthur>	is there tests for the new features?
 | [Wednesday 01 December 2010] [17:47:38] <Guthur>	in 2.1.0
+| [Wednesday 01 December 2010] [19:19:13] <erickt>	Hi #zeromq! congrats on 2.1.0. I was wondering, did sys://log make it into 2.1.0?
+| [Wednesday 01 December 2010] [19:20:47] <erickt>	and if so, what is getting logged?
+| [Wednesday 01 December 2010] [20:54:02] <Remoun>	How can I get the remote IP (of the sender) when receiving over TCP?
+| [Wednesday 01 December 2010] [23:20:06] <DanielHolth>	any word on a ctypes zeromq binding?
+| [Wednesday 01 December 2010] [23:20:11] <DanielHolth>	for Python?
+| [Thursday 02 December 2010] [02:32:59] <delaney__>	has anyone had any luck getting pyzmq to build with 3.1?
+| [Thursday 02 December 2010] [02:34:03] <delaney__>	trying with the 2.0.10
+| [Thursday 02 December 2010] [02:53:58] <sustrik>	delaney: autobuilds: http://build.valokuva.org/
+| [Thursday 02 December 2010] [02:54:33] <sustrik>	Remoun: you can't
+| [Thursday 02 December 2010] [02:55:04] <sustrik>	erickt: it have made it in
+| [Thursday 02 December 2010] [02:55:16] <sustrik>	you can subscribe to it
+| [Thursday 02 December 2010] [02:55:23] <sustrik>	but nothing is logged yet :)
+| [Thursday 02 December 2010] [02:59:16] <delaney__>	sustrik that looks cool but doesn't seem to have a link to the zmq package, or is that not available?  http://build.valokuva.org/view/pyzmq/job/pyzmq-master_ZeroMQ2-master_GCC/lastBuild/
+| [Thursday 02 December 2010] [02:59:49] <sustrik>	nope, it doesn't create packages
+| [Thursday 02 December 2010] [03:00:05] <sustrik>	but it shows that the pyzmq can be built with master
+| [Thursday 02 December 2010] [03:03:33] <delaney__>	oh i don't doubt it
+| [Thursday 02 December 2010] [03:03:50] <delaney__>	actually just got it working with 32bit visual studio 2008
+| [Thursday 02 December 2010] [03:04:07] <delaney__>	but can't seem to with 64bit visual studio 2010
+| [Thursday 02 December 2010] [03:09:09] <sustrik>	report the problem on the mailing list then...
+| [Thursday 02 December 2010] [03:09:34] <sustrik>	i cannot really help myself is a don't have win64
+| [Thursday 02 December 2010] [03:14:27] <Steve-o>	sustrik, hope you like the bug I found on MSVC :-)
+| [Thursday 02 December 2010] [03:23:34] <sustrik>	Steve-o: haven't read all emails yet
+| [Thursday 02 December 2010] [03:23:39] <sustrik>	which one is that?
