@@ -377,3 +377,105 @@
 | [Thursday 02 December 2010] [03:14:27] <Steve-o>	sustrik, hope you like the bug I found on MSVC :-)
 | [Thursday 02 December 2010] [03:23:34] <sustrik>	Steve-o: haven't read all emails yet
 | [Thursday 02 December 2010] [03:23:39] <sustrik>	which one is that?
+| [Thursday 02 December 2010] [03:24:13] <Steve-o>	ok, end of "encoder hanging in remote_thr tests" thread.  
+| [Thursday 02 December 2010] [03:24:29] <Steve-o>	compiler over-optimisation
+| [Thursday 02 December 2010] [03:25:01] <sustrik>	uh, you've sent a patch
+| [Thursday 02 December 2010] [03:25:16] <Steve-o>	it's a workaround, not a real patch
+| [Thursday 02 December 2010] [03:25:31] <sustrik>	anyway, mark the emails containing patches with [PATCH]
+| [Thursday 02 December 2010] [03:25:31] <Steve-o>	I have no idea what is a good solution, leave that up to you
+| [Thursday 02 December 2010] [03:25:44] <sustrik>	otherwise it's pretty easy to forget about it
+| [Thursday 02 December 2010] [03:26:01] <Steve-o>	I've dumped a Win32 API call in there, it's not useful to commit it
+| [Thursday 02 December 2010] [03:26:10] <sustrik>	ok, i see
+| [Thursday 02 December 2010] [03:26:52] <Steve-o>	still working on why linger isn't working
+| [Thursday 02 December 2010] [03:27:06] <Steve-o>	is it supposed to on pub sockets?
+| [Thursday 02 December 2010] [03:27:25] <sustrik>	Steve-o: i would say the problem is that OpenPGM doesn't have linger
+| [Thursday 02 December 2010] [03:27:32] <sustrik>	so the LINGER is set on 0MQ level
+| [Thursday 02 December 2010] [03:27:42] <sustrik>	when 0MQ pushes all data to OpenPGM
+| [Thursday 02 December 2010] [03:27:53] <sustrik>	it considers the work done
+| [Thursday 02 December 2010] [03:27:56] <sustrik>	and exits
+| [Thursday 02 December 2010] [03:28:01] <sustrik>	which closes the process
+| [Thursday 02 December 2010] [03:28:07] <Steve-o>	the problem here is 0MQ isn't sending anything to PGM
+| [Thursday 02 December 2010] [03:28:10] <sustrik>	thus dropping the PGM tx buffers
+| [Thursday 02 December 2010] [03:28:14] <sustrik>	ah
+| [Thursday 02 December 2010] [03:28:27] <Steve-o>	it only init's the pgm_socket object
+| [Thursday 02 December 2010] [03:28:31] <Steve-o>	the destroys it
+| [Thursday 02 December 2010] [03:28:41] <Steve-o>	core bug
+| [Thursday 02 December 2010] [03:28:50] <sustrik>	ok, i'll give it a look
+| [Thursday 02 December 2010] [03:28:51] <Steve-o>	or "feature"
+| [Thursday 02 December 2010] [03:29:08] <Steve-o>	check your mails and get back to me on the list later
+| [Thursday 02 December 2010] [03:29:15] <sustrik>	sure, will do
+| [Thursday 02 December 2010] [05:01:25] <PiotrSikora>	guys, are there any complete examples/guides about integrating zeromq with existing event poll using ZMQ_FD & ZMQ_EVENTS?
+| [Thursday 02 December 2010] [05:20:41] <sustrik_>	PiotrSikora: have a look at src/zmq.cpp
+| [Thursday 02 December 2010] [05:20:51] <sustrik_>	there's implementation of zmq_poll
+| [Thursday 02 December 2010] [05:21:00] <sustrik_>	which uses ZMQ_FD and ZMQ_EVENTS underneath
+| [Thursday 02 December 2010] [05:21:33] <sustrik_>	combined with either select(2) or poll(2)
+| [Thursday 02 December 2010] [05:25:47] <PiotrSikora>	sustrik_: yeah, i looked at it... let me clarify...
+| [Thursday 02 December 2010] [05:27:34] <PiotrSikora>	sustrik_: it is my understanding that in order to hook ZMQ into existing event look (kevent, epoll, etc) i need to get existing fd via getsockopt(ZMQ_FD), then when system will notice my about event on that fd, I need to verify that there is complete ZMQ message available via getsockopt(ZMQ_EVENTS)
+| [Thursday 02 December 2010] [05:27:54] <PiotrSikora>	however i'm lost at how can i retrieve this message without blocking?
+| [Thursday 02 December 2010] [05:28:02] <PiotrSikora>	zmq_poll? doesn't look like
+| [Thursday 02 December 2010] [05:29:11] <PiotrSikora>	or would zmq_recv() be ok?
+| [Thursday 02 December 2010] [05:29:35] <sustrik_>	zmq_recv()
+| [Thursday 02 December 2010] [05:29:40] <sustrik_>	you know it's there
+| [Thursday 02 December 2010] [05:29:50] <sustrik_>	so you just call zmq_recv() and you'll get it
+| [Thursday 02 December 2010] [05:30:40] <PiotrSikora>	ok, thx :)
+| [Thursday 02 December 2010] [05:31:07] <PiotrSikora>	seems like those new features make it extremely easy to integrate now
+| [Thursday 02 December 2010] [05:31:30] <PiotrSikora>	i remember i looked into this (integrating with existing event loop) a while ago and it seemd rather impossible to do
+| [Thursday 02 December 2010] [06:09:21] <mikko>	this is odd
+| [Thursday 02 December 2010] [06:09:31] <mikko>	out of the box gcc 3.4.6 does not support -fvisibility=hidden flag
+| [Thursday 02 December 2010] [06:09:44] <mikko>	but redhat "fixed" version does support it but messes up visibility
+| [Thursday 02 December 2010] [06:55:18] <sustrik_>	Steve-o: hi
+| [Thursday 02 December 2010] [06:55:26] <Steve-o>	hi
+| [Thursday 02 December 2010] [06:55:40] <sustrik_>	aren't there 2 different problems there?
+| [Thursday 02 December 2010] [06:55:49] <sustrik_>	one of them is solved by sleep()
+| [Thursday 02 December 2010] [06:56:11] <Steve-o>	at least 2 possibly more
+| [Thursday 02 December 2010] [06:56:26] <sustrik_>	yep
+| [Thursday 02 December 2010] [06:56:35] <sustrik_>	so let's solve these seaprately
+| [Thursday 02 December 2010] [06:56:49] <Steve-o>	the memory barrier / fence is the most odd
+| [Thursday 02 December 2010] [06:57:08] <sustrik_>	mikko: mato says you are right
+| [Thursday 02 December 2010] [06:57:15] <sustrik_>	and it's RH bug
+| [Thursday 02 December 2010] [06:57:29] <sustrik_>	Steve-o: yes
+| [Thursday 02 December 2010] [06:57:42] <sustrik_>	anyway, one problem that's pretty obvious is that 0MQ doesn't wait for OpenPGM when terminating
+| [Thursday 02 December 2010] [06:58:09] <sustrik_>	can we solve that one somehow?
+| [Thursday 02 December 2010] [06:58:22] <Steve-o>	isn't something broken in the linger implementation?
+| [Thursday 02 December 2010] [06:58:37] <sustrik_>	maybe, but that's not the point
+| [Thursday 02 December 2010] [06:58:52] <sustrik_>	the point is that 0mq doesn't know when openpgm have sent all the data
+| [Thursday 02 December 2010] [06:59:06] <Steve-o>	ok three problems
+| [Thursday 02 December 2010] [06:59:26] <sustrik_>	ok
+| [Thursday 02 December 2010] [06:59:34] <Steve-o>	#1 0mq does not flush complete batch of messages, instead it only sends first message
+| [Thursday 02 December 2010] [06:59:50] <Steve-o>	#2 a MSVC 2010 compiler optimisation bug causes encoder.get_data to hang
+| [Thursday 02 December 2010] [07:00:13] <Steve-o>	#3 short PUB runs followed by zmq_term do not plug the underlying transport
+| [Thursday 02 December 2010] [07:00:38] <mikko>	sustrik_: i think i got a feasible patch
+| [Thursday 02 December 2010] [07:01:20] <mikko>	ill talk with mato when he is back
+| [Thursday 02 December 2010] [07:01:25] <sustrik_>	sure
+| [Thursday 02 December 2010] [07:02:15] <Steve-o>	note #1 & #3 may also be MSVC bugs, no idea
+| [Thursday 02 December 2010] [07:03:00] <sustrik_>	Steve-o: ok, can it be reproduced on a single box?
+| [Thursday 02 December 2010] [07:03:31] <Steve-o>	#3 is really easy, just run remote_thr with size=100 and count=1 ... 2000
+| [Thursday 02 December 2010] [07:03:55] <Steve-o>	i added printf statements to every call in pgm_sender.cpp to see what if ever is called
+| [Thursday 02 December 2010] [07:04:37] <Steve-o>	#2 randomly occurs when data is actually sent
+| [Thursday 02 December 2010] [07:04:48] <Steve-o>	#1 not so important as the others
+| [Thursday 02 December 2010] [07:06:01] <Steve-o>	of course it will be more annoying if it is hardware dependent
+| [Thursday 02 December 2010] [07:06:50] <sustrik_>	so let's start with #3
+| [Thursday 02 December 2010] [07:07:00] <sustrik_>	pgm?
+| [Thursday 02 December 2010] [07:07:02] <sustrik_>	epgm?
+| [Thursday 02 December 2010] [07:07:04] <sustrik_>	loopback?
+| [Thursday 02 December 2010] [07:07:07] <Steve-o>	epgm,
+| [Thursday 02 December 2010] [07:07:44] <sustrik_>	does it happen on linux as well?
+| [Thursday 02 December 2010] [07:07:53] <Steve-o>	haven't checked yet
+| [Thursday 02 December 2010] [07:08:26] <sustrik_>	let me try
+| [Thursday 02 December 2010] [07:08:30] <Steve-o>	i only saw #1 on linux so far
+| [Thursday 02 December 2010] [07:13:22] <Steve-o>	linux looks fine here for count=1 
+| [Thursday 02 December 2010] [07:14:27] <Steve-o>	LD_LIBRARY_PATH=src/.libs/ ./perf/.libs/remote_thr --rate-limit 100 "epgm://eth0;239.192.0.1:7500" 100 1
+| [Thursday 02 December 2010] [07:14:41] <Steve-o>	sends 1 packet as expected
+| [Thursday 02 December 2010] [07:22:51] <sustrik_>	so it only happens on windows, right?
+| [Thursday 02 December 2010] [07:23:04] <sustrik_>	i don't have a win box here
+| [Thursday 02 December 2010] [07:26:50] <Steve-o>	appears so, just tested on another box and reproduced it
+| [Thursday 02 December 2010] [07:30:50] <Steve-o>	that's why I'm wondering if it is another MSVC compiler optimisation bug
+| [Thursday 02 December 2010] [07:31:10] <Steve-o>	you really need some heavy unit testing to catch annoying features like this
+| [Thursday 02 December 2010] [07:31:50] <sustrik_>	Steve-o: yes, but win32 is a platform that i am not really using
+| [Thursday 02 December 2010] [07:35:18] <Steve-o>	unfortunately most VMs are too helpful either for multicast testing
+| [Thursday 02 December 2010] [07:37:01] <Steve-o>	I think it's still only limited to ESX virtual NICs
+| [Thursday 02 December 2010] [07:37:38] <sustrik_>	no idea
+| [Thursday 02 December 2010] [07:38:53] <sustrik_>	anyway, the obvious problem is that the whole win/pgm thing is not going to move forward at any reasonable pace if there's no infrastructure to test it on
+| [Thursday 02 December 2010] [07:43:52] <Steve-o>	yup, and I guess some assistance in testing the .net libraries would help developers too
+| [Thursday 02 December 2010] [07:46:18] <Steve-o>	if MSVC is causing this there should be negative consequences on the TCP transport too
+| [Thursday 02 December 2010] [07:50:29] <Steve-o>	I'm currently using 2008R2 trial on a server and Windows 7 on desktop, but on separate networks :-)
