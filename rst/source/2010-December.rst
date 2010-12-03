@@ -479,3 +479,146 @@
 | [Thursday 02 December 2010] [07:43:52] <Steve-o>	yup, and I guess some assistance in testing the .net libraries would help developers too
 | [Thursday 02 December 2010] [07:46:18] <Steve-o>	if MSVC is causing this there should be negative consequences on the TCP transport too
 | [Thursday 02 December 2010] [07:50:29] <Steve-o>	I'm currently using 2008R2 trial on a server and Windows 7 on desktop, but on separate networks :-)
+| [Thursday 02 December 2010] [09:00:35] <mikko>	mato: found it
+| [Thursday 02 December 2010] [09:00:35] <mikko>	- backport C++ visibility patches, -fvisibility*, #pragma GCC visibility
+| [Thursday 02 December 2010] [09:00:44] <mikko>	from RHEL gcc changelog
+| [Thursday 02 December 2010] [09:10:28] <Guthur>	i there any caveats with having multiple contexts in the one application?
+| [Thursday 02 December 2010] [09:10:49] <Guthur>	i/is
+| [Thursday 02 December 2010] [09:11:16] <mato>	mikko: Thought so ... usual silly attitude from RHAT
+| [Thursday 02 December 2010] [09:11:48] <mato>	mikko: Anyway, I'd suggest going with the approach in your patch for now (don't enable it at all on GCC < 4)
+| [Thursday 02 December 2010] [09:11:59] <mato>	mikko: I've not reviewed it yet in detail, busy today...
+| [Thursday 02 December 2010] [09:14:06] <mikko>	mato: check this
+| [Thursday 02 December 2010] [09:14:14] <mikko>	http://valokuva.org/~mikko/visibility-rhel.patch
+| [Thursday 02 December 2010] [09:14:18] <mikko>	this is the latest
+| [Thursday 02 December 2010] [09:14:29] <mikko>	it uses AC_COMPILE_IFELSE to test the visibility
+| [Thursday 02 December 2010] [09:14:54] <mikko>	the AC_COMPILE_IFELSE should fail if the compiler is not one of the defined
+| [Thursday 02 December 2010] [09:15:09] <mikko>	additionally it uses 'nm' to check that the symbol actually has the expected visibility
+| [Thursday 02 December 2010] [09:16:13] <mato>	mikko: 'nm' is not a good idea due to non-portability of it's output
+| [Thursday 02 December 2010] [09:16:23] <mato>	mikko: e.g. solaris nm by default produces completely different output
+| [Thursday 02 December 2010] [09:16:57] <mato>	mikko: if you really want to go the whole hog and actually test if -fvisibility works, then you'd need to compile a shared object and try and link against it
+| [Thursday 02 December 2010] [09:17:04] <mato>	mikko: not sure if that's worth the work...
+| [Thursday 02 December 2010] [09:17:33] <mato>	mikko: since compiling a shared lib would need to be done thru libtool to be portable, etc etc.
+| [Thursday 02 December 2010] [09:18:20] <mato>	mikko: why not just stick with the bruteforce approach for now and don't even try -fvisibility on GCC < 4?
+| [Thursday 02 December 2010] [09:18:25] <mikko>	mato: nm format is defined in posix
+| [Thursday 02 December 2010] [09:18:34] <mikko>	not sure if everyone follows that htough
+| [Thursday 02 December 2010] [09:18:36] <mato>	mikko: Yes, but not everyone follows thhat
+| [Thursday 02 December 2010] [09:18:57] <mikko>	ok
+| [Thursday 02 December 2010] [09:19:00] <mikko>	ill remove the nm part
+| [Thursday 02 December 2010] [09:19:12] <mikko>	the AC_TRY_COMPILE should still fail with gcc 4<
+| [Thursday 02 December 2010] [09:19:19] <mikko>	gcc <4
+| [Thursday 02 December 2010] [09:20:01] <mikko>	let me update the patch
+| [Thursday 02 December 2010] [09:20:42] <mikko>	mato: you mean something like this:http://valokuva.org/~mikko/visibility.patch
+| [Thursday 02 December 2010] [09:22:10] <mato>	mikko: guess so
+| [Thursday 02 December 2010] [09:23:08] <mikko>	i can also just remove the AC_TRY_COMPILE and use the compiler check
+| [Thursday 02 December 2010] [09:23:16] <mikko>	if test "x$ac_ .. etc
+| [Thursday 02 December 2010] [09:23:34] <mato>	make it as simple as possible, this is just for people with broken redhat GCC
+| [Thursday 02 December 2010] [09:24:02] <mikko>	ok
+| [Thursday 02 December 2010] [09:24:09] <mikko>	i'll juggle it a bit later
+| [Thursday 02 December 2010] [09:27:32] <sustrik>	Guthur: you can, but what is it good for?
+| [Thursday 02 December 2010] [09:28:54] <Guthur>	To make my object disposal strategy in a C# application a little bit more naive
+| [Thursday 02 December 2010] [09:29:47] <Guthur>	I have a background thread listening for requests on a ZMQ_REQ, it'd like it to able to take care of it's own disposal
+| [Thursday 02 December 2010] [09:29:56] <Guthur>	it'd/I'd
+| [Thursday 02 December 2010] [09:30:04] <sustrik>	and?
+| [Thursday 02 December 2010] [09:30:34] <Guthur>	Well if i share a context with the main thread I was thinking that I couldn't get rid of it without worrying about that socket
+| [Thursday 02 December 2010] [09:31:08] <sustrik>	the socket returns ETERM when context it terminated
+| [Thursday 02 December 2010] [09:31:13] <Guthur>	Does that make sense
+| [Thursday 02 December 2010] [09:31:22] <Guthur>	oh ok
+| [Thursday 02 December 2010] [09:31:43] <Guthur>	ignore the make sense statement
+| [Thursday 02 December 2010] [09:33:19] <Guthur>	my mistake, I should have checked, I thought the open socket would block the context from disposing
+| [Thursday 02 December 2010] [09:34:11] <sustrik>	it will
+| [Thursday 02 December 2010] [09:34:38] <sustrik>	you'll get ETERM, then you close the socket
+| [Thursday 02 December 2010] [09:34:46] <sustrik>	then the zmq_term() finishes
+| [Thursday 02 December 2010] [09:39:16] <Guthur>	ok, thanks for the clarification sustrik 
+| [Thursday 02 December 2010] [12:06:26] <drbobbeaty>	I'm running with the new ZMQ 2.1.0 from the new downloads site. It's running just fine, and I really appreciate all the work that's gone into it. But there is one thing, and I'm not sure what approach to take. When using epgm:// (OpenPGM) as the transport, the call to send() leaks. Not as much as 2.0.10, but it still leaks. For my application, it's still a problem. Is there anything in the "known issues" list for ZMQ or OpenPGM that might clear this up?
+| [Thursday 02 December 2010] [12:06:26] <drbobbeaty>	am I on my own with the code?
+| [Thursday 02 December 2010] [12:08:08] <mikko>	drbobbeaty: do you know where it leaks?
+| [Thursday 02 December 2010] [12:08:26] <mikko>	im not sure if this is a known issue (first time i hear about it)
+| [Thursday 02 December 2010] [12:10:25] <drbobbeaty>	I only know that if I comment out the call to send(), the leak goes away. Put it in and it leaks (for me) on the order of a couple of MB every few seconds.
+| [Thursday 02 December 2010] [12:11:13] <drbobbeaty>	I know it's based on the size of the messages, but I don't have a lot of other information on it. I was going  to just get down-n-dirty with the code to try and track this down, but I wanted to ask here to see if this is something already known before I spend a few days on this.
+| [Thursday 02 December 2010] [12:12:55] <mikko>	sustrik might be able to answer this better
+| [Thursday 02 December 2010] [12:13:07] <mikko>	drbobbeaty: is it simple to reproduce?
+| [Thursday 02 December 2010] [12:13:37] <drbobbeaty>	mikko: That's the first thing I'm going to do - make a simple test case and then go from there.
+| [Thursday 02 December 2010] [12:14:03] <erickt>	does it not leak with the other protocols?
+| [Thursday 02 December 2010] [12:14:39] <drbobbeaty>	erickt: not sure, going to try that too... just at the very early stages (10 min) of this process.
+| [Thursday 02 December 2010] [12:21:58] <cremes>	drbobbeaty: it might just be queueing the data in memory; what kind of socket are you using?
+| [Thursday 02 December 2010] [12:24:08] <cremes>	nevermind... that only makes sense for tcp transport
+| [Thursday 02 December 2010] [12:24:41] <drbobbeaty>	Every idea is welcome. I'm going to do a lot of digging now and then when I have something concrete I'll send it to the mailing list.
+| [Thursday 02 December 2010] [12:29:42] <mikko>	it does sound like the data is staying in some buffer
+| [Thursday 02 December 2010] [12:30:27] <mikko>	drbobbeaty: are you closing the messages properly?
+| [Thursday 02 December 2010] [12:30:33] <drbobbeaty>	yeah, that was my guess, because I've checked on the message itself, and that's OK -- I make a new one for each send, as I thought I read here that's the "best practices" for sending.
+| [Thursday 02 December 2010] [12:30:55] <mikko>	you got message init and close for each send?
+| [Thursday 02 December 2010] [12:36:32] <drbobbeaty>	I'm using the C++ API, and that does those in the zmq::message_t class, yes.
+| [Thursday 02 December 2010] [12:37:14] <drbobbeaty>	mikko: I'm assuming you're asking about the message initialization and close out. The socket stays open for a "long" time.
+| [Thursday 02 December 2010] [12:38:52] <mikko>	drbobbeaty: yeah, message init and close. looks like the C++ api closes the message upon destruction
+| [Thursday 02 December 2010] [12:38:54] <sustrik>	drbobbeaty: are you sure you are not pushing data to 0MQ faster than PGM transfer rate?
+| [Thursday 02 December 2010] [12:40:03] <sustrik>	default transmit rate is 100kb/s
+| [Thursday 02 December 2010] [12:40:44] <drbobbeaty>	sustrik: I'm not sure what that rate is. I know I'm pushing about 1000 to 10,000 msgs/sec out on different epgm:// connected sockets (different sockets get different parts of the data set)... and I monitor the 10Gb Ethernet and it nowhere near the limit of the NIC - not even 50%. So I don't think I'm sending it too fast.
+| [Thursday 02 December 2010] [12:41:13] <sustrik>	then look at ZMQ_RATE socket option
+| [Thursday 02 December 2010] [12:41:15] <drbobbeaty>	sustrik: I set my default to 200kb/s in the construction
+| [Thursday 02 December 2010] [12:41:28] <drbobbeaty>	...of each socket.
+| [Thursday 02 December 2010] [12:41:36] <sustrik>	ok, and how much do you publish?
+| [Thursday 02 December 2010] [12:41:52] <sustrik>	if you publish more than 200kb/s then the messages are queued
+| [Thursday 02 December 2010] [12:42:42] <drbobbeaty>	I'll have to put in better measurement statistics to the logging... right now I look at messages per second, not bytes per socket per second. When I do that, I'll know.
+| [Thursday 02 December 2010] [12:43:33] <sustrik>	in any case, setting transmit rate to 200kb/s on 10GbE seems overly restrictuve
+| [Thursday 02 December 2010] [12:44:18] <drbobbeaty>	Yeah, I just upped it to 1Mbps and will try that
+| [Thursday 02 December 2010] [14:35:27] <ngerakines>	hey folks, I've got a few questions about application design with zmq.
+| [Thursday 02 December 2010] [14:36:49] <ngerakines>	In my system, i've got several load threads that subscribe to external pubsub streams and they take the messages they receive and funnel them to another thread that acts as a sort of funnel
+| [Thursday 02 December 2010] [14:37:19] <ngerakines>	that funnel binds a ZMQ_PULL socket for that purpose
+| [Thursday 02 December 2010] [14:37:47] <ngerakines>	what I want to do now, is create a number of worker threads that request work from that socket using ZMQ_REP
+| [Thursday 02 December 2010] [14:38:17] <ngerakines>	so is it possible to have that funnel thread support both the PUSH connections from the loaders as well REP/REQ connections from workers?
+| [Thursday 02 December 2010] [14:46:00] <Remoun>	ngerakines; IIUC, your use case fits into the "Request-Reply Broker" pattern, for which there's the built-in Queue device http://zguide.zeromq.org/chapter:all#toc31
+| [Thursday 02 December 2010] [14:48:14] <ngerakines>	I was reading that and got the impression that messages were pushed to the workers (service b) where in my model, I want the workers to request work
+| [Thursday 02 December 2010] [14:53:54] <Remoun>	AFAIK, the only way for the broker/funnel to know whether workers are available is that workers request work
+| [Thursday 02 December 2010] [14:55:24] <ngerakines>	 so with that, is there a relatively easy way to create a socket that receives both PUSH and REP/REQ requests and is able to determine if an incoming message is one or the other?
+| [Thursday 02 December 2010] [14:55:35] <ngerakines>	I haven't use poll much, but I'm thinking that I might have to go that route.
+| [Thursday 02 December 2010] [14:55:43] <sustrik>	yes
+| [Thursday 02 December 2010] [14:55:48] <sustrik>	two sockets
+| [Thursday 02 December 2010] [14:55:54] <sustrik>	poll on them
+| [Thursday 02 December 2010] [14:56:12] <sustrik>	read messages from both as they become available
+| [Thursday 02 December 2010] [14:57:53] <ngerakines>	ok, thanks everyone
+| [Thursday 02 December 2010] [17:07:10] <raydeo>	using 0mq 2.0.10 I have an inproc:// ZMQ_PAIR socket that is being used as communication between 2 threads. I'm getting an error when using zmq_connect to the socket in one thread before the other thread has done the zmq_bind... is this a known problem?
+| [Thursday 02 December 2010] [17:07:26] <raydeo>	the errno received from zmq_bind is ECONNREFUSED
+| [Thursday 02 December 2010] [17:14:36] <mikko>	raydeo: it's a known limitation
+| [Thursday 02 December 2010] [17:14:47] <mikko>	you need to bind before connecting
+| [Thursday 02 December 2010] [17:15:19] <raydeo>	mikko: that's fine, what would you suggest if I don't have control over the order those threads run? a different socket type, or a mutex?
+| [Thursday 02 December 2010] [17:15:50] <mikko>	raydeo: it's a limitation of inproc transport
+| [Thursday 02 December 2010] [17:16:31] <raydeo>	ok, so I'll just need to ensure externally the initialization order... shame :(
+| [Thursday 02 December 2010] [18:41:50] <abrown28>	anyone listening want to answer a dumb question for me?
+| [Thursday 02 December 2010] [23:20:49] <Remoun>	"If you need to know the identity of the peer you got a message from, only the XREP socket does this for you automatically. For any other socket type you must send the address explicitly, as a message part."
+| [Thursday 02 December 2010] [23:21:01] <Remoun>	So how _do_ I get the address/identity?
+| [Thursday 02 December 2010] [23:29:02] <the_hulk>	what is type identifier for socket, and context for C API's, or should i just declare them as void?
+| [Thursday 02 December 2010] [23:44:03] <Remoun>	the_hulk; they're opaque handles, void*
+| [Thursday 02 December 2010] [23:54:52] <the_hulk>	ok
+| [Friday 03 December 2010] [02:16:41] <sustrik>	Remoun: just write it into the message
+| [Friday 03 December 2010] [02:17:11] <Remoun>	I was/am looking for the value to write into the message :)
+| [Friday 03 December 2010] [02:17:24] <sustrik>	think of something :)
+| [Friday 03 December 2010] [02:19:13] <Remoun>	Relatedly, can I use semi-durable sockets such that I can actually address individual workers, but not have them eat memory when they're gone?
+| [Friday 03 December 2010] [02:19:55] <Remoun>	I'm basically trying to distribute the 'broker' in the last example in the guide, while also adding a layer of authentication
+| [Friday 03 December 2010] [02:22:00] <sustrik>	hm, that works only with REQ/REP pattern
+| [Friday 03 December 2010] [02:22:15] <sustrik>	when you don't set identity, one is generated for you
+| [Friday 03 December 2010] [02:22:40] <sustrik>	but the connections are still transient
+| [Friday 03 December 2010] [02:22:46] <Remoun>	And it's generated by the REP side, right?
+| [Friday 03 December 2010] [02:23:05] <sustrik>	the identity?
+| [Friday 03 December 2010] [02:23:05] <Remoun>	Meaning if the worker actually talks to more than one broker, they'd have different IDs for that worker?
+| [Friday 03 December 2010] [02:23:17] <sustrik>	yes
+| [Friday 03 December 2010] [02:23:44] <Remoun>	Therein lies the catch...
+| [Friday 03 December 2010] [02:24:16] <Remoun>	I need to avoid single points of failure, particularly with sth as involved as the broker
+| [Friday 03 December 2010] [02:24:54] <Remoun>	Yet synchronizing the 'availability' across more than one node (thread, process, etc.) is nigh impossible
+| [Friday 03 December 2010] [02:30:31] <Remoun>	sustrik; any ideas?
+| [Friday 03 December 2010] [02:30:37] <sustrik>	i don't follow
+| [Friday 03 December 2010] [02:30:40] <sustrik>	what's the problem?
+| [Friday 03 December 2010] [02:32:02] <Remoun>	Splitting the load-balancing across several brokers; I don't know how to approach that
+| [Friday 03 December 2010] [02:33:01] <sustrik>	connect the client to several brokers?
+| [Friday 03 December 2010] [02:33:47] <Remoun>	But then more than one broker would dispatch to the same worker
+| [Friday 03 December 2010] [02:33:54] <Remoun>	simultaneously, that is
+| [Friday 03 December 2010] [02:35:57] <sustrik>	you have to decide what pattern are you going to use
+| [Friday 03 December 2010] [02:36:11] <sustrik>	load balancing makes sense only with REQ/REP and PUSH/PULL
+| [Friday 03 December 2010] [02:36:18] <sustrik>	which one are you using?
+| [Friday 03 December 2010] [02:37:07] <Remoun>	I was going for REQ/REP, but now that I think about it, it can work better with PUSH/PULL
+| [Friday 03 December 2010] [02:37:57] <sustrik>	what does " more than one broker would dispatch to the same worker" means with REQ/REP or PUSH/PULL?
+| [Friday 03 December 2010] [02:38:56] <Remoun>	Well, a broker can only really service one request/pull at a time, right?
+| [Friday 03 December 2010] [02:39:51] <sustrik>	right -- unless it dispatches it further, to a separate worker thread or somesuch
+| [Friday 03 December 2010] [02:41:15] <Remoun>	I might just need to RTFM; I'll pour over the guide again
+| [Friday 03 December 2010] [02:46:23] <Remoun>	Where can I read more about PUSH/PULL sockets/patterns? The guide doesn't talk much about them
+| [Friday 03 December 2010] [02:47:44] <sustrik>	i think there's an chapter about it
+| [Friday 03 December 2010] [02:47:49] <sustrik>	the one with "ventilator"
