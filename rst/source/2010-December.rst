@@ -622,3 +622,49 @@
 | [Friday 03 December 2010] [02:46:23] <Remoun>	Where can I read more about PUSH/PULL sockets/patterns? The guide doesn't talk much about them
 | [Friday 03 December 2010] [02:47:44] <sustrik>	i think there's an chapter about it
 | [Friday 03 December 2010] [02:47:49] <sustrik>	the one with "ventilator"
+| [Friday 03 December 2010] [07:00:11] <the_hulk>	How do i know that server is down, from client site?
+| [Friday 03 December 2010] [12:12:46] <ptrb>	if I have a push/pull set up, with one pusher and multiple pullers, is there some way to have the "push" action target a specific "puller", absent some other out-of-band communication?
+| [Friday 03 December 2010] [12:13:33] <mikko>	ptrb: have each "puller" subscribe to generic and puller specific topic
+| [Friday 03 December 2010] [12:13:44] <mikko>	and use puller specific topic to communicate with specific puller
+| [Friday 03 December 2010] [12:15:29] <ptrb>	so pub/sub instead
+| [Friday 03 December 2010] [12:16:23] <mikko>	yes
+| [Friday 03 December 2010] [12:16:33] <mikko>	PUSH/PULL load balances the messages as well
+| [Friday 03 December 2010] [12:16:47] <mikko>	im not sure if there is a way to message based on the ident of client using push/pull
+| [Friday 03 December 2010] [12:16:52] <mikko>	sustrik might know better
+| [Friday 03 December 2010] [12:17:42] <sustrik>	ptrb: PUSH socket does load balancing
+| [Friday 03 December 2010] [12:17:56] <sustrik>	thus it decides which peer to send the message to itself
+| [Friday 03 December 2010] [12:18:41] <mikko>	sustrik: i got solaris10 running as build slave
+| [Friday 03 December 2010] [12:18:44] <mikko>	running first tests now
+| [Friday 03 December 2010] [12:18:50] <mikko>	will try installing windows later on
+| [Friday 03 December 2010] [12:18:58] <sustrik>	wow!
+| [Friday 03 December 2010] [12:35:39] <mikko>	mato: there?
+| [Friday 03 December 2010] [12:36:50] <sustrik>	mikko: i think he's travalling atm
+| [Friday 03 December 2010] [12:39:55] <mikko>	i just notced that the way we unpack pgm sources doesnt seem to be portable 
+| [Friday 03 December 2010] [12:39:59] <mikko>	-C option to tar
+| [Friday 03 December 2010] [12:40:23] <sustrik>	shrug
+| [Friday 03 December 2010] [12:41:36] <sustrik>	no idea myself
+| [Friday 03 December 2010] [13:47:57] <ptrb>	is it possible to change the HWM behavior of a socket?
+| [Friday 03 December 2010] [13:48:27] <ptrb>	or, failing that, poll to see the current, uh, water level?
+| [Friday 03 December 2010] [13:53:46] <mikko>	watermark
+| [Friday 03 December 2010] [13:53:54] <mikko>	yes, you can poll
+| [Friday 03 December 2010] [13:54:04] <mikko>	it should come back as writable if hwm is reached
+| [Friday 03 December 2010] [13:57:31] <ptrb>	am I stupid and missing what that function is?
+| [Friday 03 December 2010] [13:58:21] <mikko>	what function?
+| [Friday 03 December 2010] [13:58:58] <ptrb>	oh, you getsockopt on ZMQ_HWM?
+| [Friday 03 December 2010] [13:59:15] <mikko>	zmq_poll
+| [Friday 03 December 2010] [13:59:35] <mikko>	you can not get current amount of messages in transit
+| [Friday 03 December 2010] [13:59:48] <mikko>	but zmq_poll should not return the socket as writable if hwm has been reached
+| [Friday 03 December 2010] [14:00:40] <ptrb>	oh, okay. and that will work that way no matter what type of socket(s) you poll on
+| [Friday 03 December 2010] [14:01:33] <mikko>	i've only tested on push sockets
+| [Friday 03 December 2010] [14:02:04] <ptrb>	hmm.
+| [Friday 03 December 2010] [14:03:01] <mikko>	not sure about pub socket
+| [Friday 03 December 2010] [14:03:15] <mikko>	as the behavior with pub socket when hwm is reached is to discard messages
+| [Friday 03 December 2010] [14:03:58] <ptrb>	right, which I'm trying to work around
+| [Friday 03 December 2010] [14:04:36] <ptrb>	looks like the "correct" solution here is to manually manage N ZMQ_PUSH sockets... which is what I was hoping to avoid... but..
+| [Friday 03 December 2010] [14:06:25] <ptrb>	OK, thanks for the tip.. if anything else strikes you in the night, feel free to let me know :)
+| [Friday 03 December 2010] [14:06:41] <mikko>	you could easily test zmq_poll + pub socket
+| [Friday 03 December 2010] [14:06:59] <ptrb>	yeah but that is more work than I can rightly manage at 8pm on a Friday :)
+| [Friday 03 December 2010] [14:08:04] <ptrb>	cheers
+| [Friday 03 December 2010] [14:09:19] <mikko>	http://zguide.zeromq.org/chapter:all
+| [Friday 03 December 2010] [14:09:24] <mikko>	there is an example for zmq_poll
+| [Friday 03 December 2010] [14:09:30] <mikko>	you should be able to mod that with ease
