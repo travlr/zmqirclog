@@ -673,3 +673,7 @@
 | [Saturday 04 December 2010] [17:16:10] <CIA-20>	zeromq2: These are just placeholders. At the moment XPUB behaves th same
 | [Saturday 04 December 2010] [17:16:10] <CIA-20>	zeromq2: as PUB and XSUB as SUB.
 | [Saturday 04 December 2010] [17:16:10] <CIA-20>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/g8Nus1
+| [Sunday 05 December 2010] [03:50:04] <CIA-20>	zeromq2: 03Martin Sustrik 07master * r2daa0bb 10/ (src/sub.cpp src/sub.hpp src/xsub.cpp src/xsub.hpp): 
+| [Sunday 05 December 2010] [03:50:04] <CIA-20>	zeromq2: XSUB accepts (un)subscriptions in form of messages.
+| [Sunday 05 December 2010] [03:50:04] <CIA-20>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/ghbsFI
+| [Sunday 05 December 2010] [11:20:41] <CIA-20>	rbzmq: 03Brian Buchanan 07master * r86050ce 10/ (rbzmq.c zmq.gemspec): Update to support libzmq 2.1.0 - http://bit.ly/fuzMIe
