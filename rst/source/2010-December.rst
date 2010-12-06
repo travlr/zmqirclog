@@ -677,3 +677,86 @@
 | [Sunday 05 December 2010] [03:50:04] <CIA-20>	zeromq2: XSUB accepts (un)subscriptions in form of messages.
 | [Sunday 05 December 2010] [03:50:04] <CIA-20>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/ghbsFI
 | [Sunday 05 December 2010] [11:20:41] <CIA-20>	rbzmq: 03Brian Buchanan 07master * r86050ce 10/ (rbzmq.c zmq.gemspec): Update to support libzmq 2.1.0 - http://bit.ly/fuzMIe
+| [Sunday 05 December 2010] [17:25:20] <mikko>	mato: there?
+| [Monday 06 December 2010] [00:46:54] <Guest53515>	i've been reading the docs and i see that you can send a message an basically wait for an ack (reply) back. is there a way to send and timeout in error if a reply has not been received within a timeframe
+| [Monday 06 December 2010] [00:48:12] <guido_g>	no, you have to do this yourself
+| [Monday 06 December 2010] [00:55:05] <Guest53515>	thanks..   can the receivee timeout or will it block forever?
+| [Monday 06 December 2010] [00:56:26] <guido_g>	there is no timeout paramter for receive, but you can simulate it via poll
+| [Monday 06 December 2010] [00:58:30] <guido_g>	*parameter
+| [Monday 06 December 2010] [00:59:18] <Guest53515>	thanks, i was wondering about the poll.  i will have a look
+| [Monday 06 December 2010] [01:00:12] <guido_g>	i'm not sure about this particular thing, but the guide is normally a good source of information
+| [Monday 06 December 2010] [03:11:36] <mikko>	sustrik: there?
+| [Monday 06 December 2010] [03:21:33] <sustrik>	mikko: hi
+| [Monday 06 December 2010] [03:26:47] <mikko>	http://build.valokuva.org/job/ZeroMQ2-core-master_MSVC-win7/20/console
+| [Monday 06 December 2010] [03:26:54] <mikko>	xpub/xsub missing from win build files?
+| [Monday 06 December 2010] [03:28:16] <mikko>	brb, need to commute to the office
+| [Monday 06 December 2010] [03:28:34] <sustrik>	mikko: oops
+| [Monday 06 December 2010] [03:28:38] <sustrik>	let me fix that
+| [Monday 06 December 2010] [03:28:53] <sustrik>	you are already building with MSVC?
+| [Monday 06 December 2010] [03:29:06] <mikko>	yes, testing with win7 build slave
+| [Monday 06 December 2010] [03:29:17] <sustrik>	impressive
+| [Monday 06 December 2010] [03:29:20] <mikko>	http://build.valokuva.org/ -> linux, solaris10, win7 now
+| [Monday 06 December 2010] [03:29:23] <mikko>	brb
+| [Monday 06 December 2010] [03:29:27] <guido_g>	btw, are there already any docs xspub/ssub or is it code only currently?
+| [Monday 06 December 2010] [03:29:43] <sustrik>	it's been committed yesteday
+| [Monday 06 December 2010] [03:29:43] <guido_g>	*docs on xpub/xsub
+| [Monday 06 December 2010] [03:29:49] <sustrik>	and does nothing useful
+| [Monday 06 December 2010] [03:29:56] <guido_g>	ahhh ok
+| [Monday 06 December 2010] [03:30:01] <sustrik>	it's just an infrastructure for subscription forwarding
+| [Monday 06 December 2010] [03:30:02] <guido_g>	but sounds great! :)
+| [Monday 06 December 2010] [03:30:25] <sustrik>	basically the idea is that subsctiptions are just messages
+| [Monday 06 December 2010] [03:30:37] <sustrik>	that are passed up the message distribution tree
+| [Monday 06 December 2010] [03:31:01] 	 * sustrik reboots into windows
+| [Monday 06 December 2010] [03:44:33] <CIA-20>	zeromq2: 03Martin Sustrik 07master * r8a6ff4c 10/ builds/msvc/libzmq/libzmq.vcproj : 
+| [Monday 06 December 2010] [03:44:33] <CIA-20>	zeromq2: xup and xsub files added to the MSVC build
+| [Monday 06 December 2010] [03:44:33] <CIA-20>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/gELabW
+| [Monday 06 December 2010] [03:45:41] <guido_g>	:)
+| [Monday 06 December 2010] [03:47:29] <sustrik>	re
+| [Monday 06 December 2010] [03:48:34] <guido_g>	wb
+| [Monday 06 December 2010] [03:50:27] <sustrik>	:)
+| [Monday 06 December 2010] [04:13:18] <Steve-o>	sustrik: so any hope of back pressure on PUB sockets?
+| [Monday 06 December 2010] [04:13:58] <sustrik>	what's your problem?
+| [Monday 06 December 2010] [04:14:43] <Steve-o>	client sending to PGM faster than the rate limit, there's back pressure from OpenPGM but nothing from 0MQ
+| [Monday 06 December 2010] [04:15:12] <Steve-o>	you can set HWM and lose messages, but the API doesn't provide any feedback
+| [Monday 06 December 2010] [04:15:33] <sustrik>	Steve-o: don't set the HWM then
+| [Monday 06 December 2010] [04:15:36] <Steve-o>	which forces the developer to implement their own rate engine above 0MQ at a guess
+| [Monday 06 December 2010] [04:16:08] <Steve-o>	making the granular rate engine in OpenPGM pretty useless
+| [Monday 06 December 2010] [04:24:15] <sustrik>	Steve-o: still there? what the problem with leaving HWM infinite?
+| [Monday 06 December 2010] [04:30:09] <mikko>	sustrik: builds now
+| [Monday 06 December 2010] [04:30:10] <mikko>	thanks
+| [Monday 06 December 2010] [04:30:19] <sustrik>	np
+| [Monday 06 December 2010] [04:30:25] <mikko>	if this trial works well ill add the win7 as permanent part
+| [Monday 06 December 2010] [04:30:29] <mikko>	to the build cluster
+| [Monday 06 December 2010] [04:31:14] <sustrik>	that would be great
+| [Monday 06 December 2010] [04:31:23] <sustrik>	win platform is notoriously under-tested
+| [Monday 06 December 2010] [04:31:54] <mikko>	sadly this build box is 32bit
+| [Monday 06 December 2010] [04:32:07] <mikko>	i need to look into the stockpile of old servers if i could find 64bit iron
+| [Monday 06 December 2010] [04:55:12] <mato>	mikko: hi
+| [Monday 06 December 2010] [04:55:17] <mato>	mikko: you were after me?
+| [Monday 06 December 2010] [05:00:49] <mikko>	mato: yeah
+| [Monday 06 December 2010] [05:00:59] <mikko>	mato: -C option to tar is not portable it seems
+| [Monday 06 December 2010] [05:01:10] <mato>	mikko: -C ?
+| [Monday 06 December 2010] [05:01:14] <mikko>	solaris tar accepts -C when creating or replacing archive
+| [Monday 06 December 2010] [05:01:23] <mato>	mikko: what is using -C?
+| [Monday 06 December 2010] [05:01:34] <mikko>	yes, -C is used when extracting openpgm
+| [Monday 06 December 2010] [05:02:10] <mikko>	so, im wondering that should we require gnu tar or chdir before extraction
+| [Monday 06 December 2010] [05:02:17] <mikko>	i got a patch for the chdir approach somewhere
+| [Monday 06 December 2010] [05:02:37] <mato>	the latter, since it is supposed to work on Solaris I guess
+| [Monday 06 December 2010] [05:02:55] <mato>	anything to do with openpgm doesn't have to be portable past MinGW/Linux/Solaris
+| [Monday 06 December 2010] [05:03:24] <mikko>	ok, so i'll post the patch as it is when i got time
+| [Monday 06 December 2010] [05:03:36] <mikko>	mato: there is experimental win7 in the daily builds now as well
+| [Monday 06 December 2010] [05:03:36] <mato>	sure, go for it
+| [Monday 06 December 2010] [05:03:47] <mikko>	running visual studio 2008
+| [Monday 06 December 2010] [05:03:58] <mato>	mikko: wow, how did you manage that? :-)
+| [Monday 06 December 2010] [05:04:12] <mato>	mingw I could grok, but scripting VS builds ... 
+| [Monday 06 December 2010] [05:04:19] <mikko>	i installed hudson as windows service and it uses msbuild command line tools to run builds
+| [Monday 06 December 2010] [05:04:27] <mato>	ah, so it has support for that
+| [Monday 06 December 2010] [05:04:28] <mato>	great!
+| [Monday 06 December 2010] [05:04:44] <mikko>	the only pain was to install windows using vmware esx console
+| [Monday 06 December 2010] [05:04:50] <mikko>	the mouse moves in jumps 
+| [Monday 06 December 2010] [05:05:27] <mato>	by the way, the guy with rhat gcc3 problems solved his own problem
+| [Monday 06 December 2010] [05:05:33] <mato>	so I guess we can leave that alone for now
+| [Monday 06 December 2010] [05:05:51] <mikko>	i got a patch for it though
+| [Monday 06 December 2010] [05:05:53] <mato>	let's see if anyone else complains that they really need to use broken RHAT gcc3 :)
+| [Monday 06 December 2010] [05:06:09] <mato>	well, if you're happy with the patch, send it to the ML.
+| [Monday 06 December 2010] [05:06:39] 	 * mato will be on irc somewhat intermittently this week, have builders here ...
