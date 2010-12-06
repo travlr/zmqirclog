@@ -760,3 +760,139 @@
 | [Monday 06 December 2010] [05:05:53] <mato>	let's see if anyone else complains that they really need to use broken RHAT gcc3 :)
 | [Monday 06 December 2010] [05:06:09] <mato>	well, if you're happy with the patch, send it to the ML.
 | [Monday 06 December 2010] [05:06:39] 	 * mato will be on irc somewhat intermittently this week, have builders here ...
+| [Monday 06 December 2010] [06:09:00] <adalrsjr1>	hello...
+| [Monday 06 December 2010] [06:09:47] <adalrsjr1>	i need run a zmq java application in machines without zmq
+| [Monday 06 December 2010] [06:09:54] <adalrsjr1>	how i can do it?
+| [Monday 06 December 2010] [06:10:10] <adalrsjr1>	whitout zmq installed
+| [Monday 06 December 2010] [06:10:15] <adalrsjr1>	i using linux
+| [Monday 06 December 2010] [06:11:29] <mikko>	adalrsjr1: currently the java binding requires libzmq
+| [Monday 06 December 2010] [06:11:40] <mikko>	adalrsjr1: i don't think there is a pure java implementation
+| [Monday 06 December 2010] [06:16:40] <adalrsjr1>	its my problema, i don't have libzmq in these machines
+| [Monday 06 December 2010] [06:17:13] <adalrsjr1>	but i have the libzmq compiled in other pc
+| [Monday 06 December 2010] [06:17:48] <mikko>	as far as i know currently you require libzmq with the java binding as it uses jni
+| [Monday 06 December 2010] [06:26:17] <Steve-o>	adalrsjr1: if the Linux versions are the same you should be able to copy over the jni & core zmq dynamic libraries
+| [Monday 06 December 2010] [06:28:04] <Steve-o>	well, noted for the IRC log :-)
+| [Monday 06 December 2010] [06:49:02] <sustrik>	mikko, mato: a suggestion -- shouldn't we limit test_shutdown_stress to something reasonable
+| [Monday 06 December 2010] [06:49:12] <sustrik>	like seting up and tearing down 100 connection
+| [Monday 06 December 2010] [06:49:33] <sustrik>	so that it would work on any box without running into resource problems?
+| [Monday 06 December 2010] [06:51:21] <mato>	sustrik: yes
+| [Monday 06 December 2010] [06:51:29] <sustrik>	ok
+| [Monday 06 December 2010] [06:51:42] <mato>	sustrik: well, maybe... it does expose problems when run properly
+| [Monday 06 December 2010] [06:51:53] <sustrik>	that's nice
+| [Monday 06 December 2010] [06:52:03] <mato>	sustrik: but at least on solaris there's a limit of 256 fds per process by default
+| [Monday 06 December 2010] [06:52:06] <sustrik>	otoh, the builds fail bacause of it
+| [Monday 06 December 2010] [06:52:23] <mato>	sure, but then how will we know we've fixed the problem :)
+| [Monday 06 December 2010] [06:52:35] <mato>	maybe...
+| [Monday 06 December 2010] [06:52:55] <mato>	how about we change the test to run less connections on !linux
+| [Monday 06 December 2010] [06:54:19] <sustrik>	i don't think platform.hpp is included in the tests
+| [Monday 06 December 2010] [06:54:29] <sustrik>	do you know you are no linux there?
+| [Monday 06 December 2010] [06:59:27] <mato>	sustrik:  hang on
+| [Monday 06 December 2010] [07:00:14] <mato>	sustrik: a) the tests can obviously include platform.hpp
+| [Monday 06 December 2010] [07:00:34] <mato>	sustrik: b) test_shutdown_stress can call getrlimit(3) with RLIMIT_NOFILE and pick some sane value
+| [Monday 06 December 2010] [07:00:40] <mato>	sustrik: for the # of iterations
+| [Monday 06 December 2010] [07:00:49] <mato>	sustrik: that way we can at least ensure it won't run out of FDs
+| [Monday 06 December 2010] [07:01:00] <mato>	sustrik: if it dies due to other problems then that's a valid bug...
+| [Monday 06 December 2010] [07:01:23] <sustrik>	what about socket buffer size?
+| [Monday 06 December 2010] [07:01:30] <mato>	what about it?
+| [Monday 06 December 2010] [07:01:39] <mato>	that's a bug, we need to fix that somehow :-)
+| [Monday 06 December 2010] [07:02:36] <mato>	we shouldn't be hiding bugs by modifying test cases
+| [Monday 06 December 2010] [07:04:25] <sustrik>	the question is how to distinguish "out of resources" from "bug"
+| [Monday 06 December 2010] [07:04:59] <mato>	then our mailbox_t needs to report back that it has run out of socket buffers, and return that to the app somehow
+| [Monday 06 December 2010] [07:06:09] <sustrik>	it has to fail; at that point the system is broken beyond any hope to repair
+| [Monday 06 December 2010] [07:06:51] <sustrik>	it's basically a same problem as ENOMEM
+| [Monday 06 December 2010] [07:06:59] <sustrik>	is it a bug or is it not?
+| [Monday 06 December 2010] [07:07:17] <mato>	well, the way we're dealing with it at the moment is a bug
+| [Monday 06 December 2010] [07:07:27] <sustrik>	the assertion?
+| [Monday 06 December 2010] [07:07:43] <mato>	that, and/or the fact that we're reliant on the socket buffer size so much
+| [Monday 06 December 2010] [07:08:11] <mato>	step 1 would be to at least change the assertion to somehow return an errno to the application. if that's possible.
+| [Monday 06 December 2010] [07:08:18] <mato>	step 2 is obviously to fix the signaler
+| [Monday 06 December 2010] [07:08:36] <mato>	again, if that's possible - i know we've been through this...
+| [Monday 06 December 2010] [07:08:55] <mato>	sustrik: think about it in kernel terms
+| [Monday 06 December 2010] [07:09:06] <mato>	sustrik: do you panic the system if some buffer runs out? i think not.
+| [Monday 06 December 2010] [07:09:47] <sustrik>	the problem is that in this case the buffer in question is part of the essential infrastructure
+| [Monday 06 December 2010] [07:09:59] <sustrik>	thus when it overflows the whole thing is unusable
+| [Monday 06 December 2010] [07:10:08] <sustrik>	you do panic in such a case
+| [Monday 06 December 2010] [07:10:17] <sustrik>	still better than undefined behaviour
+| [Monday 06 December 2010] [07:11:28] <sustrik>	anyway, i'll leave the stress test as is for now
+| [Monday 06 December 2010] [08:26:59] <sustrik>	drbobbeaty: hi
+| [Monday 06 December 2010] [08:28:33] <drbobbeaty>	sustrik: hi
+| [Monday 06 December 2010] [08:29:40] <sustrik>	hi, have you seen steve's answer about ZMQ_RECOVERY_IVL smaller than 1 sec?
+| [Monday 06 December 2010] [08:30:54] <drbobbeaty>	Yeah, he was talking about making a C-level call to OpenPGM based on the size of the buffer. Since I'm using the C++ interface, I didn't know how/if that would be possible given that I don't have access to the underlying C pointers/structs.
+| [Monday 06 December 2010] [08:31:22] <sustrik>	the idea is to tweak the 0MQ source code
+| [Monday 06 December 2010] [08:31:46] <sustrik>	ie. set the recovery in number of packets rather than in seconds
+| [Monday 06 December 2010] [08:32:42] <sustrik>	see src/pgm_socket.cpp
+| [Monday 06 December 2010] [08:33:14] <sustrik>	line 203 and 236
+| [Monday 06 December 2010] [08:34:42] <drbobbeaty>	Ah! OK... I can tweak the code if needed. My question would be if this is going to be supported in some manner in the straight ZeroMQ releases. I can wait on this if it's coming out soon, or I can make the changes and then back them out when the feature becomes available from you guys.
+| [Monday 06 December 2010] [08:35:08] <sustrik>	drbobbeaty: if you send a patch to the mailing list, i'll apply it
+| [Monday 06 December 2010] [08:35:21] <sustrik>	just make sure that it actually works before sending it
+| [Monday 06 December 2010] [08:35:35] <drbobbeaty>	he he he... yeah, that'd be a good thing to make sure :)
+| [Monday 06 December 2010] [08:35:57] <sustrik>	(i don't have a test env here, so i won't be able to test it really)
+| [Monday 06 December 2010] [08:35:59] <drbobbeaty>	I'll have a look and then read up on the ML diff submission process. 
+| [Monday 06 December 2010] [08:36:11] <sustrik>	sure
+| [Monday 06 December 2010] [08:36:19] <sustrik>	have you seen the code?
+| [Monday 06 December 2010] [08:36:28] <sustrik>	the change seems to be pretty trivial
+| [Monday 06 December 2010] [08:36:52] <drbobbeaty>	I think I can handle it :) But if I have any questions, I will be back to ask for help.
+| [Monday 06 December 2010] [08:37:14] <sustrik>	sure
+| [Monday 06 December 2010] [08:38:17] <sustrik>	drbobbeaty: ah, damn
+| [Monday 06 December 2010] [08:38:42] <sustrik>	change from sec to msecs would break the backward compatibilitty :(
+| [Monday 06 December 2010] [08:39:10] <drbobbeaty>	Yeah, I can imagine that... but what about a different named socket option?
+| [Monday 06 December 2010] [08:39:24] <sustrik>	yes, looks like the only option atm
+| [Monday 06 December 2010] [08:40:26] <drbobbeaty>	Seems fair... do you have a preference for what that name should be? ZMQ_RECOVERY_MSEC or ZMQ_RECOVERY_IVL_MSEC?
+| [Monday 06 December 2010] [08:41:04] <mikko>	is that confusing?
+| [Monday 06 December 2010] [08:41:12] <mikko>	two constants for effectively same option
+| [Monday 06 December 2010] [08:41:34] <sustrik>	mikko: any better idea?
+| [Monday 06 December 2010] [08:42:00] <mikko>	it would be still possible to change this in 2.1
+| [Monday 06 December 2010] [08:42:04] <mikko>	as there is no stable release
+| [Monday 06 December 2010] [08:42:17] <mikko>	beta is what it says on the tin
+| [Monday 06 December 2010] [08:42:22] <sustrik>	the backward compatibility is guaranteed witin a major version
+| [Monday 06 December 2010] [08:42:39] <sustrik>	so it can't be broken before 3.0
+| [Monday 06 December 2010] [08:42:42] <mikko>	but things are already breaking going from 2.0 to 2.1
+| [Monday 06 December 2010] [08:42:55] <mikko>	zmq_init for example
+| [Monday 06 December 2010] [08:43:04] <sustrik>	how so?
+| [Monday 06 December 2010] [08:43:11] <mikko>	or did that change earlier?
+| [Monday 06 December 2010] [08:43:22] <sustrik>	yep, that changes somewhere at 2.0.4
+| [Monday 06 December 2010] [08:43:37] <sustrik>	since then people have complained about breaking backwards compatibility
+| [Monday 06 December 2010] [08:43:51] <sustrik>	so i've written compatibility guidelines
+| [Monday 06 December 2010] [08:43:58] <sustrik>	let me find it...
+| [Monday 06 December 2010] [08:46:54] <sustrik>	http://www.zeromq.org/docs:policies
+| [Monday 06 December 2010] [08:46:59] <drbobbeaty>	sustrik, mikko: I am enjoying reading the "Contributing to 0MQ" page... as soon as I get through all this, and you guys decide how you'd like me to implement it, I'll get right on it.
+| [Monday 06 December 2010] [08:47:48] <mikko>	sustrik: "It may even run, however, you should read the NEWS file so you are sure that changes made won't affect your application behaviour in subtle ways."
+| [Monday 06 December 2010] [08:47:49] <sustrik>	enjoying the burocracy? :)
+| [Monday 06 December 2010] [08:48:11] <mikko>	sustrik: it would still compile against the version
+| [Monday 06 December 2010] [08:48:11] <sustrik>	mikko: right
+| [Monday 06 December 2010] [08:48:15] <mikko>	is your policy says
+| [Monday 06 December 2010] [08:48:28] <mikko>	but people using recovery IVL would need to read about the change
+| [Monday 06 December 2010] [08:48:58] <sustrik>	but allocating buffer 1000x larger than expected in not really a subtle change
+| [Monday 06 December 2010] [08:49:22] <sustrik>	it's pretty dangerous actually
+| [Monday 06 December 2010] [08:50:20] <sustrik>	i would go for new socket option now
+| [Monday 06 December 2010] [08:50:42] <sustrik>	and normalise the two options into a single one in v3.0
+| [Monday 06 December 2010] [08:50:56] <mikko>	i guess that is sensible for now. i think we should keep a list things like these that need to be cleaned up on major
+| [Monday 06 December 2010] [08:51:17] <sustrik>	some comments are already here: http://www.zeromq.org/docs:3-0
+| [Monday 06 December 2010] [08:52:00] <sustrik>	drbobbeaty: just add a new option for now
+| [Monday 06 December 2010] [08:52:13] <drbobbeaty>	sustrik: OK, that's what I'll do.
+| [Monday 06 December 2010] [08:53:14] <sustrik>	something like:
+| [Monday 06 December 2010] [08:53:44] <sustrik>	"RECOVERY_IVL_MSEC has precedence to RECOVERY_IVL"
+| [Monday 06 December 2010] [08:54:02] <sustrik>	"however, if set to zero, it's ignored and RECOVERY_IVL is used instead"
+| [Monday 06 December 2010] [08:54:07] <sustrik>	"default is zero"
+| [Monday 06 December 2010] [08:54:37] <drbobbeaty>	sustrik: OK, sounds reasonable with a nice fallback.
+| [Monday 06 December 2010] [09:10:51] <sustrik>	Steve-o: what out_buffer_size should I use?
+| [Monday 06 December 2010] [09:11:47] <sustrik>	and what parameters you were running local_the/remote_the with?
+| [Monday 06 December 2010] [09:11:53] <sustrik>	thr*
+| [Monday 06 December 2010] [09:12:03] <Steve-o>	I tried 1420
+| [Monday 06 December 2010] [09:12:18] <Steve-o>	and "tcp..." 100 1
+| [Monday 06 December 2010] [09:12:23] <sustrik>	great
+| [Monday 06 December 2010] [09:12:35] <sustrik>	i'll check that
+| [Monday 06 December 2010] [09:50:42] <drbobbeaty>	sustrik: I assume all these changes for the recovery time should be to the default, 'development' release and not the 'maint' release, correct?
+| [Monday 06 December 2010] [09:51:17] <mikko>	drbobbeaty: yes, just for the master branch
+| [Monday 06 December 2010] [10:21:19] <toni__>	hey there. I am using a REQ socket that connects to a set of servers (XREP). Is there way to notice when a server dies? My intention is to wait for max. 2 seconds, until I consider the server as gone. But the s.recv() (s is a REQ socket) blocks. Is there a way to achieve this, or should a make use of a XREQ which is non-blocking?
+| [Monday 06 December 2010] [10:21:19] <mikko>	toni__: you should be able to use zmq_poll for this
+| [Monday 06 December 2010] [10:21:19] <mikko>	you can also pass ZMQ_NOBLOCK flag to zmq_recv
+| [Monday 06 December 2010] [10:22:05] <toni__>	cool, thanks. great channel, for all my questions I get a answer very fast. This avoids searching the huge guide twice for such particular part of information. Thanks!
+| [Monday 06 December 2010] [10:23:09] <guido_g>	toni__: there is also http://api.zeromq.org/zmq.html
+| [Monday 06 December 2010] [10:26:54] <toni__>	guido_g: i know, but I expected to maybe get a correcting answer in case my solution for the problem would already be provided by zmq itself. 
+| [Monday 06 December 2010] [10:27:56] <guido_g>	toni__: it was more a response to " This avoids searching the huge guide twice..."
+| [Monday 06 December 2010] [10:31:06] <sustrik>	hm, this is almost a FAQ
+| [Monday 06 December 2010] [10:32:13] <sustrik>	i've answered this particular question like twice in past two days
+| [Monday 06 December 2010] [10:44:37] <toni__>	hey there, one more question. I could not find a way to disconnect a socket from an address it was once connected to. I can only find socket.close() but thats not what I need. So is there a way to disconnect from an address? 
+| [Monday 06 December 2010] [10:49:08] <sustrik>	close the socket
+| [Monday 06 December 2010] [10:50:39] <toni__>	the socket is connected to a set of addresses. In case one does not answer, I want to remove the connection to this address, so I close the socket and reconnect it to all adresses without the one that did not work?
