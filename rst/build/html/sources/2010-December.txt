@@ -896,3 +896,73 @@
 | [Monday 06 December 2010] [10:44:37] <toni__>	hey there, one more question. I could not find a way to disconnect a socket from an address it was once connected to. I can only find socket.close() but thats not what I need. So is there a way to disconnect from an address? 
 | [Monday 06 December 2010] [10:49:08] <sustrik>	close the socket
 | [Monday 06 December 2010] [10:50:39] <toni__>	the socket is connected to a set of addresses. In case one does not answer, I want to remove the connection to this address, so I close the socket and reconnect it to all adresses without the one that did not work?
+| [Monday 06 December 2010] [10:51:49] <sustrik>	i presume that when the non answering address becomes available again, you want to reconnect to it?
+| [Monday 06 December 2010] [10:52:08] <toni__>	yes
+| [Monday 06 December 2010] [10:52:15] <sustrik>	0mq does that for you
+| [Monday 06 December 2010] [10:52:27] <sustrik>	you don't have to care about non-anwering endpoints
+| [Monday 06 December 2010] [10:53:13] <sustrik>	they are ignored and reconnected when they become available again
+| [Monday 06 December 2010] [10:53:31] <toni__>	okay, thats great. Does this also mean that messages wont be send to an address that seems currently not available?
+| [Monday 06 December 2010] [10:54:09] <bobdole369>	Hello everyone, tnx for letting me idle in here all weekend :x - didn't really mean to do that... OK on to it: Have a possible project in the coming weeks and am looking at 0MQ as the data transport mechanism.
+| [Monday 06 December 2010] [10:54:11] <seb`>	the server side won't block if you close the socket
+| [Monday 06 December 2010] [10:54:25] <bobdole369>	Few queries about a few things come to mine.
+| [Monday 06 December 2010] [10:55:36] <sustrik>	toni__: yes, but set HWM to something low
+| [Monday 06 December 2010] [10:55:59] <sustrik>	so that requests are not queued too much for a destination that may become unavailable later on
+| [Monday 06 December 2010] [10:57:20] <toni__>	sustrik: but it can be that a message wont be sent out, and is queued until the address becomes available again? Thats what I have to avoid.
+| [Monday 06 December 2010] [10:58:15] <sustrik>	that's done by resending the request once the timeout expires
+| [Monday 06 December 2010] [10:58:28] <sustrik>	you should also discard duplicate replies, of course
+| [Monday 06 December 2010] [10:58:55] <bobdole369>	Have a number of embedded devices in the "field" that will transmit data to a central datacenter server.  The data are infrequent small data points, perhaps 2kb of data is actually a lot.  We control these and can author the packets. Is 0MQ a suitable transport method for this data? 
+| [Monday 06 December 2010] [10:59:01] <sustrik>	(the whole resend functionality should be actually implemented inside 0mq, but it's not yet)
+| [Monday 06 December 2010] [10:59:48] <sustrik>	bobdole369: you want to deploy 0mq on the devices?
+| [Monday 06 December 2010] [11:00:29] <toni__>	sustrik: Thanks for your help
+| [Monday 06 December 2010] [11:00:49] <bobdole369>	That is possible. They are PLC style devices though, and not PC's. They do speak ansi C.
+| [Monday 06 December 2010] [11:01:07] <sustrik>	toni__: you are welcome
+| [Monday 06 December 2010] [11:01:29] <sustrik>	bobdole369: what about the OS?
+| [Monday 06 December 2010] [11:02:01] <bobdole369>	On the PLC devices
+| [Monday 06 December 2010] [11:06:13] <stephank>	bobdole369: No need to apologize for idling around, that's pretty common practice on IRC. Zeromq is C++ and builds on top of BSD sockets and threading APIs, amongst others. Those are typically implemented by an OS. Are those provided by your embedded platform.
+| [Monday 06 December 2010] [11:24:34] <drbobbeaty>	sustrik: I'm looking at the code and can't find any reference to tpdu_size, but I do find references to get_max_tsdu_size(). Should I be using the tsdu_size from this call, or am I missing something obvious? I'm trying to convert either timespan into a count of sequence numbers - as per Steven's suggestion.
+| [Monday 06 December 2010] [11:29:23] <bobdole369>	OIC ya sockets and the API does seem to be done by the embedded platform - M258 Schneider PLC
+| [Monday 06 December 2010] [11:35:15] <sustrik>	drbobbeaty: ask steven about what value to actually use
+| [Monday 06 December 2010] [11:35:35] <sustrik>	i am not an expert on PGM
+| [Monday 06 December 2010] [11:35:51] <drbobbeaty>	sustrik: Got it... will do.
+| [Monday 06 December 2010] [11:35:54] <sustrik>	alternatively you may find the definitions in RFC3208
+| [Monday 06 December 2010] [12:34:26] <bobdole369>	I'm a fair bit noob, so can I ask what is the advantage that 0MQ holds over OS calls and sockets?
+| [Monday 06 December 2010] [12:34:57] <mikko>	bobdole369: there are several
+| [Monday 06 December 2010] [12:35:14] <mikko>	i think personally the biggest advantage is work in terms of messages rather than bytes
+| [Monday 06 December 2010] [12:35:46] <mikko>	normally when writing a non-blocking server you have the problem of getting EAGAIN back and then reading a bit more bytes and maintaining state of where the protocol boundaries go
+| [Monday 06 December 2010] [12:36:19] <mikko>	another benefit is being able to switch almost transparently between different transports
+| [Monday 06 December 2010] [12:36:27] <mikko>	and of course the built-in messaging patterns
+| [Monday 06 December 2010] [12:36:40] <mikko>	publish-subscribe, request-reply etc
+| [Monday 06 December 2010] [12:36:50] <bobdole369>	Yes the patterns are mostly what brought me here.
+| [Monday 06 December 2010] [12:37:36] <mikko>	there are several other benefits as well
+| [Monday 06 December 2010] [14:10:11] <jhawk28>	sustrik: are you here?
+| [Monday 06 December 2010] [14:24:25] <delaney>	are there any up to date C# examples?
+| [Monday 06 December 2010] [14:29:40] <mikko>	delaney: the examples are usually pretty portable
+| [Monday 06 December 2010] [14:29:52] <mikko>	you should get the hang of C# by looking at here https://github.com/zeromq/clrzmq2
+| [Monday 06 December 2010] [15:08:22] <sustrik>	jhawk28: hi
+| [Monday 06 December 2010] [16:36:55] <CIA-20>	zeromq2: 03Martin Sustrik 07master * rec61751 10/ (src/pub.cpp src/sub.cpp src/xpub.cpp src/xsub.cpp): 
+| [Monday 06 December 2010] [16:36:55] <CIA-20>	zeromq2: options.type correctly set for PUB/SUB/XPUB/XSUB
+| [Monday 06 December 2010] [16:36:55] <CIA-20>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/g0JAEI
+| [Monday 06 December 2010] [16:58:28] <CIA-20>	zeromq2: 03Martin Sustrik 07master * r8d6cafe 10/ (10 files): 
+| [Monday 06 December 2010] [16:58:28] <CIA-20>	zeromq2: All devices conflated into a single implementation.
+| [Monday 06 December 2010] [16:58:28] <CIA-20>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/hbyNJH
+| [Monday 06 December 2010] [17:11:12] <CIA-20>	zeromq2: 03Martin Sustrik 07master * r73bbcb5 10/ builds/msvc/libzmq/libzmq.vcproj : 
+| [Monday 06 December 2010] [17:11:12] <CIA-20>	zeromq2: MSVC build fixed
+| [Monday 06 December 2010] [17:11:12] <CIA-20>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/gHkbTx
+| [Tuesday 07 December 2010] [03:08:08] <the_hulk>	hi, for C API's on server side, i do not have to fork? it seems to be taken care of?
+| [Tuesday 07 December 2010] [03:08:46] <Steve-o>	fork to do what?
+| [Tuesday 07 December 2010] [03:12:13] <the_hulk>	fork to handle multiple clients, as we do with normal sockets fds
+| [Tuesday 07 December 2010] [03:12:31] <Steve-o>	and thread pooling, etc, ok 
+| [Tuesday 07 December 2010] [03:14:09] <Steve-o>	It's covered pretty well in the guide, http://zguide.zeromq.org/chapter:all
+| [Tuesday 07 December 2010] [03:19:06] <the_hulk>	ohk
+| [Tuesday 07 December 2010] [05:10:53] <CIA-20>	zeromq2: 03Martin Lucina 07master * r9bb5323 10/ doc/zmq_socket.txt : 
+| [Tuesday 07 December 2010] [05:10:53] <CIA-20>	zeromq2: Clarify zmq_send() operation for ZMQ_PUB sockets
+| [Tuesday 07 December 2010] [05:10:53] <CIA-20>	zeromq2: Signed-off-by: Martin Lucina <mato@kotelna.sk> - http://bit.ly/eNDyqm
+| [Tuesday 07 December 2010] [05:16:25] <CIA-20>	zeromq2: 03Mikko Koppanen 07master * raed2eea 10/ (acinclude.m4 configure.in): 
+| [Tuesday 07 December 2010] [05:16:25] <CIA-20>	zeromq2: Fix visibility on rhel4
+| [Tuesday 07 December 2010] [05:16:25] <CIA-20>	zeromq2: Signed-off-by: Mikko Koppanen <mkoppanen@php.net> - http://bit.ly/hue9Av
+| [Tuesday 07 December 2010] [05:16:27] <CIA-20>	zeromq2: 03Mikko Koppanen 07master * ra335315 10/ acinclude.m4 : 
+| [Tuesday 07 December 2010] [05:16:27] <CIA-20>	zeromq2: Fix werror flag store/restore
+| [Tuesday 07 December 2010] [05:16:27] <CIA-20>	zeromq2: Signed-off-by: Mikko Koppanen <mkoppanen@php.net> - http://bit.ly/idiJwf
+| [Tuesday 07 December 2010] [05:16:28] <CIA-20>	zeromq2: 03Mikko Koppanen 07master * r1d81d2f 10/ configure.in : 
+| [Tuesday 07 December 2010] [05:16:28] <CIA-20>	zeromq2: tar doesn't accept -C flag on solaris while extracting
+| [Tuesday 07 December 2010] [05:16:28] <CIA-20>	zeromq2: Signed-off-by: Mikko Koppanen <mkoppanen@php.net> - http://bit.ly/hrR0E7
