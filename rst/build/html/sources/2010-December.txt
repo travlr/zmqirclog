@@ -966,3 +966,166 @@
 | [Tuesday 07 December 2010] [05:16:28] <CIA-20>	zeromq2: 03Mikko Koppanen 07master * r1d81d2f 10/ configure.in : 
 | [Tuesday 07 December 2010] [05:16:28] <CIA-20>	zeromq2: tar doesn't accept -C flag on solaris while extracting
 | [Tuesday 07 December 2010] [05:16:28] <CIA-20>	zeromq2: Signed-off-by: Mikko Koppanen <mkoppanen@php.net> - http://bit.ly/hrR0E7
+| [Tuesday 07 December 2010] [07:04:04] <ptrb>	just to confirm -- no problem making multiple connect() calls on a single ZMQ_SUB socket, right?
+| [Tuesday 07 December 2010] [07:34:58] <drbobbeaty>	ptrb: correct. You can have multiple connect() calls to one ZMQ_SUB socket.
+| [Tuesday 07 December 2010] [07:35:37] <drbobbeaty>	In order to "tear down" the socket, you have to drop/close the socket. Meaning, you can't disconnect() just one of the connections - you have to take them all down.
+| [Tuesday 07 December 2010] [07:38:08] <Steve-o>	unbind/disconnect was discussed previously:  http://thread.gmane.org/gmane.network.zeromq.devel/4369
+| [Tuesday 07 December 2010] [07:47:07] <ptrb>	cool. thanks.
+| [Tuesday 07 December 2010] [09:43:32] <sustrik_>	drbobbeaty: hi
+| [Tuesday 07 December 2010] [09:43:50] <drbobbeaty>	sustrik: hi... I sent in the patch to the ML.
+| [Tuesday 07 December 2010] [09:44:15] <sustrik_>	yes, just got it
+| [Tuesday 07 December 2010] [09:44:19] <sustrik_>	a minor point
+| [Tuesday 07 December 2010] [09:44:32] <sustrik_>	subscribe to the mailing list
+| [Tuesday 07 December 2010] [09:44:40] <sustrik_>	otherwise the messages are blocked
+| [Tuesday 07 December 2010] [09:44:46] <sustrik_>	and i have to approve them by hand
+| [Tuesday 07 December 2010] [09:45:00] <sustrik_>	if you don't want to get the traffic, you can switch that off
+| [Tuesday 07 December 2010] [09:45:12] <sustrik_>	but still be member of the list
+| [Tuesday 07 December 2010] [09:45:16] <drbobbeaty>	Funny thing, I am subscribed, and I still keep getting blocked. Pieter talked to me about that, and we walked through it together. Very puzzling.
+| [Tuesday 07 December 2010] [09:45:29] <sustrik_>	hm, let me see
+| [Tuesday 07 December 2010] [09:45:42] <drbobbeaty>	Please do... I'd love to not bother you guys.
+| [Tuesday 07 December 2010] [09:46:29] <sustrik_>	hm, i don't see you in the members list
+| [Tuesday 07 December 2010] [09:46:42] <sustrik_>	any idea what email address you have used to subscribe?
+| [Tuesday 07 December 2010] [09:46:53] <drbobbeaty>	drbob@TheManFromSPUD.com
+| [Tuesday 07 December 2010] [09:47:10] <drbobbeaty>	That's what I use to "maintain" the ML on it's web site. 
+| [Tuesday 07 December 2010] [09:47:11] <sustrik_>	aha
+| [Tuesday 07 December 2010] [09:47:21] <sustrik_>	but the emails you send are from a different address
+| [Tuesday 07 December 2010] [09:47:31] <drbobbeaty>	OH! Duh.
+| [Tuesday 07 December 2010] [09:47:36] <sustrik_>	comcast
+| [Tuesday 07 December 2010] [09:47:46] <drbobbeaty>	That's it... outgoing != incoming. I'll change that.
+| [Tuesday 07 December 2010] [09:47:51] <sustrik_>	great
+| [Tuesday 07 December 2010] [09:47:52] <drbobbeaty>	Thanks for the pointer.
+| [Tuesday 07 December 2010] [09:48:00] <sustrik_>	i'll have a look at your patch shortly
+| [Tuesday 07 December 2010] [09:48:58] <drbobbeaty>	I hope it's clean and easy. And adheres to the buidelines.
+| [Tuesday 07 December 2010] [09:51:05] <sustrik_>	one thing i am not sure of: is it possible that someone would want recovery ivl of zero?
+| [Tuesday 07 December 2010] [09:51:21] <sustrik_>	unreliable multicast...
+| [Tuesday 07 December 2010] [09:51:32] <sustrik_>	i am not even sure it's possible with OpenPGM
+| [Tuesday 07 December 2010] [09:51:57] <sustrik_>	if so, the default should be -1 rather than 0
+| [Tuesday 07 December 2010] [09:52:16] <sustrik_>	let me ask steven
+| [Tuesday 07 December 2010] [10:17:32] <toni_>	hi there. I am using a REQ socket doing socket.recv(zmq.NOBLOCK), but I am getting a "ZMQError: Resource temporarily unavailable" (using the python binding). As I saw in the docs for recv and zmq.NONBLOCK, there is this little sentence:"If there are no messages available on the specified socket, the zmq_recv() function shall fail with errno set to EAGAIN." I dont really understand. So the NOBLOCK option raises an error in case no messag
+| [Tuesday 07 December 2010] [10:20:32] <cremes>	toni_: you see that "resource unavailable" message when your REQ socket is *not* connected to any REP (or XREP) sockets
+| [Tuesday 07 December 2010] [10:20:46] <cremes>	make sure you have a z-endpoint
+| [Tuesday 07 December 2010] [10:21:01] <cremes>	with an active socket attached to it
+| [Tuesday 07 December 2010] [10:21:53] <toni_>	cremes: but it should as it all works fine since I dont specify the NOBLOCk option @ recv()
+| [Tuesday 07 December 2010] [10:22:32] <toni_>	maybe its not connected yet?
+| [Tuesday 07 December 2010] [10:28:37] <Guthur>	Should the timeout work with subscriber nodes?
+| [Tuesday 07 December 2010] [10:28:43] <Guthur>	with polling
+| [Tuesday 07 December 2010] [10:29:13] <Guthur>	It works fine if I set -1, but seems to not pickup messages when a timeout value is set
+| [Tuesday 07 December 2010] [10:31:40] <toni_>	cremes: okay, very strange.... the error disapears when I dont do zmq.NOBLOCK in s.recv(). When I specify the option, the error is raised. But why? The socket should be connected, as the error is not raised when no block is not specified
+| [Tuesday 07 December 2010] [10:43:50] <cremes>	toni_: interesting... it's funny but i *only* ever do noblock send/recv so i don't understand what is happening in the blocking scenario
+| [Tuesday 07 December 2010] [10:44:02] <cremes>	are you *certain* that the other socket has connected?
+| [Tuesday 07 December 2010] [10:44:55] <toni_>	cremes: yes I am really certain. But I found the solution describes here https://github.com/zeromq/pyzmq/issues/36#issue/36
+| [Tuesday 07 December 2010] [10:47:57] <cremes>	toni_: hmmm, ok
+| [Tuesday 07 December 2010] [11:23:22] <mikko>	mato: looks like solaris10 is still not happy
+| [Tuesday 07 December 2010] [11:24:21] <mato>	mikko: it used to be, has your visibility change broken something?
+| [Tuesday 07 December 2010] [11:24:36] <mikko>	mato: http://build.valokuva.org/job/ZeroMQ2-core-master-SunStudio-solaris10/21/console
+| [Tuesday 07 December 2010] [11:24:41] <mikko>	when building --with-pgm
+| [Tuesday 07 December 2010] [11:25:07] <mato>	mikko: ah, ok, i'll look at it later, in the middle of dissecting the linux network stack with sustrik right now
+| [Tuesday 07 December 2010] [11:25:45] <mikko>	tries to include <sys/epoll.h>
+| [Tuesday 07 December 2010] [11:26:27] <mato>	i guess openpgm in zmq has not been ported to solaris properly then
+| [Tuesday 07 December 2010] [11:28:50] <mikko>	will look into it tonight
+| [Tuesday 07 December 2010] [12:27:21] <mikko>	pfffff
+| [Tuesday 07 December 2010] [13:04:29] <toni_>	I am using  the python binding, having a REQ socket connected to a XREP socket. When I try to send from the REQ socket I get "zmq.core.error.ZMQError: Operation cannot be accomplished in current state". Any ideas?
+| [Tuesday 07 December 2010] [13:06:33] <cremes>	toni_: yes, req/rep sockets enforce a strict 1 send / 1 recv model; trying to do 2 sends or 2 recvs in a row generates a state machine error
+| [Tuesday 07 December 2010] [13:06:46] <cremes>	look at the docs for req/rep
+| [Tuesday 07 December 2010] [13:12:42] <drbobbeaty>	sustrik: my patch has a problem with it... I need to send you an additional change for using sequence numbers with OpenPGM. My mistake. Sorry.
+| [Tuesday 07 December 2010] [13:12:54] <toni_>	cremes: Thanks, thats the code snippet: https://gist.github.com/732161 the "aaaa". See the link for the traceback
+| [Tuesday 07 December 2010] [13:13:27] <drbobbeaty>	sustrik: maybe it's not a problem... I'll send the details to the mailing list and you can decide.
+| [Tuesday 07 December 2010] [13:13:56] <cremes>	toni_: your problem is at line 40
+| [Tuesday 07 December 2010] [13:14:06] <cremes>	you need a recv in that block
+| [Tuesday 07 December 2010] [13:14:12] <cremes>	again, read the docs on req/rep
+| [Tuesday 07 December 2010] [13:14:20] <cremes>	you must do alternating send/recv with each one
+| [Tuesday 07 December 2010] [13:14:37] <cremes>	you *cannot* just send with either socket; there must always be a matching recv
+| [Tuesday 07 December 2010] [13:14:51] <cremes>	the pattern is request/reply, not request/request/request/request/reply
+| [Tuesday 07 December 2010] [13:14:53] <cremes>	:)
+| [Tuesday 07 December 2010] [13:19:58] <toni_>	cremes: thanks
+| [Tuesday 07 December 2010] [13:20:38] <cremes>	toni_: you are welcome... be sure to check out the guide on the web site; it covers that topic
+| [Tuesday 07 December 2010] [13:21:29] <cremes>	andrewvc: planning to do another ffi-rzmq and zmqmachine release after 2.1 is out of beta
+| [Tuesday 07 December 2010] [13:21:41] <andrewvc>	nice!
+| [Tuesday 07 December 2010] [13:21:43] <cremes>	if you have anything you'd like to be in there, that's our deadline ;)
+| [Tuesday 07 December 2010] [13:22:03] <toni_>	cremes: I already read it, I also constructed the very last example in python. I just had some truble with the NOBLOCK option and tried to debug from scretch. Maybe its enough for today, after 10 hours of coding :-)
+| [Tuesday 07 December 2010] [13:22:03] <andrewvc>	well, I was hoping to hack on it sometime soon, but I'm moving this weekend
+| [Tuesday 07 December 2010] [13:22:15] <andrewvc>	I've had about zero free time the last couple weeks
+| [Tuesday 07 December 2010] [13:22:25] <andrewvc>	unfortunately
+| [Tuesday 07 December 2010] [13:22:38] <cremes>	toni_: np; we'll be here in channel next time you need help... take a break
+| [Tuesday 07 December 2010] [13:22:51] <cremes>	andrewvc: yeah, real life is constantly getting in the way!
+| [Tuesday 07 December 2010] [13:23:05] <andrewvc>	lol, so true
+| [Tuesday 07 December 2010] [13:23:25] <andrewvc>	i'm actually going to la.rb hack night tonight, was hoping to get a little EM work there
+| [Tuesday 07 December 2010] [13:23:45] <cremes>	cool... see if you can't recruit a few more 0mq hackers
+| [Tuesday 07 December 2010] [13:24:06] <andrewvc>	hehe, I'm trying it's so fun to play with.
+| [Tuesday 07 December 2010] [13:24:23] <andrewvc>	evanphx is usually there btw, I know you worked pretty closely with him on some ffi bugs right?
+| [Tuesday 07 December 2010] [13:25:21] <cremes>	andrewvc: yeah, i did; the api drift between the rbx ffi support and the ffi gem caused him a lot of grief
+| [Tuesday 07 December 2010] [13:25:35] <cremes>	he was pretty upset about *many* of the additions
+| [Tuesday 07 December 2010] [13:25:51] <andrewvc>	hehe, yeah we had a similar conversation
+| [Tuesday 07 December 2010] [13:25:55] <cremes>	i use 0mq with rbx daily; it's the best way to profile and debug my code these days
+| [Tuesday 07 December 2010] [13:26:04] <andrewvc>	agreed, best stack trace for issues
+| [Tuesday 07 December 2010] [13:26:13] <cremes>	yep, that too
+| [Tuesday 07 December 2010] [13:26:26] <cremes>	it's quickly becoming my ruby of choice
+| [Tuesday 07 December 2010] [13:26:38] <andrewvc>	I've wanted to test my employers code on rbx, but hpricot's sitting in the way
+| [Tuesday 07 December 2010] [13:26:39] <cremes>	as soon as it gets windows support i'll use it there too
+| [Tuesday 07 December 2010] [13:26:50] <cremes>	C extension issues?
+| [Tuesday 07 December 2010] [13:27:08] <andrewvc>	yep, and I think it's one that no one's planning on fixing
+| [Tuesday 07 December 2010] [13:27:24] <cremes>	direct RHASH access or something nutty?
+| [Tuesday 07 December 2010] [13:28:48] <andrewvc>	oh, well look what google turned up https://github.com/rubinius/hpricot
+| [Tuesday 07 December 2010] [13:28:57] <andrewvc>	someone did fix it lol
+| [Tuesday 07 December 2010] [13:29:02] <cremes>	ha!
+| [Tuesday 07 December 2010] [13:29:11] <cremes>	no more excuses, andrewvc !
+| [Tuesday 07 December 2010] [13:29:14] <andrewvc>	hehe
+| [Tuesday 07 December 2010] [13:29:32] <andrewvc>	nope, well, one more, engineyard doesn't officially support rbx, but that's a minor hurdle
+| [Tuesday 07 December 2010] [13:29:47] <cremes>	really? well, that's got to change sometime soon
+| [Tuesday 07 December 2010] [13:29:54] <cremes>	it's all ey guys working on it!
+| [Tuesday 07 December 2010] [13:29:59] <andrewvc>	yeah, weird eh?
+| [Tuesday 07 December 2010] [13:30:19] <cremes>	oh, i know why... they are having trouble creating an ebuild recipe for it under gentoo
+| [Tuesday 07 December 2010] [13:30:29] <andrewvc>	the default choices are only 1.8.7, REE and 1.8.6
+| [Tuesday 07 December 2010] [13:30:29] <cremes>	i saw whyaines chatting about it with evan recently
+| [Tuesday 07 December 2010] [13:30:40] <cremes>	no jruby even?
+| [Tuesday 07 December 2010] [13:30:44] <andrewvc>	no
+| [Tuesday 07 December 2010] [13:30:45] <cremes>	now i'm shocked
+| [Tuesday 07 December 2010] [13:30:55] <andrewvc>	but the reality of EY is that everyone uses chef and customizes everything
+| [Tuesday 07 December 2010] [13:31:07] <andrewvc>	EY is more a starting point than a destination
+| [Tuesday 07 December 2010] [13:31:12] <cremes>	hmmmmm
+| [Tuesday 07 December 2010] [13:31:20] <andrewvc>	not like heroku at all, we have so many changes to the stack
+| [Tuesday 07 December 2010] [14:11:23] <raspi>	where i could find config examples for zmq_(queue|forwarder|streamer). manual gives only TBA.
+| [Tuesday 07 December 2010] [14:50:40] <mikko>	raspi: i think in the code at the moment
+| [Tuesday 07 December 2010] [14:50:50] <mikko>	raspi: i don't think there are written examples anywhere
+| [Tuesday 07 December 2010] [14:51:10] <raspi>	ok :)
+| [Tuesday 07 December 2010] [14:51:32] <mikko>	if you look at devices/zmq_queue/ in the source
+| [Tuesday 07 December 2010] [14:51:41] <mikko>	the schema should be fairly easy to deduct from the code
+| [Tuesday 07 December 2010] [15:58:54] <toni_>	I have a REQ client connected to 2 XREP server. When one server dies, the socket.recv() on the client blocks for ever. The other server is still available, but doesnt get any requests. How can I prevent this starvation?
+| [Tuesday 07 December 2010] [15:59:47] <toni_>	I also tried to use a nonblocking XREQ socket on the client and ran in the same issue
+| [Tuesday 07 December 2010] [16:04:38] <mikko>	it blocks even if you pass ZMQ_NOBLOCK?
+| [Tuesday 07 December 2010] [16:06:15] <toni_>	I thought the XREQ socket would be nonblocking?
+| [Tuesday 07 December 2010] [16:07:34] <mikko>	it has unrestricted send/receive pattern but it's no non-blocking by default as far as i know
+| [Tuesday 07 December 2010] [16:07:59] <mikko>	have you tried passing ZMQ_NOBLOCK to recv and checking for EAGAIN ?
+| [Tuesday 07 December 2010] [16:09:04] <mikko>	you can also look at zmq_poll
+| [Tuesday 07 December 2010] [16:09:23] <toni_>	mikko yes I did. I found the snippet at the pyzmq issues
+| [Tuesday 07 December 2010] [16:11:20] <toni_>	mikko: thanks, I think I found my bug
+| [Tuesday 07 December 2010] [16:12:02] <mikko>	np
+| [Tuesday 07 December 2010] [22:25:09] <PeterTork>	Hello. I have a rather odd model that I want to build in 0MQ and was looking for some advice there. We have web servers running presentation code, and they are being designed to talk to a one or more processes (which we are jokingly calling the MCP) that will do various validation tests on the RPC calls they are making before handing them to another layer of servers that will handle actually doing stuff. We would like to h
+| [Tuesday 07 December 2010] [22:38:35] <Steve-o>	like to h...?
+| [Tuesday 07 December 2010] [22:39:08] <Steve-o>	Are you looking from Mongrel2?  http://mongrel2.org/home
+| [Tuesday 07 December 2010] [22:46:52] <Steve-o>	PeterTork: IRC limits line length, try the mailing list if you want to post a longer question
+| [Tuesday 07 December 2010] [22:54:26] <bsiemon>	hello all, A quick question about an example from the guide. In examples/C/lruqueue.c. If one removes the id assignment from the client threads, the clients see to no longer receive messages.
+| [Tuesday 07 December 2010] [22:54:50] <bsiemon>	on os x, zmq build 2.0.10
+| [Tuesday 07 December 2010] [22:56:46] <bsiemon>	it seems to only happen if the client is running within its own process rather than in a thread with the other example code
+| [Tuesday 07 December 2010] [23:04:38] <Steve-o>	bsiemon: does this also occur with 2.1, or could it be a permission problem with the unix socket endpoint?
+| [Tuesday 07 December 2010] [23:04:54] <bsiemon>	it did also occur in 2.1
+| [Tuesday 07 December 2010] [23:05:00] <bsiemon>	but I think I am just being dumb
+| [Tuesday 07 December 2010] [23:05:10] <bsiemon>	sorry to bother you
+| [Tuesday 07 December 2010] [23:06:19] <Steve-o>	from what I can see from the source code I would move the endpoints to /tmp
+| [Tuesday 07 December 2010] [23:06:47] <Steve-o>	it doesn't look like the code will work out of the box
+| [Tuesday 07 December 2010] [23:09:17] <bsiemon>	Steve-o: I see
+| [Tuesday 07 December 2010] [23:09:29] <bsiemon>	Steve-o: Thanks
+| [Tuesday 07 December 2010] [23:09:34] <Steve-o>	look at zmq_ipc for example usage, http://api.zeromq.org/zmq_ipc.html
+| [Tuesday 07 December 2010] [23:13:02] <Steve-o>	well try a different path, the example path should be the current directory
+| [Tuesday 07 December 2010] [23:13:41] <Steve-o>	so you should see a frontend.ipc and backend.ipc file in the directory listing,
+| [Tuesday 07 December 2010] [23:14:26] <bsiemon>	yes I see that now
+| [Tuesday 07 December 2010] [23:15:05] <Steve-o>	You might have issues with multiple users, discussion can be found on the list:  http://www.mail-archive.com/zeromq-dev@lists.zeromq.org/msg03151.html
+| [Tuesday 07 December 2010] [23:16:34] <bsiemon>	Steve-o: If I put the call to s_set_id back into the client code
+| [Tuesday 07 December 2010] [23:16:45] <bsiemon>	Steve-o: It works with out a hitch
+| [Tuesday 07 December 2010] [23:17:22] <Steve-o>	oh ok
+| [Tuesday 07 December 2010] [23:18:09] <bsiemon>	Is there anything special to with uuid generation on os x?
+| [Tuesday 07 December 2010] [23:18:34] <bsiemon>	from what I have read the lib call seem to be different from os x to linux
+| [Tuesday 07 December 2010] [23:19:10] <bsiemon>	I am sure I will slog through it, thanks for the help!
+| [Tuesday 07 December 2010] [23:21:45] <Steve-o>	bsiemon: pass, some Linux versions have another library with the same name
+| [Tuesday 07 December 2010] [23:22:48] <Steve-o>	it does look the same from the documentation, http://developer.apple.com/library/mac/#documentation/Darwin/Reference/ManPages/man3/uuid.3.html
+| [Tuesday 07 December 2010] [23:42:15] <Steve-o>	lol, the lruqueue example aborts on Linux
