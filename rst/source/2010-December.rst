@@ -1129,3 +1129,223 @@
 | [Tuesday 07 December 2010] [23:21:45] <Steve-o>	bsiemon: pass, some Linux versions have another library with the same name
 | [Tuesday 07 December 2010] [23:22:48] <Steve-o>	it does look the same from the documentation, http://developer.apple.com/library/mac/#documentation/Darwin/Reference/ManPages/man3/uuid.3.html
 | [Tuesday 07 December 2010] [23:42:15] <Steve-o>	lol, the lruqueue example aborts on Linux
+| [Wednesday 08 December 2010] [03:38:19] <zedas>	sustrik: looks like debian included mongrel2, but included the old 2.0.6 version before the api change for zmq_init
+| [Wednesday 08 December 2010] [03:39:16] <sustrik>	hm
+| [Wednesday 08 December 2010] [03:39:22] <sustrik>	0mq is in debian-unstable
+| [Wednesday 08 December 2010] [03:40:32] <sustrik>	we deliberately haven't pushed it to the stable as we weren't 100% sure about the API by then
+| [Wednesday 08 December 2010] [03:47:14] <Guthur>	circa my question yesterday, can anyone confirm that poll timeouts are working with sub nodes
+| [Wednesday 08 December 2010] [03:50:30] <sustrik>	Guthur: are they not?
+| [Wednesday 08 December 2010] [03:51:11] <Guthur>	does seem to be working for me, the code works fine when I set -1
+| [Wednesday 08 December 2010] [03:51:17] <Guthur>	dose/doesn't
+| [Wednesday 08 December 2010] [03:51:47] <Guthur>	but if I actually set a timeout it seems to timeout quickly and I receive nothing
+| [Wednesday 08 December 2010] [03:56:56] <sustrik>	what version are you using?
+| [Wednesday 08 December 2010] [04:00:26] <Guthur>	2.0.10
+| [Wednesday 08 December 2010] [04:00:41] <sustrik>	ah, that's a documented behaviour
+| [Wednesday 08 December 2010] [04:00:43] <Guthur>	sustrik: ^
+| [Wednesday 08 December 2010] [04:00:51] <Guthur>	oh you seen, sorry
+| [Wednesday 08 December 2010] [04:00:57] <sustrik>	zmq_poll waits for "up to" microseconds
+| [Wednesday 08 December 2010] [04:01:05] <Guthur>	Yeah I seen the upto
+| [Wednesday 08 December 2010] [04:01:15] <sustrik>	anyway, this have been changed in 2.1
+| [Wednesday 08 December 2010] [04:01:15] <Guthur>	but it's not actually 'working' in any sense
+| [Wednesday 08 December 2010] [04:01:30] <sustrik>	it honours timeouts precisely
+| [Wednesday 08 December 2010] [04:01:52] <sustrik>	is there a bug?
+| [Wednesday 08 December 2010] [04:01:55] <Guthur>	ok, but surely as it stands in 2.0.10 its pretty much broke
+| [Wednesday 08 December 2010] [04:02:05] <sustrik>	what's the problem?
+| [Wednesday 08 December 2010] [04:02:36] <Guthur>	Well it timeout so quick that I don't receive anything
+| [Wednesday 08 December 2010] [04:02:45] <Guthur>	and this isn't exactly a slow connection
+| [Wednesday 08 December 2010] [04:03:03] <Guthur>	It's local TCP
+| [Wednesday 08 December 2010] [04:03:03] <sustrik>	well, it's documented behaviour
+| [Wednesday 08 December 2010] [04:03:12] <sustrik>	you have to restart the poll in such case
+| [Wednesday 08 December 2010] [04:03:17] <sustrik>	or switch to 2.1 :)
+| [Wednesday 08 December 2010] [04:03:40] <Guthur>	hehe, ok
+| [Wednesday 08 December 2010] [04:03:43] <sustrik>	actually, it's a performance issue
+| [Wednesday 08 December 2010] [04:04:06] <sustrik>	the poll that can exit prematurely is faster than the one honouring the timeout
+| [Wednesday 08 December 2010] [04:04:20] <sustrik>	what we've done in 2.1 was adding ZMQ_FD
+| [Wednesday 08 December 2010] [04:04:31] <Guthur>	so I suppose in 2.0.10 what one would have to do is engineer some honourable timeout mechanism on top
+| [Wednesday 08 December 2010] [04:04:47] <sustrik>	which allows you to poll and handle timeouts yourself
+| [Wednesday 08 December 2010] [04:04:50] <sustrik>	efficiently
+| [Wednesday 08 December 2010] [04:05:01] <sustrik>	zmq_poll is less efficient but honours timeouts
+| [Wednesday 08 December 2010] [04:05:07] <Guthur>	so really it's just a non blocking poll
+| [Wednesday 08 December 2010] [04:05:10] <Guthur>	essentially
+| [Wednesday 08 December 2010] [04:05:27] <Guthur>	the 2.0.10 version that is
+| [Wednesday 08 December 2010] [04:05:35] <sustrik>	Guthur: it blocks
+| [Wednesday 08 December 2010] [04:05:39] <sustrik>	but can exit at times
+| [Wednesday 08 December 2010] [04:05:54] <sustrik>	basically, it exits when "something happens"
+| [Wednesday 08 December 2010] [04:06:03] <sustrik>	say a new connection is established or somesuch
+| [Wednesday 08 December 2010] [04:06:15] <Guthur>	my behaviour is that it timeouts in approximately less than a second
+| [Wednesday 08 December 2010] [04:06:20] <Guthur>	no matter what I set
+| [Wednesday 08 December 2010] [04:06:42] <sustrik>	possibly the connection being established
+| [Wednesday 08 December 2010] [04:06:57] <Guthur>	I'll try 2.1
+| [Wednesday 08 December 2010] [04:07:02] <sustrik>	ok
+| [Wednesday 08 December 2010] [04:07:42] <Guthur>	my only worry with 2.1 is that it is not yet very mature
+| [Wednesday 08 December 2010] [04:07:57] <Guthur>	i.e. there has been very little room for feedback
+| [Wednesday 08 December 2010] [04:09:32] <sustrik>	it's up to you
+| [Wednesday 08 December 2010] [04:09:43] <sustrik>	in 2.0 you can simply add a wrapper function on top of zmq_poll
+| [Wednesday 08 December 2010] [04:09:55] <sustrik>	that would check for whether the timout was reached
+| [Wednesday 08 December 2010] [04:10:02] <sustrik>	and restart the poll if it was not
+| [Wednesday 08 December 2010] [04:10:13] <Guthur>	it depends on how soon we roll out to our app
+| [Wednesday 08 December 2010] [04:10:48] <Guthur>	our rollout certainly wont be until some time in 2011 so it might be ok
+| [Wednesday 08 December 2010] [04:11:08] <sustrik>	that's three weeks :)
+| [Wednesday 08 December 2010] [04:11:19] <sustrik>	anyway, even the wrapper function is viable
+| [Wednesday 08 December 2010] [04:11:25] <sustrik>	it's 10 lines of code
+| [Wednesday 08 December 2010] [04:13:02] <Guthur>	hehe, I suppose writing a wrapper will give me some coding to do this morning
+| [Wednesday 08 December 2010] [04:14:10] <sustrik>	now = gettimeofday ();
+| [Wednesday 08 December 2010] [04:14:18] <sustrik>	while (true) {
+| [Wednesday 08 December 2010] [04:14:32] <sustrik>	    events = zmq_poll ();
+| [Wednesday 08 December 2010] [04:14:57] <sustrik>	    if (!events && now + timeout > gettimeofday ())
+| [Wednesday 08 December 2010] [04:15:03] <sustrik>	      continue;
+| [Wednesday 08 December 2010] [04:15:06] <sustrik>	   break;
+| [Wednesday 08 December 2010] [04:15:06] <sustrik>	}
+| [Wednesday 08 December 2010] [04:15:10] <sustrik>	that's it
+| [Wednesday 08 December 2010] [04:15:40] <Guthur>	man you just sucked the fun out of it, hehe
+| [Wednesday 08 December 2010] [04:15:51] <sustrik>	oooooopw
+| [Wednesday 08 December 2010] [04:15:54] <sustrik>	oops
+| [Wednesday 08 December 2010] [04:20:02] <Guthur>	ah that's better
+| [Wednesday 08 December 2010] [04:20:17] <Guthur>	three lines of C# code
+| [Wednesday 08 December 2010] [04:20:31] <sustrik>	!
+| [Wednesday 08 December 2010] [04:21:07] <Guthur>	Stopwatch timer = new Stopwatch();             timer.Start();             while (timer.ElapsedMilliseconds < timeout && ctx.Poll(items, timeout) == 0);
+| [Wednesday 08 December 2010] [04:21:16] <Guthur>	oh it did do new lines
+| [Wednesday 08 December 2010] [04:21:19] <Guthur>	sorry about hat
+| [Wednesday 08 December 2010] [04:21:22] <Guthur>	that
+| [Wednesday 08 December 2010] [04:21:28] <Guthur>	didn't
+| [Wednesday 08 December 2010] [04:21:30] <sustrik>	np
+| [Wednesday 08 December 2010] [04:21:33] <sustrik>	i see it
+| [Wednesday 08 December 2010] [04:21:51] <sustrik>	yes, that's was the idea with 2.0.x
+| [Wednesday 08 December 2010] [04:21:58] <sustrik>	the performace issue i've mentioned before is the need to measure time at the beginning of the function
+| [Wednesday 08 December 2010] [04:22:19] <sustrik>	if you don't care about honouring timeouts precisely you can avoid that overhead
+| [Wednesday 08 December 2010] [04:23:12] <Guthur>	no problem, I had read the non-honouring part, I should have heeded it more
+| [Wednesday 08 December 2010] [04:24:32] <Guthur>	I kind of assumed it was more precision thing and that it would just be out by a few micros 
+| [Wednesday 08 December 2010] [04:24:36] <Guthur>	damn assumptions
+| [Wednesday 08 December 2010] [04:26:57] <Guthur>	cheers for clearing that up sustrik 
+| [Wednesday 08 December 2010] [04:27:15] <sustrik>	you are welcome
+| [Wednesday 08 December 2010] [04:32:13] <Guthur>	minor bug in mine there, I assumed milliseconds
+| [Wednesday 08 December 2010] [04:32:36] <Guthur>	small change just, microsecond is really high res
+| [Wednesday 08 December 2010] [12:41:38] <mikko>	howdy
+| [Wednesday 08 December 2010] [12:58:32] <jhawk28_>	sustrik: has the zmq team thought about providing a durable pub/sub socket?
+| [Wednesday 08 December 2010] [12:59:04] <seb`>	jhawk28_: durable? with disk sync?
+| [Wednesday 08 December 2010] [13:00:22] <jhawk28_>	durable - req/rep for requesting off queue. Fully persistent on disc for when publisher goes down
+| [Wednesday 08 December 2010] [13:01:37] <jhawk28_>	http://sna-projects.com/kafka/design.php has some interesting approaches to get it to be fast
+| [Wednesday 08 December 2010] [13:02:14] <sustrik>	what if the disk on the middle node fails :)
+| [Wednesday 08 December 2010] [13:02:33] <jhawk28_>	no, not broker style
+| [Wednesday 08 December 2010] [13:02:59] <seb`>	jhawk28_: if you need a broker you could use rabbitmq with the 0mq plugin
+| [Wednesday 08 December 2010] [13:03:04] <seb`>	that could be fun
+| [Wednesday 08 December 2010] [13:03:10] <sustrik>	saving data to disk on endpoints?
+| [Wednesday 08 December 2010] [13:03:15] <sustrik>	you can do that in you app
+| [Wednesday 08 December 2010] [13:03:27] <sustrik>	your*
+| [Wednesday 08 December 2010] [13:04:12] <sustrik>	this is what most applications with reliability requirements do anyway
+| [Wednesday 08 December 2010] [13:04:23] <sustrik>	they have data on disk (in DB or something)
+| [Wednesday 08 December 2010] [13:05:06] <mikko>	i thought about this issue at some point as well
+| [Wednesday 08 December 2010] [13:05:20] <mikko>	came up in to conclusion that it is a lot easier to do in app level
+| [Wednesday 08 December 2010] [13:05:40] <mikko>	as you can choose different kind of backends (such as bdb etc) without having to have that requirement in the core
+| [Wednesday 08 December 2010] [13:05:56] <sustrik>	right
+| [Wednesday 08 December 2010] [13:05:58] <sustrik>	and it's kind of inpossible to push reliability to the network
+| [Wednesday 08 December 2010] [13:06:13] <sustrik>	the networks are notoriously unreliable
+| [Wednesday 08 December 2010] [13:06:49] <mikko>	maybe we could provide an example of durable device
+| [Wednesday 08 December 2010] [13:06:56] <mikko>	rather than incorporate into core
+| [Wednesday 08 December 2010] [13:07:09] <jhawk28_>	I was thinking that I would start with the device route
+| [Wednesday 08 December 2010] [13:07:46] <mikko>	maybe you could do a generic "callback" device
+| [Wednesday 08 December 2010] [13:07:47] <jhawk28_>	but, I was thinking that it might be cleaner if it ended up as a socket
+| [Wednesday 08 December 2010] [13:08:03] <mikko>	have function pointers when message is received and sent
+| [Wednesday 08 December 2010] [13:08:15] <mikko>	jhawk28_: cleaner from what point of view?
+| [Wednesday 08 December 2010] [13:08:30] <jhawk28_>	cleaner API
+| [Wednesday 08 December 2010] [13:08:42] <jhawk28_>	the end user API
+| [Wednesday 08 December 2010] [13:08:51] <mikko>	from application code point of view yes, but it does mean a) design a durable storage b) add a large dependency to core
+| [Wednesday 08 December 2010] [13:09:16] <jhawk28_>	a)
+| [Wednesday 08 December 2010] [13:09:30] <mikko>	designing persistent storage for this kind of task is not a trivial exercise
+| [Wednesday 08 December 2010] [13:09:30] <sustrik>	well, i've seen how AMQP working group struggled for years to meld the networking and persistence together into a single spec
+| [Wednesday 08 December 2010] [13:09:31] <jhawk28_>	base it off kafka or bitcask
+| [Wednesday 08 December 2010] [13:09:38] <sustrik>	and it doesn't really lead to anything sane
+| [Wednesday 08 December 2010] [13:09:42] <mikko>	if you for example look at how long it has taken for Varnish to nail it down
+| [Wednesday 08 December 2010] [13:10:23] <jhawk28_>	kafka is probably closer since it just needs a queue mechanism, but they are both kinda similar
+| [Wednesday 08 December 2010] [13:11:45] <jhawk28_>	biggest problem Ive seen with message queue persistence is that they can't scale to a huge number of messages
+| [Wednesday 08 December 2010] [13:11:59] <mikko>	you possibly want a cleanup mechanism, expiration, maybe you want the store to be accessible from other programs as well
+| [Wednesday 08 December 2010] [13:12:43] <jhawk28_>	kafka basically uses a directory as the message queue
+| [Wednesday 08 December 2010] [13:12:54] <jhawk28_>	files are created in an ordered fashion
+| [Wednesday 08 December 2010] [13:13:13] <jhawk28_>	the client is what determines what message id to start from
+| [Wednesday 08 December 2010] [13:13:44] <mikko>	is there a concept of expiration?
+| [Wednesday 08 December 2010] [13:13:48] <jhawk28_>	the cleanup is by default handled by time or size
+| [Wednesday 08 December 2010] [13:14:23] <jhawk28_>	other mechanisms can be plugged in I believe
+| [Wednesday 08 December 2010] [13:15:16] <jhawk28_>	the client effectively controls their state so they can restart if need
+| [Wednesday 08 December 2010] [13:16:05] <mikko>	bbl, need to commute home ->
+| [Wednesday 08 December 2010] [14:28:14] <mikko>	back
+| [Wednesday 08 December 2010] [14:47:57] <wayneeseguin>	nice
+| [Wednesday 08 December 2010] [14:48:22] <cremes>	welcome
+| [Wednesday 08 December 2010] [14:49:49] <wayneeseguin>	I am new to this and I am trying to determine which socket type to use
+| [Wednesday 08 December 2010] [14:50:33] <wayneeseguin>	I am playing around with an example just to see if I can get it working.
+| [Wednesday 08 December 2010] [14:50:36] <cremes>	wayneeseguin: definitely read the guide at the zeromq site
+| [Wednesday 08 December 2010] [14:50:58] <cremes>	it covers a LOT of novice questions
+| [Wednesday 08 December 2010] [14:50:58] <wayneeseguin>	I had however perhaps I should do it again as that was a month or so ago
+| [Wednesday 08 December 2010] [14:53:51] <cremes>	alternately, ask your question
+| [Wednesday 08 December 2010] [14:54:05] <cremes>	if it's answered in the guide, i'll point you to it
+| [Wednesday 08 December 2010] [14:54:06] <cremes>	othe
+| [Wednesday 08 December 2010] [14:54:25] <cremes>	otherwise, i'll try to answer it
+| [Wednesday 08 December 2010] [14:57:01] <wayneeseguin>	I am fine reading docs :) 
+| [Wednesday 08 December 2010] [14:57:35] <wayneeseguin>	I want to have a client - server relationship where the client sends updates to the server on an interval and the server can request information from the client at random
+| [Wednesday 08 December 2010] [14:57:51] <wayneeseguin>	I am unsure if there is one socket type that can facilitate that or if I should be using two distinct ones.
+| [Wednesday 08 December 2010] [14:58:56] <sustrik>	is seems there are two different flows there
+| [Wednesday 08 December 2010] [14:59:07] <sustrik>	PUB/SUB for updates
+| [Wednesday 08 December 2010] [14:59:12] <sustrik>	REQ/REP for requests
+| [Wednesday 08 December 2010] [14:59:41] <wayneeseguin>	ok
+| [Wednesday 08 December 2010] [15:01:27] <cremes>	exactly
+| [Wednesday 08 December 2010] [16:48:07] <toni__>	hey there. I have an issue with a XREQclient XREPserver architecture, where the client should resend a message to another server, in case the one he first sent the message dies. I described it in detail here: https://gist.github.com/733965 
+| [Wednesday 08 December 2010] [17:19:27] <cremes>	toni__: you are understanding the problem correctly and 0mq is doing exactly what it should
+| [Wednesday 08 December 2010] [17:19:57] <cremes>	when your server dies, the 0mq socket on the client should remove it from its list of usable endpoints
+| [Wednesday 08 December 2010] [17:20:14] <toni__>	cremes: exactly
+| [Wednesday 08 December 2010] [17:20:29] <cremes>	you are likely simulating a server death by putting it to sleep or something; make sure that when the server dies that it goes away completely
+| [Wednesday 08 December 2010] [17:20:42] <cremes>	that way the socket will disconnect and you will get the behavior that you want
+| [Wednesday 08 December 2010] [17:20:54] <cremes>	if it hangs forever, as far as 0mq is concerned it is still a valid endpoint
+| [Wednesday 08 December 2010] [17:22:42] <toni__>	cremes: Yes, I am simulating a server death...
+| [Wednesday 08 December 2010] [17:22:50] <toni__>	I sould make use of socket.close()
+| [Wednesday 08 December 2010] [17:23:02] <cremes>	right; then you'll get what you want
+| [Wednesday 08 December 2010] [17:23:02] <cremes>	\
+| [Wednesday 08 December 2010] [17:23:31] <toni__>	cremes: Thanks for your hint!
+| [Wednesday 08 December 2010] [17:23:57] <cremes>	np
+| [Wednesday 08 December 2010] [17:51:51] <toni__>	cremes: Okay, I tried it with socket.close() but this does not seem to have any effect. I posted my 2 little code-snippets on gist: https://gist.github.com/734071 
+| [Wednesday 08 December 2010] [17:54:00] <toni__>	It seems as if the client would still be connected to the server that died
+| [Wednesday 08 December 2010] [17:55:13] <cremes>	toni__: how many of these servers are you starting up?
+| [Wednesday 08 December 2010] [17:55:37] <toni__>	I start 3 servers, and then killing two of em
+| [Wednesday 08 December 2010] [17:56:06] <cremes>	and after they print "socket closed" and die, your client is still trying to send new messages to them?
+| [Wednesday 08 December 2010] [17:56:27] <toni__>	yes it is
+| [Wednesday 08 December 2010] [17:56:34] <cremes>	try this...
+| [Wednesday 08 December 2010] [17:56:46] <cremes>	1. have your client start and connect to 3 addresses *first*
+| [Wednesday 08 December 2010] [17:56:50] <cremes>	2. start one server
+| [Wednesday 08 December 2010] [17:56:55] <cremes>	see what your client does
+| [Wednesday 08 December 2010] [17:57:03] <cremes>	3. start up the other 2 servers
+| [Wednesday 08 December 2010] [17:57:08] <cremes>	see what your client does
+| [Wednesday 08 December 2010] [17:57:16] <cremes>	4. kill 2 of your servers
+| [Wednesday 08 December 2010] [17:57:20] <cremes>	see what your client does
+| [Wednesday 08 December 2010] [17:57:51] <toni__>	cremes: Ill try it right now
+| [Wednesday 08 December 2010] [18:12:52] <toni__>	cremes: I connected the client first. Then I started the first server. The client tries to send also to the other servers which are not running yet. Thats why it s first very slow. Then I start the next server, it goes faster. Starting the third server the client doesnt get any timeout and it s fast. Stopping the servers, it gets slow again...
+| [Wednesday 08 December 2010] [18:14:26] <toni__>	seems like, the socket still tries to send to the addresses that are not available yet
+| [Wednesday 08 December 2010] [18:35:44] <cremes>	toni__: weird; why don't you ask on the mailing list and include a gist of your code along with the results you have seen
+| [Wednesday 08 December 2010] [18:35:54] <cremes>	maybe someone else can give a hint
+| [Wednesday 08 December 2010] [18:36:58] <toni__>	cremes: I will post my snippets and the testcase. Thanks for your help.
+| [Wednesday 08 December 2010] [18:43:20] <oxff>	is there any central message broker for PUB-SUB in the src distribution?
+| [Wednesday 08 December 2010] [18:43:25] <oxff>	basically i look for something like rabbitmq
+| [Wednesday 08 December 2010] [18:43:33] <oxff>	with an asynchronous i/o compatible c client library
+| [Wednesday 08 December 2010] [18:43:38] <oxff>	so i want to have a central server
+| [Wednesday 08 December 2010] [18:43:41] <oxff>	(cluster)
+| [Wednesday 08 December 2010] [18:43:48] <oxff>	which publishers as well as subscribers can connect to
+| [Wednesday 08 December 2010] [18:47:13] <oxff>	ah reading the doc, i get that this is not the scope of zeromq
+| [Wednesday 08 December 2010] [18:47:14] <oxff>	too bad :/
+| [Wednesday 08 December 2010] [18:54:33] <oxff>	ah, devices seems to be what iw ant
+| [Wednesday 08 December 2010] [19:00:07] <oxff>	how can i get all FDs from a zeromq socket?
+| [Wednesday 08 December 2010] [19:00:17] <oxff>	say, i want to embed zeromq into my existing libev app
+| [Wednesday 08 December 2010] [19:01:08] <oxff>	seems that the only way to use zeromq asynchronously is to develop around zmq_poll
+| [Wednesday 08 December 2010] [19:04:12] <cremes>	oxff: read up on ZM_FD and ZM_EVENTS
+| [Wednesday 08 December 2010] [19:04:29] <cremes>	that is part of the 2.1 release (in beta) which makes it easy to use with other libraries
+| [Wednesday 08 December 2010] [19:04:35] <oxff>	ah thanks
+| [Wednesday 08 December 2010] [19:04:44] <cremes>	and zmq_poll is built on top of those primitives
+| [Wednesday 08 December 2010] [19:05:45] <oxff>	wait it only gives me one fd per zmq_socket?
+| [Wednesday 08 December 2010] [19:05:54] <oxff>	how does it work with a bind socket?
+| [Wednesday 08 December 2010] [19:06:01] <oxff>	or multiple connected sockets?
+| [Wednesday 08 December 2010] [19:07:25] <oxff>	does it create a fake fd/
+| [Wednesday 08 December 2010] [19:07:28] <oxff>	?
+| [Wednesday 08 December 2010] [19:13:04] <oxff>	looking at tcp_listener.cpp, it only returns the bound fd in get_fd
+| [Wednesday 08 December 2010] [19:13:08] <oxff>	too tired to read all of the source
+| [Wednesday 08 December 2010] [19:19:03] <oxff>	wait, does zeromq internally use threading / create threads for accepting new connectins etc?
+| [Wednesday 08 December 2010] [19:22:10] <oxff>	how can i issue a non-blocking connect with zmq_connect?
+| [Wednesday 08 December 2010] [19:28:28] <oxff>	lol you
+| [Wednesday 08 December 2010] [19:28:41] <oxff>	you're threading and the fd is just some pipe fd you accumulate to?
+| [Wednesday 08 December 2010] [19:28:44] <oxff>	this is bullshit
+| [Wednesday 08 December 2010] [20:50:01] <testuser>	hello
