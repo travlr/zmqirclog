@@ -1349,3 +1349,140 @@
 | [Wednesday 08 December 2010] [19:28:41] <oxff>	you're threading and the fd is just some pipe fd you accumulate to?
 | [Wednesday 08 December 2010] [19:28:44] <oxff>	this is bullshit
 | [Wednesday 08 December 2010] [20:50:01] <testuser>	hello
+| [Wednesday 08 December 2010] [22:55:31] 470	travlr #gwt ##gwt Forwarding to another channel
+| [Wednesday 08 December 2010] [22:55:31] Notice	-ChanServ- [##gwt] Welcome to the unofficial Google Web Toolkit channel on freenode. This is a starting (and growing) community, and we need your help. Stick around!
+| [Wednesday 08 December 2010] [22:55:45] 470	travlr #gwt ##gwt Forwarding to another channel
+| [Wednesday 08 December 2010] [22:55:45] Notice	-ChanServ- [##gwt] Welcome to the unofficial Google Web Toolkit channel on freenode. This is a starting (and growing) community, and we need your help. Stick around!
+| [Wednesday 08 December 2010] [22:55:55] 470	travlr #gwt ##gwt Forwarding to another channel
+| [Wednesday 08 December 2010] [22:55:55] Notice	-ChanServ- [##gwt] Welcome to the unofficial Google Web Toolkit channel on freenode. This is a starting (and growing) community, and we need your help. Stick around!
+| [Thursday 09 December 2010] [03:46:34] <rrg>	hi
+| [Thursday 09 December 2010] [03:49:57] <rrg>	i am unsure how to implement multiplexed sending using a PUB socket. to be specific: a changing number of producers write multipart messages of varying length, at verying times and from varying threads. do i need to synchronize the writing somehow and abandon the multipart messaging alltogether?
+| [Thursday 09 December 2010] [03:54:36] <Steve-o>	give each thread a 0mq socket then ensure each thread sends multi-part atomically
+| [Thursday 09 December 2010] [03:57:39] <Steve-o>	you could always add extra sockets, i.e. one per session per thread too
+| [Thursday 09 December 2010] [03:58:27] <mikko>	Steve-o: im getting openpgm compile failure on x86 solaris 10
+| [Thursday 09 December 2010] [03:58:43] <Steve-o>	only tried opensolaris on intel
+| [Thursday 09 December 2010] [03:59:07] <Steve-o>	have you updated the compiler flags?
+| [Thursday 09 December 2010] [03:59:30] <Steve-o>	>> http://code.google.com/p/openpgm/source/browse/trunk/openpgm/pgm/SConstruct.OpenSolaris
+| [Thursday 09 December 2010] [04:00:32] <mikko>	Steve-o: i have
+| [Thursday 09 December 2010] [04:00:33] <mikko>	sec
+| [Thursday 09 December 2010] [04:01:07] <mikko>	https://gist.github.com/123f088e350c12744e1c
+| [Thursday 09 December 2010] [04:01:22] <mikko>	i was working on getting --with-pgm build to work on solaris10 using sun studio last night
+| [Thursday 09 December 2010] [04:01:39] <Steve-o>	ok, x86/Solaris is pretty much a dead platform
+| [Thursday 09 December 2010] [04:01:51] <mikko>	had to remove strict flag because __PRETTY_FUNCTION__ is not declared on strict compliance mode
+| [Thursday 09 December 2010] [04:02:24] <Steve-o>	that's gcc only ?
+| [Thursday 09 December 2010] [04:02:44] <mikko>	-Xc mode in solaris studio drops standards incompliant things
+| [Thursday 09 December 2010] [04:02:55] <mikko>	__PRETTY_FUNCTION__ is "pseudo-standard"
+| [Thursday 09 December 2010] [04:02:56] <Steve-o>	it should be picking up __func__ instead
+| [Thursday 09 December 2010] [04:03:51] <Steve-o>	just checked, __PRETTY_FUNCTION__ should only be used with __GNUC__ defined
+| [Thursday 09 December 2010] [04:04:12] <Steve-o>	I don't even bother with __func__, I think that's only SunPro 
+| [Thursday 09 December 2010] [04:04:21] <Steve-o>	but your error is assembler
+| [Thursday 09 December 2010] [04:04:25] <mikko>	__func__ is supported by all of them
+| [Thursday 09 December 2010] [04:04:56] <mikko>	i guess it would be fairly easy to ifdef OPENPGM_FUNCTION or similar
+| [Thursday 09 December 2010] [04:05:41] <mikko>	http://blogs.sun.com/solarisdev/entry/new_article_prefetching
+| [Thursday 09 December 2010] [04:05:49] <Steve-o>	ok i see the problem
+| [Thursday 09 December 2010] [04:06:00] <Steve-o>	I assume sun = sparc
+| [Thursday 09 December 2010] [04:06:14] <Steve-o>	which is usually pretty good considering the other options are awful
+| [Thursday 09 December 2010] [04:06:48] <Steve-o>	sunpro on linux doesn't define sun
+| [Thursday 09 December 2010] [04:07:06] <Steve-o>	so what does "sun" mean?
+| [Thursday 09 December 2010] [04:07:15] <Steve-o>	it's not there for opensolaris
+| [Thursday 09 December 2010] [04:08:38] <mikko>	sun and __sun are defined for x86 solaris
+| [Thursday 09 December 2010] [04:08:51] <mikko>	sparc and __sparc for SPARC 
+| [Thursday 09 December 2010] [04:08:54] <mikko>	as far as i know
+| [Thursday 09 December 2010] [04:09:01] <mikko>	i dont have access to sparc
+| [Thursday 09 December 2010] [04:09:28] <Steve-o>	sparc is for ultrasparc and older
+| [Thursday 09 December 2010] [04:09:45] <mikko>	http://predef.sourceforge.net/preos.html#sec35
+| [Thursday 09 December 2010] [04:09:52] <mikko>	this says that it's for solaris operating system
+| [Thursday 09 December 2010] [04:10:05] <Steve-o>	it's __sparcv9 for the box I have
+| [Thursday 09 December 2010] [04:10:20] <Steve-o>	which probably makes __sparc a v8
+| [Thursday 09 December 2010] [04:12:17] <Steve-o>	ok, have to guess which ones match gcc
+| [Thursday 09 December 2010] [04:12:52] <Steve-o>	I don't even use them which makes it worse
+| [Thursday 09 December 2010] [04:13:04] <Steve-o>	they're slower on the hardware I have
+| [Thursday 09 December 2010] [04:13:12] <mikko>	interesting
+| [Thursday 09 December 2010] [04:13:26] <mikko>	CC man page says that 'sun' is sparc only macro
+| [Thursday 09 December 2010] [04:14:12] <mikko>	but that might be from time before solaris studio on x86
+| [Thursday 09 December 2010] [04:14:15] <mikko>	not sure
+| [Thursday 09 December 2010] [04:14:32] <Steve-o>	x86 solaris is really old, but yes there is a lot of confusion
+| [Thursday 09 December 2010] [04:14:47] <Steve-o>	looks like prefetch -> sun_prefetch_read_many
+| [Thursday 09 December 2010] [04:14:54] <Steve-o>	prefetchw -> sun_prefetch_write_many
+| [Thursday 09 December 2010] [04:15:15] <Steve-o>	I'll have to switch on my sparc and check
+| [Thursday 09 December 2010] [04:15:26] <rrg>	Steve-o: the cost of adding a socket is insignificant?
+| [Thursday 09 December 2010] [04:15:35] <Steve-o>	I think I have a few fixes to back port to 5.0 too anyway
+| [Thursday 09 December 2010] [04:16:13] <mikko>	Steve-o: i use +w -Xc to compile with sun studio
+| [Thursday 09 December 2010] [04:16:16] <mikko>	if you want to test
+| [Thursday 09 December 2010] [04:16:25] <Steve-o>	rrg:  0mq automagically manages the multiplexing, so once one underlying transport is setup it is cheap
+| [Thursday 09 December 2010] [04:18:04] <rrg>	Steve-o: by setup you mean the context initialization?
+| [Thursday 09 December 2010] [04:18:58] <Steve-o>	rrg: the IO thread(s) open up the TCP/IPC/PGM sockets in the background
+| [Thursday 09 December 2010] [04:19:45] <rrg>	ah, ok. so context init = transport init
+| [Thursday 09 December 2010] [04:20:57] <rrg>	Steve-o: but won't binding the socket work exactly once? in case of tcp/ip unicast?
+| [Thursday 09 December 2010] [04:21:56] <Steve-o>	i'm going on what the whitepapers on the architecture say :-)
+| [Thursday 09 December 2010] [04:24:35] <rrg>	Steve-o: ? -> /me ?
+| [Thursday 09 December 2010] [04:27:28] <Steve-o>	brb, a couple of things working on
+| [Thursday 09 December 2010] [04:29:24] <guido_g>	rrg: the context has nothing to do w/ a particular transport
+| [Thursday 09 December 2010] [04:33:12] 	 * rrg wonders if this problem could be solved by opening multiple icp push connections and performing the actual tcp sending in a dedicated receiver thread of those multipart messages
+| [Thursday 09 December 2010] [04:34:12] <guido_g>	icp?
+| [Thursday 09 December 2010] [04:35:42] <rrg>	ipc
+| [Thursday 09 December 2010] [04:35:51] <rrg>	guido_g: seems to work!
+| [Thursday 09 December 2010] [04:37:23] <rrg>	guido_g: ok, i have single thread now which binds a pub socket to tcp and sits in a recv loop on an ipc pull socket.
+| [Thursday 09 December 2010] [04:38:00] <rrg>	guide_g:  plus a certain amount of threads which send multipart messages to thread-specific ipc push sockets which they close when they terminate.
+| [Thursday 09 December 2010] [04:38:31] <rrg>	guido_g: seems to work fine with 2 context i/o threads. any antipattern i'm using here?
+| [Thursday 09 December 2010] [04:39:10] <guido_g>	2 contexts? seems fishy
+| [Thursday 09 December 2010] [04:39:17] <Steve-o>	mikko:  aaagh, that strict mode is annoying
+| [Thursday 09 December 2010] [04:41:11] <Steve-o>	I'm not even getting "sun" defined
+| [Thursday 09 December 2010] [04:41:22] <toni_>	hey there. I have a XREQ client connected to a set of XREP servers. When one server dies, the client still tries to send messages to it. Is this the default zmq behavior, or am I doing something wrong? 
+| [Thursday 09 December 2010] [04:42:16] <Steve-o>	mikko:  so strict mode presumably means only __sun is defined?  always the underscore requirement?
+| [Thursday 09 December 2010] [04:43:13] <rrg>	guido_g: 2 i/o threads, 1 ctx
+| [Thursday 09 December 2010] [04:44:21] <guido_g>	rrg: i dont think you need 2 io threads, it's a waste of ressources
+| [Thursday 09 December 2010] [04:46:41] <rrg>	guido_g: is there any usecase for n>1 threads?
+| [Thursday 09 December 2010] [04:47:05] <guido_g>	rrg: no, not that i know of
+| [Thursday 09 December 2010] [04:48:59] <rrg>	guido_g: ok
+| [Thursday 09 December 2010] [04:49:02] <rrg>	guido_g: ty
+| [Thursday 09 December 2010] [04:52:00] <toni_>	I described my issue in detail here: https://gist.github.com/734545
+| [Thursday 09 December 2010] [04:59:17] <Steve-o>	toni_:  send onto the list too
+| [Thursday 09 December 2010] [04:59:38] <guido_g>	toni_: but first write a working test, please
+| [Thursday 09 December 2010] [04:59:53] <toni_>	Steve-o: I did this. The working test is also linked
+| [Thursday 09 December 2010] [04:59:54] <guido_g>	toni_: ahh... and remove the useles recursion
+| [Thursday 09 December 2010] [05:00:29] <guido_g>	toni_: there're three code snippes that are obviously part of something else
+| [Thursday 09 December 2010] [05:00:58] <toni_>	guido_g:  the snippets I linked ?
+| [Thursday 09 December 2010] [05:01:15] <guido_g>	toni_: what else?
+| [Thursday 09 December 2010] [05:01:20] <toni_>	guido_g: no thats exactly my code and my problem
+| [Thursday 09 December 2010] [05:02:38] <guido_g>	toni_: why didn't you post the code as it is then? what you posted appears to be 3 unrelated snippets
+| [Thursday 09 December 2010] [05:02:44] <toni_>	guido_g: My aproach is, that when a server does not answer for two seconds, I resend the message
+| [Thursday 09 December 2010] [05:03:51] <toni_>	guido_g:  But the XREPServer and the XREQConnect are both used in the Testcase
+| [Thursday 09 December 2010] [05:04:25] <Steve-o>	mikko:  I have trunk working with sun one in strict mode now, will have to try ICC later
+| [Thursday 09 December 2010] [05:06:56] <toni_>	guido_g: in the Testcase I first start one server, than the second, then the third. Whenever one server is not available, my XREQ send method runs into the timeout as it does not get any reply for 2 seconds
+| [Thursday 09 December 2010] [05:07:19] <toni_>	guido_g: and in this case I resend the message
+| [Thursday 09 December 2010] [05:07:28] <guido_g>	toni_: i know, i can read
+| [Thursday 09 December 2010] [05:09:10] <toni_>	guido_g: What I would need, is to tell the XREQ at XREQConnect to disconnect from the addresses that are obviously broken
+| [Thursday 09 December 2010] [05:10:14] <guido_g>	toni_: mq should do that, if not, show a comprehensible working test case and file an issue
+| [Thursday 09 December 2010] [05:13:05] <toni_>	guido_g: Okay, Ill open up an issue. Seems to me as if it s not working properly
+| [Thursday 09 December 2010] [05:14:58] <guido_g>	toni_: make your test actually working and as small as possible, otherwise it'll be difficult to proof your point
+| [Thursday 09 December 2010] [05:15:48] <toni_>	guido_g: yes I will. Thanks for your hints anyway.
+| [Thursday 09 December 2010] [05:49:26] <toni_>	One question remains. In zmq I can connect a socket to some addresses (that never were bound before), send messages to it and they will be buffered until the addresses become available. So consider one client and two servers. The client connects to both. The messages are loadbalanced between the servers. When one server dies (s.close()) the client will try to send its message to that address. As it is not available they are buffered. A
+| [Thursday 09 December 2010] [06:45:25] <sustrik_>	drbobbeaty: hi
+| [Thursday 09 December 2010] [06:45:33] <sustrik_>	would you do the -1 default, or should i?
+| [Thursday 09 December 2010] [06:47:28] <drbobbeaty>	sustrik: I'll be glad to. I just need to get a few things done this morning and then hamer it out.
+| [Thursday 09 December 2010] [06:47:36] <sustrik_>	great
+| [Thursday 09 December 2010] [06:47:51] <drbobbeaty>	I want to build RPMs, etc. to verify etc. So it'll take me just a little bit.
+| [Thursday 09 December 2010] [06:47:59] <sustrik_>	sure, no haste
+| [Thursday 09 December 2010] [06:52:10] <toni_>	I posted my problem here with a minimal testcase: https://github.com/zeromq/pyzmq/issues/issue/51
+| [Thursday 09 December 2010] [06:57:39] <guido_g>	toni_: does it work if you start both servers and then kill one of them?
+| [Thursday 09 December 2010] [06:59:12] <guido_g>	toni_: of course, after the client connected to them
+| [Thursday 09 December 2010] [07:02:53] <toni_>	guido_g: no, when I start both servers, then starting the client e.g sending 100 000 msgs and then I kill one server, the client still tries to send to the death one
+| [Thursday 09 December 2010] [07:03:50] <guido_g>	ouch
+| [Thursday 09 December 2010] [07:04:02] <guido_g>	sounds really like a bug
+| [Thursday 09 December 2010] [07:04:36] <toni_>	The testcase is quite simple, I hope everyone can reproduce this behavior
+| [Thursday 09 December 2010] [07:10:48] <guido_g>	jepp, killing one of the servers causes a delay every other request
+| [Thursday 09 December 2010] [07:13:05] <toni_>	guido_g: but actually, zmq should behave different and notice the death server?
+| [Thursday 09 December 2010] [07:13:45] <guido_g>	should be in the docs
+| [Thursday 09 December 2010] [07:15:55] <guido_g>	ahhh.. got it
+| [Thursday 09 December 2010] [07:16:08] <guido_g>	set the HWM for the sending socket to 1, then it works
+| [Thursday 09 December 2010] [07:19:01] <toni_>	guido_g: You are my hero !!!
+| [Thursday 09 December 2010] [07:19:13] <toni_>	guido_g: hanging on this issue for almost 2 day now
+| [Thursday 09 December 2010] [07:19:32] <toni_>	guido_g: Thanks a lot for your help!!!
+| [Thursday 09 December 2010] [07:19:43] <guido_g>	the reason is -- i think -- the unbound queue for this endpoint
+| [Thursday 09 December 2010] [07:20:10] <toni_>	guido_g: what do you mean by the unbound queue?
+| [Thursday 09 December 2010] [07:20:50] <toni_>	guido_g: As far as I understood the HWM limits the send-buffer of the socket to the size of 1
+| [Thursday 09 December 2010] [07:20:53] <guido_g>	every endpoint under a mq socket has a queue for messages to be sent to it
+| [Thursday 09 December 2010] [07:21:19] <toni_>	ah okay, thats what I just called buffer...
+| [Thursday 09 December 2010] [07:21:22] <guido_g>	not of the mq socket, but the underlying endpoint
+| [Thursday 09 December 2010] [07:23:12] <toni_>	guido_g:  thanks for your help. Great project and great community

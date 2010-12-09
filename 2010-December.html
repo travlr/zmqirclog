@@ -1394,6 +1394,143 @@
 <div class="line">[Wednesday 08 December 2010] [19:28:41] &lt;oxff&gt;        you&#8217;re threading and the fd is just some pipe fd you accumulate to?</div>
 <div class="line">[Wednesday 08 December 2010] [19:28:44] &lt;oxff&gt;        this is bullshit</div>
 <div class="line">[Wednesday 08 December 2010] [20:50:01] &lt;testuser&gt;    hello</div>
+<div class="line">[Wednesday 08 December 2010] [22:55:31] 470   travlr #gwt ##gwt Forwarding to another channel</div>
+<div class="line">[Wednesday 08 December 2010] [22:55:31] Notice        -ChanServ- [##gwt] Welcome to the unofficial Google Web Toolkit channel on freenode. This is a starting (and growing) community, and we need your help. Stick around!</div>
+<div class="line">[Wednesday 08 December 2010] [22:55:45] 470   travlr #gwt ##gwt Forwarding to another channel</div>
+<div class="line">[Wednesday 08 December 2010] [22:55:45] Notice        -ChanServ- [##gwt] Welcome to the unofficial Google Web Toolkit channel on freenode. This is a starting (and growing) community, and we need your help. Stick around!</div>
+<div class="line">[Wednesday 08 December 2010] [22:55:55] 470   travlr #gwt ##gwt Forwarding to another channel</div>
+<div class="line">[Wednesday 08 December 2010] [22:55:55] Notice        -ChanServ- [##gwt] Welcome to the unofficial Google Web Toolkit channel on freenode. This is a starting (and growing) community, and we need your help. Stick around!</div>
+<div class="line">[Thursday 09 December 2010] [03:46:34] &lt;rrg&gt;  hi</div>
+<div class="line">[Thursday 09 December 2010] [03:49:57] &lt;rrg&gt;  i am unsure how to implement multiplexed sending using a PUB socket. to be specific: a changing number of producers write multipart messages of varying length, at verying times and from varying threads. do i need to synchronize the writing somehow and abandon the multipart messaging alltogether?</div>
+<div class="line">[Thursday 09 December 2010] [03:54:36] &lt;Steve-o&gt;      give each thread a 0mq socket then ensure each thread sends multi-part atomically</div>
+<div class="line">[Thursday 09 December 2010] [03:57:39] &lt;Steve-o&gt;      you could always add extra sockets, i.e. one per session per thread too</div>
+<div class="line">[Thursday 09 December 2010] [03:58:27] &lt;mikko&gt;        Steve-o: im getting openpgm compile failure on x86 solaris 10</div>
+<div class="line">[Thursday 09 December 2010] [03:58:43] &lt;Steve-o&gt;      only tried opensolaris on intel</div>
+<div class="line">[Thursday 09 December 2010] [03:59:07] &lt;Steve-o&gt;      have you updated the compiler flags?</div>
+<div class="line">[Thursday 09 December 2010] [03:59:30] &lt;Steve-o&gt;      &gt;&gt; <a class="reference external" href="http://code.google.com/p/openpgm/source/browse/trunk/openpgm/pgm/SConstruct.OpenSolaris">http://code.google.com/p/openpgm/source/browse/trunk/openpgm/pgm/SConstruct.OpenSolaris</a></div>
+<div class="line">[Thursday 09 December 2010] [04:00:32] &lt;mikko&gt;        Steve-o: i have</div>
+<div class="line">[Thursday 09 December 2010] [04:00:33] &lt;mikko&gt;        sec</div>
+<div class="line">[Thursday 09 December 2010] [04:01:07] &lt;mikko&gt;        <a class="reference external" href="https://gist.github.com/123f088e350c12744e1c">https://gist.github.com/123f088e350c12744e1c</a></div>
+<div class="line">[Thursday 09 December 2010] [04:01:22] &lt;mikko&gt;        i was working on getting &#8211;with-pgm build to work on solaris10 using sun studio last night</div>
+<div class="line">[Thursday 09 December 2010] [04:01:39] &lt;Steve-o&gt;      ok, x86/Solaris is pretty much a dead platform</div>
+<div class="line">[Thursday 09 December 2010] [04:01:51] &lt;mikko&gt;        had to remove strict flag because __PRETTY_FUNCTION__ is not declared on strict compliance mode</div>
+<div class="line">[Thursday 09 December 2010] [04:02:24] &lt;Steve-o&gt;      that&#8217;s gcc only ?</div>
+<div class="line">[Thursday 09 December 2010] [04:02:44] &lt;mikko&gt;        -Xc mode in solaris studio drops standards incompliant things</div>
+<div class="line">[Thursday 09 December 2010] [04:02:55] &lt;mikko&gt;        __PRETTY_FUNCTION__ is &#8220;pseudo-standard&#8221;</div>
+<div class="line">[Thursday 09 December 2010] [04:02:56] &lt;Steve-o&gt;      it should be picking up __func__ instead</div>
+<div class="line">[Thursday 09 December 2010] [04:03:51] &lt;Steve-o&gt;      just checked, __PRETTY_FUNCTION__ should only be used with __GNUC__ defined</div>
+<div class="line">[Thursday 09 December 2010] [04:04:12] &lt;Steve-o&gt;      I don&#8217;t even bother with __func__, I think that&#8217;s only SunPro</div>
+<div class="line">[Thursday 09 December 2010] [04:04:21] &lt;Steve-o&gt;      but your error is assembler</div>
+<div class="line">[Thursday 09 December 2010] [04:04:25] &lt;mikko&gt;        __func__ is supported by all of them</div>
+<div class="line">[Thursday 09 December 2010] [04:04:56] &lt;mikko&gt;        i guess it would be fairly easy to ifdef OPENPGM_FUNCTION or similar</div>
+<div class="line">[Thursday 09 December 2010] [04:05:41] &lt;mikko&gt;        <a class="reference external" href="http://blogs.sun.com/solarisdev/entry/new_article_prefetching">http://blogs.sun.com/solarisdev/entry/new_article_prefetching</a></div>
+<div class="line">[Thursday 09 December 2010] [04:05:49] &lt;Steve-o&gt;      ok i see the problem</div>
+<div class="line">[Thursday 09 December 2010] [04:06:00] &lt;Steve-o&gt;      I assume sun = sparc</div>
+<div class="line">[Thursday 09 December 2010] [04:06:14] &lt;Steve-o&gt;      which is usually pretty good considering the other options are awful</div>
+<div class="line">[Thursday 09 December 2010] [04:06:48] &lt;Steve-o&gt;      sunpro on linux doesn&#8217;t define sun</div>
+<div class="line">[Thursday 09 December 2010] [04:07:06] &lt;Steve-o&gt;      so what does &#8220;sun&#8221; mean?</div>
+<div class="line">[Thursday 09 December 2010] [04:07:15] &lt;Steve-o&gt;      it&#8217;s not there for opensolaris</div>
+<div class="line">[Thursday 09 December 2010] [04:08:38] &lt;mikko&gt;        sun and __sun are defined for x86 solaris</div>
+<div class="line">[Thursday 09 December 2010] [04:08:51] &lt;mikko&gt;        sparc and __sparc for SPARC</div>
+<div class="line">[Thursday 09 December 2010] [04:08:54] &lt;mikko&gt;        as far as i know</div>
+<div class="line">[Thursday 09 December 2010] [04:09:01] &lt;mikko&gt;        i dont have access to sparc</div>
+<div class="line">[Thursday 09 December 2010] [04:09:28] &lt;Steve-o&gt;      sparc is for ultrasparc and older</div>
+<div class="line">[Thursday 09 December 2010] [04:09:45] &lt;mikko&gt;        <a class="reference external" href="http://predef.sourceforge.net/preos.html#sec35">http://predef.sourceforge.net/preos.html#sec35</a></div>
+<div class="line">[Thursday 09 December 2010] [04:09:52] &lt;mikko&gt;        this says that it&#8217;s for solaris operating system</div>
+<div class="line">[Thursday 09 December 2010] [04:10:05] &lt;Steve-o&gt;      it&#8217;s __sparcv9 for the box I have</div>
+<div class="line">[Thursday 09 December 2010] [04:10:20] &lt;Steve-o&gt;      which probably makes __sparc a v8</div>
+<div class="line">[Thursday 09 December 2010] [04:12:17] &lt;Steve-o&gt;      ok, have to guess which ones match gcc</div>
+<div class="line">[Thursday 09 December 2010] [04:12:52] &lt;Steve-o&gt;      I don&#8217;t even use them which makes it worse</div>
+<div class="line">[Thursday 09 December 2010] [04:13:04] &lt;Steve-o&gt;      they&#8217;re slower on the hardware I have</div>
+<div class="line">[Thursday 09 December 2010] [04:13:12] &lt;mikko&gt;        interesting</div>
+<div class="line">[Thursday 09 December 2010] [04:13:26] &lt;mikko&gt;        CC man page says that &#8216;sun&#8217; is sparc only macro</div>
+<div class="line">[Thursday 09 December 2010] [04:14:12] &lt;mikko&gt;        but that might be from time before solaris studio on x86</div>
+<div class="line">[Thursday 09 December 2010] [04:14:15] &lt;mikko&gt;        not sure</div>
+<div class="line">[Thursday 09 December 2010] [04:14:32] &lt;Steve-o&gt;      x86 solaris is really old, but yes there is a lot of confusion</div>
+<div class="line">[Thursday 09 December 2010] [04:14:47] &lt;Steve-o&gt;      looks like prefetch -&gt; sun_prefetch_read_many</div>
+<div class="line">[Thursday 09 December 2010] [04:14:54] &lt;Steve-o&gt;      prefetchw -&gt; sun_prefetch_write_many</div>
+<div class="line">[Thursday 09 December 2010] [04:15:15] &lt;Steve-o&gt;      I&#8217;ll have to switch on my sparc and check</div>
+<div class="line">[Thursday 09 December 2010] [04:15:26] &lt;rrg&gt;  Steve-o: the cost of adding a socket is insignificant?</div>
+<div class="line">[Thursday 09 December 2010] [04:15:35] &lt;Steve-o&gt;      I think I have a few fixes to back port to 5.0 too anyway</div>
+<div class="line">[Thursday 09 December 2010] [04:16:13] &lt;mikko&gt;        Steve-o: i use +w -Xc to compile with sun studio</div>
+<div class="line">[Thursday 09 December 2010] [04:16:16] &lt;mikko&gt;        if you want to test</div>
+<div class="line">[Thursday 09 December 2010] [04:16:25] &lt;Steve-o&gt;      rrg:  0mq automagically manages the multiplexing, so once one underlying transport is setup it is cheap</div>
+<div class="line">[Thursday 09 December 2010] [04:18:04] &lt;rrg&gt;  Steve-o: by setup you mean the context initialization?</div>
+<div class="line">[Thursday 09 December 2010] [04:18:58] &lt;Steve-o&gt;      rrg: the IO thread(s) open up the TCP/IPC/PGM sockets in the background</div>
+<div class="line">[Thursday 09 December 2010] [04:19:45] &lt;rrg&gt;  ah, ok. so context init = transport init</div>
+<div class="line">[Thursday 09 December 2010] [04:20:57] &lt;rrg&gt;  Steve-o: but won&#8217;t binding the socket work exactly once? in case of tcp/ip unicast?</div>
+<div class="line">[Thursday 09 December 2010] [04:21:56] &lt;Steve-o&gt;      i&#8217;m going on what the whitepapers on the architecture say :-)</div>
+<div class="line">[Thursday 09 December 2010] [04:24:35] &lt;rrg&gt;  Steve-o: ? -&gt; /me ?</div>
+<div class="line">[Thursday 09 December 2010] [04:27:28] &lt;Steve-o&gt;      brb, a couple of things working on</div>
+<div class="line">[Thursday 09 December 2010] [04:29:24] &lt;guido_g&gt;      rrg: the context has nothing to do w/ a particular transport</div>
+<div class="line">[Thursday 09 December 2010] [04:33:12]         * rrg wonders if this problem could be solved by opening multiple icp push connections and performing the actual tcp sending in a dedicated receiver thread of those multipart messages</div>
+<div class="line">[Thursday 09 December 2010] [04:34:12] &lt;guido_g&gt;      icp?</div>
+<div class="line">[Thursday 09 December 2010] [04:35:42] &lt;rrg&gt;  ipc</div>
+<div class="line">[Thursday 09 December 2010] [04:35:51] &lt;rrg&gt;  guido_g: seems to work!</div>
+<div class="line">[Thursday 09 December 2010] [04:37:23] &lt;rrg&gt;  guido_g: ok, i have single thread now which binds a pub socket to tcp and sits in a recv loop on an ipc pull socket.</div>
+<div class="line">[Thursday 09 December 2010] [04:38:00] &lt;rrg&gt;  guide_g:  plus a certain amount of threads which send multipart messages to thread-specific ipc push sockets which they close when they terminate.</div>
+<div class="line">[Thursday 09 December 2010] [04:38:31] &lt;rrg&gt;  guido_g: seems to work fine with 2 context i/o threads. any antipattern i&#8217;m using here?</div>
+<div class="line">[Thursday 09 December 2010] [04:39:10] &lt;guido_g&gt;      2 contexts? seems fishy</div>
+<div class="line">[Thursday 09 December 2010] [04:39:17] &lt;Steve-o&gt;      mikko:  aaagh, that strict mode is annoying</div>
+<div class="line">[Thursday 09 December 2010] [04:41:11] &lt;Steve-o&gt;      I&#8217;m not even getting &#8220;sun&#8221; defined</div>
+<div class="line">[Thursday 09 December 2010] [04:41:22] &lt;<a href="#id256"><span class="problematic" id="id257">toni_</span></a>&gt;        hey there. I have a XREQ client connected to a set of XREP servers. When one server dies, the client still tries to send messages to it. Is this the default zmq behavior, or am I doing something wrong?</div>
+<div class="line">[Thursday 09 December 2010] [04:42:16] &lt;Steve-o&gt;      mikko:  so strict mode presumably means only __sun is defined?  always the underscore requirement?</div>
+<div class="line">[Thursday 09 December 2010] [04:43:13] &lt;rrg&gt;  guido_g: 2 i/o threads, 1 ctx</div>
+<div class="line">[Thursday 09 December 2010] [04:44:21] &lt;guido_g&gt;      rrg: i dont think you need 2 io threads, it&#8217;s a waste of ressources</div>
+<div class="line">[Thursday 09 December 2010] [04:46:41] &lt;rrg&gt;  guido_g: is there any usecase for n&gt;1 threads?</div>
+<div class="line">[Thursday 09 December 2010] [04:47:05] &lt;guido_g&gt;      rrg: no, not that i know of</div>
+<div class="line">[Thursday 09 December 2010] [04:48:59] &lt;rrg&gt;  guido_g: ok</div>
+<div class="line">[Thursday 09 December 2010] [04:49:02] &lt;rrg&gt;  guido_g: ty</div>
+<div class="line">[Thursday 09 December 2010] [04:52:00] &lt;<a href="#id258"><span class="problematic" id="id259">toni_</span></a>&gt;        I described my issue in detail here: <a class="reference external" href="https://gist.github.com/734545">https://gist.github.com/734545</a></div>
+<div class="line">[Thursday 09 December 2010] [04:59:17] &lt;Steve-o&gt;      <a href="#id260"><span class="problematic" id="id261">toni_</span></a>:  send onto the list too</div>
+<div class="line">[Thursday 09 December 2010] [04:59:38] &lt;guido_g&gt;      <a href="#id262"><span class="problematic" id="id263">toni_</span></a>: but first write a working test, please</div>
+<div class="line">[Thursday 09 December 2010] [04:59:53] &lt;<a href="#id264"><span class="problematic" id="id265">toni_</span></a>&gt;        Steve-o: I did this. The working test is also linked</div>
+<div class="line">[Thursday 09 December 2010] [04:59:54] &lt;guido_g&gt;      <a href="#id266"><span class="problematic" id="id267">toni_</span></a>: ahh... and remove the useles recursion</div>
+<div class="line">[Thursday 09 December 2010] [05:00:29] &lt;guido_g&gt;      <a href="#id268"><span class="problematic" id="id269">toni_</span></a>: there&#8217;re three code snippes that are obviously part of something else</div>
+<div class="line">[Thursday 09 December 2010] [05:00:58] &lt;<a href="#id270"><span class="problematic" id="id271">toni_</span></a>&gt;        guido_g:  the snippets I linked ?</div>
+<div class="line">[Thursday 09 December 2010] [05:01:15] &lt;guido_g&gt;      <a href="#id272"><span class="problematic" id="id273">toni_</span></a>: what else?</div>
+<div class="line">[Thursday 09 December 2010] [05:01:20] &lt;<a href="#id274"><span class="problematic" id="id275">toni_</span></a>&gt;        guido_g: no thats exactly my code and my problem</div>
+<div class="line">[Thursday 09 December 2010] [05:02:38] &lt;guido_g&gt;      <a href="#id276"><span class="problematic" id="id277">toni_</span></a>: why didn&#8217;t you post the code as it is then? what you posted appears to be 3 unrelated snippets</div>
+<div class="line">[Thursday 09 December 2010] [05:02:44] &lt;<a href="#id278"><span class="problematic" id="id279">toni_</span></a>&gt;        guido_g: My aproach is, that when a server does not answer for two seconds, I resend the message</div>
+<div class="line">[Thursday 09 December 2010] [05:03:51] &lt;<a href="#id280"><span class="problematic" id="id281">toni_</span></a>&gt;        guido_g:  But the XREPServer and the XREQConnect are both used in the Testcase</div>
+<div class="line">[Thursday 09 December 2010] [05:04:25] &lt;Steve-o&gt;      mikko:  I have trunk working with sun one in strict mode now, will have to try ICC later</div>
+<div class="line">[Thursday 09 December 2010] [05:06:56] &lt;<a href="#id282"><span class="problematic" id="id283">toni_</span></a>&gt;        guido_g: in the Testcase I first start one server, than the second, then the third. Whenever one server is not available, my XREQ send method runs into the timeout as it does not get any reply for 2 seconds</div>
+<div class="line">[Thursday 09 December 2010] [05:07:19] &lt;<a href="#id284"><span class="problematic" id="id285">toni_</span></a>&gt;        guido_g: and in this case I resend the message</div>
+<div class="line">[Thursday 09 December 2010] [05:07:28] &lt;guido_g&gt;      <a href="#id286"><span class="problematic" id="id287">toni_</span></a>: i know, i can read</div>
+<div class="line">[Thursday 09 December 2010] [05:09:10] &lt;<a href="#id288"><span class="problematic" id="id289">toni_</span></a>&gt;        guido_g: What I would need, is to tell the XREQ at XREQConnect to disconnect from the addresses that are obviously broken</div>
+<div class="line">[Thursday 09 December 2010] [05:10:14] &lt;guido_g&gt;      <a href="#id290"><span class="problematic" id="id291">toni_</span></a>: mq should do that, if not, show a comprehensible working test case and file an issue</div>
+<div class="line">[Thursday 09 December 2010] [05:13:05] &lt;<a href="#id292"><span class="problematic" id="id293">toni_</span></a>&gt;        guido_g: Okay, Ill open up an issue. Seems to me as if it s not working properly</div>
+<div class="line">[Thursday 09 December 2010] [05:14:58] &lt;guido_g&gt;      <a href="#id294"><span class="problematic" id="id295">toni_</span></a>: make your test actually working and as small as possible, otherwise it&#8217;ll be difficult to proof your point</div>
+<div class="line">[Thursday 09 December 2010] [05:15:48] &lt;<a href="#id296"><span class="problematic" id="id297">toni_</span></a>&gt;        guido_g: yes I will. Thanks for your hints anyway.</div>
+<div class="line">[Thursday 09 December 2010] [05:49:26] &lt;<a href="#id298"><span class="problematic" id="id299">toni_</span></a>&gt;        One question remains. In zmq I can connect a socket to some addresses (that never were bound before), send messages to it and they will be buffered until the addresses become available. So consider one client and two servers. The client connects to both. The messages are loadbalanced between the servers. When one server dies (s.close()) the client will try to send its message to that address. As it is not available they are buffered. A</div>
+<div class="line">[Thursday 09 December 2010] [06:45:25] &lt;<a href="#id300"><span class="problematic" id="id301">sustrik_</span></a>&gt;     drbobbeaty: hi</div>
+<div class="line">[Thursday 09 December 2010] [06:45:33] &lt;<a href="#id302"><span class="problematic" id="id303">sustrik_</span></a>&gt;     would you do the -1 default, or should i?</div>
+<div class="line">[Thursday 09 December 2010] [06:47:28] &lt;drbobbeaty&gt;   sustrik: I&#8217;ll be glad to. I just need to get a few things done this morning and then hamer it out.</div>
+<div class="line">[Thursday 09 December 2010] [06:47:36] &lt;<a href="#id304"><span class="problematic" id="id305">sustrik_</span></a>&gt;     great</div>
+<div class="line">[Thursday 09 December 2010] [06:47:51] &lt;drbobbeaty&gt;   I want to build RPMs, etc. to verify etc. So it&#8217;ll take me just a little bit.</div>
+<div class="line">[Thursday 09 December 2010] [06:47:59] &lt;<a href="#id306"><span class="problematic" id="id307">sustrik_</span></a>&gt;     sure, no haste</div>
+<div class="line">[Thursday 09 December 2010] [06:52:10] &lt;<a href="#id308"><span class="problematic" id="id309">toni_</span></a>&gt;        I posted my problem here with a minimal testcase: <a class="reference external" href="https://github.com/zeromq/pyzmq/issues/issue/51">https://github.com/zeromq/pyzmq/issues/issue/51</a></div>
+<div class="line">[Thursday 09 December 2010] [06:57:39] &lt;guido_g&gt;      <a href="#id310"><span class="problematic" id="id311">toni_</span></a>: does it work if you start both servers and then kill one of them?</div>
+<div class="line">[Thursday 09 December 2010] [06:59:12] &lt;guido_g&gt;      <a href="#id312"><span class="problematic" id="id313">toni_</span></a>: of course, after the client connected to them</div>
+<div class="line">[Thursday 09 December 2010] [07:02:53] &lt;<a href="#id314"><span class="problematic" id="id315">toni_</span></a>&gt;        guido_g: no, when I start both servers, then starting the client e.g sending 100 000 msgs and then I kill one server, the client still tries to send to the death one</div>
+<div class="line">[Thursday 09 December 2010] [07:03:50] &lt;guido_g&gt;      ouch</div>
+<div class="line">[Thursday 09 December 2010] [07:04:02] &lt;guido_g&gt;      sounds really like a bug</div>
+<div class="line">[Thursday 09 December 2010] [07:04:36] &lt;<a href="#id316"><span class="problematic" id="id317">toni_</span></a>&gt;        The testcase is quite simple, I hope everyone can reproduce this behavior</div>
+<div class="line">[Thursday 09 December 2010] [07:10:48] &lt;guido_g&gt;      jepp, killing one of the servers causes a delay every other request</div>
+<div class="line">[Thursday 09 December 2010] [07:13:05] &lt;<a href="#id318"><span class="problematic" id="id319">toni_</span></a>&gt;        guido_g: but actually, zmq should behave different and notice the death server?</div>
+<div class="line">[Thursday 09 December 2010] [07:13:45] &lt;guido_g&gt;      should be in the docs</div>
+<div class="line">[Thursday 09 December 2010] [07:15:55] &lt;guido_g&gt;      ahhh.. got it</div>
+<div class="line">[Thursday 09 December 2010] [07:16:08] &lt;guido_g&gt;      set the HWM for the sending socket to 1, then it works</div>
+<div class="line">[Thursday 09 December 2010] [07:19:01] &lt;<a href="#id320"><span class="problematic" id="id321">toni_</span></a>&gt;        guido_g: You are my hero !!!</div>
+<div class="line">[Thursday 09 December 2010] [07:19:13] &lt;<a href="#id322"><span class="problematic" id="id323">toni_</span></a>&gt;        guido_g: hanging on this issue for almost 2 day now</div>
+<div class="line">[Thursday 09 December 2010] [07:19:32] &lt;<a href="#id324"><span class="problematic" id="id325">toni_</span></a>&gt;        guido_g: Thanks a lot for your help!!!</div>
+<div class="line">[Thursday 09 December 2010] [07:19:43] &lt;guido_g&gt;      the reason is &#8211; i think &#8211; the unbound queue for this endpoint</div>
+<div class="line">[Thursday 09 December 2010] [07:20:10] &lt;<a href="#id326"><span class="problematic" id="id327">toni_</span></a>&gt;        guido_g: what do you mean by the unbound queue?</div>
+<div class="line">[Thursday 09 December 2010] [07:20:50] &lt;<a href="#id328"><span class="problematic" id="id329">toni_</span></a>&gt;        guido_g: As far as I understood the HWM limits the send-buffer of the socket to the size of 1</div>
+<div class="line">[Thursday 09 December 2010] [07:20:53] &lt;guido_g&gt;      every endpoint under a mq socket has a queue for messages to be sent to it</div>
+<div class="line">[Thursday 09 December 2010] [07:21:19] &lt;<a href="#id330"><span class="problematic" id="id331">toni_</span></a>&gt;        ah okay, thats what I just called buffer...</div>
+<div class="line">[Thursday 09 December 2010] [07:21:22] &lt;guido_g&gt;      not of the mq socket, but the underlying endpoint</div>
+<div class="line">[Thursday 09 December 2010] [07:23:12] &lt;<a href="#id332"><span class="problematic" id="id333">toni_</span></a>&gt;        guido_g:  thanks for your help. Great project and great community</div>
 </div>
 </div>
 
