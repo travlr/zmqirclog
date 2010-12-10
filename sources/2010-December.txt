@@ -1638,3 +1638,11 @@
 | [Friday 10 December 2010] [01:30:22] <andrewvc>	cool
 | [Friday 10 December 2010] [02:00:08] <samBiotic>	andrewvc and Steve-o thanks for the help
 | [Friday 10 December 2010] [02:00:18] <samBiotic>	bye for now
+| [Friday 10 December 2010] [09:25:49] <matias_>	hi all :-)
+| [Friday 10 December 2010] [09:39:42] <Steve-o>	mikko: I've backported many fixes to PGM 5.0 but ANSI strict is a bit too much work, therefore 5.1 must be used for Cygwin/Solaris x6/ANSI strict/OSX
+| [Friday 10 December 2010] [09:40:11] <mikko>	Steve-o: ok
+| [Friday 10 December 2010] [09:40:20] <mikko>	maybe we should remove the strict flags for solaris for now
+| [Friday 10 December 2010] [09:40:28] <mikko>	until we can use 5.1 in zeromq
+| [Friday 10 December 2010] [09:41:34] <Steve-o>	I need to run through all the tests then I can ship a 5.0.93 and the first 5.1 release
+| [Friday 10 December 2010] [09:43:59] <Steve-o>	Sun ONE is odd as ever, it wants __asm__ only in C++ ANSI strict
+| [Friday 10 December 2010] [09:44:11] <Steve-o>	every other combination is fine with __asm
