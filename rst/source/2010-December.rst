@@ -1486,3 +1486,155 @@
 | [Thursday 09 December 2010] [07:21:19] <toni_>	ah okay, thats what I just called buffer...
 | [Thursday 09 December 2010] [07:21:22] <guido_g>	not of the mq socket, but the underlying endpoint
 | [Thursday 09 December 2010] [07:23:12] <toni_>	guido_g:  thanks for your help. Great project and great community
+| [Thursday 09 December 2010] [08:38:25] <bobdole369>	Hello good morning, is zeromq used often with embedded devices? Specifically Rabbit Semiconductor stuff, or Schnieder (or others) PLC's?
+| [Thursday 09 December 2010] [10:17:29] <mikko>	bobdole369: it might make sense to ask that question on the mailing-lists to reach bigger audience
+| [Thursday 09 December 2010] [10:21:55] <Steve-o>	mikko: what strict parameters are you using for ICC?  I'll check tomorrow and update trunk for PGM
+| [Thursday 09 December 2010] [10:31:25] <mikko>	Steve-o: sec
+| [Thursday 09 December 2010] [10:31:46] <mikko>	-strict-ansi
+| [Thursday 09 December 2010] [10:43:10] <Steve-o>	taa, will test with 5.1 and backport to 5.0
+| [Thursday 09 December 2010] [10:43:18] <mikko>	cool
+| [Thursday 09 December 2010] [10:44:04] <Steve-o>	only OSX needs 5.1 because of the lack of spin locks
+| [Thursday 09 December 2010] [10:44:31] <Steve-o>	maybe something with Win x64 too but I can't recall
+| [Thursday 09 December 2010] [11:25:48] <mikko>	sustrik: there?
+| [Thursday 09 December 2010] [12:04:17] <sustrik>	mikko: hi
+| [Thursday 09 December 2010] [12:05:19] <mikko>	sustrik: im having issues with ZMQ_QUEUE
+| [Thursday 09 December 2010] [12:05:34] <sustrik>	yes?
+| [Thursday 09 December 2010] [12:05:39] <mikko>	it seems that my messages are not being closed
+| [Thursday 09 December 2010] [12:05:48] <mikko>	it's a bit tricky to reproduce
+| [Thursday 09 December 2010] [12:05:59] <mikko>	but i got front=pull, back=push device
+| [Thursday 09 December 2010] [12:06:14] <mikko>	and if i am not consuming the message the memory usage goes up steadily
+| [Thursday 09 December 2010] [12:06:28] <mikko>	if i then start consumer the memory usage doesn't go down
+| [Thursday 09 December 2010] [12:06:32] <mikko>	even though messages are flowing
+| [Thursday 09 December 2010] [12:06:45] <mikko>	i can see using valgrind that memory is held in the messages
+| [Thursday 09 December 2010] [12:06:53] <sustrik>	are you publishing at full spead?
+| [Thursday 09 December 2010] [12:06:58] <sustrik>	speed
+| [Thursday 09 December 2010] [12:07:25] <mikko>	yes
+| [Thursday 09 December 2010] [12:07:54] <mikko>	is it expected that memory usage never goes down?
+| [Thursday 09 December 2010] [12:08:31] <sustrik>	well, if receiver is slower than publisher it can happen
+| [Thursday 09 December 2010] [12:08:54] <mikko>	but even if i stop publisher and start consuming
+| [Thursday 09 December 2010] [12:09:03] <mikko>	it seems that usage does not go down
+| [Thursday 09 December 2010] [12:12:27] <sustrik>	that looks like a leak
+| [Thursday 09 December 2010] [12:12:51] <sustrik>	can you report the problem along with the test program?
+| [Thursday 09 December 2010] [12:13:04] <mikko>	does this make sense:
+| [Thursday 09 December 2010] [12:13:20] <mikko>	i generate 10k messages, then turn consumer on/off/on/off
+| [Thursday 09 December 2010] [12:13:25] <mikko>	until no more messages flow through
+| [Thursday 09 December 2010] [12:13:34] <mikko>	kinda simulating flaky network
+| [Thursday 09 December 2010] [12:13:48] <mikko>	and at the end it seems that not all messages get freed
+| [Thursday 09 December 2010] [12:13:54] <mikko>	but there is no more coming from pipe
+| [Thursday 09 December 2010] [12:14:38] <sustrik>	how do you know they weren't freed?
+| [Thursday 09 December 2010] [12:15:55] <mikko>	valgrind show them in "still reachable" memory
+| [Thursday 09 December 2010] [12:18:10] <mikko>	it might be something in my app as well
+| [Thursday 09 December 2010] [12:18:28] <mikko>	i will investigate further and open a ticket if it's somewhat reproducible
+| [Thursday 09 December 2010] [12:36:51] <sustrik>	mikko: how did you shut down the device?
+| [Thursday 09 December 2010] [12:37:06] <mikko>	sustrik: ctrl + c
+| [Thursday 09 December 2010] [12:37:17] <sustrik>	let me check the code...
+| [Thursday 09 December 2010] [12:37:27] <sustrik>	master?
+| [Thursday 09 December 2010] [12:37:35] <mikko>	yes
+| [Thursday 09 December 2010] [12:37:41] <mikko>	it could very well be my test code
+| [Thursday 09 December 2010] [12:38:11] <mikko>	i need a statistics collection over http
+| [Thursday 09 December 2010] [12:38:25] <mikko>	so im writing a small webserver that distributes the messages to backend nodes for processing
+| [Thursday 09 December 2010] [12:43:20] <sustrik>	mikko: aha
+| [Thursday 09 December 2010] [12:43:30] <sustrik>	the devices are not shutting down decently
+| [Thursday 09 December 2010] [12:43:32] <sustrik>	if (errno == ETERM)
+| [Thursday 09 December 2010] [12:43:32] <sustrik>	                        return -1;
+| [Thursday 09 December 2010] [12:43:51] <sustrik>	what they should do, i guess
+| [Thursday 09 December 2010] [12:44:05] <sustrik>	is to set LINGER to 0
+| [Thursday 09 December 2010] [12:44:12] <sustrik>	and terminate via zmq_term()
+| [Thursday 09 December 2010] [13:51:25] <delaney>	are there any examples of the proper use of socket.RecvAll() for C#?
+| [Thursday 09 December 2010] [13:54:20] <sustrik>	delaney: i don't think there are much examples for clrzmq2, try asking on the mailing list
+| [Thursday 09 December 2010] [13:54:49] <delaney>	k
+| [Thursday 09 December 2010] [15:26:06] <sustrik_>	mikko: hm, i was wrong
+| [Thursday 09 December 2010] [15:27:14] <sustrik_>	Ctrl+C actually kills the program, thus not freeing the allocated memory 
+| [Thursday 09 December 2010] [15:27:29] <sustrik_>	so valgrind would naturally report leaks
+| [Thursday 09 December 2010] [15:27:58] <sustrik_>	alternative would be to install SIGINT handler and try to clean-up before exiting
+| [Thursday 09 December 2010] [15:45:10] <CIA-20>	zeromq2: 03Bob Beaty 07master * rfcfad56 10/ (6 files in 3 dirs): (log message trimmed)
+| [Thursday 09 December 2010] [15:45:10] <CIA-20>	zeromq2: Added Recovery Interval in Milliseconds
+| [Thursday 09 December 2010] [15:45:10] <CIA-20>	zeromq2: For very high-speed message systems, the memory used for recovery can get to
+| [Thursday 09 December 2010] [15:45:10] <CIA-20>	zeromq2: be very large. The corrent limitation on that reduction is the ZMQ_RECOVERY_IVL
+| [Thursday 09 December 2010] [15:45:10] <CIA-20>	zeromq2: of 1 sec. I added in an additional option ZMQ_RECOVERY_IVL_MSEC, which is the
+| [Thursday 09 December 2010] [15:45:11] <CIA-20>	zeromq2: Recovery Interval in milliseconds. If used, this will override the previous
+| [Thursday 09 December 2010] [15:45:11] <CIA-20>	zeromq2: one, and allow you to set a sub-second recovery interval. If not set, the
+| [Thursday 09 December 2010] [15:45:12] <CIA-20>	zeromq2: 03Martin Sustrik 07master * ra9d969a 10/ AUTHORS : 
+| [Thursday 09 December 2010] [15:45:13] <CIA-20>	zeromq2: Bob Beaty added to the AUTHORS file
+| [Thursday 09 December 2010] [15:45:13] <CIA-20>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/hqM7T8
+| [Thursday 09 December 2010] [16:41:14] <mikko>	sustrik_: the thing i was seeing is that the memory just 'sits' there
+| [Thursday 09 December 2010] [16:41:24] <mikko>	and doesn't go down during when the program runs
+| [Thursday 09 December 2010] [16:46:02] <sustrik_>	that's the OS problem AFAIK
+| [Thursday 09 December 2010] [16:46:24] <sustrik_>	OS doesn't return deallocated memory back to the shared pool
+| [Thursday 09 December 2010] [16:46:36] <sustrik_>	rather the memory is kept by the running process
+| [Thursday 09 December 2010] [16:47:19] <sustrik_>	Solaris claims that it's able to reuse the memory, but my tests haven't confirmed it
+| [Thursday 09 December 2010] [16:49:29] <mikko>	i shouldn't see that memory in still reachable in valgrind though
+| [Thursday 09 December 2010] [16:49:51] <sustrik_>	right, that's interesting
+| [Thursday 09 December 2010] [16:49:58] <mikko>	but it might've been an application as i don't seem to be able to reproduce after a couple of hours of refactoring
+| [Thursday 09 December 2010] [16:50:29] <sustrik_>	yes, this kind of problems is pretty hard to track down
+| [Thursday 09 December 2010] [16:52:02] <sustrik_>	if you are able to reproduce in the future we can give it a try though
+| [Thursday 09 December 2010] [16:54:29] <mikko>	cool
+| [Thursday 09 December 2010] [16:54:36] <mikko>	the tool feels pretty stable now
+| [Thursday 09 December 2010] [16:54:59] <mikko>	can push a bit over 3k http requests per second on my virtual machine which seems more than enough
+| [Thursday 09 December 2010] [17:02:51] <sustrik_>	:)
+| [Friday 10 December 2010] [00:55:58] <samBiotic>	could someone please help me get my ruby bindings working on osx.
+| [Friday 10 December 2010] [00:56:17] <andrewvc>	samBiotic
+| [Friday 10 December 2010] [00:56:23] <andrewvc>	what's going on on OSX?
+| [Friday 10 December 2010] [00:56:25] <samBiotic>	zeromq has been installed with homebrew
+| [Friday 10 December 2010] [00:56:33] <samBiotic>	brew install zeromq
+| [Friday 10 December 2010] [00:56:33] <andrewvc>	also, which lib, ffi-rzmq or rbzmq
+| [Friday 10 December 2010] [00:57:24] <andrewvc>	hmm, but which ruby binding
+| [Friday 10 December 2010] [00:57:31] <andrewvc>	have you installed either of the zeromq gems yet?
+| [Friday 10 December 2010] [00:57:36] <samBiotic>	yes
+| [Friday 10 December 2010] [00:57:53] <andrewvc>	which one?
+| [Friday 10 December 2010] [00:58:08] <samBiotic>	gem install zmq -- --with-zmq-dir=/usr/local
+| [Friday 10 December 2010] [00:58:39] <andrewvc>	hmmm, I installed zmq for the tarball, and gem install zmq worked fine
+| [Friday 10 December 2010] [00:58:42] <andrewvc>	*from
+| [Friday 10 December 2010] [00:58:48] <andrewvc>	no idea about homebrew though
+| [Friday 10 December 2010] [00:58:52] <samBiotic>	checking for zmq_init() in -lzmq... no
+| [Friday 10 December 2010] [00:58:57] <andrewvc>	you could just try using the zmq tarball
+| [Friday 10 December 2010] [00:59:16] <samBiotic>	hmm yes i could
+| [Friday 10 December 2010] [00:59:17] <andrewvc>	I've never installed it through brew myself
+| [Friday 10 December 2010] [00:59:24] <samBiotic>	ok will try now
+| [Friday 10 December 2010] [00:59:37] <andrewvc>	cool, I know more about the search paths for ffi-rzmq
+| [Friday 10 December 2010] [00:59:51] <andrewvc>	you might want to consider using ffi-rzmq btw
+| [Friday 10 December 2010] [00:59:55] <samBiotic>	ok
+| [Friday 10 December 2010] [01:00:18] <andrewvc>	unless you have a specific need for the slight speed boost of rbzmq (just my $0.02)
+| [Friday 10 December 2010] [01:00:24] <samBiotic>	my aim is to build an open sound control multicaster eventually
+| [Friday 10 December 2010] [01:00:59] <andrewvc>	cool project
+| [Friday 10 December 2010] [01:01:45] <samBiotic>	i have forward scheduling of packets working but time to live reductions would be preferable
+| [Friday 10 December 2010] [01:02:16] <Steve-o>	samBiotic: is that like the BBCs project?
+| [Friday 10 December 2010] [01:02:29] <samBiotic>	what would that be?
+| [Friday 10 December 2010] [01:03:00] <andrewvc>	samBiotic, with that kind of time constraint, wouldn't ruby's GC cause issues?
+| [Friday 10 December 2010] [01:03:10] <Steve-o>	they have a music collaboration tool
+| [Friday 10 December 2010] [01:03:10] <andrewvc>	at least MRI
+| [Friday 10 December 2010] [01:04:03] <samBiotic>	andrewvc: possibly, using this http://opensoundcontrol.org/implementation/ruby-osc-implementation
+| [Friday 10 December 2010] [01:04:10] <Steve-o>	built upon Kamaelia http://www.bbc.co.uk/opensource/projects/kamaelia/
+| [Friday 10 December 2010] [01:04:45] <samBiotic>	Steve-o: looks interesting
+| [Friday 10 December 2010] [01:05:00] <andrewvc>	if you have GC issues btw, jRuby might be the way to go.
+| [Friday 10 December 2010] [01:05:16] <andrewvc>	plus, you'll get real multithreading if you need it
+| [Friday 10 December 2010] [01:06:36] <andrewvc>	the Kamaelia site seems abandoned
+| [Friday 10 December 2010] [01:07:09] <Steve-o>	try here, http://www.kamaelia.org/Home.html
+| [Friday 10 December 2010] [01:07:30] <Steve-o>	broken default page
+| [Friday 10 December 2010] [01:07:40] <andrewvc>	oh, there we go
+| [Friday 10 December 2010] [01:09:44] <Steve-o>	kamaelia jam from a gsoc 2008 project, http://www.bbc.co.uk/blogs/bbcinternet/2008/05/google_summer_of_code.html
+| [Friday 10 December 2010] [01:09:55] <samBiotic>	basically, i aim to eliminate network jitter at a slight expense of increased but static delay by forward syncronising timetagged packets
+| [Friday 10 December 2010] [01:10:38] <Steve-o>	more like pulseaudio then?
+| [Friday 10 December 2010] [01:11:27] <samBiotic>	control data only
+| [Friday 10 December 2010] [01:15:15] <Steve-o>	ok, similar to the pro light control system, what ever that is called
+| [Friday 10 December 2010] [01:15:42] <Steve-o>	DMX?
+| [Friday 10 December 2010] [01:18:14] <samBiotic>	yeah kind of, it's just a network procotol developed by MIT. http://opensoundcontrol.org/introduction-osc
+| [Friday 10 December 2010] [01:18:59] <samBiotic>	sorry CNMAT
+| [Friday 10 December 2010] [01:19:53] <andrewvc>	samBiotic what's zeromq bring to the table that the OSC protocol doesn't?
+| [Friday 10 December 2010] [01:20:03] <andrewvc>	I'm not familiar with OSC at all
+| [Friday 10 December 2010] [01:20:31] <Steve-o>	I'm guesing OSC over 0MQ
+| [Friday 10 December 2010] [01:20:40] <samBiotic>	thats what i was going to test
+| [Friday 10 December 2010] [01:20:50] <Steve-o>	whilst DMX is commercially licensed
+| [Friday 10 December 2010] [01:26:07] <andrewvc>	btw, did you ever get it up and running on OSX steve?
+| [Friday 10 December 2010] [01:26:11] <andrewvc>	errr Sam
+| [Friday 10 December 2010] [01:27:47] <samBiotic>	still at it
+| [Friday 10 December 2010] [01:27:50] <andrewvc>	I should mention, if you use zerocopy the ffi binding can beat out the speed of the C binding. Not sure if you need to actually open the msgs as they go through
+| [Friday 10 December 2010] [01:28:19] <samBiotic>	trying gem install ffi-rzmq now
+| [Friday 10 December 2010] [01:28:42] <andrewvc>	btw, some versions of the ffi gem don't play well with ffi-rzmq
+| [Friday 10 December 2010] [01:29:07] <samBiotic>	seems to have work with my zeromq homebrew install
+| [Friday 10 December 2010] [01:29:12] <andrewvc>	nice
+| [Friday 10 December 2010] [01:29:16] <andrewvc>	I think the most recent one is fine, but if you have weird hanging issues  related to threads, try building it from the ffi github repo
+| [Friday 10 December 2010] [01:29:16] <samBiotic>	worked*
+| [Friday 10 December 2010] [01:30:22] <andrewvc>	cool
+| [Friday 10 December 2010] [02:00:08] <samBiotic>	andrewvc and Steve-o thanks for the help
+| [Friday 10 December 2010] [02:00:18] <samBiotic>	bye for now
