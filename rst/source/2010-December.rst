@@ -1646,3 +1646,110 @@
 | [Friday 10 December 2010] [09:41:34] <Steve-o>	I need to run through all the tests then I can ship a 5.0.93 and the first 5.1 release
 | [Friday 10 December 2010] [09:43:59] <Steve-o>	Sun ONE is odd as ever, it wants __asm__ only in C++ ANSI strict
 | [Friday 10 December 2010] [09:44:11] <Steve-o>	every other combination is fine with __asm
+| [Friday 10 December 2010] [10:29:37] <mikko>	sustrik_: how does HWM interact with ZMQ_QUEUE?
+| [Friday 10 December 2010] [10:32:39] <sustrik_>	mikko: you have to set it by hand
+| [Friday 10 December 2010] [10:32:53] <sustrik_>	i.e.
+| [Friday 10 December 2010] [10:33:01] <sustrik_>	create socket 1, sreate socket 2
+| [Friday 10 December 2010] [10:33:08] <sustrik_>	set hwm on 1. set hwm on 2
+| [Friday 10 December 2010] [10:33:17] <sustrik_>	zmq_device (ZMQ_QUEUEU, s1, s2);
+| [Friday 10 December 2010] [10:35:31] <mikko>	ok, so in order to get messages swapped out when there is no consumer on the back socket i would just set on s2 ?
+| [Friday 10 December 2010] [10:42:00] <mikko>	Assertion failed: rc == 0 (pipe.cpp:187)
+| [Friday 10 December 2010] [10:43:07] <mikko>	swap init
+| [Friday 10 December 2010] [10:43:42] <mikko>	makes sense now
+| [Friday 10 December 2010] [10:43:52] <mikko>	so permission issues on swap file causes an assertion
+| [Friday 10 December 2010] [10:43:54] <mikko>	it looks like
+| [Friday 10 December 2010] [10:44:18] <mikko>	maybe hte swap location should be a sockopt
+| [Friday 10 December 2010] [10:44:32] <mikko>	as for example this daemon chdirs to / and drops privileges 
+| [Friday 10 December 2010] [10:44:40] <mikko>	so it makes sense that it cant write
+| [Friday 10 December 2010] [10:44:55] <sustrik_>	mikko: yes
+| [Friday 10 December 2010] [10:45:10] <sustrik_>	it's a problem
+| [Friday 10 December 2010] [10:47:25] <sustrik_>	zmq should not fail
+| [Friday 10 December 2010] [10:47:47] <sustrik_>	however, i am not sure what the solution should be
+| [Friday 10 December 2010] [10:47:54] <mikko>	in this case it would be easy to return error and set errno to eperm
+| [Friday 10 December 2010] [10:48:09] <sustrik_>	it happens on setsockopt?
+| [Friday 10 December 2010] [10:48:25] <mikko>	it happens later
+| [Friday 10 December 2010] [10:48:47] <sustrik_>	i would say it should happen during setsockopt
+| [Friday 10 December 2010] [10:49:02] <sustrik_>	the async error later on is just confusing
+| [Friday 10 December 2010] [10:49:02] <mikko>	thats impossible
+| [Friday 10 December 2010] [10:49:07] <sustrik_>	why so?
+| [Friday 10 December 2010] [10:49:15] <mikko>	you create sequential files
+| [Friday 10 December 2010] [10:49:31] <mikko>	someone might have one file present with same name which is not writable
+| [Friday 10 December 2010] [10:49:48] <mikko>	maybe the closes you can get is:
+| [Friday 10 December 2010] [10:49:56] <mikko>	a) give a sockopt for setting swap dir
+| [Friday 10 December 2010] [10:50:04] <mikko>	b) check that swap dir is writable
+| [Friday 10 December 2010] [10:50:14] <mikko>	c) leave the rest to user
+| [Friday 10 December 2010] [10:50:24] <sustrik_>	what i mean was to crate the file would be created directly when setsockopt(SWAP) is called
+| [Friday 10 December 2010] [10:50:28] <sustrik_>	rather than later on
+| [Friday 10 December 2010] [10:50:39] <sustrik_>	thus the credentials would be checked immediately
+| [Friday 10 December 2010] [10:50:59] <mikko>	yes, that would work as well
+| [Friday 10 December 2010] [10:51:19] <sustrik_>	that should be rathereasy
+| [Friday 10 December 2010] [10:51:20] <mikko>	and allow setting swap file name by sockopt
+| [Friday 10 December 2010] [10:51:35] <sustrik_>	yes, that's an option
+| [Friday 10 December 2010] [10:51:43] <mikko>	if not set default to current
+| [Friday 10 December 2010] [10:52:05] <mikko>	a lot of daemons won't have write permissions to $PWD
+| [Friday 10 December 2010] [10:52:15] <sustrik_>	right
+| [Friday 10 December 2010] [10:52:29] <sustrik_>	can you fill an issue in the bugtracker so that we don't forget about it?
+| [Friday 10 December 2010] [10:54:09] <mikko>	sustrik_: even better, i can create an issue and try to create patch tonight
+| [Friday 10 December 2010] [10:57:23] <mikko>	issue 140
+| [Friday 10 December 2010] [10:58:49] <sustrik_>	:)
+| [Saturday 11 December 2010] [06:43:41] <mikko>	sustrik: you there?
+| [Saturday 11 December 2010] [06:43:52] <sustrik>	hi
+| [Saturday 11 December 2010] [06:44:11] <mikko>	i created a small patch for the swap
+| [Saturday 11 December 2010] [06:44:33] <mikko>	now it fails when you try to set invalid swap file. the implementation doesn't feel ideal but it works
+| [Saturday 11 December 2010] [06:44:47] <sustrik>	mikko: i'll review it
+| [Saturday 11 December 2010] [06:44:53] <sustrik>	just send it to the ml
+| [Saturday 11 December 2010] [06:46:05] <mikko>	is there a portable PATH_MAX ?
+| [Saturday 11 December 2010] [06:57:26] <sustrik>	mikko: let me see
+| [Saturday 11 December 2010] [06:58:05] <sustrik>	it's POSIX
+| [Saturday 11 December 2010] [06:58:05] <sustrik>	http://www.opengroup.org/onlinepubs/009695399/basedefs/limits.h.html
+| [Saturday 11 December 2010] [07:18:51] <mikko>	http://valokuva.org/~mikko/swap.patch it's there for now. does it look sensible?
+| [Saturday 11 December 2010] [07:19:09] <mikko>	i'll mail ml later, now i need to vacuum before my better half comes back from hair dresser :)
+| [Saturday 11 December 2010] [07:31:11] <mikko>	hmm
+| [Saturday 11 December 2010] [07:31:24] <mikko>	maybe it would make more sense to move swap to options
+| [Saturday 11 December 2010] [07:31:38] <mikko>	and initialize it when user sets swap size 
+| [Saturday 11 December 2010] [07:34:21] <sustrik>	mikko: yes, that's what i had in mind originally
+| [Saturday 11 December 2010] [07:34:32] <sustrik>	there's one problem though
+| [Saturday 11 December 2010] [07:34:53] <sustrik>	on the bind side there are N connections
+| [Saturday 11 December 2010] [07:35:01] <sustrik>	the number is unspecified
+| [Saturday 11 December 2010] [07:35:09] <sustrik>	so you cannot create the files in advance
+| [Saturday 11 December 2010] [07:35:28] <sustrik>	maybe creating a single dummy file to check the permissions would do?
+| [Saturday 11 December 2010] [07:37:35] <mikko>	that should be fine
+| [Saturday 11 December 2010] [07:37:53] <mikko>	or maybe even check if the folder is writable
+| [Saturday 11 December 2010] [07:38:01] <mikko>	not sure how that works with windows acls etc
+| [Saturday 11 December 2010] [07:38:06] <sustrik>	if possible with POSIX API...
+| [Saturday 11 December 2010] [07:38:24] <sustrik>	creating a dummy seems easier imo
+| [Saturday 11 December 2010] [07:40:43] <mikko>	should the swap append sequence number to filename given?
+| [Saturday 11 December 2010] [07:41:02] <mikko>	so if i give /tmp/test.swap the actual filename would be /tmp/test.swap.1
+| [Saturday 11 December 2010] [07:41:05] <mikko>	or something
+| [Saturday 11 December 2010] [09:46:36] <mikko>	sustrik: i think swap_dir option makes more sense than swap file
+| [Sunday 12 December 2010] [05:35:43] <mathijs>	Hi all, is it possible to find out how many messages are currently buffered?
+| [Sunday 12 December 2010] [05:36:56] <mathijs>	I like the HWM and the transparent way things get handled in 0mq, but I would like to do some custom stuff when problems arise
+| [Sunday 12 December 2010] [05:38:27] <mathijs>	So if a buffer starts to fill up, or reaches HWM, I would like my program to log warnings about it, or talk to some controller process about it.
+| [Sunday 12 December 2010] [05:40:59] <mathijs>	ofcourse I can have my processes all log every received/sent message through some other socket to have a central process track overall flow, but it would be nice if there was a more low-level way
+| [Sunday 12 December 2010] [05:42:32] <sustrik>	set hwm, send in non-blocking way
+| [Sunday 12 December 2010] [05:42:47] <rgl>	mathijs, I don't think its possible right now; but from what I understood, future ZMQ version will have a way to accesses those events.
+| [Sunday 12 December 2010] [05:42:48] <sustrik>	when zmq_send returns EAGAIN, the buffer is full
+| [Sunday 12 December 2010] [05:43:04] <rgl>	oh we can? *G*
+| [Sunday 12 December 2010] [05:43:34] <mathijs>	sustrik: so set a low hwm to have the application handle it?
+| [Sunday 12 December 2010] [05:43:47] <sustrik>	if you want so
+| [Sunday 12 December 2010] [05:44:08] <sustrik>	think of the queue as a network buffer
+| [Sunday 12 December 2010] [05:44:10] <rgl>	we can also store the messages in a file, right?
+| [Sunday 12 December 2010] [05:44:31] <sustrik>	you can offload them to the disk,yes
+| [Sunday 12 December 2010] [05:46:18] <mathijs>	hmmm ok, that will work for preventing problems.   but what I would like as well is a way to shut down an application safely. I understood 0mq 2.1 will wait for all messages to be handled (empty buffers). So in case one buffer isn't empty yet, and waiting for some other process to come up, I would like to find out what socket/buffer is waiting
+| [Sunday 12 December 2010] [05:50:28] <rgl>	indeed, it would be nice to get the current state of a socket (or receive events about state changes). this is something that will be available on the future right sustrik?
+| [Sunday 12 December 2010] [07:30:26] <sustrik>	mathijs, rgl: the number of messages in 0MQ queue is an irrelevant statistic, the messages are queue along the whole path from sender to receiver, in 0MQ buffers, TCP buffers, NICs, switch and router queues etc.
+| [Sunday 12 December 2010] [07:33:43] <rgl>	sustrik, humm. sure, but they give you some hint if anything might be wrong. for example, how do we known why the messages are pilling up? it might be because a single consumer is delaying the whole seebang.
+| [Sunday 12 December 2010] [07:34:38] <rgl>	or for some reason we stopped to be able to connect the socket that once was working fine.
+| [Sunday 12 December 2010] [07:34:42] <sustrik>	that's why slow consumers are disconnected in pub/sub pattern
+| [Sunday 12 December 2010] [07:35:05] <rgl>	indeed, but currently, how do you known it was disconnected?
+| [Sunday 12 December 2010] [07:35:17] <sustrik>	yes, "cannot reconnect" problem should be logged
+| [Sunday 12 December 2010] [07:35:34] <sustrik>	because it may be a signal to admins that something went wrong
+| [Sunday 12 December 2010] [07:35:39] <sustrik>	and manual intervntion is needed
+| [Sunday 12 December 2010] [07:36:12] <rgl>	indeed, thats something that we should be able to log, and to monitor, so we can act uppon it.
+| [Sunday 12 December 2010] [07:36:27] <sustrik>	there's a logging mechanism in 0MQ, but at the moment nobody logs anything
+| [Sunday 12 December 2010] [07:36:29] <sustrik>	TODO
+| [Sunday 12 December 2010] [07:38:12] <rgl>	I might be wrong, but I though there were some messages on the ML about funneling that into some in-queue that could be consumed as a regular socket.
+| [Sunday 12 December 2010] [10:02:43] <mikko>	sustrik: Assertion failed: stored (pipe.cpp:238)
+| [Sunday 12 December 2010] [10:02:54] <mikko>	what should be the behavior when swap fills up?
+| [Sunday 12 December 2010] [10:03:14] <mikko>	happens in zmq::writer_t::write pipe.cpp
+| [Sunday 12 December 2010] [10:06:17] <mikko>	actually it should probably return false in bool zmq::writer_t::write (zmq_msg_t *msg_)
