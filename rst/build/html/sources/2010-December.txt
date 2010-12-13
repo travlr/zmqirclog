@@ -1753,3 +1753,187 @@
 | [Sunday 12 December 2010] [10:02:54] <mikko>	what should be the behavior when swap fills up?
 | [Sunday 12 December 2010] [10:03:14] <mikko>	happens in zmq::writer_t::write pipe.cpp
 | [Sunday 12 December 2010] [10:06:17] <mikko>	actually it should probably return false in bool zmq::writer_t::write (zmq_msg_t *msg_)
+| [Sunday 12 December 2010] [10:34:05] <benoitc>	hi all
+| [Sunday 12 December 2010] [10:34:47] <benoitc>	can we fork processes and share a zeromq "socket" between children ?
+| [Sunday 12 December 2010] [10:34:54] <benoitc>	with pyzmq
+| [Sunday 12 December 2010] [10:49:01] <cremes>	benoitc: i doubt that is supported; it's not a good idea at all
+| [Sunday 12 December 2010] [10:49:35] <cremes>	if the children need to communicate with each other, open up sockets that are specific to that job
+| [Sunday 12 December 2010] [11:04:55] <benoitc>	so i need to open a zmq socket per worker on the parent process ?
+| [Sunday 12 December 2010] [11:06:12] <cremes>	benoitc: that's what i would recommend
+| [Sunday 12 December 2010] [11:06:25] <cremes>	these sockets are "cheap" so i wouldn't worry about computational cost
+| [Sunday 12 December 2010] [11:07:18] <benoitc>	hm ok
+| [Sunday 12 December 2010] [11:07:20] <benoitc>	thanks
+| [Sunday 12 December 2010] [11:07:52] <cremes>	saying "hmmm" implies you either don't agree or you don't understand why
+| [Sunday 12 December 2010] [11:07:58] <cremes>	do you still have a question?
+| [Sunday 12 December 2010] [11:08:22] <benoitc>	well it means i've to rethink my design :)
+| [Sunday 12 December 2010] [11:08:58] <benoitc>	i was thinking at first to just open a zmq like any socket and make it not blocking
+| [Sunday 12 December 2010] [11:09:04] <cremes>	not necessarily; if your design called for multiple children to all listen to the same socket then perhaps a device in the middle will solve your issue
+| [Sunday 12 December 2010] [11:09:50] <cremes>	all children can connect to the device on the same port and the device will (depending on socket type) deliver messages to the children
+| [Sunday 12 December 2010] [11:09:51] <benoitc>	well idea was to balance between workers as soon as a message is send to the socket
+| [Sunday 12 December 2010] [11:10:00] <cremes>	definitely read the guide if you haven't done so yet
+| [Sunday 12 December 2010] [11:10:12] <cremes>	so you are using req/rep sockets?
+| [Sunday 12 December 2010] [11:13:32] <cremes>	i need to run out for about 90m; feel free to post a description of what you are trying to do
+| [Sunday 12 December 2010] [11:13:39] <cremes>	i'll try to give some guidance when i return
+| [Sunday 12 December 2010] [11:14:14] <benoitc>	mm yes I should reply i took the message I guess
+| [Sunday 12 December 2010] [11:14:43] <benoitc>	in my first approach wanted to have this balancing you can do with "normal" sockets
+| [Sunday 12 December 2010] [11:14:51] <benoitc>	anyway later
+| [Sunday 12 December 2010] [11:15:41] 	 * benoitc want the sockett.accept like
+| [Sunday 12 December 2010] [11:53:37] <mikko>	benoitc: 0MQ has load-balancing built-in
+| [Sunday 12 December 2010] [11:56:29] <benoitc>	mikko: so once the message is get by one listsner in req/rep it won't be send to other listeners ?
+| [Sunday 12 December 2010] [11:56:36] <benoitc>	(just want to make sure)
+| [Sunday 12 December 2010] [11:58:24] <mikko>	benoitc: different socket types have different kind of distribution algorithms
+| [Sunday 12 December 2010] [11:58:37] <mikko>	for example in PUB/SUB the published message is sent to all subscribers
+| [Sunday 12 December 2010] [11:59:07] <mikko>	but for example PUSH/PULL balances between live connections
+| [Sunday 12 December 2010] [11:59:14] <mikko>	you should really read zguide
+| [Sunday 12 December 2010] [13:00:52] <cremes>	benoitc: mikko is right; most of this is covered in the guide:  http://zguide.zeromq.org/chapter:all
+| [Sunday 12 December 2010] [13:01:02] <cremes>	for some reason, that link is returning a 503 right now
+| [Sunday 12 December 2010] [13:01:20] <cremes>	sustrik, pieterh: the guide is offline
+| [Sunday 12 December 2010] [13:01:30] <cremes>	it's returning a 503 error
+| [Sunday 12 December 2010] [13:26:35] <mikko>	cremes: works from here
+| [Sunday 12 December 2010] [13:27:07] <cremes>	mikko: it's responding now for me too but it wasn't before
+| [Sunday 12 December 2010] [14:18:38] <benoitc>	yeah reading it 
+| [Sunday 12 December 2010] [14:18:41] <benoitc>	thanks
+| [Sunday 12 December 2010] [15:14:53] <sustrik>	mikko: what version is that?
+| [Sunday 12 December 2010] [15:15:19] <sustrik>	what it should do is behave the same way is if HWM is reached
+| [Sunday 12 December 2010] [15:15:30] <sustrik>	block, drop, whatever
+| [Sunday 12 December 2010] [15:15:37] <sustrik>	depending on the pattern
+| [Sunday 12 December 2010] [15:18:32] <mikko>	sustrik: trunk, the lines won't match as i have some local changes
+| [Sunday 12 December 2010] [15:19:15] <mikko>	sustrik: yes, probably
+| [Sunday 12 December 2010] [15:19:16] <sustrik>	i see, so which assertion was actually hit?
+| [Sunday 12 December 2010] [15:19:28] <mikko>	sustrik: writer_t::write
+| [Sunday 12 December 2010] [15:19:35] <mikko>	when swap is full 
+| [Sunday 12 December 2010] [15:19:40] <mikko>	let me check the upstread lineno
+| [Sunday 12 December 2010] [15:19:43] <sustrik>	zmq_assert (stored); ?
+| [Sunday 12 December 2010] [15:20:20] <mikko>	https://github.com/zeromq/zeromq2/blob/master/src/pipe.cpp#L237
+| [Sunday 12 December 2010] [15:20:22] <mikko>	yes
+| [Sunday 12 December 2010] [15:20:53] <sustrik>	looks like a bug
+| [Sunday 12 December 2010] [15:20:57] <mathijs>	I read some discussion about socket migrations and memory barriers. I never heard of those before, so I probably shouldn't touch stuff...  but I think I have a possible usecase. GHC (haskell) uses a IO manager which manages a pool of OS threads. On top of those, it runs "green threads". A green thread can signal it's waiting for some FD. execution stops. When the fd is ready (epoll), execution resumes. But it's possible that it's mapped to a
+| [Sunday 12 December 2010] [15:20:57] <mathijs>	 different OS thread
+| [Sunday 12 December 2010] [15:21:10] <sustrik>	afaiu the saving of messages to the swap is not atomic
+| [Sunday 12 December 2010] [15:21:37] <sustrik>	i.e. you can store one message part and next one is rejected
+| [Sunday 12 December 2010] [15:21:44] <sustrik>	should be fixed
+| [Sunday 12 December 2010] [15:22:40] <mathijs>	is the case I describe a valid one for using socket migrations? 
+| [Sunday 12 December 2010] [15:24:47] <sustrik>	yes, that was the main use case for the "migration" feature
+| [Sunday 12 December 2010] [15:25:14] <sustrik>	you can assume that the memory barriers are handled correctly by haskell runtime
+| [Sunday 12 December 2010] [15:25:23] <mathijs>	I can signal the IO manager that a certain green thread gets mapped to the same OS thread every time it runs/continues, but having them scheduled on the least-busy OS thread sounds better.
+| [Sunday 12 December 2010] [15:25:48] <sustrik>	yes, it should work
+| [Sunday 12 December 2010] [15:25:58] <mathijs>	sustrik: thanks
+| [Sunday 12 December 2010] [16:08:57] <mikko>	sustrik: so, i'm thinking about the whole swap thing
+| [Sunday 12 December 2010] [16:09:20] <mikko>	what do you think about abstracting the swap slightly further?
+| [Sunday 12 December 2010] [16:09:46] <mikko>	maybe something like: make the swap implementation pluggable and use inproc pipe to communicate with the swap engine
+| [Sunday 12 December 2010] [16:24:25] <sustrik>	mikko: that way you would introduce a bottleneck
+| [Sunday 12 December 2010] [16:25:05] <mikko>	but swap is going to be a bottleneck in any case
+| [Sunday 12 December 2010] [16:25:05] <sustrik>	you can always make a device that would store messages on the disk if you want to
+| [Sunday 12 December 2010] [16:25:43] <mikko>	the whole concept of swapping is more preserving operation rather than performance
+| [Sunday 12 December 2010] [16:26:17] <sustrik>	the point is that you want the swap as fast as possible exactly because it is slow
+| [Sunday 12 December 2010] [16:26:25] <sustrik>	so, for example
+| [Sunday 12 December 2010] [16:26:38] <sustrik>	if your apps falls over into swap mode
+| [Sunday 12 December 2010] [16:27:00] <sustrik>	you want it to get out of it as fast as possible once the network is up and running again
+| [Sunday 12 December 2010] [16:29:04] <sustrik>	if you make it slow it may even happen that it will never get out of the swap mode
+| [Sunday 12 December 2010] [16:29:14] <sustrik>	it's kind of tricky
+| [Sunday 12 December 2010] [16:29:26] <mikko>	how much overhead does forwarding a message over inproc pipe add?
+| [Sunday 12 December 2010] [16:29:48] <sustrik>	dunno
+| [Sunday 12 December 2010] [16:29:52] <sustrik>	should be measured
+| [Sunday 12 December 2010] [16:30:56] <sustrik>	maybe it would make no difference at all
+| [Sunday 12 December 2010] [16:31:59] <mikko>	if there is little or no overhead it would allow people to implement optimised swap solutions
+| [Sunday 12 December 2010] [16:32:07] <sustrik>	sure
+| [Sunday 12 December 2010] [16:32:34] <mikko>	i noticed that there is the posix_fadvise for linux 
+| [Sunday 12 December 2010] [16:32:39] <sustrik>	yes
+| [Sunday 12 December 2010] [16:32:46] <mikko>	but there are probably available optimizations for other platforms as well
+| [Sunday 12 December 2010] [16:33:16] <mikko>	my point with this was: swap is really something that doesn't necessarily need to be in 0MQ core
+| [Sunday 12 December 2010] [16:33:24] <sustrik>	ack
+| [Sunday 12 December 2010] [16:33:33] <mikko>	if the implementation was pluggable it would allow people to make their own and share them
+| [Sunday 12 December 2010] [16:33:41] <mikko>	not sure, it's tricky
+| [Sunday 12 December 2010] [16:33:48] <sustrik>	it was added as a feature paid for by a customer
+| [Sunday 12 December 2010] [16:34:26] <sustrik>	so it's kind of a hack atm
+| [Sunday 12 December 2010] [16:35:20] <mikko>	void zmq::swap_t::rollback ()
+| [Sunday 12 December 2010] [16:35:24] <mikko>	is that used ?
+| [Sunday 12 December 2010] [16:35:25] <sustrik>	let me think about it...
+| [Sunday 12 December 2010] [16:35:37] <mikko>	as it seems that it ends up into assertion in any possible path
+| [Sunday 12 December 2010] [16:35:38] <sustrik>	mikko: it should be afaics
+| [Sunday 12 December 2010] [16:35:59] <mikko>	well, possibly ends up
+| [Sunday 12 December 2010] [16:36:04] <sustrik>	hm, quite possibly i've broken the implementation when i did all the changes for 2.1
+| [Sunday 12 December 2010] [16:37:15] <sustrik>	well, it would be nice is swapping was implemented as a device
+| [Sunday 12 December 2010] [16:37:30] <sustrik>	so you would just plug it in-between two nodes to get swap
+| [Sunday 12 December 2010] [16:38:02] <sustrik>	one problem is that by doing so you have to do two hops instead of a single one
+| [Sunday 12 December 2010] [16:38:17] <sustrik>	even though swap is not being used at the moment
+| [Sunday 12 December 2010] [16:38:23] <mikko>	that is true
+| [Sunday 12 December 2010] [16:38:43] <mikko>	but would you use swap if you were aiming for absolute performance?
+| [Sunday 12 December 2010] [16:38:59] <sustrik>	actually, i like the idea
+| [Sunday 12 December 2010] [16:39:28] <sustrik>	we could just say 'sorry, there's performance impact with swap'
+| [Sunday 12 December 2010] [16:39:49] <mikko>	so, if you were to generalise this a bit further
+| [Sunday 12 December 2010] [16:40:29] <mikko>	zmq_callback_device which takes function pointers for message received from front and sent out to back
+| [Sunday 12 December 2010] [16:40:43] <mikko>	then swap would implement functions for storing and removing
+| [Sunday 12 December 2010] [16:40:55] <mikko>	you could use the same pattern for implementing 'persistent' things
+| [Sunday 12 December 2010] [16:41:04] <mikko>	not sure about exact details yet
+| [Sunday 12 December 2010] [16:41:12] <sustrik>	right, it's just a device
+| [Sunday 12 December 2010] [16:41:32] <sustrik>	i would like to move devices out of core 0mq with 3.0
+| [Sunday 12 December 2010] [16:41:49] <sustrik>	swap could be removed as well at that point
+| [Sunday 12 December 2010] [16:41:55] <mikko>	i think for devices to be more useful is a way to stop them without SIGINT
+| [Sunday 12 December 2010] [16:42:01] <sustrik>	and instead we can provide a standalone swapping device
+| [Sunday 12 December 2010] [16:42:24] <sustrik>	yes, you want a remote managementy
+| [Sunday 12 December 2010] [16:42:46] <mikko>	void *device = zmq_device(...); while (1) { if (shutdown) { device_shutdown(device); } sleep(5); }
+| [Sunday 12 December 2010] [16:42:49] <mikko>	something like that
+| [Sunday 12 December 2010] [16:43:26] <sustrik>	shutdown sent as a message to the device, right?
+| [Sunday 12 December 2010] [16:43:31] <mikko>	yes, currently in my small program i run device in a thread and just use pthread_cancel to stop the device thread
+| [Sunday 12 December 2010] [16:43:33] <sustrik>	from the management console
+| [Sunday 12 December 2010] [16:43:44] <mikko>	that is a possibility yes
+| [Sunday 12 December 2010] [16:43:57] <mikko>	but does it open the device for DoS ?
+| [Sunday 12 December 2010] [16:44:07] <mikko>	or do you mean some sort of internal message?
+| [Sunday 12 December 2010] [16:44:16] <sustrik>	you need authentication etc.
+| [Sunday 12 December 2010] [16:44:30] <sustrik>	the whole device thing is where development will happen in the future imo
+| [Sunday 12 December 2010] [16:45:11] <sustrik>	actually, what i foresee is that devices will be removed from core 0mq
+| [Sunday 12 December 2010] [16:45:35] <sustrik>	there will be various open source devices
+| [Sunday 12 December 2010] [16:45:51] <sustrik>	but there can also be complex proprietary devices
+| [Sunday 12 December 2010] [16:46:05] <mikko>	we should have a hackathon on removing all these assertions at some point
+| [Sunday 12 December 2010] [16:46:14] <sustrik>	think of how cisco builds boxes for TCP/IP stack
+| [Sunday 12 December 2010] [16:46:47] <sustrik>	yes, but it has to happen with new major version
+| [Sunday 12 December 2010] [16:46:50] <sustrik>	i.e. 3.0
+| [Sunday 12 December 2010] [16:47:01] <sustrik>	as it's not backward compatible
+| [Sunday 12 December 2010] [16:49:41] <mikko>	thats true
+| [Sunday 12 December 2010] [18:36:00] Notice	-tomaw- [Global Notice] We're restarting services to fix some database issues; please remain patient as it will return soon.
+| [Monday 13 December 2010] [07:09:29] <mikko>	sustrik: hi
+| [Monday 13 December 2010] [07:13:54] <sustrik>	hi
+| [Monday 13 December 2010] [07:16:19] <mikko>	again, thinking out loud here: extending uris to allow shortcut for setting socket options
+| [Monday 13 December 2010] [07:16:46] <mikko>	tcp://127.0.0.1:5555?linger=1000&identity=mytestsocket
+| [Monday 13 December 2010] [07:17:11] <mikko>	although this could be done in the user application as well
+| [Monday 13 December 2010] [07:17:16] <sustrik>	can be useful but should be implemented as a layer on top of 0mq
+| [Monday 13 December 2010] [07:17:24] <sustrik>	exactly
+| [Monday 13 December 2010] [07:17:48] <sustrik>	the problem is that this kind of thing means wandering far away from POSIX
+| [Monday 13 December 2010] [07:17:53] <ianbarber>	maybe a standard function in zfl for creating sockets from a url like that?
+| [Monday 13 December 2010] [07:18:01] <sustrik>	for example
+| [Monday 13 December 2010] [07:18:15] <sustrik>	it's useful, so it's worth of implementing it
+| [Monday 13 December 2010] [07:24:05] <sustrik>	mikko: btw, i've added your idea about swap->device to 3.0 roadmap
+| [Monday 13 December 2010] [07:24:09] <sustrik>	http://www.zeromq.org/docs:3-0
+| [Monday 13 December 2010] [07:25:56] <mikko>	sustrik: cool
+| [Monday 13 December 2010] [07:26:14] <mikko>	i was thinking about the control channel
+| [Monday 13 December 2010] [07:26:29] <mikko>	it's not necessary to do it over a remote management
+| [Monday 13 December 2010] [07:26:49] <mikko>	as if there was a device handle (void *) like with sockets then people could build their own if that is a requirement
+| [Monday 13 December 2010] [07:26:55] <mikko>	lunch ->
+| [Monday 13 December 2010] [07:29:31] <sustrik>	i don't follow
+| [Monday 13 December 2010] [07:29:46] <sustrik>	people can build their own device even now, no?
+| [Monday 13 December 2010] [07:30:29] <mrm2m>	Hey ho!
+| [Monday 13 December 2010] [07:31:57] <ianbarber>	sustrik: i think the idea was to allow control flow outside the device, so the device runs in another thread, and the control is done through the parent process. 
+| [Monday 13 December 2010] [07:32:25] <sustrik>	hi
+| [Monday 13 December 2010] [07:32:32] <sustrik>	ianbarber: sure
+| [Monday 13 December 2010] [07:32:46] <sustrik>	what i meant was that you can do such thing even today
+| [Monday 13 December 2010] [07:32:54] <mrm2m>	Is there a one directional socket type? I've got some data I'd like to send to a server, but I'm not interested in any message if the data was received correctly or even if it was received. 
+| [Monday 13 December 2010] [07:33:03] <ianbarber>	push
+| [Monday 13 December 2010] [07:33:11] <sustrik>	mrm2m: PUB/SUB presumably
+| [Monday 13 December 2010] [07:33:22] <sustrik>	it's completely uni-directional
+| [Monday 13 December 2010] [07:33:43] <ianbarber>	sustrik: yeah, you can, but only if you create the device yourself - though I guess you could wrap a device available from elsewhere with one your own
+| [Monday 13 December 2010] [07:34:13] <mrm2m>	Ah - I thought that was for one PUB sending to several SUBs. 
+| [Monday 13 December 2010] [07:34:21] <sustrik>	yes
+| [Monday 13 December 2010] [07:34:30] <sustrik>	and what do you need instead?
+| [Monday 13 December 2010] [07:34:37] <mrm2m>	I need to send from several PUBs to one SUB.
+| [Monday 13 December 2010] [07:34:49] <sustrik>	that would work as well
+| [Monday 13 December 2010] [07:34:55] <sustrik>	ianbarber: ah, the plan is to move devices out of 0mq core anyway
+| [Monday 13 December 2010] [07:35:05] <sustrik>	and make them separate projects
+| [Monday 13 December 2010] [07:35:08] <ianbarber>	ah, ok. that makes sense
+| [Monday 13 December 2010] [07:35:16] <sustrik>	so you could have different types of devices
+| [Monday 13 December 2010] [07:35:37] <sustrik>	the one with control socket propsed above could be one available device
+| [Monday 13 December 2010] [07:35:38] <sustrik>	etc.
+| [Monday 13 December 2010] [07:35:40] <mrm2m>	sustrik: Ok. Then I'll have a look on SUB/PUB. 
+| [Monday 13 December 2010] [08:19:34] <CIA-20>	zeromq2: 03Dhammika Pathirana 07master * r22b2b9a 10/ (src/tcp_listener.cpp src/tcp_listener.hpp): 
+| [Monday 13 December 2010] [08:19:34] <CIA-20>	zeromq2: fix overwriting errno on bind failure
+| [Monday 13 December 2010] [08:19:34] <CIA-20>	zeromq2: Signed-off-by: Dhammika Pathirana <dhammika@gmail.com> - http://bit.ly/eB0FKT
