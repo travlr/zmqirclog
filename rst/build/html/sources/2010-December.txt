@@ -1937,3 +1937,175 @@
 | [Monday 13 December 2010] [08:19:34] <CIA-20>	zeromq2: 03Dhammika Pathirana 07master * r22b2b9a 10/ (src/tcp_listener.cpp src/tcp_listener.hpp): 
 | [Monday 13 December 2010] [08:19:34] <CIA-20>	zeromq2: fix overwriting errno on bind failure
 | [Monday 13 December 2010] [08:19:34] <CIA-20>	zeromq2: Signed-off-by: Dhammika Pathirana <dhammika@gmail.com> - http://bit.ly/eB0FKT
+| [Monday 13 December 2010] [09:17:54] <ianbarber>	yay, that's all the zguide examples translated into php :) committed the version one I needed mikko's patch for
+| [Monday 13 December 2010] [09:26:08] <mikko>	sustrik: pipe.cpp:56
+| [Monday 13 December 2010] [09:26:28] <mikko>	i reckon that should exit the device rather than assert
+| [Monday 13 December 2010] [09:26:45] <sustrik>	let me see
+| [Monday 13 December 2010] [09:27:07] <sustrik>	i have a comment on that line :(
+| [Monday 13 December 2010] [09:27:13] <sustrik>	can you paste the line here?
+| [Monday 13 December 2010] [09:27:28] <mikko>	errno_assert (false);
+| [Monday 13 December 2010] [09:27:37] <mikko>	after rc = zmq_poll (&items [0], 2, -1);
+| [Monday 13 December 2010] [09:27:48] <mikko>	i got a signal handler in my process that catches SIGINT
+| [Monday 13 December 2010] [09:28:00] <mikko>	it seems to however cause zmq_poll to return
+| [Monday 13 December 2010] [09:28:05] <mikko>	and causes following assertion:
+| [Monday 13 December 2010] [09:28:11] <mikko>	^CInterrupted system call
+| [Monday 13 December 2010] [09:28:11] <mikko>	false (device.cpp:56)
+| [Monday 13 December 2010] [09:28:12] <mikko>	Aborted
+| [Monday 13 December 2010] [09:28:42] <mikko>	if i don't catch sigint then the program exits immediately
+| [Monday 13 December 2010] [09:29:01] <sustrik>	device or pipe.coo?
+| [Monday 13 December 2010] [09:29:03] <sustrik>	cpp
+| [Monday 13 December 2010] [09:29:21] <mikko>	sorry, device.cpp
+| [Monday 13 December 2010] [09:29:21] <sustrik>	ah, have it
+| [Monday 13 December 2010] [09:29:52] <sustrik>	yes, it works that way
+| [Monday 13 December 2010] [09:30:03] <sustrik>	what should be presumably done
+| [Monday 13 December 2010] [09:30:16] <sustrik>	is to return EINTR from the zmq_device call
+| [Monday 13 December 2010] [09:31:33] <mikko>	yeah, would allow clean termination of parent program
+| [Monday 13 December 2010] [09:31:56] <mikko>	as running device in a thread and then doing pthread_cancel doesn't seem particulary clean either
+| [Monday 13 December 2010] [09:32:09] <mikko>	im surprised that it doesn't assert on pthread_cancel
+| [Monday 13 December 2010] [09:34:18] <sustrik>	i assume that just kills the thread at the spot
+| [Monday 13 December 2010] [09:34:26] <sustrik>	so it has no chance to assert
+| [Monday 13 December 2010] [09:37:53] <mikko>	looking at the code, i think it shouldn't assert at all
+| [Monday 13 December 2010] [09:38:00] <mikko>	as the caller can handle device exiting
+| [Monday 13 December 2010] [09:41:08] <CIA-20>	zeromq2: 03Dhammika Pathirana 07master * rf749f2d 10/ (src/socket_base.cpp src/socket_base.hpp): 
+| [Monday 13 December 2010] [09:41:08] <CIA-20>	zeromq2: add basic uri validations
+| [Monday 13 December 2010] [09:41:08] <CIA-20>	zeromq2: Signed-off-by: Dhammika Pathirana <dhammika@gmail.com> - http://bit.ly/hptlRa
+| [Monday 13 December 2010] [09:41:37] <sustrik>	mikko: good point
+| [Monday 13 December 2010] [09:43:14] <mikko>	you could even send the original errno back
+| [Monday 13 December 2010] [09:46:07] <sustrik>	yes
+| [Monday 13 December 2010] [09:59:04] <mikko>	sustrik: https://gist.github.com/cc8ca1efb295254bc634
+| [Monday 13 December 2010] [10:03:13] <sustrik>	mikko: looks good
+| [Monday 13 December 2010] [10:03:19] <sustrik>	can you send it as patch to the ml?
+| [Monday 13 December 2010] [10:20:42] <sustrik>	mikko: checking your swapdir patch
+| [Monday 13 December 2010] [10:20:51] <sustrik>	what's the point of having 3 test functions?
+| [Monday 13 December 2010] [10:20:55] <sustrik>	+        static bool test (const std::string& directory_);
+| [Monday 13 December 2010] [10:20:55] <sustrik>	+
+| [Monday 13 December 2010] [10:20:55] <sustrik>	+        static bool test (const char* directory_);
+| [Monday 13 December 2010] [10:20:55] <sustrik>	+
+| [Monday 13 December 2010] [10:20:55] <sustrik>	+        static bool test ();
+| [Monday 13 December 2010] [10:29:00] <mikko>	sustrik: overloaded for different types i guess
+| [Monday 13 December 2010] [10:29:16] <sustrik>	i mean, do you use all 3 of them?
+| [Monday 13 December 2010] [10:29:21] <mikko>	sustrik: yes
+| [Monday 13 December 2010] [10:29:32] <mikko>	what i think about now
+| [Monday 13 December 2010] [10:29:38] <mikko>	does it make sense to amend the swap now
+| [Monday 13 December 2010] [10:29:45] <mikko>	if it goes to heavy refactoring soon
+| [Monday 13 December 2010] [10:29:57] <sustrik>	well, depends on you
+| [Monday 13 December 2010] [10:30:10] <sustrik>	if you need it asap, i'll apply it
+| [Monday 13 December 2010] [10:30:59] <mikko>	i don't need asap
+| [Monday 13 December 2010] [10:31:09] <mikko>	i can work around it and document for php extension
+| [Monday 13 December 2010] [10:31:43] <mikko>	at the moment doing const char *tmp = getenv("TMPDIR"); if (!tmp) { tmp = "/tmp"; } chdir(tmp);
+| [Monday 13 December 2010] [10:31:45] <sustrik>	ok then
+| [Monday 13 December 2010] [10:32:27] <sustrik>	maybe just write a comment about it on the ml
+| [Monday 13 December 2010] [10:32:36] <sustrik>	so that people know what happened to the patch
+| [Monday 13 December 2010] [10:34:09] <mikko>	i'll write comment and send device patch today
+| [Monday 13 December 2010] [10:34:39] <sustrik>	ok
+| [Monday 13 December 2010] [12:37:13] <mikko>	sustrik: call to device is not consistent between C and C++
+| [Monday 13 December 2010] [12:37:18] <mikko>	seems to be void in C++
+| [Monday 13 December 2010] [12:37:21] <mikko>	and int in C
+| [Monday 13 December 2010] [12:37:26] <mikko>	return type that is
+| [Monday 13 December 2010] [12:39:16] <mikko>	error_t is int?
+| [Monday 13 December 2010] [12:42:14] <mikko>	no, wait. got it
+| [Monday 13 December 2010] [13:15:31] <myraft>	complete noob - quick question - where do I start? I am not sure if I even installed it correctly. Is there a zmq on linux that should be in the path?
+| [Monday 13 December 2010] [13:17:15] <myraft>	Nevermind - found some Java examples on Github - will scan and ask the questions again. 
+| [Monday 13 December 2010] [13:17:19] <myraft>	Thanks though.
+| [Monday 13 December 2010] [13:18:21] <cremes>	myraft: make sure you run ldconfig so that the zmq libs get added to your linux library paths
+| [Monday 13 December 2010] [13:19:00] <drbobbeaty>	myraft: it's probably best to read The Guide (it's that important): http://zguide.zeromq.org/chapter:all
+| [Monday 13 December 2010] [13:19:25] <drbobbeaty>	It contains a lot of good information as well as a lot of examples in all kinds of languages.
+| [Monday 13 December 2010] [13:21:11] 	 * davetoo is n00b but needs to figure out how one might do pub/sub with 0mq 
+| [Monday 13 December 2010] [13:21:21] <davetoo>	with topic exchange-like behavior :)
+| [Monday 13 December 2010] [13:23:21] <cremes>	davetoo: that's described in the guide too ;)
+| [Monday 13 December 2010] [13:27:44] <myraft>	thanks folks - just found the guide as well 
+| [Monday 13 December 2010] [14:13:32] <mikko>	sustrik: https://gist.github.com/848e949008e67ca542f7
+| [Monday 13 December 2010] [14:14:31] <sustrik>	hm, that may be the problem that dhammika fixed
+| [Monday 13 December 2010] [14:14:39] <sustrik>	i'll apply his patch tomorrow
+| [Monday 13 December 2010] [14:15:15] <mikko>	cool
+| [Monday 13 December 2010] [14:15:24] <mikko>	ianbarber stumbled on this with the php extension
+| [Monday 13 December 2010] [14:15:26] <sustrik>	it's a heisenbug, right?
+| [Monday 13 December 2010] [14:15:39] <mikko>	nope, can reproduce reliably
+| [Monday 13 December 2010] [14:15:53] <sustrik>	ah, then it may be something different
+| [Monday 13 December 2010] [14:16:05] <mikko>	if you take the .c file attached to the paste
+| [Monday 13 December 2010] [14:16:09] <mikko>	compile and and 
+| [Monday 13 December 2010] [14:16:14] <mikko>	compile and run
+| [Monday 13 December 2010] [14:16:20] <sustrik>	right
+| [Monday 13 December 2010] [14:16:22] <mikko>	it should segfault / show memory errors
+| [Monday 13 December 2010] [15:32:22] <mikko>	i to the b
+| [Monday 13 December 2010] [15:33:26] <ianbarber>	m to the k
+| [Monday 13 December 2010] [15:40:58] <myraft>	when trying to run java program I get "UnsatisfiedLinkError: no jzmq in java.library.path" - I have done ldconfig -p |grep zmq and see they so are a loaded. I have tried recompiling the code. Any ideas ?
+| [Monday 13 December 2010] [15:51:15] <mikko>	myraft: it seems to be complaining about jzmq
+| [Monday 13 December 2010] [15:51:19] <mikko>	rather than zmq itself
+| [Monday 13 December 2010] [15:52:09] <myraft>	ok
+| [Monday 13 December 2010] [15:52:31] <myraft>	but not sure how to proceed - followed the instructions - 
+| [Monday 13 December 2010] [15:53:20] <myraft>	nathanmarz - if I do ldconfig -p|grep for zmq I see libzmq.so along with ligjzmq.so  - 
+| [Monday 13 December 2010] [15:53:42] <myraft>	I meant to direct that at mikko - 
+| [Monday 13 December 2010] [15:54:05] <mikko>	myraft: is the directory where libjzmq.so is in java.library.path ?
+| [Monday 13 December 2010] [15:55:07] <myraft>	mikko : libjzmq.so is in /usr/local/lib - "sheepishly" - not sure if it is java.library.path, how do I set it ?
+| [Monday 13 December 2010] [15:56:36] <mikko>	myraft: i've no idea tbh, i don't use java myself
+| [Monday 13 December 2010] [15:56:43] <mikko>	myraft: what version of zeromq are you using?
+| [Monday 13 December 2010] [15:58:05] <myraft>	mikko: 2.0.10
+| [Monday 13 December 2010] [15:58:28] <mikko>	myraft: can you test with current github trunk?
+| [Monday 13 December 2010] [15:58:29] <mikko>	just in case
+| [Monday 13 December 2010] [15:58:38] <mikko>	git clone https://github.com/zeromq/zeromq2.git
+| [Monday 13 December 2010] [15:58:51] <mikko>	cd zeromq2 && ./autogen.sh && ./configure && make install
+| [Monday 13 December 2010] [16:00:38] <myraft>	mikko: will do and postback  - thanks 
+| [Monday 13 December 2010] [16:04:03] <myraft>	mikko - did that and see libzmq.so.1 created in /usr/local/bin - running the Java program still gives the same error. 
+| [Monday 13 December 2010] [16:04:43] <myraft>	I did go thru installation instructions - and was confused about setting java.library.path - I did CLASSPATH instead in the .bashrc 
+| [Monday 13 December 2010] [16:08:36] <myraft>	I wonder if I need to restart the system - since there is libconf daemon - and that will not see the changes. 
+| [Monday 13 December 2010] [16:08:59] <myraft>	Anyways - thanks for the attempt - let me know if you have any more ideas.
+| [Monday 13 December 2010] [16:14:08] <myraft>	I will leaving the workstation for a little bit and will be online later.
+| [Monday 13 December 2010] [16:19:13] <mikko>	i dont think that makes a different
+| [Monday 13 December 2010] [16:19:18] <mikko>	difference*
+| [Monday 13 December 2010] [16:19:24] <mikko>	i can give it a go later
+| [Monday 13 December 2010] [16:35:08] <mikko>	sustrik: still there?
+| [Tuesday 14 December 2010] [00:07:52] <gandhijee>	hey, installed zmq on my system, and for my cross compiler, now my c++ programs won't compile unless i link in zmq, any ideas?
+| [Tuesday 14 December 2010] [00:21:48] <EricL>	I am debating using 0mq as a possible 'logserver'. Basically just listen for messages and write them to a file (but these messages are JSON and will be coming at a very high rate of speed).  Is there a good use-case?
+| [Tuesday 14 December 2010] [04:08:37] <mikko>	good morning
+| [Tuesday 14 December 2010] [04:09:04] <Steve-o>	good afternoon
+| [Tuesday 14 December 2010] [04:09:35] <Steve-o>	:P
+| [Tuesday 14 December 2010] [04:12:30] <Steve-o>	quiet morning, nothing but net splits
+| [Tuesday 14 December 2010] [04:13:44] <mikko>	indeed
+| [Tuesday 14 December 2010] [04:13:49] <mikko>	europe is just waking up
+| [Tuesday 14 December 2010] [04:14:41] <Steve-o>	I released OpenPGM 5.0.93 and 5.1.99, hopefully the latter is more friendly towards Solaris/x86
+| [Tuesday 14 December 2010] [04:15:50] <Steve-o>	builds in ICC and Sun ONE strict mode, along with OSX and Cygwin too
+| [Tuesday 14 December 2010] [04:16:48] <Steve-o>	I keep on messing up byte order macros on Solaris, the builds definitely work on Sparc
+| [Tuesday 14 December 2010] [04:18:54] <mikko>	nice!
+| [Tuesday 14 December 2010] [04:19:17] <Steve-o>	OSX is tedious as the libc is really old
+| [Tuesday 14 December 2010] [04:19:39] <mikko>	i'll fix zeromq --with-pgm to build properly on solaris x86 at some point
+| [Tuesday 14 December 2010] [04:19:47] <mikko>	haven't got access to sparc yet
+| [Tuesday 14 December 2010] [04:20:06] <Steve-o>	remember there are 3 compilers on sparc to test
+| [Tuesday 14 December 2010] [04:20:17] <Steve-o>	Sun ONE, Sun GCC, and GCC
+| [Tuesday 14 December 2010] [04:20:28] <Steve-o>	all each with their own quirks
+| [Tuesday 14 December 2010] [04:20:40] <mikko>	i can test all those on x86
+| [Tuesday 14 December 2010] [04:21:13] <mikko>	hmm, currently the win7 builds using visual studio 2008
+| [Tuesday 14 December 2010] [04:21:22] <mikko>	might upgrade to 2010 at some point
+| [Tuesday 14 December 2010] [04:22:11] <Steve-o>	PGM should work in 2008, it is just that I found some really annoying bugs in the CRT socket libraries
+| [Tuesday 14 December 2010] [04:22:35] <mikko>	that's not surprising
+| [Tuesday 14 December 2010] [04:23:14] <Steve-o>	haven't tried mingw32 on Windows, only cross compiles
+| [Tuesday 14 December 2010] [04:23:27] <Steve-o>	Scons on Cygwin is pretty terrible, although I think it's Python at fault
+| [Tuesday 14 December 2010] [04:23:40] <mikko>	i could add mingw32 on windows to daily builds 
+| [Tuesday 14 December 2010] [04:23:55] <mikko>	and possibly a BSD box
+| [Tuesday 14 December 2010] [04:24:14] <Steve-o>	FreeBSD is nice to catch portability bugs
+| [Tuesday 14 December 2010] [04:24:27] <Steve-o>	but the IP header quirk is annoying
+| [Tuesday 14 December 2010] [04:24:48] <mikko>	should i go for OpenBSD might be even a bit more exotic
+| [Tuesday 14 December 2010] [04:25:15] <mikko>	FreeBSD is a bit more user-friendly though
+| [Tuesday 14 December 2010] [04:25:19] <Steve-o>	good luck, I've only used OpenBSD on Sparc
+| [Tuesday 14 December 2010] [04:25:43] <mikko>	OpenBSD doesn't use GCC iirc
+| [Tuesday 14 December 2010] [04:25:46] <Steve-o>	can be annoying to install, especially since getting the install is inconvenient
+| [Tuesday 14 December 2010] [04:25:54] <Steve-o>	GCC 2.95 I believe
+| [Tuesday 14 December 2010] [04:25:56] <mikko>	Portable C Compiler
+| [Tuesday 14 December 2010] [04:26:09] <mikko>	ermm
+| [Tuesday 14 December 2010] [04:27:30] <Steve-o>	maybe the change was recent
+| [Tuesday 14 December 2010] [04:27:42] <mikko>	added to openbsd source tree 2007
+| [Tuesday 14 December 2010] [04:27:49] <mikko>	was able to compile x86 kernel image 2009
+| [Tuesday 14 December 2010] [04:27:56] <mikko>	according to wikipedia
+| [Tuesday 14 December 2010] [04:28:13] <mikko>	but probably not the 'default' compiler yet
+| [Tuesday 14 December 2010] [04:28:33] <Steve-o>	ok
+| [Tuesday 14 December 2010] [04:28:42] <Steve-o>	tea time, catch you laters
+| [Tuesday 14 December 2010] [04:29:11] <Steve-o>	I thnk Theo wants compiler that isn't GCC 3
+| [Tuesday 14 December 2010] [04:29:17] <Steve-o>	hence the search for others
+| [Tuesday 14 December 2010] [04:29:50] <mikko>	see you later
+| [Tuesday 14 December 2010] [04:42:18] <sustrik>	morning
+| [Tuesday 14 December 2010] [04:42:50] <mikko>	sustrik: did you see the patch for swap?
+| [Tuesday 14 December 2010] [04:43:47] <sustrik>	juse seen it
+| [Tuesday 14 December 2010] [04:43:58] <sustrik>	i have to do some administrative stuff
+| [Tuesday 14 December 2010] [04:44:02] <sustrik>	then i'll have a look
+| [Tuesday 14 December 2010] [04:44:26] <mikko>	col
+| [Tuesday 14 December 2010] [04:44:28] <mikko>	+o
