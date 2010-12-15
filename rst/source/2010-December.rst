@@ -2109,3 +2109,245 @@
 | [Tuesday 14 December 2010] [04:44:02] <sustrik>	then i'll have a look
 | [Tuesday 14 December 2010] [04:44:26] <mikko>	col
 | [Tuesday 14 December 2010] [04:44:28] <mikko>	+o
+| [Tuesday 14 December 2010] [06:05:51] <mikko>	sustrik: does HWM option only work if set before bind/connect? If yes should the setsockopt fail?
+| [Tuesday 14 December 2010] [06:09:45] <sustrik>	yes
+| [Tuesday 14 December 2010] [06:09:55] <sustrik>	why should it fail?
+| [Tuesday 14 December 2010] [06:10:10] <mikko>	if it has no effect
+| [Tuesday 14 December 2010] [06:11:55] <sustrik>	it has effect on all subsequent connects and binds
+| [Tuesday 14 December 2010] [06:56:55] <mikko>	hmm
+| [Tuesday 14 December 2010] [06:57:02] <mikko>	how does that work?
+| [Tuesday 14 December 2010] [06:57:10] <mikko>	i got a PUSH socket
+| [Tuesday 14 December 2010] [06:57:16] <mikko>	connect, set hwm, connect
+| [Tuesday 14 December 2010] [06:57:44] <mikko>	so that allows to do weighted load-balancing
+| [Tuesday 14 December 2010] [06:59:28] <sustrik>	then the two connections have different HWMs
+| [Tuesday 14 December 2010] [06:59:33] <sustrik>	the first is unlimited
+| [Tuesday 14 December 2010] [06:59:44] <sustrik>	the second one has the hwm you've set
+| [Tuesday 14 December 2010] [07:00:41] <mikko>	yeah, so in a scenario where second has HWM of 5 and it fills up the messages would go to first one
+| [Tuesday 14 December 2010] [07:00:53] <mikko>	which makes sense, if you for example you have slower consumer on second socket
+| [Tuesday 14 December 2010] [07:01:03] <mikko>	second connection i mean
+| [Tuesday 14 December 2010] [08:53:40] <EricL>	I am debating using 0mq as a possible 'logserver'. Basically just listen for messages and write them to a file (but these messages are JSON and will be coming at a very high rate of speed).  Is this a good use-case?
+| [Tuesday 14 December 2010] [09:02:38] <spht>	EricL: Do you have control over what is sending the log entries? If yes, perfect match (including possibilites for distributed logging), if no...uncertain
+| [Tuesday 14 December 2010] [09:03:09] <EricL>	spht: I have 100% control over what's sending the logs.  I am writing what is sending the logs.
+| [Tuesday 14 December 2010] [09:03:24] <spht>	EricL: Then it's perfect
+| [Tuesday 14 December 2010] [09:03:26] <spht>	:)
+| [Tuesday 14 December 2010] [09:04:22] <EricL>	spht: That's great news.  Problem is that I need to get it working quickly.  The client (sending piece) is in Ruby so that should be easy.  But I feel like the receiver should be in C for as much speed as possible (unless the receiver language doesn't matter).
+| [Tuesday 14 December 2010] [09:04:57] <spht>	EricL: Prototype it in Ruby (I mean, a prototype will be just a few lines) and benchmark it. won't cost you much time
+| [Tuesday 14 December 2010] [09:05:19] <spht>	EricL: Disclaimer:  I'm a 0mq-newbie ;)
+| [Tuesday 14 December 2010] [09:05:37] <EricL>	spht: Fair enough.  How long did it take you to get something up and running?
+| [Tuesday 14 December 2010] [09:06:26] <spht>	EricL:  I read the guide back to back, from there it's a matter of minutes in python (which is my weapon of choice), should be the same in ruby.  Read the guide though
+| [Tuesday 14 December 2010] [09:07:02] <EricL>	I read the beginner part already, not the other 2 parts.
+| [Tuesday 14 December 2010] [09:08:06] <spht>	I would bet that disk io will be the limiting factor not the messaging overhead...
+| [Tuesday 14 December 2010] [09:08:18] <spht>	depending on what network you have of course :)
+| [Tuesday 14 December 2010] [09:08:20] <EricL>	spht: I am thinking the same thing.
+| [Tuesday 14 December 2010] [09:08:31] <EricL>	The network is a local GigE network.
+| [Tuesday 14 December 2010] [09:12:25] <guido_g>	so split the work between multiple writers each with its own disk
+| [Tuesday 14 December 2010] [09:13:08] <EricL>	guido_g: Sounds like that's the advanced stuff I need to work out.  Right now I am fine with a single machine.  The heavy load will be a month or two down the road.
+| [Tuesday 14 December 2010] [09:13:14] <guido_g>	PUSH/PULL sockets would do the trick out of the box
+| [Tuesday 14 December 2010] [09:14:00] <guido_g>	EricL: you were worried about the speed
+| [Tuesday 14 December 2010] [09:17:13] <EricL>	guido_g: I am. That's why I am asking the questions.
+| [Tuesday 14 December 2010] [09:18:12] <brandyn>	Hey I have a pub/sub setup where the sub is too busy to read all of the pub's messages.  What is happening now is that sub seems to be buffering everything.  How do I fix that?  I am using the python wrapper (I tried release and now dev from git)
+| [Tuesday 14 December 2010] [09:19:03] <brandyn>	I have already set the HWM to 1, that didn't help.  And it is the client that seems to be buffering as it's memory usage balloons out of control
+| [Tuesday 14 December 2010] [09:19:04] <guido_g>	if the sub is to slow, make it faster
+| [Tuesday 14 December 2010] [09:19:23] <brandyn>	guido_g, not an option I'm shooting video frames at it and some devices can't handle all ofit
+| [Tuesday 14 December 2010] [09:19:34] <guido_g>	if you set HWM you'll lose messages
+| [Tuesday 14 December 2010] [09:19:41] <brandyn>	guido_g, yes that is what I want
+| [Tuesday 14 December 2010] [09:19:54] <guido_g>	brandyn: too bad
+| [Tuesday 14 December 2010] [09:19:56] <brandyn>	but I am not losing them enough clearly, the client is still buffering
+| [Tuesday 14 December 2010] [09:20:44] <brandyn>	I guess I'm in the wrong place
+| [Tuesday 14 December 2010] [09:30:03] <spht>	Uhm, 2 minute attention span is pretty short for asking questions on IRC :)
+| [Tuesday 14 December 2010] [09:34:23] <spht>	EricL: You could also make the writer a pub socket and have different loggers listening to different messages, one way to partition the writes
+| [Tuesday 14 December 2010] [09:35:57] <spht>	push socket on the other hand will give you round-robin style load balancing between different clients if you don't want to partition by message type
+| [Tuesday 14 December 2010] [09:37:39] <guido_g>	don't forget that for now, the topic is filtered at the sub side
+| [Tuesday 14 December 2010] [09:37:56] <guido_g>	so the message will be received and at least partially processed
+| [Tuesday 14 December 2010] [09:38:22] <spht>	guido_g:  true!
+| [Tuesday 14 December 2010] [09:38:46] <guido_g>	but i would go this route anyway, i'm a pub/sub fan :)
+| [Tuesday 14 December 2010] [09:40:12] <EricL>	So the clients would be the pubs and the server would sub to multiiple clients?
+| [Tuesday 14 December 2010] [09:40:51] <EricL>	I know that sounds backwards, but do I have the concept right?
+| [Tuesday 14 December 2010] [09:41:18] <spht>	EricL:  no the clients should be sub sockets of course :)
+| [Tuesday 14 December 2010] [09:41:37] <guido_g>	don't think in terms of sockets or connections
+| [Tuesday 14 December 2010] [09:41:44] <guido_g>	start to think in messages instead
+| [Tuesday 14 December 2010] [09:41:50] <EricL>	spht: The clients are the ones publishing the connections.
+| [Tuesday 14 December 2010] [09:41:52] <guido_g>	makes life much easier
+| [Tuesday 14 December 2010] [09:42:16] <guido_g>	publishing connections?
+| [Tuesday 14 December 2010] [09:43:01] <spht>	why?
+| [Tuesday 14 December 2010] [09:43:34] <guido_g>	why what?
+| [Tuesday 14 December 2010] [09:44:18] <spht>	guido_g:  why the clients should bind and not the server
+| [Tuesday 14 December 2010] [09:44:35] <guido_g>	spht: huh? where did i say that?
+| [Tuesday 14 December 2010] [09:44:43] <spht>	guido_g:  you didn't, EricL did :)
+| [Tuesday 14 December 2010] [09:44:47] <guido_g>	ahhh
+| [Tuesday 14 December 2010] [09:45:03] <spht>	or, I didn't get enough coffee and is confused as usual ;)
+| [Tuesday 14 December 2010] [09:45:20] <EricL>	spht: Maybe I should re-read the beginner stuff.  I guess I don't understand it.
+| [Tuesday 14 December 2010] [09:46:00] <guido_g>	EricL: don't overreate the socket/connection/bind stuff
+| [Tuesday 14 December 2010] [09:46:24] <EricL>	I am thinking that clients (the ones pushing the log messages) are the publishers and the server can subscribe to each client.
+| [Tuesday 14 December 2010] [09:46:33] <guido_g>	as i said, to think in terms of messages is much more important
+| [Tuesday 14 December 2010] [09:46:52] <guido_g>	client and server are way to overloaded
+| [Tuesday 14 December 2010] [09:47:08] <guido_g>	i suggest using words like sender and receiver
+| [Tuesday 14 December 2010] [09:47:29] <EricL>	guido_g: Ok.  Let me go back and do some reading.
+| [Tuesday 14 December 2010] [09:47:51] <EricL>	I have to jump into a few meetings.  I'll be back later today if I can't figure this out.
+| [Tuesday 14 December 2010] [09:48:23] <spht>	same here, bbl
+| [Tuesday 14 December 2010] [09:48:34] <guido_g>	ahhh... the joys of working in a professional environment...   ]:->
+| [Tuesday 14 December 2010] [11:38:37] <mikko>	good evening
+| [Tuesday 14 December 2010] [12:07:56] <sustrik>	mikko: i haven't had chance to review the patch :(
+| [Tuesday 14 December 2010] [12:08:03] <sustrik>	i have to leave now
+| [Tuesday 14 December 2010] [12:08:08] <sustrik>	will do tomorrow
+| [Tuesday 14 December 2010] [12:08:09] <sustrik>	sorry
+| [Tuesday 14 December 2010] [12:08:20] <mikko>	no worries
+| [Tuesday 14 December 2010] [12:08:44] <gandhijee>	hey, i installed zmq on my system, now my C++ programs won't compile unless i use -lzmq
+| [Tuesday 14 December 2010] [12:09:07] <sustrik>	you mean unrelated C++ programs?
+| [Tuesday 14 December 2010] [12:09:12] <mikko>	gandhijee: what system is that?
+| [Tuesday 14 December 2010] [12:09:42] <gandhijee>	sustrik: right, even if i don't have the zmq header in, i still need -lzmq
+| [Tuesday 14 December 2010] [12:10:00] <gandhijee>	2 systems, my gentoo laptop, plus my ARM toolchain thats installed on it
+| [Tuesday 14 December 2010] [12:10:37] <mikko>	what is the error message you get?
+| [Tuesday 14 December 2010] [12:10:56] <gandhijee>	one second
+| [Tuesday 14 December 2010] [12:12:23] <gandhijee>	hmm, actually i guess it might be the way i am invoking the compile
+| [Tuesday 14 December 2010] [12:12:34] <gandhijee>	i was calling gcc instead of g++ to compile to code
+| [Tuesday 14 December 2010] [12:13:39] <mikko>	have you got CLFAGS, LDFLAGS or similar set?
+| [Tuesday 14 December 2010] [12:20:53] <gandhijee>	no
+| [Tuesday 14 December 2010] [14:41:16] <brandyn>	I have a pub/sub setup where the sub is too busy to read all of the pub's messages.  What is happening now is that sub seems to be buffering everything.  How do I fix that?  I am using the python wrapper (I tried release and now dev from git)
+| [Tuesday 14 December 2010] [14:44:08] <cremes>	brandyn: question:  is the sub unable to keep up due to processing in python? or it can't read the messages fast enough (and you are not processing them at all)?
+| [Tuesday 14 December 2010] [14:45:19] <brandyn>	cremes, it can't keep up
+| [Tuesday 14 December 2010] [14:45:37] <brandyn>	cremes, I would like it to drop ones that it can't process, like the HWM
+| [Tuesday 14 December 2010] [14:45:45] <cremes>	brandyn: can it keep up if you drop *all* messages?
+| [Tuesday 14 December 2010] [14:45:45] <brandyn>	cremes, but it seems like there isn't an option like that
+| [Tuesday 14 December 2010] [14:45:56] <brandyn>	cremes, yes if I just keep recv'ing
+| [Tuesday 14 December 2010] [14:45:59] <cremes>	ok
+| [Tuesday 14 December 2010] [14:46:13] <brandyn>	it is from a streaming sensor
+| [Tuesday 14 December 2010] [14:46:18] <brandyn>	and some devices can't handle the data
+| [Tuesday 14 December 2010] [14:46:22] <brandyn>	and it is ok to get some of the packets
+| [Tuesday 14 December 2010] [14:46:29] <cremes>	then you're only hope is to increase the speed of your python processor; use a faster language or throw hardware at it
+| [Tuesday 14 December 2010] [14:46:39] <brandyn>	but shouldn't there be a way to leak the buffer
+| [Tuesday 14 December 2010] [14:46:45] <brandyn>	like the HWM on the PUB side
+| [Tuesday 14 December 2010] [14:46:58] <cremes>	no, you can't tell how many messages are queued; that information is not exposed
+| [Tuesday 14 December 2010] [14:47:14] <brandyn>	sure, but it knows
+| [Tuesday 14 December 2010] [14:47:23] <brandyn>	so if I said "don't queue more than X messages"
+| [Tuesday 14 December 2010] [14:47:27] <cremes>	the best you could do is process 1 out of X packets and drop the rest; that logic should be easy
+| [Tuesday 14 December 2010] [14:47:29] <brandyn>	then it should work, just like HWM does now
+| [Tuesday 14 December 2010] [14:47:47] <brandyn>	I see, so I can just close and reopen the socket?
+| [Tuesday 14 December 2010] [14:48:28] <brandyn>	that seems like a hack, if the SUB listened to the HWM, then it could just drop packets and keep the newest ones
+| [Tuesday 14 December 2010] [14:48:53] <cremes>	brandyn: no, you should not close & reopen the socket
+| [Tuesday 14 December 2010] [14:49:00] <brandyn>	how do you drop the packets then?
+| [Tuesday 14 December 2010] [14:49:15] <brandyn>	just recv really fast? or something
+| [Tuesday 14 December 2010] [14:49:17] <cremes>	i meant that your python logic should drop x-1 of x packets; e.g. don't process them, just read and toss
+| [Tuesday 14 December 2010] [14:49:24] <cremes>	yes
+| [Tuesday 14 December 2010] [14:49:26] <brandyn>	ah gotcha, ok yeah I guess that can work
+| [Tuesday 14 December 2010] [14:49:46] <brandyn>	so what I can probably do is set to to nonblocking
+| [Tuesday 14 December 2010] [14:49:49] <cremes>	if (counter MOD 10 == 0) process else drop end
+| [Tuesday 14 December 2010] [14:49:57] <brandyn>	and then keep recv'ing until I get the exception
+| [Tuesday 14 December 2010] [14:49:59] <brandyn>	and just use the last one
+| [Tuesday 14 December 2010] [14:50:06] <cremes>	non-blocking reads/writes aren't going to help you here
+| [Tuesday 14 December 2010] [14:50:22] <cremes>	a regular blocking read should be fine
+| [Tuesday 14 December 2010] [14:50:24] <brandyn>	what I mean is that I just want my app to get access to the newest message
+| [Tuesday 14 December 2010] [14:50:30] <brandyn>	so I can just read all of them
+| [Tuesday 14 December 2010] [14:50:36] <brandyn>	which will flush the buffer
+| [Tuesday 14 December 2010] [14:50:40] <brandyn>	and then use the last one
+| [Tuesday 14 December 2010] [14:51:06] <brandyn>	the nonblocking would tell me when the buffer is done
+| [Tuesday 14 December 2010] [14:51:09] <cremes>	sure, that's fine
+| [Tuesday 14 December 2010] [14:51:16] <brandyn>	cremes, you rock man, thank you
+| [Tuesday 14 December 2010] [14:51:24] <cremes>	pay it forward... :)
+| [Tuesday 14 December 2010] [14:52:03] <cremes>	brandyn: are you sure setting HWM on the publisher didn't help?
+| [Tuesday 14 December 2010] [14:52:18] <cremes>	when a pub socket hits HWM for a subscriber, it should drop messages
+| [Tuesday 14 December 2010] [14:52:28] <cremes>	try HWM = 1 if you haven't
+| [Tuesday 14 December 2010] [14:54:24] <brandyn>	yeah I did
+| [Tuesday 14 December 2010] [14:54:27] <brandyn>	but the client can read them
+| [Tuesday 14 December 2010] [14:54:29] <brandyn>	that's the problem
+| [Tuesday 14 December 2010] [14:54:48] <brandyn>	it appears there is no similar HWM for the sub
+| [Tuesday 14 December 2010] [14:54:54] <brandyn>	but that's ok
+| [Tuesday 14 December 2010] [14:55:17] <brandyn>	this is good enough, basically I offload ZMQ's SUB buffer to myself, and then apply my own restrictions
+| [Tuesday 14 December 2010] [14:55:36] <cremes>	i'm not sure i follow; if a sub socket has more than HWM messages in its queue then the pub socket should detect that and drop packets
+| [Tuesday 14 December 2010] [14:55:42] <cremes>	but whatever...
+| [Tuesday 14 December 2010] [14:55:46] <cremes>	you have a solution
+| [Tuesday 14 December 2010] [14:56:44] <brandyn>	oh I see, yeah it doesn't appear to do that
+| [Tuesday 14 December 2010] [14:56:57] <brandyn>	I think the HWM applies only to the queue on the PUB size
+| [Tuesday 14 December 2010] [14:57:02] <brandyn>	for each SUB
+| [Tuesday 14 December 2010] [14:57:24] <brandyn>	like if I don't call recv, then my buffer blows up
+| [Tuesday 14 December 2010] [14:57:35] <brandyn>	so it tells me that in the background is it buffering lots of goodies for me
+| [Tuesday 14 December 2010] [14:57:40] <brandyn>	and I just didn't ask for them
+| [Tuesday 14 December 2010] [14:59:41] <cremes>	hmmm, that's surprising; you might want to ask on the ML for clarification with your use-case
+| [Tuesday 14 December 2010] [15:00:27] <brandyn>	yeah for sure, this is just a rushed project so I need a fix. It's the first time I've used ZMQ
+| [Tuesday 14 December 2010] [15:14:00] <brandyn>	cremes, ok so strange problem.  If I read the socket opt for HWM, it is zero, if I set it, I get a totally different number
+| [Tuesday 14 December 2010] [15:15:02] <cremes>	0 is the default
+| [Tuesday 14 December 2010] [15:15:18] <cremes>	what value are you trying to set it to? and what do you get back when you read that option again?
+| [Tuesday 14 December 2010] [15:15:39] <cremes>	btw, 0 means no limit
+| [Tuesday 14 December 2010] [15:15:42] <brandyn>	yeah I know that
+| [Tuesday 14 December 2010] [15:16:26] <brandyn>	so I set it to 1, and got thishttp://pastebin.com/xh9dCw6C
+| [Tuesday 14 December 2010] [15:16:49] <brandyn>	crazy right?
+| [Tuesday 14 December 2010] [15:17:52] <cremes>	HWM takes an unsigned 64-bit integer; maybe the python bindings aren't handling that right?
+| [Tuesday 14 December 2010] [15:18:43] <brandyn>	yeah I see that
+| [Tuesday 14 December 2010] [15:18:48] <brandyn>	I'll fix it an put in a patch
+| [Tuesday 14 December 2010] [15:19:25] <brandyn>	yeah simple fix
+| [Tuesday 14 December 2010] [15:22:42] <brandyn>	so I fixed that, it now returns the correct HWM, but same semantics
+| [Tuesday 14 December 2010] [15:25:19] <cremes>	cool
+| [Tuesday 14 December 2010] [16:10:51] <mikko>	evening ladies and gents
+| [Tuesday 14 December 2010] [16:12:32] <cremes>	evening
+| [Tuesday 14 December 2010] [16:18:16] <brandyn>	anyone here a python wrapper contributor?
+| [Tuesday 14 December 2010] [16:18:58] <mikko>	brandyn: MinRK and bgranger pop in occasionally
+| [Tuesday 14 December 2010] [16:19:34] <brandyn>	thanks
+| [Tuesday 14 December 2010] [21:51:36] <brandyn>	does the new xpub/xsub allow for PUB side filtering?
+| [Tuesday 14 December 2010] [21:51:57] <brandyn>	I haven't seen any documentation on it, just a few mailing list posts
+| [Tuesday 14 December 2010] [21:56:07] <Steve-o>	that is what the design is for
+| [Tuesday 14 December 2010] [21:56:31] <Steve-o>	the spec is on the mailing list
+| [Tuesday 14 December 2010] [22:19:12] <Steve-o>	http://www.mail-archive.com/zeromq-dev@lists.zeromq.org/msg06247.html
+| [Tuesday 14 December 2010] [23:18:48] <EricL>	Is anyone around?
+| [Tuesday 14 December 2010] [23:20:42] <Steve-o>	all sleeping
+| [Tuesday 14 December 2010] [23:21:24] <EricL>	I am trying to figure out what the best approach for my setup is to use 0MQ
+| [Tuesday 14 December 2010] [23:22:39] <Steve-o>	to do what?
+| [Tuesday 14 December 2010] [23:22:52] <EricL>	I have a log server and a few clients that are pushing a lot of data to the server.  I think I want something similar to pub/sub that is a queue on the client.
+| [Tuesday 14 December 2010] [23:23:12] <EricL>	This way any one of multiple log servers can grab a line from the client and it pops off the queue.
+| [Tuesday 14 December 2010] [23:24:43] <EricL>	from any client rather.
+| [Tuesday 14 December 2010] [23:25:03] <Steve-o>	as in polling the logger
+| [Tuesday 14 December 2010] [23:25:47] <EricL>	Kind of.  The way the logging happens is that there is a Ruby Resque job that does a few things and dumps the output to a log.
+| [Tuesday 14 December 2010] [23:26:11] <Steve-o>	so, REQ/REP sockets then
+| [Tuesday 14 December 2010] [23:26:51] <Steve-o>	it's not ideal to have the chatter back and forth though
+| [Tuesday 14 December 2010] [23:27:44] <Steve-o>	you end up slowing the communication down to the RTT
+| [Tuesday 14 December 2010] [23:28:28] <EricL>	That's what I am curious about.
+| [Tuesday 14 December 2010] [23:30:10] <Steve-o>	which is why PUB is preferred, 
+| [Tuesday 14 December 2010] [23:30:36] <Steve-o>	so what do you not like about PUB/SUB implementation?
+| [Tuesday 14 December 2010] [23:31:03] <EricL>	Because then multiple log servers will be receiving the same msgs, no?
+| [Tuesday 14 December 2010] [23:32:15] <Steve-o>	you can use different topics for each server
+| [Tuesday 14 December 2010] [23:33:48] <EricL>	Log server?
+| [Tuesday 14 December 2010] [23:34:05] <Steve-o>	yes, or only have the client connect to one log server
+| [Tuesday 14 December 2010] [23:34:24] <Steve-o>	you can partition by connection or topic/subject
+| [Tuesday 14 December 2010] [23:35:06] <EricL>	The problem there is that there is more data coming from the client than can be written to disk (on a MB/s basis)
+| [Tuesday 14 December 2010] [23:36:13] <EricL>	That's why I am interested in something like 0MQ.  I just am not sure how to segment the write load across multiple servers.
+| [Tuesday 14 December 2010] [23:36:15] <Steve-o>	so the messages will queue up on the log clients
+| [Tuesday 14 December 2010] [23:36:40] <Steve-o>	you will probably want to use the zmq_swap function to spool onto disk too
+| [Tuesday 14 December 2010] [23:38:43] <Steve-o>	log client: send messages as soon as available, zmq queues up messages if log server is congested receiving
+| [Tuesday 14 December 2010] [23:38:44] <EricL>	That won't solve the issue since it's constantly going to be backing up.
+| [Tuesday 14 December 2010] [23:39:21] <brandyn>	any know the state of pub side filtering?
+| [Tuesday 14 December 2010] [23:40:24] <Steve-o>	EricL:  zmq is managing the queue and congestion for you, so it sounds ideal
+| [Tuesday 14 December 2010] [23:40:26] <brandyn>	that is a really essential feature for my application and I have to emulate it now
+| [Tuesday 14 December 2010] [23:40:46] <Steve-o>	brandyn:  have you checked the source in git/master?  
+| [Tuesday 14 December 2010] [23:41:58] <brandyn>	Steve-o, yeah I got it this morning but it looks to be a copy of pub/sub (the XPUB/SUB that is)
+| [Tuesday 14 December 2010] [23:42:28] <EricL>	It's only ideal if I can avoid duplication of msg logging on the server side.
+| [Tuesday 14 December 2010] [23:43:13] <Steve-o>	duplication?  As in re-transmits?
+| [Tuesday 14 December 2010] [23:43:15] <brandyn>	https://github.com/zeromq/zeromq2/commit/c80e7b80cc726ca7c29493c2553c8d19792bb6e5
+| [Tuesday 14 December 2010] [23:44:31] <EricL>	duplication meaning that if I have more than 1 logserver and 3 clients pushing out msgs, I don't care which logserver the msgs go to as long as there are not any duplicate msgs.
+| [Tuesday 14 December 2010] [23:44:42] <Steve-o>	brandyn:  I guess you have to ask Gerard Toonstra, he was submitting the patches and RFC
+| [Tuesday 14 December 2010] [23:44:48] <EricL>	(from logserver to logserver)
+| [Tuesday 14 December 2010] [23:45:41] <Steve-o>	EricL: so you also have a question of which logserver is being targetted
+| [Tuesday 14 December 2010] [23:47:06] <EricL>	I don't care which logserver is being targeted as long as it gets there.
+| [Tuesday 14 December 2010] [23:52:14] <Steve-o>	k, the link for loggly's notes has disappeared, http://www.zeromq.org/blog:loggy-switches-to-0mq
+| [Tuesday 14 December 2010] [23:52:32] <EricL>	Looking.
+| [Tuesday 14 December 2010] [23:55:38] <EricL>	Yea, that doesn't tell much.
+| [Tuesday 14 December 2010] [23:57:32] <Steve-o>	maybe PUSH/PULL sockets, implements load sharing, not sure about guarantees on one only delivery
+| [Wednesday 15 December 2010] [00:06:36] <EricL>	Hmm...I guess I am not sure of the best approach in general.
+| [Wednesday 15 December 2010] [00:08:55] <EricL>	So you think I should setup a PUSH socket on the client and then write everything from the Resque processes to that socket (which will then do the buffering).
+| [Wednesday 15 December 2010] [00:10:40] <EricL>	Then on the server(s), I should do a PULL and hope that I am not receiving duplicates.
+| [Wednesday 15 December 2010] [00:13:25] <Steve-o>	yes, although I'd check with the devs on the mailing list about duplicate delivery
+| [Wednesday 15 December 2010] [00:15:13] <Steve-o>	otherwise you need req/rep and you suffer RTT time
+| [Wednesday 15 December 2010] [00:20:52] <EricL>	Alright.  I think I have some reading to do in order to understand how to implement all this.
+| [Wednesday 15 December 2010] [00:21:27] <Steve-o>	the main devs should be online in a few hours time
+| [Wednesday 15 December 2010] [00:21:43] <EricL>	They in EST?
+| [Wednesday 15 December 2010] [00:22:30] <Steve-o>	MET I think
+| [Wednesday 15 December 2010] [00:22:48] <Steve-o>	I only look after PGM stuff, all my middleware knowledge is TIBCO stuff
+| [Wednesday 15 December 2010] [00:23:06] <EricL>	Gotchya.
+| [Wednesday 15 December 2010] [00:25:42] <Steve-o>	In TIBCO you would use a Rendezvous Distributed Queue (RVDQ), but the implementation is very layered and not as efficient as 0MQ
+| [Wednesday 15 December 2010] [00:28:20] <EricL>	I think I need the efficiency of 0MQ because of the amount of data I am dealing with.
+| [Wednesday 15 December 2010] [02:01:43] <EricL>	Steve-o: Thanks.
+| [Wednesday 15 December 2010] [06:09:20] <gb_>	hello
+| [Wednesday 15 December 2010] [06:22:02] <sustrik>	hello
+| [Wednesday 15 December 2010] [06:26:02] <mikko>	hi
+| [Wednesday 15 December 2010] [06:35:39] <sustrik>	finally i'm getting to your patch
+| [Wednesday 15 December 2010] [06:35:43] <sustrik>	sorry for the delay
+| [Wednesday 15 December 2010] [06:35:52] <mikko>	i'm patching jmeter at the moment
+| [Wednesday 15 December 2010] [06:36:05] <mikko>	only works master-slave if it's in the same network / no firewalls
