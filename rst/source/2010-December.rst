@@ -2328,26 +2328,4 @@
 | [Tuesday 14 December 2010] [23:47:06] <EricL>	I don't care which logserver is being targeted as long as it gets there.
 | [Tuesday 14 December 2010] [23:52:14] <Steve-o>	k, the link for loggly's notes has disappeared, http://www.zeromq.org/blog:loggy-switches-to-0mq
 | [Tuesday 14 December 2010] [23:52:32] <EricL>	Looking.
-| [Tuesday 14 December 2010] [23:55:38] <EricL>	Yea, that doesn't tell much.
-| [Tuesday 14 December 2010] [23:57:32] <Steve-o>	maybe PUSH/PULL sockets, implements load sharing, not sure about guarantees on one only delivery
-| [Wednesday 15 December 2010] [00:06:36] <EricL>	Hmm...I guess I am not sure of the best approach in general.
-| [Wednesday 15 December 2010] [00:08:55] <EricL>	So you think I should setup a PUSH socket on the client and then write everything from the Resque processes to that socket (which will then do the buffering).
-| [Wednesday 15 December 2010] [00:10:40] <EricL>	Then on the server(s), I should do a PULL and hope that I am not receiving duplicates.
-| [Wednesday 15 December 2010] [00:13:25] <Steve-o>	yes, although I'd check with the devs on the mailing list about duplicate delivery
-| [Wednesday 15 December 2010] [00:15:13] <Steve-o>	otherwise you need req/rep and you suffer RTT time
-| [Wednesday 15 December 2010] [00:20:52] <EricL>	Alright.  I think I have some reading to do in order to understand how to implement all this.
-| [Wednesday 15 December 2010] [00:21:27] <Steve-o>	the main devs should be online in a few hours time
-| [Wednesday 15 December 2010] [00:21:43] <EricL>	They in EST?
-| [Wednesday 15 December 2010] [00:22:30] <Steve-o>	MET I think
-| [Wednesday 15 December 2010] [00:22:48] <Steve-o>	I only look after PGM stuff, all my middleware knowledge is TIBCO stuff
-| [Wednesday 15 December 2010] [00:23:06] <EricL>	Gotchya.
-| [Wednesday 15 December 2010] [00:25:42] <Steve-o>	In TIBCO you would use a Rendezvous Distributed Queue (RVDQ), but the implementation is very layered and not as efficient as 0MQ
-| [Wednesday 15 December 2010] [00:28:20] <EricL>	I think I need the efficiency of 0MQ because of the amount of data I am dealing with.
-| [Wednesday 15 December 2010] [02:01:43] <EricL>	Steve-o: Thanks.
-| [Wednesday 15 December 2010] [06:09:20] <gb_>	hello
-| [Wednesday 15 December 2010] [06:22:02] <sustrik>	hello
-| [Wednesday 15 December 2010] [06:26:02] <mikko>	hi
-| [Wednesday 15 December 2010] [06:35:39] <sustrik>	finally i'm getting to your patch
-| [Wednesday 15 December 2010] [06:35:43] <sustrik>	sorry for the delay
-| [Wednesday 15 December 2010] [06:35:52] <mikko>	i'm patching jmeter at the moment
-| [Wednesday 15 December 2010] [06:36:05] <mikko>	only works master-slave if it's in the same network / no firewalls
+| [Tuesda
