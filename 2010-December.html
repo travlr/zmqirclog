@@ -2373,7 +2373,91 @@
 <div class="line">[Tuesday 14 December 2010] [23:47:06] &lt;EricL&gt; I don&#8217;t care which logserver is being targeted as long as it gets there.</div>
 <div class="line">[Tuesday 14 December 2010] [23:52:14] &lt;Steve-o&gt;       k, the link for loggly&#8217;s notes has disappeared, <a class="reference external" href="http://www.zeromq.org/blog:loggy-switches-to-0mq">http://www.zeromq.org/blog:loggy-switches-to-0mq</a></div>
 <div class="line">[Tuesday 14 December 2010] [23:52:32] &lt;EricL&gt; Looking.</div>
-<div class="line">[Tuesda</div>
+<div class="line">[Tuesday 14 December 2010] [23:55:38] &lt;EricL&gt; Yea, that doesn&#8217;t tell much.</div>
+<div class="line">[Tuesday 14 December 2010] [23:57:32] &lt;Steve-o&gt;       maybe PUSH/PULL sockets, implements load sharing, not sure about guarantees on one only delivery</div>
+<div class="line">[Wednesday 15 December 2010] [00:06:36] &lt;EricL&gt;       Hmm...I guess I am not sure of the best approach in general.</div>
+<div class="line">[Wednesday 15 December 2010] [00:08:55] &lt;EricL&gt;       So you think I should setup a PUSH socket on the client and then write everything from the Resque processes to that socket (which will then do the buffering).</div>
+<div class="line">[Wednesday 15 December 2010] [00:10:40] &lt;EricL&gt;       Then on the server(s), I should do a PULL and hope that I am not receiving duplicates.</div>
+<div class="line">[Wednesday 15 December 2010] [00:13:25] &lt;Steve-o&gt;     yes, although I&#8217;d check with the devs on the mailing list about duplicate delivery</div>
+<div class="line">[Wednesday 15 December 2010] [00:15:13] &lt;Steve-o&gt;     otherwise you need req/rep and you suffer RTT time</div>
+<div class="line">[Wednesday 15 December 2010] [00:20:52] &lt;EricL&gt;       Alright.  I think I have some reading to do in order to understand how to implement all this.</div>
+<div class="line">[Wednesday 15 December 2010] [00:21:27] &lt;Steve-o&gt;     the main devs should be online in a few hours time</div>
+<div class="line">[Wednesday 15 December 2010] [00:21:43] &lt;EricL&gt;       They in EST?</div>
+<div class="line">[Wednesday 15 December 2010] [00:22:30] &lt;Steve-o&gt;     MET I think</div>
+<div class="line">[Wednesday 15 December 2010] [00:22:48] &lt;Steve-o&gt;     I only look after PGM stuff, all my middleware knowledge is TIBCO stuff</div>
+<div class="line">[Wednesday 15 December 2010] [00:23:06] &lt;EricL&gt;       Gotchya.</div>
+<div class="line">[Wednesday 15 December 2010] [00:25:42] &lt;Steve-o&gt;     In TIBCO you would use a Rendezvous Distributed Queue (RVDQ), but the implementation is very layered and not as efficient as 0MQ</div>
+<div class="line">[Wednesday 15 December 2010] [00:28:20] &lt;EricL&gt;       I think I need the efficiency of 0MQ because of the amount of data I am dealing with.</div>
+<div class="line">[Wednesday 15 December 2010] [02:01:43] &lt;EricL&gt;       Steve-o: Thanks.</div>
+<div class="line">[Wednesday 15 December 2010] [06:09:20] &lt;<a href="#id426"><span class="problematic" id="id427">gb_</span></a>&gt; hello</div>
+<div class="line">[Wednesday 15 December 2010] [06:22:02] &lt;sustrik&gt;     hello</div>
+<div class="line">[Wednesday 15 December 2010] [06:26:02] &lt;mikko&gt;       hi</div>
+<div class="line">[Wednesday 15 December 2010] [06:35:39] &lt;sustrik&gt;     finally i&#8217;m getting to your patch</div>
+<div class="line">[Wednesday 15 December 2010] [06:35:43] &lt;sustrik&gt;     sorry for the delay</div>
+<div class="line">[Wednesday 15 December 2010] [06:35:52] &lt;mikko&gt;       i&#8217;m patching jmeter at the moment</div>
+<div class="line">[Wednesday 15 December 2010] [06:36:05] &lt;mikko&gt;       only works master-slave if it&#8217;s in the same network / no firewalls</div>
+<div class="line">[Wednesday 15 December 2010] [07:04:33] &lt;mikko&gt;       sustrik: it seems that swap_t::full() was maybe an old implementation from where</div>
+<div class="line">[Wednesday 15 December 2010] [07:04:46] &lt;mikko&gt;       sustrik: it seems unlikely that buffer_space () == 1 in any case</div>
+<div class="line">[Wednesday 15 December 2010] [07:06:51] &lt;sustrik&gt;     mikko: the swap isn&#8217;t my code</div>
+<div class="line">[Wednesday 15 December 2010] [07:06:58] &lt;sustrik&gt;     i&#8217;m trying to make sense of it</div>
+<div class="line">[Wednesday 15 December 2010] [07:07:35] &lt;mikko&gt;       the problem is was hitting was that swap was not full but there wasn&#8217;t enough space for the given message</div>
+<div class="line">[Wednesday 15 December 2010] [07:07:45] &lt;mikko&gt;       hence swap_t::fits(..</div>
+<div class="line">[Wednesday 15 December 2010] [07:11:03] &lt;Steve-o&gt;     why does swap_t call GetCurrentThreadId on Windows but getpid on POSIX?  brain fart.</div>
+<div class="line">[Wednesday 15 December 2010] [07:12:42] &lt;sustrik&gt;     it just need some unique number</div>
+<div class="line">[Wednesday 15 December 2010] [07:13:01] &lt;sustrik&gt;     i think the code was written before 0mq was linked with libuuid</div>
+<div class="line">[Wednesday 15 December 2010] [07:13:24] &lt;Steve-o&gt;     but not both thread id or process id, one of each</div>
+<div class="line">[Wednesday 15 December 2010] [07:15:28] &lt;Steve-o&gt;     meh, also how many people use octets as a counter?  old people :P</div>
+<div class="line">[Wednesday 15 December 2010] [07:21:20] &lt;sustrik&gt;     well, it&#8217;s always one of them afaics</div>
+<div class="line">[Wednesday 15 December 2010] [07:21:29] &lt;sustrik&gt;     tid on windows</div>
+<div class="line">[Wednesday 15 December 2010] [07:21:33] &lt;sustrik&gt;     pid on posix</div>
+<div class="line">[Wednesday 15 December 2010] [07:21:54] &lt;sustrik&gt;     but, presumably, uuid would be better</div>
+<div class="line">[Wednesday 15 December 2010] [08:05:03] &lt;sustrik&gt;     mikko: still there?</div>
+<div class="line">[Wednesday 15 December 2010] [08:29:13] &lt;mikko&gt;       yes</div>
+<div class="line">[Wednesday 15 December 2010] [08:32:42] &lt;sustrik&gt;     mikko: i&#8217;ve sent a modified swap patch</div>
+<div class="line">[Wednesday 15 December 2010] [08:32:56] &lt;sustrik&gt;     basically i&#8217;ve just removed some dead code</div>
+<div class="line">[Wednesday 15 December 2010] [08:33:07] &lt;mikko&gt;       sustrik: you still have the implementation of full there</div>
+<div class="line">[Wednesday 15 December 2010] [08:33:16] &lt;sustrik&gt;     oh my</div>
+<div class="line">[Wednesday 15 December 2010] [08:33:17] &lt;mikko&gt;       no you dont</div>
+<div class="line">[Wednesday 15 December 2010] [08:33:22] &lt;mikko&gt;       misread the patch</div>
+<div class="line">[Wednesday 15 December 2010] [08:33:23] &lt;sustrik&gt;     it&#8217;s commented out</div>
+<div class="line">[Wednesday 15 December 2010] [08:33:40] &lt;mikko&gt;       yes, looks good to me. i can test it after i get a haircut</div>
+<div class="line">[Wednesday 15 December 2010] [08:33:46] &lt;sustrik&gt;     goodo</div>
+<div class="line">[Wednesday 15 December 2010] [08:33:50] &lt;sustrik&gt;     just ping me then</div>
+<div class="line">[Wednesday 15 December 2010] [08:33:53] &lt;sustrik&gt;     and i&#8217;ll apply it</div>
+<div class="line">[Wednesday 15 December 2010] [08:34:37] &lt;mikko&gt;       i&#8217;ll give you ping</div>
+<div class="line">[Wednesday 15 December 2010] [08:34:42] &lt;mikko&gt;       i added freebsd 8.1 to build cluster</div>
+<div class="line">[Wednesday 15 December 2010] [08:34:48] &lt;mikko&gt;       linux, solaris, win, freebsd now</div>
+<div class="line">[Wednesday 15 December 2010] [08:36:02] &lt;sustrik&gt;     it&#8217;s getting pretty complete :)</div>
+<div class="line">[Wednesday 15 December 2010] [08:36:33] &lt;mikko&gt;       Bad file descriptor</div>
+<div class="line">[Wednesday 15 December 2010] [08:36:33] &lt;mikko&gt;       nbytes != -1 (tcp_socket.cpp:197)</div>
+<div class="line">[Wednesday 15 December 2010] [08:36:33] &lt;mikko&gt;       Abort trap (core dumped)</div>
+<div class="line">[Wednesday 15 December 2010] [08:36:47] &lt;mikko&gt;       shutdown_stress on freebsd 8.1</div>
+<div class="line">[Wednesday 15 December 2010] [08:41:30] &lt;CIA-20&gt;      zeromq2: 03Mikko Koppanen 07master * ra46980b 10/ (4 files in 4 dirs):</div>
+<div class="line">[Wednesday 15 December 2010] [08:41:30] &lt;CIA-20&gt;      zeromq2: Remove assertions from devices</div>
+<div class="line">[Wednesday 15 December 2010] [08:41:30] &lt;CIA-20&gt;      zeromq2: Signed-off-by: Mikko Koppanen &lt;<a class="reference external" href="mailto:mkoppanen&#37;&#52;&#48;php&#46;net">mkoppanen<span>&#64;</span>php<span>&#46;</span>net</a>&gt; - <a class="reference external" href="http://bit.ly/e4ZWpR">http://bit.ly/e4ZWpR</a></div>
+<div class="line">[Wednesday 15 December 2010] [08:42:23] &lt;sustrik&gt;     mikko: that&#8217;s presumably the bug dhammika fixed</div>
+<div class="line">[Wednesday 15 December 2010] [08:42:40] &lt;sustrik&gt;     i still have to look at the one you&#8217;ve reported yesterday</div>
+<div class="line">[Wednesday 15 December 2010] [09:58:43] &lt;mikko&gt;       sustrik: you mean the HWM one?</div>
+<div class="line">[Wednesday 15 December 2010] [10:00:05] &lt;sustrik&gt;     mikko: <a class="reference external" href="https://gist.github.com/848e949008e67ca542f7">https://gist.github.com/848e949008e67ca542f7</a></div>
+<div class="line">[Wednesday 15 December 2010] [10:07:14] &lt;Guthur&gt;      sustrik: I just noticed that clrzmq2 issue there now</div>
+<div class="line">[Wednesday 15 December 2010] [10:07:19] &lt;Guthur&gt;      I&#8217;ve replied</div>
+<div class="line">[Wednesday 15 December 2010] [10:07:35] &lt;sustrik&gt;     Guthur: good</div>
+<div class="line">[Wednesday 15 December 2010] [10:07:46] &lt;Guthur&gt;      all I can say is... at least he finally got it built</div>
+<div class="line">[Wednesday 15 December 2010] [10:08:21] &lt;sustrik&gt;     problem with clrzmq or problem with the user?</div>
+<div class="line">[Wednesday 15 December 2010] [10:08:35] &lt;Guthur&gt;      user</div>
+<div class="line">[Wednesday 15 December 2010] [10:08:39] &lt;sustrik&gt;     :)</div>
+<div class="line">[Wednesday 15 December 2010] [10:08:59] &lt;Guthur&gt;      He&#8217;s wondering why passing in a String encoding object only returns strings</div>
+<div class="line">[Wednesday 15 December 2010] [10:09:12] &lt;Guthur&gt;      he wanted binary</div>
+<div class="line">[Wednesday 15 December 2010] [10:09:30] &lt;Guthur&gt;      which is the standard method, returning a byte array</div>
+<div class="line">[Wednesday 15 December 2010] [10:10:00] &lt;Guthur&gt;      I need to check the comments again, I&#8217;m sure I was pretty explicit</div>
+<div class="line">[Wednesday 15 December 2010] [10:10:34] &lt;sustrik&gt;     depends on the user</div>
+<div class="line">[Wednesday 15 December 2010] [10:10:59] &lt;sustrik&gt;     however simply you explain, there&#8217;s still someone who&#8217;s not going to understand</div>
+<div class="line">[Wednesday 15 December 2010] [10:11:03] &lt;Guthur&gt;      hehe comment -&gt; Listen for message, and return it in string format</div>
+<div class="line">[Wednesday 15 December 2010] [10:12:07] &lt;Guthur&gt;      actually to be fair there could be some improvement in the comment for the method he wanted</div>
+<div class="line">[Wednesday 15 December 2010] [10:12:17] &lt;Guthur&gt;      I&#8217;ll look into updating later</div>
+<div class="line">[Wednesday 15 December 2010] [10:15:00] &lt;sustrik&gt;     Guthur: there have been something else wrt clrzmq discussed on the ML</div>
+<div class="line">[Saturday 18 December 2010] [16:32:02] &lt;mikko&gt;        sustrik: no more race condition failures</div>
+<div class="line">[Saturday 18 December 2010] [16:33:52] &lt;mikko&gt;        in the daily builds</div>
 </div>
 </div>
 
