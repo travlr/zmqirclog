@@ -2328,4 +2328,88 @@
 | [Tuesday 14 December 2010] [23:47:06] <EricL>	I don't care which logserver is being targeted as long as it gets there.
 | [Tuesday 14 December 2010] [23:52:14] <Steve-o>	k, the link for loggly's notes has disappeared, http://www.zeromq.org/blog:loggy-switches-to-0mq
 | [Tuesday 14 December 2010] [23:52:32] <EricL>	Looking.
-| [Tuesda
+| [Tuesday 14 December 2010] [23:55:38] <EricL>	Yea, that doesn't tell much.
+| [Tuesday 14 December 2010] [23:57:32] <Steve-o>	maybe PUSH/PULL sockets, implements load sharing, not sure about guarantees on one only delivery
+| [Wednesday 15 December 2010] [00:06:36] <EricL>	Hmm...I guess I am not sure of the best approach in general.
+| [Wednesday 15 December 2010] [00:08:55] <EricL>	So you think I should setup a PUSH socket on the client and then write everything from the Resque processes to that socket (which will then do the buffering).
+| [Wednesday 15 December 2010] [00:10:40] <EricL>	Then on the server(s), I should do a PULL and hope that I am not receiving duplicates.
+| [Wednesday 15 December 2010] [00:13:25] <Steve-o>	yes, although I'd check with the devs on the mailing list about duplicate delivery
+| [Wednesday 15 December 2010] [00:15:13] <Steve-o>	otherwise you need req/rep and you suffer RTT time
+| [Wednesday 15 December 2010] [00:20:52] <EricL>	Alright.  I think I have some reading to do in order to understand how to implement all this.
+| [Wednesday 15 December 2010] [00:21:27] <Steve-o>	the main devs should be online in a few hours time
+| [Wednesday 15 December 2010] [00:21:43] <EricL>	They in EST?
+| [Wednesday 15 December 2010] [00:22:30] <Steve-o>	MET I think
+| [Wednesday 15 December 2010] [00:22:48] <Steve-o>	I only look after PGM stuff, all my middleware knowledge is TIBCO stuff
+| [Wednesday 15 December 2010] [00:23:06] <EricL>	Gotchya.
+| [Wednesday 15 December 2010] [00:25:42] <Steve-o>	In TIBCO you would use a Rendezvous Distributed Queue (RVDQ), but the implementation is very layered and not as efficient as 0MQ
+| [Wednesday 15 December 2010] [00:28:20] <EricL>	I think I need the efficiency of 0MQ because of the amount of data I am dealing with.
+| [Wednesday 15 December 2010] [02:01:43] <EricL>	Steve-o: Thanks.
+| [Wednesday 15 December 2010] [06:09:20] <gb_>	hello
+| [Wednesday 15 December 2010] [06:22:02] <sustrik>	hello
+| [Wednesday 15 December 2010] [06:26:02] <mikko>	hi
+| [Wednesday 15 December 2010] [06:35:39] <sustrik>	finally i'm getting to your patch
+| [Wednesday 15 December 2010] [06:35:43] <sustrik>	sorry for the delay
+| [Wednesday 15 December 2010] [06:35:52] <mikko>	i'm patching jmeter at the moment
+| [Wednesday 15 December 2010] [06:36:05] <mikko>	only works master-slave if it's in the same network / no firewalls
+| [Wednesday 15 December 2010] [07:04:33] <mikko>	sustrik: it seems that swap_t::full() was maybe an old implementation from where
+| [Wednesday 15 December 2010] [07:04:46] <mikko>	sustrik: it seems unlikely that buffer_space () == 1 in any case
+| [Wednesday 15 December 2010] [07:06:51] <sustrik>	mikko: the swap isn't my code
+| [Wednesday 15 December 2010] [07:06:58] <sustrik>	i'm trying to make sense of it
+| [Wednesday 15 December 2010] [07:07:35] <mikko>	the problem is was hitting was that swap was not full but there wasn't enough space for the given message
+| [Wednesday 15 December 2010] [07:07:45] <mikko>	hence swap_t::fits(..
+| [Wednesday 15 December 2010] [07:11:03] <Steve-o>	why does swap_t call GetCurrentThreadId on Windows but getpid on POSIX?  brain fart.
+| [Wednesday 15 December 2010] [07:12:42] <sustrik>	it just need some unique number
+| [Wednesday 15 December 2010] [07:13:01] <sustrik>	i think the code was written before 0mq was linked with libuuid
+| [Wednesday 15 December 2010] [07:13:24] <Steve-o>	but not both thread id or process id, one of each
+| [Wednesday 15 December 2010] [07:15:28] <Steve-o>	meh, also how many people use octets as a counter?  old people :P
+| [Wednesday 15 December 2010] [07:21:20] <sustrik>	well, it's always one of them afaics
+| [Wednesday 15 December 2010] [07:21:29] <sustrik>	tid on windows
+| [Wednesday 15 December 2010] [07:21:33] <sustrik>	pid on posix
+| [Wednesday 15 December 2010] [07:21:54] <sustrik>	but, presumably, uuid would be better
+| [Wednesday 15 December 2010] [08:05:03] <sustrik>	mikko: still there?
+| [Wednesday 15 December 2010] [08:29:13] <mikko>	yes
+| [Wednesday 15 December 2010] [08:32:42] <sustrik>	mikko: i've sent a modified swap patch
+| [Wednesday 15 December 2010] [08:32:56] <sustrik>	basically i've just removed some dead code
+| [Wednesday 15 December 2010] [08:33:07] <mikko>	sustrik: you still have the implementation of full there
+| [Wednesday 15 December 2010] [08:33:16] <sustrik>	oh my
+| [Wednesday 15 December 2010] [08:33:17] <mikko>	no you dont
+| [Wednesday 15 December 2010] [08:33:22] <mikko>	misread the patch
+| [Wednesday 15 December 2010] [08:33:23] <sustrik>	it's commented out
+| [Wednesday 15 December 2010] [08:33:40] <mikko>	yes, looks good to me. i can test it after i get a haircut
+| [Wednesday 15 December 2010] [08:33:46] <sustrik>	goodo
+| [Wednesday 15 December 2010] [08:33:50] <sustrik>	just ping me then
+| [Wednesday 15 December 2010] [08:33:53] <sustrik>	and i'll apply it
+| [Wednesday 15 December 2010] [08:34:37] <mikko>	i'll give you ping
+| [Wednesday 15 December 2010] [08:34:42] <mikko>	i added freebsd 8.1 to build cluster
+| [Wednesday 15 December 2010] [08:34:48] <mikko>	linux, solaris, win, freebsd now
+| [Wednesday 15 December 2010] [08:36:02] <sustrik>	it's getting pretty complete :)
+| [Wednesday 15 December 2010] [08:36:33] <mikko>	Bad file descriptor
+| [Wednesday 15 December 2010] [08:36:33] <mikko>	nbytes != -1 (tcp_socket.cpp:197)
+| [Wednesday 15 December 2010] [08:36:33] <mikko>	Abort trap (core dumped)
+| [Wednesday 15 December 2010] [08:36:47] <mikko>	shutdown_stress on freebsd 8.1
+| [Wednesday 15 December 2010] [08:41:30] <CIA-20>	zeromq2: 03Mikko Koppanen 07master * ra46980b 10/ (4 files in 4 dirs): 
+| [Wednesday 15 December 2010] [08:41:30] <CIA-20>	zeromq2: Remove assertions from devices
+| [Wednesday 15 December 2010] [08:41:30] <CIA-20>	zeromq2: Signed-off-by: Mikko Koppanen <mkoppanen@php.net> - http://bit.ly/e4ZWpR
+| [Wednesday 15 December 2010] [08:42:23] <sustrik>	mikko: that's presumably the bug dhammika fixed
+| [Wednesday 15 December 2010] [08:42:40] <sustrik>	i still have to look at the one you've reported yesterday
+| [Wednesday 15 December 2010] [09:58:43] <mikko>	sustrik: you mean the HWM one?
+| [Wednesday 15 December 2010] [10:00:05] <sustrik>	mikko: https://gist.github.com/848e949008e67ca542f7
+| [Wednesday 15 December 2010] [10:07:14] <Guthur>	sustrik: I just noticed that clrzmq2 issue there now
+| [Wednesday 15 December 2010] [10:07:19] <Guthur>	I've replied
+| [Wednesday 15 December 2010] [10:07:35] <sustrik>	Guthur: good
+| [Wednesday 15 December 2010] [10:07:46] <Guthur>	all I can say is... at least he finally got it built
+| [Wednesday 15 December 2010] [10:08:21] <sustrik>	problem with clrzmq or problem with the user?
+| [Wednesday 15 December 2010] [10:08:35] <Guthur>	user 
+| [Wednesday 15 December 2010] [10:08:39] <sustrik>	:)
+| [Wednesday 15 December 2010] [10:08:59] <Guthur>	He's wondering why passing in a String encoding object only returns strings
+| [Wednesday 15 December 2010] [10:09:12] <Guthur>	he wanted binary
+| [Wednesday 15 December 2010] [10:09:30] <Guthur>	which is the standard method, returning a byte array
+| [Wednesday 15 December 2010] [10:10:00] <Guthur>	I need to check the comments again, I'm sure I was pretty explicit
+| [Wednesday 15 December 2010] [10:10:34] <sustrik>	depends on the user
+| [Wednesday 15 December 2010] [10:10:59] <sustrik>	however simply you explain, there's still someone who's not going to understand
+| [Wednesday 15 December 2010] [10:11:03] <Guthur>	hehe comment -> Listen for message, and return it in string format
+| [Wednesday 15 December 2010] [10:12:07] <Guthur>	actually to be fair there could be some improvement in the comment for the method he wanted
+| [Wednesday 15 December 2010] [10:12:17] <Guthur>	I'll look into updating later
+| [Wednesday 15 December 2010] [10:15:00] <sustrik>	Guthur: there have been something else wrt clrzmq discussed on the ML
+| [Saturday 18 December 2010] [16:32:02] <mikko>	sustrik: no more race condition failures
+| [Saturday 18 December 2010] [16:33:52] <mikko>	in the daily builds
