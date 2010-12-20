@@ -2505,3 +2505,34 @@
 | [Sunday 19 December 2010] [23:42:19] <Steve-o>	it's less cumbersome than XDR anyhow
 | [Sunday 19 December 2010] [23:44:00] <Steve-o>	you could roll your own PHP extension with fixed scope,
 | [Sunday 19 December 2010] [23:48:47] <Steve-o>	Google lacks dynamic forms, everything is static compiled
+| [Monday 20 December 2010] [03:16:36] <sustrik>	hi mikko: what segfault?
+| [Monday 20 December 2010] [05:22:49] <mikko>	sustrik: https://gist.github.com/17fb87b54e83832354b5
+| [Monday 20 December 2010] [05:24:39] <sustrik>	mikko: looks like a deallocation of invalid message
+| [Monday 20 December 2010] [05:24:56] <sustrik>	do you have a test program?
+| [Monday 20 December 2010] [05:25:07] <mikko>	the way i reproduce is by creating a rep socket
+| [Monday 20 December 2010] [05:25:11] <mikko>	then telnet in
+| [Monday 20 December 2010] [05:25:19] <mikko>	press ctrl+c in telnet 
+| [Monday 20 December 2010] [05:25:22] <mikko>	and enter twice
+| [Monday 20 December 2010] [05:25:33] <sustrik>	sorry, what's enter twice?
+| [Monday 20 December 2010] [05:25:46] <mikko>	 
+| [Monday 20 December 2010] [05:25:47] <mikko>	 
+| [Monday 20 December 2010] [05:25:54] <sustrik>	in telnet?
+| [Monday 20 December 2010] [05:25:57] <mikko>	yes
+| [Monday 20 December 2010] [05:26:11] <sustrik>	let me try...
+| [Monday 20 December 2010] [05:26:11] <mikko>	i've been too lazy to check the exact bytes that combo sends :)
+| [Monday 20 December 2010] [05:26:20] <sustrik>	doesn't matter
+| [Monday 20 December 2010] [05:27:16] <sustrik>	reproduced
+| [Monday 20 December 2010] [05:27:18] <sustrik>	thanks!
+| [Monday 20 December 2010] [05:30:43] <mikko>	np
+| [Monday 20 December 2010] [05:31:47] <mikko>	https://gist.github.com/21ee1c85b1b2f6cbba66
+| [Monday 20 December 2010] [05:31:54] <mikko>	that's from my gdb session last night
+| [Monday 20 December 2010] [05:47:52] <CIA-21>	zeromq2: 03Martin Sustrik 07master * r112d0cd 10/ src/decoder.cpp : 
+| [Monday 20 December 2010] [05:47:52] <CIA-21>	zeromq2: Fix the segfault when over-sized message is rejected.
+| [Monday 20 December 2010] [05:47:52] <CIA-21>	zeromq2: The in_progress message inside of decoder was left
+| [Monday 20 December 2010] [05:47:52] <CIA-21>	zeromq2: uninitialised in such a case.
+| [Monday 20 December 2010] [05:47:52] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/grKk2b
+| [Monday 20 December 2010] [05:53:09] <mikko>	sustrik: gj, that was quick
+| [Monday 20 December 2010] [06:12:00] <sustrik>	:)
+| [Monday 20 December 2010] [07:05:46] <CIA-21>	zeromq2: 03Martin Sustrik 07master * r51d2d9b 10/ src/decoder.cpp : 
+| [Monday 20 December 2010] [07:05:46] <CIA-21>	zeromq2: Yet one more fix for oversized messages.
+| [Monday 20 December 2010] [07:05:46] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/ez2JYr
