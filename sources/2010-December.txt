@@ -2413,3 +2413,95 @@
 | [Wednesday 15 December 2010] [10:15:00] <sustrik>	Guthur: there have been something else wrt clrzmq discussed on the ML
 | [Saturday 18 December 2010] [16:32:02] <mikko>	sustrik: no more race condition failures
 | [Saturday 18 December 2010] [16:33:52] <mikko>	in the daily builds
+| [Saturday 18 December 2010] [21:15:14] <raydeo>	is it possible that libcurl is interfering with zeromq? I have a system that uses 3 IPC sockets that runs very smoothly but when I turn on network uploading via libcurl I get bizarre behavior like dropped messages.
+| [Saturday 18 December 2010] [22:01:22] <raydeo>	is there a reliable way to ensure that zmq is closing properly? I'm discovering that if a process dies without cleaning up it brings the whole system down.
+| [Sunday 19 December 2010] [02:59:38] <mikko>	raydeo: is your libcurl thingia running in a thread?
+| [Sunday 19 December 2010] [02:59:54] <mikko>	raydeo: just wondering because it would most likely block (?)
+| [Sunday 19 December 2010] [12:17:42] <mikko>	good evening
+| [Sunday 19 December 2010] [16:39:37] <mikko>	sustrik: found a segfault
+| [Sunday 19 December 2010] [22:28:02] <davidstrauss>	I'm trying to figure out why my first attempt at a C++ echo/client implementation isn't exchanging any messages.
+| [Sunday 19 December 2010] [22:28:32] <davidstrauss>	http://pastie.org/1390975
+| [Sunday 19 December 2010] [22:28:51] <davidstrauss>	(the code is pastied)
+| [Sunday 19 December 2010] [22:35:57] <Steve-o>	isn't rep supposed to bind?
+| [Sunday 19 December 2010] [22:36:39] <davidstrauss>	Steve-o, I've tried that
+| [Sunday 19 December 2010] [22:36:57] <davidstrauss>	Steve-o, Converting the connect to a bind on the echo.cpp doesn't make it work
+| [Sunday 19 December 2010] [22:37:11] <Steve-o>	k
+| [Sunday 19 December 2010] [22:37:15] <davidstrauss>	Steve-o, I have nearly identical code in Python working
+| [Sunday 19 December 2010] [22:37:58] <Steve-o>	aha, nice
+| [Sunday 19 December 2010] [22:38:04] <davidstrauss>	Steve-o, The echo.cpp version starts and then just waits forever for a message
+| [Sunday 19 December 2010] [22:38:18] <davidstrauss>	Steve-o, And the client.cpp code "sends" a message without error.
+| [Sunday 19 December 2010] [22:38:28] <davidstrauss>	Steve-o, But echo.cpp doesn't seem to get it
+| [Sunday 19 December 2010] [22:39:03] <davidstrauss>	Steve-o, If I can get this working, I would happily publish this as a public example
+| [Sunday 19 December 2010] [22:39:14] <Steve-o>	local_lat uses REP sockets
+| [Sunday 19 December 2010] [22:39:26] <davidstrauss>	Steve-o, local_lat?
+| [Sunday 19 December 2010] [22:39:37] <Steve-o>	latency performance test tool
+| [Sunday 19 December 2010] [22:40:02] <Steve-o>	>> https://github.com/zeromq/zeromq2/blob/master/perf/local_lat.cpp
+| [Sunday 19 December 2010] [22:40:44] <Steve-o>	with remote_lat being the REQ client
+| [Sunday 19 December 2010] [22:41:21] <davidstrauss>	Steve-o, Unfortunately, that uses the C API, even though the code is C++
+| [Sunday 19 December 2010] [22:43:01] <Steve-o>	the bind on the REQ socket should be something like tcp://eth0:5555
+| [Sunday 19 December 2010] [22:43:29] <davidstrauss>	Steve-o, I need to bind on the REQ socket? Not just connect?
+| [Sunday 19 December 2010] [22:44:07] <Steve-o>	bind only
+| [Sunday 19 December 2010] [22:44:27] <Steve-o>	actually forget the eth0 thing, according to http://api.zeromq.org/zmq_tcp.html using the IP address should work too
+| [Sunday 19 December 2010] [22:44:37] <davidstrauss>	Steve-o, All the demos I see have the ZMQ_REP server bind and the ZMQ_REQ connect
+| [Sunday 19 December 2010] [22:44:49] <Steve-o>	change line 11 to socket.bind("tcp://127.0.0.1:5000");
+| [Sunday 19 December 2010] [22:45:07] <Steve-o>	sorry, getting confused
+| [Sunday 19 December 2010] [22:45:09] <davidstrauss>	Steve-o, I can't have the server and client both bind
+| [Sunday 19 December 2010] [22:45:22] <Steve-o>	REQ should connect only, REP should bind only, right?
+| [Sunday 19 December 2010] [22:45:43] <davidstrauss>	Steve-o, That's the impression i'm under, and it's not working for me.
+| [Sunday 19 December 2010] [22:45:51] <davidstrauss>	Steve-o, Nor is it giving any errors.
+| [Sunday 19 December 2010] [22:47:34] <Steve-o>	mmm, don't you have to do a bit more work in the echo.cpp loop
+| [Sunday 19 December 2010] [22:47:49] <Steve-o>	it looks like you are re-using one message object all the time
+| [Sunday 19 December 2010] [22:47:49] <davidstrauss>	Steve-o, How so?
+| [Sunday 19 December 2010] [22:48:05] <davidstrauss>	Steve-o, Even reusing the same message object should work at least once
+| [Sunday 19 December 2010] [22:48:19] <Steve-o>	yes, I would think so
+| [Sunday 19 December 2010] [22:48:32] <davidstrauss>	Steve-o, The code never reaches "cout << "Message: " << (char *) message.data() << endl;"
+| [Sunday 19 December 2010] [22:48:58] <Steve-o>	stuck in recv?
+| [Sunday 19 December 2010] [22:49:12] <davidstrauss>	Steve-o, yes, blocking on getting a message
+| [Sunday 19 December 2010] [22:49:44] <davidstrauss>	Steve-o, I just see "Waiting on message" when I run it
+| [Sunday 19 December 2010] [22:51:54] <Steve-o>	but Python version is working?
+| [Sunday 19 December 2010] [22:52:03] <davidstrauss>	Steve-o, yes
+| [Sunday 19 December 2010] [22:52:41] <davidstrauss>	Steve-o, http://pastie.org/1391002
+| [Sunday 19 December 2010] [22:53:37] <Steve-o>	try adding a socket.recv() in the client.cpp
+| [Sunday 19 December 2010] [22:53:49] <Steve-o>	I'm guessing the client is terminating too quickly
+| [Sunday 19 December 2010] [22:54:35] <davidstrauss>	Steve-o, woo hoo
+| [Sunday 19 December 2010] [22:55:03] <davidstrauss>	Steve-o, the works!
+| [Sunday 19 December 2010] [22:55:06] <davidstrauss>	that*
+| [Sunday 19 December 2010] [22:55:18] <Steve-o>	which version of 0mq is this?
+| [Sunday 19 December 2010] [22:56:27] <davidstrauss>	Steve-o, 2.0.10
+| [Sunday 19 December 2010] [22:56:49] <Steve-o>	ok 2.1.0 will wait for you in zmq_term
+| [Sunday 19 December 2010] [22:56:59] <Steve-o>	2.0 will exit out early
+| [Sunday 19 December 2010] [22:57:01] <davidstrauss>	Steve-o, i see
+| [Sunday 19 December 2010] [22:57:11] <Steve-o>	ZMQ_LINGER option
+| [Sunday 19 December 2010] [22:57:38] <Steve-o>	otherwise you need to sleep or some other hack
+| [Sunday 19 December 2010] [22:57:51] <davidstrauss>	Steve-o, honestly, it's kind of silly to use REP/REQ without the client waiting on the reply
+| [Sunday 19 December 2010] [22:58:01] <davidstrauss>	Steve-o, I was just trying to get things working
+| [Sunday 19 December 2010] [22:58:26] <Steve-o>	it also affects other sockets, like trying to PUB on message and quit
+| [Sunday 19 December 2010] [22:58:53] <Steve-o>	which makes command line utilities a bit useless
+| [Sunday 19 December 2010] [23:01:52] <Steve-o>	REQ/REP limits you on speed to RTT, you need other socket types for faster performance
+| [Sunday 19 December 2010] [23:04:33] <davidstrauss>	Steve-o, to RTT?
+| [Sunday 19 December 2010] [23:04:44] <Steve-o>	round-trip-time on the LAN/MAN/WAN
+| [Sunday 19 December 2010] [23:05:41] <Steve-o>	0mq excels when you can batch up messages
+| [Sunday 19 December 2010] [23:06:47] <Steve-o>	depends on application architecture and requirements
+| [Sunday 19 December 2010] [23:07:05] <Steve-o>	whether you wish to allow several outstanding requests for example
+| [Sunday 19 December 2010] [23:18:10] <davidstrauss>	Steve-o, Cool. So, I have PHP, Python, and C++ interoperating on the REQ/REP pattern. I'll try to clean up the code and publish it.
+| [Sunday 19 December 2010] [23:19:10] <davidstrauss>	Steve-o, thanks for your help
+| [Sunday 19 December 2010] [23:26:34] <Steve-o>	np
+| [Sunday 19 December 2010] [23:28:35] <davidstrauss>	Is there any good comparison between using Thrift's built-in RPC support vs. using ZeroMQ?
+| [Sunday 19 December 2010] [23:32:30] <Steve-o>	I've seen it come up, but nothing detailed apart from discussing it
+| [Sunday 19 December 2010] [23:35:30] <Steve-o>	I think there was a protobuf vs thrift as message format above zeromq
+| [Sunday 19 December 2010] [23:35:41] <Steve-o>	nothing on the actual RPC implementation
+| [Sunday 19 December 2010] [23:36:13] <Steve-o>	lol, thrift over 0mq:  http://www.mail-archive.com/thrift-dev@incubator.apache.org/msg08473.html
+| [Sunday 19 December 2010] [23:36:41] <davidstrauss>	Steve-o, Well, it is necessary to pick *some* sort of format for messages.
+| [Sunday 19 December 2010] [23:37:00] <davidstrauss>	Steve-o, I'm looking at pure Thrift vs. Thrift serialization + ZeroMQ
+| [Sunday 19 December 2010] [23:37:49] <Steve-o>	ok, I like protobufs as it is easy to roll
+| [Sunday 19 December 2010] [23:38:12] <Steve-o>	still a bit backward compared with TIBCO quick forms though
+| [Sunday 19 December 2010] [23:38:36] <davidstrauss>	Steve-o, Yeah, but I'm working with primarily PHP clients, and Protobufs only have experimental PHP support with no accelerated serialization
+| [Sunday 19 December 2010] [23:39:33] <Steve-o>	ok
+| [Sunday 19 December 2010] [23:40:01] <Steve-o>	You also have JSON and derivatives to pick from then
+| [Sunday 19 December 2010] [23:40:39] <davidstrauss>	Steve-o, JSON isn't great for C++ servers, nor is it a terribly efficient format :-/
+| [Sunday 19 December 2010] [23:41:39] <Steve-o>	but it's easy for PHP, JavaScript, and humans to read :D
+| [Sunday 19 December 2010] [23:41:56] <Steve-o>	and there are libraries for it everywhere
+| [Sunday 19 December 2010] [23:42:04] <davidstrauss>	Steve-o, agreed
+| [Sunday 19 December 2010] [23:42:19] <Steve-o>	it's less cumbersome than XDR anyhow
+| [Sunday 19 December 2010] [23:44:00] <Steve-o>	you could roll your own PHP extension with fixed scope,
+| [Sunday 19 December 2010] [23:48:47] <Steve-o>	Google lacks dynamic forms, everything is static compiled
