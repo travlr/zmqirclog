@@ -2550,6 +2550,37 @@
 <div class="line">[Sunday 19 December 2010] [23:42:19] &lt;Steve-o&gt;        it&#8217;s less cumbersome than XDR anyhow</div>
 <div class="line">[Sunday 19 December 2010] [23:44:00] &lt;Steve-o&gt;        you could roll your own PHP extension with fixed scope,</div>
 <div class="line">[Sunday 19 December 2010] [23:48:47] &lt;Steve-o&gt;        Google lacks dynamic forms, everything is static compiled</div>
+<div class="line">[Monday 20 December 2010] [03:16:36] &lt;sustrik&gt;        hi mikko: what segfault?</div>
+<div class="line">[Monday 20 December 2010] [05:22:49] &lt;mikko&gt;  sustrik: <a class="reference external" href="https://gist.github.com/17fb87b54e83832354b5">https://gist.github.com/17fb87b54e83832354b5</a></div>
+<div class="line">[Monday 20 December 2010] [05:24:39] &lt;sustrik&gt;        mikko: looks like a deallocation of invalid message</div>
+<div class="line">[Monday 20 December 2010] [05:24:56] &lt;sustrik&gt;        do you have a test program?</div>
+<div class="line">[Monday 20 December 2010] [05:25:07] &lt;mikko&gt;  the way i reproduce is by creating a rep socket</div>
+<div class="line">[Monday 20 December 2010] [05:25:11] &lt;mikko&gt;  then telnet in</div>
+<div class="line">[Monday 20 December 2010] [05:25:19] &lt;mikko&gt;  press ctrl+c in telnet</div>
+<div class="line">[Monday 20 December 2010] [05:25:22] &lt;mikko&gt;  and enter twice</div>
+<div class="line">[Monday 20 December 2010] [05:25:33] &lt;sustrik&gt;        sorry, what&#8217;s enter twice?</div>
+<div class="line">[Monday 20 December 2010] [05:25:46] &lt;mikko&gt;</div>
+<div class="line">[Monday 20 December 2010] [05:25:47] &lt;mikko&gt;</div>
+<div class="line">[Monday 20 December 2010] [05:25:54] &lt;sustrik&gt;        in telnet?</div>
+<div class="line">[Monday 20 December 2010] [05:25:57] &lt;mikko&gt;  yes</div>
+<div class="line">[Monday 20 December 2010] [05:26:11] &lt;sustrik&gt;        let me try...</div>
+<div class="line">[Monday 20 December 2010] [05:26:11] &lt;mikko&gt;  i&#8217;ve been too lazy to check the exact bytes that combo sends :)</div>
+<div class="line">[Monday 20 December 2010] [05:26:20] &lt;sustrik&gt;        doesn&#8217;t matter</div>
+<div class="line">[Monday 20 December 2010] [05:27:16] &lt;sustrik&gt;        reproduced</div>
+<div class="line">[Monday 20 December 2010] [05:27:18] &lt;sustrik&gt;        thanks!</div>
+<div class="line">[Monday 20 December 2010] [05:30:43] &lt;mikko&gt;  np</div>
+<div class="line">[Monday 20 December 2010] [05:31:47] &lt;mikko&gt;  <a class="reference external" href="https://gist.github.com/21ee1c85b1b2f6cbba66">https://gist.github.com/21ee1c85b1b2f6cbba66</a></div>
+<div class="line">[Monday 20 December 2010] [05:31:54] &lt;mikko&gt;  that&#8217;s from my gdb session last night</div>
+<div class="line">[Monday 20 December 2010] [05:47:52] &lt;CIA-21&gt; zeromq2: 03Martin Sustrik 07master * r112d0cd 10/ src/decoder.cpp :</div>
+<div class="line">[Monday 20 December 2010] [05:47:52] &lt;CIA-21&gt; zeromq2: Fix the segfault when over-sized message is rejected.</div>
+<div class="line">[Monday 20 December 2010] [05:47:52] &lt;CIA-21&gt; zeromq2: The in_progress message inside of decoder was left</div>
+<div class="line">[Monday 20 December 2010] [05:47:52] &lt;CIA-21&gt; zeromq2: uninitialised in such a case.</div>
+<div class="line">[Monday 20 December 2010] [05:47:52] &lt;CIA-21&gt; zeromq2: Signed-off-by: Martin Sustrik &lt;<a class="reference external" href="mailto:sustrik&#37;&#52;&#48;250bpm&#46;com">sustrik<span>&#64;</span>250bpm<span>&#46;</span>com</a>&gt; - <a class="reference external" href="http://bit.ly/grKk2b">http://bit.ly/grKk2b</a></div>
+<div class="line">[Monday 20 December 2010] [05:53:09] &lt;mikko&gt;  sustrik: gj, that was quick</div>
+<div class="line">[Monday 20 December 2010] [06:12:00] &lt;sustrik&gt;        :)</div>
+<div class="line">[Monday 20 December 2010] [07:05:46] &lt;CIA-21&gt; zeromq2: 03Martin Sustrik 07master * r51d2d9b 10/ src/decoder.cpp :</div>
+<div class="line">[Monday 20 December 2010] [07:05:46] &lt;CIA-21&gt; zeromq2: Yet one more fix for oversized messages.</div>
+<div class="line">[Monday 20 December 2010] [07:05:46] &lt;CIA-21&gt; zeromq2: Signed-off-by: Martin Sustrik &lt;<a class="reference external" href="mailto:sustrik&#37;&#52;&#48;250bpm&#46;com">sustrik<span>&#64;</span>250bpm<span>&#46;</span>com</a>&gt; - <a class="reference external" href="http://bit.ly/ez2JYr">http://bit.ly/ez2JYr</a></div>
 </div>
 </div>
 
