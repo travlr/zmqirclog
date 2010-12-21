@@ -2536,3 +2536,141 @@
 | [Monday 20 December 2010] [07:05:46] <CIA-21>	zeromq2: 03Martin Sustrik 07master * r51d2d9b 10/ src/decoder.cpp : 
 | [Monday 20 December 2010] [07:05:46] <CIA-21>	zeromq2: Yet one more fix for oversized messages.
 | [Monday 20 December 2010] [07:05:46] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/ez2JYr
+| [Monday 20 December 2010] [13:41:56] <myraft_>	mikko - I haven't been back here for a while. Quick update - got past the initial Java HelloWorld queue setup. The problem was the way I was running the Java code on Ubuntu.
+| [Monday 20 December 2010] [13:42:05] <myraft_>	Thanks for the help the other day.
+| [Monday 20 December 2010] [13:44:51] <mikko>	no problem
+| [Monday 20 December 2010] [13:45:01] <mikko>	what is the problem of running java code on ubuntu?
+| [Monday 20 December 2010] [14:01:58] <myraft_>	mikko - the guide explicitly states to calls to run it with -Djava.library.path="/usr/local/lib". I did sudo ldconfig , which in theory should have loaded it and be avaiable for any program to use (at least that was my impression). Once I set that as VM Argument - everythigng started working.
+| [Monday 20 December 2010] [14:09:58] <mikko>	nice!
+| [Monday 20 December 2010] [14:10:05] <mikko>	so the error message was correct after all
+| [Monday 20 December 2010] [14:10:34] <mikko>	good to know, now we know what to tell the next guy asking
+| [Monday 20 December 2010] [14:25:09] <dv_>	woot
+| [Monday 20 December 2010] [14:25:19] <dv_>	i can now send asynchronous function calls through zeromq
+| [Monday 20 December 2010] [14:32:41] <mikko>	dv_: cool!
+| [Monday 20 December 2010] [14:32:52] <mikko>	dv_: what language are you working in?
+| [Monday 20 December 2010] [14:32:55] <dv_>	its not rpc, mind you
+| [Monday 20 December 2010] [14:33:05] <dv_>	more like boost signals/libsigc++/qt signals
+| [Monday 20 December 2010] [14:33:14] <dv_>	mikko, right now its for c++ and ruby
+| [Monday 20 December 2010] [14:33:32] <dv_>	i plan on adding support for more languages. especially javascript through websockets
+| [Monday 20 December 2010] [14:33:32] <mikko>	im doing something similar in my current project
+| [Monday 20 December 2010] [14:33:40] <mikko>	i got "intercomm" for communicating between threads
+| [Monday 20 December 2010] [14:33:47] <mikko>	sending shutdown messages etc
+| [Monday 20 December 2010] [14:33:50] <dv_>	on one side, i do send_call("foobar", params); 
+| [Monday 20 December 2010] [14:33:57] <dv_>	on the other side, i previously registered a "foobar" callback
+| [Monday 20 December 2010] [14:34:03] <mikko>	nice
+| [Monday 20 December 2010] [14:34:14] <dv_>	and it transmits the params etc. through the wire
+| [Monday 20 December 2010] [14:34:21] <dv_>	the c++ side uses a lot of metaprogramming fu :)
+| [Monday 20 December 2010] [14:34:29] <mikko>	nice, nice
+| [Monday 20 December 2010] [14:35:13] <dv_>	do you send more complex types, such as arrays?
+| [Monday 20 December 2010] [14:35:31] <mikko>	no, my use-case is very simple
+| [Monday 20 December 2010] [14:35:32] <dv_>	i want to limit things, that is, primitive types, and maybe binary buffers
+| [Monday 20 December 2010] [14:35:39] <mikko>	just sending ints
+| [Monday 20 December 2010] [14:35:57] <dv_>	but more heavyweight transmissions need their dedicated channel anyway in my opinion
+| [Monday 20 December 2010] [14:36:16] <mikko>	im sending enums like HTTPD_SHUTDOWN, SEND_STATS etc
+| [Monday 20 December 2010] [14:36:20] <mikko>	fairly simple
+| [Monday 20 December 2010] [14:36:41] <dv_>	yeah, usually this kind of communication makes up the majority of it all
+| [Monday 20 December 2010] [14:36:57] <mikko>	i got a libevent based httpd that pushes data down to 0MQ, which is consumed by classifier nodes and then aggregated from classifiers in aggregator nodes
+| [Monday 20 December 2010] [14:37:07] <mikko>	in=in to
+| [Monday 20 December 2010] [14:40:43] <dv_>	btw. in case you do something with epgm,
+| [Monday 20 December 2010] [14:40:55] <dv_>	try using your IP address instead of the NIC name
+| [Monday 20 December 2010] [14:41:38] <dv_>	sometimes openpgm seems to have problems with the nic's name, this issue was discussed a bit in the mailing list a while ago
+| [Monday 20 December 2010] [20:25:15] <falconair>	hi all, a few newbie questions: can zeromq api be used to do raw tcp/ip programming?
+| [Monday 20 December 2010] [21:21:08] <xpromache1>	hello guys, I'm considering zmq for replacing corba in an application
+| [Monday 20 December 2010] [21:21:25] <xpromache1>	the typical rpc stuff I think I know how to implement
+| [Monday 20 December 2010] [21:22:00] <xpromache1>	but at some point a client can send a request to the server that will have to send some large amounts of data back to the clinet
+| [Monday 20 December 2010] [21:22:13] <xpromache1>	how is this best done?
+| [Monday 20 December 2010] [21:22:47] <xpromache1>	I guess I need to answer the request with "OK, here it comes", and then to open another socket for pushing the data?
+| [Monday 20 December 2010] [21:22:55] <xpromache1>	what sort of socket?
+| [Monday 20 December 2010] [23:53:37] <cremes>	falconair: no
+| [Monday 20 December 2010] [23:53:54] <cremes>	it's a higher level api than that with a few abstractions
+| [Monday 20 December 2010] [23:54:02] <cremes>	make sure to read the guide linked off of the main page
+| [Monday 20 December 2010] [23:54:34] <cremes>	xpromache1: open a socket for each kind of messaging pattern you plan to use
+| [Monday 20 December 2010] [23:54:59] <cremes>	if you are waiting for a request/reply to start a large data download, use the REQ/REP sockets for that purpose
+| [Monday 20 December 2010] [23:55:21] <cremes>	for the big data download, consider PUB/SUB or PUSH/PULL depending on what you need
+| [Monday 20 December 2010] [23:55:36] <cremes>	you may even want to look at PAIR; it really depends on your app requirement
+| [Monday 20 December 2010] [23:56:03] <cremes>	make sure to read the guide linked off of the main page; it may help you pick the right pattern and its associated sockets
+| [Monday 20 December 2010] [23:56:40] <xpromache1>	ok, thanks for the answer
+| [Monday 20 December 2010] [23:56:51] <xpromache1>	is there a way to use all these over a limited number of ports
+| [Monday 20 December 2010] [23:57:00] <xpromache1>	like one for req/rep
+| [Monday 20 December 2010] [23:57:08] <xpromache1>	and another one for the data tansfer
+| [Tuesday 21 December 2010] [00:00:39] <cremes>	absolutely; each socket should get its own transport (tcp/pgm/ipc/inproc) and port (not necessary for transports other than tcp)
+| [Tuesday 21 December 2010] [00:01:20] <cremes>	0mq doesn't use "random" ports; you specifically connect or bind to whatever you need
+| [Tuesday 21 December 2010] [00:02:33] <xpromache1>	yes but I want to use the same port for all clients
+| [Tuesday 21 December 2010] [00:02:40] <xpromache1>	or maybe this doesn't make sense
+| [Tuesday 21 December 2010] [00:02:59] <xpromache1>	I mean it only makes sense when there is some firewalls in between
+| [Tuesday 21 December 2010] [00:03:14] <xpromache1>	but this is not the use case where zeromq should be used, right?
+| [Tuesday 21 December 2010] [00:03:57] <cremes>	xpromache1: not really sure what you are trying to d
+| [Tuesday 21 December 2010] [00:04:13] <cremes>	if you have a complex use-case, you may consider posting it to the ML for comment
+| [Tuesday 21 December 2010] [00:04:58] <xpromache1>	not really complex
+| [Tuesday 21 December 2010] [00:05:06] <xpromache1>	it's like a database driver
+| [Tuesday 21 December 2010] [00:05:16] <xpromache1>	you execute some small queries from time to time
+| [Tuesday 21 December 2010] [00:05:27] <xpromache1>	but ocasionally you want to retrieve a lot of data
+| [Tuesday 21 December 2010] [00:05:37] <xpromache1>	and I prefer not to have a request for each row
+| [Tuesday 21 December 2010] [00:07:36] <cremes>	then you would probably use the pattern i suggested above; REQ/REP for the query, PUB/SUB for the data transmission
+| [Tuesday 21 December 2010] [00:08:04] <cremes>	but if thisis over tcp,then the reqp/rep would get its own port as would the pub/sub
+| [Tuesday 21 December 2010] [00:08:14] <cremes>	they cannot share the same port simultaneously
+| [Tuesday 21 December 2010] [00:08:41] <xpromache1>	so if I have 10 clients connected simultaneously, how many ports do I need?
+| [Tuesday 21 December 2010] [00:09:14] <cremes>	2, one for the req/rep and 1 for the pub/sub
+| [Tuesday 21 December 2010] [00:10:02] <xpromache1>	but then all the clients will get all the data even from the requests of the other clients?
+| [Tuesday 21 December 2010] [00:10:34] <cremes>	they could ignore it if the published topic is not something they are interested in; altnerately, use the XREQ/XREP socket types
+| [Tuesday 21 December 2010] [00:10:38] <cremes>	have you read the guide yet?
+| [Tuesday 21 December 2010] [00:11:22] <xpromache1>	I did partly but this is not clear to me
+| [Tuesday 21 December 2010] [00:11:32] <xpromache1>	exactly what you can multiplex on a server socket
+| [Tuesday 21 December 2010] [00:12:22] <cremes>	i may not be able to clarify it completely for you :)
+| [Tuesday 21 December 2010] [00:12:51] <cremes>	a 0mq socket is a smart socket; it can connect/bind to multiple endpoints simultaneously
+| [Tuesday 21 December 2010] [00:13:13] <cremes>	so in your situation the server would likely bind a REP or XREP socket
+| [Tuesday 21 December 2010] [00:13:36] <xpromache1>	yes, that's clear for the response reply pattern
+| [Tuesday 21 December 2010] [00:13:38] <cremes>	the clients would come in with REQ (or XREQ) sockets via  "connect" call; 0mq handles the multiplexing for you
+| [Tuesday 21 December 2010] [00:13:48] <xpromache1>	what is not clear is for the data transfer
+| [Tuesday 21 December 2010] [00:14:07] <cremes>	well, i suggested pub/sub but maybe that's not appropriate
+| [Tuesday 21 December 2010] [00:14:16] <xpromache1>	so a client connects and sends a request for the data
+| [Tuesday 21 December 2010] [00:14:18] <cremes>	you could use the xreq/xrep sockets for the data transfer
+| [Tuesday 21 December 2010] [00:14:27] <cremes>	go on
+| [Tuesday 21 December 2010] [00:14:27] <xpromache1>	I can send a reply saying connect here to get the data
+| [Tuesday 21 December 2010] [00:14:32] <cremes>	sure
+| [Tuesday 21 December 2010] [00:14:41] <xpromache1>	but what does it mean here
+| [Tuesday 21 December 2010] [00:15:08] <cremes>	"here" where? explain.
+| [Tuesday 21 December 2010] [00:15:17] <xpromache1>	that's my question
+| [Tuesday 21 December 2010] [00:15:24] <xpromache1>	what do I answer to the client
+| [Tuesday 21 December 2010] [00:15:30] <xpromache1>	where to connect to get its data
+| [Tuesday 21 December 2010] [00:15:55] <xpromache1>	do I have to start a new thread, create a new socket on a random port, and start pushing data once a client is connected
+| [Tuesday 21 December 2010] [00:16:05] <xpromache1>	or there is a smarter way
+| [Tuesday 21 December 2010] [00:16:11] <cremes>	you could send in your reply something like: :transport => :tcp, :address => '10.10.4.48', :port => 1800
+| [Tuesday 21 December 2010] [00:16:30] <cremes>	then the client would know where to go for getting the data
+| [Tuesday 21 December 2010] [00:16:49] <cremes>	you can't do random ports without informing the client what it will be
+| [Tuesday 21 December 2010] [00:17:02] <xpromache1>	yes, I realize that
+| [Tuesday 21 December 2010] [00:17:13] <xpromache1>	I was hoping that it is somehow possible to do without random ports
+| [Tuesday 21 December 2010] [00:17:13] <cremes>	you *could* use another thread or use the poll api to do it all within one
+| [Tuesday 21 December 2010] [00:17:17] <xpromache1>	just one fixed port
+| [Tuesday 21 December 2010] [00:17:37] <xpromache1>	like I have port x for request/reply
+| [Tuesday 21 December 2010] [00:17:43] <xpromache1>	and port y for data transfer
+| [Tuesday 21 December 2010] [00:17:52] <cremes>	sure, you could use 1 fixed port but you could run into issues if you have lots of concurrent requests/replies
+| [Tuesday 21 December 2010] [00:18:36] <cremes>	you would probably want to use xreq/xrep sockets so your data transfer could target the right client
+| [Tuesday 21 December 2010] [00:18:53] <cremes>	take a look at the "advanced routing" section of the guide; i'm pretty sure they wrote about that
+| [Tuesday 21 December 2010] [00:19:15] <xpromache1>	but xreq/xrep needs one message in both ways
+| [Tuesday 21 December 2010] [00:19:23] <cremes>	not true
+| [Tuesday 21 December 2010] [00:19:24] <xpromache1>	I would need something like xpush xpull
+| [Tuesday 21 December 2010] [00:19:31] <cremes>	not true
+| [Tuesday 21 December 2010] [00:19:48] <cremes>	reqp/rep enforces a strict request/reply/request/reply pattern
+| [Tuesday 21 December 2010] [00:19:59] <cremes>	the xreq/xrep sockets do *not* enforce that
+| [Tuesday 21 December 2010] [00:20:32] <cremes>	so, using xreq/xrep, you could send a single request and get a multiple message reply
+| [Tuesday 21 December 2010] [00:21:45] <xpromache1>	ok, I didn't know that
+| [Tuesday 21 December 2010] [00:22:08] <xpromache1>	I will look further into it, thanks for the hints
+| [Tuesday 21 December 2010] [00:22:40] <cremes>	no prob...
+| [Tuesday 21 December 2010] [00:22:43] <cremes>	time for bed!
+| [Tuesday 21 December 2010] [00:26:11] <xpromache1>	me too, I have to go to work in 2 hours :(
+| [Tuesday 21 December 2010] [01:15:25] <bkad>	anyone know how to get the zmq_server binary? cant find it in the installation instructions
+| [Tuesday 21 December 2010] [01:22:04] <guido_g>	what server?
+| [Tuesday 21 December 2010] [01:23:23] <bkad>	zmq_server?
+| [Tuesday 21 December 2010] [01:23:39] <bkad>	there's lots of references to it in the zmq docs
+| [Tuesday 21 December 2010] [01:24:10] <bkad>	but the ./configure, make, make install didn't build that binary
+| [Tuesday 21 December 2010] [01:24:58] <guido_g>	the docs are a bit outdated i fear
+| [Tuesday 21 December 2010] [01:25:07] <bkad>	in http://www.zeromq.org/code:examples-exchange
+| [Tuesday 21 December 2010] [01:25:12] <bkad>	under Running It
+| [Tuesday 21 December 2010] [01:25:20] <guido_g>	there is a devices directory w/ some executables
+| [Tuesday 21 December 2010] [01:25:27] <guido_g>	ouch
+| [Tuesday 21 December 2010] [01:25:38] <guido_g>	this example is way outdated
+| [Tuesday 21 December 2010] [01:25:46] <sustrik>	see the top of the page
+| [Tuesday 21 December 2010] [01:25:48] <sustrik>	WARNING: This text is deprecated and refers to an old version of MQ. It remains here for historical interest. DO NOT USE THIS TO LEARN MQ.
+| [Tuesday 21 December 2010] [01:25:56] <guido_g>	it'S even pre zeromq2 afair
+| [Tuesday 21 December 2010] [01:26:03] <bkad>	ahhh, oops

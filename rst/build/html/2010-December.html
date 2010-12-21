@@ -2581,6 +2581,144 @@
 <div class="line">[Monday 20 December 2010] [07:05:46] &lt;CIA-21&gt; zeromq2: 03Martin Sustrik 07master * r51d2d9b 10/ src/decoder.cpp :</div>
 <div class="line">[Monday 20 December 2010] [07:05:46] &lt;CIA-21&gt; zeromq2: Yet one more fix for oversized messages.</div>
 <div class="line">[Monday 20 December 2010] [07:05:46] &lt;CIA-21&gt; zeromq2: Signed-off-by: Martin Sustrik &lt;<a class="reference external" href="mailto:sustrik&#37;&#52;&#48;250bpm&#46;com">sustrik<span>&#64;</span>250bpm<span>&#46;</span>com</a>&gt; - <a class="reference external" href="http://bit.ly/ez2JYr">http://bit.ly/ez2JYr</a></div>
+<div class="line">[Monday 20 December 2010] [13:41:56] &lt;<a href="#id430"><span class="problematic" id="id431">myraft_</span></a>&gt;        mikko - I haven&#8217;t been back here for a while. Quick update - got past the initial Java HelloWorld queue setup. The problem was the way I was running the Java code on Ubuntu.</div>
+<div class="line">[Monday 20 December 2010] [13:42:05] &lt;<a href="#id432"><span class="problematic" id="id433">myraft_</span></a>&gt;        Thanks for the help the other day.</div>
+<div class="line">[Monday 20 December 2010] [13:44:51] &lt;mikko&gt;  no problem</div>
+<div class="line">[Monday 20 December 2010] [13:45:01] &lt;mikko&gt;  what is the problem of running java code on ubuntu?</div>
+<div class="line">[Monday 20 December 2010] [14:01:58] &lt;<a href="#id434"><span class="problematic" id="id435">myraft_</span></a>&gt;        mikko - the guide explicitly states to calls to run it with -Djava.library.path=&#8221;/usr/local/lib&#8221;. I did sudo ldconfig , which in theory should have loaded it and be avaiable for any program to use (at least that was my impression). Once I set that as VM Argument - everythigng started working.</div>
+<div class="line">[Monday 20 December 2010] [14:09:58] &lt;mikko&gt;  nice!</div>
+<div class="line">[Monday 20 December 2010] [14:10:05] &lt;mikko&gt;  so the error message was correct after all</div>
+<div class="line">[Monday 20 December 2010] [14:10:34] &lt;mikko&gt;  good to know, now we know what to tell the next guy asking</div>
+<div class="line">[Monday 20 December 2010] [14:25:09] &lt;<a href="#id436"><span class="problematic" id="id437">dv_</span></a>&gt;    woot</div>
+<div class="line">[Monday 20 December 2010] [14:25:19] &lt;<a href="#id438"><span class="problematic" id="id439">dv_</span></a>&gt;    i can now send asynchronous function calls through zeromq</div>
+<div class="line">[Monday 20 December 2010] [14:32:41] &lt;mikko&gt;  <a href="#id440"><span class="problematic" id="id441">dv_</span></a>: cool!</div>
+<div class="line">[Monday 20 December 2010] [14:32:52] &lt;mikko&gt;  <a href="#id442"><span class="problematic" id="id443">dv_</span></a>: what language are you working in?</div>
+<div class="line">[Monday 20 December 2010] [14:32:55] &lt;<a href="#id444"><span class="problematic" id="id445">dv_</span></a>&gt;    its not rpc, mind you</div>
+<div class="line">[Monday 20 December 2010] [14:33:05] &lt;<a href="#id446"><span class="problematic" id="id447">dv_</span></a>&gt;    more like boost signals/libsigc++/qt signals</div>
+<div class="line">[Monday 20 December 2010] [14:33:14] &lt;<a href="#id448"><span class="problematic" id="id449">dv_</span></a>&gt;    mikko, right now its for c++ and ruby</div>
+<div class="line">[Monday 20 December 2010] [14:33:32] &lt;<a href="#id450"><span class="problematic" id="id451">dv_</span></a>&gt;    i plan on adding support for more languages. especially javascript through websockets</div>
+<div class="line">[Monday 20 December 2010] [14:33:32] &lt;mikko&gt;  im doing something similar in my current project</div>
+<div class="line">[Monday 20 December 2010] [14:33:40] &lt;mikko&gt;  i got &#8220;intercomm&#8221; for communicating between threads</div>
+<div class="line">[Monday 20 December 2010] [14:33:47] &lt;mikko&gt;  sending shutdown messages etc</div>
+<div class="line">[Monday 20 December 2010] [14:33:50] &lt;<a href="#id452"><span class="problematic" id="id453">dv_</span></a>&gt;    on one side, i do send_call(&#8220;foobar&#8221;, params);</div>
+<div class="line">[Monday 20 December 2010] [14:33:57] &lt;<a href="#id454"><span class="problematic" id="id455">dv_</span></a>&gt;    on the other side, i previously registered a &#8220;foobar&#8221; callback</div>
+<div class="line">[Monday 20 December 2010] [14:34:03] &lt;mikko&gt;  nice</div>
+<div class="line">[Monday 20 December 2010] [14:34:14] &lt;<a href="#id456"><span class="problematic" id="id457">dv_</span></a>&gt;    and it transmits the params etc. through the wire</div>
+<div class="line">[Monday 20 December 2010] [14:34:21] &lt;<a href="#id458"><span class="problematic" id="id459">dv_</span></a>&gt;    the c++ side uses a lot of metaprogramming fu :)</div>
+<div class="line">[Monday 20 December 2010] [14:34:29] &lt;mikko&gt;  nice, nice</div>
+<div class="line">[Monday 20 December 2010] [14:35:13] &lt;<a href="#id460"><span class="problematic" id="id461">dv_</span></a>&gt;    do you send more complex types, such as arrays?</div>
+<div class="line">[Monday 20 December 2010] [14:35:31] &lt;mikko&gt;  no, my use-case is very simple</div>
+<div class="line">[Monday 20 December 2010] [14:35:32] &lt;<a href="#id462"><span class="problematic" id="id463">dv_</span></a>&gt;    i want to limit things, that is, primitive types, and maybe binary buffers</div>
+<div class="line">[Monday 20 December 2010] [14:35:39] &lt;mikko&gt;  just sending ints</div>
+<div class="line">[Monday 20 December 2010] [14:35:57] &lt;<a href="#id464"><span class="problematic" id="id465">dv_</span></a>&gt;    but more heavyweight transmissions need their dedicated channel anyway in my opinion</div>
+<div class="line">[Monday 20 December 2010] [14:36:16] &lt;mikko&gt;  im sending enums like HTTPD_SHUTDOWN, SEND_STATS etc</div>
+<div class="line">[Monday 20 December 2010] [14:36:20] &lt;mikko&gt;  fairly simple</div>
+<div class="line">[Monday 20 December 2010] [14:36:41] &lt;<a href="#id466"><span class="problematic" id="id467">dv_</span></a>&gt;    yeah, usually this kind of communication makes up the majority of it all</div>
+<div class="line">[Monday 20 December 2010] [14:36:57] &lt;mikko&gt;  i got a libevent based httpd that pushes data down to 0MQ, which is consumed by classifier nodes and then aggregated from classifiers in aggregator nodes</div>
+<div class="line">[Monday 20 December 2010] [14:37:07] &lt;mikko&gt;  in=in to</div>
+<div class="line">[Monday 20 December 2010] [14:40:43] &lt;<a href="#id468"><span class="problematic" id="id469">dv_</span></a>&gt;    btw. in case you do something with epgm,</div>
+<div class="line">[Monday 20 December 2010] [14:40:55] &lt;<a href="#id470"><span class="problematic" id="id471">dv_</span></a>&gt;    try using your IP address instead of the NIC name</div>
+<div class="line">[Monday 20 December 2010] [14:41:38] &lt;<a href="#id472"><span class="problematic" id="id473">dv_</span></a>&gt;    sometimes openpgm seems to have problems with the nic&#8217;s name, this issue was discussed a bit in the mailing list a while ago</div>
+<div class="line">[Monday 20 December 2010] [20:25:15] &lt;falconair&gt;      hi all, a few newbie questions: can zeromq api be used to do raw tcp/ip programming?</div>
+<div class="line">[Monday 20 December 2010] [21:21:08] &lt;xpromache1&gt;     hello guys, I&#8217;m considering zmq for replacing corba in an application</div>
+<div class="line">[Monday 20 December 2010] [21:21:25] &lt;xpromache1&gt;     the typical rpc stuff I think I know how to implement</div>
+<div class="line">[Monday 20 December 2010] [21:22:00] &lt;xpromache1&gt;     but at some point a client can send a request to the server that will have to send some large amounts of data back to the clinet</div>
+<div class="line">[Monday 20 December 2010] [21:22:13] &lt;xpromache1&gt;     how is this best done?</div>
+<div class="line">[Monday 20 December 2010] [21:22:47] &lt;xpromache1&gt;     I guess I need to answer the request with &#8220;OK, here it comes&#8221;, and then to open another socket for pushing the data?</div>
+<div class="line">[Monday 20 December 2010] [21:22:55] &lt;xpromache1&gt;     what sort of socket?</div>
+<div class="line">[Monday 20 December 2010] [23:53:37] &lt;cremes&gt; falconair: no</div>
+<div class="line">[Monday 20 December 2010] [23:53:54] &lt;cremes&gt; it&#8217;s a higher level api than that with a few abstractions</div>
+<div class="line">[Monday 20 December 2010] [23:54:02] &lt;cremes&gt; make sure to read the guide linked off of the main page</div>
+<div class="line">[Monday 20 December 2010] [23:54:34] &lt;cremes&gt; xpromache1: open a socket for each kind of messaging pattern you plan to use</div>
+<div class="line">[Monday 20 December 2010] [23:54:59] &lt;cremes&gt; if you are waiting for a request/reply to start a large data download, use the REQ/REP sockets for that purpose</div>
+<div class="line">[Monday 20 December 2010] [23:55:21] &lt;cremes&gt; for the big data download, consider PUB/SUB or PUSH/PULL depending on what you need</div>
+<div class="line">[Monday 20 December 2010] [23:55:36] &lt;cremes&gt; you may even want to look at PAIR; it really depends on your app requirement</div>
+<div class="line">[Monday 20 December 2010] [23:56:03] &lt;cremes&gt; make sure to read the guide linked off of the main page; it may help you pick the right pattern and its associated sockets</div>
+<div class="line">[Monday 20 December 2010] [23:56:40] &lt;xpromache1&gt;     ok, thanks for the answer</div>
+<div class="line">[Monday 20 December 2010] [23:56:51] &lt;xpromache1&gt;     is there a way to use all these over a limited number of ports</div>
+<div class="line">[Monday 20 December 2010] [23:57:00] &lt;xpromache1&gt;     like one for req/rep</div>
+<div class="line">[Monday 20 December 2010] [23:57:08] &lt;xpromache1&gt;     and another one for the data tansfer</div>
+<div class="line">[Tuesday 21 December 2010] [00:00:39] &lt;cremes&gt;        absolutely; each socket should get its own transport (tcp/pgm/ipc/inproc) and port (not necessary for transports other than tcp)</div>
+<div class="line">[Tuesday 21 December 2010] [00:01:20] &lt;cremes&gt;        0mq doesn&#8217;t use &#8220;random&#8221; ports; you specifically connect or bind to whatever you need</div>
+<div class="line">[Tuesday 21 December 2010] [00:02:33] &lt;xpromache1&gt;    yes but I want to use the same port for all clients</div>
+<div class="line">[Tuesday 21 December 2010] [00:02:40] &lt;xpromache1&gt;    or maybe this doesn&#8217;t make sense</div>
+<div class="line">[Tuesday 21 December 2010] [00:02:59] &lt;xpromache1&gt;    I mean it only makes sense when there is some firewalls in between</div>
+<div class="line">[Tuesday 21 December 2010] [00:03:14] &lt;xpromache1&gt;    but this is not the use case where zeromq should be used, right?</div>
+<div class="line">[Tuesday 21 December 2010] [00:03:57] &lt;cremes&gt;        xpromache1: not really sure what you are trying to d</div>
+<div class="line">[Tuesday 21 December 2010] [00:04:13] &lt;cremes&gt;        if you have a complex use-case, you may consider posting it to the ML for comment</div>
+<div class="line">[Tuesday 21 December 2010] [00:04:58] &lt;xpromache1&gt;    not really complex</div>
+<div class="line">[Tuesday 21 December 2010] [00:05:06] &lt;xpromache1&gt;    it&#8217;s like a database driver</div>
+<div class="line">[Tuesday 21 December 2010] [00:05:16] &lt;xpromache1&gt;    you execute some small queries from time to time</div>
+<div class="line">[Tuesday 21 December 2010] [00:05:27] &lt;xpromache1&gt;    but ocasionally you want to retrieve a lot of data</div>
+<div class="line">[Tuesday 21 December 2010] [00:05:37] &lt;xpromache1&gt;    and I prefer not to have a request for each row</div>
+<div class="line">[Tuesday 21 December 2010] [00:07:36] &lt;cremes&gt;        then you would probably use the pattern i suggested above; REQ/REP for the query, PUB/SUB for the data transmission</div>
+<div class="line">[Tuesday 21 December 2010] [00:08:04] &lt;cremes&gt;        but if thisis over tcp,then the reqp/rep would get its own port as would the pub/sub</div>
+<div class="line">[Tuesday 21 December 2010] [00:08:14] &lt;cremes&gt;        they cannot share the same port simultaneously</div>
+<div class="line">[Tuesday 21 December 2010] [00:08:41] &lt;xpromache1&gt;    so if I have 10 clients connected simultaneously, how many ports do I need?</div>
+<div class="line">[Tuesday 21 December 2010] [00:09:14] &lt;cremes&gt;        2, one for the req/rep and 1 for the pub/sub</div>
+<div class="line">[Tuesday 21 December 2010] [00:10:02] &lt;xpromache1&gt;    but then all the clients will get all the data even from the requests of the other clients?</div>
+<div class="line">[Tuesday 21 December 2010] [00:10:34] &lt;cremes&gt;        they could ignore it if the published topic is not something they are interested in; altnerately, use the XREQ/XREP socket types</div>
+<div class="line">[Tuesday 21 December 2010] [00:10:38] &lt;cremes&gt;        have you read the guide yet?</div>
+<div class="line">[Tuesday 21 December 2010] [00:11:22] &lt;xpromache1&gt;    I did partly but this is not clear to me</div>
+<div class="line">[Tuesday 21 December 2010] [00:11:32] &lt;xpromache1&gt;    exactly what you can multiplex on a server socket</div>
+<div class="line">[Tuesday 21 December 2010] [00:12:22] &lt;cremes&gt;        i may not be able to clarify it completely for you :)</div>
+<div class="line">[Tuesday 21 December 2010] [00:12:51] &lt;cremes&gt;        a 0mq socket is a smart socket; it can connect/bind to multiple endpoints simultaneously</div>
+<div class="line">[Tuesday 21 December 2010] [00:13:13] &lt;cremes&gt;        so in your situation the server would likely bind a REP or XREP socket</div>
+<div class="line">[Tuesday 21 December 2010] [00:13:36] &lt;xpromache1&gt;    yes, that&#8217;s clear for the response reply pattern</div>
+<div class="line">[Tuesday 21 December 2010] [00:13:38] &lt;cremes&gt;        the clients would come in with REQ (or XREQ) sockets via  &#8220;connect&#8221; call; 0mq handles the multiplexing for you</div>
+<div class="line">[Tuesday 21 December 2010] [00:13:48] &lt;xpromache1&gt;    what is not clear is for the data transfer</div>
+<div class="line">[Tuesday 21 December 2010] [00:14:07] &lt;cremes&gt;        well, i suggested pub/sub but maybe that&#8217;s not appropriate</div>
+<div class="line">[Tuesday 21 December 2010] [00:14:16] &lt;xpromache1&gt;    so a client connects and sends a request for the data</div>
+<div class="line">[Tuesday 21 December 2010] [00:14:18] &lt;cremes&gt;        you could use the xreq/xrep sockets for the data transfer</div>
+<div class="line">[Tuesday 21 December 2010] [00:14:27] &lt;cremes&gt;        go on</div>
+<div class="line">[Tuesday 21 December 2010] [00:14:27] &lt;xpromache1&gt;    I can send a reply saying connect here to get the data</div>
+<div class="line">[Tuesday 21 December 2010] [00:14:32] &lt;cremes&gt;        sure</div>
+<div class="line">[Tuesday 21 December 2010] [00:14:41] &lt;xpromache1&gt;    but what does it mean here</div>
+<div class="line">[Tuesday 21 December 2010] [00:15:08] &lt;cremes&gt;        &#8220;here&#8221; where? explain.</div>
+<div class="line">[Tuesday 21 December 2010] [00:15:17] &lt;xpromache1&gt;    that&#8217;s my question</div>
+<div class="line">[Tuesday 21 December 2010] [00:15:24] &lt;xpromache1&gt;    what do I answer to the client</div>
+<div class="line">[Tuesday 21 December 2010] [00:15:30] &lt;xpromache1&gt;    where to connect to get its data</div>
+<div class="line">[Tuesday 21 December 2010] [00:15:55] &lt;xpromache1&gt;    do I have to start a new thread, create a new socket on a random port, and start pushing data once a client is connected</div>
+<div class="line">[Tuesday 21 December 2010] [00:16:05] &lt;xpromache1&gt;    or there is a smarter way</div>
+<div class="line">[Tuesday 21 December 2010] [00:16:11] &lt;cremes&gt;        you could send in your reply something like: :transport =&gt; :tcp, :address =&gt; &#8216;10.10.4.48&#8217;, :port =&gt; 1800</div>
+<div class="line">[Tuesday 21 December 2010] [00:16:30] &lt;cremes&gt;        then the client would know where to go for getting the data</div>
+<div class="line">[Tuesday 21 December 2010] [00:16:49] &lt;cremes&gt;        you can&#8217;t do random ports without informing the client what it will be</div>
+<div class="line">[Tuesday 21 December 2010] [00:17:02] &lt;xpromache1&gt;    yes, I realize that</div>
+<div class="line">[Tuesday 21 December 2010] [00:17:13] &lt;xpromache1&gt;    I was hoping that it is somehow possible to do without random ports</div>
+<div class="line">[Tuesday 21 December 2010] [00:17:13] &lt;cremes&gt;        you <em>could</em> use another thread or use the poll api to do it all within one</div>
+<div class="line">[Tuesday 21 December 2010] [00:17:17] &lt;xpromache1&gt;    just one fixed port</div>
+<div class="line">[Tuesday 21 December 2010] [00:17:37] &lt;xpromache1&gt;    like I have port x for request/reply</div>
+<div class="line">[Tuesday 21 December 2010] [00:17:43] &lt;xpromache1&gt;    and port y for data transfer</div>
+<div class="line">[Tuesday 21 December 2010] [00:17:52] &lt;cremes&gt;        sure, you could use 1 fixed port but you could run into issues if you have lots of concurrent requests/replies</div>
+<div class="line">[Tuesday 21 December 2010] [00:18:36] &lt;cremes&gt;        you would probably want to use xreq/xrep sockets so your data transfer could target the right client</div>
+<div class="line">[Tuesday 21 December 2010] [00:18:53] &lt;cremes&gt;        take a look at the &#8220;advanced routing&#8221; section of the guide; i&#8217;m pretty sure they wrote about that</div>
+<div class="line">[Tuesday 21 December 2010] [00:19:15] &lt;xpromache1&gt;    but xreq/xrep needs one message in both ways</div>
+<div class="line">[Tuesday 21 December 2010] [00:19:23] &lt;cremes&gt;        not true</div>
+<div class="line">[Tuesday 21 December 2010] [00:19:24] &lt;xpromache1&gt;    I would need something like xpush xpull</div>
+<div class="line">[Tuesday 21 December 2010] [00:19:31] &lt;cremes&gt;        not true</div>
+<div class="line">[Tuesday 21 December 2010] [00:19:48] &lt;cremes&gt;        reqp/rep enforces a strict request/reply/request/reply pattern</div>
+<div class="line">[Tuesday 21 December 2010] [00:19:59] &lt;cremes&gt;        the xreq/xrep sockets do <em>not</em> enforce that</div>
+<div class="line">[Tuesday 21 December 2010] [00:20:32] &lt;cremes&gt;        so, using xreq/xrep, you could send a single request and get a multiple message reply</div>
+<div class="line">[Tuesday 21 December 2010] [00:21:45] &lt;xpromache1&gt;    ok, I didn&#8217;t know that</div>
+<div class="line">[Tuesday 21 December 2010] [00:22:08] &lt;xpromache1&gt;    I will look further into it, thanks for the hints</div>
+<div class="line">[Tuesday 21 December 2010] [00:22:40] &lt;cremes&gt;        no prob...</div>
+<div class="line">[Tuesday 21 December 2010] [00:22:43] &lt;cremes&gt;        time for bed!</div>
+<div class="line">[Tuesday 21 December 2010] [00:26:11] &lt;xpromache1&gt;    me too, I have to go to work in 2 hours :(</div>
+<div class="line">[Tuesday 21 December 2010] [01:15:25] &lt;bkad&gt;  anyone know how to get the zmq_server binary? cant find it in the installation instructions</div>
+<div class="line">[Tuesday 21 December 2010] [01:22:04] &lt;guido_g&gt;       what server?</div>
+<div class="line">[Tuesday 21 December 2010] [01:23:23] &lt;bkad&gt;  zmq_server?</div>
+<div class="line">[Tuesday 21 December 2010] [01:23:39] &lt;bkad&gt;  there&#8217;s lots of references to it in the zmq docs</div>
+<div class="line">[Tuesday 21 December 2010] [01:24:10] &lt;bkad&gt;  but the ./configure, make, make install didn&#8217;t build that binary</div>
+<div class="line">[Tuesday 21 December 2010] [01:24:58] &lt;guido_g&gt;       the docs are a bit outdated i fear</div>
+<div class="line">[Tuesday 21 December 2010] [01:25:07] &lt;bkad&gt;  in <a class="reference external" href="http://www.zeromq.org/code:examples-exchange">http://www.zeromq.org/code:examples-exchange</a></div>
+<div class="line">[Tuesday 21 December 2010] [01:25:12] &lt;bkad&gt;  under Running It</div>
+<div class="line">[Tuesday 21 December 2010] [01:25:20] &lt;guido_g&gt;       there is a devices directory w/ some executables</div>
+<div class="line">[Tuesday 21 December 2010] [01:25:27] &lt;guido_g&gt;       ouch</div>
+<div class="line">[Tuesday 21 December 2010] [01:25:38] &lt;guido_g&gt;       this example is way outdated</div>
+<div class="line">[Tuesday 21 December 2010] [01:25:46] &lt;sustrik&gt;       see the top of the page</div>
+<div class="line">[Tuesday 21 December 2010] [01:25:48] &lt;sustrik&gt;       WARNING: This text is deprecated and refers to an old version of MQ. It remains here for historical interest. DO NOT USE THIS TO LEARN MQ.</div>
+<div class="line">[Tuesday 21 December 2010] [01:25:56] &lt;guido_g&gt;       it&#8217;S even pre zeromq2 afair</div>
+<div class="line">[Tuesday 21 December 2010] [01:26:03] &lt;bkad&gt;  ahhh, oops</div>
 </div>
 </div>
 
