@@ -2674,3 +2674,176 @@
 | [Tuesday 21 December 2010] [01:25:48] <sustrik>	WARNING: This text is deprecated and refers to an old version of MQ. It remains here for historical interest. DO NOT USE THIS TO LEARN MQ.
 | [Tuesday 21 December 2010] [01:25:56] <guido_g>	it'S even pre zeromq2 afair
 | [Tuesday 21 December 2010] [01:26:03] <bkad>	ahhh, oops
+| [Tuesday 21 December 2010] [03:34:47] <sustrik>	mikko: there's a build patch on the mailing list
+| [Tuesday 21 December 2010] [03:34:53] <sustrik>	can you give it a look?
+| [Tuesday 21 December 2010] [03:35:20] <sustrik>	mato is on his way to new zealand for next few days
+| [Tuesday 21 December 2010] [03:56:25] <mikko>	sustrik: sure
+| [Tuesday 21 December 2010] [03:56:37] <mikko>	it looks like my flight is departing today
+| [Tuesday 21 December 2010] [03:56:45] <mikko>	causiously excited
+| [Tuesday 21 December 2010] [03:57:52] <sustrik>	good luck :)
+| [Tuesday 21 December 2010] [04:28:07] <mikko>	reviewed
+| [Tuesday 21 December 2010] [04:29:05] <sustrik>	thanks
+| [Tuesday 21 December 2010] [04:56:53] <mikko>	Steve-o: hi
+| [Tuesday 21 December 2010] [04:57:03] <mikko>	what does the scons build produce?
+| [Tuesday 21 December 2010] [04:57:05] <mikko>	Makefiles?
+| [Tuesday 21 December 2010] [04:57:27] <Steve-o>	No it runs commands in Python directly
+| [Tuesday 21 December 2010] [04:58:00] <Steve-o>	CMake is the Make wrapper
+| [Tuesday 21 December 2010] [04:58:48] <mikko>	ok
+| [Tuesday 21 December 2010] [04:58:56] <Steve-o>	you are supposed to be able to see the commands by "scons -Q" but I haven't seen that working on my Scons files in a long time
+| [Tuesday 21 December 2010] [04:59:00] <mikko>	would've been nice if it produced something that could be directly used
+| [Tuesday 21 December 2010] [04:59:29] <Steve-o>	well, all the other build systems kinda suck though :P
+| [Tuesday 21 December 2010] [05:00:20] <Steve-o>	Although I think I had to patch Scons again for Intel C on Linux, urgh
+| [Tuesday 21 December 2010] [05:00:50] <Steve-o>	CMake just doesn't support anything interesting
+| [Tuesday 21 December 2010] [05:02:26] <mikko>	interesting development, my airline sends twitter DMs to inform about flights
+| [Tuesday 21 December 2010] [05:04:06] <Steve-o>	Cathay likes to send emails after the flight has left
+| [Tuesday 21 December 2010] [05:04:10] <mikko>	im wondering if we should split OS specific builds to separate automake files in zmq
+| [Tuesday 21 December 2010] [05:04:24] <mikko>	it might be more maintainable than conditionals in one file
+| [Tuesday 21 December 2010] [05:04:54] <Steve-o>	Makes patching a bit cleaner
+| [Tuesday 21 December 2010] [05:06:37] <Steve-o>	unless you want to write several new autoconf rules
+| [Tuesday 21 December 2010] [05:06:37] <mikko>	yeah
+| [Tuesday 21 December 2010] [05:08:41] <Steve-o>	only ~24 tests required :P
+| [Tuesday 21 December 2010] [05:09:17] <Steve-o>	many should already have autoconf macros available
+| [Tuesday 21 December 2010] [05:11:08] <mikko>	it feels like duplicating work
+| [Tuesday 21 December 2010] [05:11:10] <mikko>	hmm
+| [Tuesday 21 December 2010] [05:11:28] <mikko>	would be nicer to launch scons from zmq build
+| [Tuesday 21 December 2010] [05:11:34] <mikko>	and then just link
+| [Tuesday 21 December 2010] [05:12:18] <Steve-o>	I've looked for a long time for building Debian packages
+| [Tuesday 21 December 2010] [05:13:02] <Steve-o>	there isn't much out there despite all the big packages using SCons (Blender, Quake 3, etc)
+| [Tuesday 21 December 2010] [05:14:37] <Steve-o>	as in, for nice hooks for the deb-buildpackager
+| [Tuesday 21 December 2010] [05:14:58] <Steve-o>	you can always build a basic scons command based off uname otherwise
+| [Tuesday 21 December 2010] [05:15:11] <mikko>	autoconf might be slightly dreadful but its fairly well supported
+| [Tuesday 21 December 2010] [05:19:10] <Steve-o>	I don't think you can easily get multiple build environments in autoconf/automake though
+| [Tuesday 21 December 2010] [05:19:30] <Steve-o>	Scons is killing me on crap compiler dependencies for unit tests
+| [Tuesday 21 December 2010] [05:29:32] <Steve-o>	autoconf is a bit too cumbersome for testing different compilers on one platform
+| [Tuesday 21 December 2010] [05:29:56] <Steve-o>	I'm sure there has to be a better way \:D/
+| [Tuesday 21 December 2010] [05:30:54] <mikko>	it is slightly cumbersome yes
+| [Tuesday 21 December 2010] [09:15:45] <ptrb>	correct me if I'm wrong, but if I'm sitting in a blocking recv() on a socket in one thread, and I zmq_term() the context in another thread, the recv() should return (in C++, should throw) -- right?
+| [Tuesday 21 December 2010] [09:22:10] <sustrik>	ptrb: right
+| [Tuesday 21 December 2010] [09:22:17] <sustrik>	ETERM
+| [Tuesday 21 December 2010] [09:26:06] <ptrb>	hmm... the zmq_term() goes through OK, but I'm still blocking in the other thread... time for a minimal test case I guess :\
+| [Tuesday 21 December 2010] [09:28:41] <sustrik>	yes, please
+| [Tuesday 21 December 2010] [10:48:50] <mikko>	sustrik: zmq_term(ZMQ_NOBLOCK) would be useful
+| [Tuesday 21 December 2010] [10:48:56] <mikko>	or another function call
+| [Tuesday 21 December 2010] [10:51:11] <cremes>	mikko: something similar has been discussed on the ML; sustrik says it isn't possible
+| [Tuesday 21 December 2010] [10:51:37] <sustrik>	you mean, instead setting all the sockets to ZMQ_LINGER=0
+| [Tuesday 21 December 2010] [10:51:44] <sustrik>	right?
+| [Tuesday 21 December 2010] [10:54:11] <mikko>	sustrik: no
+| [Tuesday 21 December 2010] [10:54:21] <mikko>	sustrik: i mean instead of manually closing all sockets
+| [Tuesday 21 December 2010] [10:54:36] <mikko>	because currently it's not possible to force closing of sockets
+| [Tuesday 21 December 2010] [10:55:07] <sustrik>	hm, how would you migrate all the sockets to the thread calling zmq_term()?
+| [Tuesday 21 December 2010] [10:55:48] <mikko>	do they need to be migrated to obtain information whether zmq_term would block?
+| [Tuesday 21 December 2010] [10:56:18] <mikko>	i meant that zmq_term() would return EGAIN if given a flag
+| [Tuesday 21 December 2010] [10:56:23] <mikko>	EAGAIN*
+| [Tuesday 21 December 2010] [10:56:29] <sustrik>	how would the main thread know that they are not used in the moment otherwise?
+| [Tuesday 21 December 2010] [10:56:43] <sustrik>	at the moment*
+| [Tuesday 21 December 2010] [10:57:31] <sustrik>	you cannot grab a socket from underneath the feer of another thread
+| [Tuesday 21 December 2010] [10:58:54] <mikko>	sockets is removed from sockets array in context when it's closed?
+| [Tuesday 21 December 2010] [10:59:21] <sustrik>	yes
+| [Tuesday 21 December 2010] [10:59:23] <mikko>	slightly laggy connection at the moment
+| [Tuesday 21 December 2010] [10:59:36] <mikko>	sockets.size() > 0 would block, yes?
+| [Tuesday 21 December 2010] [10:59:46] <sustrik>	yes
+| [Tuesday 21 December 2010] [11:00:14] <mikko>	sozmq_term_nb woudl return EAGAIN if sockets.size() > 0
+| [Tuesday 21 December 2010] [11:00:26] <sustrik>	aha
+| [Tuesday 21 December 2010] [11:00:26] <mikko>	no need to migrate anything (?)
+| [Tuesday 21 December 2010] [11:00:48] <sustrik>	i though you want zmq_term to close the sockets
+| [Tuesday 21 December 2010] [11:01:28] <mikko>	im after info whether call to zmq_term will block
+| [Tuesday 21 December 2010] [11:01:32] <mikko>	not to close sockets
+| [Tuesday 21 December 2010] [11:01:52] <sustrik>	yes, that should be doable
+| [Tuesday 21 December 2010] [11:02:09] <sustrik>	if you have a look atc ctx.cpp
+| [Tuesday 21 December 2010] [11:02:14] <sustrik>	::terminate()
+| [Tuesday 21 December 2010] [11:02:35] <mikko>	around line 118?
+| [Tuesday 21 December 2010] [11:02:53] <sustrik>	the function begins at 107
+| [Tuesday 21 December 2010] [11:03:05] <sustrik>	you have 2 waits there
+| [Tuesday 21 December 2010] [11:03:25] <sustrik>	line 130:
+| [Tuesday 21 December 2010] [11:03:27] <sustrik>	no_sockets_sync.wait ();
+| [Tuesday 21 December 2010] [11:03:39] <sustrik>	and line 152:
+| [Tuesday 21 December 2010] [11:03:41] <sustrik>	usleep (1000);
+| [Tuesday 21 December 2010] [11:04:03] <sustrik>	the first wait waits for all sockets being closed (zmq_close)
+| [Tuesday 21 December 2010] [11:04:12] <sustrik>	the second one wait for all pending data to be sent
+| [Tuesday 21 December 2010] [11:04:21] <mikko>	ok
+| [Tuesday 21 December 2010] [11:08:59] <cremes>	i like this EAGAIN idea for zmq_term()
+| [Tuesday 21 December 2010] [11:27:36] <Skaag>	Hello!
+| [Tuesday 21 December 2010] [11:27:40] <Skaag>	(again)
+| [Tuesday 21 December 2010] [11:27:42] <mikko>	i
+| [Tuesday 21 December 2010] [11:27:43] <mikko>	hi
+| [Tuesday 21 December 2010] [11:27:47] <Skaag>	hi mikko :)
+| [Tuesday 21 December 2010] [11:28:41] <Skaag>	we're about to perform a POC for ZMQ, and if all goes well, convert a system to ZMQ that uses RabbitMQ at the moment.
+| [Tuesday 21 December 2010] [11:29:12] <Skaag>	but I wanted to ask, in general, about the theoretical potential of ZMQ to scale to thousands of servers...
+| [Tuesday 21 December 2010] [11:29:43] <mikko>	Skaag: can you describe your specific use-case?
+| [Tuesday 21 December 2010] [11:29:48] <mikko>	it would give some context
+| [Tuesday 21 December 2010] [11:29:52] <Skaag>	And also how practical it is to use the multicast functionality - does it require special network equipment? is it IP Multicast? Or is it just a name really, and the multicast is just synonimous for sending the message at once to many hosts?
+| [Tuesday 21 December 2010] [11:29:57] <Skaag>	sure!
+| [Tuesday 21 December 2010] [11:30:07] <Skaag>	I have at the moment only 16 nodes, distributed around the world
+| [Tuesday 21 December 2010] [11:30:22] <Skaag>	they send once per second a small block of data, statistical data about themselves
+| [Tuesday 21 December 2010] [11:30:30] <Skaag>	less than 512 bytes
+| [Tuesday 21 December 2010] [11:31:07] <Skaag>	so it's "all to all", and all of them need to collect this data, and produce historical graphs, etc.
+| [Tuesday 21 December 2010] [11:31:23] <Skaag>	so i'm asking myself what will happen when this scales, to 1000 nodes
+| [Tuesday 21 December 2010] [11:32:45] <mikko>	so every node needs to know about all others?
+| [Tuesday 21 December 2010] [11:35:00] <cremes>	sounds like a perfect use-case for pub/sub with a forwarder device
+| [Tuesday 21 December 2010] [11:35:38] <cremes>	Skaag: need more info; do you have particular latency requirements? how frequent is the data generated?
+| [Tuesday 21 December 2010] [11:36:11] <mikko>	yeah, if latency is not a problem you could batch updates
+| [Tuesday 21 December 2010] [11:36:16] <Skaag>	every 1 second, the nodes send to all other nodes a less than 512 byte data structure (json or binary, I don't mind)
+| [Tuesday 21 December 2010] [11:36:35] <Skaag>	could also be every 5 seconds. still fine.
+| [Tuesday 21 December 2010] [11:36:49] <Skaag>	but while the cluster is small, it would be cool to have fast updates.
+| [Tuesday 21 December 2010] [11:36:58] <mikko>	sure
+| [Tuesday 21 December 2010] [11:37:04] <mikko>	you could have quick local updates
+| [Tuesday 21 December 2010] [11:37:10] <Skaag>	the latency between the nodes is a maximum of 100ms.
+| [Tuesday 21 December 2010] [11:37:11] <mikko>	and batch the packets to remote locations
+| [Tuesday 21 December 2010] [11:37:22] <Skaag>	there are at the moment 6 locations around the world
+| [Tuesday 21 December 2010] [11:37:27] <Skaag>	with a bunch of machines in each location
+| [Tuesday 21 December 2010] [11:37:30] <mikko>	update every second locally and send out every 5 seconds
+| [Tuesday 21 December 2010] [11:37:48] <mikko>	so every five seconds you would send five updates to remote locations
+| [Tuesday 21 December 2010] [11:37:50] <cremes>	multicast/pgm transport won't help you if this is over a public network (internet)
+| [Tuesday 21 December 2010] [11:38:09] <Skaag>	ok so I was right to assume it is IP Multicast...
+| [Tuesday 21 December 2010] [11:38:19] <Skaag>	and not some internal terminology
+| [Tuesday 21 December 2010] [11:38:19] <mikko>	i would probably look into something like zookeeper for service discovery
+| [Tuesday 21 December 2010] [11:38:33] <Skaag>	sounds interesting!
+| [Tuesday 21 December 2010] [11:38:39] <mikko>	create ephimeral nodes of available endpoints
+| [Tuesday 21 December 2010] [11:38:58] <mikko>	i used zookeeper ages ago for services discovery
+| [Tuesday 21 December 2010] [11:39:18] <mikko>	wrote a small daemon called 'myservices' and each node on cluster had a configuration file of services it has
+| [Tuesday 21 December 2010] [11:39:44] <mikko>	so as long as node was up the ephimeral node existed in zookeeper
+| [Tuesday 21 December 2010] [11:39:58] <mikko>	when a node died the ephimeral node is automatically removed by zookeeper
+| [Tuesday 21 December 2010] [11:40:08] <mikko>	allows 'automatic' graceful failure handling
+| [Tuesday 21 December 2010] [11:40:53] <Skaag>	that's absolutely awesome
+| [Tuesday 21 December 2010] [11:41:20] <mikko>	sadly the project never went live so i cant really tell how well it would've worked in production
+| [Tuesday 21 December 2010] [11:44:00] <mikko>	im gonna go get some coffee
+| [Tuesday 21 December 2010] [11:44:00] <mikko>	bbl
+| [Tuesday 21 December 2010] [11:45:21] <ngerakines>	is there a list of large companies that use zmq on the site?
+| [Tuesday 21 December 2010] [11:52:10] <Skaag>	mikko: Would love to take a look at your 'myservices' code ;)
+| [Tuesday 21 December 2010] [11:54:19] <cremes>	ngerakines: i don't think so
+| [Tuesday 21 December 2010] [11:54:26] <ngerakines>	cremes: ok, thanks
+| [Tuesday 21 December 2010] [11:58:42] <sustrik>	Skaag: one thing to understand is that "all to all" model is inherently unscalable
+| [Tuesday 21 December 2010] [11:59:12] <Skaag>	I thought about creating 'bubbles'
+| [Tuesday 21 December 2010] [11:59:22] <Skaag>	so machines in the same DC would update quickly, internally
+| [Tuesday 21 December 2010] [11:59:30] <sustrik>	at some point the number of nodes would be so high, that amount of messages will overload any receiver
+| [Tuesday 21 December 2010] [11:59:37] <Skaag>	with less frequent updates being sent between such bubbles, aggregated
+| [Tuesday 21 December 2010] [11:59:50] <sustrik>	yes, aggregation solves the problem
+| [Tuesday 21 December 2010] [12:00:06] <Skaag>	we should probably do that from the start
+| [Tuesday 21 December 2010] [12:00:26] <sustrik>	depends on the requirements
+| [Tuesday 21 December 2010] [12:00:35] <sustrik>	it the goal is to have 1000 nodes
+| [Tuesday 21 December 2010] [12:00:44] <sustrik>	with 1 msg per 5 secs
+| [Tuesday 21 December 2010] [12:00:53] <sustrik>	you probably don't need it
+| [Tuesday 21 December 2010] [12:13:49] <Skaag>	yes that's more or less the goal.
+| [Tuesday 21 December 2010] [12:13:57] <Skaag>	it will take some time to get there, too...
+| [Tuesday 21 December 2010] [12:14:04] <Skaag>	for now we have just 25 machines.
+| [Tuesday 21 December 2010] [12:14:16] <Skaag>	I expect in 6 month it will maybe grow to 150.
+| [Tuesday 21 December 2010] [12:14:50] <Skaag>	so there is time to ameliorate the system.
+| [Tuesday 21 December 2010] [12:15:00] <Skaag>	uh, to improve the system.
+| [Tuesday 21 December 2010] [12:15:11] <Skaag>	(I think maybe I used a french word?)
+| [Tuesday 21 December 2010] [12:25:21] <mikko>	Skaag: what is this system doing?
+| [Tuesday 21 December 2010] [12:25:32] <mikko>	what kinda of data are you pushing through?
+| [Tuesday 21 December 2010] [12:25:37] <mikko>	just out of interest
+| [Tuesday 21 December 2010] [12:28:12] <Skaag>	I can tell you exactly..!
+| [Tuesday 21 December 2010] [12:28:18] <Skaag>	it is a bunch of media streamers
+| [Tuesday 21 December 2010] [12:28:35] <Skaag>	the important information is cpu load, bandwidth usage, and number of connections
+| [Tuesday 21 December 2010] [12:28:54] <Skaag>	and in the future, cost per traffic (actual cost, in dollars)
+| [Tuesday 21 December 2010] [12:29:11] <Skaag>	or some combination of cost, and remaining quota
+| [Tuesday 21 December 2010] [12:29:17] <Skaag>	but that's "phase 2" stuff :)
+| [Tuesday 21 December 2010] [12:29:34] <Skaag>	and this will be used to make smart decisions about where to send new traffic
+| [Tuesday 21 December 2010] [12:29:58] <Skaag>	and indirectly, will also be used to generate graphs for me and other admins, to view what's going on in the network
+| [Tuesday 21 December 2010] [12:31:37] <mikko>	how do you do the routing on global level?
+| [Tuesday 21 December 2010] [13:05:19] <Skaag>	Level3 fibers, connect all the DC's
+| [Tuesday 21 December 2010] [13:06:43] <Skaag>	you can see our map here: http://bams.iptp.net/cacti/plugins/weathermap/output/weathermap_7.png
+| [Tuesday 21 December 2010] [13:07:04] <Skaag>	right now, I am near m9.msk.ru :-)
+| [Tuesday 21 December 2010] [13:07:15] <Skaag>	(physically speaking)
+| [Tuesday 21 December 2010] [13:11:42] <Skaag>	and this means that this year, I will celebrate xmas in moscow  \o/  yey!
