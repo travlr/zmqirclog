@@ -2847,3 +2847,187 @@
 | [Tuesday 21 December 2010] [13:07:04] <Skaag>	right now, I am near m9.msk.ru :-)
 | [Tuesday 21 December 2010] [13:07:15] <Skaag>	(physically speaking)
 | [Tuesday 21 December 2010] [13:11:42] <Skaag>	and this means that this year, I will celebrate xmas in moscow  \o/  yey!
+| [Wednesday 22 December 2010] [02:14:22] <ytang>	hi, anyone online?
+| [Wednesday 22 December 2010] [02:33:39] <sustrik>	hi
+| [Wednesday 22 December 2010] [02:38:47] <Steve-o>	good morning
+| [Wednesday 22 December 2010] [03:05:04] <mindful>	anybody in
+| [Wednesday 22 December 2010] [03:08:03] <sustrik>	yup
+| [Wednesday 22 December 2010] [05:29:54] <mikko>	good morning
+| [Wednesday 22 December 2010] [05:29:59] <mikko>	i made it 
+| [Wednesday 22 December 2010] [05:39:12] <Skaag_>	made what?
+| [Wednesday 22 December 2010] [05:39:16] <Skaag_>	to work? :)
+| [Wednesday 22 December 2010] [07:29:42] <mikko>	Skaag: made it home for christmas
+| [Wednesday 22 December 2010] [07:29:52] <mikko>	Skaag: i was flying from london to finland
+| [Wednesday 22 December 2010] [07:30:09] <mikko>	took five days 
+| [Wednesday 22 December 2010] [07:31:24] <Skaag>	wow!
+| [Wednesday 22 December 2010] [07:31:27] <Skaag>	why 5 days?!
+| [Wednesday 22 December 2010] [07:31:47] <Skaag>	I thought 5 days is with a ferry
+| [Wednesday 22 December 2010] [07:31:55] <Skaag>	London to Stockholm, then Stockholm to Helsinki
+| [Wednesday 22 December 2010] [07:32:18] <Skaag>	brb
+| [Wednesday 22 December 2010] [07:34:20] <mikko>	Skaag: tons of canceled flights 
+| [Wednesday 22 December 2010] [07:34:50] <mikko>	i was supposed to fly last friday and finally managed to fly tuesday evening
+| [Wednesday 22 December 2010] [07:35:17] <Skaag>	sounds like a nightmare
+| [Wednesday 22 December 2010] [07:40:10] <Skaag_>	back.
+| [Wednesday 22 December 2010] [07:40:23] <Skaag>	I really should bring my bouncer into freenode as well...
+| [Wednesday 22 December 2010] [10:55:02] <dos000>	howdy
+| [Wednesday 22 December 2010] [10:55:56] <dos000>	can someone tell me if concurrent lock free circular buffers are used in zmq ? i read something recently that was talking about the perf improvements
+| [Wednesday 22 December 2010] [11:43:20] <cremes>	dos000: 0mq definitely uses lock-free algos; i don't know if they protect a circular buffer though
+| [Wednesday 22 December 2010] [11:43:34] <cremes>	the code answers all!
+| [Wednesday 22 December 2010] [11:43:37] <Skaag>	lol
+| [Wednesday 22 December 2010] [11:43:51] <Skaag>	*snicker* typical developer answer ;)
+| [Wednesday 22 December 2010] [11:44:04] <Skaag>	what documentation? look at the comments in the code... ;)
+| [Wednesday 22 December 2010] [11:44:09] <cremes>	yep ;)
+| [Wednesday 22 December 2010] [11:45:18] <cremes>	docs usually don't cover those kinds of implementation details anyway
+| [Wednesday 22 December 2010] [11:45:40] <cremes>	they are intended to remain hidden under the covers; anyone using the api shouldn't care what the algo is
+| [Wednesday 22 December 2010] [11:46:12] <cremes>	since dos000 was asking specifically about it, the only way to get the real answer is to 1) ask sustrik
+| [Wednesday 22 December 2010] [11:46:16] <cremes>	or 2) check the source
+| [Wednesday 22 December 2010] [11:46:44] <dos000>	ah!
+| [Wednesday 22 December 2010] [11:48:19] <dos000>	i was also looking for some experience in other libs offering lock-free circular buffers
+| [Wednesday 22 December 2010] [11:48:32] <dos000>	this stuff seems like black magic 
+| [Wednesday 22 December 2010] [11:48:55] <cremes>	yes, very dark :)
+| [Wednesday 22 December 2010] [11:49:05] <dos000>	no one is doing it or talking about their implementation 
+| [Wednesday 22 December 2010] [11:49:25] <dos000>	and no central de facto to go fo this .. evryone rolls their own
+| [Wednesday 22 December 2010] [11:49:33] <cremes>	true
+| [Wednesday 22 December 2010] [11:49:53] <cremes>	the main idea behind lock-free is to leverage a platform's atomic compare-and-swap operation
+| [Wednesday 22 December 2010] [11:50:12] <cremes>	if your hw supports that, a lock-free impl is fairly "easy" to create
+| [Wednesday 22 December 2010] [11:50:17] <dos000>	yes .. and i am hoping (please) support it
+| [Wednesday 22 December 2010] [11:50:31] <cremes>	the hard part then becomes dealing with cache coherency and its perf implications
+| [Wednesday 22 December 2010] [11:50:49] <dos000>	i am hoping 0mq has it for sparc and x86 and/or x86_64
+| [Wednesday 22 December 2010] [11:51:08] <cremes>	it definitely has it for x86 and x86_64; not sure on sparc
+| [Wednesday 22 December 2010] [11:51:45] <dos000>	cremes: zmq does not deal with threads correct ? i was thinking a way of "forcing" a thread to run on a particular core
+| [Wednesday 22 December 2010] [11:52:19] <cremes>	dos000: not correct; you can force cpu affinity for sockets
+| [Wednesday 22 December 2010] [11:52:28] <cremes>	check the setsockopt docs on the web site
+| [Wednesday 22 December 2010] [11:52:38] <dos000>	ok
+| [Wednesday 22 December 2010] [11:52:40] <cremes>	(i haven't used it myself otherwise i'd be more helpful...)
+| [Wednesday 22 December 2010] [11:52:56] <dos000>	here is the (interesting) talk http://www.infoq.com/presentations/LMAX
+| [Wednesday 22 December 2010] [11:53:15] <cremes>	ah, i just saw that this morning! it's in my queue to watch a bit later
+| [Wednesday 22 December 2010] [11:53:30] <dos000>	ah!
+| [Wednesday 22 December 2010] [11:53:31] <cremes>	i do trading stuff but i'm not in the super high-freq space
+| [Wednesday 22 December 2010] [11:54:35] <dos000>	they mention someway of sending a packet straight to user space bypassing (virtually) the kernel ... but they dont explain how or which os supports it
+| [Wednesday 22 December 2010] [11:55:09] <dos000>	very interestng talk indeed
+| [Wednesday 22 December 2010] [11:55:52] <dos000>	cremes, which blog/sites do you follow for this types of talks ?
+| [Wednesday 22 December 2010] [11:56:08] <dos000>	how did you stumble on the LMAX presentation ?
+| [Wednesday 22 December 2010] [11:56:26] <cremes>	i subscribe to reddit rss feeds as well as the infoq rss stuff
+| [Wednesday 22 December 2010] [11:58:10] <dos000>	the solution they propose starts from 36:00 if you want to skip through .. a picture is worth a thousand words
+| [Wednesday 22 December 2010] [11:58:28] <cremes>	cool, thanks for the heads up
+| [Wednesday 22 December 2010] [11:58:37] <cremes>	are you involved with trading systems or similar?
+| [Wednesday 22 December 2010] [11:58:55] <dos000>	yes very similar .. payment systems
+| [Wednesday 22 December 2010] [11:59:53] <Skaag>	dos000: don't the boost libraries do this type of locking?
+| [Wednesday 22 December 2010] [12:00:54] <dos000>	i asked already in #C++ it might be only circular buffers .. not lock free implementations
+| [Wednesday 22 December 2010] [12:01:40] <Skaag>	weren't all such kernel modules that broke the core -> user space membrane been kicked from the kernel project by Linus?
+| [Wednesday 22 December 2010] [12:02:03] <dos000>	no idea!
+| [Wednesday 22 December 2010] [12:02:10] <Skaag>	they are doing this without a custom kernel module?
+| [Wednesday 22 December 2010] [12:02:25] <dos000>	not sure how .. its just a blimp in the video
+| [Wednesday 22 December 2010] [12:40:07] <dos000>	ok ... now i found this http://www.puppetmastertrading.com/blog/2010/02/16/lock-free/
+| [Wednesday 22 December 2010] [12:52:10] <mikko>	dos000: http://www.zeromq.org/blog:multithreading-magic
+| [Wednesday 22 December 2010] [12:52:15] <mikko>	this might be interesting read as well
+| [Wednesday 22 December 2010] [12:52:20] <mikko>	not directly related
+| [Wednesday 22 December 2010] [12:58:59] <dos000>	fastflow seems to be up there with 0mq .. lots of similarities
+| [Wednesday 22 December 2010] [13:03:57] <cremes>	dos000: they diss ruby in that blog so now i need to go on a rant! ;)
+| [Wednesday 22 December 2010] [13:08:18] <Skaag>	lol!!!
+| [Wednesday 22 December 2010] [13:08:37] <dos000>	lol
+| [Wednesday 22 December 2010] [15:11:03] <Skaag>	the developer I work with tells me he managed to publish and consume a message on a topic with rabbitmq, but it's still unclear to him how to cluster the thing ;)
+| [Wednesday 22 December 2010] [16:41:57] <mikko>	Skaag: you can publish and consume a message with zeromq within minutes 
+| [Wednesday 22 December 2010] [16:41:58] <mikko>	:)
+| [Wednesday 22 December 2010] [16:42:06] <Skaag>	I know
+| [Wednesday 22 December 2010] [16:42:33] <Skaag>	anyway, what I am thinking to answer him, is that Zookeeper will be in charge of managing a list of IP addresses of available hosts
+| [Wednesday 22 December 2010] [16:42:50] <Skaag>	and he will just connect to all of them and subscribe
+| [Wednesday 22 December 2010] [16:43:07] <mikko>	did you test zookeeper
+| [Wednesday 22 December 2010] [16:43:09] <mikko>	?
+| [Wednesday 22 December 2010] [16:43:21] <Skaag>	not yet
+| [Wednesday 22 December 2010] [16:43:25] <Skaag>	I'm installing it as we speak
+| [Wednesday 22 December 2010] [16:44:07] <mikko>	the only annoyance i found was that zookeeper didnt have rhel packaging
+| [Wednesday 22 December 2010] [16:44:12] <mikko>	i think i made spec-files back then
+| [Wednesday 22 December 2010] [16:45:13] <Skaag>	well I am running on Ubuntu myself. I can't stand rhel.
+| [Wednesday 22 December 2010] [16:45:31] <Skaag>	I used to be very redhat oriented
+| [Wednesday 22 December 2010] [16:45:54] <Skaag>	but once I was exposed to debian, and then to ubuntu, I knew my destiny was sealed ;)
+| [Wednesday 22 December 2010] [16:46:12] <mikko>	i use debian on my own stuff
+| [Wednesday 22 December 2010] [16:46:16] <Skaag>	I know it may sound stupid, and rhel is considered a kind of 'standard'.
+| [Wednesday 22 December 2010] [16:46:23] <mikko>	but many companies i work with prefer rhel
+| [Wednesday 22 December 2010] [16:46:52] <dos000>	i hate rhel .. anything non debian (based) for that matter
+| [Wednesday 22 December 2010] [16:47:13] <dos000>	apt-get is sweet
+| [Wednesday 22 December 2010] [16:47:14] <mikko>	rhel packaging is far more pleasant to make imho
+| [Wednesday 22 December 2010] [16:47:20] <mikko>	compared to debs
+| [Wednesday 22 December 2010] [16:47:31] <Skaag>	i disagree
+| [Wednesday 22 December 2010] [16:47:33] <dos000>	to use however isa different thing
+| [Wednesday 22 December 2010] [16:47:37] <Skaag>	I make a deb in 3 minutes.
+| [Wednesday 22 December 2010] [16:47:47] <Skaag>	less...
+| [Wednesday 22 December 2010] [16:48:05] <Skaag>	well I have a ready skeleton, from the first 5 minutes I spent trying to make a deb
+| [Wednesday 22 December 2010] [16:48:17] <dos000>	there are some utilities that will create the pkgs for you .. based on make && make installl
+| [Wednesday 22 December 2010] [16:48:31] <Skaag>	so now to make a deb is a matter of copying the files to the right places, specifying dependencies, and perhaps adding some install / uninstall scripts...
+| [Wednesday 22 December 2010] [16:48:53] <Skaag>	not to mention how easy it is to create a repository
+| [Wednesday 22 December 2010] [16:49:12] <mikko>	Skaag: it's easy for yum as well
+| [Wednesday 22 December 2010] [16:49:18] <mikko>	createrepo /path/to
+| [Wednesday 22 December 2010] [16:49:45] <dos000>	i did not find companies that do support for debian so far 
+| [Wednesday 22 December 2010] [16:50:04] <dos000>	something that passes the CEO test
+| [Wednesday 22 December 2010] [16:51:13] <Skaag>	the CEO test is different in every company...
+| [Wednesday 22 December 2010] [16:51:16] <Skaag>	in some, the money talks
+| [Wednesday 22 December 2010] [16:51:29] <Skaag>	in some others, it's how large the support company is
+| [Wednesday 22 December 2010] [16:51:38] <Skaag>	and in some, it's how technically knowledgable :-)
+| [Wednesday 22 December 2010] [16:51:41] <dos000>	in some companies the CEO (and evryone around him) is dumb !
+| [Wednesday 22 December 2010] [16:51:52] <dos000>	thats the problem
+| [Wednesday 22 December 2010] [16:51:55] <Skaag>	and here in Russia! It's about how much money you slip into the CEO's pocket, behind the back of the board of directors...! ;-)
+| [Wednesday 22 December 2010] [16:52:07] <dos000>	heh!
+| [Wednesday 22 December 2010] [16:53:06] <mikko>	im not far from russia atm
+| [Wednesday 22 December 2010] [16:53:13] <mikko>	a few hundred km if even that
+| [Wednesday 22 December 2010] [16:54:01] <mikko>	Skaag: https://github.com/mkoppanen/myservices
+| [Wednesday 22 December 2010] [16:54:15] <mikko>	it's not very well tested but should give some ideas for zk integration
+| [Wednesday 22 December 2010] [16:54:21] <Skaag>	mikko: I read your page already ;)
+| [Wednesday 22 December 2010] [16:54:52] <Skaag>	ah, that's another page
+| [Wednesday 22 December 2010] [16:54:54] <Skaag>	sorry
+| [Wednesday 22 December 2010] [16:54:58] <Skaag>	Where in Finland are you?
+| [Wednesday 22 December 2010] [16:55:46] <Skaag>	I took the bus from Helsinki to St. Petersburg, just 6 month ago :-)
+| [Wednesday 22 December 2010] [16:55:54] <Skaag>	17 euros and I was in Russia!
+| [Wednesday 22 December 2010] [16:56:03] <mikko>	they got a new fast train as well
+| [Wednesday 22 December 2010] [16:56:12] <mikko>	three hours to st petersburg from helsinki
+| [Wednesday 22 December 2010] [16:56:27] <Skaag>	amazing
+| [Wednesday 22 December 2010] [16:56:31] <dos000>	lets say i had 3 packets coming from 3 different sources ... and all packets are sequentially numbered. 
+| [Wednesday 22 December 2010] [16:56:38] <Skaag>	but I doubt in such a weather condition?
+| [Wednesday 22 December 2010] [16:57:01] <dos000>	what would you do to wait for three packets with the same seq numbers ?
+| [Wednesday 22 December 2010] [16:57:06] <mikko>	Skaag: even in such conditions
+| [Wednesday 22 December 2010] [16:57:11] <Skaag>	amazing!
+| [Wednesday 22 December 2010] [16:57:12] <mikko>	things dont stop in .fi even when its cold
+| [Wednesday 22 December 2010] [16:57:20] <Skaag>	I know
+| [Wednesday 22 December 2010] [16:57:25] <Skaag>	but on the russian side...?
+| [Wednesday 22 December 2010] [16:57:26] <Skaag>	:-)
+| [Wednesday 22 December 2010] [16:57:35] <Skaag>	I lived in Helsinki for 5 month
+| [Wednesday 22 December 2010] [16:57:45] <Skaag>	I absolutely love Finland
+| [Wednesday 22 December 2010] [16:57:52] <Skaag>	awesome country.
+| [Wednesday 22 December 2010] [16:57:58] <Skaag>	I loved it since childhood.
+| [Wednesday 22 December 2010] [16:58:10] <Skaag>	and recently, after living there, I understood why.
+| [Wednesday 22 December 2010] [16:58:56] <mikko>	i dislike the winter. thats why i moved to london
+| [Wednesday 22 December 2010] [16:59:19] <Skaag>	maybe because you grew up with it.
+| [Wednesday 22 December 2010] [16:59:50] <Skaag>	this is my second REAL winter here in Moscow, first time in Helsinki, where it was almost constantly under -10c
+| [Wednesday 22 December 2010] [16:59:58] <Skaag>	and I don't mind it much.
+| [Wednesday 22 December 2010] [17:01:07] <mikko>	im in middle .fi now
+| [Wednesday 22 December 2010] [17:01:14] <mikko>	-30 outside
+| [Wednesday 22 December 2010] [17:02:31] <mikko>	does your company operate in russia?
+| [Wednesday 22 December 2010] [17:03:00] <Skaag>	yes
+| [Wednesday 22 December 2010] [17:03:03] <Skaag>	among other places
+| [Wednesday 22 December 2010] [17:03:27] <Skaag>	middle = near Sodankyl?
+| [Wednesday 22 December 2010] [17:03:52] <mikko>	thats the northest place in finland
+| [Wednesday 22 December 2010] [17:04:04] <mikko>	close to the sea up north
+| [Wednesday 22 December 2010] [17:04:52] <mikko>	pretty close to Jyvskyl
+| [Wednesday 22 December 2010] [17:05:03] <Skaag>	cool
+| [Wednesday 22 December 2010] [17:05:41] <Skaag>	I have a good friend in Mikkeli
+| [Wednesday 22 December 2010] [17:07:10] <Skaag>	I actually passed through Jyvskyl one time
+| [Wednesday 22 December 2010] [17:09:44] <Skaag>	they just prepared Olutglgi
+| [Wednesday 22 December 2010] [17:09:54] <Skaag>	http://mika.letonsaari.net/foobar/olutglgi/14.jpg
+| [Wednesday 22 December 2010] [17:10:11] <Skaag>	some part of me is glad I can not taste it.
+| [Wednesday 22 December 2010] [17:11:31] <mikko>	warm beer and spices?
+| [Wednesday 22 December 2010] [17:11:57] <Skaag>	actually it looks interesting
+| [Wednesday 22 December 2010] [17:13:15] <Skaag>	yes
+| [Wednesday 22 December 2010] [17:59:27] <ryandmonk>	hello... curious if someone can help me out with at pyzmq issue
+| [Wednesday 22 December 2010] [17:59:52] <ryandmonk>	i followed the instructions on site
+| [Wednesday 22 December 2010] [17:59:56] <ryandmonk>	and ran python setup.py install
+| [Wednesday 22 December 2010] [18:00:32] <ryandmonk>	its spits out some stuff.. but eventually gives an error saying "zmq/core/constants.c:1: error: #error Do not use this file, it is the result of a failed Cython compilation."
+| [Wednesday 22 December 2010] [18:01:29] <ryandmonk>	im on ubuntu 10.10.. using zeromq-2.0.10
+| [Wednesday 22 December 2010] [18:10:56] <cremes>	ryandmonk: try searching the ML archives; i have seen discussions on python binding problems there before
+| [Wednesday 22 December 2010] [18:11:03] <cremes>	perhaps the solution is buried in the archives
+| [Wednesday 22 December 2010] [18:12:44] <ryandmonk>	where are these archives?
+| [Wednesday 22 December 2010] [18:13:15] <Skaag>	cool - I have a working 16 node zookeeper cluster :)
+| [Wednesday 22 December 2010] [18:18:57] <ryandmonk>	found em.. thanks cremes!
+| [Wednesday 22 December 2010] [20:26:13] <dos000>	how does the network/tcp driver deliver packets for the same flow when a new packet arrives ? does it look up a hash tree to find the correct app listening on that socket ?
+| [Wednesday 22 December 2010] [20:26:36] <dos000>	i have to do kinda same thing ... and zmq does also
+| [Wednesday 22 December 2010] [20:47:01] <Steve-o>	morning all
+| [Wednesday 22 December 2010] [21:15:03] <Skaag>	morning Steve-o 
