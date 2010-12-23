@@ -3031,3 +3031,157 @@
 | [Wednesday 22 December 2010] [20:26:36] <dos000>	i have to do kinda same thing ... and zmq does also
 | [Wednesday 22 December 2010] [20:47:01] <Steve-o>	morning all
 | [Wednesday 22 December 2010] [21:15:03] <Skaag>	morning Steve-o 
+| [Wednesday 22 December 2010] [23:45:20] <NoobFukaire>	I'm trying to test out the hello world stuff for C++ and zeromq
+| [Wednesday 22 December 2010] [23:45:37] <NoobFukaire>	the server binds and I can see it's there with netstat (and I can telnet into it)
+| [Wednesday 22 December 2010] [23:45:46] <NoobFukaire>	but when I connect with the client, I get Assertion failed: fetched (rep.cpp:232)
+| [Wednesday 22 December 2010] [23:46:26] <NoobFukaire>	which is:
+| [Wednesday 22 December 2010] [23:46:27] <NoobFukaire>	            //  Get next part of the message.
+| [Wednesday 22 December 2010] [23:46:28] <NoobFukaire>	            bool fetched = in_pipes [current]->read (msg_);
+| [Wednesday 22 December 2010] [23:46:28] <NoobFukaire>	            zmq_assert (fetched);
+| [Wednesday 22 December 2010] [23:46:43] <NoobFukaire>	I'm not sure whats up with this lib?
+| [Wednesday 22 December 2010] [23:49:55] <NoobFukaire>	http://pastebin.com/piwK7gxL
+| [Wednesday 22 December 2010] [23:49:59] <NoobFukaire>	the stack trace
+| [Wednesday 22 December 2010] [23:54:06] <NoobFukaire>	https://github.com/imatix/zguide/blob/master/examples/C++/hwserver.cpp
+| [Wednesday 22 December 2010] [23:54:11] <NoobFukaire>	https://github.com/imatix/zguide/blob/master/examples/C++/hwclient.cpp
+| [Wednesday 22 December 2010] [23:54:13] <NoobFukaire>	that's the code
+| [Thursday 23 December 2010] [00:07:48] <NoobFukaire>	okay nm, it had to do with some of my build paths
+| [Thursday 23 December 2010] [01:55:03] <andrewvc>	cremes: you around?
+| [Thursday 23 December 2010] [02:59:33] <sustrik>	hi mikko!
+| [Thursday 23 December 2010] [03:16:20] <mikko>	sustrik: hi
+| [Thursday 23 December 2010] [03:16:27] <sustrik>	morning
+| [Thursday 23 December 2010] [03:16:41] <sustrik>	there's a build patch from steve in the ML
+| [Thursday 23 December 2010] [03:16:51] <sustrik>	can i apply it?
+| [Thursday 23 December 2010] [03:16:52] <mikko>	steve-o?
+| [Thursday 23 December 2010] [03:16:56] <sustrik>	yes
+| [Thursday 23 December 2010] [03:17:16] <mikko>	i'll review today if thats ok
+| [Thursday 23 December 2010] [03:17:23] <sustrik>	sure, no haste
+| [Thursday 23 December 2010] [03:17:31] <mikko>	i would like to change the way we build openpgm
+| [Thursday 23 December 2010] [03:17:44] <sustrik>	what's the idea?
+| [Thursday 23 December 2010] [03:17:48] <mikko>	it seems that we are duplicating a lot of work at the moment
+| [Thursday 23 December 2010] [03:17:53] <mikko>	somehow that doesn't feel right
+| [Thursday 23 December 2010] [03:17:59] <sustrik>	yes, we are
+| [Thursday 23 December 2010] [03:18:12] <sustrik>	the alternative was to use scons
+| [Thursday 23 December 2010] [03:18:40] <sustrik>	which create additional dependencies
+| [Thursday 23 December 2010] [03:18:50] <sustrik>	any better idea?
+| [Thursday 23 December 2010] [03:19:02] <mikko>	i was thinking about two options:
+| [Thursday 23 December 2010] [03:19:06] <mikko>	a) invoke scons
+| [Thursday 23 December 2010] [03:19:14] <mikko>	b) isolate openpgm flags to their own files
+| [Thursday 23 December 2010] [03:19:47] <sustrik>	a) IMO is just shifting work from 0mq maintainers to 0mq users
+| [Thursday 23 December 2010] [03:19:52] <mikko>	i think that having large amount of conditionals in the Makefile.am isn't maintainable in the long run. also makes patching harder
+| [Thursday 23 December 2010] [03:20:19] <sustrik>	yes, agreed
+| [Thursday 23 December 2010] [03:20:32] <sustrik>	would b) help with that?
+| [Thursday 23 December 2010] [03:20:36] <mikko>	yes
+| [Thursday 23 December 2010] [03:20:52] <mikko>	we would have something like foreign/Makefile.linux.am
+| [Thursday 23 December 2010] [03:21:04] <mikko>	and include from configure.in based on OS/compiler
+| [Thursday 23 December 2010] [03:21:14] <sustrik>	i see
+| [Thursday 23 December 2010] [03:21:20] <mikko>	not sure if that works yet but ill try today
+| [Thursday 23 December 2010] [03:21:26] <sustrik>	ok
+| [Thursday 23 December 2010] [03:21:36] <mikko>	that way we could track openpgm build changes more easily
+| [Thursday 23 December 2010] [03:21:56] <sustrik>	ack
+| [Thursday 23 December 2010] [03:23:10] <mikko>	also, we should add support for solaris / freebsd with openpgm and the other steve is working on os x build
+| [Thursday 23 December 2010] [03:23:20] <mikko>	so that's 5 conditionals in Makefile
+| [Thursday 23 December 2010] [03:24:35] <sustrik>	sounds messy
+| [Thursday 23 December 2010] [03:25:00] <mikko>	yeah, that was originally why i wanted to investigate invoking scons
+| [Thursday 23 December 2010] [03:25:15] <mikko>	as steve has done a lot of work with different platforms / compilers to get the build working
+| [Thursday 23 December 2010] [11:55:37] <NoobFukaire>	whats the best way to implement bidirectional messaging with zeromq?
+| [Thursday 23 December 2010] [11:56:14] <NoobFukaire>	two REQ-REP sockets?
+| [Thursday 23 December 2010] [11:56:45] <NoobFukaire>	I need either client to be able to send and receive messages at any point
+| [Thursday 23 December 2010] [12:10:44] <sustrik>	what are you trying to do?
+| [Thursday 23 December 2010] [12:11:17] <NoobFukaire>	I have two processes that need to exchange event information
+| [Thursday 23 December 2010] [12:11:39] <NoobFukaire>	those events can be created at any time, on either end
+| [Thursday 23 December 2010] [12:12:08] <NoobFukaire>	I wish there was some non blocking way to process inbound messages
+| [Thursday 23 December 2010] [12:12:13] <NoobFukaire>	with zeromq
+| [Thursday 23 December 2010] [12:16:26] <sustrik>	is that some kind of "multicast bus" scenario?
+| [Thursday 23 December 2010] [12:16:42] <sustrik>	i.e. any message published by anyone is received by anyone else?
+| [Thursday 23 December 2010] [12:17:05] <NoobFukaire>	no, it's basically client server
+| [Thursday 23 December 2010] [12:17:18] <NoobFukaire>	right now it's 1:1 but there might be multiple clients in the future
+| [Thursday 23 December 2010] [12:17:28] <NoobFukaire>	I'm find with 1:1 for now though
+| [Thursday 23 December 2010] [12:17:29] <sustrik>	so it's 1 server and N clients
+| [Thursday 23 December 2010] [12:17:50] <NoobFukaire>	*fine
+| [Thursday 23 December 2010] [12:18:11] <NoobFukaire>	I'll refactor for multiple clients when the time comes and I know zeromq better ;)
+| [Thursday 23 December 2010] [12:18:18] <sustrik>	what kind of interactions there are between server & client?
+| [Thursday 23 December 2010] [12:18:32] <sustrik>	server publishing stream of events to be received by each client?
+| [Thursday 23 December 2010] [12:18:34] <NoobFukaire>	I'm sending google protobuf messages back and forth
+| [Thursday 23 December 2010] [12:19:05] <sustrik>	back & forth = client initiated handshake?
+| [Thursday 23 December 2010] [12:19:07] <NoobFukaire>	they're just "events" they can be generated asynchronously by either side
+| [Thursday 23 December 2010] [12:19:51] <sustrik>	0mq doesn't work that way, you have to identify patterns in the communications
+| [Thursday 23 December 2010] [12:19:54] <sustrik>	handshakes
+| [Thursday 23 December 2010] [12:20:02] <sustrik>	data distribution
+| [Thursday 23 December 2010] [12:20:05] <sustrik>	load balancing
+| [Thursday 23 December 2010] [12:20:07] <sustrik>	and similar
+| [Thursday 23 December 2010] [12:20:14] <NoobFukaire>	okay I don't care about any of that
+| [Thursday 23 December 2010] [12:20:24] <NoobFukaire>	this is about two process that exist on the same machine
+| [Thursday 23 December 2010] [12:20:27] <NoobFukaire>	and need to communicate
+| [Thursday 23 December 2010] [12:20:33] <sustrik>	use TCP then
+| [Thursday 23 December 2010] [12:20:34] <NoobFukaire>	there will never be a performance issue
+| [Thursday 23 December 2010] [12:20:42] <NoobFukaire>	gagh
+| [Thursday 23 December 2010] [12:21:22] <sustrik>	well, 0mq needs to know what you are trying to achieve to help you
+| [Thursday 23 December 2010] [12:21:25] <spht>	NoobFukaire:  Just because you're scenario is 1:1 doesn't mean a 1:N solution doesn't fit
+| [Thursday 23 December 2010] [12:21:34] <spht>	s/you're/your
+| [Thursday 23 December 2010] [12:21:34] <sustrik>	just saying "anything" doesn't work
+| [Thursday 23 December 2010] [12:21:52] <NoobFukaire>	that's true but I'm just trying to keep things as simple as possible until I'm more familiar with zeromq
+| [Thursday 23 December 2010] [12:22:34] <sustrik>	you can use PAIR socket
+| [Thursday 23 December 2010] [12:22:39] <sustrik>	it's strictly 1:1
+| [Thursday 23 December 2010] [12:22:55] <sustrik>	but there are some features missing, like auto-reconnection etc.
+| [Thursday 23 December 2010] [12:23:55] <NoobFukaire>	spht: is there no way to check read zeromq input in a non blocking fashion?
+| [Thursday 23 December 2010] [12:24:10] <NoobFukaire>	I have a function that gets called at a regular interval
+| [Thursday 23 December 2010] [12:24:24] <NoobFukaire>	ideally, I'd like to have that check for input, process it and then process outbound messages
+| [Thursday 23 December 2010] [12:24:24] <sustrik>	use ZMQ_NOBLOCK flag in recv()
+| [Thursday 23 December 2010] [12:24:25] <spht>	NoobFukaire:   you can setup zeromq non-blocking IIRC, 
+| [Thursday 23 December 2010] [12:24:54] <spht>	what sustrik said ;)
+| [Thursday 23 December 2010] [12:24:58] <NoobFukaire>	right now it's blocking, so once recv is called, it blocks until input is returned
+| [Thursday 23 December 2010] [12:25:02] <NoobFukaire>	what did he say
+| [Thursday 23 December 2010] [12:25:33] <spht>	ZMQ_NOBLOCK
+| [Thursday 23 December 2010] [12:25:55] <NoobFukaire>	thanks
+| [Thursday 23 December 2010] [12:26:38] <spht>	but if your app is event driven to start with maybe you want to hook up the zeromq fd's into your runloop/reactor or what you use
+| [Thursday 23 December 2010] [12:26:55] <spht>	sustrik:  IIRC thats possible, right?
+| [Thursday 23 December 2010] [12:27:16] <spht>	I'm a newbie myself so I hope I'm not spreading lies ;)
+| [Thursday 23 December 2010] [12:29:29] <NoobFukaire>	in my case, latency is very important and networking is not required at all
+| [Thursday 23 December 2010] [12:29:40] <NoobFukaire>	because these events may have UI functionality executed as a result
+| [Thursday 23 December 2010] [12:33:33] <sustrik>	spht: yes, it's possible
+| [Thursday 23 December 2010] [12:34:25] <sustrik>	VoobFukaire: for best latency you can collacate the sender and receiver in the same process
+| [Thursday 23 December 2010] [12:34:32] <sustrik>	each running is a different thread
+| [Thursday 23 December 2010] [12:35:13] <spht>	And for low latency you probably do not want to poll for new messages (as I guess was what you wanted with the non-blocking sockets)
+| [Thursday 23 December 2010] [12:52:20] <NoobFukaire>	I need to keep the UI responses ideally under ~100ms to eliminate any lag for the end user
+| [Thursday 23 December 2010] [12:52:45] <NoobFukaire>	granted the UI stuff itself is done in the toolkit's thread, so these events are more of a "trigger" for those
+| [Thursday 23 December 2010] [12:53:08] <NoobFukaire>	thank you for your help and suggestions
+| [Thursday 23 December 2010] [12:54:59] <NoobFukaire>	ZMQ_NOBLOCK seems to do what I want with nonblocking io, thank you sustrik 
+| [Thursday 23 December 2010] [12:57:46] <sustrik>	you are welcome
+| [Thursday 23 December 2010] [13:58:55] <mikko>	sustrik: why doesn't pair auto-reconnect?
+| [Thursday 23 December 2010] [13:59:10] <sustrik>	nobody implemented it :)
+| [Thursday 23 December 2010] [13:59:21] <mikko>	is that a hint ?
+| [Thursday 23 December 2010] [13:59:23] <mikko>	:)
+| [Thursday 23 December 2010] [13:59:26] <sustrik>	:)
+| [Thursday 23 December 2010] [13:59:35] <mikko>	drove 800km today
+| [Thursday 23 December 2010] [13:59:36] <sustrik>	well, the thing is that PAIR is a socket type
+| [Thursday 23 December 2010] [13:59:45] <sustrik>	that is most prone to misuse
+| [Thursday 23 December 2010] [14:00:00] <sustrik>	so i quite like it being slightly broken
+| [Thursday 23 December 2010] [14:00:10] <mikko>	i abuse pair heavily in my program
+| [Thursday 23 December 2010] [14:00:15] <sustrik>	:)
+| [Thursday 23 December 2010] [14:00:23] <sustrik>	where have you gone?
+| [Thursday 23 December 2010] [14:00:28] <mikko>	dark place
+| [Thursday 23 December 2010] [14:00:32] <sustrik>	finland?
+| [Thursday 23 December 2010] [14:00:34] <mikko>	yeah
+| [Thursday 23 December 2010] [14:01:06] <sustrik>	800km, than must be somewhere behing polar cirscle
+| [Thursday 23 December 2010] [14:01:08] <sustrik>	circle
+| [Thursday 23 December 2010] [14:01:16] <mikko>	drove to helsinki and back
+| [Thursday 23 December 2010] [14:01:28] <mikko>	just to find out that my friend's flight is so late that we drove back
+| [Thursday 23 December 2010] [14:01:38] <sustrik>	:|
+| [Thursday 23 December 2010] [14:01:52] <mikko>	now he might even miss the last bus 
+| [Thursday 23 December 2010] [14:02:27] <sustrik>	what's exactly the problem with flights?
+| [Thursday 23 December 2010] [14:02:31] <sustrik>	too cold or what?
+| [Thursday 23 December 2010] [14:03:42] <mikko>	he is flying from london heathrow
+| [Thursday 23 December 2010] [14:03:49] <mikko>	the problem at heathrow is incompetence
+| [Thursday 23 December 2010] [14:03:57] <sustrik>	i guess so
+| [Thursday 23 December 2010] [14:04:14] <mikko>	it's not -29.5 celsius where i am
+| [Thursday 23 December 2010] [14:04:27] <mikko>	and all airports open
+| [Thursday 23 December 2010] [14:04:39] <sustrik>	actually, it's nice warm here in Bratislava today
+| [Thursday 23 December 2010] [14:05:01] <sustrik>	temperature went up by 20 degress or so
+| [Thursday 23 December 2010] [14:05:41] <sustrik>	btw, i'm messing with linux kernel
+| [Thursday 23 December 2010] [14:06:45] <sustrik>	the experience so far is that in comparison 0MQ codebase is pretty sane and well documented
+| [Thursday 23 December 2010] [14:07:46] <mikko>	heheh
+| [Thursday 23 December 2010] [14:07:50] <mikko>	im not suprised
+| [Thursday 23 December 2010] [14:08:19] <sustrik>	well, it's an old project so some amount of messiness is expected
+| [Thursday 23 December 2010] [14:08:38] <sustrik>	but the network stack seems to have no comments at all
+| [Thursday 23 December 2010] [14:08:42] <sustrik>	:(
+| [Thursday 23 December 2010] [14:19:43] <mikko>	dark arts
