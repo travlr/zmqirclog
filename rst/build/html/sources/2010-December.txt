@@ -3185,3 +3185,67 @@
 | [Thursday 23 December 2010] [14:08:38] <sustrik>	but the network stack seems to have no comments at all
 | [Thursday 23 December 2010] [14:08:42] <sustrik>	:(
 | [Thursday 23 December 2010] [14:19:43] <mikko>	dark arts
+| [Thursday 23 December 2010] [17:06:28] <andrewvc>	cremes: you around?
+| [Thursday 23 December 2010] [20:25:43] Notice	-NickServ- travlr_ is not a registered nickname.
+| [Thursday 23 December 2010] [21:26:56] <justanewbie>	Hi,i've installed the zeromq,but i cannot find a executable named zmq_server,just zmq_queue,zmq_streamer,zmq_forward,why?
+| [Thursday 23 December 2010] [21:27:51] <justanewbie>	i wanted to know how to write config file of zmq_queue,but don't know how
+| [Thursday 23 December 2010] [21:32:18] <mikko>	justanewbie: what are you trying to achieve?
+| [Thursday 23 December 2010] [21:32:24] <mikko>	justanewbie: just run a device?
+| [Thursday 23 December 2010] [21:32:58] <mikko>	i don't think the device configuration files are documented at the moment 
+| [Thursday 23 December 2010] [21:33:13] <mikko>	it should be fairly easy to decipher the config from the code
+| [Thursday 23 December 2010] [21:33:51] <mikko>	https://github.com/zeromq/zeromq2/blob/master/devices/zmq_streamer/zmq_streamer.cpp
+| [Thursday 23 December 2010] [21:33:54] <mikko>	for exampe that
+| [Thursday 23 December 2010] [21:35:25] <justanewbie>	thank u mikko,i'll take a look and c
+| [Thursday 23 December 2010] [23:51:06] <neopallium>	Hey everyone, I just wanted to let you know about this https://github.com/Neopallium/lua-handlers lua project that I created it wraps lua-ev(event loop) & lua-zmq(requires ZeroMQ 2.1.0).  It makes it easy to work with many zmq/tcp/udp sockets in non-blocking mode.
+| [Friday 24 December 2010] [02:37:58] <sustrik>	naopallium: announce it on the mailing list rather, there's much more people there
+| [Friday 24 December 2010] [04:44:51] <cods>	Hi. Just to make sure I understand: for any type of 1-1 connection (push/pull, pub/sub, req/rep), it doesn't matter which side do a connect and which one do the bind, right? (of course, differences occurs when talking about 1-n or n-n)
+| [Friday 24 December 2010] [05:00:31] <seb`>	afaik yes it does not matter
+| [Friday 24 December 2010] [05:03:28] <cods>	ok
+| [Friday 24 December 2010] [05:07:53] <neopallium>	cods: from what I know it doesn't even matter with 1-n or n-n connections.
+| [Friday 24 December 2010] [05:11:01] <cods>	neopallium: well, I meant that when reversing role (binder/connecter) you have to adapt code to create many socket (connect) instead of one (bind) if you're the server for example, but apart from that, I understand what you mean (messages will be handled the same way at the end I guess)
+| [Friday 24 December 2010] [05:16:44] <neopallium>	looks like you can bind & connect on the same zmq socket
+| [Friday 24 December 2010] [05:17:25] <neopallium>	I just modified one of my test scripts which creates a PUB socket and had it bind to port 5555 and connect to port 5556
+| [Friday 24 December 2010] [05:18:00] <neopallium>	on port 5556 was a script with a SUB socket
+| [Friday 24 December 2010] [05:18:31] <neopallium>	both server & client SUB sockets where able to receive messages from the PUB socket.
+| [Friday 24 December 2010] [05:18:51] <neopallium>	I didn't even think that was possible until now.
+| [Friday 24 December 2010] [05:19:06] <cods>	oh, that's interesting. I have not seen that documented.
+| [Friday 24 December 2010] [05:20:07] <neopallium>	I have read somewhere in the docs that zmq sockets don't put restrictions on who connects and who binds.
+| [Friday 24 December 2010] [05:20:40] <neopallium>	but I didn't think that applied to binding & connection with the same socket.
+| [Friday 24 December 2010] [05:22:08] <cods>	I like how 0mq is versatile. Great design.
+| [Friday 24 December 2010] [05:33:05] <sustrik>	:)
+| [Friday 24 December 2010] [05:34:15] <sustrik>	neopallium: you can also add the link to your project here:
+| [Friday 24 December 2010] [05:34:16] <sustrik>	http://www.zeromq.org/docs:labs
+| [Friday 24 December 2010] [06:22:19] <neopallium>	sustrik: thanks I just sent an email to the mailinglist.
+| [Friday 24 December 2010] [06:48:01] <cods>	just curious while looking at the data on the wire, what the 0x01 0x01 header means? (before what looks like the "SPB" encoding) Is this documented somewhere? (or alternatively, where is it handled in the source code?)
+| [Friday 24 December 2010] [10:02:59] <DasIch>	i'm currently trying to install pyzmq on a machine running ubuntu 10.10, even with libzmq-dev installed pip install pyzmq reports that a zmq_utils.h is missing
+| [Friday 24 December 2010] [10:03:33] <DasIch>	i wasn't able to find any information regarding this issue is there a ppa i should use?
+| [Friday 24 December 2010] [10:06:21] <DasIch>	ah, ppa:chris-lea-zeromq does the job
+| [Friday 24 December 2010] [10:07:07] <DasIch>	uh no, i get an Assertion failed: !pgm_supported () (zmq.cpp:240)
+| [Friday 24 December 2010] [10:07:50] <guido_g>	DasIch: do the versions of libzmq and pyzmq match?
+| [Friday 24 December 2010] [10:11:37] <DasIch>	pyzmq version is 2.0.10, how do i find out the libzmq version?
+| [Friday 24 December 2010] [10:12:17] <guido_g>	from the package? apt-cache show ... 
+| [Friday 24 December 2010] [10:12:27] <DasIch>	ah it's also 2.0.10
+| [Friday 24 December 2010] [10:13:05] <guido_g>	then it seems to be build w/o pgm
+| [Friday 24 December 2010] [10:14:00] <guido_g>	get the source and compile it yourself
+| [Friday 24 December 2010] [10:14:13] <DasIch>	guido_g: ok, thanks
+| [Friday 24 December 2010] [11:55:51] <cremes>	andrewvc: i'm around for about 30m this morning; what's up?
+| [Friday 24 December 2010] [12:12:57] <cremes>	andrewvc: send me a message offline and i'll answer it; i'll be off irc for the next 3 days or so...
+| [Friday 24 December 2010] [12:13:21] <cremes>	merry christmas, everybody!
+| [Friday 24 December 2010] [21:01:23] <lorph>	is there a API for communicating between TCP/UDP and zeromq, or do I have to make that myself
+| [Saturday 25 December 2010] [11:05:11] <kuka>	hi! how to install zeroMQ lib in tomcat for using in web apps?
+| [Saturday 25 December 2010] [11:05:34] <kuka>	ivan help us
+| [Saturday 25 December 2010] [12:19:11] <keffo>	Merry off-work-period, everyone!
+| [Saturday 25 December 2010] [17:28:45] <roxlu>	hi
+| [Saturday 25 December 2010] [17:31:20] <roxlu>	I just found zeromq, and read the intro pages of the manual but I'm confused what's so good about zeromq?
+| [Saturday 25 December 2010] [17:31:54] <roxlu>	It's a networking library; but what makes it different from other libs
+| [Saturday 25 December 2010] [17:52:48] <keffo>	Might I suggest you keep reading beyond the intro pages?
+| [Saturday 25 December 2010] [18:14:39] <Skaag>	yes, I suggest you do that, as well. I know for a fact that after you read more, it will become clear to you, because I just re-read those documents myself this week.
+| [Saturday 25 December 2010] [18:15:02] <Skaag>	assume it's deeper and more important than you might imagine... ;-)
+| [Saturday 25 December 2010] [21:22:00] <andrewvc>	cremes: around?
+| [Sunday 26 December 2010] [03:42:06] <neopallium>	how does one detect if a request sent to a REQ socket is lost? (i.e. the server dies/restarts before sending the message from it's REP socket)
+| [Sunday 26 December 2010] [03:44:36] <neopallium>	I have an example of a job queue server with worker clients, the workers connect a REQ socket to the server's XREP socket and pull for jobs, but if the server is restarted when the workers are waiting for a job, they get stuck.
+| [Sunday 26 December 2010] [03:46:53] <guido_g>	you can't
+| [Sunday 26 December 2010] [03:47:27] <guido_g>	or better, mq can't, you've to build a timeout yourself
+| [Sunday 26 December 2010] [03:55:12] <neopallium>	one option I though of to try and solve this is to use PUB/SUB sockets so the server can tell the workers to re-connect.  But I don't think that will be an option for other uses of REQ/REP sockets.
+| [Sunday 26 December 2010] [03:57:57] <guido_g>	right, req/rep is simple but doesn't work
+| [Sunday 26 December 2010] [03:58:41] <guido_g>	you have to augment it w/ poll for timeout
