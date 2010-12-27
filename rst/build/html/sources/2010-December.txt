@@ -3249,3 +3249,60 @@
 | [Sunday 26 December 2010] [03:55:12] <neopallium>	one option I though of to try and solve this is to use PUB/SUB sockets so the server can tell the workers to re-connect.  But I don't think that will be an option for other uses of REQ/REP sockets.
 | [Sunday 26 December 2010] [03:57:57] <guido_g>	right, req/rep is simple but doesn't work
 | [Sunday 26 December 2010] [03:58:41] <guido_g>	you have to augment it w/ poll for timeout
+| [Sunday 26 December 2010] [15:52:00] <andrewvc>	sustrik, cremes, I was wondering if either of you were around
+| [Sunday 26 December 2010] [15:52:14] <andrewvc>	or anyone who's done work with FDs lately, they seem to act funky for me
+| [Sunday 26 December 2010] [15:52:38] <andrewvc>	initially, they notify via 'select' properly, but after a point, they don't seem to
+| [Sunday 26 December 2010] [15:52:59] <andrewvc>	select(15, [12 14], [], [], {0, 90000}) = 1 (in [12], left {0, 89997})
+| [Sunday 26 December 2010] [15:52:59] <andrewvc>	select(15, [12 14], [], [], {0, 90000}) = 1 (in [12], left {0, 36581})
+| [Sunday 26 December 2010] [15:53:00] <andrewvc>	select(15, [12 14], [], [], {0, 90000}) = 0 (Timeout)
+| [Sunday 26 December 2010] [15:53:00] <andrewvc>	select(15, [12 14], [], [], {0, 90000}) = 0 (Timeout)
+| [Sunday 26 December 2010] [15:53:00] <andrewvc>	select(15, [12 14], [], [], {0, 90000}) = 0 (Timeout)
+| [Sunday 26 December 2010] [15:53:00] <andrewvc>	select(15, [12 14], [], [], {0, 90000}) = 0 (Timeout)
+| [Sunday 26 December 2010] [15:53:12] <andrewvc>	even with a constant stream of messages
+| [Sunday 26 December 2010] [16:06:10] <andrewvc>	oh, I'm not sure if this is true in general for select (or a total noob mistake), but previously I was reading a single message at a time off the socket whenever EM was notified by either select() or epoll(). This apparently does not work, your handler must repeatedly read off the socket until there is nothing left to read. I'm doing this by repeatedly checking ZMQ::EVENTS after reading each message. 
+| [Sunday 26 December 2010] [21:49:22] <swills>	ping?
+| [Sunday 26 December 2010] [21:49:39] <swills>	i was in here a while back asking about zeromq perl modules
+| [Sunday 26 December 2010] [21:49:44] <swills>	http://travlr.github.com/zmqirclog/2010-November.html
+| [Sunday 26 December 2010] [21:52:27] <swills>	i'me back to looking at that, but i think i've decided the issue is that the perl zeromq module is written to expect a threaded perl and threaded zeromq
+| [Monday 27 December 2010] [08:29:48] <monokrome>	hey
+| [Monday 27 December 2010] [08:30:04] <monokrome>	Does anyone know if I can use zeromq without using exceptions?
+| [Monday 27 December 2010] [08:31:55] <monokrome>	I guess that I could use the C libraries :/
+| [Monday 27 December 2010] [10:47:21] <andrewvc>	cremes: around?
+| [Monday 27 December 2010] [10:52:01] <andrewvc>	actually, anyone else around? sustrik?
+| [Monday 27 December 2010] [11:48:33] <andrewvc>	Anyone know why if you monitor a ZMQ FD with select for a read, and the select gets triggered, subsequent calls to select will show the socket as readable until all messages have been read off the socket?
+| [Monday 27 December 2010] [12:30:50] <andrewvc>	cremes, thanks for the email wrt to edge triggering
+| [Monday 27 December 2010] [12:34:40] <andrewvc>	you know if I after it gets triggered I should use a loop that checks ZMQ::EVENTS before reading each message, or just repeatedly calls recv(ZMQ::NOBLOCK) without checking ZMQ::EVENTS for reads. i'm guessing that recv alone is probably fine for reads, but ZMQ::EVENTS is probably a good thing to check for before sending a message
+| [Monday 27 December 2010] [12:49:10] <neopallium>	andrewvc: I have used ZMQ::FD with the an event loop and the way I did it was to call recv()/send() until they return EAGAIN.  When recv() returns EAGAIN then wait for a read event before calling recv() again.  When send() returns EAGAIN then queue the data and wait for a write event.
+| [Monday 27 December 2010] [12:49:31] <andrewvc>	cool
+| [Monday 27 December 2010] [12:49:54] <andrewvc>	so, ZMQ_EVENTS is there only if you're curious, but don't actually want to send/read
+| [Monday 27 December 2010] [12:49:57] <neopallium>	you can see how I did it in Lua code here: https://github.com/Neopallium/lua-handlers/blob/master/handler/nsocket.lua
+| [Monday 27 December 2010] [12:50:04] <andrewvc>	nice! thanks
+| [Monday 27 December 2010] [12:50:21] <neopallium>	I didn't use ZMQ_EVENTS
+| [Monday 27 December 2010] [12:51:23] <neopallium>	seems like event mongrel2 which uses zeromq with an eventloop doesn't use ZMQ_EVENTS
+| [Monday 27 December 2010] [12:51:29] <neopallium>	*even
+| [Monday 27 December 2010] [12:51:30] <andrewvc>	interesting
+| [Monday 27 December 2010] [12:51:56] <neopallium>	basically that is how you should work with an edge-trigger socket.
+| [Monday 27 December 2010] [12:52:17] <andrewvc>	cool, yeah, I don't know where I got it into my head that ZMQ_EVENTS should be checked first
+| [Monday 27 December 2010] [12:52:34] <neopallium>	you only pause your sending/receiving when you get an EAGAIN from the socket.
+| [Monday 27 December 2010] [12:53:05] <andrewvc>	cool, yeah I've never really mucked around much with select/epoll before, I appreciate the pointers
+| [Monday 27 December 2010] [12:53:06] <neopallium>	I really don't know what ZMQ_EVENTS is good for.
+| [Monday 27 December 2010] [12:54:35] <neopallium>	oops that was the wrong file the one for zeromq socket is this one: https://github.com/Neopallium/lua-handlers/blob/master/handler/zsocket.lua
+| [Monday 27 December 2010] [12:55:18] <neopallium>	the nsocket.lua file is for tcp/udp sockets which are level-triggered.
+| [Monday 27 December 2010] [12:57:27] <andrewvc>	well
+| [Monday 27 December 2010] [12:57:31] <andrewvc>	I recall someone saying
+| [Monday 27 December 2010] [12:57:39] <cremes>	andrewvc: ZM_EVENTS is used to determine if there is a "whole" message ready on the FD
+| [Monday 27 December 2010] [12:57:42] <andrewvc>	yeah
+| [Monday 27 December 2010] [12:57:50] <andrewvc>	was about to say :)
+| [Monday 27 December 2010] [12:57:52] <andrewvc>	lol
+| [Monday 27 December 2010] [12:57:53] <cremes>	otherwise you would try to read a partial which eoesn't work in 0mq
+| [Monday 27 December 2010] [12:58:01] <andrewvc>	but you'd get an EAGAIN right?
+| [Monday 27 December 2010] [12:58:23] <andrewvc>	i mean, I assume it'd be a waste of cycles to call ZMQ_EVENTS before each recv
+| [Monday 27 December 2010] [12:58:25] <cremes>	andrewvc: i don't know; i assume so but my assumptions are sometimes wildly wrong
+| [Monday 27 December 2010] [12:58:33] <andrewvc>	lol
+| [Monday 27 December 2010] [12:58:54] <cremes>	no, you wouldn't need to call it *each* time, just *once* after ZM_FD triggered
+| [Monday 27 December 2010] [12:59:11] <cremes>	once ZM_FD and ZM_EVENTS agree, read until EAGAIN
+| [Monday 27 December 2010] [13:03:06] <andrewvc>	gotcha
+| [Monday 27 December 2010] [13:03:40] <andrewvc>	how about for a writable handler.
+| [Monday 27 December 2010] [13:03:54] <andrewvc>	it's conceivable the writable state could change after any given message no?
+| [Monday 27 December 2010] [13:10:58] <zedas>	neopallium: i think ZMQ_EVENTS is new, and I just use zmq_poll directly instead.
+| [Monday 27 December 2010] [13:11:34] <neopallium>	ah, yeah I forgot about that.
