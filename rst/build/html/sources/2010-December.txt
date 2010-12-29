@@ -3306,3 +3306,244 @@
 | [Monday 27 December 2010] [13:03:54] <andrewvc>	it's conceivable the writable state could change after any given message no?
 | [Monday 27 December 2010] [13:10:58] <zedas>	neopallium: i think ZMQ_EVENTS is new, and I just use zmq_poll directly instead.
 | [Monday 27 December 2010] [13:11:34] <neopallium>	ah, yeah I forgot about that.
+| [Monday 27 December 2010] [15:20:38] <cremes>	andrewvc: what you said doesn't make sense from the write side
+| [Monday 27 December 2010] [15:20:48] <andrewvc>	oh?
+| [Monday 27 December 2010] [15:20:50] <cremes>	just write until you get EAGAIN; no need to check ZM_EVENTS
+| [Monday 27 December 2010] [15:20:56] <andrewvc>	ah, gotcha
+| [Tuesday 28 December 2010] [00:32:58] <lestrrat>	oh, woot, emails for build failures ;)
+| [Tuesday 28 December 2010] [00:33:00] <lestrrat>	cool
+| [Tuesday 28 December 2010] [06:02:30] <Skaag>	anyone here uses zookeeper with zmq?
+| [Tuesday 28 December 2010] [06:46:50] <newbie2207>	hi
+| [Tuesday 28 December 2010] [13:29:29] <CIA-21>	jzmq: 03Gonzalo Diethelm 07master * rb623601 10/ (4 files in 3 dirs): 
+| [Tuesday 28 December 2010] [13:29:29] <CIA-21>	jzmq: Added new files (Streamer, Forwarder, Queue) to MSCV project.
+| [Tuesday 28 December 2010] [13:29:29] <CIA-21>	jzmq: Corrected permissions. (+10 more commits...) - http://bit.ly/fgP0rH
+| [Tuesday 28 December 2010] [13:35:55] <CIA-21>	jzmq: 03Gonzalo Diethelm 07master * r76b78bf 10/ README : 
+| [Tuesday 28 December 2010] [13:35:55] <CIA-21>	jzmq: Merge branch 'master' of http://github.com/yawn/jzmq into yawn-master
+| [Tuesday 28 December 2010] [13:35:55] <CIA-21>	jzmq: Conflicts:
+| [Tuesday 28 December 2010] [13:35:55] <CIA-21>	jzmq:  README - http://bit.ly/fXVvAM
+| [Tuesday 28 December 2010] [14:17:38] <shykes_>	hello
+| [Tuesday 28 December 2010] [14:19:06] <shykes_>	I'm thinking of implementing a device with a simple "routing key" mechanism - does that exist already?
+| [Tuesday 28 December 2010] [18:16:35] <lestrrat>	Can the hudson tests run the perl binding tests using "make test TEST_VERBOSE=1"? that would give me more hints for debugging
+| [Tuesday 28 December 2010] [19:40:59] <s0undt3ch>	hello ppl
+| [Tuesday 28 December 2010] [19:41:20] <s0undt3ch>	I'm getting "Assertion failed: !pgm_supported() ...." when trying to run one of the pyzmq examples
+| [Tuesday 28 December 2010] [20:02:37] <bgranger>	s0undt3ch: what version of pyzmq and zeromq are you running?
+| [Tuesday 28 December 2010] [20:03:11] <s0undt3ch>	bgranger: well the ones I get from the ppa repo are pyzmq 2.0.7 and zmq 2.0.10
+| [Tuesday 28 December 2010] [20:03:39] <s0undt3ch>	bgranger: I'm now trying to build local versions of the libraries to see if I can get over that
+| [Tuesday 28 December 2010] [20:03:40] <bgranger>	This is a known bug that has been fixed in 2.0.10 of pyzmq.  Can you give that a shot?
+| [Tuesday 28 December 2010] [20:03:47] <bgranger>	Yep, that would solve it.
+| [Tuesday 28 December 2010] [20:03:59] <s0undt3ch>	oh sorry
+| [Tuesday 28 December 2010] [20:04:08] <bgranger>	But, just so you know, the library should work fine even though the tests fail.
+| [Tuesday 28 December 2010] [20:04:08] <s0undt3ch>	I think I was using 2.0.10 of pyzmq
+| [Tuesday 28 December 2010] [20:04:24] <s0undt3ch>	let me clean up the mess first
+| [Tuesday 28 December 2010] [20:04:26] <bgranger>	OK
+| [Tuesday 28 December 2010] [20:05:08] <bgranger>	Which example were you running.
+| [Tuesday 28 December 2010] [20:05:16] <s0undt3ch>	heartbeat/heart.py
+| [Tuesday 28 December 2010] [20:05:26] <s0undt3ch>	I'm building 2.0.10 now
+| [Tuesday 28 December 2010] [20:07:33] <s0undt3ch>	ok, I now have the 2.0.10 pyzmq
+| [Tuesday 28 December 2010] [20:07:46] <s0undt3ch>	bgranger: same error
+| [Tuesday 28 December 2010] [20:08:59] <s0undt3ch>	ok, both packages libzmq0 and pyzmq are at 2.0.10
+| [Tuesday 28 December 2010] [20:09:47] <s0undt3ch>	bgranger: yep, I've added a print statement at the top of heart.py
+| [Tuesday 28 December 2010] [20:09:56] <s0undt3ch>	print zmq.__version__, zmq.__file__
+| [Tuesday 28 December 2010] [20:10:00] <s0undt3ch>	output  is:
+| [Tuesday 28 December 2010] [20:10:09] <s0undt3ch>	2.0.10 /home/vampas/projects/.virtual_python/lib/python2.6/site-packages/zmq/__init__.pyc
+| [Tuesday 28 December 2010] [20:10:09] <s0undt3ch>	Assertion failed: !pgm_supported () (zmq.cpp:240)
+| [Tuesday 28 December 2010] [20:10:09] <s0undt3ch>	Aborted
+| [Tuesday 28 December 2010] [20:12:29] <bgranger>	Can you comment out line 17 of the heart.py and retry?
+| [Tuesday 28 December 2010] [20:12:37] <bgranger>	The one where the Context is created.
+| [Tuesday 28 December 2010] [20:13:47] <s0undt3ch>	bgranger: yeah, the Context() was what was causing it
+| [Tuesday 28 December 2010] [20:16:38] <bgranger>	The issue is that when pgm is enabled (multicast), only 1 context can be created.  The ThreadDevice creates one (which is fine), but so did line 17.  The one in L17 was never used though.
+| [Tuesday 28 December 2010] [20:16:52] <s0undt3ch>	bgranger: zmq.Context() wasn't doin' anything there right?
+| [Tuesday 28 December 2010] [20:17:05] <bgranger>	This is a general limitation of zeromq - that with pgm, only 1 context can be used.
+| [Tuesday 28 December 2010] [20:17:32] <bgranger>	But, pyzmq+zeromq should be working fine for you.
+| [Tuesday 28 December 2010] [20:17:42] <s0undt3ch>	bgranger: but instead of completely failing can't it just warn or ignore and continue?
+| [Tuesday 28 December 2010] [20:18:56] <bgranger>	As far as pyzmq goes, we don't have a clean way of doing that yet in general.  We would need zeromq to handle it differently, but zeromq is limited by the initialization model of pgm.
+| [Tuesday 28 December 2010] [20:19:00] <bgranger>	Tough to get around.
+| [Tuesday 28 December 2010] [20:19:23] <bgranger>	At least, that is how I remember the situation for now.
+| [Tuesday 28 December 2010] [20:19:45] <s0undt3ch>	well Thanks!
+| [Tuesday 28 December 2010] [20:19:48] <s0undt3ch>	:)
+| [Tuesday 28 December 2010] [20:19:48] <bgranger>	Sure
+| [Tuesday 28 December 2010] [20:19:54] <bgranger>	At least it is working.
+| [Tuesday 28 December 2010] [20:20:04] <s0undt3ch>	anyway, now for some implementation thought
+| [Tuesday 28 December 2010] [20:20:09] <s0undt3ch>	*thoughts
+| [Tuesday 28 December 2010] [20:20:20] <s0undt3ch>	here's my problem
+| [Tuesday 28 December 2010] [20:20:25] <bgranger>	Sure
+| [Tuesday 28 December 2010] [20:21:06] <s0undt3ch>	I need to build a system that listens to audio streams, analyses them, and sends events to clients
+| [Tuesday 28 December 2010] [20:21:31] <s0undt3ch>	I created this already using twisted, not that good though
+| [Tuesday 28 December 2010] [20:21:59] <bgranger>	OK
+| [Tuesday 28 December 2010] [20:22:00] <s0undt3ch>	what I'm trying to achieve now is use green threads, ie, eventlet or gevent
+| [Tuesday 28 December 2010] [20:22:32] <bgranger>	Are the audio streams coming over zeromq as well?
+| [Tuesday 28 December 2010] [20:22:34] <s0undt3ch>	the issue with this is that gstreamer the audio lib I'll use is not integrated with either eventlet nor gevent
+| [Tuesday 28 December 2010] [20:23:14] <s0undt3ch>	bgranger: nope, zmq was going at first to be used for the events messaging
+| [Tuesday 28 December 2010] [20:23:20] <bgranger>	OK
+| [Tuesday 28 December 2010] [20:23:41] <bgranger>	So you have 1 process that is using gstreamer to look at audio streams and you want to fire off event to clients.
+| [Tuesday 28 December 2010] [20:23:44] <bgranger>	How many clients?
+| [Tuesday 28 December 2010] [20:23:50] <s0undt3ch>	what I've been advised by some eventlet ppl is to run each gstreamer audio stream in it's own process
+| [Tuesday 28 December 2010] [20:24:02] <s0undt3ch>	at most 100 clients at least for now
+| [Tuesday 28 December 2010] [20:24:06] <bgranger>	OK
+| [Tuesday 28 December 2010] [20:24:16] <s0undt3ch>	this is going to be a tool to be used inside the company
+| [Tuesday 28 December 2010] [20:24:19] <bgranger>	OK
+| [Tuesday 28 December 2010] [20:24:31] <bgranger>	So you actually have N gstreamer processes and M clients
+| [Tuesday 28 December 2010] [20:24:37] <s0undt3ch>	yes
+| [Tuesday 28 December 2010] [20:24:39] <bgranger>	OK
+| [Tuesday 28 December 2010] [20:24:55] <bgranger>	And you want all M clients to get the events from all N streaming processes?
+| [Tuesday 28 December 2010] [20:25:31] <s0undt3ch>	so what I'm thinking now is, also use zmq to communicate between the gstreamer processes and a "core daemon" which will get all messages and deliver them to clients
+| [Tuesday 28 December 2010] [20:25:43] <s0undt3ch>	well, all clients should receive all messages
+| [Tuesday 28 December 2010] [20:25:54] <s0undt3ch>	so
+| [Tuesday 28 December 2010] [20:25:56] <s0undt3ch>	yes
+| [Tuesday 28 December 2010] [20:26:04] <s0undt3ch>	"all M clients to get the events from all N streaming processes"
+| [Tuesday 28 December 2010] [20:26:36] <s0undt3ch>	since the core daemon and the gstreamer process will be on the same machine I though of using ipc
+| [Tuesday 28 December 2010] [20:27:16] <s0undt3ch>	but as you can see there are several needs for the zmq lib which I'm just starting to get aquainted
+| [Tuesday 28 December 2010] [20:27:25] <s0undt3ch>	oh
+| [Tuesday 28 December 2010] [20:27:25] <bgranger>	Yes
+| [Tuesday 28 December 2010] [20:27:37] <s0undt3ch>	the gstreamer processes will need to be controlable
+| [Tuesday 28 December 2010] [20:27:45] <bgranger>	In what sense?
+| [Tuesday 28 December 2010] [20:27:52] <s0undt3ch>	ie, I'll need to pass "commands" to it
+| [Tuesday 28 December 2010] [20:28:24] <s0undt3ch>	ie, should it stop, change the stream configuration variables, etc
+| [Tuesday 28 December 2010] [20:28:56] <bgranger>	OK, let's start with the basics of getting the events to the clients.
+| [Tuesday 28 December 2010] [20:29:02] <s0undt3ch>	ok
+| [Tuesday 28 December 2010] [20:29:09] <bgranger>	Let's call the gstreamer processes source processes.
+| [Tuesday 28 December 2010] [20:29:13] <s0undt3ch>	sure
+| [Tuesday 28 December 2010] [20:29:23] <bgranger>	For each source process, you will have a PUB socket.
+| [Tuesday 28 December 2010] [20:29:53] <bgranger>	Each of those PUB sockets will connect to a FORWARDER device that runs in a separate process.
+| [Tuesday 28 December 2010] [20:30:34] <bgranger>	The job of the FOWARDER process is to collect all the events and publish them to all clients.  The clients will each have a SUB socket that is connected to the other end of the FORWARDER process.
+| [Tuesday 28 December 2010] [20:31:16] <s0undt3ch>	ok
+| [Tuesday 28 December 2010] [20:31:30] <s0undt3ch>	so far, I'm understanding :)
+| [Tuesday 28 December 2010] [20:32:05] <bgranger>	You could do all of this w/o the FORWARDER in the middle, but having it will make it much easier for all the clients to get the events of all the sources.
+| [Tuesday 28 December 2010] [20:32:18] <s0undt3ch>	ok
+| [Tuesday 28 December 2010] [20:32:19] <bgranger>	I would start out by prototyping that.
+| [Tuesday 28 December 2010] [20:32:50] <s0undt3ch>	yeah, get some example code going on right?
+| [Tuesday 28 December 2010] [20:33:01] <bgranger>	Then if you want to enable the clients to control the sources, I would use REQ/REP or XREQ/XREP sockets separately
+| [Tuesday 28 December 2010] [20:33:02] <bgranger>	Yes
+| [Tuesday 28 December 2010] [20:33:52] <bgranger>	The overall idea is to use different socket pairs for each type of communication pattern in your distributed application.  In some of our more complicated apps, we have many different zeromq sockets.
+| [Tuesday 28 December 2010] [20:34:21] <s0undt3ch>	what are the diferences between the req/rep and x version of them
+| [Tuesday 28 December 2010] [20:36:05] <bgranger>	There are a number of differences, I would check out the guide:
+| [Tuesday 28 December 2010] [20:36:06] <bgranger>	http://zguide.zeromq.org/chapter:all#toc41
+| [Tuesday 28 December 2010] [20:36:14] <s0undt3ch>	I will
+| [Tuesday 28 December 2010] [20:36:39] <bgranger>	In most cases find myself using the X variants as they are more flexible and handle multiple peers asynchronously.
+| [Tuesday 28 December 2010] [21:13:31] <s0undt3ch>	nice reading
+| [Tuesday 28 December 2010] [21:13:47] <s0undt3ch>	so far I'm not thinking about scalability, at least at the sources level
+| [Tuesday 28 December 2010] [21:14:10] <s0undt3ch>	the only part that should be scalable is client handling
+| [Tuesday 28 December 2010] [21:14:23] <s0undt3ch>	anyway, let cook up some code...
+| [Tuesday 28 December 2010] [21:14:29] <s0undt3ch>	*let's
+| [Wednesday 29 December 2010] [03:49:51] <jugg>	Having an xrep (bind)/req (connect) setup, with xrep implementation using zmq 2.1.x and the req implementation using 2.0.10, and the req implementation being a single process with multiple threads, each thread having a req-socket.   It is always the case that eventually the req-socket after send'ing blocks on recv never getting a response.  Upgrading the req implementation to 2.1.0 greatly reduces this occurrence frequency, but it still happens.
+| [Wednesday 29 December 2010] [03:50:10] <jugg>	Sometimes instead of locking on recv,  zmq asserts while blocking in recv with this error (zmq v2.1.0): Assertion failed: zmq_msg_size (msg_) == 0 (req.cpp:87). 
+| [Wednesday 29 December 2010] [03:51:49] <jugg>	Has that use case xrep(bind)/req(connect) been tested much?
+| [Wednesday 29 December 2010] [03:54:52] <sustrik>	the assert looks like there's an malformed message being received on the wire
+| [Wednesday 29 December 2010] [03:56:27] <jugg>	Perhaps the xrep isn't filtering the id part correctly, and sending the separator message?
+| [Wednesday 29 December 2010] [03:56:52] <sustrik>	dunno, can you make a minimal test case?
+| [Wednesday 29 December 2010] [03:56:58] <jugg>	I'm still working on that...
+| [Wednesday 29 December 2010] [03:57:36] <jugg>	I jumped in here where I found that changing the req implementation zmq library version changed the behavior...   I had been expecting to find the issue on the xrep side.
+| [Wednesday 29 December 2010] [03:59:40] <jugg>	is the use case known to be robust, or does it have little known exposure?
+| [Wednesday 29 December 2010] [04:03:32] <sustrik>	which part are you speaking about now? the blocking on recv or the assert?
+| [Wednesday 29 December 2010] [04:09:47] <jugg>	one xrep(bind)/many req(connect) pair.
+| [Wednesday 29 December 2010] [04:11:58] <sustrik>	what behaviour change?
+| [Wednesday 29 December 2010] [04:12:30] <sustrik>	the assert?
+| [Wednesday 29 December 2010] [04:12:49] <jugg>	the blocking on recv frequency diminished moving from 2.0.10 to 2.1.0.
+| [Wednesday 29 December 2010] [04:13:00] <jugg>	The assert is random as ever with both versions.
+| [Wednesday 29 December 2010] [04:13:53] <sustrik>	are you closing the req peer at that moment?
+| [Wednesday 29 December 2010] [04:15:13] <jugg>	no, it happens at various points in the set of messages/responses I'm processing.
+| [Wednesday 29 December 2010] [04:16:34] <sustrik>	are you setting HWMs?
+| [Wednesday 29 December 2010] [04:16:43] <jugg>	no
+| [Wednesday 29 December 2010] [04:16:55] <sustrik>	then it should not happen imo
+| [Wednesday 29 December 2010] [04:17:11] <sustrik>	looks like a bug
+| [Wednesday 29 December 2010] [04:18:31] <jugg>	If I can reproduce the issue on a simple test case, I'll pass it along.
+| [Wednesday 29 December 2010] [04:18:44] <sustrik>	thanks
+| [Wednesday 29 December 2010] [04:31:24] <s0undt3ch>	hello ppl, are there any issue using pyzmq inside a chroot?
+| [Wednesday 29 December 2010] [04:31:30] <s0undt3ch>	http://paste.pocoo.org/show/311220/
+| [Wednesday 29 December 2010] [09:30:10] <CIA-21>	jzmq: 03Gonzalo Diethelm 07master * ree2d21e 10/ (6 files in 2 dirs): 
+| [Wednesday 29 December 2010] [09:30:10] <CIA-21>	jzmq: Added support for unregistering sockets from poller.
+| [Wednesday 29 December 2010] [09:30:10] <CIA-21>	jzmq: Applied standard indentation everywhere on Java files. - http://bit.ly/fcb5Pi
+| [Wednesday 29 December 2010] [09:43:58] <jgarbers>	Hi! I'm trying to build zmq under Visual Studio 2008 -- but the current source release seems to have VS2010 .vcproj files in its solution, so VS2008 can't read them. Is there a straightforward way to use VS2008 instead of VS2010?
+| [Wednesday 29 December 2010] [09:45:58] <sustrik>	are they vs2010 project files?
+| [Wednesday 29 December 2010] [09:46:13] <sustrik>	i recall i built it with vs2008 last time i tried
+| [Wednesday 29 December 2010] [09:46:52] <jgarbers>	seems so, or maybe i'm doing something wrong
+| [Wednesday 29 December 2010] [09:47:02] <jgarbers>	the VS2008 reports an error when opening the .sln
+| [Wednesday 29 December 2010] [09:47:08] <jgarbers>	let me get the details again
+| [Wednesday 29 December 2010] [09:47:37] <jgarbers>	i'm hoping this is a simple pilot error that will make me feel stupid for 5 minutes and let me get back to work :-)
+| [Wednesday 29 December 2010] [09:48:17] <jgarbers>	says "...libzmq\libzmq.vcproj' cannot be opened because its project type (.vcproj) is not supported by this version of Visual Studio."
+| [Wednesday 29 December 2010] [09:48:30] <jgarbers>	get that same error for each of the projects
+| [Wednesday 29 December 2010] [09:50:18] <sustrik>	hm, no idea, sorry
+| [Wednesday 29 December 2010] [09:51:45] <jgarbers>	darn. thanks anyway!
+| [Wednesday 29 December 2010] [10:01:30] <jgarbers>	okay, it was indeed pilot stupidity. my VS2008 doesn't have C++ -- just C# and VB.  Cripes.  Off to go get the appropriate compiler, which *may* help.
+| [Wednesday 29 December 2010] [11:49:20] <shykes_>	hello
+| [Wednesday 29 December 2010] [11:49:46] <shykes_>	I'm seeing a weird issue when trying to PUB via a higher-latency link
+| [Wednesday 29 December 2010] [11:50:09] <cremes>	what do you see?
+| [Wednesday 29 December 2010] [11:50:38] <seb`>	REQ messages arrive with no problem
+| [Wednesday 29 December 2010] [11:50:53] <seb`>	but PUB and PUSH messages never arrive
+| [Wednesday 29 December 2010] [11:51:26] <shykes_>	... they never arrive *if sent from a home DSL link*
+| [Wednesday 29 December 2010] [11:51:42] <shykes_>	PUB and PUSH messages *do* arrive at the same location if sent from the same datacenter
+| [Wednesday 29 December 2010] [11:51:57] <seb`>	on tcp sockets btw
+| [Wednesday 29 December 2010] [11:52:29] <cremes>	are you both working on the same issue? interleaving your messages like that is confusing....
+| [Wednesday 29 December 2010] [11:52:43] <seb`>	sorry yes:-)
+| [Wednesday 29 December 2010] [11:52:50] <cremes>	ok
+| [Wednesday 29 December 2010] [11:53:22] <cremes>	what does the "on tcp sockets btw" comment mean? you are using both 0mq and your own sockets?
+| [Wednesday 29 December 2010] [11:53:54] <seb`>	no I mean it's a tcp link
+| [Wednesday 29 December 2010] [11:54:06] <seb`>	not epgm & co
+| [Wednesday 29 December 2010] [11:54:07] <cremes>	ok, tcp transport in 0mq-speak
+| [Wednesday 29 December 2010] [11:54:12] <seb`>	yes
+| [Wednesday 29 December 2010] [11:54:30] <seb`>	"transport" that's the word I was looking for:-)
+| [Wednesday 29 December 2010] [11:54:32] <cremes>	so to recap, req/rep works but pub & push do not
+| [Wednesday 29 December 2010] [11:54:54] <seb`>	exactly
+| [Wednesday 29 December 2010] [11:55:08] <sustrik>	strange
+| [Wednesday 29 December 2010] [11:55:12] <cremes>	do *all* messages disappear or do you get *some* of them?
+| [Wednesday 29 December 2010] [11:55:17] <seb`>	all of them
+| [Wednesday 29 December 2010] [11:55:21] <seb`>	nothing arrives
+| [Wednesday 29 December 2010] [11:55:50] <sustrik>	have a look whether the underlying tcp connection exists
+| [Wednesday 29 December 2010] [11:56:01] <sustrik>	netstat or something
+| [Wednesday 29 December 2010] [11:56:09] <cremes>	in your client program with the SUB socket, do you use setsockopt with ZM_SUBSCRIBE to set your subscription?
+| [Wednesday 29 December 2010] [11:56:25] <cremes>	if you don't, all messages are dropped
+| [Wednesday 29 December 2010] [11:56:31] <seb`>	cremes: yes we did
+| [Wednesday 29 December 2010] [11:56:36] <cremes>	good
+| [Wednesday 29 December 2010] [11:56:40] <seb`>	sustrik: I'll check
+| [Wednesday 29 December 2010] [11:58:02] <seb`>	sustrik: netcat is able to connect
+| [Wednesday 29 December 2010] [11:58:07] <sustrik>	i mean -- there may be a problem establishing the connection is particular direction
+| [Wednesday 29 December 2010] [11:58:22] <sustrik>	due to firewalls
+| [Wednesday 29 December 2010] [11:58:32] <sustrik>	the same way as in your use case?
+| [Wednesday 29 December 2010] [11:59:06] <seb`>	sustrik: no it's not firewalls since a switch to req/rep works
+| [Wednesday 29 December 2010] [11:59:30] <sustrik>	it may depend on the direction of connection establishment
+| [Wednesday 29 December 2010] [11:59:39] <sustrik>	i.e. where you do bind and where you do connecty
+| [Wednesday 29 December 2010] [12:00:00] <seb`>	the bind is server side
+| [Wednesday 29 December 2010] [12:00:08] <sustrik>	same as in your use case?
+| [Wednesday 29 December 2010] [12:00:43] <sustrik>	anyway, start you app and check whether the TCP connection is established
+| [Wednesday 29 December 2010] [12:01:00] <sustrik>	that would be the best point to start the investigation
+| [Wednesday 29 December 2010] [12:01:05] <seb`>	sustrik: yes checking now
+| [Wednesday 29 December 2010] [12:02:16] <seb`>	yes it's established
+| [Wednesday 29 December 2010] [12:03:31] <sustrik>	it's PUSH/PULL, right?
+| [Wednesday 29 December 2010] [12:04:01] <seb`>	yes it is
+| [Wednesday 29 December 2010] [12:04:11] <seb`>	but the problem is the same with PUB/SUB
+| [Wednesday 29 December 2010] [12:04:29] <seb`>	but REQ/REP works (exactly the same conditions)
+| [Wednesday 29 December 2010] [12:04:34] <sustrik>	let's focus on push/pull now
+| [Wednesday 29 December 2010] [12:04:47] <seb`>	ok
+| [Wednesday 29 December 2010] [12:04:56] <sustrik>	can you check whether data are passed on the wire?
+| [Wednesday 29 December 2010] [12:05:08] <sustrik>	using wireshark or tcp dump?
+| [Wednesday 29 December 2010] [12:05:17] <seb`>	yup
+| [Wednesday 29 December 2010] [12:05:19] <seb`>	hold on
+| [Wednesday 29 December 2010] [12:09:02] <shykes_>	Ok, we just found the problem ;)
+| [Wednesday 29 December 2010] [12:09:10] <shykes_>	(taking over from seb`, sorry for the interleaving)
+| [Wednesday 29 December 2010] [12:09:52] <shykes_>	in order to give you netstat information, we had the client stay open and wait for manual input to send
+| [Wednesday 29 December 2010] [12:10:23] <shykes_>	instead of sending a pre-defined message and exiting instnatly
+| [Wednesday 29 December 2010] [12:10:54] <shykes_>	when the client stays connected for a second or two, the messages start arriving
+| [Wednesday 29 December 2010] [12:11:10] <shykes_>	looks like there's no guarantee that a connect() is ready when we start sending?
+| [Wednesday 29 December 2010] [12:11:25] <shykes_>	I suppose in the context of a never-ending stream of messages, it's no big deal
+| [Wednesday 29 December 2010] [12:11:26] <sustrik>	right
+| [Wednesday 29 December 2010] [12:11:32] <sustrik>	zmq_connect is async
+| [Wednesday 29 December 2010] [12:11:43] <shykes_>	So our problem is a non-problem :)
+| [Wednesday 29 December 2010] [12:11:49] <sustrik>	great :)
+| [Wednesday 29 December 2010] [12:12:00] <shykes_>	out of curiosity, any way to hook into connect?
+| [Wednesday 29 December 2010] [12:12:11] <shykes_>	if we *do* need to wait for it to succeed? (ie for an automated test)
+| [Wednesday 29 December 2010] [12:12:25] <seb`>	I think we could use zmq_poll for that
+| [Wednesday 29 December 2010] [12:12:38] <sustrik>	not really, because the connection can be dropped and reestablished in the background
+| [Wednesday 29 December 2010] [12:12:57] <sustrik>	so connect can happen even when no zmq_connect is being executed
+| [Wednesday 29 December 2010] [12:13:56] <shykes_>	I see
+| [Wednesday 29 December 2010] [12:14:00] <seb`>	sustrik: it should work to wait for POLLOUT right?
+| [Wednesday 29 December 2010] [12:14:41] <sustrik>	pollout will succeed even though the connection is not established yet
+| [Wednesday 29 December 2010] [12:14:48] <seb`>	ah?
+| [Wednesday 29 December 2010] [12:14:57] <sustrik>	there's a message buffer
+| [Wednesday 29 December 2010] [12:15:07] <sustrik>	if there's still space in the buffer
+| [Wednesday 29 December 2010] [12:15:11] <seb`>	I see
+| [Wednesday 29 December 2010] [12:15:12] <sustrik>	you can send messages
+| [Wednesday 29 December 2010] [12:15:23] <sustrik>	they will be passed to the peer as soon as possible
+| [Wednesday 29 December 2010] [12:15:48] <sustrik>	(i.e. when connection is established)
+| [Wednesday 29 December 2010] [12:15:57] <seb`>	ok
+| [Wednesday 29 December 2010] [12:16:04] <seb`>	thanks for your help
+| [Wednesday 29 December 2010] [12:16:09] <sustrik>	you are welcome
