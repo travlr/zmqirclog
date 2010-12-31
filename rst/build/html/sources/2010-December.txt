@@ -3547,3 +3547,90 @@
 | [Wednesday 29 December 2010] [12:15:57] <seb`>	ok
 | [Wednesday 29 December 2010] [12:16:04] <seb`>	thanks for your help
 | [Wednesday 29 December 2010] [12:16:09] <sustrik>	you are welcome
+| [Wednesday 29 December 2010] [17:39:52] <s0undt3ch>	hello ppl, here's a gdb session where I'm having troubles daemonizing my app -> http://paste.pocoo.org/show/311220/ <- seems to be related to pyzmq
+| [Wednesday 29 December 2010] [17:57:03] <mikko>	s0undt3ch: do you fork() ?
+| [Wednesday 29 December 2010] [17:57:18] <mikko>	and if yes do you init zmq before or after fork?
+| [Wednesday 29 December 2010] [17:57:24] <s0undt3ch>	mikko: I'm using python-daemon and yes, it forks
+| [Wednesday 29 December 2010] [17:57:35] <s0undt3ch>	mikko: and yes, I think zmq is setup before the fork
+| [Wednesday 29 December 2010] [17:57:37] <s0undt3ch>	work?
+| [Wednesday 29 December 2010] [17:57:41] <s0undt3ch>	*wrong
+| [Wednesday 29 December 2010] [17:57:43] <s0undt3ch>	*wrong?
+| [Wednesday 29 December 2010] [17:57:58] <mikko>	i remember someone having issues with that
+| [Wednesday 29 December 2010] [17:58:07] <mikko>	try initializing all 0mq stuff after fork
+| [Wednesday 29 December 2010] [17:59:32] <s0undt3ch>	mikko: hmm, zmq is beeing used to message that the app has forket, but I'll try to cook something up
+| [Wednesday 29 December 2010] [18:02:16] <mikko>	are you forking just to daemonize?
+| [Wednesday 29 December 2010] [18:05:04] <s0undt3ch>	mikko: hmm, lemme look at python-daemon's code
+| [Wednesday 29 December 2010] [18:06:05] <s0undt3ch>	mikko: yes, it's forking to daemonize
+| [Wednesday 29 December 2010] [18:06:33] <s0undt3ch>	mikko: http://paste.pocoo.org/show/311724/
+| [Wednesday 29 December 2010] [18:13:07] <s0undt3ch>	mikko: if an app is chrooted, can it still reach the outside through tcp?
+| [Wednesday 29 December 2010] [18:13:17] <s0undt3ch>	ie, will zmq connected to a tcp socket work?
+| [Wednesday 29 December 2010] [18:13:49] <s0undt3ch>	doesn't seem to
+| [Wednesday 29 December 2010] [18:18:29] <s0undt3ch>	hmm, I aparently have to mount proc inside the chroot, have a proper resolv.conf
+| [Wednesday 29 December 2010] [18:18:59] <s0undt3ch>	so, aparently I have to solve both the daemonizing issues and also the chroot issues
+| [Wednesday 29 December 2010] [18:22:23] <s0undt3ch>	hmm, how the hell does mogrel2 chroot
+| [Wednesday 29 December 2010] [18:53:24] <mikko>	s0undt3ch: im not sure whether the fork actually causes the issues
+| [Wednesday 29 December 2010] [18:53:45] <mikko>	but i think you are supposed to init zmq context for each fork
+| [Wednesday 29 December 2010] [19:16:12] <s0undt3ch>	mikko: well, each for will have it's own context, nothing is shared between forks, hence zmq for the messaging between them
+| [Wednesday 29 December 2010] [19:17:22] <mikko>	s0undt3ch: the gdb trace doesn't really tell anything
+| [Wednesday 29 December 2010] [19:17:26] <mikko>	no symbols
+| [Wednesday 29 December 2010] [19:18:23] <s0undt3ch>	mikko: well, it's a python virtualenv, don't know how to add debug symbols there
+| [Wednesday 29 December 2010] [19:19:35] <mikko>	s0undt3ch: which version of zeromq is this?
+| [Wednesday 29 December 2010] [19:19:50] <s0undt3ch>	mikko: both zmq and pyzmq are at 2.0.10
+| [Wednesday 29 December 2010] [19:20:13] <mikko>	can you compile zmq with -O0 -g ?
+| [Wednesday 29 December 2010] [19:20:25] <mikko>	hmm
+| [Wednesday 29 December 2010] [19:20:53] <mikko>	looks like it aborts somewhere in zmq::epoll_t::loop but cant really know where/why
+| [Wednesday 29 December 2010] [19:21:02] <mikko>	also testing with 2.1.0 would be helpful
+| [Wednesday 29 December 2010] [19:22:34] <s0undt3ch>	mikko: well, I'd have to compile it myself and since this project is going to be deployd on a server which I'm trying to only have distro packages, I'm trying to avoid that
+| [Wednesday 29 December 2010] [19:23:00] <s0undt3ch>	although 2.1.0 seems to make it easier to "attach" zmq to other event loops
+| [Wednesday 29 December 2010] [19:25:19] <mikko>	s0undt3ch: does your distro provide a debug symbols package?
+| [Wednesday 29 December 2010] [19:25:37] <s0undt3ch>	mikko: for what?
+| [Wednesday 29 December 2010] [19:25:38] <s0undt3ch>	hmm
+| [Wednesday 29 December 2010] [19:25:40] <s0undt3ch>	zmq
+| [Wednesday 29 December 2010] [19:25:42] <s0undt3ch>	I think so
+| [Wednesday 29 December 2010] [19:25:48] <s0undt3ch>	let me get it
+| [Wednesday 29 December 2010] [19:26:58] <s0undt3ch>	mikko: however, after setting up zmq after the fork/chroot seems not to cause the issue anymore
+| [Wednesday 29 December 2010] [19:30:34] <mikko>	cool
+| [Wednesday 29 December 2010] [20:08:10] <s0undt3ch>	hmm
+| [Wednesday 29 December 2010] [20:08:52] <s0undt3ch>	if I don't daemonize, zmq messages pass through outside the chroot, if I daemonize, they don't :\
+| [Wednesday 29 December 2010] [20:17:40] <s0undt3ch>	hmm, I should not worry about chrooting right now, there' s a bunch of problems that will arrise, python libraries not found, etc, etc
+| [Thursday 30 December 2010] [12:27:33] <mikko>	lestrrat: zeromq perl builds failing
+| [Thursday 30 December 2010] [13:58:43] <mikko>	i to the b
+| [Thursday 30 December 2010] [14:06:08] <ianbarber>	mikizzy
+| [Thursday 30 December 2010] [14:07:26] <mikko>	are you back in UK?
+| [Thursday 30 December 2010] [14:24:48] <Thomas_aboutus>	Hey everyone. I was wondering if someone could help me with a __stack_chk_fail problem I am having?
+| [Thursday 30 December 2010] [14:26:33] <mikko>	Thomas_aboutus: what sort of problem is that?
+| [Thursday 30 December 2010] [14:26:41] <mikko>	build time?
+| [Thursday 30 December 2010] [14:27:43] <Thomas_aboutus>	No, it's at run time
+| [Thursday 30 December 2010] [14:28:07] <Thomas_aboutus>	__stack_chk_fail is called when a stack smash is detected by stdlib (according to google).
+| [Thursday 30 December 2010] [14:28:08] <mikko>	what language are you using?
+| [Thursday 30 December 2010] [14:29:10] <Thomas_aboutus>	C
+| [Thursday 30 December 2010] [14:29:14] <Thomas_aboutus>	The code is here: https://gist.github.com/760174
+| [Thursday 30 December 2010] [14:29:19] <mikko>	are you sure you dont have stack overflow there?
+| [Thursday 30 December 2010] [14:29:32] <Thomas_aboutus>	The gist description is the build command I'm using. I'm running it on mac os x
+| [Thursday 30 December 2010] [14:29:41] <Thomas_aboutus>	It's possible, but if I do, I can't find it.
+| [Thursday 30 December 2010] [14:29:58] <Thomas_aboutus>	I've had a couple folks here at the office take a look as well, and they are scratching their heads too.
+| [Thursday 30 December 2010] [14:31:36] <Thomas_aboutus>	The basic idea of the code is a simple queue mechanism that I can use in bash scripts, etc. The error comes up when cat files to it on stdin, and passing it the "-o tcp://127.0.0.1:12345" option to have the output get pushed onto a queue. You can read off of it by kicking of another one with the -i flag set to the same value.
+| [Thursday 30 December 2010] [14:34:02] <mikko>	sec
+| [Thursday 30 December 2010] [14:34:06] <mikko>	let me look at the code
+| [Thursday 30 December 2010] [14:35:20] <Thomas_aboutus>	Cool. I really appreciate it!
+| [Thursday 30 December 2010] [14:35:22] <mikko>	line 22
+| [Thursday 30 December 2010] [14:35:30] <mikko>	you init the message to size strlen(message)
+| [Thursday 30 December 2010] [14:35:46] <mikko>	but wouldnt strncpy copy the terminating \0 as well?
+| [Thursday 30 December 2010] [14:36:09] <mikko>	also, lines 18 and 22 dont really play well
+| [Thursday 30 December 2010] [14:37:18] <Thomas_aboutus>	Good point. Okay, I'll change that and see if that helps
+| [Thursday 30 December 2010] [14:37:40] <mikko>	and i think you should use memcpy rather than strcpy
+| [Thursday 30 December 2010] [14:37:47] <mikko>	conceptually the data is a void *
+| [Thursday 30 December 2010] [14:38:46] <mikko>	and there is zmq_msg_init_data as well
+| [Thursday 30 December 2010] [14:43:30] <Thomas_aboutus>	Alright, so I changed the code (I updated the gist in case you care) and it all seems to be working now! I also had to change the reading part, but that did the trick.
+| [Thursday 30 December 2010] [14:43:50] <Thomas_aboutus>	Thank you again! I just couldn't see pas the wall staring at it, and a simple bug like that just got overlooked.
+| [Thursday 30 December 2010] [14:44:05] <mikko>	zmq_close(&in_socket);
+| [Thursday 30 December 2010] [14:44:11] <mikko>	that doesnt look right either
+| [Thursday 30 December 2010] [14:46:20] <Thomas_aboutus>	Yup, you're right. I've been killing the running processes with Ctrl-C so it never came up, but good catch.
+| [Thursday 30 December 2010] [14:46:59] <Thomas_aboutus>	Thanks again!
+| [Thursday 30 December 2010] [15:03:45] Notice	-NickServ- travlr__ is not a registered nickname.
+| [Thursday 30 December 2010] [15:41:59] <lestrrat>	mikko: Yes, but can you change the "make test" in the test to "make test TEST_VERBOSE=1" so I can see where the tests are halting
+| [Thursday 30 December 2010] [15:42:22] <mikko>	cool
+| [Thursday 30 December 2010] [15:42:24] <mikko>	ill check
+| [Thursday 30 December 2010] [15:42:31] <mikko>	should i change the build to do that as well?
+| [Thursday 30 December 2010] [15:43:20] <mikko>	currently the daily build uses ./autobuild/run.sh
+| [Thursday 30 December 2010] [15:44:57] <mikko>	https://gist.github.com/24e54efd2f763ea5bee1
