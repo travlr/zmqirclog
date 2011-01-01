@@ -1,5 +1,5 @@
 ===============
-2010-December
+2011-December
 ===============
 
 | [Wednesday 01 December 2010] [00:40:43] <guido_g>	Nate75Sanders: no HWM means: queue all messages as long as memory permits.
@@ -3634,3 +3634,15 @@
 | [Thursday 30 December 2010] [15:42:31] <mikko>	should i change the build to do that as well?
 | [Thursday 30 December 2010] [15:43:20] <mikko>	currently the daily build uses ./autobuild/run.sh
 | [Thursday 30 December 2010] [15:44:57] <mikko>	https://gist.github.com/24e54efd2f763ea5bee1
+| [Friday 31 December 2010] [08:56:41] <fliebel>	Hey, What would be the best way to have a many-to-many message queue, where clients publish messages to all other clients?
+| [Friday 31 December 2010] [09:29:55] <sustrik>	use forwarder device in the middle
+| [Friday 31 December 2010] [10:05:08] <Skaag>	what forwarder device?
+| [Friday 31 December 2010] [12:58:42] <neopallium>	Skaag: When you install ZeroMQ you should get an exe called: zmq_forwarder
+| [Friday 31 December 2010] [12:59:03] <neopallium>	also you can see how the forwarder would be coded in C at: http://zguide.zeromq.org/chapter:all#toc30
+| [Friday 31 December 2010] [12:59:34] <neopallium>	there are other devices: zmq_queue & zmq_streamer
+| [Friday 31 December 2010] [13:12:18] <Skaag>	oh that one
+| [Friday 31 December 2010] [13:12:20] <Skaag>	ok
+| [Friday 31 December 2010] [13:12:21] <Skaag>	:)
+| [Friday 31 December 2010] [13:32:21] <neopallium>	When a custom identity is used on a socket, should it always be set before making bind()/connect() calls on that socket?
+| [Friday 31 December 2010] [13:37:00] <neopallium>	ah, I found the answer at the end of this section: http://zguide.zeromq.org/chapter:all#toc37
+| [Friday 31 December 2010] [16:33:24] <d4de>	Happy New Year - Egypt (^_^)
