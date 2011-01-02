@@ -145,6 +145,54 @@
 <div class="line">[Saturday 01 January 2011] [14:17:28] &lt;dos000&gt;        thanks a lot</div>
 <div class="line">[Saturday 01 January 2011] [14:20:46] &lt;sustrik&gt;       you are welcome</div>
 <div class="line">[Saturday 01 January 2011] [14:36:27] &lt;mikko&gt; happy new year all</div>
+<div class="line">[Saturday 01 January 2011] [15:12:01] &lt;andrewvc&gt;      cremes: If you&#8217;re around I have a question about error_check_nonblock if you have a chance</div>
+<div class="line">[Saturday 01 January 2011] [15:33:17] &lt;andrewvc&gt;      So, here&#8217;s a nonblocking question</div>
+<div class="line">[Saturday 01 January 2011] [15:36:31] &lt;andrewvc&gt;      so, if I get an errno 95 doing a recv NOBLOCK</div>
+<div class="line">[Saturday 01 January 2011] [15:37:18] &lt;andrewvc&gt;      what is the usual cause for that</div>
+<div class="line">[Saturday 01 January 2011] [15:37:28] &lt;andrewvc&gt;      I was expecting an EAGAIN</div>
+<div class="line">[Saturday 01 January 2011] [15:37:36] &lt;andrewvc&gt;      and retrying later my recv did work</div>
+<div class="line">[Saturday 01 January 2011] [16:27:29] &lt;sustrik&gt;       what&#8217;s errno 95?</div>
+<div class="line">[Saturday 01 January 2011] [16:59:13] &lt;andrewvc&gt;      sustrik,  #define EOPNOTSUPP  95  /* Operation not supported on transport endpoint <a href="#id1"><span class="problematic" id="id2">*</span></a>/</div>
+<div class="line">[Saturday 01 January 2011] [16:59:53] &lt;andrewvc&gt;      basically, I get a notification of activity via select for a FD</div>
+<div class="line">[Saturday 01 January 2011] [17:00:06] &lt;andrewvc&gt;      so I&#8217;m calling a recv ZMQ::NOBLOCK on it to see if I can read off a message</div>
+<div class="line">[Saturday 01 January 2011] [17:00:08] &lt;andrewvc&gt;      and I get that</div>
+<div class="line">[Saturday 01 January 2011] [17:00:29] &lt;andrewvc&gt;      i mean if I just pretend that&#8217;s an EAGAIN it works alright</div>
+<div class="line">[Saturday 01 January 2011] [17:00:37] &lt;andrewvc&gt;      but just not what I expected</div>
+<div class="line">[Saturday 01 January 2011] [18:23:03] &lt;neopallium&gt;    andrewvc: if you are calling recv() on a REQ/REP socket during the wrong state, you will get that error.</div>
+<div class="line">[Saturday 01 January 2011] [18:24:36] &lt;neopallium&gt;    REQ/REP sockets switch back and forth from send-only to recv-only states.</div>
+<div class="line">[Saturday 01 January 2011] [19:03:57] &lt;andrewvc&gt;      neopallium: it&#8217;s actually a push socket</div>
+<div class="line">[Saturday 01 January 2011] [19:04:03] &lt;andrewvc&gt;      errr a pull socket I mena</div>
+<div class="line">[Saturday 01 January 2011] [19:04:20] &lt;andrewvc&gt;      maybe it didn&#8217;t finish binding yet or something?</div>
+<div class="line">[Saturday 01 January 2011] [19:04:28] &lt;andrewvc&gt;      though the FD did trigger</div>
+<div class="line">[Saturday 01 January 2011] [19:19:37] &lt;mikko&gt; andrewvc: are you sure it&#8217;s a pull and not push socket?</div>
+<div class="line">[Saturday 01 January 2011] [19:28:59] &lt;andrewvc&gt;      yeah I&#8217;m certain</div>
+<div class="line">[Saturday 01 January 2011] [19:29:10] &lt;andrewvc&gt;      mikko: I&#8217;m certain because the messages eventually do start coming off</div>
+<div class="line">[Saturday 01 January 2011] [19:29:19] &lt;andrewvc&gt;      I should double check though</div>
+<div class="line">[Saturday 01 January 2011] [19:50:12] &lt;andrewvc&gt;      mikko: Oh how about that, I didn&#8217;t realize that was being called on both send AND recv.... Thanks for the pointer</div>
+<div class="line">[Saturday 01 January 2011] [19:50:35] &lt;andrewvc&gt;      it was a PUSH after all. Thanks for recognizing that!</div>
+<div class="line">[Saturday 01 January 2011] [19:51:13] &lt;mikko&gt; no prob, i think i&#8217;ve done that before as well</div>
+<div class="line">[Saturday 01 January 2011] [19:51:21] &lt;andrewvc&gt;      but recv isn&#8217;t being called on it</div>
+<div class="line">[Saturday 01 January 2011] [19:51:23] &lt;andrewvc&gt;      send is</div>
+<div class="line">[Saturday 01 January 2011] [19:51:40] &lt;andrewvc&gt;      so, does that mean the socket isn&#8217;t in a state where it&#8217;s ready for sending I suppose</div>
+<div class="line">[Saturday 01 January 2011] [19:54:57] &lt;andrewvc&gt;      mikko: Well, re-checking it I&#8217;m getting all proper codes, and EAGAIN where I expect it. I guess cleaning up my testing code must have fixed whatever the err was</div>
+<div class="line">[Saturday 01 January 2011] [19:55:11] &lt;andrewvc&gt;      thanks for the help though, still good to know for later</div>
+<div class="line">[Sunday 02 January 2011] [05:08:53] &lt;sustrik&gt; andrewvc: you&#8217;ve got ENOTSUPP from zmq_recv?</div>
+<div class="line">[Sunday 02 January 2011] [05:11:38] &lt;sustrik&gt; looking at the code...</div>
+<div class="line">[Sunday 02 January 2011] [05:12:00] &lt;sustrik&gt; hm, it can possibly happen when the socket is not yet fully initialised</div>
+<div class="line">[Sunday 02 January 2011] [05:31:08] &lt;sustrik&gt; do you have a test program to reproduce it?</div>
+<div class="line">[Sunday 02 January 2011] [17:20:36] &lt;<a href="#id3"><span class="problematic" id="id4">shykes_</span></a>&gt; Hello</div>
+<div class="line">[Sunday 02 January 2011] [17:29:28] &lt;mikko&gt;   hi</div>
+<div class="line">[Sunday 02 January 2011] [17:31:06] &lt;<a href="#id5"><span class="problematic" id="id6">shykes_</span></a>&gt; I&#8217;m weighing my options for a &#8220;smarter&#8221; req/rep device. Are you aware of any projects going in that direction?</div>
+<div class="line">[Sunday 02 January 2011] [17:31:25] &lt;mikko&gt;   what do you mean by smarter?</div>
+<div class="line">[Sunday 02 January 2011] [17:31:27] &lt;mikko&gt;   brb</div>
+<div class="line">[Sunday 02 January 2011] [17:32:19] &lt;<a href="#id7"><span class="problematic" id="id8">shykes_</span></a>&gt; Currently we have a forwarder with bind on both sides</div>
+<div class="line">[Sunday 02 January 2011] [17:32:26] &lt;<a href="#id9"><span class="problematic" id="id10">shykes_</span></a>&gt; ie dynamic workers, dynamic clients</div>
+<div class="line">[Sunday 02 January 2011] [17:32:57] &lt;<a href="#id11"><span class="problematic" id="id12">shykes_</span></a>&gt; we use that to load-balance synchronous rpc. I&#8217;m guessing this is a classic use case</div>
+<div class="line">[Sunday 02 January 2011] [17:34:02] &lt;<a href="#id13"><span class="problematic" id="id14">shykes_</span></a>&gt; I&#8217;d like my device to stop forwarding requests to a worker which doesn&#8217;t behave properly</div>
+<div class="line">[Sunday 02 January 2011] [17:34:29] &lt;<a href="#id15"><span class="problematic" id="id16">shykes_</span></a>&gt; eg. a pre-configured timeout</div>
+<div class="line">[Sunday 02 January 2011] [17:37:18] &lt;<a href="#id17"><span class="problematic" id="id18">shykes_</span></a>&gt; Maybe I could implement this as a &#8216;proxy device&#8217; in front of each worker</div>
+<div class="line">[Sunday 02 January 2011] [17:38:00] &lt;<a href="#id19"><span class="problematic" id="id20">shykes_</span></a>&gt; each proxy has only one message to worry about at a time, which makes it simpler to write</div>
+<div class="line">[Sunday 02 January 2011] [17:38:06] &lt;<a href="#id21"><span class="problematic" id="id22">shykes_</span></a>&gt; Any insight would be much appreciated :)</div>
 </div>
 </div>
 
