@@ -100,3 +100,51 @@
 | [Saturday 01 January 2011] [14:17:28] <dos000>	thanks a lot
 | [Saturday 01 January 2011] [14:20:46] <sustrik>	you are welcome
 | [Saturday 01 January 2011] [14:36:27] <mikko>	happy new year all
+| [Saturday 01 January 2011] [15:12:01] <andrewvc>	cremes: If you're around I have a question about error_check_nonblock if you have a chance
+| [Saturday 01 January 2011] [15:33:17] <andrewvc>	So, here's a nonblocking question
+| [Saturday 01 January 2011] [15:36:31] <andrewvc>	so, if I get an errno 95 doing a recv NOBLOCK
+| [Saturday 01 January 2011] [15:37:18] <andrewvc>	what is the usual cause for that
+| [Saturday 01 January 2011] [15:37:28] <andrewvc>	I was expecting an EAGAIN
+| [Saturday 01 January 2011] [15:37:36] <andrewvc>	and retrying later my recv did work
+| [Saturday 01 January 2011] [16:27:29] <sustrik>	what's errno 95?
+| [Saturday 01 January 2011] [16:59:13] <andrewvc>	sustrik,  #define EOPNOTSUPP  95  /* Operation not supported on transport endpoint */
+| [Saturday 01 January 2011] [16:59:53] <andrewvc>	basically, I get a notification of activity via select for a FD
+| [Saturday 01 January 2011] [17:00:06] <andrewvc>	so I'm calling a recv ZMQ::NOBLOCK on it to see if I can read off a message
+| [Saturday 01 January 2011] [17:00:08] <andrewvc>	and I get that
+| [Saturday 01 January 2011] [17:00:29] <andrewvc>	i mean if I just pretend that's an EAGAIN it works alright
+| [Saturday 01 January 2011] [17:00:37] <andrewvc>	but just not what I expected
+| [Saturday 01 January 2011] [18:23:03] <neopallium>	andrewvc: if you are calling recv() on a REQ/REP socket during the wrong state, you will get that error.
+| [Saturday 01 January 2011] [18:24:36] <neopallium>	REQ/REP sockets switch back and forth from send-only to recv-only states.
+| [Saturday 01 January 2011] [19:03:57] <andrewvc>	neopallium: it's actually a push socket
+| [Saturday 01 January 2011] [19:04:03] <andrewvc>	errr a pull socket I mena
+| [Saturday 01 January 2011] [19:04:20] <andrewvc>	maybe it didn't finish binding yet or something?
+| [Saturday 01 January 2011] [19:04:28] <andrewvc>	though the FD did trigger
+| [Saturday 01 January 2011] [19:19:37] <mikko>	andrewvc: are you sure it's a pull and not push socket?
+| [Saturday 01 January 2011] [19:28:59] <andrewvc>	yeah I'm certain
+| [Saturday 01 January 2011] [19:29:10] <andrewvc>	mikko: I'm certain because the messages eventually do start coming off
+| [Saturday 01 January 2011] [19:29:19] <andrewvc>	I should double check though
+| [Saturday 01 January 2011] [19:50:12] <andrewvc>	mikko: Oh how about that, I didn't realize that was being called on both send AND recv.... Thanks for the pointer
+| [Saturday 01 January 2011] [19:50:35] <andrewvc>	it was a PUSH after all. Thanks for recognizing that!
+| [Saturday 01 January 2011] [19:51:13] <mikko>	no prob, i think i've done that before as well
+| [Saturday 01 January 2011] [19:51:21] <andrewvc>	but recv isn't being called on it
+| [Saturday 01 January 2011] [19:51:23] <andrewvc>	send is
+| [Saturday 01 January 2011] [19:51:40] <andrewvc>	so, does that mean the socket isn't in a state where it's ready for sending I suppose
+| [Saturday 01 January 2011] [19:54:57] <andrewvc>	mikko: Well, re-checking it I'm getting all proper codes, and EAGAIN where I expect it. I guess cleaning up my testing code must have fixed whatever the err was
+| [Saturday 01 January 2011] [19:55:11] <andrewvc>	thanks for the help though, still good to know for later
+| [Sunday 02 January 2011] [05:08:53] <sustrik>	andrewvc: you've got ENOTSUPP from zmq_recv?
+| [Sunday 02 January 2011] [05:11:38] <sustrik>	looking at the code...
+| [Sunday 02 January 2011] [05:12:00] <sustrik>	hm, it can possibly happen when the socket is not yet fully initialised
+| [Sunday 02 January 2011] [05:31:08] <sustrik>	do you have a test program to reproduce it?
+| [Sunday 02 January 2011] [17:20:36] <shykes_>	Hello
+| [Sunday 02 January 2011] [17:29:28] <mikko>	hi
+| [Sunday 02 January 2011] [17:31:06] <shykes_>	I'm weighing my options for a "smarter" req/rep device. Are you aware of any projects going in that direction?
+| [Sunday 02 January 2011] [17:31:25] <mikko>	what do you mean by smarter?
+| [Sunday 02 January 2011] [17:31:27] <mikko>	brb
+| [Sunday 02 January 2011] [17:32:19] <shykes_>	Currently we have a forwarder with bind on both sides
+| [Sunday 02 January 2011] [17:32:26] <shykes_>	ie dynamic workers, dynamic clients
+| [Sunday 02 January 2011] [17:32:57] <shykes_>	we use that to load-balance synchronous rpc. I'm guessing this is a classic use case
+| [Sunday 02 January 2011] [17:34:02] <shykes_>	I'd like my device to stop forwarding requests to a worker which doesn't behave properly
+| [Sunday 02 January 2011] [17:34:29] <shykes_>	eg. a pre-configured timeout
+| [Sunday 02 January 2011] [17:37:18] <shykes_>	Maybe I could implement this as a 'proxy device' in front of each worker
+| [Sunday 02 January 2011] [17:38:00] <shykes_>	each proxy has only one message to worry about at a time, which makes it simpler to write
+| [Sunday 02 January 2011] [17:38:06] <shykes_>	Any insight would be much appreciated :)
