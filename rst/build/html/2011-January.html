@@ -180,19 +180,59 @@
 <div class="line">[Sunday 02 January 2011] [05:11:38] &lt;sustrik&gt; looking at the code...</div>
 <div class="line">[Sunday 02 January 2011] [05:12:00] &lt;sustrik&gt; hm, it can possibly happen when the socket is not yet fully initialised</div>
 <div class="line">[Sunday 02 January 2011] [05:31:08] &lt;sustrik&gt; do you have a test program to reproduce it?</div>
-<div class="line">[Sunday 02 January 2011] [17:20:36] &lt;<a href="#id3"><span class="problematic" id="id4">shykes_</span></a>&gt; Hello</div>
+<div class="line">[Sunday 02 January 2011] [17:20:36] &lt;<a href="#id5"><span class="problematic" id="id6">shykes_</span></a>&gt; Hello</div>
 <div class="line">[Sunday 02 January 2011] [17:29:28] &lt;mikko&gt;   hi</div>
-<div class="line">[Sunday 02 January 2011] [17:31:06] &lt;<a href="#id5"><span class="problematic" id="id6">shykes_</span></a>&gt; I&#8217;m weighing my options for a &#8220;smarter&#8221; req/rep device. Are you aware of any projects going in that direction?</div>
+<div class="line">[Sunday 02 January 2011] [17:31:06] &lt;<a href="#id7"><span class="problematic" id="id8">shykes_</span></a>&gt; I&#8217;m weighing my options for a &#8220;smarter&#8221; req/rep device. Are you aware of any projects going in that direction?</div>
 <div class="line">[Sunday 02 January 2011] [17:31:25] &lt;mikko&gt;   what do you mean by smarter?</div>
 <div class="line">[Sunday 02 January 2011] [17:31:27] &lt;mikko&gt;   brb</div>
-<div class="line">[Sunday 02 January 2011] [17:32:19] &lt;<a href="#id7"><span class="problematic" id="id8">shykes_</span></a>&gt; Currently we have a forwarder with bind on both sides</div>
-<div class="line">[Sunday 02 January 2011] [17:32:26] &lt;<a href="#id9"><span class="problematic" id="id10">shykes_</span></a>&gt; ie dynamic workers, dynamic clients</div>
-<div class="line">[Sunday 02 January 2011] [17:32:57] &lt;<a href="#id11"><span class="problematic" id="id12">shykes_</span></a>&gt; we use that to load-balance synchronous rpc. I&#8217;m guessing this is a classic use case</div>
-<div class="line">[Sunday 02 January 2011] [17:34:02] &lt;<a href="#id13"><span class="problematic" id="id14">shykes_</span></a>&gt; I&#8217;d like my device to stop forwarding requests to a worker which doesn&#8217;t behave properly</div>
-<div class="line">[Sunday 02 January 2011] [17:34:29] &lt;<a href="#id15"><span class="problematic" id="id16">shykes_</span></a>&gt; eg. a pre-configured timeout</div>
-<div class="line">[Sunday 02 January 2011] [17:37:18] &lt;<a href="#id17"><span class="problematic" id="id18">shykes_</span></a>&gt; Maybe I could implement this as a &#8216;proxy device&#8217; in front of each worker</div>
-<div class="line">[Sunday 02 January 2011] [17:38:00] &lt;<a href="#id19"><span class="problematic" id="id20">shykes_</span></a>&gt; each proxy has only one message to worry about at a time, which makes it simpler to write</div>
-<div class="line">[Sunday 02 January 2011] [17:38:06] &lt;<a href="#id21"><span class="problematic" id="id22">shykes_</span></a>&gt; Any insight would be much appreciated :)</div>
+<div class="line">[Sunday 02 January 2011] [17:32:19] &lt;<a href="#id9"><span class="problematic" id="id10">shykes_</span></a>&gt; Currently we have a forwarder with bind on both sides</div>
+<div class="line">[Sunday 02 January 2011] [17:32:26] &lt;<a href="#id11"><span class="problematic" id="id12">shykes_</span></a>&gt; ie dynamic workers, dynamic clients</div>
+<div class="line">[Sunday 02 January 2011] [17:32:57] &lt;<a href="#id13"><span class="problematic" id="id14">shykes_</span></a>&gt; we use that to load-balance synchronous rpc. I&#8217;m guessing this is a classic use case</div>
+<div class="line">[Sunday 02 January 2011] [17:34:02] &lt;<a href="#id15"><span class="problematic" id="id16">shykes_</span></a>&gt; I&#8217;d like my device to stop forwarding requests to a worker which doesn&#8217;t behave properly</div>
+<div class="line">[Sunday 02 January 2011] [17:34:29] &lt;<a href="#id17"><span class="problematic" id="id18">shykes_</span></a>&gt; eg. a pre-configured timeout</div>
+<div class="line">[Sunday 02 January 2011] [17:37:18] &lt;<a href="#id19"><span class="problematic" id="id20">shykes_</span></a>&gt; Maybe I could implement this as a &#8216;proxy device&#8217; in front of each worker</div>
+<div class="line">[Sunday 02 January 2011] [17:38:00] &lt;<a href="#id21"><span class="problematic" id="id22">shykes_</span></a>&gt; each proxy has only one message to worry about at a time, which makes it simpler to write</div>
+<div class="line">[Sunday 02 January 2011] [17:38:06] &lt;<a href="#id23"><span class="problematic" id="id24">shykes_</span></a>&gt; Any insight would be much appreciated :)</div>
+<div class="line">[Sunday 02 January 2011] [19:47:25] &lt;Skaag&gt;   <a href="#id25"><span class="problematic" id="id26">shykes_</span></a>: sounds like an important and also &#8220;classical&#8221; use case to me, sounds like you need a sort of a &#8220;broker&#8221;? :-)</div>
+<div class="line">[Sunday 02 January 2011] [19:48:57] &lt;<a href="#id27"><span class="problematic" id="id28">shykes_</span></a>&gt; Correct. Although I already use zmq_forwarder as a broker</div>
+<div class="line">[Sunday 02 January 2011] [19:50:09] &lt;<a href="#id29"><span class="problematic" id="id30">shykes_</span></a>&gt; But before I reinvent the wheel, I&#8217;m trying to find out how much of it already exists</div>
+<div class="line">[Sunday 02 January 2011] [19:50:51] &lt;<a href="#id31"><span class="problematic" id="id32">shykes_</span></a>&gt; I&#8217;m guessing a lot of people use zeromq for the same purpose as me. How did all these people implement this?</div>
+<div class="line">[Sunday 02 January 2011] [19:55:14] &lt;<a href="#id33"><span class="problematic" id="id34">shykes_</span></a>&gt; Hum, I just found rabbitmq&#8217;s rmq-0mq plugin. Maybe that can help</div>
+<div class="line">[Sunday 02 January 2011] [20:00:11] &lt;Skaag&gt;   we are porting our system from rabbitmq to 0mq</div>
+<div class="line">[Sunday 02 January 2011] [20:00:26] &lt;Skaag&gt;   because of scaling issues</div>
+<div class="line">[Sunday 02 January 2011] [20:00:43] &lt;<a href="#id35"><span class="problematic" id="id36">shykes_</span></a>&gt; Yeah, we were using rabbitmq too</div>
+<div class="line">[Sunday 02 January 2011] [20:00:46] &lt;Skaag&gt;   I think the case of a &#8220;dead&#8221; machine is handled well, but a misbehaving machine, that&#8217;s another story</div>
+<div class="line">[Sunday 02 January 2011] [20:01:23] &lt;Skaag&gt;   you&#8217;ll simply need to implement this yourself, or on the machine itself, decouple the process that receives the messages from the processes that do the actual work</div>
+<div class="line">[Sunday 02 January 2011] [20:01:31] &lt;<a href="#id37"><span class="problematic" id="id38">shykes_</span></a>&gt; yeah</div>
+<div class="line">[Sunday 02 January 2011] [20:01:39] &lt;<a href="#id39"><span class="problematic" id="id40">shykes_</span></a>&gt; sounds like less work than putting rabbitmq back into the mix :)</div>
+<div class="line">[Sunday 02 January 2011] [20:01:44] &lt;Skaag&gt;   why are you using 0mq instead of the wicked rabbit if I may ask?</div>
+<div class="line">[Sunday 02 January 2011] [20:02:09] &lt;Skaag&gt;   yes, also in my opinion, it is less work.</div>
+<div class="line">[Sunday 02 January 2011] [20:02:16] &lt;<a href="#id41"><span class="problematic" id="id42">shykes_</span></a>&gt; A few reasons</div>
+<div class="line">[Sunday 02 January 2011] [20:02:29] &lt;<a href="#id43"><span class="problematic" id="id44">shykes_</span></a>&gt; 1. We encountered problems with our Celery+RabbitMQ setup</div>
+<div class="line">[Sunday 02 January 2011] [20:02:30] &lt;Skaag&gt;   I wish I knew about the shortcomings before I started implementing with rabbit...</div>
+<div class="line">[Sunday 02 January 2011] [20:02:56] &lt;<a href="#id45"><span class="problematic" id="id46">shykes_</span></a>&gt; 2. We hit a major bug in the persister, which made it crash and not come back. Had to recover by hand...</div>
+<div class="line">[Sunday 02 January 2011] [20:03:09] &lt;Skaag&gt;   crap</div>
+<div class="line">[Sunday 02 January 2011] [20:03:15] &lt;Skaag&gt;   (and now i&#8217;m told that our 16 node cluster is considered &#8220;very large&#8221; in rabbitmq terms...)</div>
+<div class="line">[Sunday 02 January 2011] [20:03:19] &lt;<a href="#id47"><span class="problematic" id="id48">shykes_</span></a>&gt; 3. I hate amqp. It&#8217;s too complicated</div>
+<div class="line">[Sunday 02 January 2011] [20:03:55] &lt;Skaag&gt;   well then we agree at least on 2 and 3, and about 1 is irrelevant to our own system</div>
+<div class="line">[Sunday 02 January 2011] [20:03:58] &lt;<a href="#id49"><span class="problematic" id="id50">shykes_</span></a>&gt; 4. more freedom in the topology</div>
+<div class="line">[Sunday 02 January 2011] [20:04:04] &lt;Skaag&gt;   right</div>
+<div class="line">[Sunday 02 January 2011] [20:04:13] &lt;<a href="#id51"><span class="problematic" id="id52">shykes_</span></a>&gt; for example, switch to multicast down the road</div>
+<div class="line">[Sunday 02 January 2011] [20:04:16] &lt;Skaag&gt;   ok this gives me validation in my own path</div>
+<div class="line">[Sunday 02 January 2011] [20:04:20] &lt;Skaag&gt;   yep</div>
+<div class="line">[Sunday 02 January 2011] [20:04:28] &lt;Skaag&gt;   at least within a single DC</div>
+<div class="line">[Sunday 02 January 2011] [20:04:37] &lt;Skaag&gt;   I believe multicast over WAN is not feasible and may never be</div>
+<div class="line">[Sunday 02 January 2011] [20:04:51] &lt;<a href="#id53"><span class="problematic" id="id54">shykes_</span></a>&gt; yeah, we&#8217;re primarily on EC2 for now, so not relevant for us either</div>
+<div class="line">[Sunday 02 January 2011] [20:21:22] &lt;Skaag&gt;   I constantly fail to see how EC2 helps with anything other than temporarily huge computations</div>
+<div class="line">[Sunday 02 January 2011] [20:21:38] &lt;Skaag&gt;   it&#8217;s more expensive than standard hosting</div>
+<div class="line">[Sunday 02 January 2011] [20:21:46] &lt;Skaag&gt;   by any calculation I made</div>
+<div class="line">[Sunday 02 January 2011] [22:01:38] &lt;viraptor&gt;        hi all</div>
+<div class="line">[Sunday 02 January 2011] [22:02:29] &lt;viraptor&gt;        could someone tell me where to look for information on zeromq + forking? the docs describe multithreading, but not how I should handle a fork (inherit the context or not)</div>
+<div class="line">[Sunday 02 January 2011] [22:46:42] &lt;viraptor&gt;        ehh... found the answer after all... it&#8217;s &#8220;don&#8217;t share the context with fork&#8221;</div>
+<div class="line">[Monday 03 January 2011] [00:46:14] &lt;jugg&gt;    with zmq 2.1.x, sockets can be shared between threads.  However, zmq_poll documentation still state that the sockets must belong to the same thread calling zmq_poll.   Is that still the case?</div>
+<div class="line">[Monday 03 January 2011] [01:09:59] &lt;neopallium&gt;      jugg: with zmq 2.1 sockets can be moved between threads, but you still can&#8217;t send/recv from different threads on the same socket.</div>
+<div class="line">[Monday 03 January 2011] [01:57:01] &lt;PeterTork&gt;       Question regarding the Ruby bindings. I am creating a socket, and then trying to extend it with a module. This causes it to fail in ZM.select(arrayOfSockets, nil, nil, 30) with the error <a href="#id3"><span class="problematic" id="id4">`</span></a>select&#8217;: uninitialized stream (IOError)</div>
+<div class="line">[Monday 03 January 2011] [01:57:20] &lt;PeterTork&gt;       Removing the s.extend(EmptyModule) fixes this.</div>
 </div>
 </div>
 
