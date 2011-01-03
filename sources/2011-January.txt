@@ -148,3 +148,43 @@
 | [Sunday 02 January 2011] [17:37:18] <shykes_>	Maybe I could implement this as a 'proxy device' in front of each worker
 | [Sunday 02 January 2011] [17:38:00] <shykes_>	each proxy has only one message to worry about at a time, which makes it simpler to write
 | [Sunday 02 January 2011] [17:38:06] <shykes_>	Any insight would be much appreciated :)
+| [Sunday 02 January 2011] [19:47:25] <Skaag>	shykes_: sounds like an important and also "classical" use case to me, sounds like you need a sort of a "broker"? :-)
+| [Sunday 02 January 2011] [19:48:57] <shykes_>	Correct. Although I already use zmq_forwarder as a broker
+| [Sunday 02 January 2011] [19:50:09] <shykes_>	But before I reinvent the wheel, I'm trying to find out how much of it already exists
+| [Sunday 02 January 2011] [19:50:51] <shykes_>	I'm guessing a lot of people use zeromq for the same purpose as me. How did all these people implement this?
+| [Sunday 02 January 2011] [19:55:14] <shykes_>	Hum, I just found rabbitmq's rmq-0mq plugin. Maybe that can help
+| [Sunday 02 January 2011] [20:00:11] <Skaag>	we are porting our system from rabbitmq to 0mq
+| [Sunday 02 January 2011] [20:00:26] <Skaag>	because of scaling issues
+| [Sunday 02 January 2011] [20:00:43] <shykes_>	Yeah, we were using rabbitmq too
+| [Sunday 02 January 2011] [20:00:46] <Skaag>	I think the case of a "dead" machine is handled well, but a misbehaving machine, that's another story
+| [Sunday 02 January 2011] [20:01:23] <Skaag>	you'll simply need to implement this yourself, or on the machine itself, decouple the process that receives the messages from the processes that do the actual work
+| [Sunday 02 January 2011] [20:01:31] <shykes_>	yeah
+| [Sunday 02 January 2011] [20:01:39] <shykes_>	sounds like less work than putting rabbitmq back into the mix :)
+| [Sunday 02 January 2011] [20:01:44] <Skaag>	why are you using 0mq instead of the wicked rabbit if I may ask?
+| [Sunday 02 January 2011] [20:02:09] <Skaag>	yes, also in my opinion, it is less work.
+| [Sunday 02 January 2011] [20:02:16] <shykes_>	A few reasons
+| [Sunday 02 January 2011] [20:02:29] <shykes_>	1. We encountered problems with our Celery+RabbitMQ setup
+| [Sunday 02 January 2011] [20:02:30] <Skaag>	I wish I knew about the shortcomings before I started implementing with rabbit...
+| [Sunday 02 January 2011] [20:02:56] <shykes_>	2. We hit a major bug in the persister, which made it crash and not come back. Had to recover by hand...
+| [Sunday 02 January 2011] [20:03:09] <Skaag>	crap
+| [Sunday 02 January 2011] [20:03:15] <Skaag>	(and now i'm told that our 16 node cluster is considered "very large" in rabbitmq terms...)
+| [Sunday 02 January 2011] [20:03:19] <shykes_>	3. I hate amqp. It's too complicated
+| [Sunday 02 January 2011] [20:03:55] <Skaag>	well then we agree at least on 2 and 3, and about 1 is irrelevant to our own system
+| [Sunday 02 January 2011] [20:03:58] <shykes_>	4. more freedom in the topology
+| [Sunday 02 January 2011] [20:04:04] <Skaag>	right
+| [Sunday 02 January 2011] [20:04:13] <shykes_>	for example, switch to multicast down the road 
+| [Sunday 02 January 2011] [20:04:16] <Skaag>	ok this gives me validation in my own path
+| [Sunday 02 January 2011] [20:04:20] <Skaag>	yep
+| [Sunday 02 January 2011] [20:04:28] <Skaag>	at least within a single DC
+| [Sunday 02 January 2011] [20:04:37] <Skaag>	I believe multicast over WAN is not feasible and may never be
+| [Sunday 02 January 2011] [20:04:51] <shykes_>	yeah, we're primarily on EC2 for now, so not relevant for us either
+| [Sunday 02 January 2011] [20:21:22] <Skaag>	I constantly fail to see how EC2 helps with anything other than temporarily huge computations
+| [Sunday 02 January 2011] [20:21:38] <Skaag>	it's more expensive than standard hosting
+| [Sunday 02 January 2011] [20:21:46] <Skaag>	by any calculation I made
+| [Sunday 02 January 2011] [22:01:38] <viraptor>	hi all
+| [Sunday 02 January 2011] [22:02:29] <viraptor>	could someone tell me where to look for information on zeromq + forking? the docs describe multithreading, but not how I should handle a fork (inherit the context or not)
+| [Sunday 02 January 2011] [22:46:42] <viraptor>	ehh... found the answer after all... it's "don't share the context with fork"
+| [Monday 03 January 2011] [00:46:14] <jugg>	with zmq 2.1.x, sockets can be shared between threads.  However, zmq_poll documentation still state that the sockets must belong to the same thread calling zmq_poll.   Is that still the case?
+| [Monday 03 January 2011] [01:09:59] <neopallium>	jugg: with zmq 2.1 sockets can be moved between threads, but you still can't send/recv from different threads on the same socket.
+| [Monday 03 January 2011] [01:57:01] <PeterTork>	Question regarding the Ruby bindings. I am creating a socket, and then trying to extend it with a module. This causes it to fail in ZM.select(arrayOfSockets, nil, nil, 30) with the error `select': uninitialized stream (IOError)
+| [Monday 03 January 2011] [01:57:20] <PeterTork>	Removing the s.extend(EmptyModule) fixes this.
