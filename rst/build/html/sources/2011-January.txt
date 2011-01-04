@@ -188,3 +188,49 @@
 | [Monday 03 January 2011] [01:09:59] <neopallium>	jugg: with zmq 2.1 sockets can be moved between threads, but you still can't send/recv from different threads on the same socket.
 | [Monday 03 January 2011] [01:57:01] <PeterTork>	Question regarding the Ruby bindings. I am creating a socket, and then trying to extend it with a module. This causes it to fail in ZM.select(arrayOfSockets, nil, nil, 30) with the error `select': uninitialized stream (IOError)
 | [Monday 03 January 2011] [01:57:20] <PeterTork>	Removing the s.extend(EmptyModule) fixes this.
+| [Monday 03 January 2011] [12:55:38] <Seta00>	I'm having lots of problems building pyzmq :(
+| [Monday 03 January 2011] [12:55:57] <Seta00>	well, only one problem, but I can't fix it :P
+| [Monday 03 January 2011] [12:58:15] <mikko>	what problem are you having?
+| [Monday 03 January 2011] [13:02:15] <Seta00>	mikko, distutils couldn't find my vcvarsall, but I've just fixed it by manually returning the absolute path to it
+| [Monday 03 January 2011] [13:02:42] <Seta00>	now I just need to put the include files on the right dirs
+| [Monday 03 January 2011] [13:02:49] <Seta00>	and everything is good to go (I think)
+| [Monday 03 January 2011] [13:06:27] <Seta00>	now I need a constants.pyd.manifest file
+| [Monday 03 January 2011] [13:15:44] <Seta00>	lol I had to manually create a bunch of manifest files
+| [Monday 03 January 2011] [13:18:10] <Seta00>	hehe finally working
+| [Monday 03 January 2011] [13:25:58] <Seta00>	aaaand they don't work :)
+| [Monday 03 January 2011] [13:26:13] <Seta00>	DLL load failed: The application has failed to start because its side-by-side configuration is incorrect.
+| [Monday 03 January 2011] [13:50:22] <Seta00>	this thing is driving me nuts, I think I'll just use the C++ library
+| [Monday 03 January 2011] [13:56:17] <sustrik>	Seta00: try asking on the mailing list, the pyzmq guys can possibly help you
+| [Monday 03 January 2011] [14:29:29] <mikko>	sustrik: build currently fails on sunos using gcc3
+| [Monday 03 January 2011] [14:29:33] <mikko>	not sure if that is big deal
+| [Monday 03 January 2011] [14:38:11] <sustrik>	mikko: there's lot of failures there...
+| [Monday 03 January 2011] [14:38:38] <mikko>	what do you mean? 
+| [Monday 03 January 2011] [14:38:59] <mikko>	you mean sunos and gcc3 to begin with
+| [Monday 03 January 2011] [14:39:00] <mikko>	:)
+| [Monday 03 January 2011] [14:39:13] <sustrik>	i see 8 red point on valokuva.org
+| [Monday 03 January 2011] [14:39:20] <sustrik>	points
+| [Monday 03 January 2011] [14:39:45] <mikko>	have i broken something?
+| [Monday 03 January 2011] [14:39:50] <mikko>	i'll check
+| [Monday 03 January 2011] [14:40:09] <mikko>	github was unavailable it seems
+| [Monday 03 January 2011] [14:40:17] <sustrik>	ah, yes
+| [Monday 03 January 2011] [14:40:25] <sustrik>	i've noticed that myself
+| [Monday 03 January 2011] [14:40:41] <sustrik>	so where should i look for console output?
+| [Monday 03 January 2011] [14:41:23] <mikko>	http://build.valokuva.org/job/ZeroMQ2-core-master-SunGCC-solaris10/4/console
+| [Monday 03 January 2011] [14:41:27] <mikko>	there at the end
+| [Monday 03 January 2011] [14:42:02] <mikko>	i looked at it last night, looks like compiler error to me
+| [Monday 03 January 2011] [14:44:05] <sustrik>	yep
+| [Monday 03 January 2011] [14:44:08] <sustrik>	let me fix it
+| [Monday 03 January 2011] [14:49:56] <CIA-21>	zeromq2: 03Martin Sustrik 07master * r95eebbf 10/ src/sub.cpp : 
+| [Monday 03 January 2011] [14:49:56] <CIA-21>	zeromq2: sunos/gcc3 compilation issue fixed
+| [Monday 03 January 2011] [14:49:56] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/ezkv67
+| [Monday 03 January 2011] [14:50:02] <sustrik>	mikko: try now
+| [Monday 03 January 2011] [16:07:50] <mikko>	sustrik: i'll kick a build
+| [Monday 03 January 2011] [16:08:16] <mikko>	building
+| [Monday 03 January 2011] [16:16:11] <mikko>	passes
+| [Monday 03 January 2011] [16:18:26] <sustrik>	great
+| [Monday 03 January 2011] [16:26:09] <Thomas_aboutus>	I have what I'm sure is a super-noob question, but I've been over the docs a hundred times and can't figure out what I'm doing wrong. If someone can help me that would rock!
+| [Monday 03 January 2011] [16:26:48] <Thomas_aboutus>	I am trying to make a simple pub/sub setup. I have the code here: https://gist.github.com/763990   For some reason, the subscriber never receives messages from the publisher. The code in the gist is as simple as I could make it for clarities sake.
+| [Monday 03 January 2011] [16:36:08] <mikko>	Thomas_aboutus: both sockets connect
+| [Monday 03 January 2011] [16:37:39] <mikko>	change the pub to bind and it should work
+| [Monday 03 January 2011] [16:40:05] <Thomas_aboutus>	Wow... Thank you.
+| [Monday 03 January 2011] [16:40:07] <Thomas_aboutus>	:)

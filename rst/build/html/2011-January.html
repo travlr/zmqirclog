@@ -233,6 +233,52 @@
 <div class="line">[Monday 03 January 2011] [01:09:59] &lt;neopallium&gt;      jugg: with zmq 2.1 sockets can be moved between threads, but you still can&#8217;t send/recv from different threads on the same socket.</div>
 <div class="line">[Monday 03 January 2011] [01:57:01] &lt;PeterTork&gt;       Question regarding the Ruby bindings. I am creating a socket, and then trying to extend it with a module. This causes it to fail in ZM.select(arrayOfSockets, nil, nil, 30) with the error <a href="#id3"><span class="problematic" id="id4">`</span></a>select&#8217;: uninitialized stream (IOError)</div>
 <div class="line">[Monday 03 January 2011] [01:57:20] &lt;PeterTork&gt;       Removing the s.extend(EmptyModule) fixes this.</div>
+<div class="line">[Monday 03 January 2011] [12:55:38] &lt;Seta00&gt;  I&#8217;m having lots of problems building pyzmq :(</div>
+<div class="line">[Monday 03 January 2011] [12:55:57] &lt;Seta00&gt;  well, only one problem, but I can&#8217;t fix it :P</div>
+<div class="line">[Monday 03 January 2011] [12:58:15] &lt;mikko&gt;   what problem are you having?</div>
+<div class="line">[Monday 03 January 2011] [13:02:15] &lt;Seta00&gt;  mikko, distutils couldn&#8217;t find my vcvarsall, but I&#8217;ve just fixed it by manually returning the absolute path to it</div>
+<div class="line">[Monday 03 January 2011] [13:02:42] &lt;Seta00&gt;  now I just need to put the include files on the right dirs</div>
+<div class="line">[Monday 03 January 2011] [13:02:49] &lt;Seta00&gt;  and everything is good to go (I think)</div>
+<div class="line">[Monday 03 January 2011] [13:06:27] &lt;Seta00&gt;  now I need a constants.pyd.manifest file</div>
+<div class="line">[Monday 03 January 2011] [13:15:44] &lt;Seta00&gt;  lol I had to manually create a bunch of manifest files</div>
+<div class="line">[Monday 03 January 2011] [13:18:10] &lt;Seta00&gt;  hehe finally working</div>
+<div class="line">[Monday 03 January 2011] [13:25:58] &lt;Seta00&gt;  aaaand they don&#8217;t work :)</div>
+<div class="line">[Monday 03 January 2011] [13:26:13] &lt;Seta00&gt;  DLL load failed: The application has failed to start because its side-by-side configuration is incorrect.</div>
+<div class="line">[Monday 03 January 2011] [13:50:22] &lt;Seta00&gt;  this thing is driving me nuts, I think I&#8217;ll just use the C++ library</div>
+<div class="line">[Monday 03 January 2011] [13:56:17] &lt;sustrik&gt; Seta00: try asking on the mailing list, the pyzmq guys can possibly help you</div>
+<div class="line">[Monday 03 January 2011] [14:29:29] &lt;mikko&gt;   sustrik: build currently fails on sunos using gcc3</div>
+<div class="line">[Monday 03 January 2011] [14:29:33] &lt;mikko&gt;   not sure if that is big deal</div>
+<div class="line">[Monday 03 January 2011] [14:38:11] &lt;sustrik&gt; mikko: there&#8217;s lot of failures there...</div>
+<div class="line">[Monday 03 January 2011] [14:38:38] &lt;mikko&gt;   what do you mean?</div>
+<div class="line">[Monday 03 January 2011] [14:38:59] &lt;mikko&gt;   you mean sunos and gcc3 to begin with</div>
+<div class="line">[Monday 03 January 2011] [14:39:00] &lt;mikko&gt;   :)</div>
+<div class="line">[Monday 03 January 2011] [14:39:13] &lt;sustrik&gt; i see 8 red point on valokuva.org</div>
+<div class="line">[Monday 03 January 2011] [14:39:20] &lt;sustrik&gt; points</div>
+<div class="line">[Monday 03 January 2011] [14:39:45] &lt;mikko&gt;   have i broken something?</div>
+<div class="line">[Monday 03 January 2011] [14:39:50] &lt;mikko&gt;   i&#8217;ll check</div>
+<div class="line">[Monday 03 January 2011] [14:40:09] &lt;mikko&gt;   github was unavailable it seems</div>
+<div class="line">[Monday 03 January 2011] [14:40:17] &lt;sustrik&gt; ah, yes</div>
+<div class="line">[Monday 03 January 2011] [14:40:25] &lt;sustrik&gt; i&#8217;ve noticed that myself</div>
+<div class="line">[Monday 03 January 2011] [14:40:41] &lt;sustrik&gt; so where should i look for console output?</div>
+<div class="line">[Monday 03 January 2011] [14:41:23] &lt;mikko&gt;   <a class="reference external" href="http://build.valokuva.org/job/ZeroMQ2-core-master-SunGCC-solaris10/4/console">http://build.valokuva.org/job/ZeroMQ2-core-master-SunGCC-solaris10/4/console</a></div>
+<div class="line">[Monday 03 January 2011] [14:41:27] &lt;mikko&gt;   there at the end</div>
+<div class="line">[Monday 03 January 2011] [14:42:02] &lt;mikko&gt;   i looked at it last night, looks like compiler error to me</div>
+<div class="line">[Monday 03 January 2011] [14:44:05] &lt;sustrik&gt; yep</div>
+<div class="line">[Monday 03 January 2011] [14:44:08] &lt;sustrik&gt; let me fix it</div>
+<div class="line">[Monday 03 January 2011] [14:49:56] &lt;CIA-21&gt;  zeromq2: 03Martin Sustrik 07master * r95eebbf 10/ src/sub.cpp :</div>
+<div class="line">[Monday 03 January 2011] [14:49:56] &lt;CIA-21&gt;  zeromq2: sunos/gcc3 compilation issue fixed</div>
+<div class="line">[Monday 03 January 2011] [14:49:56] &lt;CIA-21&gt;  zeromq2: Signed-off-by: Martin Sustrik &lt;<a class="reference external" href="mailto:sustrik&#37;&#52;&#48;250bpm&#46;com">sustrik<span>&#64;</span>250bpm<span>&#46;</span>com</a>&gt; - <a class="reference external" href="http://bit.ly/ezkv67">http://bit.ly/ezkv67</a></div>
+<div class="line">[Monday 03 January 2011] [14:50:02] &lt;sustrik&gt; mikko: try now</div>
+<div class="line">[Monday 03 January 2011] [16:07:50] &lt;mikko&gt;   sustrik: i&#8217;ll kick a build</div>
+<div class="line">[Monday 03 January 2011] [16:08:16] &lt;mikko&gt;   building</div>
+<div class="line">[Monday 03 January 2011] [16:16:11] &lt;mikko&gt;   passes</div>
+<div class="line">[Monday 03 January 2011] [16:18:26] &lt;sustrik&gt; great</div>
+<div class="line">[Monday 03 January 2011] [16:26:09] &lt;Thomas_aboutus&gt;  I have what I&#8217;m sure is a super-noob question, but I&#8217;ve been over the docs a hundred times and can&#8217;t figure out what I&#8217;m doing wrong. If someone can help me that would rock!</div>
+<div class="line">[Monday 03 January 2011] [16:26:48] &lt;Thomas_aboutus&gt;  I am trying to make a simple pub/sub setup. I have the code here: <a class="reference external" href="https://gist.github.com/763990">https://gist.github.com/763990</a>   For some reason, the subscriber never receives messages from the publisher. The code in the gist is as simple as I could make it for clarities sake.</div>
+<div class="line">[Monday 03 January 2011] [16:36:08] &lt;mikko&gt;   Thomas_aboutus: both sockets connect</div>
+<div class="line">[Monday 03 January 2011] [16:37:39] &lt;mikko&gt;   change the pub to bind and it should work</div>
+<div class="line">[Monday 03 January 2011] [16:40:05] &lt;Thomas_aboutus&gt;  Wow... Thank you.</div>
+<div class="line">[Monday 03 January 2011] [16:40:07] &lt;Thomas_aboutus&gt;  :)</div>
 </div>
 </div>
 
