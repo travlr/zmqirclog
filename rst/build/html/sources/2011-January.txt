@@ -234,3 +234,535 @@
 | [Monday 03 January 2011] [16:37:39] <mikko>	change the pub to bind and it should work
 | [Monday 03 January 2011] [16:40:05] <Thomas_aboutus>	Wow... Thank you.
 | [Monday 03 January 2011] [16:40:07] <Thomas_aboutus>	:)
+| [Tuesday 04 January 2011] [00:42:35] <jugg>	I've done some work updating the zmq erlang bindings, for the most part things are working well now, but I'm running into issues with events on the socket FD (that was retrieved using ZMQ_FD getsockopt).  question: Can the FD be used in poll/select in one thread while the Socket is being used in other thread?  eg. the erlang vm sits on the FD in the poll/select call while waiting for an event and in the mean time other socket operations may be performe
+| [Tuesday 04 January 2011] [01:45:35] <sustrik>	jugg: no
+| [Tuesday 04 January 2011] [01:45:41] <sustrik>	sockets are not thread safe
+| [Tuesday 04 January 2011] [01:46:02] <sustrik>	you can access a socket from at most one thread at a time
+| [Tuesday 04 January 2011] [01:48:40] <jugg>	Is this zmq specific, or (I've not yet been able to find an answer) is it the case that a normal file descriptor would have problems if one thread used it in a poll() call, while another thread tried to read/write to it?
+| [Tuesday 04 January 2011] [01:49:31] <sustrik>	normal FDs are thread safe
+| [Tuesday 04 January 2011] [01:50:16] <sustrik>	0mq is special as it uses lock-free algorithms
+| [Tuesday 04 January 2011] [01:50:32] <sustrik>	thus, it cannot synchronise the access using mutex or somesuch
+| [Tuesday 04 January 2011] [01:51:32] <sustrik>	you can apply a mutex on top of it yourself, if that's what you need
+| [Tuesday 04 January 2011] [01:51:40] <sustrik>	but be aware of the performance impact
+| [Tuesday 04 January 2011] [01:51:42] <jugg>	What makes the socket FD different than a normal FD in this regards?
+| [Tuesday 04 January 2011] [01:51:51] <jugg>	No, that isn't an option for the erlang bindings...
+| [Tuesday 04 January 2011] [01:59:51] <neopallium>	jugg: the 0mq FD is just a socketpair to sent notices that there are messages/commands to read from the socket's queue.
+| [Tuesday 04 January 2011] [02:00:47] <neopallium>	the message data you get from recv() is transferred in-memory from a lock-free queue, not over the socketpair.
+| [Tuesday 04 January 2011] [02:02:58] <neopallium>	jugg: are you making a erlang port or a linked-in driver?
+| [Tuesday 04 January 2011] [02:03:30] <jugg>	linked-in driver - its based off of the broken erlzmq bindings.
+| [Tuesday 04 January 2011] [02:10:39] <jugg>	So if the socket FD is a socketpair, what makes it not usable in a poll call from one thread while another thread uses the socket?  Does zmq listen for events on the socket internally (outside of zmq_poll itself)?
+| [Tuesday 04 January 2011] [02:11:45] <sustrik>	jugg: yes, it does so in zmq_send, zmq_recv and alike
+| [Tuesday 04 January 2011] [02:12:50] <jugg>	ok... well, time to approach the erlang binding architecture differently then... :/
+| [Tuesday 04 January 2011] [02:14:09] <neopallium>	sustrik: if the polling thread just calls poll() and not any zmq_* functions like zmq_poll(), would it still cause an issue?
+| [Tuesday 04 January 2011] [02:14:33] <jugg>	if other parts of zmq consume the socketpair events, then yes...
+| [Tuesday 04 January 2011] [02:14:35] <neopallium>	jugg: what is your polling thread doing with the events it gets back from the 0mq FD?
+| [Tuesday 04 January 2011] [02:15:04] <jugg>	Notifies the socket owner thread and event occurred.
+| [Tuesday 04 January 2011] [02:16:12] <jugg>	and => an
+| [Tuesday 04 January 2011] [02:16:38] <neopallium>	ok, even if the owner thread gets a old POLLIN or POLLOUT event it can still try to call zmq_send/zmq_recv() with the NOBLOCK flag.
+| [Tuesday 04 January 2011] [02:16:59] <neopallium>	it will just get an EAGAIN if it had already comsumed the event.
+| [Tuesday 04 January 2011] [02:17:10] <jugg>	the problem is that it does not get a POLLIN/OUT event - as it appears the zmq internals are consuming those events...
+| [Tuesday 04 January 2011] [02:17:23] <jugg>	which from sustrik's statement confirms this.
+| [Tuesday 04 January 2011] [02:17:32] <neopallium>	do you use the NOBLOCK flag?
+| [Tuesday 04 January 2011] [02:18:09] <jugg>	I don't see the relevance... the problem is the erlang poll is not being signaled an event occurred...
+| [Tuesday 04 January 2011] [02:18:56] <neopallium>	your owner thread should be calling zmq_send()/zmq_recv() with the NOBLOCK flag, and only if it get EAGAIN, do it wait for an event notice from the polling thread.
+| [Tuesday 04 January 2011] [02:18:57] <sustrik>	neopallium: getsockopt(ZMQ_EVENTS) consumes events from the socket pair
+| [Tuesday 04 January 2011] [02:19:27] <neopallium>	sustrik: yes, and he should only call that from the owner thread not the poller thread.
+| [Tuesday 04 January 2011] [02:20:39] <sustrik>	jugg: why do you need to combine recv and poll from different threads
+| [Tuesday 04 January 2011] [02:20:52] <sustrik>	(i know, erlang is tricky)
+| [Tuesday 04 January 2011] [02:21:46] <sustrik>	neopallium: i assume the problem is how erlang VM works
+| [Tuesday 04 January 2011] [02:21:55] <sustrik>	it's kind of thread-agnostic
+| [Tuesday 04 January 2011] [02:22:27] <neopallium>	jugg: have you tried an external C port?  it would make this must similar.
+| [Tuesday 04 January 2011] [02:23:47] <neopallium>	sustrik: yeah, the book I have on erlang doesn't have much details about how the linked-in driver interface is effected by any internal threads that the erlang VM might have.
+| [Tuesday 04 January 2011] [02:25:29] <sustrik>	the erlang binding is a troublesome one
+| [Tuesday 04 January 2011] [02:25:39] <sustrik>	originally it was written by shammika pathirana
+| [Tuesday 04 January 2011] [02:25:44] <jugg>	the only way to wait on an event in erlang is to provide the fd to the erlang vm.  The erlang vm, then calls the driver callback routine input/output_ready depending on the event type.  The callback is an arbitrary thread.   That callback checks the fd if an even actually occurred on the socket using getsockopt(ZMQ_EVENTS), and if so, then sends a notification back into the erlang world notifying an erlang process which owns the socket.  That erlang pr
+| [Tuesday 04 January 2011] [02:25:51] <sustrik>	who had no erlang experience at the time afaik
+| [Tuesday 04 January 2011] [02:26:06] <sustrik>	then it was fixed by serge aleynikov
+| [Tuesday 04 January 2011] [02:26:26] <sustrik>	later on we've created some fixes when working on RabbitMQ/0MQ bridge with VMWare
+| [Tuesday 04 January 2011] [02:26:29] <neopallium>	jugg: are you sure the vm is using a different polling thread from the callbacks?
+| [Tuesday 04 January 2011] [02:26:32] <sustrik>	this are not yet in
+| [Tuesday 04 January 2011] [02:26:34] <sustrik>	etc.
+| [Tuesday 04 January 2011] [02:27:21] <jugg>	neopallium, the callback gets called from arbitrary threads... I don't know for sure if the poll is happening in the same thread or not.
+| [Tuesday 04 January 2011] [02:28:54] <sustrik>	what about an alternative architecture: poll on FD, when signaled remove it from the pollset then read, when read is done, return it to the pollset
+| [Tuesday 04 January 2011] [02:29:09] <neopallium>	jugg: why not do the zmq_recv() in the output_ready() callback instead of sending a notice to the erlang process (which is not a real thread/process).
+| [Tuesday 04 January 2011] [02:30:17] <jugg>	sustrik, I'm already half way down that path...
+| [Tuesday 04 January 2011] [02:30:58] <neopallium>	even if you are sending a notice back to the erlang process (saying hay you can read now), that erlang process will just send a port command which will be delivered to the port
+| [Tuesday 04 January 2011] [02:30:59] <jugg>	neopallium, that has issues with multi-part messages... 
+| [Tuesday 04 January 2011] [02:31:19] <neopallium>	the ports callbacks should be restricted to one thread.
+| [Tuesday 04 January 2011] [02:31:36] <neopallium>	I don't see any warnings that linked-in drivers need to be thread-safe.
+| [Tuesday 04 January 2011] [02:32:45] <neopallium>	jugg: do you deliver each part of the message in a different message back to the controlling process?
+| [Tuesday 04 January 2011] [02:33:47] <jugg>	each erlzmq recv call acts just like zmq_recv.  It'll return each part separately.
+| [Tuesday 04 January 2011] [02:34:58] <sustrik>	jugg: btw, there's a problem with erlzmq project now; as i've mentioned dhammika is not really an erlang guy and serge has unrelated problems now that prevent him from doing stuff
+| [Tuesday 04 January 2011] [02:35:18] <sustrik>	in case you are interested i can give you commit access...
+| [Tuesday 04 January 2011] [02:36:32] <jugg>	sustrik, let me get this working successfully, and I'll ping you then for access.
+| [Tuesday 04 January 2011] [02:37:07] <sustrik>	jugg: ok, good
+| [Tuesday 04 January 2011] [02:38:31] <sustrik>	there's also VMware patch that solves the sender-side backpressure IIRC
+| [Tuesday 04 January 2011] [02:38:40] <jugg>	sustrik, just to clarify something.. you said getsockopt(ZMQ_EVENTS) consumes the socketpair events... do you mean payload or events that would trigger a waiting poll call?
+| [Tuesday 04 January 2011] [02:38:40] 	 * sustrik makes a mental note that it has to be applied
+| [Tuesday 04 January 2011] [02:39:30] <sustrik>	it consumes internal 0mq events from the socket pair
+| [Tuesday 04 January 2011] [02:39:49] <neopallium>	jugg: it reads from the socketpair which will consume the POLLIN event from the FD
+| [Tuesday 04 January 2011] [02:40:26] <sustrik>	let me give an overvirew of the achitecture
+| [Tuesday 04 January 2011] [02:40:39] <sustrik>	the actual TCP sockets are handled by background threads
+| [Tuesday 04 January 2011] [02:40:49] <sustrik>	making sending/receiving messages asynchronous
+| [Tuesday 04 January 2011] [02:41:20] <sustrik>	the user's thread communicates with background (I/O) threads using so called 'commands'
+| [Tuesday 04 January 2011] [02:41:41] <sustrik>	these are sent via a socketpair connecting the user thread and the I/O thread
+| [Tuesday 04 January 2011] [02:42:14] <sustrik>	example of a command sent from I/O thread to user's thread would be "there are messages available for reading"
+| [Tuesday 04 January 2011] [02:43:02] <sustrik>	when user's thread get that command it knows it can unblock (in case it's blocked in recv) and read new messages from the lock-free queue
+| [Tuesday 04 January 2011] [02:43:16] <sustrik>	that's more or less it
+| [Tuesday 04 January 2011] [02:45:48] <jugg>	are socketpairs ever shared with multiple zmq sockets?
+| [Tuesday 04 January 2011] [02:46:18] <jugg>	or does every zmq socket have its own socketpair?
+| [Tuesday 04 January 2011] [02:46:57] <sustrik>	every socket has it's own socketpair
+| [Tuesday 04 January 2011] [02:47:11] <sustrik>	this is needed to be able to migrate sockets between threads
+| [Tuesday 04 January 2011] [02:47:33] <sustrik>	so, to be precise, in 2.0.x multiple sockets share single socketpair
+| [Tuesday 04 January 2011] [02:47:53] <sustrik>	in 2.1 there's one socketpair per 0mq socket
+| [Tuesday 04 January 2011] [02:50:46] <jugg>	ok.  Thanks, this helps my mental picture.  I have a couple of approaches to test out now.
+| [Tuesday 04 January 2011] [02:51:43] <sustrik>	good luck :)
+| [Tuesday 04 January 2011] [02:52:30] <sustrik>	ah, btw, erlang binding works with 2.1 only anyway
+| [Tuesday 04 January 2011] [02:52:53] <sustrik>	so you don't have to take the case where the socketpair is shared between sockets into account
+| [Tuesday 04 January 2011] [02:54:24] <jugg>	yes
+| [Tuesday 04 January 2011] [02:59:03] <neopallium>	jugg: I think you should only register events with driver_select() when the 0mq socket is blocked as reported by ZMQ_EVENTS.
+| [Tuesday 04 January 2011] [02:59:47] <neopallium>	and when you are waiting for an event back from the vm don't call zmq_recv() or ZMQ_EVENTS until the event comes back.
+| [Tuesday 04 January 2011] [03:00:15] <jugg>	that is interesting
+| [Tuesday 04 January 2011] [03:00:20] <neopallium>	that way the owner thread can't consume events from the socketpair.
+| [Tuesday 04 January 2011] [03:01:32] <neopallium>	I found the details about driver's and erlang threads.
+| [Tuesday 04 January 2011] [03:01:54] <neopallium>	and by default the driver will only have one thread access it at a time.
+| [Tuesday 04 January 2011] [03:02:19] <neopallium>	you can do locking at driver or port level, the default is locking at the driver level.
+| [Tuesday 04 January 2011] [03:03:19] <neopallium>	if you don't share 0mq sockets between ports it should be possible to use port-level locking.
+| [Tuesday 04 January 2011] [03:04:26] <neopallium>	also remember to remove the event notice from the socket after receiving the event and mark the socket as readable/writable.
+| [Tuesday 04 January 2011] [03:05:38] <neopallium>	sustrik basically said the same thing earlier about removing the socket from the pollset (i.e. from driver_select()) when it is readable.
+| [Tuesday 04 January 2011] [03:06:50] <jugg>	I'm not sure what you meant by "remove the event notice"... are you talking an implementation concept, or an erlang requirement?
+| [Tuesday 04 January 2011] [03:07:44] <neopallium>	jugg: driver_select(port, event, mode, /* put 0 here. */)
+| [Tuesday 04 January 2011] [03:08:14] <neopallium>	that last arg. is for clearing the event (i.e. removing it from the pollset)
+| [Tuesday 04 January 2011] [03:09:27] <jugg>	yes.  But my understanding is (although it has been hard to find supporting evidence) that it isn't a requirement normally to do that in order for the erlang vm to report subsequent events on a fd.
+| [Tuesday 04 January 2011] [03:10:17] <neopallium>	jugg: is your current problem that you are not receiving an event from the vm?
+| [Tuesday 04 January 2011] [03:11:22] <jugg>	yes, but I think between sustrik's comment on getsockopt(ZMQ_EVENTS) consuming events, and his description on how things work, I can see why that is the case...
+| [Tuesday 04 January 2011] [03:11:25] <neopallium>	0mq sockets are edge-triggered, that means you need to read from them until they will block (i.e. you get EAGAIN)
+| [Tuesday 04 January 2011] [03:11:33] <jugg>	yes
+| [Tuesday 04 January 2011] [03:12:57] <neopallium>	when your driver call getsockopt(ZMQ_EVENTS) and it says there is a message to read, then you need to mark the socket as readable, until you read a full message.
+| [Tuesday 04 January 2011] [03:13:48] <neopallium>	once you read a full message call ZMQ_EVENTS again to check if there is another message to read, if it reports "no messages", then you wait for a read event from the vm.
+| [Tuesday 04 January 2011] [03:14:32] <neopallium>	I think there was an example in the guide that use ZMQ_EVENTS like that.
+| [Tuesday 04 January 2011] [03:14:54] <sustrik>	yes, more or less
+| [Tuesday 04 January 2011] [03:15:06] <sustrik>	but you don't have to store the "readable" flag yourself
+| [Tuesday 04 January 2011] [03:15:30] <sustrik>	you can retrieve it from 0mq by calling getsockop(ZMQ_EVENTS) actually
+| [Tuesday 04 January 2011] [03:15:33] <jugg>	yes, I think the key is to implement a poll method which checks ZMQ_EVENTS prior to passing the fd to the erlang vm, and only do so if nothing is pending.
+| [Tuesday 04 January 2011] [03:15:52] <sustrik>	yes
+| [Tuesday 04 January 2011] [03:17:53] <neopallium>	jugg: is this driver pushing messages out to the controlling erlang process?  or does the erlang process block in a recv() type function for each message?
+| [Tuesday 04 January 2011] [03:22:17] <jugg>	the driver returns messages only if the erlang process requests it via recv().   Of course, driver does not block in the recv() call, as that'd freeze the vm.  It later pushes the incoming message when it comes available - thus the driver must use the fd to be notified of such an event.  A gen_server is used to ensure further requests to the driver is not made, and the calling erlang process is blocked in the gen_server call until the driver eventually
+| [Tuesday 04 January 2011] [03:22:56] <jugg>	of course the erlang process can call a non blocking recv as well.
+| [Tuesday 04 January 2011] [03:23:25] <jugg>	(the old erlzmq did not support that last)
+| [Tuesday 04 January 2011] [03:27:15] <jugg>	sustrik, does one only use the socketpair fd with POLLIN?  even if waiting for the zmq socket to become writeable?
+| [Tuesday 04 January 2011] [03:28:10] <neopallium>	jugg: so the erlang sends the port a {call, recv} type message telling it to call zmq_recv() and send back a part of the message.
+| [Tuesday 04 January 2011] [03:28:18] <sustrik>	jugg: yes
+| [Tuesday 04 January 2011] [03:28:25] <sustrik>	POLLOUT makes no sense
+| [Tuesday 04 January 2011] [03:28:31] <jugg>	sustrik, ok
+| [Tuesday 04 January 2011] [03:29:55] <jugg>	neopallium, the driver will always call zmq_recv with NOBLOCK.  But if the erlang requests did not specify NOBLOCK, and zmq_recv returns EAGAIN, then the driver calls driver_select on the socket fd, and waits for an event, at which point it reads from the socket and returns the received message part to the erlang process.
+| [Tuesday 04 January 2011] [03:29:56] <neopallium>	sustrik: so if the 0mq socket blocks on zmq_send(), do you have to wait for a POLLIN from the socketpair and the check with ZMQ_EVENTS if the socket is writable?
+| [Tuesday 04 January 2011] [03:30:14] <sustrik>	yes
+| [Tuesday 04 January 2011] [03:30:35] <sustrik>	the underlying socketpair is actually used for uni-directional transfer of commands
+| [Tuesday 04 January 2011] [03:30:42] <neopallium>	ok, I need to fix my Lua async handler for 0mq sockets.
+| [Tuesday 04 January 2011] [03:30:43] <sustrik>	so POLLOUT is always signaled
+| [Tuesday 04 January 2011] [03:31:18] <sustrik>	i think it's mentioned in the reference
+| [Tuesday 04 January 2011] [03:31:20] <sustrik>	let me check
+| [Tuesday 04 January 2011] [03:31:24] <jugg>	sustrik, the docs could be clarified on that regards... It kind of says so, but it was unclear.
+| [Tuesday 04 January 2011] [03:31:28] <neopallium>	yeah, I am basically doing a POLLOUT on the socketpair when zmq_send() returns EAGAIN.
+| [Tuesday 04 January 2011] [03:32:07] <neopallium>	it is hard to test blocking on zmq_send()
+| [Tuesday 04 January 2011] [03:32:17] <jugg>	indeed :/
+| [Tuesday 04 January 2011] [03:32:42] <sustrik>	"0MQ library shall signal any pending events on the socket in an edge-triggered fashion by making the file descriptor become ready for reading"
+| [Tuesday 04 January 2011] [03:33:00] <sustrik>	how would you reprharse that?
+| [Tuesday 04 January 2011] [03:33:47] <neopallium>	.... signal any pending events from getsockopt(ZMQ_EVENTS...) when the FD is readable?
+| [Tuesday 04 January 2011] [03:34:13] <sustrik>	i don't understand that :)
+| [Tuesday 04 January 2011] [03:34:17] <sustrik>	maybe 2 sentences?
+| [Tuesday 04 January 2011] [03:34:51] <neopallium>	it needs to say something about calling getsockopt(ZMQ_EVENTS...) for the ready events.
+| [Tuesday 04 January 2011] [03:35:28] <sustrik>	"The ability to read from the returned file descriptor does not necessarily indicate that messages are available to be read from, or can be written to, the underlying socket; applications
+| [Tuesday 04 January 2011] [03:35:29] <sustrik>	           must retrieve the actual event state with a subsequent retrieval of the ZMQ_EVENTS option."
+| [Tuesday 04 January 2011] [03:35:43] <sustrik>	see zmq_getsockopt(3)
+| [Tuesday 04 January 2011] [03:36:42] <neopallium>	how about something like: "0MQ library shall signal any pending events by making the FD readable, getsockopt(ZMQ_EVENTS...) returns which events are pending."
+| [Tuesday 04 January 2011] [03:37:09] <sustrik>	that's better
+| [Tuesday 04 January 2011] [03:37:26] <neopallium>	yeah, but not perfect
+| [Tuesday 04 January 2011] [03:37:28] <sustrik>	but kind of duplicates what the note above says
+| [Tuesday 04 January 2011] [03:38:42] <sustrik>	have a look at whole ZMQ_FD section and feel free to propose a better wording
+| [Tuesday 04 January 2011] [03:40:28] <neopallium>	hmm, yeah I guess the original dues say that in the Note
+| [Tuesday 04 January 2011] [03:41:49] <neopallium>	maybe just add a note that checking for POLLOUT on the FD is use-less for finding out if it is writable?
+| [Tuesday 04 January 2011] [03:42:27] <jugg>	is it the case to mark the socketpair FD read, one must call getsockopt(ZMQ_EVENTS), else subsequent calls to poll will always return immediately?
+| [Tuesday 04 January 2011] [03:44:51] <neopallium>	jugg: if you get a POLLIN event from poll() you will need to call getsockopt(ZMQ_EVENTS) to clear that event, or you will just keep getting the POLLIN.
+| [Tuesday 04 January 2011] [03:46:38] <neopallium>	I think from a simple event loop it would be best to call getsockopt(ZMQ_EVENTS) on each POLLIN event and then dispatch the real POLLIN/POLLOUT events as returned from getsockopt(ZMQ_EVENTS).
+| [Tuesday 04 January 2011] [03:47:10] <neopallium>	that is what I am going to try with my async. handlers.
+| [Tuesday 04 January 2011] [03:49:50] <sustrik>	jugg: the event is cleared also when you call non-blocking recv() which returns with EAGAIN
+| [Tuesday 04 January 2011] [04:26:50] <mikko>	good morning
+| [Tuesday 04 January 2011] [04:53:03] <sustrik>	morning
+| [Tuesday 04 January 2011] [04:57:17] <mikko>	hmm, [zeromq-dev] Segfault
+| [Tuesday 04 January 2011] [04:57:26] <mikko>	looks like to be related to the HWM bug we discussed ages ago
+| [Tuesday 04 January 2011] [04:58:05] <sustrik>	mikko: the one you've gave me the test case for?
+| [Tuesday 04 January 2011] [04:58:24] <mikko>	sustrik: i think so
+| [Tuesday 04 January 2011] [04:58:30] <sustrik>	i've looked into that but the problem was not obvious
+| [Tuesday 04 January 2011] [04:58:47] <sustrik>	i'll have to look at it further
+| [Tuesday 04 January 2011] [04:58:59] <mikko>	man, year after year it's harder to come back to work after holidays
+| [Tuesday 04 January 2011] [04:59:27] <sustrik>	same here :)
+| [Tuesday 04 January 2011] [05:15:22] <neopallium>	I hit this assertion in zeromq: Assertion failed: msg_->flags & ZMQ_MSG_MORE (rep.cpp:80)
+| [Tuesday 04 January 2011] [05:15:53] <neopallium>	that is from a REP socket with a XREQ client.
+| [Tuesday 04 January 2011] [05:16:27] <neopallium>	is it bad to connect a XREQ socket to a REP socket?
+| [Tuesday 04 January 2011] [05:18:37] <neopallium>	hmm, looks like XREQ -> REP is a supported setup.
+| [Tuesday 04 January 2011] [05:23:25] <jugg>	I believe REP socket expects at least two message parts, but three is needed.  <msg id> <empty msg> <msg body>.  Both <msg id> and <empty msg> should be sent with SNDMORE flag set.
+| [Tuesday 04 January 2011] [05:26:55] <jugg>	basically, your application code on the xreq side passes in <msg body> (in one or more parts).  The xreq wrapper layer must then provide an identifier for that <msg body> and send that along to the rep socket, along with an empty message so that the rep socket and delineate between id parts and body parts.  When the rep socket responds, your xrep wrapper layer pulls off the msg id part and looks up who to route the body part to.
+| [Tuesday 04 January 2011] [05:28:28] <jugg>	"...so that the rep socket can delineate.."
+| [Tuesday 04 January 2011] [05:29:20] <neopallium>	jugg: yup, REQ/REP sockets hid the "address" part of the message, XREQ/XREP expose the "address" part.
+| [Tuesday 04 January 2011] [05:30:00] <neopallium>	I am trying a manual example with the plain lua-zmq bindings to make sure it is not just my use of zmq that is cause it.
+| [Tuesday 04 January 2011] [05:30:15] <jugg>	so, you were already sending along the message id and blank msg? 
+| [Tuesday 04 January 2011] [05:30:37] <jugg>	with SNDMORE set?
+| [Tuesday 04 January 2011] [05:31:39] <neopallium>	testing that right now, making a minimal example.
+| [Tuesday 04 January 2011] [05:41:29] <neopallium>	jugg: https://gist.github.com/764629
+| [Tuesday 04 January 2011] [05:42:33] <neopallium>	also sometime I got a crash on the XREQ side.
+| [Tuesday 04 January 2011] [05:42:49] <neopallium>	but not an assertion, just a core dump.
+| [Tuesday 04 January 2011] [05:43:23] <jugg>	I believe the delim needs to be empty, zero bytes.  You are sending a single byte.
+| [Tuesday 04 January 2011] [05:43:46] <jugg>	try: s:send("", zmq.SNDMORE)
+| [Tuesday 04 January 2011] [05:44:13] <neopallium>	ah, yeah, I just tried that and it worked
+| [Tuesday 04 January 2011] [05:44:18] <jugg>	cool
+| [Tuesday 04 January 2011] [05:44:41] <neopallium>	I don't know where I read to send "\0" as the delim. part
+| [Tuesday 04 January 2011] [06:05:25] <orestis>	Hello, I'm wondering how 0mq fits in with a GUI event loop - is it safe to make 0mq requests from the GUI thread?
+| [Tuesday 04 January 2011] [06:05:48] <mikko>	orestis: you mean whether it would block?
+| [Tuesday 04 January 2011] [06:06:39] <mikko>	orestis: can you integrate external filehandle polling to your gui event loop?
+| [Tuesday 04 January 2011] [06:06:59] <mikko>	you can get ZMQ_FD from the socket and use that event loop
+| [Tuesday 04 January 2011] [06:07:08] <mikko>	then in the callback check for ZMQ_EVENTS 
+| [Tuesday 04 January 2011] [06:29:35] <orestis>	Thanks. That looks a bit too cutting-edge for my taste. I guess my original question was, are the 0mq send/receive calls async? I'm a bit confused because there are mentions of background threads.
+| [Tuesday 04 January 2011] [06:33:19] <mikko>	orestis: send/recv is async yes but there is a possiblity that the calls block
+| [Tuesday 04 January 2011] [06:33:27] <mikko>	unless ZMQ_NOBLOCK is used
+| [Tuesday 04 January 2011] [06:37:16] <orestis>	Thanks. In general, is 0mq a bit more low-level for doing async I/O from something like Twisted (that gives you Deferreds, Callbacks etc)?
+| [Tuesday 04 January 2011] [06:38:16] <mikko>	orestis: i guess that is true. then again as far as i understand twisted is more general purpose ae framework where as 0mq is messaging stack
+| [Tuesday 04 January 2011] [06:41:02] <orestis>	yes, apparently. I mainly wanted to use 0mq to split a monolithic gui app that does heavy I/O into separate processes. I definitely want to use Twisted for Deferreds and Callbacks (and Twisted plays well with GUIs) so I was wondering how to bring everything together.
+| [Tuesday 04 January 2011] [06:42:25] <mikko>	orestis: you should be able to integrate 0mq into twisted
+| [Tuesday 04 January 2011] [06:42:33] <mikko>	using the methods i mentioned earlier
+| [Tuesday 04 January 2011] [06:44:05] <orestis>	mikko: they're not in the stable version though, are they?
+| [Tuesday 04 January 2011] [06:45:05] <mikko>	orestis: if you mean 2.0.x then no
+| [Tuesday 04 January 2011] [06:45:11] <mikko>	but 2.1.x seems fairly stable
+| [Tuesday 04 January 2011] [06:45:19] <mikko>	i use github trunk in all my developments
+| [Tuesday 04 January 2011] [07:14:53] <orestis>	mikko: thanks for your input. I'll see what I can come up with.
+| [Tuesday 04 January 2011] [07:21:39] <jugg>	The documentation for ZMQ_IDENTITY is not clear to me.  I assume that the zmq context has to be maintained in order for a socket's identity to be re-usable?  But terminating the zmq context will lose the identity persistence?
+| [Tuesday 04 January 2011] [10:55:17] <Seta00>	how do I build 0MQ with MinGW?
+| [Tuesday 04 January 2011] [10:55:36] <mikko>	Seta00: configure && make && make install i guess
+| [Tuesday 04 January 2011] [10:55:51] <mikko>	Seta00: i got mingw build running on linux machine
+| [Tuesday 04 January 2011] [10:55:52] 	 * Seta00 installs MSYS
+| [Tuesday 04 January 2011] [10:55:54] <Seta00>	:P
+| [Tuesday 04 January 2011] [10:56:05] <mikko>	haven't tried on windows in a while
+| [Tuesday 04 January 2011] [10:56:32] <mikko>	i got mingw32 on linux and VS2008 on windows in daily builds
+| [Tuesday 04 January 2011] [10:56:43] <mikko>	maybe mingw32 on windows would be a good addition
+| [Tuesday 04 January 2011] [10:57:26] <Seta00>	definitely :)
+| [Tuesday 04 January 2011] [11:00:21] <Seta00>	working with various libraries can get messed up really fast
+| [Tuesday 04 January 2011] [11:12:05] <Seta00>	msg_store.cpp:279: error: ISO C++ does not support `long long'
+| [Tuesday 04 January 2011] [11:12:10] <Seta00>	why aren't things easier? hehe
+| [Tuesday 04 January 2011] [11:13:17] <sustrik>	Set00: is that 2.0.10?
+| [Tuesday 04 January 2011] [11:13:39] <Seta00>	sustrik, yes
+| [Tuesday 04 January 2011] [11:13:52] <sustrik>	i recall the long long issue was being solved
+| [Tuesday 04 January 2011] [11:13:59] <sustrik>	maybe it's fixed in 2.1
+| [Tuesday 04 January 2011] [11:14:08] <sustrik>	mikko: don't you remember by chance?
+| [Tuesday 04 January 2011] [11:14:46] <Seta00>	I'll try
+| [Tuesday 04 January 2011] [11:26:16] <Seta00>	2.1.0 gives me ".../mingw/lib/dllcrt2.o: No such file or directory" when linking
+| [Tuesday 04 January 2011] [11:27:32] <sustrik>	:|
+| [Tuesday 04 January 2011] [11:28:53] <sustrik>	no idea what that is
+| [Tuesday 04 January 2011] [11:28:57] <sustrik>	as for the long long problem
+| [Tuesday 04 January 2011] [11:29:31] <sustrik>	iirc the problem is that long long is not part of C++ standard, yet it it used in Win32 signatures
+| [Tuesday 04 January 2011] [11:29:37] <sustrik>	Win32 API
+| [Tuesday 04 January 2011] [11:30:09] <Skaag>	I wonder if anyone else is using google protocol buffers to send messages over zmq
+| [Tuesday 04 January 2011] [11:31:14] <Seta00>	I'm trying with uint64_t
+| [Tuesday 04 January 2011] [11:33:42] <Seta00>	doesn't work
+| [Tuesday 04 January 2011] [11:34:03] <Seta00>	how can I remove -Werror?
+| [Tuesday 04 January 2011] [11:34:16] <Seta00>	other than manually editing the makefile?
+| [Tuesday 04 January 2011] [11:35:32] <Seta00>	long works fine, but msys doesn`t find that DLL
+| [Tuesday 04 January 2011] [11:40:26] <sustrik>	no idea, try checking configure.in
+| [Tuesday 04 January 2011] [11:41:28] <Seta00>	forgot to configure fstab
+| [Tuesday 04 January 2011] [11:42:39] <mikko>	sustrik: yes
+| [Tuesday 04 January 2011] [11:42:48] <mikko>	ah, it was answered
+| [Tuesday 04 January 2011] [11:42:58] <mikko>	long long problem is with 2.0.x
+| [Tuesday 04 January 2011] [11:43:02] <mikko>	it's fixed in 2.1.0
+| [Tuesday 04 January 2011] [11:43:48] <sustrik>	thx
+| [Tuesday 04 January 2011] [11:46:20] <mikko>	Skaag: there has been a couple of mentions about that
+| [Tuesday 04 January 2011] [11:46:31] <mikko>	Seta00: i can test mingw32 build when i get home
+| [Tuesday 04 January 2011] [11:47:00] <Seta00>	mikko, it worked after I configured my fstab on MSYS
+| [Tuesday 04 January 2011] [11:47:15] <Seta00>	thanks sustrik and mikko
+| [Tuesday 04 January 2011] [11:47:37] <sustrik>	you are welcome
+| [Tuesday 04 January 2011] [11:47:49] <Seta00>	now I need qmake to link to it :P
+| [Tuesday 04 January 2011] [11:48:04] <Seta00>	which shall be solved in #qt
+| [Tuesday 04 January 2011] [11:48:05] <Seta00>	:)
+| [Tuesday 04 January 2011] [11:48:28] <mikko>	i remember someone doing this before
+| [Tuesday 04 January 2011] [11:48:31] <mikko>	with qt toolchain
+| [Tuesday 04 January 2011] [11:48:39] <mikko>	that sparked the whole fixing of mingw32 builds
+| [Tuesday 04 January 2011] [12:28:58] <s0undt3ch>	with pyzmq, on a publisher subscriber model, I'm setting the publisher's identity, how can a subscriber retrieve that identity
+| [Tuesday 04 January 2011] [12:28:59] <s0undt3ch>	?
+| [Tuesday 04 January 2011] [12:31:53] <sustrik>	it can't
+| [Tuesday 04 January 2011] [12:33:16] <s0undt3ch>	hmmm
+| [Tuesday 04 January 2011] [12:33:25] <s0undt3ch>	I need to pass that on the message then
+| [Tuesday 04 January 2011] [12:34:26] <sustrik>	yes, the identity is only internel per-hop mechanism
+| [Tuesday 04 January 2011] [12:34:42] <sustrik>	it's not passed all the way down from publisher to subscriber
+| [Tuesday 04 January 2011] [12:39:56] <s0undt3ch>	sustrik: same for req/rep right?
+| [Tuesday 04 January 2011] [12:41:11] <Seta00>	s0undt3ch, are you on windows?
+| [Tuesday 04 January 2011] [12:44:59] <sustrik>	same for all patterns
+| [Tuesday 04 January 2011] [12:45:31] <sustrik>	req/rep is special in that identities are stuck to the request as it passes individual nodes
+| [Tuesday 04 January 2011] [12:46:03] <sustrik>	but there's still no special mechanism to inspect peers' identities
+| [Tuesday 04 January 2011] [12:48:35] <s0undt3ch>	Seta00: nope
+| [Tuesday 04 January 2011] [12:49:01] <Seta00>	just checking if someone has a pyzmq build for Windows
+| [Tuesday 04 January 2011] [13:54:20] <Joes_>	Hello. It is very tempting for me to use ZeroMQ, but I'm trying to figure out how architecture would look like. So, we have chat server (a-la IRC) with chat rooms.
+| [Tuesday 04 January 2011] [13:54:40] <Joes_>	Users can join multiple rooms and I need to route messages between users in same room.
+| [Tuesday 04 January 2011] [13:54:53] <Joes_>	As far as I understood tutorials, I need 2 connections
+| [Tuesday 04 January 2011] [13:55:06] <Joes_>	one pubsub to send room events back to users
+| [Tuesday 04 January 2011] [13:55:16] <Joes_>	and one pubsub to send events from users to rooms?
+| [Tuesday 04 January 2011] [13:55:30] <Joes_>	can it be done with only one connection?
+| [Tuesday 04 January 2011] [13:55:38] <Joes_>	(or socket)
+| [Tuesday 04 January 2011] [14:16:49] <mikko>	Joes_: you would need two
+| [Tuesday 04 January 2011] [14:17:34] <Joes_>	in terms of low level communication with tcp transport - two tcp ports on the server will be used
+| [Tuesday 04 January 2011] [14:17:36] <Joes_>	correct?
+| [Tuesday 04 January 2011] [14:17:44] <Joes_>	(firewall setup, etc)
+| [Tuesday 04 January 2011] [14:18:04] <mikko>	Joes_: assuming you bind the two sockets then yet
+| [Tuesday 04 January 2011] [14:18:07] <mikko>	yes*
+| [Tuesday 04 January 2011] [14:18:10] <Joes_>	ok
+| [Tuesday 04 January 2011] [14:18:19] <Joes_>	and second question - any bindings for Javascript?
+| [Tuesday 04 January 2011] [14:18:31] <mikko>	i think someone was working for node.js bindings
+| [Tuesday 04 January 2011] [14:18:34] <Joes_>	using WebSockets/socketjs/etc
+| [Tuesday 04 January 2011] [14:18:42] <Joes_>	saw them
+| [Tuesday 04 January 2011] [14:18:52] <Joes_>	includes native C code
+| [Tuesday 04 January 2011] [14:19:02] <Joes_>	is wire protocol documented?
+| [Tuesday 04 January 2011] [14:19:08] <mikko>	yes, i think it is
+| [Tuesday 04 January 2011] [14:19:19] <mikko>	gimme a sec
+| [Tuesday 04 January 2011] [14:20:39] <mikko>	here is the message format http://rfc.zeromq.org/spec:2
+| [Tuesday 04 January 2011] [14:20:54] <Joes_>	thanks
+| [Tuesday 04 January 2011] [14:20:57] <mikko>	let me see if the rest is documented
+| [Tuesday 04 January 2011] [14:21:02] <Joes_>	going to see how long it will take to write dumb client in JS
+| [Tuesday 04 January 2011] [14:21:25] <Joes_>	there's one for AMQP, but nothing for ZeroMQ
+| [Tuesday 04 January 2011] [14:21:33] <Joes_>	and I don't need 95% of AMQP features...
+| [Tuesday 04 January 2011] [14:22:38] <mikko>	are you going to do communications from browser straight to 0mq?
+| [Tuesday 04 January 2011] [14:22:46] <Joes_>	well, that would be ideal
+| [Tuesday 04 January 2011] [14:22:55] <mikko>	i don't think that's going to work
+| [Tuesday 04 January 2011] [14:23:00] <mikko>	at least with websockets
+| [Tuesday 04 January 2011] [14:23:12] <mikko>	as websockets have their own framing as well
+| [Tuesday 04 January 2011] [14:23:25] <Joes_>	instead of making own wire protocol
+| [Tuesday 04 January 2011] [14:23:40] <Joes_>	hm
+| [Tuesday 04 January 2011] [14:23:43] <mikko>	have you looked into mongrel2?
+| [Tuesday 04 January 2011] [14:24:04] <Joes_>	I did
+| [Tuesday 04 January 2011] [14:24:14] <Joes_>	however, I can't find any benchmarks
+| [Tuesday 04 January 2011] [14:24:20] <Joes_>	or who's using it in production
+| [Tuesday 04 January 2011] [14:24:38] <mikko>	it's very new tech, i would be surprised if there are large installations yet
+| [Tuesday 04 January 2011] [14:25:03] <mikko>	and i tend to find benchmarks mainly useless as there are a lot of people who don't know how to benchmark the software
+| [Tuesday 04 January 2011] [14:25:08] <mikko>	or optimize it for benchmarking
+| [Tuesday 04 January 2011] [14:25:27] <Joes_>	well, at least some rough numbers would help
+| [Tuesday 04 January 2011] [14:25:34] <Joes_>	like faster than X Y times
+| [Tuesday 04 January 2011] [14:27:12] <mikko>	but very often i find they are comparing apples to oranges
+| [Tuesday 04 January 2011] [14:27:35] <mikko>	one tool with highly optimized config against incorrect config of other
+| [Tuesday 04 January 2011] [14:27:49] <Joes_>	I see.
+| [Tuesday 04 January 2011] [14:28:17] <mikko>	it's very hard to create good benchmarks
+| [Tuesday 04 January 2011] [14:32:13] <mikko>	but communicating from browser you most likely need some sort of middle piece
+| [Tuesday 04 January 2011] [14:32:36] <mikko>	probably doesn't need to be complicated but something that converts websocket messages to 0mq messages
+| [Tuesday 04 January 2011] [14:32:40] <Joes_>	Let's assume I have middlepiece - some kind of broker between browser and 0MQ
+| [Tuesday 04 January 2011] [14:32:45] <Joes_>	(thought about it)
+| [Tuesday 04 January 2011] [14:32:49] <Joes_>	with some simple wire protocol
+| [Tuesday 04 January 2011] [14:32:56] <sustrik>	i think that's mostly what mongrel2 does
+| [Tuesday 04 January 2011] [14:33:01] <Joes_>	but I have following issues:
+| [Tuesday 04 January 2011] [14:33:12] <Joes_>	1. Who will guarantee delivery, if client drops connection
+| [Tuesday 04 January 2011] [14:33:26] <Joes_>	(I will need to queue up messages for this client till his next connection)
+| [Tuesday 04 January 2011] [14:33:53] <Joes_>	well, there some other issues, but I don't remember them all :-)
+| [Tuesday 04 January 2011] [14:33:57] <mikko>	if client drops connection do you want to queue messages?
+| [Tuesday 04 January 2011] [14:34:08] <mikko>	for how long time after client leaves?
+| [Tuesday 04 January 2011] [14:34:19] <Joes_>	I don't know if client dropped or temporary lost connection to the server and will reconnect shortly
+| [Tuesday 04 January 2011] [14:34:30] <sustrik>	can be done using ZMQ_IDENTITY
+| [Tuesday 04 January 2011] [14:34:39] <Joes_>	em
+| [Tuesday 04 January 2011] [14:34:51] <Joes_>	let's say I'm am the server which handles requests from browsers.
+| [Tuesday 04 January 2011] [14:34:59] <Joes_>	I accepted raw TCP connection (or websocket connection)
+| [Tuesday 04 January 2011] [14:35:16] <Joes_>	so, for this connection, I will create 0MQ socket (or two, but it does not matter now)
+| [Tuesday 04 January 2011] [14:35:24] <Joes_>	and will connect to the chat server
+| [Tuesday 04 January 2011] [14:35:31] <sustrik>	right
+| [Tuesday 04 January 2011] [14:35:41] <Joes_>	if incoming (browser) connection will drop
+| [Tuesday 04 January 2011] [14:35:48] <Joes_>	I should close socket?
+| [Tuesday 04 January 2011] [14:35:54] <Joes_>	(0MQ socket)
+| [Tuesday 04 January 2011] [14:36:08] <sustrik>	no, 0MQ socket represents all the connections
+| [Tuesday 04 January 2011] [14:36:17] <sustrik>	so closing it means closing all the connections
+| [Tuesday 04 January 2011] [14:36:20] <Joes_>	hm
+| [Tuesday 04 January 2011] [14:36:27] <Joes_>	1 socket for all incoming clients?
+| [Tuesday 04 January 2011] [14:36:31] <sustrik>	yes
+| [Tuesday 04 January 2011] [14:37:03] <Joes_>	who will be doing queuing of the messages for temporary disconnected clients?
+| [Tuesday 04 January 2011] [14:37:14] <sustrik>	the server
+| [Tuesday 04 January 2011] [14:37:39] <Joes_>	I see
+| [Tuesday 04 January 2011] [14:37:41] <sustrik>	to be precise, the 0MQ socket in the server
+| [Tuesday 04 January 2011] [14:37:45] <Joes_>	hm
+| [Tuesday 04 January 2011] [14:38:03] <sustrik>	all you need to do is set the ZMQ_IDENTITY socket option on the client
+| [Tuesday 04 January 2011] [14:38:37] <sustrik>	that way the server socket would know that is should not deallocate the connection when it accidentally breaks
+| [Tuesday 04 January 2011] [14:38:46] <sustrik>	the messages will be stored
+| [Tuesday 04 January 2011] [14:38:58] <sustrik>	and once the same client re-connects they will be sent
+| [Tuesday 04 January 2011] [14:39:03] <Joes_>	that's the problem - I will have to write proxy between browser and 0MQ server
+| [Tuesday 04 January 2011] [14:39:05] <mikko>	i think you are talking about separate issue
+| [Tuesday 04 January 2011] [14:39:10] <mikko>	in this case:
+| [Tuesday 04 January 2011] [14:39:33] <mikko>	chat server <-- 0mq --> broker <-- raw tcp --> client
+| [Tuesday 04 January 2011] [14:39:38] <Joes_>	yep
+| [Tuesday 04 January 2011] [14:40:33] <Joes_>	so, my question is - I'm adding extra logic on broker side to handle another wire protocol, message queuing (connection persistence logic like in 0MQ)
+| [Tuesday 04 January 2011] [14:40:42] <Joes_>	is it worth of the trouble?
+| [Tuesday 04 January 2011] [14:41:01] <Joes_>	broker can be "end point"
+| [Tuesday 04 January 2011] [14:41:34] <Joes_>	not scalable solution, though
+| [Tuesday 04 January 2011] [14:41:35] <mikko>	the only thing you have described about the application this far that it's a chat like irc
+| [Tuesday 04 January 2011] [14:41:56] <Joes_>	yep, pretty much
+| [Tuesday 04 January 2011] [14:42:03] <mikko>	is this from scratch or do you have something running already?
+| [Tuesday 04 January 2011] [14:42:07] <Joes_>	scratch
+| [Tuesday 04 January 2011] [14:42:12] <Joes_>	prototyping
+| [Tuesday 04 January 2011] [14:43:04] <Joes_>	well, in terms of possible load - ~12k users average online
+| [Tuesday 04 January 2011] [14:43:30] <Joes_>	each making ~1 message in 5 seconds (worst case)
+| [Tuesday 04 January 2011] [14:43:49] <Joes_>	ajax with long polling does not suit very well
+| [Tuesday 04 January 2011] [14:44:17] <mikko>	why do you need to queue the messages if the client drops?
+| [Tuesday 04 January 2011] [14:44:20] <Joes_>	so, trying to find other possibilities apart of writing custom protocol on top of raw sockets
+| [Tuesday 04 January 2011] [14:44:36] <Joes_>	to keep state of the room and its recent history
+| [Tuesday 04 January 2011] [14:45:03] <Joes_>	it is doable by resending last N items on reconnect
+| [Tuesday 04 January 2011] [14:45:19] <Joes_>	which solves the problem, but.. if 0MQ provides it for free..
+| [Tuesday 04 January 2011] [14:49:14] <mikko>	let me think for a sec
+| [Tuesday 04 January 2011] [14:49:28] <mikko>	the biggest problem is the last part to the browser
+| [Tuesday 04 January 2011] [14:49:32] <Joes_>	yep
+| [Tuesday 04 January 2011] [14:49:45] <Joes_>	I want to get rid of it by having simple, yet functional, 0mq client
+| [Tuesday 04 January 2011] [14:50:01] <Joes_>	let's assume there's no WebSocket wrapping for now.
+| [Tuesday 04 January 2011] [14:50:05] <Joes_>	plain tcp sockets
+| [Tuesday 04 January 2011] [14:50:54] <mikko>	you are not in control of the client side i assume?
+| [Tuesday 04 January 2011] [14:51:04] <mikko>	as in installing 0mq on client :)
+| [Tuesday 04 January 2011] [14:51:16] <Joes_>	nope.
+| [Tuesday 04 January 2011] [14:51:19] <Joes_>	plain HTML+JS
+| [Tuesday 04 January 2011] [14:51:28] <Joes_>	and, maybe, some Flash.
+| [Tuesday 04 January 2011] [14:51:50] <Joes_>	(I already checked almost all language integrations - all of them are dependent on the native C library)
+| [Tuesday 04 January 2011] [14:54:36] <mikko>	yes, i think you would need to implement some logic in your broker
+| [Tuesday 04 January 2011] [14:55:52] <Joes_>	in terms of code, for 1 incoming browser it will create 0mq socket or it will handle all incoming browser connections through 1 0mq socket?
+| [Tuesday 04 January 2011] [14:55:55] <Joes_>	what is better approach?
+| [Tuesday 04 January 2011] [14:56:37] <Joes_>	multiple sockets - free message queuing
+| [Tuesday 04 January 2011] [14:56:57] <Joes_>	one socket - easier overall architecture (and speed?), but manual queuing on the broker
+| [Tuesday 04 January 2011] [14:57:17] <Joes_>	plus, custom wire protocol from broker to browser
+| [Tuesday 04 January 2011] [14:57:20] <Joes_>	etc.
+| [Tuesday 04 January 2011] [14:57:31] <mikko>	one socket also requires custom filtering i guess
+| [Tuesday 04 January 2011] [14:57:49] <mikko>	you got messages coming in 1 socket destined to ~12k clients
+| [Tuesday 04 January 2011] [14:57:51] <Joes_>	well, I can read address from the message
+| [Tuesday 04 January 2011] [14:58:00] <mikko>	so you need to write them to correct handles on other side
+| [Tuesday 04 January 2011] [14:58:12] <Joes_>	and then pick proper browser socket and send it there
+| [Tuesday 04 January 2011] [14:58:12] <Joes_>	yep
+| [Tuesday 04 January 2011] [14:58:20] <Joes_>	it = message
+| [Tuesday 04 January 2011] [14:59:02] <mikko>	one socket might be easier to handle for events as well
+| [Tuesday 04 January 2011] [14:59:09] <mikko>	otherwise you got a pollset of 12k items
+| [Tuesday 04 January 2011] [14:59:13] <mikko>	that you need to maintain
+| [Tuesday 04 January 2011] [14:59:15] <Joes_>	yeah
+| [Tuesday 04 January 2011] [14:59:19] <Joes_>	bad idea.
+| [Tuesday 04 January 2011] [14:59:27] <Joes_>	ok, another idea.
+| [Tuesday 04 January 2011] [14:59:39] <Joes_>	I write pure JS implementation of the wire protocol
+| [Tuesday 04 January 2011] [14:59:43] <Joes_>	it's pretty simple
+| [Tuesday 04 January 2011] [14:59:57] <Joes_>	and broker will be dump WebSocket negotiator and TCP proxy
+| [Tuesday 04 January 2011] [15:00:07] <Joes_>	(forwards tcp connection to the real 0MQ server port)
+| [Tuesday 04 January 2011] [15:00:14] <Joes_>	I assume it might work.
+| [Tuesday 04 January 2011] [15:00:33] <Joes_>	each message sent will have address as a first chunk
+| [Tuesday 04 January 2011] [15:00:46] <Joes_>	so chat server knows who sent it
+| [Tuesday 04 January 2011] [15:00:54] <Joes_>	and, maybe, where
+| [Tuesday 04 January 2011] [15:01:07] <Joes_>	dump = dumb
+| [Tuesday 04 January 2011] [15:01:18] <mikko>	i think i wrote websocket daemon ages ago using libev
+| [Tuesday 04 January 2011] [15:01:29] <mikko>	it wasn't complicated
+| [Tuesday 04 January 2011] [15:03:57] <Joes_>	hm, someone already did it for Ruby
+| [Tuesday 04 January 2011] [15:04:10] <Joes_>	https://github.com/andrewvc/dripdrop
+| [Tuesday 04 January 2011] [15:04:28] <Joes_>	custom wire format from client
+| [Tuesday 04 January 2011] [15:04:32] <andrewvc>	hey, that's me
+| [Tuesday 04 January 2011] [15:04:35] <Joes_>	browser that is
+| [Tuesday 04 January 2011] [15:04:36] <Joes_>	:-)
+| [Tuesday 04 January 2011] [15:04:39] <Joes_>	wonderful
+| [Tuesday 04 January 2011] [15:04:54] <Joes_>	there was pretty long discussion
+| [Tuesday 04 January 2011] [15:05:04] <andrewvc>	oh?
+| [Tuesday 04 January 2011] [15:05:16] <Joes_>	but, to sum it up - any plans for pure JS 0mq client instead of custom protocol?
+| [Tuesday 04 January 2011] [15:05:18] <Joes_>	(or message format)
+| [Tuesday 04 January 2011] [15:05:39] <Joes_>	so, you can get rid of Ruby server and just relay messages to 0mq
+| [Tuesday 04 January 2011] [15:05:42] <Joes_>	straight
+| [Tuesday 04 January 2011] [15:05:46] <andrewvc>	oh
+| [Tuesday 04 January 2011] [15:05:54] <andrewvc>	well, there's a node JS project
+| [Tuesday 04 January 2011] [15:06:05] <andrewvc>	and I was going to implement zmq_devices as part of ffi-rzmq as well
+| [Tuesday 04 January 2011] [15:06:14] <andrewvc>	or do those options not cover it?
+| [Tuesday 04 January 2011] [15:06:19] <Joes_>	node JS is using native C library
+| [Tuesday 04 January 2011] [15:06:28] <Joes_>	I want something like DripDrop
+| [Tuesday 04 January 2011] [15:06:31] <andrewvc>	oh
+| [Tuesday 04 January 2011] [15:06:33] <andrewvc>	interesting
+| [Tuesday 04 January 2011] [15:06:33] <Joes_>	browser <-> 0mq
+| [Tuesday 04 January 2011] [15:06:40] <Joes_>	and simple TCP proxy
+| [Tuesday 04 January 2011] [15:06:42] <Joes_>	in between
+| [Tuesday 04 January 2011] [15:06:49] <andrewvc>	well, dripdrop doesn't really require zeromq
+| [Tuesday 04 January 2011] [15:06:50] <Joes_>	which knows how to handle WebSocket handshake
+| [Tuesday 04 January 2011] [15:06:53] <andrewvc>	it works well with websockets
+| [Tuesday 04 January 2011] [15:06:56] <andrewvc>	and http
+| [Tuesday 04 January 2011] [15:06:57] <andrewvc>	all evented
+| [Tuesday 04 January 2011] [15:07:18] <andrewvc>	I'm a bit confused as to the actual question still I guess
+| [Tuesday 04 January 2011] [15:07:21] <mikko>	andrewvc: but he wants to run this in browser
+| [Tuesday 04 January 2011] [15:07:28] <mikko>	andrewvc: hence the pure js implementation i guess
+| [Tuesday 04 January 2011] [15:07:34] <Joes_>	yes
+| [Tuesday 04 January 2011] [15:07:43] <andrewvc>	ohhh, well who would the browser talk to. Itself?
+| [Tuesday 04 January 2011] [15:07:51] <Joes_>	0mq server, preferably.
+| [Tuesday 04 January 2011] [15:08:09] <Joes_>	here's another example: online real-time game.
+| [Tuesday 04 January 2011] [15:08:11] <andrewvc>	oh, well, as far as I know you can't open a raw TCP conn from any browser still
+| [Tuesday 04 January 2011] [15:08:17] <andrewvc>	so you're using websockets in the yes?
+| [Tuesday 04 January 2011] [15:08:29] <Joes_>	socketjs also works
+| [Tuesday 04 January 2011] [15:09:01] <Joes_>	(embeds small Flash object to proxy sockets)
+| [Tuesday 04 January 2011] [15:09:09] <Joes_>	gives plain sockets in JS
+| [Tuesday 04 January 2011] [15:09:41] <andrewvc>	yeah, so, that's an interesting idea
+| [Tuesday 04 January 2011] [15:09:56] <Joes_>	I mean - sure, I can create custom protocol
+| [Tuesday 04 January 2011] [15:10:00] <Joes_>	write custom server software
+| [Tuesday 04 January 2011] [15:10:00] <andrewvc>	what kinds of implementation were you guys thinking?
+| [Tuesday 04 January 2011] [15:10:06] <Joes_>	which will parse messages, etc
+| [Tuesday 04 January 2011] [15:10:11] <Joes_>	but I dont see a point
+| [Tuesday 04 January 2011] [15:10:52] <andrewvc>	what would the api look like, in JS?
+| [Tuesday 04 January 2011] [15:11:04] <Joes_>	so, DripDrop already doing it - checked JS files, it is encapsulating messages into DD.Message
+| [Tuesday 04 January 2011] [15:11:05] <andrewvc>	I think that's probably a good place to start, if you can throw up a gist for a simple case
+| [Tuesday 04 January 2011] [15:11:09] <andrewvc>	yep
+| [Tuesday 04 January 2011] [15:11:37] <andrewvc>	the JS prolly needs a little love at this point
+| [Tuesday 04 January 2011] [15:12:15] <Joes_>	so, imagine that there's no need to have custom wire protocol (json serialized) and JS would just talk to 0mq server using 0mq wire protocol
+| [Tuesday 04 January 2011] [15:12:48] <Joes_>	that's the simpliest case
+| [Tuesday 04 January 2011] [15:13:18] <andrewvc>	hmmm, the 0mq wire protocol doesn't handle that much really
+| [Tuesday 04 January 2011] [15:13:43] <andrewvc>	I mean, you could express multipart stuff, like socket identities for stuff like xreq/xrep
+| [Tuesday 04 January 2011] [15:13:45] <Joes_>	browser won't be server either
+| [Tuesday 04 January 2011] [15:13:49] <andrewvc>	but I'm not sure how useful that is
+| [Tuesday 04 January 2011] [15:13:50] <Joes_>	sub or pub, mostly
+| [Tuesday 04 January 2011] [15:13:59] <Joes_>	maybe req
+| [Tuesday 04 January 2011] [15:14:13] <andrewvc>	I'm off to grab some lunch, but it's an interesting idea
+| [Tuesday 04 January 2011] [15:14:20] <andrewvc>	I'd love to see a gist of a proposed API
+| [Tuesday 04 January 2011] [15:14:26] <Joes_>	actually, from wire perspective it can be req
+| [Tuesday 04 January 2011] [15:14:28] <Joes_>	always
+| [Tuesday 04 January 2011] [15:14:37] <Joes_>	em, no.
+| [Tuesday 04 January 2011] [15:14:40] <Joes_>	I need to get updates from server.
+| [Tuesday 04 January 2011] [15:14:44] <Joes_>	anyway, I'll think about it.
+| [Tuesday 04 January 2011] [15:14:53] <andrewvc>	yeah, I'd like to hear more
+| [Tuesday 04 January 2011] [15:15:00] <Joes_>	it won't be full-scale 0mq implementation anyway
+| [Tuesday 04 January 2011] [15:15:04] <andrewvc>	If you could ping me at @andrewvc on twitter when you have something I'd be interested
+| [Tuesday 04 January 2011] [15:15:09] <andrewvc>	anyway, off to lunch
+| [Tuesday 04 January 2011] [15:15:12] <Joes_>	k
+| [Tuesday 04 January 2011] [15:15:24] <Joes_>	bon appetit
+| [Tuesday 04 January 2011] [15:17:32] <Joes_>	Disconnected question - how do you handle security? If you don't want particular client to be connected, what you can do?
+| [Tuesday 04 January 2011] [15:17:48] <Joes_>	so, I don't want malicious client to DOS my message queue
+| [Tuesday 04 January 2011] [15:17:52] <Joes_>	can I forcibly disconnect him?
+| [Tuesday 04 January 2011] [15:17:58] <Joes_>	(in my application)
+| [Tuesday 04 January 2011] [15:20:29] <mikko>	hmm
+| [Tuesday 04 January 2011] [15:20:47] <mikko>	was searching for 0mq on twitter and most of the results are people using "0mq" instead of "omg"
+| [Tuesday 04 January 2011] [15:20:53] <Joes_>	:-)
+| [Tuesday 04 January 2011] [15:24:09] <Joes_>	mikko: any hints on how to forcibly drop connections on server side?
+| [Tuesday 04 January 2011] [15:25:44] <Joes_>	or 0mq not really suited for client-facing functionality?
+| [Tuesday 04 January 2011] [15:26:51] <mikko>	there is really no way to forcibly drop a connection
+| [Tuesday 04 January 2011] [15:27:02] <Joes_>	ouch.
+| [Tuesday 04 January 2011] [15:27:12] <mikko>	apart from closing the socket
+| [Tuesday 04 January 2011] [15:27:20] <Joes_>	on client side, I assume
+| [Tuesday 04 January 2011] [15:27:21] <Joes_>	?
+| [Tuesday 04 January 2011] [15:27:31] <mikko>	on the server-side but that closes all connections
+| [Tuesday 04 January 2011] [15:27:39] <Joes_>	oops.
+| [Tuesday 04 January 2011] [15:28:40] <Joes_>	means, 0mq not really suitable for client-facing stuff, as clients might misbehave
+| [Tuesday 04 January 2011] [15:28:47] <Joes_>	plus, if there's some sort of authentication
+| [Tuesday 04 January 2011] [15:28:56] <Joes_>	it's easier to disconnect client
+| [Tuesday 04 January 2011] [15:29:01] <Joes_>	than to ignore all his sent messages
+| [Tuesday 04 January 2011] [15:43:17] <sustrik>	what's the difference? a malevolent client can reconnect immediately and sent another malformed message
+| [Tuesday 04 January 2011] [15:43:59] <sustrik>	the only consequence is that the server would use much more CPU to handle the reconnecting instead of simply dropping the messages
+| [Tuesday 04 January 2011] [15:47:25] <Joes_>	yep
+| [Tuesday 04 January 2011] [15:47:28] <Joes_>	but
+| [Tuesday 04 January 2011] [15:47:35] <Joes_>	let's assume that it is pub/sub
+| [Tuesday 04 January 2011] [15:47:41] <Joes_>	with, let's say 10 subscribers
+| [Tuesday 04 January 2011] [15:48:15] <Joes_>	so, bad clients sends 1 message
+| [Tuesday 04 January 2011] [15:48:47] <Joes_>	and 10 messages total are sent to subscribers
+| [Tuesday 04 January 2011] [15:49:01] <Joes_>	effectively, network topology creates nice DOS environment
+| [Tuesday 04 January 2011] [15:49:31] <Joes_>	bad client sends*
+| [Tuesday 04 January 2011] [15:49:55] <Joes_>	I mean - there's no built-in security, so there's no way to filter these messages before they get into "internal" network
+| [Tuesday 04 January 2011] [15:50:08] <Joes_>	where workers sit
+| [Tuesday 04 January 2011] [15:56:16] <Joes_>	however, I think broker which will relay messages to internal network will work
+| [Tuesday 04 January 2011] [15:56:26] <Joes_>	and he'll do the authentication stuff too
+| [Tuesday 04 January 2011] [16:13:42] <mikko>	Joes_: it sounds like a sensible approach
+| [Tuesday 04 January 2011] [20:47:48] <jugg>	sustrik, it would appear that 2.1.x C zmq_poll function needs to check ZMQ_EVENTS prior to polling the FD... yes?
+| [Tuesday 04 January 2011] [20:49:53] <jugg>	btw, erlang bindings are functioning again... still some clean up work and consideration on how to expose certain aspects, but it is fairly usable now.
+| [Tuesday 04 January 2011] [21:30:33] <jugg>	documentation bug: http://api.zeromq.org/zmq_send.html -> EFAULT incorrectly references 'context' rather than 'socket'.
+| [Tuesday 04 January 2011] [23:56:48] <munin>	i have a python / zeromq question if anyone is active..? 
+| [Tuesday 04 January 2011] [23:57:04] <munin>	i'm trying to get python 3.2 and zeromq to work and am having a problem importing zmq:
+| [Tuesday 04 January 2011] [23:57:14] <munin>	ImportError: /home/munin/dbz-class/python/lib/python3.2/site-packages/zmq/core/poll.cpython-32m.so: undefined symbol: PyCObject_FromVoidPtr
+| [Wednesday 05 January 2011] [01:31:27] <the_hulk>	hi, if i allocate a memory to zmq_msg_t pointer using malloc, then does zmq_msg_close frees the memory, or i would have to free it?
+| [Wednesday 05 January 2011] [01:35:49] <jsimmons>	if you allocate it, you have to free it.
+| [Wednesday 05 January 2011] [01:36:36] <the_hulk>	jsimmons, after zmq_msg_close, ok, thanks
