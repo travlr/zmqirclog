@@ -766,3 +766,303 @@
 | [Wednesday 05 January 2011] [01:31:27] <the_hulk>	hi, if i allocate a memory to zmq_msg_t pointer using malloc, then does zmq_msg_close frees the memory, or i would have to free it?
 | [Wednesday 05 January 2011] [01:35:49] <jsimmons>	if you allocate it, you have to free it.
 | [Wednesday 05 January 2011] [01:36:36] <the_hulk>	jsimmons, after zmq_msg_close, ok, thanks
+| [Wednesday 05 January 2011] [04:03:53] <mikko>	the_hulk: you can use zmq_msg_init_data if you want the data to be freed when the message is freed
+| [Wednesday 05 January 2011] [04:07:55] <the_hulk>	mikko, data, no, i was talking about zmq_msg_t struct
+| [Wednesday 05 January 2011] [04:08:46] <mikko>	ah, ok
+| [Wednesday 05 January 2011] [04:22:15] <mikko>	http://twitter.com/alexdong/statuses/22478134221733888
+| [Wednesday 05 January 2011] [04:22:18] <mikko>	i don't get this
+| [Wednesday 05 January 2011] [04:46:26] <the_hulk>	mikko, me too
+| [Wednesday 05 January 2011] [05:35:25] <sustrik>	redis is a database, isn't it?
+| [Wednesday 05 January 2011] [05:35:31] <sustrik>	some people have no clue
+| [Wednesday 05 January 2011] [05:44:05] <mikko>	yes, it's a key-value store
+| [Wednesday 05 January 2011] [05:51:31] <mikko>	https://github.com/mkoppanen/httpush
+| [Wednesday 05 January 2011] [05:51:37] <mikko>	if anyone is interested in such a thing
+| [Wednesday 05 January 2011] [05:54:55] <sustrik>	mikko: i am not a web developer so i cannot judge
+| [Wednesday 05 January 2011] [05:55:20] <sustrik>	but i would definitely announce it on mailing list and add a link to zeromq.org labs page
+| [Wednesday 05 January 2011] [05:55:26] <sustrik>	to make it more accessible
+| [Wednesday 05 January 2011] [06:01:30] <neopallium>	mikko: that is similar to Mongrel2
+| [Wednesday 05 January 2011] [06:01:36] <the_hulk>	mikko, mongrel?
+| [Wednesday 05 January 2011] [06:02:22] <mikko>	neopallium: it doesn't really act as request reply web-server
+| [Wednesday 05 January 2011] [06:02:35] <mikko>	i just needed a simple http->zeromq bridge for statistics collection
+| [Wednesday 05 January 2011] [06:03:38] <neopallium>	so you can only push data to a 0mq socket? no responses back to the http client?
+| [Wednesday 05 January 2011] [06:03:47] <mikko>	neopallium: yep
+| [Wednesday 05 January 2011] [06:05:42] <the_hulk>	mikko, how does that help? i am quite new to this stuff..
+| [Wednesday 05 January 2011] [06:06:02] <mikko>	the use-case for this was fairly simple
+| [Wednesday 05 January 2011] [06:06:26] <mikko>	the initial use-case was just collecting web-statistics/analytics
+| [Wednesday 05 January 2011] [06:07:27] <mikko>	so take a request from client, push to 0mq and analyse later in the background
+| [Wednesday 05 January 2011] [06:08:09] <the_hulk>	and response?
+| [Wednesday 05 January 2011] [06:08:16] <mikko>	static 200 OK
+| [Wednesday 05 January 2011] [06:08:47] <mikko>	if you want to send proper responses to client you probably want something like mongrel2
+| [Wednesday 05 January 2011] [06:19:49] <the_hulk>	yeah, i am trying mongrel2, but i am still not clear about httppush.. is it like backend for page tagging?
+| [Wednesday 05 January 2011] [06:20:52] <mikko>	it just pushes http requests to 0mq
+| [Wednesday 05 January 2011] [06:20:54] <mikko>	nothing more
+| [Wednesday 05 January 2011] [06:21:06] <mikko>	not a bidirectional communication
+| [Wednesday 05 January 2011] [06:21:54] <the_hulk>	hmm, looks good
+| [Wednesday 05 January 2011] [06:22:42] <mikko>	it's for far simpler and specifc use-case than mongrel2
+| [Wednesday 05 January 2011] [10:07:30] <jugg>	sustrik, in 2.1.x zmq_term is a blocking call, is there a way to check if it will block, or make it not block?   In the erlang bindings, this causes a problem, because it hard locks the erlang vm, not allowing the sockets to be cleaned up and closed (which would unblock the zmq_term call).  As such it turns into a dead lock.   Of course I can put smarts into the erlang driver to deal with this issue, but...
+| [Wednesday 05 January 2011] [10:08:48] <mikko>	jugg: it blocks if there are sockets open
+| [Wednesday 05 January 2011] [10:08:56] <mikko>	jugg: if you close all sockets first then it will not block
+| [Wednesday 05 January 2011] [10:09:10] <jugg>	yes
+| [Wednesday 05 January 2011] [10:09:12] <mikko>	jugg: currently there is no non-blocking version but there has been some discussion around it
+| [Wednesday 05 January 2011] [10:10:36] <sustrik>	there are 2 distinct problems there
+| [Wednesday 05 January 2011] [10:11:10] <sustrik>	1. the sockets have to be closed before zmq_term succeeds
+| [Wednesday 05 January 2011] [10:11:39] <sustrik>	the reason is that otherwise you would destroy the sockets underneath running threads
+| [Wednesday 05 January 2011] [10:11:52] <sustrik>	and end up with access violations etc.
+| [Wednesday 05 January 2011] [10:12:20] <mikko>	there was the idea having a non-blocking call that just checks if sockets have been closed
+| [Wednesday 05 January 2011] [10:12:30] <sustrik>	yes
+| [Wednesday 05 January 2011] [10:12:46] <mikko>	does the following sound absurd:
+| [Wednesday 05 January 2011] [10:12:55] <sustrik>	2. zmq_term() waits while the pending message are send to the wite
+| [Wednesday 05 January 2011] [10:13:03] <mikko>	1. call zmq_term_nb(ctx);
+| [Wednesday 05 January 2011] [10:13:11] <sustrik>	that one can be worked aeound by setting ZMQ_LINGER to 0
+| [Wednesday 05 January 2011] [10:13:11] <jugg>	it'd be nice if it just returned with EAGAIN if there were open sockets, and have any blocking calls on the open sockets return with ETERM
+| [Wednesday 05 January 2011] [10:13:20] <mikko>	2. context is marked "awaiting termination" and doesnt allow new sockets to be allocated
+| [Wednesday 05 January 2011] [10:13:41] <mikko>	3. context automatically terminates after alst socket is done
+| [Wednesday 05 January 2011] [10:13:45] <mikko>	is this even possible?
+| [Wednesday 05 January 2011] [10:14:17] <mikko>	jugg: i guess that would be ideal
+| [Wednesday 05 January 2011] [10:14:31] <sustrik>	1 and 2 is ok
+| [Wednesday 05 January 2011] [10:14:32] <mikko>	but not sure if possible
+| [Wednesday 05 January 2011] [10:14:37] <sustrik>	3 won't fly
+| [Wednesday 05 January 2011] [10:15:01] <sustrik>	the problem is that what you noramally do is:
+| [Wednesday 05 January 2011] [10:15:05] <sustrik>	zmq_term()
+| [Wednesday 05 January 2011] [10:15:07] <sustrik>	exit()
+| [Wednesday 05 January 2011] [10:15:17] <jugg>	zmq_term would have to be called again if it returned with eagain previously...
+| [Wednesday 05 January 2011] [10:15:33] <sustrik>	thus the application exits even though there are pending messages there
+| [Wednesday 05 January 2011] [10:15:48] <sustrik>	jugg: yes
+| [Wednesday 05 January 2011] [10:16:33] <mikko>	sustrik: i see two problems here
+| [Wednesday 05 January 2011] [10:16:40] <sustrik>	in short you need a point where the application can sleep waiting for 0mq to finish any work underway
+| [Wednesday 05 January 2011] [10:16:43] <mikko>	well, one problem 
+| [Wednesday 05 January 2011] [10:16:49] 	 * sustrik listens
+| [Wednesday 05 January 2011] [10:16:57] <mikko>	the problem being that zmq_term doesn't indicate to sockets that they should exit
+| [Wednesday 05 January 2011] [10:17:12] <sustrik>	?
+| [Wednesday 05 January 2011] [10:17:17] <sustrik>	what about ETERM?
+| [Wednesday 05 January 2011] [10:17:30] <mikko>	does it currently send eterm to sockets?
+| [Wednesday 05 January 2011] [10:17:41] <mikko>	maybe im not handling that in my code properly
+| [Wednesday 05 January 2011] [10:17:45] <sustrik>	after zmq_term() is called
+| [Wednesday 05 January 2011] [10:17:54] <sustrik>	all the functions except amq_close() return ETERM
+| [Wednesday 05 January 2011] [10:18:18] <mikko>	does that signal event in ZMQ_FD as well?
+| [Wednesday 05 January 2011] [10:18:28] <sustrik>	good question
+| [Wednesday 05 January 2011] [10:18:37] <sustrik>	probably yes
+| [Wednesday 05 January 2011] [10:18:43] <sustrik>	not sure
+| [Wednesday 05 January 2011] [10:18:43] <mikko>	maybe that was my problem as i am using libevent loop
+| [Wednesday 05 January 2011] [10:19:14] <sustrik>	i would say
+| [Wednesday 05 January 2011] [10:19:19] <sustrik>	fd should be signaled
+| [Wednesday 05 January 2011] [10:19:35] <sustrik>	and getsockopt(zmq_events) should return ETERM
+| [Wednesday 05 January 2011] [10:19:40] <mikko>	let me test
+| [Wednesday 05 January 2011] [10:19:41] <sustrik>	but i never tried that
+| [Wednesday 05 January 2011] [10:21:09] <jugg>	what happens of zmq_send is blocking, or if the last message was sent with SNDMORE?  Do only full message sets get sent?  Or does zmq_send not return with eterm?
+| [Wednesday 05 January 2011] [10:22:10] <sustrik>	messages are atomic
+| [Wednesday 05 January 2011] [10:22:15] <sustrik>	so, in this case
+| [Wednesday 05 January 2011] [10:22:19] <jugg>	I assume, the linger option only deals with a fully atomic message set?
+| [Wednesday 05 January 2011] [10:22:24] <sustrik>	zmq_send return ETERM
+| [Wednesday 05 January 2011] [10:22:32] <sustrik>	but the message is not sent at all
+| [Wednesday 05 January 2011] [10:22:40] <mikko>	https://gist.github.com/79d15fa01f0c7288f129
+| [Wednesday 05 January 2011] [10:22:41] <mikko>	strange
+| [Wednesday 05 January 2011] [10:22:56] <sustrik>	jugg: yes, half-sent messages are never delivered
+| [Wednesday 05 January 2011] [10:24:28] <sustrik>	mikko: that's ETERM
+| [Wednesday 05 January 2011] [10:24:42] <mikko>	yeah
+| [Wednesday 05 January 2011] [10:24:50] <mikko>	so it does signal the ZMQ_FD
+| [Wednesday 05 January 2011] [10:25:37] <sustrik>	ok, easy to fix
+| [Wednesday 05 January 2011] [10:25:53] <sustrik>	just change line 270 to
+| [Wednesday 05 January 2011] [10:26:03] <sustrik>	if (rc != 0 && (errno == EINTR || errno == ETERM))
+| [Wednesday 05 January 2011] [10:27:21] <mikko>	sustrik: socket_base.cpp:272
+| [Wednesday 05 January 2011] [10:27:24] <mikko>	yeah
+| [Wednesday 05 January 2011] [10:57:35] <CIA-21>	zeromq2: 03Martin Sustrik 07master * r472bdcd 10/ src/socket_base.cpp : 
+| [Wednesday 05 January 2011] [10:57:35] <CIA-21>	zeromq2: Return ETERM from getsockopt(ZMQ_EVETS) if zmq_term() was called
+| [Wednesday 05 January 2011] [10:57:35] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/hXhab5
+| [Wednesday 05 January 2011] [12:29:53] <s0undt3ch>	hello ppl
+| [Wednesday 05 January 2011] [12:30:42] <s0undt3ch>	I'm trying to use pyzmq withing a gobject mainloop, ie, I can't simple do while True: sock.recv()
+| [Wednesday 05 January 2011] [12:30:47] <s0undt3ch>	so what are my options?
+| [Wednesday 05 January 2011] [12:31:06] <s0undt3ch>	using the gobject mainlopp I can make a function run at a specific interval
+| [Wednesday 05 January 2011] [12:31:25] <sustrik>	you can do non-blocking recv
+| [Wednesday 05 January 2011] [12:31:34] <sustrik>	use ZMQ_NOBLOCK flag
+| [Wednesday 05 January 2011] [12:32:50] <s0undt3ch>	sustrik: so, keep calling recv(zmq.NOBLOCK) untill I get an empty message meaning a message was completely sent?
+| [Wednesday 05 January 2011] [12:33:26] <sustrik>	EAGAIN error ensues if there's nothing to receive
+| [Wednesday 05 January 2011] [12:35:59] <s0undt3ch>	sustrik: k, Thanks
+| [Wednesday 05 January 2011] [12:36:07] <sustrik>	np
+| [Wednesday 05 January 2011] [12:36:10] <s0undt3ch>	sustrik: in which cases should we use poller?
+| [Wednesday 05 January 2011] [12:36:26] <s0undt3ch>	might be unrelated
+| [Wednesday 05 January 2011] [12:36:28] <sustrik>	if you need to use several sockets in parallel
+| [Wednesday 05 January 2011] [12:36:55] <s0undt3ch>	sustrik: well, a daemonized process will need a req and a rep socket
+| [Wednesday 05 January 2011] [12:37:00] <s0undt3ch>	is this such a case?
+| [Wednesday 05 January 2011] [12:37:14] <sustrik>	if you need to use them from the same thread
+| [Wednesday 05 January 2011] [12:37:20] <mikko>	s0undt3ch: ideal for you would be to use ZMQ_FD to get the filehandle
+| [Wednesday 05 January 2011] [12:37:30] <mikko>	and gobject.add_watch to watch for activity on the handle
+| [Wednesday 05 January 2011] [12:37:43] <mikko>	then in the callback check ZMQ_EVENTS and recv if there are events
+| [Wednesday 05 January 2011] [12:37:50] <mikko>	i think
+| [Wednesday 05 January 2011] [12:37:55] <mikko>	home ->
+| [Wednesday 05 January 2011] [12:38:00] <s0undt3ch>	mikko: wow! Thanks! Have you done something like this?
+| [Wednesday 05 January 2011] [12:38:06] <s0undt3ch>	mikko: any public code?
+| [Wednesday 05 January 2011] [12:38:11] <mikko>	s0undt3ch: i've done something like this with libevent
+| [Wednesday 05 January 2011] [12:38:17] <mikko>	i'll be back in an hour
+| [Wednesday 05 January 2011] [12:38:19] <mikko>	->
+| [Wednesday 05 January 2011] [12:38:28] <s0undt3ch>	mikko: please ping me when back
+| [Wednesday 05 January 2011] [12:39:32] <s0undt3ch>	mikko: ah, zmq 2.1.0 right?
+| [Wednesday 05 January 2011] [12:41:14] <sustrik>	yes, 2.1
+| [Wednesday 05 January 2011] [12:43:05] <s0undt3ch>	hmm, guess I need to build both packages in order to support that
+| [Wednesday 05 January 2011] [13:00:15] <s0undt3ch>	while trying to build pyzmq 2.1.0(git master) I'm getting http://paste.pocoo.org/show/315418/
+| [Wednesday 05 January 2011] [13:04:03] <sustrik>	looks like mismatch btween 2.0 and 2.1
+| [Wednesday 05 January 2011] [13:04:14] <sustrik>	aren't there old headers lingering somewhere?
+| [Wednesday 05 January 2011] [13:05:31] <s0undt3ch>	sustrik: yes, the distro ones
+| [Wednesday 05 January 2011] [13:05:35] <s0undt3ch>	ie, probably
+| [Wednesday 05 January 2011] [13:07:00] <s0undt3ch>	sustrik: I need to remove all distro headers?
+| [Wednesday 05 January 2011] [13:07:13] <s0undt3ch>	sustrik: I've specified the path to the new ones though
+| [Wednesday 05 January 2011] [13:08:04] <sustrik>	there's some mismatch obviously
+| [Wednesday 05 January 2011] [13:08:13] <s0undt3ch>	anyway I've downloaded the latest dev tar from the git downloads
+| [Wednesday 05 January 2011] [13:08:14] <sustrik>	mikko should be able to help you with that
+| [Wednesday 05 January 2011] [13:08:15] <s0undt3ch>	it now builds
+| [Wednesday 05 January 2011] [13:08:17] <s0undt3ch>	though
+| [Wednesday 05 January 2011] [13:08:43] <s0undt3ch>	http://paste.pocoo.org/show/315424/
+| [Wednesday 05 January 2011] [13:15:37] <s0undt3ch>	it now does not finding the compiled lib
+| [Wednesday 05 January 2011] [13:18:58] <s0undt3ch>	ok, tests work now
+| [Wednesday 05 January 2011] [13:26:04] <s0undt3ch>	sustrik: there's no ZMQ_FD example in pyzmq's git is there?
+| [Wednesday 05 January 2011] [13:26:28] <sustrik>	don't know
+| [Wednesday 05 January 2011] [13:26:38] <sustrik>	you shoud ask brian or minrk
+| [Wednesday 05 January 2011] [13:26:46] <sustrik>	those are pyzmq authors
+| [Wednesday 05 January 2011] [13:26:56] <sustrik>	you can talk to them via mailing list
+| [Wednesday 05 January 2011] [13:27:37] <sustrik>	ale uz si podpisla zmluvu na preklad :}
+| [Wednesday 05 January 2011] [13:28:22] <sustrik>	oops, sorry
+| [Wednesday 05 January 2011] [13:33:16] <mikko>	back
+| [Wednesday 05 January 2011] [13:33:39] <s0undt3ch>	mikko: hello there again!
+| [Wednesday 05 January 2011] [13:33:58] <s0undt3ch>	mikko: I've sucessfully built zmq and pyzmq 2.1.0 on my machine
+| [Wednesday 05 January 2011] [13:34:16] <s0undt3ch>	mikko: your work with the ZMQ_FD is it public?
+| [Wednesday 05 January 2011] [13:34:47] <s0undt3ch>	ie, just to get me some pointers on where to go next
+| [Wednesday 05 January 2011] [13:34:58] <mikko>	yes
+| [Wednesday 05 January 2011] [13:35:23] <mikko>	this is the callback https://github.com/mkoppanen/httpush/blob/master/src/httpd.c#L170
+| [Wednesday 05 January 2011] [13:35:40] <s0undt3ch>	I can't seem to find any examples in pyzmq
+| [Wednesday 05 January 2011] [13:35:43] <s0undt3ch>	ah, C ;)
+| [Wednesday 05 January 2011] [13:35:55] <s0undt3ch>	I'll see if I can translate that to python....
+| [Wednesday 05 January 2011] [13:35:59] 	 * s0undt3ch does not know C
+| [Wednesday 05 January 2011] [13:36:25] <mikko>	initialized here https://github.com/mkoppanen/httpush/blob/master/src/server.c#L41
+| [Wednesday 05 January 2011] [13:36:28] <mikko>	yes, C
+| [Wednesday 05 January 2011] [13:36:47] <mikko>	is zmq_getsockopt ZMQ_FD available in python?
+| [Wednesday 05 January 2011] [13:40:13] <s0undt3ch>	mikko: in 2.1.0 yes
+| [Wednesday 05 January 2011] [13:40:17] <s0undt3ch>	I was able to get the FD
+| [Wednesday 05 January 2011] [13:40:35] <mikko>	now you probably want to look into gobject.add_watch
+| [Wednesday 05 January 2011] [13:41:58] <mikko>	i think
+| [Wednesday 05 January 2011] [13:42:29] <mikko>	http://www.pygtk.org/pygtk2reference/gobject-functions.html#function-gobject--io-add-watch
+| [Wednesday 05 January 2011] [13:42:32] <mikko>	this
+| [Wednesday 05 January 2011] [13:43:01] <mikko>	pass the fd, gobject.IO_IN, and a callback
+| [Wednesday 05 January 2011] [13:43:17] <mikko>	then in the callback you: zmq_getsockopt(ZMQ_EVENTS
+| [Wednesday 05 January 2011] [13:43:24] <mikko>	and see if there are events available
+| [Wednesday 05 January 2011] [13:43:28] <mikko>	and do a read
+| [Wednesday 05 January 2011] [13:43:41] <mikko>	and remember that zeromq is edge-triggered rather than level-triggered
+| [Wednesday 05 January 2011] [13:45:53] <s0undt3ch>	mikko: hmm, that means?
+| [Wednesday 05 January 2011] [13:46:07] <mikko>	let's say you got 3 messages waiting in the socket
+| [Wednesday 05 January 2011] [13:46:13] <mikko>	your callback gets triggered
+| [Wednesday 05 January 2011] [13:46:23] <mikko>	you need to read all events in one go in the callback
+| [Wednesday 05 January 2011] [13:46:51] <mikko>	the fd only triggers event when the state changes rather than "until there are messages"
+| [Wednesday 05 January 2011] [13:48:06] <mikko>	if you look at this callback https://github.com/mkoppanen/httpush/blob/master/src/httpd.c#L170 you should understand the semantics even without understanding c
+| [Wednesday 05 January 2011] [14:03:26] <s0undt3ch>	mikko: sorry, had to work a bit?
+| [Wednesday 05 January 2011] [14:03:32] <s0undt3ch>	oops
+| [Wednesday 05 January 2011] [14:03:43] <s0undt3ch>	forget the ?
+| [Wednesday 05 January 2011] [14:03:51] <s0undt3ch>	mikko: I'll have a look a that code
+| [Wednesday 05 January 2011] [14:03:54] <s0undt3ch>	mikko: Thanks!
+| [Wednesday 05 January 2011] [14:04:12] <mikko>	no problem
+| [Wednesday 05 January 2011] [14:28:13] <s0undt3ch>	mikko: working python example -> http://paste.pocoo.org/show/315462/
+| [Wednesday 05 January 2011] [14:28:53] <s0undt3ch>	mikko: although I'm sending alot of messages, I aparently only handle one at a time, ie, events = subscriber.getsockopt(zmq.EVENTS) either returns 0 or 1
+| [Wednesday 05 January 2011] [14:30:56] <s0undt3ch>	mikko: is there a way to test in order to get more than a single zmq message?
+| [Wednesday 05 January 2011] [14:31:32] <s0undt3ch>	mikko: or socket.getsockopt(zmq.EVENTS) returns 0 or 1 in order to tell if there are events pending or not?
+| [Wednesday 05 January 2011] [14:35:30] <s0undt3ch>	mikko: the same can be done for outgoing events?
+| [Wednesday 05 January 2011] [14:35:30] <mikko>	if events == 0:
+| [Wednesday 05 January 2011] [14:35:43] <mikko>	check if (events & ZMQ_POLLIN)
+| [Wednesday 05 January 2011] [14:36:23] <mikko>	s0undt3ch: you could start your socket
+| [Wednesday 05 January 2011] [14:36:31] <mikko>	sleep 5 seconds while sending messages at other end
+| [Wednesday 05 January 2011] [14:36:37] <mikko>	and see how many you get in the callback
+| [Wednesday 05 January 2011] [14:36:50] <mikko>	hmm that might not work well
+| [Wednesday 05 January 2011] [14:36:55] <mikko>	or you could sleep in the callback
+| [Wednesday 05 January 2011] [14:37:11] <mikko>	ah now i see
+| [Wednesday 05 January 2011] [14:37:13] <mikko>	print 'GOT', events, 'EVENTS'
+| [Wednesday 05 January 2011] [14:37:22] <s0undt3ch>	mikko: I tried sleeping in the callback, 1 message every time
+| [Wednesday 05 January 2011] [14:37:25] <mikko>	events is a bitmask rather than number of events
+| [Wednesday 05 January 2011] [14:37:29] <s0undt3ch>	ah
+| [Wednesday 05 January 2011] [14:38:13] <s0undt3ch>	mikko: so "if events and zmq.POLLIN: break" right?
+| [Wednesday 05 January 2011] [14:38:40] <mikko>	if (events & zmq.POLLIN) 
+| [Wednesday 05 January 2011] [14:38:48] <mikko>	you can also check for if (events & zmq.POLLERR
+| [Wednesday 05 January 2011] [14:39:36] <s0undt3ch>	thats in case of errors right?
+| [Wednesday 05 January 2011] [14:40:15] <s0undt3ch>	recv() reads every message? or single message everytime?
+| [Wednesday 05 January 2011] [14:41:11] <mikko>	single message at a time
+| [Wednesday 05 January 2011] [14:41:14] <mikko>	thats why you loop
+| [Wednesday 05 January 2011] [14:41:47] <s0undt3ch>	ok
+| [Wednesday 05 January 2011] [14:42:08] <s0undt3ch>	so, it's working correctly, ie, with the changes you've said
+| [Wednesday 05 January 2011] [14:45:12] <mikko>	it sounds like so
+| [Wednesday 05 January 2011] [14:52:15] <s0undt3ch>	mikko: in case of (events & zmq.POLLERR) can we get the error?
+| [Wednesday 05 January 2011] [14:53:16] <mikko>	im not sure
+| [Wednesday 05 January 2011] [14:53:39] <mikko>	errno might or might not contain it
+| [Wednesday 05 January 2011] [14:55:29] <s0undt3ch>	k
+| [Wednesday 05 January 2011] [15:36:19] <s0undt3ch>	mikko: can it also be done for zmq.POLLOUT? or this does not make that much sense?
+| [Wednesday 05 January 2011] [15:36:47] <s0undt3ch>	since in order to send a message we have to call .send()
+| [Wednesday 05 January 2011] [15:36:57] <s0undt3ch>	which would send
+| [Wednesday 05 January 2011] [15:37:03] <mikko>	yes, it ca be done with pollout as well
+| [Wednesday 05 January 2011] [15:37:05] <s0undt3ch>	hmm, doesn't make that much sense
+| [Wednesday 05 January 2011] [15:37:12] <mikko>	send could block
+| [Wednesday 05 January 2011] [15:37:45] <mikko>	so you could either do a non-blocking send and check for the return code (EAGAIN) or poll
+| [Wednesday 05 January 2011] [15:38:30] <mikko>	it might be easier just to send with ZMQ_NOBLOCK
+| [Wednesday 05 January 2011] [15:38:34] <mikko>	and check for EINVAL
+| [Wednesday 05 January 2011] [15:38:42] <mikko>	depending on socket type it might not even block
+| [Wednesday 05 January 2011] [15:41:25] <s0undt3ch>	so, socket.send(msg, zmq.NOBLOCK) and have gobject listening on the fd for gobject.IO_OUT, then on the callback check for zmq.EINVAL meaning message was completely sent?
+| [Wednesday 05 January 2011] [15:44:27] <s0undt3ch>	mikko: makes sense?
+| [Wednesday 05 January 2011] [15:44:41] <mikko>	no
+| [Wednesday 05 January 2011] [15:44:56] <mikko>	socket.send(msg, zmq.NOBLOCK)
+| [Wednesday 05 January 2011] [15:45:00] <mikko>	then check errno
+| [Wednesday 05 January 2011] [15:45:17] <mikko>	if errno == einval, schedule gobject io_out
+| [Wednesday 05 January 2011] [15:45:26] <mikko>	and send message when it's signaled ready
+| [Wednesday 05 January 2011] [15:45:27] <mikko>	maybe
+| [Wednesday 05 January 2011] [15:57:56] <s0undt3ch>	mikko: my example -> http://paste.pocoo.org/show/315517/ <- though I don't think it makes that much sense
+| [Wednesday 05 January 2011] [15:58:31] <s0undt3ch>	and I don't know how to schedule a gobject io_out
+| [Wednesday 05 January 2011] [16:01:33] <s0undt3ch>	messages get through, but I don't think this is what you were saying
+| [Wednesday 05 January 2011] [16:05:31] <mikko>	ZMQ_PUB socket wont block
+| [Wednesday 05 January 2011] [16:05:43] <mikko>	so you dont need to worry about that really
+| [Wednesday 05 January 2011] [16:06:46] <s0undt3ch>	mikko: REQ/REP will?
+| [Wednesday 05 January 2011] [16:07:05] <s0undt3ch>	the purpose of this was actually for REQ/REP
+| [Wednesday 05 January 2011] [16:07:18] <mikko>	some sockets block depending on situation
+| [Wednesday 05 January 2011] [16:07:20] <s0undt3ch>	PUB/SUB was some existing code I had lying arround
+| [Wednesday 05 January 2011] [16:07:59] <mikko>	let me see if i can write understandable python
+| [Wednesday 05 January 2011] [16:08:43] <s0undt3ch>	ah
+| [Wednesday 05 January 2011] [16:08:54] <s0undt3ch>	making those REQ/REP I'm getting Operation cannot be accomplished in current state
+| [Wednesday 05 January 2011] [16:09:22] <s0undt3ch>	mikko: that would be wonderful!
+| [Wednesday 05 January 2011] [16:09:25] <mikko>	where you have if e.errno == zmq.EINVAL:
+| [Wednesday 05 January 2011] [16:09:44] <mikko>	if you check for zmq.EAGAIN
+| [Wednesday 05 January 2011] [16:09:53] <mikko>	EAGAIN means that the operation would have blocked
+| [Wednesday 05 January 2011] [16:10:01] <mikko>	so if e.errno == zmq.EAGAIN
+| [Wednesday 05 January 2011] [16:10:10] <mikko>	schedule io watcher there for IO_OUT
+| [Wednesday 05 January 2011] [16:10:21] <mikko>	it should be called when the socket becomes writable
+| [Wednesday 05 January 2011] [16:10:33] <mikko>	and in the callback:
+| [Wednesday 05 January 2011] [16:10:41] <mikko>	if you have sent everything, do not reschedule event
+| [Wednesday 05 January 2011] [16:10:57] <mikko>	if you get EAGAIN in the callback before sending all messages, reschedule event
+| [Wednesday 05 January 2011] [16:11:03] <mikko>	do you follow?
+| [Wednesday 05 January 2011] [16:11:07] <s0undt3ch>	mikko: I think so
+| [Wednesday 05 January 2011] [16:11:21] <mikko>	let's say you need to send out 100 messages
+| [Wednesday 05 January 2011] [16:11:33] <mikko>	you are happily sending messages but on message 59 you get EAGAIN
+| [Wednesday 05 January 2011] [16:11:57] <mikko>	which means that the operation would block. so you schedule io_watcher for the outgoing socket 
+| [Wednesday 05 January 2011] [16:12:12] <mikko>	the callback gets called when the socket is ready to receive more message
+| [Wednesday 05 January 2011] [16:12:13] <mikko>	s
+| [Wednesday 05 January 2011] [16:12:24] <mikko>	so then you keep on sending where you left 
+| [Wednesday 05 January 2011] [16:12:55] <mikko>	if you hit EAGAIN then return true (that seems to be the way gobject reschedules the event)
+| [Wednesday 05 January 2011] [16:13:03] <mikko>	if you have sent everything return false
+| [Wednesday 05 January 2011] [16:18:30] Notice	-NickServ- This nickname is registered. Please choose a different nickname, or identify via /msg NickServ identify <password>.
+| [Wednesday 05 January 2011] [16:18:30] Notice	-NickServ- You are now identified for travlr.
+| [Wednesday 05 January 2011] [16:24:41] <s0undt3ch>	mikko: as it is now -> http://paste.pocoo.org/show/315529/ <- I'm getting "Operation cannot be accomplished in current state", errno is 156384763
+| [Wednesday 05 January 2011] [16:24:55] <s0undt3ch>	ie, no messages are beeing sent as it is
+| [Wednesday 05 January 2011] [16:31:10] <mikko>	request-reply is strict on the pattern
+| [Wednesday 05 January 2011] [16:31:26] <mikko>	recv -> send -> recv -> send etc
+| [Wednesday 05 January 2011] [16:31:48] <s0undt3ch>	ah, the socket hasn't received anyting so it can't send
+| [Wednesday 05 January 2011] [16:32:27] <s0undt3ch>	I think for now I won't worry about this, right now I'm worried about async handling on incoming messages
+| [Wednesday 05 January 2011] [16:51:14] <mikko>	s0undt3ch: you might want to look into XREP/XREQ as well
+| [Wednesday 05 January 2011] [16:51:31] <s0undt3ch>	mikko: big diferences?
+| [Wednesday 05 January 2011] [16:51:53] <s0undt3ch>	mikko: I'm looking at REQ/REP to create a kind of rpc through zmq messaging
+| [Wednesday 05 January 2011] [16:52:05] <s0undt3ch>	*rpc client/server
+| [Wednesday 05 January 2011] [16:59:56] <mikko>	then maybe rep/req might be in place
+| [Wednesday 05 January 2011] [17:00:03] <mikko>	are you going to have multiple worker processes?
+| [Wednesday 05 January 2011] [17:01:20] <s0undt3ch>	mikko: yes, different ones, ie, each worker, the replier, will handle a specific job, the rpc is for them
+| [Wednesday 05 January 2011] [17:01:32] <s0undt3ch>	mikko: my "problem" at hands is
+| [Wednesday 05 January 2011] [17:02:52] <s0undt3ch>	I'll have several processes analysing diferent audio sources through gstreamer. when a problem on that audio source is found, a pub message is sent. However then need to be controllable, hence the rpc(REQ) need for them
+| [Wednesday 05 January 2011] [17:03:08] <s0undt3ch>	s/then need/they need/
+| [Wednesday 05 January 2011] [17:03:43] <s0undt3ch>	a client should be able to control a single or all of those gstreamer processes
+| [Wednesday 05 January 2011] [17:24:47] <s0undt3ch>	mikko: does my needs apply for XREQ/XREP?
+| [Wednesday 05 January 2011] [17:25:09] <mikko>	probably not 
+| [Wednesday 05 January 2011] [17:25:17] <mikko>	xreq/xrep doesn't enforce the pattern
+| [Wednesday 05 January 2011] [17:25:22] <mikko>	recv/send/recv/send
+| [Wednesday 05 January 2011] [17:27:30] <s0undt3ch>	ah ok
+| [Wednesday 05 January 2011] [17:27:54] <s0undt3ch>	mikko: those would be good for my testing needs, but not for the actual project
+| [Wednesday 05 January 2011] [17:27:56] <s0undt3ch>	Thanks!
+| [Wednesday 05 January 2011] [18:26:58] <s0undt3ch>	on a rep socket, can we know "who" is making the request?
