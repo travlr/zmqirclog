@@ -1066,3 +1066,349 @@
 | [Wednesday 05 January 2011] [17:27:54] <s0undt3ch>	mikko: those would be good for my testing needs, but not for the actual project
 | [Wednesday 05 January 2011] [17:27:56] <s0undt3ch>	Thanks!
 | [Wednesday 05 January 2011] [18:26:58] <s0undt3ch>	on a rep socket, can we know "who" is making the request?
+| [Thursday 06 January 2011] [01:52:43] <Malinga>	hi all i have a question to be asked
+| [Thursday 06 January 2011] [01:53:35] <Malinga>	about how to use OpenAMQ or ZeroMQ to deliver market data (quote server)
+| [Thursday 06 January 2011] [01:53:44] <Malinga>	*effectively
+| [Thursday 06 January 2011] [01:56:00] <Malinga>	hi any one there to help my technical question
+| [Thursday 06 January 2011] [02:00:54] <sustrik>	what's the problem?
+| [Thursday 06 January 2011] [02:02:48] <Malinga>	We are developing a Quote Server which will be handel the market data and deliver it to the end client
+| [Thursday 06 January 2011] [02:02:59] <Malinga>	we are think of using a SOA architecture for this
+| [Thursday 06 January 2011] [02:03:46] <Malinga>	So can u tell me some information how to use OpenAMQ to make this happen
+| [Thursday 06 January 2011] [02:04:06] <guido_g>	hrhrhr
+| [Thursday 06 January 2011] [02:04:10] <Malinga>	i used openamq 3 years back in my previous company as a middleware
+| [Thursday 06 January 2011] [02:04:12] <guido_g>	sorry
+| [Thursday 06 January 2011] [02:04:37] <sustrik>	openamq or 0mq?
+| [Thursday 06 January 2011] [02:04:42] <Malinga>	but now i want to use it to deliver market data effectlvely and use this openAMQ as a quote server
+| [Thursday 06 January 2011] [02:04:52] <Malinga>	any idas ?
+| [Thursday 06 January 2011] [02:04:52] <guido_g>	you did realize that zeromq is not related to openamq?
+| [Thursday 06 January 2011] [02:05:09] <Malinga>	if zeroMQ is better approach i can use ithat even
+| [Thursday 06 January 2011] [02:06:03] <guido_g>	no its not better
+| [Thursday 06 January 2011] [02:06:10] <guido_g>	its different
+| [Thursday 06 January 2011] [02:06:20] <Malinga>	any architecture gudes that u can give sustrik ...
+| [Thursday 06 January 2011] [02:08:21] <Malinga>	so can i use zero MQ for my senario
+| [Thursday 06 January 2011] [02:08:26] <sustrik>	Malinga: on the quote publisher open a PUB socket
+| [Thursday 06 January 2011] [02:08:32] <sustrik>	send the quotes to the socket
+| [Thursday 06 January 2011] [02:08:42] <sustrik>	on clients, open a SUB socket
+| [Thursday 06 January 2011] [02:08:54] <sustrik>	do your subscriptions
+| [Thursday 06 January 2011] [02:09:00] <sustrik>	and recv() the messages
+| [Thursday 06 January 2011] [02:09:02] <sustrik>	that's all
+| [Thursday 06 January 2011] [02:09:04] <Malinga>	listning
+| [Thursday 06 January 2011] [02:09:39] <Malinga>	this is via openAMQ right ?
+| [Thursday 06 January 2011] [02:09:48] <sustrik>	no, it's 0mq
+| [Thursday 06 January 2011] [02:09:53] <Malinga>	sorry
+| [Thursday 06 January 2011] [02:09:54] <Malinga>	ok
+| [Thursday 06 January 2011] [02:10:16] <Malinga>	so u think we can use the 0MQ to our market data quote server ?
+| [Thursday 06 January 2011] [02:10:23] <sustrik>	yes
+| [Thursday 06 January 2011] [02:10:27] <Malinga>	cool
+| [Thursday 06 January 2011] [02:10:39] <sustrik>	have a look at 0mq guide
+| [Thursday 06 January 2011] [02:10:45] <Malinga>	do u have some high level architecture on this is possible
+| [Thursday 06 January 2011] [02:10:58] <sustrik>	there's an example of -- i think -- distributing weather forecase
+| [Thursday 06 January 2011] [02:11:03] <sustrik>	forecast
+| [Thursday 06 January 2011] [02:11:12] <Malinga>	hmmm
+| [Thursday 06 January 2011] [02:11:21] <sustrik>	it's basically the same as you need for stock quotes
+| [Thursday 06 January 2011] [02:11:52] <Malinga>	so like in openAMQ do we have to have per symbol queues sorry i dont have much ida about 0MQ
+| [Thursday 06 January 2011] [02:12:39] <sustrik>	what do you need it for?
+| [Thursday 06 January 2011] [02:12:55] <sustrik>	fair balancing between individual symbols?
+| [Thursday 06 January 2011] [02:14:16] <Malinga>	u mean per symbol queues ?
+| [Thursday 06 January 2011] [02:16:33] <Malinga>	what is the better open 0MQ or OpenAMQ for my quote server
+| [Thursday 06 January 2011] [02:17:07] <sustrik>	openamq is a legacy technology
+| [Thursday 06 January 2011] [02:17:15] <sustrik>	so i would recommend 0mq
+| [Thursday 06 January 2011] [02:17:22] <sustrik>	it's also much easier to use
+| [Thursday 06 January 2011] [02:17:31] <sustrik>	and you don't need the broker
+| [Thursday 06 January 2011] [02:17:39] <sustrik>	which makes administration easier
+| [Thursday 06 January 2011] [02:17:47] <Malinga>	cool
+| [Thursday 06 January 2011] [02:18:14] <Malinga>	but our entire application (end clients) is in Java and hope to write back end also in java
+| [Thursday 06 January 2011] [02:18:21] <sustrik>	sure
+| [Thursday 06 January 2011] [02:18:29] <sustrik>	check java 0mq bindings
+| [Thursday 06 January 2011] [02:18:35] <Malinga>	u have java wrappers right ?
+| [Thursday 06 January 2011] [02:18:38] <sustrik>	yes
+| [Thursday 06 January 2011] [02:19:06] <Malinga>	realiable as C++ ? i mean java wrappers ?
+| [Thursday 06 January 2011] [02:19:19] <sustrik>	it's wrapper on top of C
+| [Thursday 06 January 2011] [02:19:27] <sustrik>	so it's the same thing
+| [Thursday 06 January 2011] [02:19:31] <Malinga>	JNI /
+| [Thursday 06 January 2011] [02:19:34] <Malinga>	JNI ?
+| [Thursday 06 January 2011] [02:19:34] <sustrik>	yes
+| [Thursday 06 January 2011] [02:19:37] <Malinga>	hmmm
+| [Thursday 06 January 2011] [02:19:39] <Malinga>	ok
+| [Thursday 06 January 2011] [02:19:44] <Malinga>	let me read 0MQ
+| [Thursday 06 January 2011] [02:19:53] <Malinga>	and come back to u in a few days
+| [Thursday 06 January 2011] [02:20:12] <sustrik>	you are welcome
+| [Thursday 06 January 2011] [02:20:52] <Malinga>	anyway thanks so much for all those informatin, i still can remember u helped me allot (u may not rememebr now) few years back also
+| [Thursday 06 January 2011] [02:21:06] <Malinga>	when im doing another system with openAMQ
+| [Thursday 06 January 2011] [02:21:11] <Malinga>	it was a gr8 sucess
+| [Thursday 06 January 2011] [02:21:14] <Malinga>	thanks
+| [Thursday 06 January 2011] [02:21:18] <Malinga>	and bye for now
+| [Thursday 06 January 2011] [02:21:40] <sustrik>	i remember your nick :)
+| [Thursday 06 January 2011] [02:21:42] <sustrik>	see you
+| [Thursday 06 January 2011] [02:42:31] <CIA-21>	zeromq2: 03Min Ragan-Kelley 07master * r08cd2ce 10/ (AUTHORS include/zmq.h include/zmq_utils.h): 
+| [Thursday 06 January 2011] [02:42:31] <CIA-21>	zeromq2: resolve "function declaration isn't a prototype"
+| [Thursday 06 January 2011] [02:42:31] <CIA-21>	zeromq2: change two declarations in headers to form f(void); instead of f();
+| [Thursday 06 January 2011] [02:42:31] <CIA-21>	zeromq2: which eliminates the warnings when compiling against zeromq
+| [Thursday 06 January 2011] [02:42:31] <CIA-21>	zeromq2: Signed-off-by: MinRK <benjaminrk@gmail.com> - http://bit.ly/fIJTkE
+| [Thursday 06 January 2011] [04:14:13] <mikko>	good morning
+| [Thursday 06 January 2011] [04:29:44] <sustrik>	morning
+| [Thursday 06 January 2011] [05:13:38] <jugg>	After calling zmq_send(..., ZMQ_SNDMORE), is there a way to abort the transfer without sending the final message part?  eg. If an application error occurs disallowing sending the final part(s), is closing the socket the only way to recover?
+| [Thursday 06 January 2011] [05:16:03] <jugg>	A reset socket option would be nice...
+| [Thursday 06 January 2011] [05:18:24] <mikko>	you mean reset as in send empty message part or a part flagged as "reset" ?
+| [Thursday 06 January 2011] [05:32:55] <jugg>	I mean, abort the sending of the message parts (don't send them over the wire).  Which they aren't at this point.   However, currently either you have to send another message without sndmore set, thus the entire bad message is put on the wire, or you have to close the socket.
+| [Thursday 06 January 2011] [05:35:38] <sustrik>	jugg: what are you trying to achieve?
+| [Thursday 06 January 2011] [05:35:56] <sustrik>	how come the message is "bad"?
+| [Thursday 06 January 2011] [05:36:26] <jugg>	the message is incomplete... the application code generating the message parts can not finish.
+| [Thursday 06 January 2011] [05:37:23] <jugg>	Of course, the application code could wait until the entire message is built, but that isn't always interesting.
+| [Thursday 06 January 2011] [05:38:12] <sustrik>	so what happens?
+| [Thursday 06 January 2011] [05:38:17] <sustrik>	something like timeout?
+| [Thursday 06 January 2011] [05:38:50] <jugg>	the application would like to go on to start building another message, but it can not send a new message until the old one completes.  So it either has to allow a bad message to be sent, or close the socket.
+| [Thursday 06 January 2011] [05:39:20] <sustrik>	i mean, how come the message is bad?
+| [Thursday 06 January 2011] [05:39:26] <jugg>	it is incomplete
+| [Thursday 06 January 2011] [05:39:37] <sustrik>	why are you sending it then?
+| [Thursday 06 January 2011] [05:40:02] <jugg>	because it is sent as it is built.
+| [Thursday 06 January 2011] [05:40:09] <sustrik>	hm
+| [Thursday 06 January 2011] [05:40:35] <sustrik>	that's not what multi-part messages are for
+| [Thursday 06 January 2011] [05:40:36] <jugg>	obviously a solution is to wait to send until it is fully built, but...
+| [Thursday 06 January 2011] [05:40:56] <sustrik>	the goal is not to hold the list of message parts on behalf of the user
+| [Thursday 06 January 2011] [05:41:05] <sustrik>	it's more like gather/scatter array
+| [Thursday 06 January 2011] [05:41:23] <sustrik>	allowing for zero-copy of data that is not placed in contiguous memory
+| [Thursday 06 January 2011] [05:41:58] <sustrik>	i would suggest holding the message parts in your app
+| [Thursday 06 January 2011] [05:41:59] <jugg>	yes, I'm aware of what it is designed for... But that doesn't mean I won't try to extend its use case...
+| [Thursday 06 January 2011] [05:42:06] <sustrik>	and sending only when the message is complete
+| [Thursday 06 January 2011] [05:42:17] <sustrik>	sure, go on :)
+| [Thursday 06 January 2011] [05:43:16] <jugg>	a socket reset option would help.  - for other reasons as well, but I know I'll get more flac for those.. :)
+| [Thursday 06 January 2011] [05:43:52] <jugg>	btw, I'll probably hit you up for erlzmq access tomorrow... it seems to be working well.
+| [Thursday 06 January 2011] [05:44:08] <jugg>	Still a few more test cases to check.
+| [Thursday 06 January 2011] [05:44:24] <sustrik>	well, my concert is that the option would bind the API to particular implementation
+| [Thursday 06 January 2011] [05:44:28] <sustrik>	ie.
+| [Thursday 06 January 2011] [05:45:03] <sustrik>	currently the code can be rewritten/optimised in such a way that message parts are sent over the wire
+| [Thursday 06 January 2011] [05:45:11] <sustrik>	even if the message is not fully sent
+| [Thursday 06 January 2011] [05:45:18] <sustrik>	and cached on the receiver side
+| [Thursday 06 January 2011] [05:45:46] <sustrik>	if the connection breaks, the cached message parts would be discarded
+| [Thursday 06 January 2011] [05:46:07] <jugg>	you'd have to send an abort message then, so the receiver could discard the incomplete parts.
+| [Thursday 06 January 2011] [05:46:11] <sustrik>	the rollback option would then require to extent the wire protocol
+| [Thursday 06 January 2011] [05:46:21] <sustrik>	exactly
+| [Thursday 06 January 2011] [05:46:31] <jugg>	I see
+| [Thursday 06 January 2011] [05:46:43] <sustrik>	the interactions are quite complex
+| [Thursday 06 January 2011] [05:47:11] <sustrik>	now, doing that just to not force user to keep a simple list of message parts seems an overkill
+| [Thursday 06 January 2011] [05:48:04] <sustrik>	in more generic terms, 0mq was designed to implement the minimal possible subset of features
+| [Thursday 06 January 2011] [05:48:20] <sustrik>	everytihng that can be build on top was deliberately eliminated
+| [Thursday 06 January 2011] [05:48:47] <sustrik>	so, if you want this kind of thing, just go on, implement a wrapper on top on 0mq
+| [Thursday 06 January 2011] [05:49:22] <sustrik>	or maybe a whole stack layer that would provide all kind of additional functionality
+| [Thursday 06 January 2011] [05:49:24] <jugg>	Well, that view point simplifies a problem I was having with the erlang bindings... :)
+| [Thursday 06 January 2011] [05:53:38] <jugg>	I have to run.  Thanks for the explanation.  Combined with the discussion we had some time ago where I wanted zmq to send each part over the wire as it was received, I might be starting to 'get' it :)
+| [Thursday 06 January 2011] [05:54:14] <sustrik>	it's simply avoinding the feature creep
+| [Thursday 06 January 2011] [05:54:26] <sustrik>	see you later
+| [Thursday 06 January 2011] [06:38:52] <parik>	Hi
+| [Thursday 06 January 2011] [06:40:03] <sustrik>	hi
+| [Thursday 06 January 2011] [06:40:37] <parik>	I was going through 0MQ src and found that it is based on PGM protocol.So i studied first PGM protocol and it was intersting need to know about multicasting 
+| [Thursday 06 January 2011] [06:41:43] <parik>	Like how no acknowledgment for successful delievery and negative acks for data loss and duplication of packet by the router
+| [Thursday 06 January 2011] [06:42:43] <parik>	and hence reduce Server Load  and Network Load
+| [Thursday 06 January 2011] [06:43:17] <parik>	Do i need to download open PGM to make 0MQ work
+| [Thursday 06 January 2011] [06:44:26] <parik>	I am not getting the defintion for pgm_init..I looked around in PGM also
+| [Thursday 06 January 2011] [06:44:50] <parik>	Hi Sustrik are you there
+| [Thursday 06 January 2011] [06:44:58] <sustrik>	parik: 0mq is multi-protocol
+| [Thursday 06 January 2011] [06:45:17] <sustrik>	so you have tcp as well as pgm
+| [Thursday 06 January 2011] [06:45:31] <sustrik>	if you don't need mutlicast you can just ignore pgm
+| [Thursday 06 January 2011] [06:45:56] <sustrik>	if you need it, openpgm is packaged with 0mq (see foreign/openpgm subdir)
+| [Thursday 06 January 2011] [06:46:21] <sustrik>	to build 0mq *with* pgm you need to add an option to confiuger:
+| [Thursday 06 January 2011] [06:46:23] <parik>	Thanks Sustrik.
+| [Thursday 06 January 2011] [06:46:26] <sustrik>	./configure --with-pgm
+| [Thursday 06 January 2011] [06:46:44] <mikko>	does openpgm maintain ABI?
+| [Thursday 06 January 2011] [06:46:49] <parik>	ok.Thanks alot.
+| [Thursday 06 January 2011] [06:46:57] <parik>	What is ABI
+| [Thursday 06 January 2011] [06:46:58] <mikko>	i'm wondering if packaging openpgm with 0mq makes sense in long-term
+| [Thursday 06 January 2011] [06:47:14] <mikko>	application binary interface
+| [Thursday 06 January 2011] [06:47:17] <sustrik>	it would be better to have an separate openpgm package
+| [Thursday 06 January 2011] [06:47:30] <sustrik>	but so far it doesn't look like that
+| [Thursday 06 January 2011] [06:47:45] <parik>	Thanks Mikko
+| [Thursday 06 January 2011] [06:47:55] <mikko>	the main problem with current implementation being hard to upgrade and added maintenance for 0mq project
+| [Thursday 06 January 2011] [06:48:00] <sustrik>	the actual fact, afaiu, is that most people are using openpg via 0mq
+| [Thursday 06 January 2011] [06:48:29] <sustrik>	mikko: right
+| [Thursday 06 January 2011] [06:48:37] <sustrik>	it's not obvious how to solve it though
+| [Thursday 06 January 2011] [06:48:48] <mikko>	so there are situations where openpgm is supported on certain platform + compiler combination but cant be compiled with --with-pgm
+| [Thursday 06 January 2011] [06:49:01] <parik>	You mean to say it's better to use open pgm pakage then that comes with OMQ
+| [Thursday 06 January 2011] [06:49:39] <sustrik>	i am aware of that
+| [Thursday 06 January 2011] [06:50:03] <sustrik>	but on the other hand requiring users to install scons and build openpgm by hand
+| [Thursday 06 January 2011] [06:50:06] <mikko>	there are two ways to change it: a) decouple pgm completely from 0mq and have users install it separately b) build openpgm using their scons builds and just link against artifacts
+| [Thursday 06 January 2011] [06:50:11] <sustrik>	manage the dependencies
+| [Thursday 06 January 2011] [06:50:12] <sustrik>	etc.
+| [Thursday 06 January 2011] [06:50:13] <mikko>	the latter adds dependency to scons
+| [Thursday 06 January 2011] [06:50:21] <sustrik>	could be actually a barrier to adoption
+| [Thursday 06 January 2011] [06:50:23] <mikko>	as does the former
+| [Thursday 06 January 2011] [06:50:25] <parik>	So pgm that is bundled with 0MQ will be potable to all OS and architectures
+| [Thursday 06 January 2011] [06:50:43] <mikko>	sustrik: in the long run 99% of the users will get 0mq via their distro
+| [Thursday 06 January 2011] [06:50:52] <mikko>	well, maybe not that large amount but high percentage
+| [Thursday 06 January 2011] [06:50:56] <sustrik>	yes
+| [Thursday 06 January 2011] [06:51:13] <sustrik>	so the goal is to have openpgm packages for all distros and 0mq packages for all distros
+| [Thursday 06 January 2011] [06:51:24] <sustrik>	we are quite far away from that afaics
+| [Thursday 06 January 2011] [06:51:52] <sustrik>	the current system is the next best thing imo
+| [Thursday 06 January 2011] [06:52:09] <mikko>	im not sure if dependency to scons is a large issue 
+| [Thursday 06 January 2011] [06:52:17] <mikko>	i see python as larger issue but that is already a dependency
+| [Thursday 06 January 2011] [06:52:28] <sustrik>	huh
+| [Thursday 06 January 2011] [06:52:29] <sustrik>	is it?
+| [Thursday 06 January 2011] [06:52:31] <mikko>	yes
+| [Thursday 06 January 2011] [06:52:35] <sustrik>	where?
+| [Thursday 06 January 2011] [06:52:49] <sustrik>	openpgm?
+| [Thursday 06 January 2011] [06:52:53] <mikko>	yes
+| [Thursday 06 January 2011] [06:52:59] <sustrik>	oh my
+| [Thursday 06 January 2011] [06:53:04] <mikko>	https://github.com/zeromq/zeromq2/blob/master/configure.in#L318
+| [Thursday 06 January 2011] [06:53:07] <sustrik>	any idea of what is it used for?
+| [Thursday 06 January 2011] [06:53:32] <mikko>	i don't but i can easily check
+| [Thursday 06 January 2011] [06:53:56] <mikko>	foreign/openpgm/@pgm_basename@/openpgm/pgm/version.c: ../foreign/openpgm/@pgm_basename@/openpgm/pgm/version_generator.py
+| [Thursday 06 January 2011] [06:53:59] <mikko>	python ../foreign/openpgm/@pgm_basename@/openpgm/pgm/version_generator.py > $@
+| [Thursday 06 January 2011] [06:54:10] <sustrik>	hm
+| [Thursday 06 January 2011] [06:54:12] <sustrik>	let me see
+| [Thursday 06 January 2011] [06:54:12] <mikko>	https://github.com/zeromq/zeromq2/blob/master/src/Makefile.am
+| [Thursday 06 January 2011] [06:54:25] <mikko>	github doesn't show lines so i can't link you directly
+| [Thursday 06 January 2011] [06:54:29] <mikko>	but should be easy to find
+| [Thursday 06 January 2011] [06:56:10] <sustrik>	the script generates the version name
+| [Thursday 06 January 2011] [06:56:47] <sustrik>	possibly we can replace it by a hardcoded one
+| [Thursday 06 January 2011] [06:56:57] <sustrik>	and thus drop the python dependency
+| [Thursday 06 January 2011] [06:57:59] <mikko>	but then again, there hasn't been complaints about python dependency
+| [Thursday 06 January 2011] [06:58:37] <sustrik>	the problem imo is that the build comes very early on in adoption process
+| [Thursday 06 January 2011] [06:59:06] <sustrik>	so, say if you find a bug in 0mq, you are already using it
+| [Thursday 06 January 2011] [06:59:12] <sustrik>	so it make sense to report the bug
+| [Thursday 06 January 2011] [06:59:15] <sustrik>	or even fix it
+| [Thursday 06 January 2011] [06:59:31] <sustrik>	however, if you are building it
+| [Thursday 06 January 2011] [06:59:45] <sustrik>	it means you are using 0mq for 5 mins at the moment
+| [Thursday 06 January 2011] [07:00:11] <sustrik>	if there's a problem, the simple solution is to just let it be
+| [Thursday 06 January 2011] [07:00:16] <sustrik>	and use something else
+| [Thursday 06 January 2011] [07:00:48] <mikko>	hmm
+| [Thursday 06 January 2011] [07:00:53] <mikko>	i agree and disagree
+| [Thursday 06 January 2011] [07:00:59] 	 * sustrik listens
+| [Thursday 06 January 2011] [07:01:09] <mikko>	i agree that build issues will throw off people
+| [Thursday 06 January 2011] [07:01:30] <mikko>	i disagree that clear dependency will throw off people, especially when it's build-time only
+| [Thursday 06 January 2011] [07:01:45] <mikko>	we require autoconf 2.61 as well which is not available everywhere
+| [Thursday 06 January 2011] [07:02:09] <sustrik>	ack
+| [Thursday 06 January 2011] [07:02:11] <mikko>	brb, fetching lunch
+| [Thursday 06 January 2011] [07:02:21] <sustrik>	otoh, autoconf is a standard package
+| [Thursday 06 January 2011] [07:02:40] <sustrik>	openpgm is not yet a package
+| [Thursday 06 January 2011] [07:02:46] <sustrik>	you have to build it by hand
+| [Thursday 06 January 2011] [07:02:47] <sustrik>	etc.
+| [Thursday 06 January 2011] [07:02:58] <sustrik>	bon appettit
+| [Thursday 06 January 2011] [07:13:47] <parik>	Sustrik.Thanks alot.Yes I got pgm package inside foreign subdir.I am going to do code walkthrough before i take up and understands 0MQ
+| [Thursday 06 January 2011] [07:13:55] <parik>	Thanks alot Sustrik once again
+| [Thursday 06 January 2011] [07:14:01] <parik>	Thanks mikko
+| [Thursday 06 January 2011] [07:14:45] <sustrik>	:)
+| [Thursday 06 January 2011] [07:15:48] <parik>	Do I am going in right direction.I always wnat to know as much as possible so as this learning will help me somewhere
+| [Thursday 06 January 2011] [07:18:16] <sustrik>	parik: have you seen the 0mq guide?
+| [Thursday 06 January 2011] [07:18:26] <sustrik>	it's worth of reading for the starters
+| [Thursday 06 January 2011] [07:18:26] <parik>	Yes ..
+| [Thursday 06 January 2011] [07:19:27] <parik>	Thanks Sustrik.Actually I have not yet gone through it completely
+| [Thursday 06 January 2011] [07:20:12] <sustrik>	ch1 & ch2 are the most important
+| [Thursday 06 January 2011] [07:20:17] <sustrik>	to grasp the concept
+| [Thursday 06 January 2011] [07:20:29] <parik>	When I come across 0MQ is based on PGM My entire focus goes to understand PGM first as I was not aware fo it earlier
+| [Thursday 06 January 2011] [07:21:04] <parik>	I will definitly go through ch1 and ch2
+| [Thursday 06 January 2011] [07:21:37] <sustrik>	parik: be careful with pgm
+| [Thursday 06 January 2011] [07:21:42] <parik>	Now i understands PGM to certain extent to start with
+| [Thursday 06 January 2011] [07:22:03] <sustrik>	mutlicast is only useful in special circumstances
+| [Thursday 06 January 2011] [07:22:05] <parik>	You mean to say shall i not concentrate much on this
+| [Thursday 06 January 2011] [07:22:14] <parik>	ok...
+| [Thursday 06 January 2011] [07:22:15] <sustrik>	in most cases tcp makes more sense
+| [Thursday 06 January 2011] [07:22:35] <sustrik>	pgm =very high volume pub/sub on LANs
+| [Thursday 06 January 2011] [07:22:49] <sustrik>	it needs quite a lot of administration
+| [Thursday 06 January 2011] [07:22:50] <parik>	But does not three way shaking makes it more congested in TCP
+| [Thursday 06 January 2011] [07:22:59] <parik>	ok..
+| [Thursday 06 January 2011] [07:23:04] <sustrik>	it requires good hardware etc.
+| [Thursday 06 January 2011] [07:23:18] <parik>	You mean to say pgm compatible routers
+| [Thursday 06 January 2011] [07:23:40] <parik>	upgraded hardware for performance
+| [Thursday 06 January 2011] [07:23:48] <sustrik>	in most cases you don't event want multicast traffic pass the router
+| [Thursday 06 January 2011] [07:23:58] <parik>	ok
+| [Thursday 06 January 2011] [07:23:58] <sustrik>	rather i meant switches with IGMP snooping
+| [Thursday 06 January 2011] [07:24:11] <Steve-o>	pgm routers are v. expensive
+| [Thursday 06 January 2011] [07:24:26] <Steve-o>	switches are pretty easy, standard procurves work well
+| [Thursday 06 January 2011] [07:24:33] <parik>	ok..So that's an expensive one
+| [Thursday 06 January 2011] [07:25:33] <Steve-o>	well, v.expensive for gigabit capacity, cisco support it on almost their entire product range, expensive = US$10,000
+| [Thursday 06 January 2011] [07:26:01] <parik>	oh...That's really expensive...
+| [Thursday 06 January 2011] [07:27:09] <parik>	So then i will start with TCP.But no ways going through PGM gives me some insight of what is it and how does it work
+| [Thursday 06 January 2011] [07:27:29] <parik>	I will start with TCP 
+| [Thursday 06 January 2011] [07:27:37] <Steve-o>	100mb is around $5,000 the closest I saw last check, slower speeds all the way down to $250 for DSL routers, etc.
+| [Thursday 06 January 2011] [07:28:01] <Steve-o>	consider PGM an administrative option rather than anything particular technical for development
+| [Thursday 06 January 2011] [07:28:46] <Steve-o>	that's how zeromq has been developed, choose a ZMQ_PUB socket and run it to the ground with TCP until you really need scaling
+| [Thursday 06 January 2011] [07:28:51] <sustrik>	right, you can start with tcp and switch to pgm when needed
+| [Thursday 06 January 2011] [07:29:22] <Steve-o>	consider TCP sockets are pretty much accelerated everywhere and PGM isn't anywhere
+| [Thursday 06 January 2011] [07:29:29] <parik>	Thanks for guidance and making me to go in right direction 
+| [Thursday 06 January 2011] [07:29:40] <parik>	Yes I do agree
+| [Thursday 06 January 2011] [07:30:04] <Steve-o>	but when you need it, it's awesome :D
+| [Thursday 06 January 2011] [07:30:25] <parik>	I am a novice but got some useful tips from Sustrik and Steve
+| [Thursday 06 January 2011] [07:30:33] <parik>	:-)
+| [Thursday 06 January 2011] [07:33:44] <parik>	Just one thing I always want to work and write some protcols, creating some utility but i always wonder how can I start with
+| [Thursday 06 January 2011] [07:35:45] <Steve-o>	implementing your own network protcol or are we talking above zeromq?
+| [Thursday 06 January 2011] [07:40:04] <parik>	I mean to say something I can contribute to and involved myself as one of the developer
+| [Thursday 06 January 2011] [07:41:00] <Steve-o>	well there is plenty of scope with zeromq
+| [Thursday 06 January 2011] [07:41:58] <Steve-o>	a lot can be made on top, e.g. last value cache, certified delivery, transactional delivery, virtual circuits, http tunneling, encryption, authentication, proxying, etc
+| [Thursday 06 January 2011] [07:43:09] <parik>	Great..Since I am novice and don't know How I can also be felt great of doing/contributing something..Just I want to know How can I contribute...Need some guidance on this front
+| [Thursday 06 January 2011] [07:44:53] <Steve-o>	well it's usually easiest if you have a target architecture to develop for, 
+| [Thursday 06 January 2011] [07:45:22] <Steve-o>	for example a last value cache could be simply integrating memcached from TCP/UDP to zeromq sockets
+| [Thursday 06 January 2011] [07:45:22] <keffo>	What's wrong with abstract logic? =)
+| [Thursday 06 January 2011] [07:47:16] <parik>	Steve I am really sorry ..I didnot get it
+| [Thursday 06 January 2011] [07:49:16] <Steve-o>	if you have a scenario to deploy something its easier than randomly creating something
+| [Thursday 06 January 2011] [07:49:31] <Steve-o>	unless you are into computer science theory I guess
+| [Thursday 06 January 2011] [07:49:39] <parik>	oh..
+| [Thursday 06 January 2011] [07:50:13] <parik>	Yeah I am in Comuter Science
+| [Thursday 06 January 2011] [07:50:59] <Steve-o>	there is one developer integrating zeromq with websockets for their app, that's pretty neat
+| [Thursday 06 January 2011] [07:51:44] <parik>	ok..
+| [Thursday 06 January 2011] [07:52:36] <Steve-o>	you can also pickup ideas from here:  http://www.zeromq.org/docs:labs
+| [Thursday 06 January 2011] [07:53:56] <parik>	Thanks alot Steve..I think this will really help.
+| [Thursday 06 January 2011] [07:55:12] <parik>	Thanks Steve You have given me a starting point to start with..I
+| [Thursday 06 January 2011] [07:55:23] <parik>	am really grateful to you
+| [Thursday 06 January 2011] [07:57:04] <parik>	Thanks alot once again to Steve to Sustrik for guiding me and answering my doubts and given your precious time.
+| [Thursday 06 January 2011] [07:57:34] <Steve-o>	good luck, post something on a blog and let us read about it
+| [Thursday 06 January 2011] [07:58:01] <sustrik>	feel free to discuss your ideas on the mailing list
+| [Thursday 06 January 2011] [07:58:16] <parik>	Thanks alot Steve.I will make it sure...
+| [Thursday 06 January 2011] [07:58:17] <sustrik>	there's much more people there to comment then on irc
+| [Thursday 06 January 2011] [07:58:32] <parik>	oh...ok
+| [Thursday 06 January 2011] [07:59:34] <sustrik>	Steve-o: btw, your Tibco migration docs are really useful
+| [Thursday 06 January 2011] [07:59:40] <sustrik>	especially the code examples
+| [Thursday 06 January 2011] [07:59:55] <parik>	Thanks once again to Steve and Sustrik...I donot want to leave the discussion but i have to as I have to go but i will cherish the discussion with you people.You people are alot supported
+| [Thursday 06 January 2011] [07:59:56] <sustrik>	it would be great if these were widely accessible
+| [Thursday 06 January 2011] [08:00:25] <sustrik>	even if they are not perfect, it at least allows rv users to start somewhere
+| [Thursday 06 January 2011] [08:00:43] <Steve-o>	ideally dumping in github or somewhere
+| [Thursday 06 January 2011] [08:00:58] <Steve-o>	as I mentioned I already have C++ & Java examples but didn't include them
+| [Thursday 06 January 2011] [08:01:27] <Steve-o>	but honestly I have no idea how you want rv users to migrate no-single-point-of-failure architectures
+| [Thursday 06 January 2011] [08:01:30] <sustrik>	i would say the text can be dumped on a wiki page, while code examples can reside on github
+| [Thursday 06 January 2011] [08:02:12] <sustrik>	well, we can address that later on
+| [Thursday 06 January 2011] [08:02:39] <sustrik>	the important thing is make the initial docs accessible
+| [Thursday 06 January 2011] [08:02:51] <Steve-o>	that will make all the order routing developers happy
+| [Thursday 06 January 2011] [08:03:50] <keffo>	routing developer, now that's a career! :)
+| [Thursday 06 January 2011] [08:03:56] <sustrik>	it's matter of time imo, you can't do everything straight away
+| [Thursday 06 January 2011] [08:04:12] <sustrik>	so let them try 0mq, experiment with it, complain about it
+| [Thursday 06 January 2011] [08:04:28] <sustrik>	and hopefully solution would emerge
+| [Thursday 06 January 2011] [08:04:33] <keffo>	sustrik: Do you know if anyone has tried to bridge zmq with wcf?
+| [Thursday 06 January 2011] [08:04:59] <sustrik>	i think i dimly remember something like that
+| [Thursday 06 January 2011] [08:05:03] <sustrik>	but i may be wrong
+| [Thursday 06 January 2011] [08:05:36] <Steve-o>	keffo: order routing is rather dull, especially FX
+| [Thursday 06 January 2011] [08:05:49] <keffo>	Steve-o: my point yeah :)
+| [Thursday 06 January 2011] [08:06:17] <Steve-o>	1,000 trades a day max, woohoo
+| [Thursday 06 January 2011] [08:06:35] <keffo>	sustrik: It's easy enough to just call a zmq api inside a wcf service, but a somewhat more native method would be very useful
+| [Thursday 06 January 2011] [08:08:33] <sustrik>	hm, tried googling?
+| [Thursday 06 January 2011] [08:08:43] <keffo>	yeah
+| [Thursday 06 January 2011] [08:09:32] <sustrik>	doesn't look like anything is available
+| [Thursday 06 January 2011] [08:10:02] <sustrik>	small project for someone to spend weekend hacking :)
+| [Thursday 06 January 2011] [08:10:21] <keffo>	hmm, rabbitmq seems to support it, and also federation services, that's totally awesome if they support full saml & adfs
+| [Thursday 06 January 2011] [08:10:45] <keffo>	not that it helps in any way I guess, exept perusal of their code maybe
+| [Thursday 06 January 2011] [08:10:50] <Steve-o>	presumably wcf 4 looks most interesting?
+| [Thursday 06 January 2011] [08:11:03] <keffo>	how do you mean?
+| [Thursday 06 January 2011] [08:11:14] <keffo>	if I did decide to try I would target the latest version obviously?
+| [Thursday 06 January 2011] [08:11:46] <Steve-o>	the original cl wrapper was designed around .net 2 for greater compatibility
+| [Thursday 06 January 2011] [08:12:29] <keffo>	I already have my loadbalancer ui in wpf, but there's something oddly appealing about hosting the loadbalancer directly in IIS, with the ui as a silverlight app 
+| [Thursday 06 January 2011] [08:13:03] <keffo>	Steve-o: this would be a lib, using the zmq api, and nothing more
+| [Thursday 06 January 2011] [08:31:01] <keffo>	"The RabbitMQ .NET client is an implementation of an AMQP client library for C# (and, implicitly, other .NET languages), and a binding exposing AMQP services via Microsoft's Windows Communication Foundation (WCF)."
+| [Thursday 06 January 2011] [08:31:08] <keffo>	So, doable
+| [Thursday 06 January 2011] [08:35:45] <mikko>	http://msdn.microsoft.com/en-us/magazine/cc163394.aspx
+| [Thursday 06 January 2011] [08:35:55] <mikko>	doesn't seem to be overly complicated to create custom bindings
+| [Thursday 06 January 2011] [08:36:07] <mikko>	then again, i really dont know anything about windows
+| [Thursday 06 January 2011] [10:14:10] <mikko>	sustrik: there?
+| [Thursday 06 January 2011] [10:14:25] <sustrik>	mikko: yes
+| [Thursday 06 January 2011] [10:14:54] <mikko>	where is api.zeromq.org hosted at?
+| [Thursday 06 January 2011] [10:16:39] <sustrik>	here in bratislava
+| [Thursday 06 January 2011] [10:17:19] <sustrik>	it's a box at the local ISP's datacenter afaik
+| [Thursday 06 January 2011] [10:17:48] <mikko>	cool, i noticed that the 404 handler is not very user-friendly:
+| [Thursday 06 January 2011] [10:17:53] <mikko>	http://api.zeromq.org/zmq_msg_close for example
+| [Thursday 06 January 2011] [10:18:32] <mikko>	i can do a small page that shows "Did you mean: x" 
+| [Thursday 06 January 2011] [10:18:41] <mikko>	not sure if that is a high priority though
+| [Thursday 06 January 2011] [10:19:03] <sustrik>	you have to speak to mato
+| [Thursday 06 January 2011] [10:19:08] <sustrik>	he's managing the box
+| [Thursday 06 January 2011] [10:19:13] <mikko>	where is mato nowadays btw?
+| [Thursday 06 January 2011] [10:19:18] <sustrik>	new zealand
+| [Thursday 06 January 2011] [10:19:25] <mikko>	contract work?
+| [Thursday 06 January 2011] [10:19:42] <sustrik>	he's half slovak, half new zealander
+| [Thursday 06 January 2011] [10:19:48] <sustrik>	on his holiday atm
+| [Thursday 06 January 2011] [10:20:10] <sustrik>	i think he should be available shortly
