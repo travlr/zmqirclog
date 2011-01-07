@@ -1412,3 +1412,158 @@
 | [Thursday 06 January 2011] [10:19:42] <sustrik>	he's half slovak, half new zealander
 | [Thursday 06 January 2011] [10:19:48] <sustrik>	on his holiday atm
 | [Thursday 06 January 2011] [10:20:10] <sustrik>	i think he should be available shortly
+| [Thursday 06 January 2011] [16:46:39] <Namei>	Hello
+| [Thursday 06 January 2011] [16:54:51] <sustrik>	hi
+| [Thursday 06 January 2011] [17:01:20] <mikko>	hi
+| [Thursday 06 January 2011] [17:01:30] <Namei>	how are u ?
+| [Thursday 06 January 2011] [17:02:33] <mikko>	im fine thank you
+| [Thursday 06 January 2011] [17:02:36] <mikko>	yourself?
+| [Thursday 06 January 2011] [17:04:44] <Namei>	the same :)
+| [Thursday 06 January 2011] [17:06:50] <Namei>	i came in a english server to perfect my english, but it's hard lol
+| [Thursday 06 January 2011] [17:20:30] <Namei>	good night
+| [Thursday 06 January 2011] [20:19:54] <codebeaker>	Good evening all, quick question for an inexperienced C-developer, I'm following the Introduction, and I'm getting an odd error - https://gist.github.com/4f82911f324c8fae8f9e - trying to compile one of the exampels. What have I missed, zmq installed (maint branch) from Git, built and make-installed to the standard places, and I'm compiling my sample project with a vanilla cmake project
+| [Thursday 06 January 2011] [20:20:06] <codebeaker>	is there a CMake find_zmq I'm missing?
+| [Thursday 06 January 2011] [20:32:01] <codebeaker>	I found this https://github.com/PatrickCheng/zeromq2/blob/master/FindZMQ.cmake - P.Chen - thanks if you're idling here somewhere!
+| [Thursday 06 January 2011] [22:55:21] <jugg>	Can zmq ever error with EAGAIN if ZMQ_SNDMORE is set?
+| [Thursday 06 January 2011] [22:57:33] <jugg>	(of course ZMQ_NOBLOCK is also set)
+| [Thursday 06 January 2011] [23:26:24] <rqmedes>	anyone use zeromq with c#?
+| [Friday 07 January 2011] [02:36:38] <sustrik>	jugg: yes it can
+| [Friday 07 January 2011] [02:36:47] <sustrik>	for the first message part
+| [Friday 07 January 2011] [03:01:04] <parik>	Hi Sustrik and Steve 
+| [Friday 07 January 2011] [03:02:40] <parik>	I am trying to build zeromq src but running ./configure script before that to check the dependencies and I am getting error "configure: error: cannot link with -luuid, install uuid-dev."
+| [Friday 07 January 2011] [03:03:12] <parik>	I tried looking on web-also for downloading uuid-dev but not of much success.I didn't get the package
+| [Friday 07 January 2011] [03:04:20] <parik>	Does anybody help me out
+| [Friday 07 January 2011] [03:04:27] <parik>	in this regard
+| [Friday 07 January 2011] [04:00:56] <mikko>	rqmedes: there are a couple of people who do use it in C#
+| [Friday 07 January 2011] [04:16:55] <jugg>	sustrik, So, after send(...,SNDMORE|NOBLOCK) the first message part successfully, I could subsequently tight loop send(..., SNDMORE|NOBLOCK) an arbitrarily large amount of messages and never get EAGAIN?  If so, could you explain what causes EAGAIN to be generated?
+| [Friday 07 January 2011] [04:39:04] <sustrik>	jugg: EAGAIN means there are already HWM messages in 0mq's buffer
+| [Friday 07 January 2011] [04:39:17] <sustrik>	so you get EAGAIN when you try to insert new message
+| [Friday 07 January 2011] [04:39:25] <sustrik>	which happens with the first message parts
+| [Friday 07 January 2011] [04:39:43] <sustrik>	subsequent message parts belong to the same message that was already validated
+| [Friday 07 January 2011] [04:39:51] <sustrik>	so you never get EAGAIN there
+| [Friday 07 January 2011] [04:41:31] <jugg>	so nothing to do whether data can be put on the wire?
+| [Friday 07 January 2011] [04:44:43] <parik>	Hi
+| [Friday 07 January 2011] [04:46:23] <jugg>	anyway, what seems to me a bug - zmq::xsub_t::xhas_out () is implemented returning true.  Thus getsockopt(events) shows the a sub socket can be written to.
+| [Friday 07 January 2011] [04:46:33] <parik>	Where I can find the definiton for zmq_init() 
+| [Friday 07 January 2011] [04:47:18] <jugg>	http://api.zeromq.org/
+| [Friday 07 January 2011] [04:48:36] <parik>	That's the manual page.I have referred it but I want to know What inside zmq_init is happening.How its initalizing and returning context and creating a thread poool
+| [Friday 07 January 2011] [04:48:47] <parik>	I am interesting in code
+| [Friday 07 January 2011] [04:49:06] <jugg>	http://github.com/zeromq/zeromq2
+| [Friday 07 January 2011] [04:52:35] <parik>	Thanks jugg But I want to have C source
+| [Friday 07 January 2011] [04:55:50] <guido_g>	funny
+| [Friday 07 January 2011] [04:56:03] <guido_g>	mq is written in c++
+| [Friday 07 January 2011] [04:58:15] <parik>	But In 0MQ Guide its showing C example using zeroMQ facililites
+| [Friday 07 January 2011] [04:58:36] <parik>	Also other Languages
+| [Friday 07 January 2011] [04:58:49] <guido_g>	sure
+| [Friday 07 January 2011] [04:59:09] <guido_g>	the mq core is still written in c++
+| [Friday 07 January 2011] [04:59:49] <guido_g>	"<parik> That's the manual page.I have referred it but I want to know What inside zmq_init is happening.How its initalizing and returning context and creating a thread poool" <- this part is in the core
+| [Friday 07 January 2011] [05:01:23] <parik>	ok.
+| [Friday 07 January 2011] [05:02:03] <yrashk>	I am new to zeromq2, and have a simple question  for inproc, should endpoint be unique per process if each thread has its own pair of push/pull sockets?
+| [Friday 07 January 2011] [05:02:23] <yrashk>	s/unique per process/unique process-wide/
+| [Friday 07 January 2011] [05:03:23] <mikko>	yrashk: it should be unique to context
+| [Friday 07 January 2011] [05:03:47] <yrashk>	mikko: alright, make sense, thanks :) is it okay to have a context per thread?
+| [Friday 07 January 2011] [05:03:59] <mikko>	yrashk: no
+| [Friday 07 January 2011] [05:04:12] <yrashk>	ok, I'll generate unique endpoints then :)
+| [Friday 07 January 2011] [05:04:15] <mikko>	yrashk: you can only have inproc communications between sockets allocated from same context
+| [Friday 07 January 2011] [05:04:42] <mikko>	yrashk: i usually use something like "inproc://thread-%d" where %d is thread id or similar
+| [Friday 07 January 2011] [05:04:51] <yrashk>	yeah this is exactly what I am going to do
+| [Friday 07 January 2011] [05:04:54] <yrashk>	sprintf thread id
+| [Friday 07 January 2011] [05:05:53] <parik>	I guesss Context is represeneting application.I mean to say Context shall be think w.r.t. application
+| [Friday 07 January 2011] [05:06:03] <parik>	In application context
+| [Friday 07 January 2011] [05:09:09] <yrashk>	fine, done :) another question is when exactly msg's ffn will be called? I didn't really get this from the man (3)
+| [Friday 07 January 2011] [05:09:16] <yrashk>	should I look deeper into the manual?
+| [Friday 07 January 2011] [05:09:25] <mikko>	parik: not quite i would say
+| [Friday 07 January 2011] [05:09:43] <mikko>	parik: context is more of a "operating context" for 0mq
+| [Friday 07 January 2011] [05:10:07] <mikko>	let's say you have two libraries, libxy and libzz and both of them use 0mq internally
+| [Friday 07 January 2011] [05:10:18] <mikko>	most likely each one of these libraries would have their own context
+| [Friday 07 January 2011] [05:10:40] <mikko>	and you could happily use both libraries in a project without having to worry about collisions in inproc names etc
+| [Friday 07 January 2011] [05:10:56] <mikko>	that's at least how i see it
+| [Friday 07 January 2011] [05:11:14] <yrashk>	I suspect I have occasional test failures because I don't quite understand when msg data is deallocated :S
+| [Friday 07 January 2011] [05:12:14] <mikko>	yrashk: does this lead to a specific question?
+| [Friday 07 January 2011] [05:12:23] <yrashk>	yep, the one above :)
+| [Friday 07 January 2011] [05:12:31] <yrashk>	"another question is when exactly msg's ffn will be called? I didn't really get this from the man (3)"
+| [Friday 07 January 2011] [05:12:38] <yrashk>	"should I look deeper into the manual?"
+| [Friday 07 January 2011] [05:14:55] <mikko>	yrashk: the ffn is called when the message refcount is 0 and the message is not shared
+| [Friday 07 January 2011] [05:15:05] <mikko>	yrashk: https://github.com/zeromq/zeromq2/blob/master/src/zmq.cpp#L126
+| [Friday 07 January 2011] [05:15:38] <yrashk>	thanks
+| [Friday 07 January 2011] [05:15:47] <yrashk>	mm I think I know what causes those occasional failures
+| [Friday 07 January 2011] [05:23:10] <yrashk>	yup, nothing to do with zeromq (almost, rather with its awesomeness :)
+| [Friday 07 January 2011] [05:32:25] <yrashk>	although I am surprised it didn't gain me any extra performance comparing to pthread_cond message delivery method. Well, may be I am doing something wrong
+| [Friday 07 January 2011] [05:32:39] <parik>	Hi Mikko, I agree with you.Thanks for expalining thorugh the scenarios.Sorry for replying late as I was off from the discussion for sometime
+| [Friday 07 January 2011] [05:48:54] <yrashk>	mikko: if I am using ZMQ_NOBLOCK in zmq_send, should I initialize context with at least one thread? or I am misunderstanding how NOBLOCK works for inproc?
+| [Friday 07 January 2011] [05:48:59] <yrashk>	*am *
+| [Friday 07 January 2011] [05:49:04] <yrashk>	*am I
+| [Friday 07 January 2011] [05:57:24] <jsimmons>	with inproc, it should be non-blocking anyway yrashk, as far as I can tell
+| [Friday 07 January 2011] [05:57:55] <mikko>	yrashk: sorry, i dont understand the question
+| [Friday 07 January 2011] [05:58:50] <mikko>	jsimmons: zero lock yes but not necessarily non-blocking
+| [Friday 07 January 2011] [05:59:45] <jsimmons>	oh noblock returns failure when it's going to block I see
+| [Friday 07 January 2011] [06:01:30] <rqmedes>	sorry miko was away from keyboard
+| [Friday 07 January 2011] [06:03:04] <rqmedes>	have installed and am playing through c# examples, any pointers on how  you run your seperate programs, wcf, services?
+| [Friday 07 January 2011] [06:18:16] <mikko>	rqmedes: i guess you could do a custom wcf binding
+| [Friday 07 January 2011] [06:18:20] <mikko>	as far as i understand
+| [Friday 07 January 2011] [06:18:29] <mikko>	rqmedes: i don't really know anything about windows world
+| [Friday 07 January 2011] [06:19:36] <mikko>	rqmedes: i think you should mail to mailing-list. there are several windows people there
+| [Friday 07 January 2011] [06:19:42] <mikko>	i gotta hop into a meeting ->
+| [Friday 07 January 2011] [06:23:07] <parik>	Thanks alot mikko and guido_g
+| [Friday 07 January 2011] [06:46:50] <sustrik>	jugg: good point
+| [Friday 07 January 2011] [06:46:53] <sustrik>	let me fix it
+| [Friday 07 January 2011] [06:50:18] <jugg>	sustrik, is the idea for subscriptions to be sent to the publisher eventually?  Or why is zmq::sub_t::xsetsockopt sending subscriptions as a payload?
+| [Friday 07 January 2011] [06:51:21] <sustrik>	jugg: yes, it's the first step towards subscription forwarding
+| [Friday 07 January 2011] [06:51:31] <jugg>	cool
+| [Friday 07 January 2011] [06:59:55] <CIA-21>	zeromq2: 03Martin Sustrik 07master * r8e0049e 10/ (src/sub.cpp src/sub.hpp): 
+| [Friday 07 January 2011] [06:59:55] <CIA-21>	zeromq2: Disable sending messages on SUB socket
+| [Friday 07 January 2011] [06:59:55] <CIA-21>	zeromq2: The ability was inherited from XSUB socket.
+| [Friday 07 January 2011] [06:59:55] <CIA-21>	zeromq2: Now it's properly disabled.
+| [Friday 07 January 2011] [06:59:55] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/ih6erI
+| [Friday 07 January 2011] [06:59:58] <sustrik>	jugg: done
+| [Friday 07 January 2011] [07:01:17] <rqmedes>	thanks mikko
+| [Friday 07 January 2011] [07:01:20] <jugg>	thanks
+| [Friday 07 January 2011] [07:10:19] <yrashk>	hmm, caught a rare segfault in recv, https://gist.github.com/c985ee3760af3aadaf96
+| [Friday 07 January 2011] [07:10:38] <yrashk>	(2.1.0)
+| [Friday 07 January 2011] [07:20:41] <sustrik>	yrashk: is it reproducible
+| [Friday 07 January 2011] [07:20:44] <sustrik>	?
+| [Friday 07 January 2011] [07:20:57] <yrashk>	sustrik: rarely  running some indirect stress tests
+| [Friday 07 January 2011] [07:21:23] <sustrik>	can you possible compile 0mq with debug enabled?
+| [Friday 07 January 2011] [07:21:32] <sustrik>	so that backtrace is more useful?
+| [Friday 07 January 2011] [07:21:43] <sustrik>	./configure --enable-debug
+| [Friday 07 January 2011] [07:21:44] <yrashk>	sure, may be not tonight, but will do
+| [Friday 07 January 2011] [07:21:53] <sustrik>	sure, take your time
+| [Friday 07 January 2011] [07:22:15] <yrashk>	hopefully its nothing serious
+| [Friday 07 January 2011] [07:22:20] <yrashk>	or should I switch to master?
+| [Friday 07 January 2011] [07:26:45] <sustrik>	wait a sec, i'm going to apply one pending patch
+| [Friday 07 January 2011] [07:29:45] <CIA-21>	zeromq2: 03Dhammika Pathirana 07master * rbabdf48 10/ src/pipe.cpp : 
+| [Friday 07 January 2011] [07:29:45] <CIA-21>	zeromq2: Fix pipe writer termination
+| [Friday 07 January 2011] [07:29:45] <CIA-21>	zeromq2: Signed-off-by: Dhammika Pathirana <dhammika@gmail.com> - http://bit.ly/gNG05Z
+| [Friday 07 January 2011] [07:29:58] <sustrik>	yrashk: ok, done
+| [Friday 07 January 2011] [07:30:21] <sustrik>	you can use the trunk, there are couple of patches there
+| [Friday 07 January 2011] [07:30:33] <sustrik>	that may (or may not) fix your problem
+| [Friday 07 January 2011] [07:30:36] <yrashk>	hmmm this patchh is for PUSH/PULL sockets, am I right?
+| [Friday 07 January 2011] [07:30:46] <sustrik>	it's generic
+| [Friday 07 January 2011] [07:30:49] <sustrik>	all socket types
+| [Friday 07 January 2011] [07:30:50] <yrashk>	oh ok
+| [Friday 07 January 2011] [07:31:24] <yrashk>	I am new to actual zeromq usage (knew about it for quite some time, though) just trying to switch my event loop from pthread_cond kind of loop
+| [Friday 07 January 2011] [07:31:50] <yrashk>	(although I naively expected to get some performance gains from this transition, but it didn't happen :)
+| [Friday 07 January 2011] [07:32:26] <sustrik>	you should get the performance gain once the batching kicks in
+| [Friday 07 January 2011] [07:32:38] <yrashk>	at least it simplified my code
+| [Friday 07 January 2011] [07:32:43] <sustrik>	i.e. sending many messages using a single operation
+| [Friday 07 January 2011] [07:32:53] <yrashk>	when it is going to kick in?
+| [Friday 07 January 2011] [07:32:58] <yrashk>	to be kicked in*
+| [Friday 07 January 2011] [07:33:13] <sustrik>	with high message load
+| [Friday 07 January 2011] [07:33:42] <yrashk>	hmm I do have a high message load in my stress test
+| [Friday 07 January 2011] [07:33:57] <yrashk>	I guess it depends on what we understand by high essage load
+| [Friday 07 January 2011] [07:34:13] <sustrik>	dunno, million a second or somesuch
+| [Friday 07 January 2011] [07:34:22] <yrashk>	mm I have less, I guess
+| [Friday 07 January 2011] [07:35:02] <yrashk>	most likely my performance issues aren't in event loop algorithm (so either cond or zeromq get the same bottleneck down the road)
+| [Friday 07 January 2011] [07:35:18] <sustrik>	that's quite likely
+| [Friday 07 January 2011] [07:35:26] <sustrik>	as both of them are pretty much optimised
+| [Friday 07 January 2011] [07:35:38] <yrashk>	I would assume so
+| [Friday 07 January 2011] [07:35:48] <yrashk>	still with zeromq my code is much cleaner
+| [Friday 07 January 2011] [07:36:27] <yrashk>	helped me to drop message queueing/pooling thing of my own
+| [Friday 07 January 2011] [07:38:18] <yrashk>	and hopefully will help more down the road
+| [Friday 07 January 2011] [07:38:20] <codebeaker>	what's the practical difference on Github between the @zeqomq user, and the repository of @PatrickCheng? They both seem pretty much the same, on the surface - but Cheng's includes useful snips for using MQ in a CMake project
+| [Friday 07 January 2011] [07:40:03] <sustrik>	i think he just made the cmake build
+| [Friday 07 January 2011] [07:40:08] <sustrik>	not 100% sure though
+| [Friday 07 January 2011] [07:40:13] <sustrik>	check the project history
+| [Friday 07 January 2011] [07:44:28] <codebeaker>	thanks sustrik - maynbe I'll fork both (running) and diff the whole trees, but his cmake work looks good
+| [Friday 07 January 2011] [07:45:16] <codebeaker>	appreciate teh answer to a dumb question!
+| [Friday 07 January 2011] [07:45:54] <sustrik>	:)
