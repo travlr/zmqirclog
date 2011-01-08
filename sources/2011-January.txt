@@ -1567,3 +1567,49 @@
 | [Friday 07 January 2011] [07:44:28] <codebeaker>	thanks sustrik - maynbe I'll fork both (running) and diff the whole trees, but his cmake work looks good
 | [Friday 07 January 2011] [07:45:16] <codebeaker>	appreciate teh answer to a dumb question!
 | [Friday 07 January 2011] [07:45:54] <sustrik>	:)
+| [Friday 07 January 2011] [09:17:14] <codebeaker>	hey everyone
+| [Friday 07 January 2011] [09:26:06] <keffo>	hey ho
+| [Friday 07 January 2011] [09:44:48] <codebeaker>	was wondering if anyone could lend me a hand, I'm trying to include mq in my project - I build it with CMake, and I would like a portable "FindMQ.cmake"  I found it in Patrick Chen's github repo, but ZMQ_DIR is always unset I wondered if I'm barking up the wrong tree - and should simply hard-code the paths?
+| [Friday 07 January 2011] [09:45:55] <codebeaker>	right now, I have the maint branch from the @zeromq repository built and installed the defailt location, and a as a submodule in my project
+| [Friday 07 January 2011] [09:49:08] <zchrish>	Hi.
+| [Friday 07 January 2011] [09:49:18] <codebeaker>	 easy problem really, the linker isn't finding the library - not all together surprising, but I'd like a portable solution
+| [Friday 07 January 2011] [09:51:26] <zchrish>	I have downloaded zeromq to my OpenSuse box and compiled the examples. I modified the mtserver and hwclient to suppress the printf and increased the message length to 80 bytes. When I run the program and pass 1000000 messages into it, it seems like the software works at around 7,500 messages per second. This seems low; any pointers?
+| [Friday 07 January 2011] [09:55:00] <zchrish>	AAA
+| [Friday 07 January 2011] [09:55:27] <keffo>	?
+| [Friday 07 January 2011] [09:55:43] <zchrish>	I have downloaded zeromq to my OpenSuse box and compiled the examples. I modified the mtserver and hwclient to suppress the printf and increased the message length to 80 bytes. When I run the program and pass 1000000 messages into it, it seems like the software works at around 7,500 messages per second. This seems low; any pointers?
+| [Friday 07 January 2011] [10:13:41] <sustrik>	zchrish: are you using local_thr & remote_thr to measure the throughput?
+| [Friday 07 January 2011] [11:43:41] <zchrish>	I am just using the code out-of-the-box. Not sure how to answer the question; I am new to zeromq
+| [Friday 07 January 2011] [11:47:29] <zchrish>	sustrik: I am measuring on the same machine.
+| [Friday 07 January 2011] [12:04:37] <sustrik>	zchrish: how have you get the number?
+| [Friday 07 January 2011] [12:04:39] <sustrik>	7500?
+| [Friday 07 January 2011] [12:13:06] <zchrish>	sustrik: (1) started mtserver, (2) time hwclient
+| [Friday 07 January 2011] [12:14:07] <zchrish>	sustrik: both mtserver and hwclient were stripped of printf statements and the sleep(1) was removed from mtserver and the number of iterations was increased to 1 million
+| [Friday 07 January 2011] [12:14:50] <zchrish>	runtime / # iterations was about 7,500.
+| [Friday 07 January 2011] [12:15:23] <zchrish>	sorry; other way around.
+| [Friday 07 January 2011] [12:15:37] <sustrik>	that's something from the guide?
+| [Friday 07 January 2011] [12:15:45] <sustrik>	anyway, try the offical perf tests:
+| [Friday 07 January 2011] [12:15:46] <sustrik>	http://www.zeromq.org/results:perf-howto
+| [Friday 07 January 2011] [12:16:06] <zchrish>	yes, in the c++ section. I will look at perf-howto; thank you.
+| [Friday 07 January 2011] [13:27:09] <zchrish>	sustrik: OK, I ran these programs and the throughput is much higher. I will look more closely into how mtserver and hwclient are constructed to see how I can modify them to improve the throughput of these programs.
+| [Friday 07 January 2011] [19:14:38] <codebeaker>	does anyone have a few mins, to help me get my project (CMake build) to work with Patrick Chen's CMake form of mq ?
+| [Friday 07 January 2011] [19:17:10] <codebeaker>	Right now I can't get it to recognise ZMQ_DIR
+| [Friday 07 January 2011] [20:11:28] <Seta00>	anyone experienced with pyzmq here?
+| [Friday 07 January 2011] [20:11:32] <Seta00>	(on Windows)
+| [Saturday 08 January 2011] [08:07:02] <s0undt3ch>	hello ppl
+| [Saturday 08 January 2011] [08:07:45] <s0undt3ch>	while trying to send on a zmq.REQ socket, if the socket is not correctly connected, how can I catch the error?
+| [Saturday 08 January 2011] [08:14:07] <sustrik>	you can't the messages are queued and will be send once to connecting succeeds
+| [Saturday 08 January 2011] [08:40:50] <s0undt3ch>	sustrik: hmm, not the intended behaviour, what do you suggest?
+| [Saturday 08 January 2011] [08:41:01] <s0undt3ch>	s/intended/desired
+| [Saturday 08 January 2011] [08:43:16] <sustrik>	you mean when you misconfigure your component, right?
+| [Saturday 08 January 2011] [08:43:50] <sustrik>	using an un-existent hostname or somesuch
+| [Saturday 08 January 2011] [08:44:55] <s0undt3ch>	sustrik: yeah
+| [Saturday 08 January 2011] [08:45:18] <s0undt3ch>	sustrik: right now I'm trying to build some king of ping/pong for my app's components
+| [Saturday 08 January 2011] [08:45:54] <sustrik>	well, the requirement for 0mq is to withstand network failures
+| [Saturday 08 January 2011] [08:45:55] <s0undt3ch>	but I'd like to know who's responding and calculate lag's 
+| [Saturday 08 January 2011] [08:46:07] <sustrik>	so when it cannot connect
+| [Saturday 08 January 2011] [08:46:16] <sustrik>	it tries a bit later on
+| [Saturday 08 January 2011] [08:46:25] <s0undt3ch>	hmm
+| [Saturday 08 January 2011] [08:47:05] <s0undt3ch>	sustrik: use pub/sub instead? those replying should then include their name etc...?
+| [Saturday 08 January 2011] [08:47:34] <s0undt3ch>	instead of req/rep?
+| [Saturday 08 January 2011] [08:52:19] <s0undt3ch>	hmm, I think I should look closely to the heartbeat example
+| [Saturday 08 January 2011] [11:01:58] <mikko>	afternoon
