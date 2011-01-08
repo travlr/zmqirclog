@@ -1612,6 +1612,52 @@
 <div class="line">[Friday 07 January 2011] [07:44:28] &lt;codebeaker&gt;      thanks sustrik - maynbe I&#8217;ll fork both (running) and diff the whole trees, but his cmake work looks good</div>
 <div class="line">[Friday 07 January 2011] [07:45:16] &lt;codebeaker&gt;      appreciate teh answer to a dumb question!</div>
 <div class="line">[Friday 07 January 2011] [07:45:54] &lt;sustrik&gt; :)</div>
+<div class="line">[Friday 07 January 2011] [09:17:14] &lt;codebeaker&gt;      hey everyone</div>
+<div class="line">[Friday 07 January 2011] [09:26:06] &lt;keffo&gt;   hey ho</div>
+<div class="line">[Friday 07 January 2011] [09:44:48] &lt;codebeaker&gt;      was wondering if anyone could lend me a hand, I&#8217;m trying to include mq in my project - I build it with CMake, and I would like a portable &#8220;FindMQ.cmake&#8221;  I found it in Patrick Chen&#8217;s github repo, but ZMQ_DIR is always unset I wondered if I&#8217;m barking up the wrong tree - and should simply hard-code the paths?</div>
+<div class="line">[Friday 07 January 2011] [09:45:55] &lt;codebeaker&gt;      right now, I have the maint branch from the &#64;zeromq repository built and installed the defailt location, and a as a submodule in my project</div>
+<div class="line">[Friday 07 January 2011] [09:49:08] &lt;zchrish&gt; Hi.</div>
+<div class="line">[Friday 07 January 2011] [09:49:18] &lt;codebeaker&gt;       easy problem really, the linker isn&#8217;t finding the library - not all together surprising, but I&#8217;d like a portable solution</div>
+<div class="line">[Friday 07 January 2011] [09:51:26] &lt;zchrish&gt; I have downloaded zeromq to my OpenSuse box and compiled the examples. I modified the mtserver and hwclient to suppress the printf and increased the message length to 80 bytes. When I run the program and pass 1000000 messages into it, it seems like the software works at around 7,500 messages per second. This seems low; any pointers?</div>
+<div class="line">[Friday 07 January 2011] [09:55:00] &lt;zchrish&gt; AAA</div>
+<div class="line">[Friday 07 January 2011] [09:55:27] &lt;keffo&gt;   ?</div>
+<div class="line">[Friday 07 January 2011] [09:55:43] &lt;zchrish&gt; I have downloaded zeromq to my OpenSuse box and compiled the examples. I modified the mtserver and hwclient to suppress the printf and increased the message length to 80 bytes. When I run the program and pass 1000000 messages into it, it seems like the software works at around 7,500 messages per second. This seems low; any pointers?</div>
+<div class="line">[Friday 07 January 2011] [10:13:41] &lt;sustrik&gt; zchrish: are you using local_thr &amp; remote_thr to measure the throughput?</div>
+<div class="line">[Friday 07 January 2011] [11:43:41] &lt;zchrish&gt; I am just using the code out-of-the-box. Not sure how to answer the question; I am new to zeromq</div>
+<div class="line">[Friday 07 January 2011] [11:47:29] &lt;zchrish&gt; sustrik: I am measuring on the same machine.</div>
+<div class="line">[Friday 07 January 2011] [12:04:37] &lt;sustrik&gt; zchrish: how have you get the number?</div>
+<div class="line">[Friday 07 January 2011] [12:04:39] &lt;sustrik&gt; 7500?</div>
+<div class="line">[Friday 07 January 2011] [12:13:06] &lt;zchrish&gt; sustrik: (1) started mtserver, (2) time hwclient</div>
+<div class="line">[Friday 07 January 2011] [12:14:07] &lt;zchrish&gt; sustrik: both mtserver and hwclient were stripped of printf statements and the sleep(1) was removed from mtserver and the number of iterations was increased to 1 million</div>
+<div class="line">[Friday 07 January 2011] [12:14:50] &lt;zchrish&gt; runtime / # iterations was about 7,500.</div>
+<div class="line">[Friday 07 January 2011] [12:15:23] &lt;zchrish&gt; sorry; other way around.</div>
+<div class="line">[Friday 07 January 2011] [12:15:37] &lt;sustrik&gt; that&#8217;s something from the guide?</div>
+<div class="line">[Friday 07 January 2011] [12:15:45] &lt;sustrik&gt; anyway, try the offical perf tests:</div>
+<div class="line">[Friday 07 January 2011] [12:15:46] &lt;sustrik&gt; <a class="reference external" href="http://www.zeromq.org/results:perf-howto">http://www.zeromq.org/results:perf-howto</a></div>
+<div class="line">[Friday 07 January 2011] [12:16:06] &lt;zchrish&gt; yes, in the c++ section. I will look at perf-howto; thank you.</div>
+<div class="line">[Friday 07 January 2011] [13:27:09] &lt;zchrish&gt; sustrik: OK, I ran these programs and the throughput is much higher. I will look more closely into how mtserver and hwclient are constructed to see how I can modify them to improve the throughput of these programs.</div>
+<div class="line">[Friday 07 January 2011] [19:14:38] &lt;codebeaker&gt;      does anyone have a few mins, to help me get my project (CMake build) to work with Patrick Chen&#8217;s CMake form of mq ?</div>
+<div class="line">[Friday 07 January 2011] [19:17:10] &lt;codebeaker&gt;      Right now I can&#8217;t get it to recognise ZMQ_DIR</div>
+<div class="line">[Friday 07 January 2011] [20:11:28] &lt;Seta00&gt;  anyone experienced with pyzmq here?</div>
+<div class="line">[Friday 07 January 2011] [20:11:32] &lt;Seta00&gt;  (on Windows)</div>
+<div class="line">[Saturday 08 January 2011] [08:07:02] &lt;s0undt3ch&gt;     hello ppl</div>
+<div class="line">[Saturday 08 January 2011] [08:07:45] &lt;s0undt3ch&gt;     while trying to send on a zmq.REQ socket, if the socket is not correctly connected, how can I catch the error?</div>
+<div class="line">[Saturday 08 January 2011] [08:14:07] &lt;sustrik&gt;       you can&#8217;t the messages are queued and will be send once to connecting succeeds</div>
+<div class="line">[Saturday 08 January 2011] [08:40:50] &lt;s0undt3ch&gt;     sustrik: hmm, not the intended behaviour, what do you suggest?</div>
+<div class="line">[Saturday 08 January 2011] [08:41:01] &lt;s0undt3ch&gt;     s/intended/desired</div>
+<div class="line">[Saturday 08 January 2011] [08:43:16] &lt;sustrik&gt;       you mean when you misconfigure your component, right?</div>
+<div class="line">[Saturday 08 January 2011] [08:43:50] &lt;sustrik&gt;       using an un-existent hostname or somesuch</div>
+<div class="line">[Saturday 08 January 2011] [08:44:55] &lt;s0undt3ch&gt;     sustrik: yeah</div>
+<div class="line">[Saturday 08 January 2011] [08:45:18] &lt;s0undt3ch&gt;     sustrik: right now I&#8217;m trying to build some king of ping/pong for my app&#8217;s components</div>
+<div class="line">[Saturday 08 January 2011] [08:45:54] &lt;sustrik&gt;       well, the requirement for 0mq is to withstand network failures</div>
+<div class="line">[Saturday 08 January 2011] [08:45:55] &lt;s0undt3ch&gt;     but I&#8217;d like to know who&#8217;s responding and calculate lag&#8217;s</div>
+<div class="line">[Saturday 08 January 2011] [08:46:07] &lt;sustrik&gt;       so when it cannot connect</div>
+<div class="line">[Saturday 08 January 2011] [08:46:16] &lt;sustrik&gt;       it tries a bit later on</div>
+<div class="line">[Saturday 08 January 2011] [08:46:25] &lt;s0undt3ch&gt;     hmm</div>
+<div class="line">[Saturday 08 January 2011] [08:47:05] &lt;s0undt3ch&gt;     sustrik: use pub/sub instead? those replying should then include their name etc...?</div>
+<div class="line">[Saturday 08 January 2011] [08:47:34] &lt;s0undt3ch&gt;     instead of req/rep?</div>
+<div class="line">[Saturday 08 January 2011] [08:52:19] &lt;s0undt3ch&gt;     hmm, I think I should look closely to the heartbeat example</div>
+<div class="line">[Saturday 08 January 2011] [11:01:58] &lt;mikko&gt; afternoon</div>
 </div>
 </div>
 
