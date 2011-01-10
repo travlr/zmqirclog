@@ -1734,3 +1734,73 @@
 | [Sunday 09 January 2011] [15:03:42] <zchrish>	But maybe I could be beta people's work if that'd help. I agree subscription forwarding is the way to go.
 | [Sunday 09 January 2011] [15:11:02] <sustrik>	well, as i said, there are people trying, let's see what emerges
 | [Sunday 09 January 2011] [20:17:53] <rbraley>	is there a good way to write to a file asynchronously in zeromq?
+| [Monday 10 January 2011] [03:57:01] <mikko>	rbraley: can you elaborate a bit?
+| [Monday 10 January 2011] [07:54:14] <CIA-21>	zeromq2: 03Martin Sustrik 07master * rbd0ba6e 10/ (6 files in 2 dirs): 
+| [Monday 10 January 2011] [07:54:14] <CIA-21>	zeromq2: Size of inproc hwm and swap is sum of peers' hwms and swaps
+| [Monday 10 January 2011] [07:54:14] <CIA-21>	zeromq2: The meat of the patch was contributed by Douglas Creager.
+| [Monday 10 January 2011] [07:54:14] <CIA-21>	zeromq2: Martin Sustrik implemented storing peer options in inproc
+| [Monday 10 January 2011] [07:54:14] <CIA-21>	zeromq2: endpoint repository.
+| [Monday 10 January 2011] [07:54:14] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/fE9QLj
+| [Monday 10 January 2011] [09:34:11] <zchrish>	Is there a way to control which IP addresses subscribe to a publisher?
+| [Monday 10 January 2011] [09:50:43] <sustrik>	firewall?
+| [Monday 10 January 2011] [10:11:29] <zchrish>	OK; I assumed that was the design of the package. Thank you.
+| [Monday 10 January 2011] [12:25:54] <zchrish>	Is there a way to determine which IP addresses are subscribed to a publisher?
+| [Monday 10 January 2011] [12:28:47] <cremes>	zchrish: not from within the framework
+| [Monday 10 January 2011] [12:29:03] <zchrish>	ok; thank you.
+| [Monday 10 January 2011] [12:48:25] <s0undt3ch>	hello ppl
+| [Monday 10 January 2011] [12:48:27] <s0undt3ch>	using pyzmq
+| [Monday 10 January 2011] [12:48:47] <s0undt3ch>	if we want to filter PUB/SUB messages, we need to send them multipart?
+| [Monday 10 January 2011] [12:50:55] <Vince__>	hey
+| [Monday 10 January 2011] [12:53:15] <Vince__>	I've making a wrapper and zmq_bind crashes. I am certain I am sending the right information at the API zmq_bind%(pSoc%,psAddr$):"zmq_bind"  and RetVal = zmq_bind(pSoc, "tcp://*:5555")
+| [Monday 10 January 2011] [12:53:20] <sustrik>	s0undt3ch: no
+| [Monday 10 January 2011] [12:53:34] <s0undt3ch>	sustrik: plain send right?
+| [Monday 10 January 2011] [12:53:41] <sustrik>	yes
+| [Monday 10 January 2011] [12:54:06] <sustrik>	Vince__: what's the crash?
+| [Monday 10 January 2011] [12:54:15] <s0undt3ch>	send_pyobj won't allow this :\
+| [Monday 10 January 2011] [12:54:50] <sustrik>	how come?
+| [Monday 10 January 2011] [12:55:16] <Vince__>	Unfortunately I don't know because this is a user library for Blitz Basic and the debugger crashes with no output.
+| [Monday 10 January 2011] [12:55:49] <sustrik>	hard to help then
+| [Monday 10 January 2011] [12:56:19] <sustrik>	but i haven't seen any reports about zmq_bind crashing yet
+| [Monday 10 January 2011] [12:56:33] <sustrik>	so maybe you should look at the layers above first
+| [Monday 10 January 2011] [12:56:46] <s0undt3ch>	sustrik: send_pyobj pickles and unpicles the object we pass, filtering is done similar to msg.startswith() which won't work on a pickled string
+| [Monday 10 January 2011] [12:57:08] <sustrik>	i see
+| [Monday 10 January 2011] [12:57:19] <sustrik>	then maybe make a pyzmq patch
+| [Monday 10 January 2011] [12:57:26] <sustrik>	to allow simple pub/sub messages
+| [Monday 10 January 2011] [12:57:30] <Vince__>	Is it possible to make zeromq to a debug dump as API access occurs? Maybe to a text file or something?
+| [Monday 10 January 2011] [12:58:00] <s0undt3ch>	sustrik: simple pub/sub messages, text messages, it supports them, I just wanted the pickling/unpickling to be automated ;)
+| [Monday 10 January 2011] [12:58:15] <sustrik>	Vince__: you can create a core dump and inspect it in debugger afterwards
+| [Monday 10 January 2011] [12:58:38] <s0undt3ch>	If I pickle/unpickle myself, I can do, 'filter <pickled_string>'
+| [Monday 10 January 2011] [12:58:50] <s0undt3ch>	but then I have to be the one pickling and unpickling
+| [Monday 10 January 2011] [13:00:41] <sustrik>	i see
+| [Monday 10 January 2011] [13:04:35] <s0undt3ch>	anyway, since the filtering is done on the client side, I might skip it or work arround that issue
+| [Monday 10 January 2011] [13:22:44] <guido_g>	why not put the topic (plus '\0') before the pickled data and on receive split on the first '\0'?
+| [Monday 10 January 2011] [13:37:43] <s0undt3ch>	guido_g: that's an idea, but it needs to be done on the python bindings
+| [Monday 10 January 2011] [13:37:57] <guido_g>	why?
+| [Monday 10 January 2011] [13:38:41] <s0undt3ch>	guido_g: because using recv_pyobjc does the unplickling for us, so, \0 spliting should be done before unpickling
+| [Monday 10 January 2011] [13:38:51] <s0undt3ch>	ecv_pyobj
+| [Monday 10 January 2011] [13:38:54] <s0undt3ch>	errrr
+| [Monday 10 January 2011] [13:38:57] <s0undt3ch>	*recv_pyobj
+| [Monday 10 January 2011] [13:39:49] <guido_g>	recv_pyobj is a general method, not only for sub sockets
+| [Monday 10 January 2011] [13:40:27] <guido_g>	just derive a class and implement your desired behaviour
+| [Monday 10 January 2011] [13:40:47] <guido_g>	much much easier, for you and the pyzmq devs
+| [Monday 10 January 2011] [13:41:09] <s0undt3ch>	that can be done to, sure, but then I'd have to also subclass Context in order for it to return my socket implementation
+| [Monday 10 January 2011] [13:41:36] <guido_g>	just start to use a factory
+| [Monday 10 January 2011] [13:41:36] <s0undt3ch>	guido_g: so right now, I might just use another socket for the filtering :)
+| [Monday 10 January 2011] [14:08:18] <s0undt3ch>	guido_g: http://paste.pocoo.org/show/318466/
+| [Monday 10 January 2011] [14:09:26] <guido_g>	this is for sub sockets only?
+| [Monday 10 January 2011] [14:10:17] <s0undt3ch>	guido_g: when you mean sub, you mean those we get from context.socket?
+| [Monday 10 January 2011] [14:10:40] <s0undt3ch>	well, anyway dunno, all of those that make use of socket.pyx
+| [Monday 10 January 2011] [14:10:42] <guido_g>	no
+| [Monday 10 January 2011] [14:10:56] <guido_g>	i mean sockets of type zmq.SUB
+| [Monday 10 January 2011] [14:11:08] <s0undt3ch>	ah
+| [Monday 10 January 2011] [14:11:15] <s0undt3ch>	didn't though of that
+| [Monday 10 January 2011] [14:11:16] <s0undt3ch>	:)
+| [Monday 10 January 2011] [14:11:17] <guido_g>	or zmq.PUB
+| [Monday 10 January 2011] [14:11:26] <guido_g>	so you allow a topic for all sockets
+| [Monday 10 January 2011] [14:11:33] <guido_g>	which is silly
+| [Monday 10 January 2011] [14:11:36] <s0undt3ch>	yes
+| [Monday 10 January 2011] [14:13:22] <guido_g>	as I said, implement a socket factory where you register your _special_ sockets
+| [Monday 10 January 2011] [14:14:24] <guido_g>	so you don't need to patch a perfectly nice working module and would gain a higher degree of freedom
+| [Monday 10 January 2011] [14:17:12] <s0undt3ch>	yeah
+| [Monday 10 January 2011] [17:16:52] <vince____>	Finally managed to get an error out of Bind failing on my wrapper. First-chance exception at 0x762cb727 in test.exe: Microsoft C++ exception: zmq::error_t at memory location 0x0019f8f0..
+| [Monday 10 January 2011] [17:30:37] <mikko>	vince____: is that an unhandled exception?
