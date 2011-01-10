@@ -1613,3 +1613,124 @@
 | [Saturday 08 January 2011] [08:47:34] <s0undt3ch>	instead of req/rep?
 | [Saturday 08 January 2011] [08:52:19] <s0undt3ch>	hmm, I think I should look closely to the heartbeat example
 | [Saturday 08 January 2011] [11:01:58] <mikko>	afternoon
+| [Saturday 08 January 2011] [12:21:13] <andrewvc_>	cremes: Around?
+| [Saturday 08 January 2011] [12:21:56] Notice	-ChanServ- [#gentoo] Welcome to #gentoo || Acceptable Usage Policy @ http://www.gentoo.org/main/en/irc.xml || Keep the language clean || Google is your friend || No bots or scripts that talk || Turn off public away messages || More than three lines to #flood or a pastebin service, no spam!
+| [Saturday 08 January 2011] [12:26:37] <mikko>	sustrik: shutdown stress failing on freebsd 8.1
+| [Saturday 08 January 2011] [12:27:13] Error	You are not on #gentoo.
+| [Saturday 08 January 2011] [12:29:14] <sustrik>	let me see
+| [Saturday 08 January 2011] [12:30:56] <sustrik>	that's the same problem with insufficient buffer space in socketpair as was seen several time before
+| [Saturday 08 January 2011] [12:31:01] <sustrik>	there's no easy solution
+| [Saturday 08 January 2011] [12:31:18] <sustrik>	presumably, we can make the stress test less stresfull :)
+| [Saturday 08 January 2011] [19:27:56] <andrewvc>	cremes: ping
+| [Sunday 09 January 2011] [02:05:27] <maxpn>	how can I handle timeouts in pyzmq ?
+| [Sunday 09 January 2011] [02:05:48] <maxpn>	for PUSH socket
+| [Sunday 09 January 2011] [02:24:55] <maxpn>	hmm... looks like I should use NOBLOCK in a loop
+| [Sunday 09 January 2011] [05:26:56] <s0undt3ch>	hello ppl
+| [Sunday 09 January 2011] [05:27:36] <s0undt3ch>	xreq_socket.recv(zmq.NOBLOCK) should never, ever block right? seems it's blocking for at least 1.5 secs for me :\
+| [Sunday 09 January 2011] [05:32:32] <mikko>	maxpn: you can use poll
+| [Sunday 09 January 2011] [05:32:43] <mikko>	s0undt3ch: it shouldn't block
+| [Sunday 09 January 2011] [05:33:23] <s0undt3ch>	mikko: I'm using evenlet with zmq, it has block detector, I'm setting it to 1.5 secs, and it's triggering :|
+| [Sunday 09 January 2011] [05:34:12] <mikko>	are you doing more than "xreq_socket.recv(zmq.NOBLOCK)" in that block of code?
+| [Sunday 09 January 2011] [05:35:32] <s0undt3ch>	mikko: involved blocks of code -> http://paste.pocoo.org/show/317519/
+| [Sunday 09 January 2011] [05:35:38] <maxpn>	is there an option like recv(NOBLOCK, timeout= ... )
+| [Sunday 09 January 2011] [05:37:22] <maxpn>	would be very usable
+| [Sunday 09 January 2011] [05:38:21] <mikko>	maxpn: noblock returns immediately
+| [Sunday 09 January 2011] [05:39:01] <mikko>	maxpn: it's very simple to do with poll
+| [Sunday 09 January 2011] [05:39:04] <maxpn>	mikko: yes, but in that case I have to sleep
+| [Sunday 09 January 2011] [05:39:11] <maxpn>	for some amount of time
+| [Sunday 09 January 2011] [05:40:54] <mikko>	maxpn: https://github.com/mkoppanen/httpush/blob/master/src/helpers.c#L110
+| [Sunday 09 January 2011] [05:41:00] <mikko>	there is similar thing in C
+| [Sunday 09 January 2011] [05:41:22] <mikko>	it uses poll to handle the timeout
+| [Sunday 09 January 2011] [05:42:28] <mikko>	s0undt3ch: are you getting eagain?
+| [Sunday 09 January 2011] [05:42:38] <s0undt3ch>	mikko: nope
+| [Sunday 09 January 2011] [05:42:57] <mikko>	s0undt3ch: you are sure that it actually blocks inside recv call?
+| [Sunday 09 January 2011] [05:43:01] <maxpn>	ok I see, is such an option for Python?
+| [Sunday 09 January 2011] [05:43:23] <mikko>	maxpn: yes, poll
+| [Sunday 09 January 2011] [05:43:27] <s0undt3ch>	mikko: aparently is, I'm trying to refactor it a bit to try and confirm it
+| [Sunday 09 January 2011] [05:43:48] <mikko>	maxpn: https://github.com/zeromq/pyzmq/blob/master/examples/poll/pair.py
+| [Sunday 09 January 2011] [05:48:31] <maxpn>	as I understand poller.poll() returns a list of paris (socket,state) , right?
+| [Sunday 09 January 2011] [05:53:35] <mikko>	maxpn: i don't really know how it's implemented in python
+| [Sunday 09 January 2011] [05:55:03] <maxpn>	poller.poll() will return data when complete ZMQ message received in POLLIN socket?
+| [Sunday 09 January 2011] [05:55:47] <mikko>	it will retur when there is a state change in one or more of the sockets in the poll set
+| [Sunday 09 January 2011] [05:57:22] <s0undt3ch>	mikko: how can I know if a message is complete?
+| [Sunday 09 January 2011] [05:57:39] <mikko>	s0undt3ch: you mean with x(rep|req) sockets?
+| [Sunday 09 January 2011] [05:57:45] <s0undt3ch>	mikko: yes
+| [Sunday 09 January 2011] [05:58:20] <mikko>	the first parts will contain RCVMORE flag
+| [Sunday 09 January 2011] [05:58:35] <mikko>	the part that doesn't contain it terminates the message
+| [Sunday 09 January 2011] [05:59:31] <s0undt3ch>	mikko: so I can append to a buffer untill I get RCVMORE at wich time I can process the message right?
+| [Sunday 09 January 2011] [06:00:10] <mikko>	the other way around
+| [Sunday 09 January 2011] [06:00:26] <s0undt3ch>	ah yes
+| [Sunday 09 January 2011] [06:01:04] <mikko>	RCVMORE indicates that there is at least one more part coming 
+| [Sunday 09 January 2011] [06:01:37] <maxpn>	is recv_json() handles that situation correctly?
+| [Sunday 09 January 2011] [06:01:42] <s0undt3ch>	mikko: xrep.getsockopt(zmq.RCVMORE) right?
+| [Sunday 09 January 2011] [06:01:54] <mikko>	s0undt3ch: yes
+| [Sunday 09 January 2011] [06:02:09] <mikko>	maxpn: i don't really know, that sounds like a python specific method
+| [Sunday 09 January 2011] [06:02:36] <s0undt3ch>	mikko: RCVMORE is socket option right?
+| [Sunday 09 January 2011] [06:02:53] <s0undt3ch>	ie, I test it in getsockopt
+| [Sunday 09 January 2011] [06:03:28] <mikko>	yes
+| [Sunday 09 January 2011] [06:03:47] <s0undt3ch>	mikko: Hurray! Thanks! Now working as suposed
+| [Sunday 09 January 2011] [06:04:36] <s0undt3ch>	was implementing a heartbeater and each of the hearts, if more than one, would fail in turns, which let me to think that my could must have been wrong
+| [Sunday 09 January 2011] [06:06:42] <s0undt3ch>	but now one of the processors is at 100% :)
+| [Sunday 09 January 2011] [06:06:50] <s0undt3ch>	need to refactor again
+| [Sunday 09 January 2011] [06:12:32] <mikko>	s0undt3ch: spinning on something?
+| [Sunday 09 January 2011] [06:13:12] <s0undt3ch>	mikko: I think I'm checking socket state too often, unfotunately, eventlet does not allow listening to fd changes
+| [Sunday 09 January 2011] [06:13:42] <s0undt3ch>	ok, now dropped to 8-10%
+| [Sunday 09 January 2011] [06:13:46] <s0undt3ch>	:)
+| [Sunday 09 January 2011] [06:23:55] <s0undt3ch>	handling 50 heartbeats at 7-9% ;)
+| [Sunday 09 January 2011] [07:05:22] <s0undt3ch>	a REQ socket can be connected to multiple "endpoints" right? can it send a message to a specific endpoint?
+| [Sunday 09 January 2011] [07:06:34] <s0undt3ch>	or sending will send to all and the receiving endpoint cannot know for who the message is?
+| [Sunday 09 January 2011] [07:56:02] <zchrish>	That's my question. I am reading 3.0 roadmap and it appears that TCP and PUB/SUB are distributed across all receivers.
+| [Sunday 09 January 2011] [07:57:05] <zchrish>	I think in this reference TCP=REQ.
+| [Sunday 09 January 2011] [11:31:45] Notice	-NickServ- This nickname is registered. Please choose a different nickname, or identify via /msg NickServ identify <password>.
+| [Sunday 09 January 2011] [11:31:45] Notice	-NickServ- You are now identified for travlr.
+| [Sunday 09 January 2011] [12:01:55] <sustrik>	s0undt3ch: you send a request to a "cloud"
+| [Sunday 09 January 2011] [12:02:06] <sustrik>	so it eventually gets to someone
+| [Sunday 09 January 2011] [12:16:46] Notice	-NickServ- This nickname is registered. Please choose a different nickname, or identify via /msg NickServ identify <password>.
+| [Sunday 09 January 2011] [12:16:46] Notice	-NickServ- You are now identified for travlr.
+| [Sunday 09 January 2011] [13:02:48] <s0undt3ch>	sustrik: I'm trying to do some aync message handling. I have gobject listening for the socket's FD and when there's a change on it, a function is called. For REQ/REP, this is ok, I handle incoming message aync, and outgoing messages sync, however,  for XREP, I seem to be unable to  do async out messages
+| [Sunday 09 January 2011] [13:03:07] <s0undt3ch>	especially since I'm calling socket.send_pyobj(data)
+| [Sunday 09 January 2011] [13:03:26] <s0undt3ch>	I think that makes the socket go into zmq.POLLOUT
+| [Sunday 09 January 2011] [13:03:38] <s0undt3ch>	but how do I handle zmq.POLLOUT?
+| [Sunday 09 January 2011] [13:06:16] <s0undt3ch>	intead of directly calling send() should I put messages in a queue and then handle them in the queue?
+| [Sunday 09 January 2011] [13:07:21] <s0undt3ch>	am I making any sense?
+| [Sunday 09 January 2011] [13:15:07] <sustrik>	have a look at zmq_getsockopt(3), the ZMQ_FD and ZMQ_EVENTS section
+| [Sunday 09 January 2011] [13:15:36] <sustrik>	ZMQ_FD signals that "something happened"
+| [Sunday 09 January 2011] [13:15:48] <sustrik>	you have to get ZMQ_EVENTS to find out what actually happened
+| [Sunday 09 January 2011] [13:17:53] <s0undt3ch>	sustrik: that part I know, that's how I'm handling incoming messges, I'm just failing to get own to handle outgoing messages with the same resources, ie, EVENTS and FD
+| [Sunday 09 January 2011] [13:19:39] <s0undt3ch>	I already catched the (events & POOLOUT), just don't know what and from where to actualy send, since I've already done .send()
+| [Sunday 09 January 2011] [13:23:31] <s0undt3ch>	s/own/how/
+| [Sunday 09 January 2011] [13:24:48] <s0undt3ch>	is there a way to get the contents of the outgoing XREP buffer?
+| [Sunday 09 January 2011] [13:25:37] <s0undt3ch>	perhaps better
+| [Sunday 09 January 2011] [13:25:48] <s0undt3ch>	if I try to send NOBLOCK, how do I handle it?
+| [Sunday 09 January 2011] [13:28:24] <sustrik>	send with a non-block
+| [Sunday 09 January 2011] [13:28:40] <sustrik>	if it cannot be sent it returns EAGAIN
+| [Sunday 09 January 2011] [13:28:48] <sustrik>	then you can poll on ZMQ_FD
+| [Sunday 09 January 2011] [13:28:58] <sustrik>	once it signals POLLIN
+| [Sunday 09 January 2011] [13:29:04] <sustrik>	you getsockopt(ZMQ_EVENTS)
+| [Sunday 09 January 2011] [13:29:19] <sustrik>	if ZMQ_POLLOUT is set, you can send the message
+| [Sunday 09 January 2011] [14:33:55] <zchrish>	Is using a vector a supported method to implement socket_t? I want to service 10,000 different subscription channels so that each channel has independent information. According to the roadmap, all data goes to all subscribers even if a subscriber is only interested in certain data. 
+| [Sunday 09 January 2011] [14:42:06] <mikko>	zchrish: currently the filtering is done at subscriber side, correct
+| [Sunday 09 January 2011] [14:42:52] <zchrish>	mikko: Yes, that is what I have learned. I don't want to do that; too much information flying across the publisher.
+| [Sunday 09 January 2011] [14:54:22] <sustrik>	zchrish: why not use a single pub socket with subscriptions instead of handling 10,000 sockets
+| [Sunday 09 January 2011] [14:55:49] <sustrik>	and rather focus on implementing subscription forwarding inside 0mq
+| [Sunday 09 January 2011] [14:56:09] <zchrish>	sustrik: I'd like to but as far as I can tell, if my subscriber only wants data to travel across the wire for only 1 of the 10,000 channels, that isn't currently supported. The roadmap says that is a 3.0 feature possibly.
+| [Sunday 09 January 2011] [14:57:05] <sustrik>	it can go even to 2.x if someone actually implements it
+| [Sunday 09 January 2011] [14:57:17] <sustrik>	there are several people trying at the moment
+| [Sunday 09 January 2011] [14:57:34] <zchrish>	So what to do now?
+| [Sunday 09 January 2011] [14:58:02] <sustrik>	it's up to you
+| [Sunday 09 January 2011] [14:58:22] <sustrik>	you can either write your code to use 10,000 sockets
+| [Sunday 09 January 2011] [14:58:41] <sustrik>	or instead try to implement the subscription forwarding inside 0mq
+| [Sunday 09 January 2011] [14:58:44] <zchrish>	So my idea was to create a vector of publishers and bind them to different ports. Sort of crude but was wondering if it was even supported.
+| [Sunday 09 January 2011] [14:59:03] <sustrik>	yes, you can do that
+| [Sunday 09 January 2011] [14:59:40] <zchrish>	can you estimate the work difference?
+| [Sunday 09 January 2011] [14:59:52] <zchrish>	between the 2 methods?
+| [Sunday 09 January 2011] [15:00:31] <sustrik>	well, the developer has to estimate the work
+| [Sunday 09 January 2011] [15:00:40] <sustrik>	have a look at the mailing list
+| [Sunday 09 January 2011] [15:00:53] <zchrish>	understood; thank you.
+| [Sunday 09 January 2011] [15:00:58] <sustrik>	the subscription forwarding was discussed several times there
+| [Sunday 09 January 2011] [15:01:03] <sustrik>	you'll get some idea
+| [Sunday 09 January 2011] [15:02:07] <zchrish>	At this point, I'd like to remain a user of zeromq in my application and focus on that. Seems like great software but this feature seems really important as I guess people already know.
+| [Sunday 09 January 2011] [15:03:03] <sustrik>	sure, it's up to you
+| [Sunday 09 January 2011] [15:03:42] <zchrish>	But maybe I could be beta people's work if that'd help. I agree subscription forwarding is the way to go.
+| [Sunday 09 January 2011] [15:11:02] <sustrik>	well, as i said, there are people trying, let's see what emerges
+| [Sunday 09 January 2011] [20:17:53] <rbraley>	is there a good way to write to a file asynchronously in zeromq?
