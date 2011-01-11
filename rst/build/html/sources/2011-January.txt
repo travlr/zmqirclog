@@ -1804,3 +1804,33 @@
 | [Monday 10 January 2011] [14:17:12] <s0undt3ch>	yeah
 | [Monday 10 January 2011] [17:16:52] <vince____>	Finally managed to get an error out of Bind failing on my wrapper. First-chance exception at 0x762cb727 in test.exe: Microsoft C++ exception: zmq::error_t at memory location 0x0019f8f0..
 | [Monday 10 January 2011] [17:30:37] <mikko>	vince____: is that an unhandled exception?
+| [Monday 10 January 2011] [22:13:11] <potatodemon>	Howdy, how many queues can 0mq handle on a machine with a gig of ram?
+| [Tuesday 11 January 2011] [07:20:02] <mikko>	hi steve
+| [Tuesday 11 January 2011] [07:20:43] <mikko>	is it possible to have the scons to build to a specific subdirectory rather than platform specific one?
+| [Tuesday 11 January 2011] [07:21:00] <mikko>	i played around during weekend with invoking scons build from zeromq build
+| [Tuesday 11 January 2011] [07:26:11] <Steve-o>	just use autoconf & automake?
+| [Tuesday 11 January 2011] [07:26:43] <Steve-o>	check the new trunk, committed support ~90 mins ago
+| [Tuesday 11 January 2011] [07:27:15] <Steve-o>	please test on old platforms as I've hard coded the minimum versions to Ubuntu 10.10 :-)
+| [Tuesday 11 January 2011] [07:27:37] <Steve-o>	"silent building" is limited to automake 1.11 I think
+| [Tuesday 11 January 2011] [07:28:03] <Steve-o>	I'll have a look at CMake for Windows later
+| [Tuesday 11 January 2011] [07:28:11] <mikko>	yes, automake would make things easier
+| [Tuesday 11 January 2011] [07:28:39] <mikko>	the current way doesn't seem sustainable to me in the longer run
+| [Tuesday 11 January 2011] [07:28:56] <mikko>	another question was about openpgm ABI/API
+| [Tuesday 11 January 2011] [07:29:11] <mikko>	is there a guarantee in openpgm related to those?
+| [Tuesday 11 January 2011] [07:29:33] <Steve-o>	The version numbers tie to the ABI
+| [Tuesday 11 January 2011] [07:30:01] <Steve-o>	minor version on ABI changes, micro version on fixes
+| [Tuesday 11 January 2011] [07:30:35] <Steve-o>	I've tried setting release/version-info with automake
+| [Tuesday 11 January 2011] [07:30:42] <mikko>	because if we invoke openpgm build from 0mq we could support specifying arbitrary openpgm location as well
+| [Tuesday 11 January 2011] [07:30:52] <mikko>	so that we wouldn't force certain version of openpgm
+| [Tuesday 11 January 2011] [07:31:09] <Steve-o>	with autoconf distros are more likely to package it :D
+| [Tuesday 11 January 2011] [07:31:17] <mikko>	brb, lunch
+| [Tuesday 11 January 2011] [08:42:02] <sustrik>	mikko: have you seen the s360 patch?
+| [Tuesday 11 January 2011] [08:42:33] <sustrik>	oh, it wasnt't sent to the mailing list
+| [Tuesday 11 January 2011] [08:42:36] <sustrik>	wait a sec
+| [Tuesday 11 January 2011] [08:45:01] <sustrik>	sent to the mailing list
+| [Tuesday 11 January 2011] [10:18:03] <Skaag>	I want to subscribe to the mailing list
+| [Tuesday 11 January 2011] [10:21:35] <mikko>	Skaag: http://lists.zeromq.org/mailman/listinfo/zeromq-dev
+| [Tuesday 11 January 2011] [10:23:26] <Skaag>	thank you :)
+| [Tuesday 11 January 2011] [10:23:34] <Skaag>	my internet is painfully slow :-(
+| [Tuesday 11 January 2011] [10:23:45] <Skaag>	So even subscribing to this will take a while
+| [Tuesday 11 January 2011] [10:24:45] <Skaag>	there, done, thankfully that page is very minimalistic and not loaded with images
