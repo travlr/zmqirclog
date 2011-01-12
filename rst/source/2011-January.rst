@@ -1834,3 +1834,289 @@
 | [Tuesday 11 January 2011] [10:23:34] <Skaag>	my internet is painfully slow :-(
 | [Tuesday 11 January 2011] [10:23:45] <Skaag>	So even subscribing to this will take a while
 | [Tuesday 11 January 2011] [10:24:45] <Skaag>	there, done, thankfully that page is very minimalistic and not loaded with images
+| [Tuesday 11 January 2011] [11:18:58] <jugg>	sustrik, my implementation of erlzmq can be found here: https://github.com/csrl/erlzmq   If you want me to push to the zeromq/erlzmq repo, let me know.
+| [Tuesday 11 January 2011] [12:54:08] <sustrik>	jugg: try to ask serge aleynikov first
+| [Tuesday 11 January 2011] [12:54:20] <sustrik>	he've been maintaining the erlzmq
+| [Tuesday 11 January 2011] [12:54:51] <sustrik>	serge@aleynikov.org
+| [Tuesday 11 January 2011] [13:03:03] <s0undt3ch>	on a PUB socket, it can only be binded by a single instance? ie, can serveral unrelated parts of my code be bind to the same PUB socket?
+| [Tuesday 11 January 2011] [13:03:47] <s0undt3ch>	from what I'm seeing from my code, it apears that it works like that :\
+| [Tuesday 11 January 2011] [13:04:06] <s0undt3ch>	do I need to create a FORWARDER device of some kind?
+| [Tuesday 11 January 2011] [13:06:09] <s0undt3ch>	sustrik: any idea?
+| [Tuesday 11 January 2011] [13:07:20] <sustrik>	no. several sockets can't bind to the same endpoint
+| [Tuesday 11 January 2011] [13:07:50] <sustrik>	if there are N pubs and M subs you need a forwarding device of some kind
+| [Tuesday 11 January 2011] [13:08:03] <sustrik>	0MQ socket is always 1:N
+| [Tuesday 11 January 2011] [13:08:23] <sustrik>	N:M topologies are created using devices in the middle
+| [Tuesday 11 January 2011] [13:09:10] <s0undt3ch>	sustrik: hmm, any examples of that anywhere?
+| [Tuesday 11 January 2011] [13:09:52] <guido_g>	http://paste.pocoo.org/show/318987/   <- minimal forwarder config
+| [Tuesday 11 January 2011] [13:10:11] <guido_g>	the in address is where the pubs connect to
+| [Tuesday 11 January 2011] [13:10:18] <guido_g>	the out where the subs connect to
+| [Tuesday 11 January 2011] [13:10:48] <guido_g>	simply start zmq_forwarder <config-file>
+| [Tuesday 11 January 2011] [13:10:48] <s0undt3ch>	hmm, ok
+| [Tuesday 11 January 2011] [13:10:50] <s0undt3ch>	Thanks!
+| [Tuesday 11 January 2011] [13:11:38] <guido_g>	you can have multiple bind addresses per section
+| [Tuesday 11 January 2011] [13:12:10] <sustrik>	the config file looks something like this:
+| [Tuesday 11 January 2011] [13:12:11] <sustrik>	<forwarder>
+| [Tuesday 11 January 2011] [13:12:11] <sustrik>	    <in>
+| [Tuesday 11 January 2011] [13:12:12] <sustrik>	        <bind addr = "tcp://eth0:5555&quot;/>
+| [Tuesday 11 January 2011] [13:12:12] <sustrik>	    </in>
+| [Tuesday 11 January 2011] [13:12:12] <sustrik>	    <out>
+| [Tuesday 11 January 2011] [13:12:13] <sustrik>	        <bind addr = "tcp://eth0:5556&quot;/>
+| [Tuesday 11 January 2011] [13:12:15] <sustrik>	    </out>
+| [Tuesday 11 January 2011] [13:12:17] <sustrik>	</forwarder>
+| [Tuesday 11 January 2011] [13:12:36] <s0undt3ch>	guido_g: the forwarder device will then allow multiple binds and connects
+| [Tuesday 11 January 2011] [13:12:46] <s0undt3ch>	I thinks that's what I'm really after
+| [Tuesday 11 January 2011] [13:12:51] <s0undt3ch>	*think
+| [Tuesday 11 January 2011] [13:12:52] <sustrik>	oops, there should be double quoute instead of &quot;
+| [Tuesday 11 January 2011] [13:12:57] <s0undt3ch>	yeah
+| [Tuesday 11 January 2011] [13:13:05] <s0undt3ch>	I also saw guido_g's paste
+| [Tuesday 11 January 2011] [13:13:07] <guido_g>	you PUB sockets all connect to the in addresses
+| [Tuesday 11 January 2011] [13:13:19] <sustrik>	ah, i missed that
+| [Tuesday 11 January 2011] [13:13:20] <s0undt3ch>	yeah, I think I got it
+| [Tuesday 11 January 2011] [13:13:21] <guido_g>	you SUB sockets connect to the out addresses
+| [Tuesday 11 January 2011] [13:45:49] <s0undt3ch>	do I need to set zmq.SUBSCRIBE on the device?
+| [Tuesday 11 January 2011] [13:47:36] <guido_g>	no
+| [Tuesday 11 January 2011] [13:47:44] <guido_g>	just what i pasted
+| [Tuesday 11 January 2011] [13:51:42] <s0undt3ch>	guido_g: I'm not using zmq_formwarder, I'm using the python bindings :\
+| [Tuesday 11 January 2011] [13:52:12] <guido_g>	writing you own device? why?
+| [Tuesday 11 January 2011] [13:52:28] <guido_g>	btw, i'm also using python
+| [Tuesday 11 January 2011] [13:52:59] <s0undt3ch>	guido_g: zmq_forwarder is python?
+| [Tuesday 11 January 2011] [13:53:04] <guido_g>	no
+| [Tuesday 11 January 2011] [13:53:24] <guido_g>	its a program that comes with mq
+| [Tuesday 11 January 2011] [13:53:37] <s0undt3ch>	guido_g: http://paste.pocoo.org/show/319013/ my forwarding device
+| [Tuesday 11 January 2011] [13:54:12] <guido_g>	seems you like it complicated
+| [Tuesday 11 January 2011] [13:54:27] <s0undt3ch>	not realy, I'd love to make it simple
+| [Tuesday 11 January 2011] [13:54:37] <s0undt3ch>	guido_g: what have I made complicate?
+| [Tuesday 11 January 2011] [13:54:59] <guido_g>	by not using what's already there
+| [Tuesday 11 January 2011] [13:55:37] <s0undt3ch>	I'm sorry... I don't know all of pyzmq's source code
+| [Tuesday 11 January 2011] [13:55:45] <guido_g>	me neither
+| [Tuesday 11 January 2011] [13:55:56] <s0undt3ch>	so what's there, where can I read it?
+| [Tuesday 11 January 2011] [13:56:07] <guido_g>	but if you install nmq, zmq_forwarder is also installed
+| [Tuesday 11 January 2011] [13:56:38] <s0undt3ch>	guido_g: I'm launching my own app, I'm not gonna use subprocess to lauch zmq_forwarder!?
+| [Tuesday 11 January 2011] [13:56:56] <s0undt3ch>	espcially since pyzmq also provides irt
+| [Tuesday 11 January 2011] [13:56:58] <s0undt3ch>	*it
+| [Tuesday 11 January 2011] [13:56:59] <guido_g>	just start it in backround
+| [Tuesday 11 January 2011] [13:57:21] <yawn>	regarding jzmq - is there any advice on error handling? i regularly experience the jvm dying due to zmq errors.
+| [Tuesday 11 January 2011] [13:57:39] <s0undt3ch>	ok, as a last resort. Can you please, since you also code in python, walk me through setting up the threaddevice?
+| [Tuesday 11 January 2011] [13:58:07] <guido_g>	what threaddevice?
+| [Tuesday 11 January 2011] [13:58:36] <s0undt3ch>	guido_g: http://zeromq.github.com/pyzmq/api/generated/zmq.devices.basedevice.html#threaddevice
+| [Tuesday 11 January 2011] [13:59:55] <guido_g>	where is the problem?
+| [Tuesday 11 January 2011] [14:00:09] <s0undt3ch>	guido_g: my code is aparently not working
+| [Tuesday 11 January 2011] [14:00:16] <guido_g>	its nearly the same as the config i pasted
+| [Tuesday 11 January 2011] [14:00:44] <guido_g>	s0undt3ch: i can't see that from here, to many walls
+| [Tuesday 11 January 2011] [14:01:12] <guido_g>	s0undt3ch: iow, could show the error message and the corresponding code?
+| [Tuesday 11 January 2011] [14:01:21] <s0undt3ch>	it' s probably the subscriber
+| [Tuesday 11 January 2011] [14:01:23] <s0undt3ch>	no error
+| [Tuesday 11 January 2011] [14:01:33] <s0undt3ch>	I'm just not getting anything on the M subscribers
+| [Tuesday 11 January 2011] [14:01:39] <guido_g>	show code
+| [Tuesday 11 January 2011] [14:01:43] <s0undt3ch>	although the N publishers are publishing
+| [Tuesday 11 January 2011] [14:03:46] <s0undt3ch>	guido_g: test subscriber
+| [Tuesday 11 January 2011] [14:04:15] <guido_g>	s0undt3ch: huh? what does that mean?
+| [Tuesday 11 January 2011] [14:04:29] <s0undt3ch>	guido_g: sorry
+| [Tuesday 11 January 2011] [14:04:31] <s0undt3ch>	guido_g: test subscriber http://bpaste.net/show/12837/
+| [Tuesday 11 January 2011] [14:04:36] <s0undt3ch>	forgot the paste
+| [Tuesday 11 January 2011] [14:06:30] <guido_g>	does the device publish to the unix socket the subscriber expects?
+| [Tuesday 11 January 2011] [14:06:32] <sustrik>	yawn: what errors are you getting?
+| [Tuesday 11 January 2011] [14:06:41] <sustrik>	can you send them to the mailing list?
+| [Tuesday 11 January 2011] [14:07:06] <s0undt3ch>	guido_g: http://bpaste.net/show/12838/ test publisher
+| [Tuesday 11 January 2011] [14:07:13] <s0undt3ch>	sustrik: no errors at all
+| [Tuesday 11 January 2011] [14:07:36] <sustrik>	it's question for yawn
+| [Tuesday 11 January 2011] [14:07:46] <sustrik>	he's complaining about jzmq craching
+| [Tuesday 11 January 2011] [14:07:55] <s0undt3ch>	sustrik: oh, sorry
+| [Tuesday 11 January 2011] [14:08:00] <sustrik>	np
+| [Tuesday 11 January 2011] [14:08:15] <s0undt3ch>	guido_g: the forwarder seems to not be forwarding nothing at all
+| [Tuesday 11 January 2011] [14:09:07] <guido_g>	s0undt3ch: there is no forwarder involved as far as i can see
+| [Tuesday 11 January 2011] [14:09:34] <s0undt3ch>	guido_g: the forwarder was the first paste, the one you said I was complicating
+| [Tuesday 11 January 2011] [14:09:54] <guido_g>	*sigh*
+| [Tuesday 11 January 2011] [14:10:09] <guido_g>	s0undt3ch: see which endpoints your code is using
+| [Tuesday 11 January 2011] [14:10:35] <guido_g>	s0undt3ch: pub and sub are using the unix socket
+| [Tuesday 11 January 2011] [14:10:44] <s0undt3ch>	yes
+| [Tuesday 11 January 2011] [14:10:54] <s0undt3ch>	can't be unix sockets?
+| [Tuesday 11 January 2011] [14:11:10] <s0undt3ch>	guido_g: diferent sockets though
+| [Tuesday 11 January 2011] [14:11:19] <s0undt3ch>	xxx-in and xxx-out
+| [Tuesday 11 January 2011] [14:15:19] <yawn>	sustrik: Bad file descriptorrc != -1 (kqueue.cpp:79)
+| [Tuesday 11 January 2011] [14:15:47] <yawn>	sustrik: "somewhere", no stacktrace available when dealing with jni i suppose
+| [Tuesday 11 January 2011] [14:16:12] <sustrik>	is it deterministic?
+| [Tuesday 11 January 2011] [14:17:02] <s0undt3ch>	guido_g: test code -> http://bpaste.net/show/12840/
+| [Tuesday 11 January 2011] [14:17:08] <s0undt3ch>	guido_g: what's wrong there?
+| [Tuesday 11 January 2011] [14:18:45] <guido_g>	ipc endpoints are file names, http://api.zeromq.org/zmq_ipc.html
+| [Tuesday 11 January 2011] [14:18:57] <s0undt3ch>	yes
+| [Tuesday 11 January 2011] [14:19:15] <s0undt3ch>	that will create a file on the curent dir
+| [Tuesday 11 January 2011] [14:19:36] <yawn>	sustrik: no really. only in the sense that it happens from time to time.
+| [Tuesday 11 January 2011] [14:19:41] <s0undt3ch>	the diferences in paths on the previous code mean nothing, my app changes dir
+| [Tuesday 11 January 2011] [14:21:35] <snidely>	If I have a high volume of stock/option quotes coming into a data center and I want clients connected over a low speed WAN link to subscribe to quotes from that dc.  Should I use 0MQ?  Or do I need some broker based solution so that the whole multicast doesnt have to go over the WAN for key based filtering on each client?
+| [Tuesday 11 January 2011] [14:23:12] <sustrik>	snidely, are you looking for solution for both WAN and LAN?
+| [Tuesday 11 January 2011] [14:24:06] <sustrik>	in that case the best way is to place forwarder device at the edge of your LAN
+| [Tuesday 11 January 2011] [14:24:15] <sustrik>	then use TCP for WAN
+| [Tuesday 11 January 2011] [14:24:21] <sustrik>	and multicast only on LAN part
+| [Tuesday 11 January 2011] [14:24:33] <s0undt3ch>	guido_g: forwarders can't use unix sockets?
+| [Tuesday 11 January 2011] [14:24:46] <guido_g>	don't know, ask sustric
+| [Tuesday 11 January 2011] [14:24:59] <s0undt3ch>	sustrik:  forwarders can't use unix sockets?
+| [Tuesday 11 January 2011] [14:25:00] <guido_g>	s/c$/k/
+| [Tuesday 11 January 2011] [14:25:24] <yawn>	sustrik: but is there a sensible way to handle zmq errors when using it in a jvm?
+| [Tuesday 11 January 2011] [14:25:28] <sustrik>	s0oundt3ch: they use the transport you specify
+| [Tuesday 11 January 2011] [14:25:52] <sustrik>	it you are using ipc:// then they use unix domain sockets
+| [Tuesday 11 January 2011] [14:25:57] <s0undt3ch>	sustrik:  what's wrong with http://bpaste.net/show/12840/?
+| [Tuesday 11 January 2011] [14:26:07] <sustrik>	if you use tcp:// they'll use TCP socekts
+| [Tuesday 11 January 2011] [14:26:08] <s0undt3ch>	http://bpaste.net/show/12840/
+| [Tuesday 11 January 2011] [14:26:11] <s0undt3ch>	yeah
+| [Tuesday 11 January 2011] [14:26:22] <s0undt3ch>	but my forwarder isn't forwarding
+| [Tuesday 11 January 2011] [14:27:24] <snidely>	yeah I want to be able to have client apps at the datacenter subscribe to quotes (in large volume) and also have apps connected via WAN subscribe in small quantities.   
+| [Tuesday 11 January 2011] [14:28:54] <snidely>	Where can I get more info about forwarders?  This is unfinished: http://api.zeromq.org/zmq_forwarder.html
+| [Tuesday 11 January 2011] [14:29:17] <sustrik>	it's a simple executable, zmq_forwarder
+| [Tuesday 11 January 2011] [14:29:29] <sustrik>	the argument is a config file
+| [Tuesday 11 January 2011] [14:29:44] <sustrik>	http://paste.pocoo.org/show/318987/
+| [Tuesday 11 January 2011] [14:30:08] <sustrik>	s0oundt3ch: hm, it's a pyzmq implementation of forwarder
+| [Tuesday 11 January 2011] [14:30:09] <guido_g>	s0undt3ch: can't get your python forwarder to work even w/ tcp
+| [Tuesday 11 January 2011] [14:30:16] <sustrik>	no idea how it works
+| [Tuesday 11 January 2011] [14:30:27] <s0undt3ch>	hmmm
+| [Tuesday 11 January 2011] [14:30:29] <s0undt3ch>	dam
+| [Tuesday 11 January 2011] [14:30:43] <sustrik>	try asking on the mailing list
+| [Tuesday 11 January 2011] [14:30:48] <s0undt3ch>	guido_g: something must be terrably wrong
+| [Tuesday 11 January 2011] [14:30:53] <sustrik>	pyzmq devs should be able to reply
+| [Tuesday 11 January 2011] [14:31:22] <guido_g>	with the original zmq forwarder it works ove rtcp
+| [Tuesday 11 January 2011] [14:33:07] <s0undt3ch>	guido_g: the original zmq_forwarder?
+| [Tuesday 11 January 2011] [14:33:12] <guido_g>	yes
+| [Tuesday 11 January 2011] [14:33:17] <s0undt3ch>	hmm
+| [Tuesday 11 January 2011] [14:33:31] <guido_g>	the one that comes with mq
+| [Tuesday 11 January 2011] [14:33:45] <guido_g>	the one i pasted the config for
+| [Tuesday 11 January 2011] [14:34:43] <s0undt3ch>	yeah
+| [Tuesday 11 January 2011] [14:36:30] <guido_g>	just verified that that zmq_forwarder works w/ ipc
+| [Tuesday 11 January 2011] [14:37:24] <guido_g>	did you try a zmq.SUBSCRIBE on the in socket of you device?
+| [Tuesday 11 January 2011] [14:37:33] <guido_g>	*your
+| [Tuesday 11 January 2011] [14:40:30] <s0undt3ch>	guido_g: just tried, it works
+| [Tuesday 11 January 2011] [14:40:48] <guido_g>	what a crap
+| [Tuesday 11 January 2011] [14:41:12] <s0undt3ch>	guido_g: http://paste.pocoo.org/show/319036/ <- this is what I tried, it works
+| [Tuesday 11 January 2011] [14:41:24] <s0undt3ch>	bypasses the device
+| [Tuesday 11 January 2011] [14:43:40] <guido_g>	that's what you had before the devices were mentioned, right?
+| [Tuesday 11 January 2011] [14:44:05] <s0undt3ch>	guido_g: yes, but I need multiple publishers
+| [Tuesday 11 January 2011] [14:44:16] <s0undt3ch>	for multiple subscribers
+| [Tuesday 11 January 2011] [14:44:33] <s0undt3ch>	thats where devices came in
+| [Tuesday 11 January 2011] [14:44:42] <guido_g>	i know
+| [Tuesday 11 January 2011] [14:46:54] <guido_g>	forwarder.setsockopt_in(zmq.SUBSCRIBE, '') <- that's the trick
+| [Tuesday 11 January 2011] [14:47:54] <guido_g>	at least it works w/ tcp
+| [Tuesday 11 January 2011] [14:48:40] <s0undt3ch>	guido_g: can you paste your code?
+| [Tuesday 11 January 2011] [14:48:58] <guido_g>	just add the line shown
+| [Tuesday 11 January 2011] [14:49:33] <s0undt3ch>	guido_g: to which paste?
+| [Tuesday 11 January 2011] [14:49:39] <guido_g>	omg
+| [Tuesday 11 January 2011] [14:49:39] <s0undt3ch>	because I had tried that
+| [Tuesday 11 January 2011] [14:50:18] <s0undt3ch>	guido_g: this one?
+| [Tuesday 11 January 2011] [14:50:20] <s0undt3ch>	http://bpaste.net/show/12840/
+| [Tuesday 11 January 2011] [14:50:35] <guido_g>	http://bpaste.net/show/12841/
+| [Tuesday 11 January 2011] [14:53:26] <s0undt3ch>	great, bpast is throwing 500's
+| [Tuesday 11 January 2011] [14:53:30] <s0undt3ch>	*bpaste
+| [Tuesday 11 January 2011] [14:54:10] <guido_g>	works here
+| [Tuesday 11 January 2011] [14:55:50] <s0undt3ch>	dunno then
+| [Tuesday 11 January 2011] [14:57:06] <s0undt3ch>	heh, tpc, address already in use....
+| [Tuesday 11 January 2011] [14:57:11] <s0undt3ch>	*tcp
+| [Tuesday 11 January 2011] [14:57:58] <s0undt3ch>	guido_g: yeah, tried that too
+| [Tuesday 11 January 2011] [14:58:06] <s0undt3ch>	guido_g: are you using 2.1.0?
+| [Tuesday 11 January 2011] [14:58:14] <guido_g>	no
+| [Tuesday 11 January 2011] [14:58:51] <s0undt3ch>	hmm, I am
+| [Tuesday 11 January 2011] [14:58:51] <s0undt3ch>	hmm, I am
+| [Tuesday 11 January 2011] [14:59:07] <s0undt3ch>	sorry for doubling
+| [Tuesday 11 January 2011] [14:59:16] <s0undt3ch>	quassel wasn't responsive
+| [Tuesday 11 January 2011] [15:01:39] <s0undt3ch>	ok
+| [Tuesday 11 January 2011] [15:01:45] <s0undt3ch>	seems to be a 2.1.0 issue
+| [Tuesday 11 January 2011] [15:02:05] <s0undt3ch>	on the subscribers endpoint
+| [Tuesday 11 January 2011] [15:04:29] <s0undt3ch>	I think I found a bug
+| [Tuesday 11 January 2011] [15:04:47] <s0undt3ch>	just recreating a minimal example to create a ticket
+| [Tuesday 11 January 2011] [15:11:14] <s0undt3ch>	dam, with pyzmq's ioloop it works correctly
+| [Tuesday 11 January 2011] [15:11:22] <s0undt3ch>	even on 2.1.0
+| [Tuesday 11 January 2011] [15:13:13] <CIA-21>	zeromq2: 03Martin Sustrik 07master * r725ebce 10/ include/zmq.h : 
+| [Tuesday 11 January 2011] [15:13:13] <CIA-21>	zeromq2: Version bumped to 2.1.1
+| [Tuesday 11 January 2011] [15:13:13] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/ihsCvD
+| [Tuesday 11 January 2011] [15:41:10] <mikko>	sustrik: will look into the build patch now
+| [Tuesday 11 January 2011] [15:43:21] <sustrik>	mikko: i've seen there are some additional functions being checked for
+| [Tuesday 11 January 2011] [15:43:25] <sustrik>	for OpenPGM's sake
+| [Tuesday 11 January 2011] [15:43:47] <sustrik>	they probably should not be checked for if pgm is disabled though
+| [Tuesday 11 January 2011] [15:44:25] <mikko>	yes
+| [Tuesday 11 January 2011] [15:44:38] <mikko>	steve has been working on openpgm autoconf as well
+| [Tuesday 11 January 2011] [15:44:43] <mikko>	which is very good progress
+| [Tuesday 11 January 2011] [15:44:59] <mikko>	we could invoke the openpgm build from zeromq build without additional deps
+| [Tuesday 11 January 2011] [15:45:26] <sustrik>	that would be fantastic
+| [Tuesday 11 January 2011] [15:45:44] <sustrik>	getting rid of the foreign build system...
+| [Tuesday 11 January 2011] [15:46:04] <mikko>	and not maintain a copy of the openpgm build system
+| [Tuesday 11 January 2011] [15:46:11] <sustrik>	exactly
+| [Tuesday 11 January 2011] [15:46:34] <mikko>	i think those changes are in openpgm trunk now
+| [Tuesday 11 January 2011] [15:46:46] <mikko>	i might take a poke on that side as well and test freebsd/solaris at some point
+| [Tuesday 11 January 2011] [15:46:57] <sustrik>	ack
+| [Tuesday 11 January 2011] [16:25:07] <mikko>	sustrik: getting build error on linux after the patch
+| [Tuesday 11 January 2011] [16:25:12] <mikko>	will investigate a bit
+| [Tuesday 11 January 2011] [16:26:36] <mikko>	hmm
+| [Tuesday 11 January 2011] [17:29:24] <amacleod>	With the Python bindings for zmq, is it okay to just let the Context expire with the running script?  Or should I explicitly close it?
+| [Tuesday 11 January 2011] [17:39:43] <sustrik>	amacleod: closing of the context ensures the all the pending messages are actually pushed to the network before the application extis
+| [Tuesday 11 January 2011] [17:39:45] <sustrik>	exits
+| [Tuesday 11 January 2011] [17:47:16] <codebeaker>	hi all - anyone know how to build Patrick Chen's fork properly, it says "See the INSTAL file", but that file is absent, and my typical cmake routine "$ mkdir build; $ cd build; $ cmake ../; ......" doesn't seem to want to work
+| [Tuesday 11 January 2011] [17:58:48] <codebeaker>	I got as far as setting CMAKE_MODULE_PATH and ZMQ_DIR to the ./src/zmq directory, to which I cloned pchen's repository, now I get the error "include could not find load file: src/zmq/ZMQConfig.cmake" - which makes sense, because it only exists as ./src/zmq/ZMQConfig.cmake.in
+| [Tuesday 11 January 2011] [17:59:30] <codebeaker>	how to make sure my top-level project configures the ./src/zmq correctly ? and preprocesses the .in files
+| [Tuesday 11 January 2011] [18:12:33] <zchrish>	I made a test case whereby I created a publisher -> forwarder -> subscriber and feed it a 500MB file with 7500847 lines and the time it took to process the file was 102.39 seconds. This equates to about 72,350 messages per second. This was done on localhost. Do these results seem reasonable?
+| [Tuesday 11 January 2011] [18:19:34] <zchrish>	Pleased to see that files pass "diff" !
+| [Tuesday 11 January 2011] [18:20:06] <codebeaker>	zchrish: that does seem to tally with the numbers quoted in the various docs
+| [Tuesday 11 January 2011] [18:20:27] <codebeaker>	 you can check the Introduction - into it a little way are some comparisons of throuput and message sizes
+| [Tuesday 11 January 2011] [18:35:25] <snidely>	I'm told that 0MQ has missing libraries which prevent it from running on windows.  Anyone know about that?
+| [Tuesday 11 January 2011] [19:44:12] <zchrish>	If I have a PUBSUB system with 3 subscribers that can handle data rates of 10,000 - 20,000 - 30,000 messages per second respectively, how many messages would arrive at the fastest subscriber after 10 seconds? I am asking theoretically of course. This is my next test.
+| [Tuesday 11 January 2011] [20:10:19] <zchrish>	The result of the above test suggests that PUBSUB sets the transmisstion rate to the slowest subscriber; is that correct? If so, that could be a problem for my application if I encounter someone with a dialup or with a zombie subscriber. Is there anything that can be done in these cases?
+| [Tuesday 11 January 2011] [20:11:34] <zchrish>	<test1> was all localhost and the aggregate PUB->FORWARDER->SUB was 72,350 messages per second.
+| [Tuesday 11 January 2011] [20:12:32] <zchrish>	<test2> added an additional endpoint subscriber but across the internet and the aggregate reduced to 27,000 messages per second.
+| [Tuesday 11 January 2011] [20:13:07] <zchrish>	<test2> showed both localhost and remote subscribers completed at the same time
+| [Tuesday 11 January 2011] [20:14:58] <zchrish>	<test2> also had a couple of occurrances in which the transmission stalled for some seconds which I cannot account since other activities on my system appeared normal.
+| [Tuesday 11 January 2011] [20:17:18] <zchrish>	<test2> both local and remote had correct diffs to the original !
+| [Tuesday 11 January 2011] [20:22:07] <zchrish>	The result of <test2> seems to indicate that PUBSUB uses a global queue for its messaging system which is probably obvious but I haven't dug into the source code to find out. I wanted to be a user for awhile to see how it operates first.
+| [Tuesday 11 January 2011] [20:23:29] <zchrish>	Seems like one item on the to-do list is to implement per-subscription queueing to improve transmission rates for faster channels. I am too naive to know what additional complexity that requires...
+| [Tuesday 11 January 2011] [21:19:07] <potatodemon>	Howdy Y'all!  Can zeromq listen as a normal TCP socket? I have a lot of clients using normal sockets that I want to all connect to the zeromq server at once.  Is that something zeromq is good for ?
+| [Tuesday 11 January 2011] [22:08:07] <potatodemon>	It looks like zeromq does not do normal sockets, http://lists.zeromq.org/pipermail/zeromq-dev/2010-September/006344.html  is that correct ?
+| [Tuesday 11 January 2011] [22:08:33] <jugg>	http://www.zeromq.org/intro:read-the-manual
+| [Tuesday 11 January 2011] [22:27:49] <potatodemon>	How many queues can I have with 0mq on a machine with a gig of ram?
+| [Tuesday 11 January 2011] [23:06:55] <cremes>	potatodemon: you could probably figure this out on your own by writing a little app that spawns a bunch of sockets
+| [Tuesday 11 January 2011] [23:07:29] <cremes>	make sure you bump up the number of file descriptors available to your process or it will run out pretty quickly
+| [Tuesday 11 January 2011] [23:07:58] <cremes>	also, i think 0mq defaults to 512 max sockets; you need to change that in the source and recompile
+| [Tuesday 11 January 2011] [23:29:44] <benoitc>	hi all
+| [Tuesday 11 January 2011] [23:29:57] <benoitc>	how stable is erlzmq actually ?
+| [Wednesday 12 January 2011] [02:23:49] <sustrik>	snidely: what libraries?
+| [Wednesday 12 January 2011] [02:43:52] <potatodemon>	Hey Y'all anyone in here know a lot about the Python ZMQ lib ?
+| [Wednesday 12 January 2011] [02:44:41] <guido_g>	dont't as meta-questions, just ask the question and wait
+| [Wednesday 12 January 2011] [02:46:15] <potatodemon>	I just wanted to know if anyone has used the Python ZMQ lib with the Python gevents lib.
+| [Wednesday 12 January 2011] [02:48:44] <potatodemon>	I am trying to write a simple normal bsd sockets to 0mq data proxy
+| [Wednesday 12 January 2011] [02:49:11] <guido_g>	s0undt3ch had something like this yesterday
+| [Wednesday 12 January 2011] [02:49:15] <potatodemon>	Or find a good, fast one
+| [Wednesday 12 January 2011] [02:49:38] <guido_g>	you could do it w/ pyzmq.eventloop
+| [Wednesday 12 January 2011] [02:51:40] <potatodemon>	Will that give me a async socket server ?
+| [Wednesday 12 January 2011] [02:51:58] <potatodemon>	I think it does.  Do you know any examples -- this is new to me.
+| [Wednesday 12 January 2011] [02:52:03] <guido_g>	http://zeromq.github.com/pyzmq/index.html#using-pyzmq
+| [Wednesday 12 January 2011] [02:59:44] <potatodemon>	Cool, a good place to start. Thanks
+| [Wednesday 12 January 2011] [03:22:38] <CIA-21>	zeromq2: 03Neale Ferguson 07master * r7051387 10/ (AUTHORS configure.in src/Makefile.am src/clock.cpp): 
+| [Wednesday 12 January 2011] [03:22:38] <CIA-21>	zeromq2: Support dynamic generation of C preprocessor definitions for PGM rather than hardcoding them.
+| [Wednesday 12 January 2011] [03:22:38] <CIA-21>	zeromq2: Signed-off-by: Neale Ferguson <neale@sinenomine.net> - http://bit.ly/fPnk1c
+| [Wednesday 12 January 2011] [03:41:50] <codebeaker>	2
+| [Wednesday 12 January 2011] [03:45:15] <codebeaker>	sorry, morning all - someone was kind enough to help me out last night, but had another quick query - with the code from github.com/PatrickCheng/zeromq2 - there are missing build instructions, specifically for using that in my own project which is built iwith cmake
+| [Wednesday 12 January 2011] [03:47:11] <sustrik>	welll, with cmake you are probably on your own, it's not part of the official project and there's little knowledge of it; you can possibly to address patrick cheng directly...
+| [Wednesday 12 January 2011] [03:57:22] <codebeaker>	ahh, thanks sustrik -
+| [Wednesday 12 January 2011] [03:58:12] <codebeaker>	I *think* to be honest, this is something that would be easier if I knew about CMake - I want my build to automatically compile the ZMQ target, but I cna't work out how - and Patrick didn't write any docs :)
+| [Wednesday 12 January 2011] [03:59:19] <benoitc>	erlzmq version using rebar : https://github.com/benoitc/erlzmq/tree/rebar
+| [Wednesday 12 January 2011] [03:59:28] <benoitc>	if it helps someone
+| [Wednesday 12 January 2011] [03:59:56] <benoitc>	how do you guys handle persistence with zmq ?
+| [Wednesday 12 January 2011] [04:03:07] <codebeaker>	benoitc: as far as I understand, that's completely up to tiy
+| [Wednesday 12 January 2011] [04:03:30] <codebeaker>	to you* since I believe you can guarantee that if the message is not sent, then it's not sent - and you should persist it
+| [Wednesday 12 January 2011] [04:06:46] <benoitc>	mmm right
+| [Wednesday 12 January 2011] [04:06:57] <codebeaker>	^^ :) HTH
+| [Wednesday 12 January 2011] [04:07:42] <benoitc>	want ot use the possibility of zmq to load balance messages with push/pull instead of simply using redis and jhandle manually suscription
+| [Wednesday 12 January 2011] [04:07:45] <benoitc>	+s
+| [Wednesday 12 January 2011] [04:07:56] <benoitc>	maybe i will just use both
+| [Wednesday 12 January 2011] [04:42:42] <si14>	hi all. Is anybody there?
+| [Wednesday 12 January 2011] [04:49:14] <si14>	I'm trying to make a zeromq, but I've got a lot of errors like this
+| [Wednesday 12 January 2011] [04:49:22] <si14>	 /usr/include/c++/4.4/bits/stl_vector.h:434: error: __gnu_cxx::__normal_iterator<typename std::_Vector_base<_Tp, _Alloc>::_Tp_alloc_type::const_pointer, std::vector<_Tp, _Alloc> > std::vector<_Tp, _Alloc>::begin() cannot be overloaded
+| [Wednesday 12 January 2011] [04:50:08] <si14>	in fact it's something like this (it's not my log, but this one is very similar to mine): https://gist.github.com/700285
+| [Wednesday 12 January 2011] [04:54:20] <si14>	ah, sorry, I've found the solution here: http://travlr.github.com/zmqirclog/2010-November.html
+| [Wednesday 12 January 2011] [04:56:46] <sustrik>	sil4: if you find the website not addressing this problem, feel free to adjust it
+| [Wednesday 12 January 2011] [04:56:47] <sustrik>	it's a wiki
+| [Wednesday 12 January 2011] [07:37:09] <s0undt3ch>	guido_g: remeber my problem fom yesterday? here's a sucessfull attempt with zmq.eventloop using 2.1.0, 2.0.10 does not have zmq.devices, so I couldn't test it -> http://paste.pocoo.org/show/319395/
+| [Wednesday 12 January 2011] [07:37:40] <s0undt3ch>	guido_g: now I have to narrow down what went wrong on my previous attemps using gobject and eventlet io loops
+| [Wednesday 12 January 2011] [08:22:02] <s0undt3ch>	zchrish: you confirmed that the pub/sub io is as slow as the slowest client right?
+| [Wednesday 12 January 2011] [08:28:00] <zchrish>	sOundt3ch: No, according to sustrik this is not the case. The cause of throughput drop is by the use of unicast and the throughput drops linearly with the number of subscribers.
+| [Wednesday 12 January 2011] [08:28:25] <s0undt3ch>	zchrish: pub sub uses unicast?
+| [Wednesday 12 January 2011] [08:30:03] <s0undt3ch>	zchrish: or you were using unicast on you pub/sub sockets?
+| [Wednesday 12 January 2011] [08:30:47] <s0undt3ch>	ah, tcp is unicast
+| [Wednesday 12 January 2011] [08:31:37] <zchrish>	sOundt3ch: My testing was using tcp. There exists pgm/epgm but I have no experience with it.
+| [Wednesday 12 January 2011] [08:32:57] <s0undt3ch>	zchrish: for now I'm using local unix sockets, but I might need to use tcp at a latter stage...
+| [Wednesday 12 January 2011] [08:33:11] <s0undt3ch>	zchrish: anyway, Thanks, was just wondering...
+| [Wednesday 12 January 2011] [08:35:02] <zchrish>	sOundt3ch: My application is designed to be transported through the internet so I am concerned with latency and throughput issues. Still don't have enough experience with 0mq to know how robust it will be to this but I like what I see so far.
