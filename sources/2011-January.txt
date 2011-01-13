@@ -2120,3 +2120,230 @@
 | [Wednesday 12 January 2011] [08:32:57] <s0undt3ch>	zchrish: for now I'm using local unix sockets, but I might need to use tcp at a latter stage...
 | [Wednesday 12 January 2011] [08:33:11] <s0undt3ch>	zchrish: anyway, Thanks, was just wondering...
 | [Wednesday 12 January 2011] [08:35:02] <zchrish>	sOundt3ch: My application is designed to be transported through the internet so I am concerned with latency and throughput issues. Still don't have enough experience with 0mq to know how robust it will be to this but I like what I see so far.
+| [Wednesday 12 January 2011] [10:47:17] <yawn>	any advice on jzmq error handling?
+| [Wednesday 12 January 2011] [10:47:49] <yawn>	it tends to die from assertions and being jni i have no obvious way to handle those
+| [Wednesday 12 January 2011] [11:15:47] <efhache>	hi everybody... I need some help with a cross-compiled(arm) library under linux 2.4
+| [Wednesday 12 January 2011] [11:16:34] <efhache>	I've previously compiled the library, codded and work fine under a linux 2.6 but now with a kernell 2.4, I obtain an error as Function not implemented epoll_fd != -1 (epoll.cpp:40) Aborted
+| [Wednesday 12 January 2011] [11:16:58] <efhache>	May be is it possible to configure and recompile the library with an other sort of poolling?
+| [Wednesday 12 January 2011] [11:19:09] <mikko>	yawn: what sort of assertions?
+| [Wednesday 12 January 2011] [11:19:16] <mikko>	and which version of libzmq?
+| [Wednesday 12 January 2011] [11:19:54] <efhache>	zmq 2.0.7
+| [Wednesday 12 January 2011] [11:19:54] <yawn>	mikko: different assertions really. i have not yet collected all of them, last one was Assertion failed: (s), function get_socket, file Socket.cpp, line 467.
+| [Wednesday 12 January 2011] [11:20:05] <mikko>	efhache: can you test with 2.1.0 ?
+| [Wednesday 12 January 2011] [11:20:20] <yawn>	mikko: version is 2.0.10 from brew
+| [Wednesday 12 January 2011] [11:20:23] <mikko>	i remember there is an issue with using epoll on linux even if it's not available
+| [Wednesday 12 January 2011] [11:20:38] <yawn>	mikko: env is mac os x, snow leopard
+| [Wednesday 12 January 2011] [11:20:38] <mikko>	yawn: can you test with 2.1.0 ?
+| [Wednesday 12 January 2011] [11:20:52] <mikko>	2.1.0 is where active development happens currently
+| [Wednesday 12 January 2011] [11:21:01] <mikko>	so it would be helpful to see if those have been sorted out already
+| [Wednesday 12 January 2011] [11:21:03] <efhache>	miko : not really  All the code developped was based on an zmq 2.0.7 version
+| [Wednesday 12 January 2011] [11:21:33] <yawn>	mikko: sure. but the large variety of errors makes me a bit nervous since there really seems to be no way of "catching" those errors. the jvm simply dies as soon as something crashes in the zmq api.
+| [Wednesday 12 January 2011] [11:21:53] <yawn>	mikko: that's why i'm asking about error handling
+| [Wednesday 12 January 2011] [11:22:04] <mikko>	yawn: yes, that's what assertion causes. large chunk of those have been sorted out and we are fixing them as we bump into new ones
+| [Wednesday 12 January 2011] [11:22:31] <mikko>	efhache: i can check this evening as you should probably use poll rather than epoll with 2.4
+| [Wednesday 12 January 2011] [11:23:03] <yawn>	mikko: ok. i have not much experience with jni at all but is there some kind of mechanism that would prevent the jvm from dying?
+| [Wednesday 12 January 2011] [11:23:16] <efhache>	ok I'll back to you tomorow
+| [Wednesday 12 January 2011] [11:23:23] <yawn>	mikko: or is there a flag that changes the assertion behaviour in zmq?
+| [Wednesday 12 January 2011] [11:23:31] <yawn>	mikko: compile-time flag
+| [Wednesday 12 January 2011] [11:23:38] <mikko>	efhache: sure
+| [Wednesday 12 January 2011] [11:23:59] <mikko>	yawn: yes, but those are not properly handled in that case
+| [Wednesday 12 January 2011] [11:24:12] <efhache>	mikko: I'll search again this evening, thw
+| [Wednesday 12 January 2011] [11:24:22] <mikko>	yawn: you can specify -DNDEBUG iirc
+| [Wednesday 12 January 2011] [11:24:51] <yawn>	ok
+| [Wednesday 12 January 2011] [11:25:11] <mikko>	yawn: it would be helpful if you can give 2.1.0 a spin
+| [Wednesday 12 January 2011] [11:25:23] <yawn>	mikko: i'll try to update zmq and compiling with DNDBUG (or whatever the flags name is).
+| [Wednesday 12 January 2011] [11:25:36] <mikko>	yawn: try without the flag first
+| [Wednesday 12 January 2011] [11:25:45] <mikko>	yawn: as i said 2.1.0 fixes a lot of the assertions
+| [Wednesday 12 January 2011] [11:25:58] <mikko>	yawn: and if you run into assertions in normal usage we would like to sort those out as well
+| [Wednesday 12 January 2011] [11:26:18] <yawn>	mikko: i think that most of the problems occur when inproc sockets with multipart messages terminate before the message is complete
+| [Wednesday 12 January 2011] [11:26:41] <mikko>	yawn: do you code C ?
+| [Wednesday 12 January 2011] [11:26:59] <mikko>	C test case would be a huge help (java should be ok as wlel but takes a bit longer to process)
+| [Wednesday 12 January 2011] [11:27:11] <yawn>	mikko: no, it's a java project
+| [Wednesday 12 January 2011] [11:27:36] <mikko>	if you can wait a couple of hours for me to get home i can test this on 2.1.0
+| [Wednesday 12 January 2011] [11:27:46] <mikko>	i dont have java bindings running but shouldnt take long to get them
+| [Wednesday 12 January 2011] [11:28:01] <mikko>	and as it's JNI java test case should be fairly valid as well
+| [Wednesday 12 January 2011] [11:28:09] <yawn>	mikko: test data is a bit problematic since it's driven by real world data. plus the server that interfaces with zmq is evented - so i usually have no idea at all what exactly caused the assertion.
+| [Wednesday 12 January 2011] [11:28:20] <mikko>	ok
+| [Wednesday 12 January 2011] [11:28:23] <yawn>	real world data = totally volatile stuff
+| [Wednesday 12 January 2011] [11:28:31] <mikko>	you can have the process to core dump on assertion
+| [Wednesday 12 January 2011] [11:28:37] <mikko>	and run it in debugger
+| [Wednesday 12 January 2011] [11:28:45] <mikko>	but i would recommend testing with 2.1.0 as the first step
+| [Wednesday 12 January 2011] [11:28:52] <yawn>	i'll do that first
+| [Wednesday 12 January 2011] [11:29:16] <yawn>	when it's still dying i'll try to send you a dump
+| [Wednesday 12 January 2011] [11:34:03] <yawn>	mikko: damn, 2.1.0 is not yet on brew ... :-)
+| [Wednesday 12 January 2011] [11:35:23] <mikko>	brew is something like macports?
+| [Wednesday 12 January 2011] [11:36:45] <seb`>	yes
+| [Wednesday 12 January 2011] [11:56:16] <zchrish>	In the PUBSUB pattern, is there a way for the publisher to know something about the subscriber set?
+| [Wednesday 12 January 2011] [11:57:48] <zchrish>	like subscriber IPs.
+| [Wednesday 12 January 2011] [11:59:01] <Vince__>	my wrapper has been throwing this message at me today "Operation cannot be accomplished in current state" anyone seen that before? This happens with zmq_recv()
+| [Wednesday 12 January 2011] [11:59:20] <zchrish>	If not, I suppose it could be easy enough to broadcast a call-in message which causes the subscriber set to respond.
+| [Wednesday 12 January 2011] [12:00:19] <Vince__>	Seems the actual point which throws this error is here:
+| [Wednesday 12 January 2011] [12:00:19] <cremes>	zchrish: no, it's not possible because that kind of information doesn't fit into the pub/sub pattern
+| [Wednesday 12 January 2011] [12:00:24] <Vince__>	   //  In blocking scenario, commands are processed over and over again until     //  we are able to fetch a message.     while (rc != 0) {         if (errno != EAGAIN)
+| [Wednesday 12 January 2011] [12:00:29] <cremes>	zchrish: use a separate pair of sockets to share that information
+| [Wednesday 12 January 2011] [12:00:50] <Vince__>	whats a blocking scenario? How do I over come it?
+| [Wednesday 12 January 2011] [12:00:53] <cremes>	Vince__: that is happening with a req/rep pair, yes?
+| [Wednesday 12 January 2011] [12:00:59] <zchrish>	OK; thanks.
+| [Wednesday 12 January 2011] [12:01:00] <Vince__>	yes
+| [Wednesday 12 January 2011] [12:01:34] <cremes>	Vince__: you need to call send/recv/send/recv in that pattern for each one; you must be trying to call send/send or recv/recv somewhere
+| [Wednesday 12 January 2011] [12:01:45] <cremes>	which violates the request/reply state machine
+| [Wednesday 12 January 2011] [12:02:17] <potatodemon>	Are pyzmq zmq socket sends non-bocking ?
+| [Wednesday 12 January 2011] [12:02:18] <Vince__>	recv/recv on a server demo in a loop........ I guess that was wrong then
+| [Wednesday 12 January 2011] [12:02:30] <cremes>	Vince__: yep, that's wrong
+| [Wednesday 12 January 2011] [12:02:53] <cremes>	potatodemon: i doubt sends are nonblocking by default; there is likely a flag you can pass to make it so
+| [Wednesday 12 January 2011] [12:02:57] <cremes>	otherwise it blocks by default
+| [Wednesday 12 January 2011] [12:03:04] <Vince__>	Seems like I need to rethink the design then
+| [Wednesday 12 January 2011] [12:03:31] <Vince__>	the server won't be sending anything usually though so now I'm confused...
+| [Wednesday 12 January 2011] [12:03:33] <cremes>	Vince__: tell us what you are trying to do and we can probably make suggestions
+| [Wednesday 12 January 2011] [12:05:15] <Vince__>	I wrote a wrapper for a basic language that not many people use (blitz) it needed safe types so I wrote an addition to the ZMQ API to use safe types as well. Everything seems to be fine except for this issue. I created a server in basic that right now has zmq_recv() running in a while loop. Obviously thats not right. 
+| [Wednesday 12 January 2011] [12:05:50] <cremes>	Vince__: explain what the client is supposed to do and what the server is supposed to do
+| [Wednesday 12 January 2011] [12:06:26] <Vince__>	server recieves messages from client and sends it to other clients
+| [Wednesday 12 January 2011] [12:06:55] <Vince__>	pretty simple
+| [Wednesday 12 January 2011] [12:06:55] <cremes>	and what does the client do?
+| [Wednesday 12 January 2011] [12:07:08] <cremes>	send requests only?
+| [Wednesday 12 January 2011] [12:07:39] <Vince__>	client sends messages to the server and recieves messages from the server
+| [Wednesday 12 January 2011] [12:07:44] <yawn>	mikko: yes.
+| [Wednesday 12 January 2011] [12:07:48] <cremes>	ok
+| [Wednesday 12 January 2011] [12:08:17] <cremes>	so which one of these (client or server) is currently sitting in a while loop doing recv?
+| [Wednesday 12 January 2011] [12:08:26] <Vince__>	server
+| [Wednesday 12 January 2011] [12:09:01] <cremes>	does that server ever need to respond back to the client, e.g. return a result?
+| [Wednesday 12 January 2011] [12:09:16] <Vince__>	I was hoping to just let the server sit there and wait for a connection/message from client
+| [Wednesday 12 January 2011] [12:09:48] <cremes>	ok; so does the server ever need to respond back to its clients?
+| [Wednesday 12 January 2011] [12:10:07] <cremes>	i'm trying to understand the message flow.... it's unclear
+| [Wednesday 12 January 2011] [12:10:33] <Vince__>	the server needs to communicate messages from ClientA to B,C,D,E,F etc... the server doesn't need to talk back to the client that connected. All I need to know is if the client connected successfully.
+| [Wednesday 12 January 2011] [12:10:52] <cremes>	ok
+| [Wednesday 12 January 2011] [12:11:16] <cremes>	do clients B,C,D,etc need to respond to A or is the message flow uni-directional?
+| [Wednesday 12 January 2011] [12:11:42] <cremes>	that is, A only ever sends and never receives, B,C,D,etc only recv and never send
+| [Wednesday 12 January 2011] [12:11:48] <Vince__>	Easiest example I can think of is a game server where the client moves and the movement is sent to all the other clients
+| [Wednesday 12 January 2011] [12:12:03] <cremes>	ok
+| [Wednesday 12 January 2011] [12:12:22] <cremes>	you should look at the pub/sub sockets; req/rep is the *wrong* pattern
+| [Wednesday 12 January 2011] [12:12:46] <Vince__>	hmmm
+| [Wednesday 12 January 2011] [12:12:47] <cremes>	client A would have a PUB socket
+| [Wednesday 12 January 2011] [12:12:57] <cremes>	the server would be a FORWARDER device
+| [Wednesday 12 January 2011] [12:13:18] <cremes>	the clients of the server would all have SUB sockets and would subscribe to the topics they want
+| [Wednesday 12 January 2011] [12:13:37] <cremes>	does that make sense?
+| [Wednesday 12 January 2011] [12:13:53] <cremes>	if not, tell me where it's confusing or wrong
+| [Wednesday 12 January 2011] [12:14:21] <Vince__>	I guess I need to make sure I understand what you are saying.
+| [Wednesday 12 January 2011] [12:14:40] <cremes>	ok, i'll break it down a bit more
+| [Wednesday 12 January 2011] [12:14:58] <cremes>	client A *only* sends data and never cares about a response to what it sent
+| [Wednesday 12 January 2011] [12:15:02] <Vince__>	is there a simple example anywhere?
+| [Wednesday 12 January 2011] [12:15:10] <cremes>	...
+| [Wednesday 12 January 2011] [12:15:18] <cremes>	did you read the guide linked off of the website?
+| [Wednesday 12 January 2011] [12:15:26] <cremes>	it covers all of these patterns in detail with code
+| [Wednesday 12 January 2011] [12:15:28] <Vince__>	Yes I did actually
+| [Wednesday 12 January 2011] [12:15:49] <cremes>	and the PUB section didn't seem appropriate for some reason?
+| [Wednesday 12 January 2011] [12:16:10] <Vince__>	It is probably. I just did the tutorials a few weeks ago.
+| [Wednesday 12 January 2011] [12:16:19] <Vince__>	Forwarder seems to be throwing me.
+| [Wednesday 12 January 2011] [12:17:44] <Vince__>	I am looking at the guide now.
+| [Wednesday 12 January 2011] [12:18:12] <cremes>	forwarder is a pretty simple device... let me see if i can help clarify its use
+| [Wednesday 12 January 2011] [12:18:39] <cremes>	a forwarder device will have a SUB socket and a PUB socket
+| [Wednesday 12 January 2011] [12:18:50] <Vince__>	k
+| [Wednesday 12 January 2011] [12:18:54] <cremes>	both sockets will *bind* to some addresses
+| [Wednesday 12 January 2011] [12:19:30] <cremes>	a publisher (client A) connects to the forwarder and sends its messages there
+| [Wednesday 12 January 2011] [12:20:02] <cremes>	subscribers interested in what client A have to say subscribe to the forwarder without needing to know the address of client A
+| [Wednesday 12 January 2011] [12:20:25] <Vince__>	aha! thats what I want indeed
+| [Wednesday 12 January 2011] [12:20:28] <cremes>	now along comes client B who *also* wants to publish data to an unknown number of subscribers
+| [Wednesday 12 January 2011] [12:20:41] <cremes>	it also connects to the forwarder and starts publishing
+| [Wednesday 12 January 2011] [12:21:08] <cremes>	a forwarder is a device for linking up multiple subscribers with multiple publishers
+| [Wednesday 12 January 2011] [12:21:34] <cremes>	does this help?
+| [Wednesday 12 January 2011] [12:22:09] <cremes>	the forwarder can be thought of as a way to get "multicast"/spread delivery via tcp
+| [Wednesday 12 January 2011] [12:23:06] <Vince__>	so what happens with the forwarder in terms of the application. Do I not need to actively tell it to recv messages?
+| [Wednesday 12 January 2011] [12:23:24] <cremes>	nope
+| [Wednesday 12 January 2011] [12:23:37] <cremes>	take a look at the code in the repository.... it's super simple
+| [Wednesday 12 January 2011] [12:24:03] <cremes>	it essentially sits in a while loop; every time it receives something it immediately sends it out to all subscribers
+| [Wednesday 12 January 2011] [12:24:14] <Vince__>	ah
+| [Wednesday 12 January 2011] [12:24:44] <Vince__>	I'm starting to think something like
+| [Wednesday 12 January 2011] [12:24:47] <Vince__>	zmq_init() //  Socket facing clients zmq_socket() //  Socket facing services zmq_bind() zmq_socket() //  Start built-in device zmq_device()
+| [Wednesday 12 January 2011] [12:40:54] <Vince__>	cremes how can I determine if a subscriber connects to the published socket from the server application?
+| [Wednesday 12 January 2011] [13:15:50] <cremes>	Vince__: that information is not exposed by the 0mq library; you would need a separate pair of sockets to transmit that info
+| [Wednesday 12 January 2011] [13:15:54] <cremes>	at the application level
+| [Wednesday 12 January 2011] [13:19:19] <Vince__>	thanks for all your help cremes!
+| [Wednesday 12 January 2011] [13:19:34] <cremes>	Vince__: you're welcome
+| [Wednesday 12 January 2011] [13:19:50] <Vince__>	pub/sub is certainly what I was looking for
+| [Wednesday 12 January 2011] [14:24:06] <mikko>	good evening
+| [Wednesday 12 January 2011] [15:26:47] <mikko>	sustrik: there?
+| [Wednesday 12 January 2011] [15:37:19] <sustrik>	mikko: hi
+| [Wednesday 12 January 2011] [15:39:39] <mikko>	sustrik: im adding some static analysis tools to builds
+| [Wednesday 12 January 2011] [15:39:55] <mikko>	they might produce some false positives but i guess it's ok 
+| [Wednesday 12 January 2011] [15:39:59] <mikko>	http://build.valokuva.org/job/ZeroMQ2-core-master_cppcheck/3/cppcheckResult/?
+| [Wednesday 12 January 2011] [15:45:53] <sustrik>	mikko: nice
+| [Wednesday 12 January 2011] [15:45:56] <sustrik>	let me check the report
+| [Wednesday 12 January 2011] [15:47:45] <sustrik>	mikko: that's the current master?
+| [Wednesday 12 January 2011] [15:48:56] <sustrik>	it looks like there's a bug in cppcheck :)
+| [Wednesday 12 January 2011] [15:50:17] <sustrik>	struct x {}; results in "Redundant code: Found a statement that begins with numeric constant"
+| [Wednesday 12 January 2011] [15:51:26] <mikko>	i could scale down the volume
+| [Wednesday 12 January 2011] [15:51:31] <mikko>	to more critical errors
+| [Wednesday 12 January 2011] [15:51:38] <sustrik>	no need
+| [Wednesday 12 January 2011] [15:51:41] <mikko>	i was thinking about adding a check for trailing whitespace as well
+| [Wednesday 12 January 2011] [15:51:50] <sustrik>	why not
+| [Wednesday 12 January 2011] [15:52:01] <sustrik>	i should maybe report the problem to cppcheck devs...
+| [Wednesday 12 January 2011] [15:53:51] <mikko>	yes, they are on github as well
+| [Wednesday 12 January 2011] [15:56:19] <sustrik>	hm, github? brief search seems to point me to sourceforge
+| [Wednesday 12 January 2011] [15:59:17] <mikko>	https://github.com/danmar/cppcheck
+| [Wednesday 12 January 2011] [15:59:23] <mikko>	at least this is where i cloned it from
+| [Wednesday 12 January 2011] [16:00:45] <sustrik>	probably a mirror
+| [Wednesday 12 January 2011] [16:00:58] <sustrik>	the project itselft seems to live at sourceforge
+| [Wednesday 12 January 2011] [16:10:46] <sustrik>	ok, i've posted a comment on their forum
+| [Wednesday 12 January 2011] [16:32:27] <danyamins>	hi
+| [Wednesday 12 January 2011] [16:32:51] <danyamins>	does anyone here have ideas about using pyzmq to make an asychronous driver for mongodb?
+| [Wednesday 12 January 2011] [16:34:06] <guido_g>	mongodb doesn't speak mq
+| [Wednesday 12 January 2011] [16:34:22] <guido_g>	so it would be more a proxy then a driver
+| [Wednesday 12 January 2011] [16:34:40] <danyamins>	well
+| [Wednesday 12 January 2011] [16:34:48] <danyamins>	when you say it doesnt speak 0zm, what do you mean?
+| [Wednesday 12 January 2011] [16:35:01] <danyamins>	(sorry for the naive question)
+| [Wednesday 12 January 2011] [16:35:54] <guido_g>	mongodb doesn't understand mq messages
+| [Wednesday 12 January 2011] [16:36:23] <danyamins>	you mean, there's something about he packing of the bits ?
+| [Wednesday 12 January 2011] [16:36:33] <danyamins>	you have to have it in aparticular form, the things you send over the sockets?
+| [Wednesday 12 January 2011] [16:36:36] <guido_g>	*sigh* yes
+| [Wednesday 12 January 2011] [16:37:12] <danyamins>	how so?
+| [Wednesday 12 January 2011] [16:37:16] <danyamins>	where is that documented?
+| [Wednesday 12 January 2011] [16:37:31] <danyamins>	I mean, undestand that the mongo stuff has to be in a particular form
+| [Wednesday 12 January 2011] [16:37:41] <danyamins>	I've already written a mongodb asynchronous driver
+| [Wednesday 12 January 2011] [16:37:58] <danyamins>	(I was hoping to replace the regular sockets in it with zmq sockets)
+| [Wednesday 12 January 2011] [16:38:14] <danyamins>	(and replace the tornado ioloop i use with the zmq ioloop)
+| [Wednesday 12 January 2011] [16:38:14] <mikko>	danyamins: zeromq frames the messages before sending them over wire
+| [Wednesday 12 January 2011] [16:38:31] <danyamins>	ah
+| [Wednesday 12 January 2011] [16:45:07] <danyamins>	so what is the proper solution?
+| [Wednesday 12 January 2011] [16:45:11] <danyamins>	do I have any options?
+| [Wednesday 12 January 2011] [16:45:13] <danyamins>	that are good?
+| [Wednesday 12 January 2011] [16:47:42] <yrashk>	is there any common reason why this https://gist.github.com/92839a6ab653f9366bb2 might happen?
+| [Wednesday 12 January 2011] [16:52:51] <benoitc>	https://github.com/benoitc/couch_zmq I started a zeromq endpoint for couchdb
+| [Wednesday 12 January 2011] [16:54:56] <danyamins>	could that help with the mongodb project?
+| [Wednesday 12 January 2011] [16:55:11] <benoitc>	no
+| [Wednesday 12 January 2011] [16:55:18] <danyamins>	ok sorry
+| [Wednesday 12 January 2011] [17:04:29] <mikko>	danyamins: you can't easily have zmq to communicate with mongo
+| [Wednesday 12 January 2011] [17:04:50] <mikko>	danyamins: you would need to write a proxy that takes zeromq messages and converts them to something that mongo understands
+| [Wednesday 12 January 2011] [17:04:58] <mikko>	so you are effectively back to square one
+| [Wednesday 12 January 2011] [17:05:59] <mikko>	benoitc: i think i've seen this before
+| [Wednesday 12 January 2011] [17:06:03] <mikko>	or something similar
+| [Wednesday 12 January 2011] [17:27:02] <mikko>	sustrik: http://build.valokuva.org/job/ZeroMQ2-core-master_static-analysis/7/dryResult/?
+| [Wednesday 12 January 2011] [17:27:07] <mikko>	duplicate code checker as well
+| [Wednesday 12 January 2011] [17:27:11] <mikko>	now time to sleep
+| [Wednesday 12 January 2011] [17:27:14] <mikko>	g'night
+| [Wednesday 12 January 2011] [18:03:58] <Seta00>	how do I check if the other endpoint is running?
+| [Wednesday 12 January 2011] [18:05:14] <Seta00>	(on a SUB socket)
+| [Wednesday 12 January 2011] [18:05:18] <Seta00>	if that matters :P
+| [Wednesday 12 January 2011] [18:06:00] <neopallium>	Seta00: you can't with just a SUB socket.
+| [Wednesday 12 January 2011] [18:06:39] <Seta00>	neopallium, what are my options?
+| [Wednesday 12 January 2011] [18:06:40] <neopallium>	you can create a REQ socket and send a request to the publisher to see if they are running, or just wait for a message on the SUB socket.
+| [Wednesday 12 January 2011] [18:07:15] <Seta00>	the problem with just waiting is that I can't notify users that the server is not running
+| [Wednesday 12 January 2011] [18:07:18] <neopallium>	the publisher can bind a REP socket, which the subscribers connect with a REQ socket to to ask if they are running.
+| [Wednesday 12 January 2011] [18:07:58] <Seta00>	so the REQ socket won't wait for the endpoint to come online like a SUB socket?
+| [Wednesday 12 January 2011] [18:08:39] <neopallium>	no, you would have to add some timeout when you send the request over the REQ socket.
+| [Wednesday 12 January 2011] [18:08:58] <Seta00>	hmm, I wonder how I didn't notice that
+| [Wednesday 12 January 2011] [18:09:01] <Seta00>	thank you neopallium 
+| [Wednesday 12 January 2011] [18:09:06] <neopallium>	np
+| [Wednesday 12 January 2011] [18:10:32] <neopallium>	I just wished 0mq provided a way to register to receive events from the sockets (i.e. like connect/disconnect notices).
+| [Wednesday 12 January 2011] [18:11:01] <Seta00>	that would be nice :)
+| [Wednesday 12 January 2011] [19:45:57] <zchrish>	Can one create a zmq::pollitem_t object dynamically? I am considering adding and subtracting PUSH patterns as subscribers come onboard.
+| [Wednesday 12 January 2011] [19:49:09] <zchrish>	For example, in my publisher, I have a PULL pattern that syncs my subscribers. I want to add dedicated PUSH patterns that can connect to each of those subscribers. I would get the connection information from a message from the subscriber to the publisher.
+| [Wednesday 12 January 2011] [19:51:04] <zchrish>	According to sustrik, using a vector for the pattern is supported (I think this is the result based on an earlier xChat post.
+| [Wednesday 12 January 2011] [21:41:51] <jugg>	sustrik, if the offer for access to the zeromq/erlzmq repo is still on the table, please ping me.
+| [Thursday 13 January 2011] [02:39:25] <benoitc>	mikko: i'm not awer of one, except something i launched in the past but aborted cause erlzmq wasn't working so well
+| [Thursday 13 January 2011] [02:39:42] <benoitc>	sustrik: did you see my pull request for rebar ?
+| [Thursday 13 January 2011] [02:41:11] <benoitc>	how would you validate suscriptions of a client ?
+| [Thursday 13 January 2011] [02:58:56] <yrashk>	another bizzare random zeromq segfault: https://gist.github.com/b5495c3f5dd29e193e9b I must be definitely doing something wrong
+| [Thursday 13 January 2011] [04:02:41] <sustrik>	benoitc: i am not maintaining the erlzmq binding
+| [Thursday 13 January 2011] [04:02:54] <sustrik>	try contacting serge aleynikov
+| [Thursday 13 January 2011] [04:03:15] <sustrik>	serge@aleynikov.org
+| [Thursday 13 January 2011] [04:03:50] <sustrik>	yrashk: what's the error?
