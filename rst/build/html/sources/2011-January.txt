@@ -2347,3 +2347,481 @@
 | [Thursday 13 January 2011] [04:02:54] <sustrik>	try contacting serge aleynikov
 | [Thursday 13 January 2011] [04:03:15] <sustrik>	serge@aleynikov.org
 | [Thursday 13 January 2011] [04:03:50] <sustrik>	yrashk: what's the error?
+| [Thursday 13 January 2011] [04:08:24] <yrashk>	sustrik: the one in the gist i mentioned
+| [Thursday 13 January 2011] [04:08:43] <sustrik>	there's no error there
+| [Thursday 13 January 2011] [04:10:01] <jugg>	benoitc, you may want to look at http://github.com/csrl/erlzmq for what I believe is a usable erlang binding
+| [Thursday 13 January 2011] [04:10:35] <sustrik>	jugg: any answer from serge?
+| [Thursday 13 January 2011] [04:11:07] <yrashk>	sustrik: its a segfault point inspected in gdb
+| [Thursday 13 January 2011] [04:11:41] <sustrik>	ah, segfault
+| [Thursday 13 January 2011] [04:11:43] <jugg>	sustrik, ?  I think I may have missed something.
+| [Thursday 13 January 2011] [04:12:00] <jugg>	I take it I should contact him. :)
+| [Thursday 13 January 2011] [04:12:08] <sustrik>	doyrashk: can you provide a minimal test case?
+| [Thursday 13 January 2011] [04:12:22] <sustrik>	jugg: well, try to ask him to pull the changes
+| [Thursday 13 January 2011] [04:12:52] <jugg>	does he handle pull requests on zeromq/erlzmq?
+| [Thursday 13 January 2011] [04:13:14] <yrashk>	sustrik: im trying but this segfault is only randomly reproducible :(
+| [Thursday 13 January 2011] [04:13:17] <sustrik>	he did so a week ago
+| [Thursday 13 January 2011] [04:13:24] <jugg>	k
+| [Thursday 13 January 2011] [04:13:26] <sustrik>	so he's probably still maintaining the project
+| [Thursday 13 January 2011] [04:13:35] <sustrik>	anyway, if he doesn't answer, ping me
+| [Thursday 13 January 2011] [04:13:45] <sustrik>	i'll grant you commit access to the project
+| [Thursday 13 January 2011] [04:13:50] <jugg>	ok
+| [Thursday 13 January 2011] [04:14:16] <sustrik>	yrashk: maybe be using a loop in your test program?
+| [Thursday 13 January 2011] [04:15:04] <yrashk>	sustrik: may be, i just have to narrow it down somehow
+| [Thursday 13 January 2011] [04:15:15] <sustrik>	goodo
+| [Thursday 13 January 2011] [04:15:20] <yrashk>	i have a pushing thread and a pulling thread
+| [Thursday 13 January 2011] [04:15:30] <yrashk>	not sure how this can affect it
+| [Thursday 13 January 2011] [04:15:53] <yrashk>	given i use ffn to deallocate stuff
+| [Thursday 13 January 2011] [04:16:38] <benoitc>	sustrik: k
+| [Thursday 13 January 2011] [04:19:43] <benoitc>	jugg: does it change the use of erlzmq ?
+| [Thursday 13 January 2011] [04:20:32] <benoitc>	ah yes so you create one context / socket
+| [Thursday 13 January 2011] [04:20:48] <jugg>	sustrik, to close the loop on an old discussion from a few weeks ago.  The problems I was seeing with bogus blank messages seems to have gone away with the updated erlang bindings, and I believe I have an explanation as to what was causing. As such I don't believe the issue exists but is masked, but that the issue was in the bindings.
+| [Thursday 13 January 2011] [04:21:05] <jugg>	benoitc, no, there are multiple sockets per context.
+| [Thursday 13 January 2011] [04:21:23] <jugg>	There is one erlang process per socket.
+| [Thursday 13 January 2011] [04:21:42] <sustrik>	jugg: great
+| [Thursday 13 January 2011] [04:21:56] <benoitc>	right parsing pursub server ex
+| [Thursday 13 January 2011] [04:22:53] <jugg>	the main difference is that zmq:start_link no longer exists (which used to initialize a zmq context).  Now you must call zmq:init/1 instead to establish a context.  And you must pass the context to zmq:socket/2.  Also, the returned socket from zmq:socket/2 must be passed around.
+| [Thursday 13 January 2011] [04:23:28] <benoitc>	mmm ok
+| [Thursday 13 January 2011] [04:23:54] <benoitc>	would be good if the change happen soon, so i could test it on couch_zmq
+| [Thursday 13 January 2011] [04:23:58] <jugg>	basically you can treat the erlang bindings very much like the C bindings.  See: http://csrl.github.com/erlzmq/  for documented differences.
+| [Thursday 13 January 2011] [04:24:16] <jugg>	(under architecture)
+| [Thursday 13 January 2011] [04:25:40] <benoitc>	jugg: i will provide a branch using rebar with that in coming hour
+| [Thursday 13 January 2011] [04:25:47] <jugg>	however, if you want low level control, you can utilize the zmq_drv:xxx functions directly, however there are certain constraints to respect.  I don't have those documented yet.
+| [Thursday 13 January 2011] [04:26:03] <benoitc>	cool
+| [Thursday 13 January 2011] [04:26:22] <jugg>	benoitc, great, I saw your rebar update and was waiting to see if my fork would get merged before integrating.
+| [Thursday 13 January 2011] [04:26:52] <benoitc>	i'm trying to only se rebar these days (hopefully it will be integrated in erlang)
+| [Thursday 13 January 2011] [04:26:55] <benoitc>	so I need it
+| [Thursday 13 January 2011] [04:31:32] <sustrik>	jugg: btw, i like the idea of erlzmq looking more alike to C API and other bindings
+| [Thursday 13 January 2011] [04:32:41] <jugg>	things started coming together better once I took that approach.
+| [Thursday 13 January 2011] [04:33:22] <sustrik>	nice
+| [Thursday 13 January 2011] [04:36:30] <jugg>	ok, pull request sent.
+| [Thursday 13 January 2011] [04:36:36] <yrashk>	jugg: how stable erlzmq now? I have another project in the pipeline and I am again trying to choose between zeromq and rabbitmq (I used both, although more of rabbitmq)
+| [Thursday 13 January 2011] [04:36:40] <yrashk>	is now*
+| [Thursday 13 January 2011] [04:37:32] <jugg>	fairly.  I haven't tested all of the get/setsockopt however, so I might have a bug in there - hopefully not.  And it'll be going into production use within two weeks here.
+| [Thursday 13 January 2011] [04:37:43] <yrashk>	oh nice
+| [Thursday 13 January 2011] [04:37:56] <mikko>	sustrik: im wondering that do we currently provide a way to remove subscription?
+| [Thursday 13 January 2011] [04:38:24] <mikko>	sustrik: im thinking about internet like usage scenario where subscribers with identities might come and go
+| [Thursday 13 January 2011] [04:50:39] <sustrik>	mikko: ZMQ_UNSUBSCRIBE
+| [Thursday 13 January 2011] [05:08:16] <benoitc>	jugg: i've an error while building your version :
+| [Thursday 13 January 2011] [05:08:17] <benoitc>	c_src/zmq_drv.cpp: In function void zmqdrv_ready_input(_erl_drv_data*, _erl_drv_event*):
+| [Thursday 13 January 2011] [05:08:20] <benoitc>	c_src/zmq_drv.cpp:939: error: cast from _erl_drv_event* to int loses precision
+| [Thursday 13 January 2011] [05:08:42] <benoitc>	mmm maybe I miss a flag
+| [Thursday 13 January 2011] [05:11:52] <mikko>	sustrik: i meant from server side
+| [Thursday 13 January 2011] [05:12:07] <mikko>	i've never used PUB/SUB with identities
+| [Thursday 13 January 2011] [05:12:24] <mikko>	but i understand if subscriber with identity goes away the messages are buffered
+| [Thursday 13 January 2011] [05:12:30] <mikko>	are they buffered up to HWM?
+| [Thursday 13 January 2011] [05:12:40] <sustrik>	yes
+| [Thursday 13 January 2011] [05:12:57] <sustrik>	basically, identity defines a "permanent connection"
+| [Thursday 13 January 2011] [05:13:26] <sustrik>	one that remains even though reconnect happens, one application is shut down or alike
+| [Thursday 13 January 2011] [05:13:46] <sustrik>	then there's orthogonal issue of how many massages can be buffered
+| [Thursday 13 January 2011] [05:13:52] <sustrik>	that's HWM and SWAP
+| [Thursday 13 January 2011] [05:13:55] <mikko>	but it's good that HWM limits it
+| [Thursday 13 January 2011] [05:14:06] <sustrik>	yes, it's orthogonal
+| [Thursday 13 January 2011] [05:14:17] <mikko>	i was thinking about untrusted subscribers creating a resource exchaustion 
+| [Thursday 13 January 2011] [05:14:43] <sustrik>	it can still happen
+| [Thursday 13 January 2011] [05:14:45] <seb`>	do sockets get a randomly assigned identity if it's not set?
+| [Thursday 13 January 2011] [05:14:49] <sustrik>	it there's a lot of them
+| [Thursday 13 January 2011] [05:14:56] <mikko>	yes, i guess so
+| [Thursday 13 January 2011] [05:14:57] <sustrik>	is it wise to ude identities?
+| [Thursday 13 January 2011] [05:15:00] <sustrik>	use
+| [Thursday 13 January 2011] [05:15:12] <sustrik>	seb': kind of
+| [Thursday 13 January 2011] [05:15:20] <mikko>	i guess a sockopt disabling permanent connections even if client requests might be good
+| [Thursday 13 January 2011] [05:15:35] <mikko>	if clients are untrusted it might prove to be useful
+| [Thursday 13 January 2011] [05:15:43] <sustrik>	seb': but the connection is not persistent in the sense the resources are deallocated once the connection breaks
+| [Thursday 13 January 2011] [05:16:05] <seb`>	I see
+| [Thursday 13 January 2011] [05:44:42] <CIA-21>	zeromq2: 03Martin Sustrik 07master * r18f29de 10/ (52 files): 
+| [Thursday 13 January 2011] [05:44:42] <CIA-21>	zeromq2: Make cppcheck not complain about "'operator=' should return something"
+| [Thursday 13 January 2011] [05:44:42] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/hUiXv8
+| [Thursday 13 January 2011] [05:45:18] <mikko>	heh, i wonder other static analysis tools are there
+| [Thursday 13 January 2011] [05:45:34] <mikko>	currently it runs cppcheck, duplicate code check and soon sloccount
+| [Thursday 13 January 2011] [05:50:45] <sustrik>	let me first fix these :)
+| [Thursday 13 January 2011] [05:51:03] <sustrik>	mikko: btw, is it possible to switch off certain types of errors?
+| [Thursday 13 January 2011] [05:51:17] <mikko>	sustrik: i can create a suppressions file
+| [Thursday 13 January 2011] [05:51:21] <mikko>	which ones specifically?
+| [Thursday 13 January 2011] [05:51:37] <sustrik>	Redundant condition. It is safe to deallocate a NULL pointer
+| [Thursday 13 January 2011] [05:51:59] <sustrik>	The code is redundant but it improves readability
+| [Thursday 13 January 2011] [05:52:07] <sustrik>	so I would prefer to leave it in
+| [Thursday 13 January 2011] [05:52:25] <sustrik>	cppCheckId=	redundantIfDelete0
+| [Thursday 13 January 2011] [05:53:24] <mikko>	ok, i'll try adding suppressions file
+| [Thursday 13 January 2011] [05:53:25] <mikko>	just a sec
+| [Thursday 13 January 2011] [06:19:03] <jugg>	benoitc, 32bit or 64bit?
+| [Thursday 13 January 2011] [06:22:07] <jugg>	benoitc, looks like for some reason I changed the cast from a long to an int.  I'll take a look and see if I can figure out why.
+| [Thursday 13 January 2011] [06:29:59] <mikko>	sustrik: http://build.valokuva.org/job/ZeroMQ2-core-master_static-analysis/12/cppcheckResult/?
+| [Thursday 13 January 2011] [06:30:04] <mikko>	suppressed now
+| [Thursday 13 January 2011] [06:31:10] <mikko>	still a couple of redundant ones but fixing later
+| [Thursday 13 January 2011] [06:34:33] <sustrik>	mikko: strange that it is analysing the system header files
+| [Thursday 13 January 2011] [06:34:43] <sustrik>	like /usr/include/stdlib.h
+| [Thursday 13 January 2011] [06:36:22] <mikko>	yeah, i removed those 
+| [Thursday 13 January 2011] [06:36:24] <mikko>	http://build.valokuva.org/job/ZeroMQ2-core-master_static-analysis/14/cppcheckResult/?
+| [Thursday 13 January 2011] [06:46:18] <sustrik>	great
+| [Thursday 13 January 2011] [06:46:28] <sustrik>	i have a look at remaining problems later on
+| [Thursday 13 January 2011] [06:46:42] <mikko>	let me know if more suppressions are needed
+| [Thursday 13 January 2011] [06:47:26] <jugg>	benoitc, It is because zeromq returns an 'int' for that value, so the conversion is harmless, but the warning should be suppressed.
+| [Thursday 13 January 2011] [06:53:06] <benoitc>	jugg: sound like there are other error
+| [Thursday 13 January 2011] [06:53:11] <benoitc>	yes 64 bits
+| [Thursday 13 January 2011] [06:53:37] <benoitc>	jugg: there is also a problem l 446 and 820
+| [Thursday 13 January 2011] [06:53:45] <benoitc>	int e = (uintptr_t)event;
+| [Thursday 13 January 2011] [06:53:52] <benoitc>	solve the first one
+| [Thursday 13 January 2011] [06:54:03] <benoitc>	on 446 i've to assert((sizeof(uint8_t)+ n+1) == size);
+| [Thursday 13 January 2011] [06:54:12] <benoitc>	but my C is really rosten
+| [Thursday 13 January 2011] [06:54:39] <benoitc>	rusty
+| [Thursday 13 January 2011] [07:00:22] <jugg>	hmm, that 446 error is strange.  I don't yet understand why your change would be correct.
+| [Thursday 13 January 2011] [07:01:16] <jugg>	size should be equal to n + 1
+| [Thursday 13 January 2011] [07:01:25] <jugg>	sizeof(uint8_t) == 1
+| [Thursday 13 January 2011] [07:01:37] <jugg>	so, sizeof(uint8_t) + n should be correct...
+| [Thursday 13 January 2011] [07:04:04] <zchrish>	I have a use case and am wondering whether zeromq is the right implementation method :
+| [Thursday 13 January 2011] [07:04:21] <jugg>	benoitc, what is the error on 820?
+| [Thursday 13 January 2011] [07:04:58] <zchrish>	 Actually will send to the discussion group; sorry.
+| [Thursday 13 January 2011] [07:07:01] <jugg>	benoitc, I believe I've understood the problem at 446.  Verifying...
+| [Thursday 13 January 2011] [07:13:43] <jugg>	yes,  'n' is not byte size, it is the number of options.  So what is being asserted itself is bogus.  I'm making a fix and will push it shortly.
+| [Thursday 13 January 2011] [07:38:22] <jugg>	benoitc, I have the fixes in place for the first two issues.  Is there anything to fix for line 820?
+| [Thursday 13 January 2011] [07:57:53] <benoitc>	jugg: testing
+| [Thursday 13 January 2011] [08:00:38] <benoitc>	jugg: new error c_src/zmq_drv.cpp: In function void wrap_zmq_setsockopt(zmq_drv_t*, const uint8_t*, size_t):
+| [Thursday 13 January 2011] [08:00:41] <benoitc>	c_src/zmq_drv.cpp:492: error: optvalen was not declared in this scope
+| [Thursday 13 January 2011] [08:00:47] <jugg>	eh
+| [Thursday 13 January 2011] [08:01:24] <jugg>	wow, how is my compiler not giving me an error there?
+| [Thursday 13 January 2011] [08:02:07] <benoitc>	-Wl isn't an option on osx
+| [Thursday 13 January 2011] [08:02:35] <benoitc>	ah yes a typo
+| [Thursday 13 January 2011] [08:03:37] <benoitc>	and now have a new warning c_src/zmq_drv.cpp:492: warning: comparison between signed and unsigned integer expressions
+| [Thursday 13 January 2011] [08:04:07] <jugg>	ah NDEBUG is defined in my build environment... no wonder I'm not finding these problems.
+| [Thursday 13 January 2011] [08:04:11] 	 * jugg slaps head
+| [Thursday 13 January 2011] [08:04:21] <benoitc>	heh
+| [Thursday 13 January 2011] [08:05:09] <jugg>	sorry... too many things going at once; missing these types of details.
+| [Thursday 13 January 2011] [08:05:15] <benoitc>	np
+| [Thursday 13 January 2011] [08:05:38] <benoitc>	that' where opensource helps :)
+| [Thursday 13 January 2011] [08:05:52] <jugg>	quite so :)
+| [Thursday 13 January 2011] [08:08:45] <jugg>	there we go... now I'm getting the errors.
+| [Thursday 13 January 2011] [08:09:18] <benoitc>	i'm not sure it is, but cool :-)
+| [Thursday 13 January 2011] [08:20:09] <jugg>	fix pushed
+| [Thursday 13 January 2011] [08:22:45] <benoitc>	one last sorry :(
+| [Thursday 13 January 2011] [08:22:46] <benoitc>	10> Assertion failed: (sizeof(uint32_t) == size), function wrap_zmq_poll, file c_src/zmq_drv.cpp, line 821. Abort trap
+| [Thursday 13 January 2011] [08:22:51] <jugg>	I guess I should re-run my tests now that the asserts are actually 
+| [Thursday 13 January 2011] [08:22:55] <benoitc>	the one I had with my fixes
+| [Thursday 13 January 2011] [08:23:38] <benoitc>	jugg: btw rebared version https://github.com/benoitc/erlzmq/tree/rebar-socketprocess
+| [Thursday 13 January 2011] [08:24:38] <benoitc>	the pubtest is ok here
+| [Thursday 13 January 2011] [08:24:53] <benoitc>	only repserver hangs
+| [Thursday 13 January 2011] [08:29:51] <jugg>	yes, I have another bug there. I'll have to rerun my tests now that asserts are actually being checked.
+| [Thursday 13 January 2011] [08:30:26] <benoitc>	k i will concentrate on app level for now
+| [Thursday 13 January 2011] [08:34:54] <efhache>	mikko: hi do you have seen how i can configure zmq 2.0.7  to work under linux 2.4 without epooll ?
+| [Thursday 13 January 2011] [08:35:13] <mikko>	efhache: take a look at src/poller.h
+| [Thursday 13 January 2011] [08:35:28] <mikko>	i reckon you could change ZMQ_HAVE_LINUX condition to use poll instead of epoll
+| [Thursday 13 January 2011] [08:35:36] <mikko>	not sure if that's the only thing you need to do
+| [Thursday 13 January 2011] [08:35:59] <mikko>	maybe we could add a configure flag in the future to choose poller implementation
+| [Thursday 13 January 2011] [08:37:32] <efhache>	so the define become : elif defined ZMQ_HAVE_LINUX     typedef epoll_t poller_t; // fhn modification 20110113 epoll_t poller_t;
+| [Thursday 13 January 2011] [08:37:38] <efhache>	are you ok with me?
+| [Thursday 13 January 2011] [08:37:55] <mikko>	no
+| [Thursday 13 January 2011] [08:38:04] <efhache>	sorry typedef : poll_t poller_t;
+| [Thursday 13 January 2011] [08:38:08] <mikko>	yes
+| [Thursday 13 January 2011] [08:38:10] <mikko>	try that 
+| [Thursday 13 January 2011] [08:38:18] <efhache>	yes sorry wrong copy past   ;-)
+| [Thursday 13 January 2011] [08:39:52] <sustrik>	efhache: you can use ZMQ_FORCE_POLL or somesuch
+| [Thursday 13 January 2011] [08:40:29] <mikko>	did we have that in 2.0.7 ?
+| [Thursday 13 January 2011] [08:40:58] <mikko>	oh
+| [Thursday 13 January 2011] [08:41:00] <mikko>	it is there
+| [Thursday 13 January 2011] [08:41:07] <mikko>	so no modification should be needed
+| [Thursday 13 January 2011] [08:41:20] <mikko>	export CPPFLAGS="-DZMQ_FORCE_POLL" ./configure
+| [Thursday 13 January 2011] [08:45:47] <efhache>	ah sorry I've modified source... it recompile it, I'll test and come back... if ok I'll retry with the flag
+| [Thursday 13 January 2011] [08:45:56] <efhache>	thanks a lot and SYL ;-)
+| [Thursday 13 January 2011] [08:46:29] <mikko>	you should really look into making the software work with 2.1.0 as well
+| [Thursday 13 January 2011] [08:46:42] <mikko>	there aren't that many modifications needed usually
+| [Thursday 13 January 2011] [08:52:08] <efhache>	mmhh  I''ve begun with 2.0.6  and then update to 2.0.7 thath normally "no many modification"  but in result I've rework all the code... So now I fix it  and later I'll update the library if need it
+| [Thursday 13 January 2011] [09:02:03] <efhache>	mikko: it does not work more, i've test with poller.h modified and obtain another problem : "Assertion failed: !(it->revents & POLLNVAL) (poll.cpp:171)"
+| [Thursday 13 January 2011] [09:02:30] <efhache>	with the export of the FORCE POLL FLAG  I reobtain the assetion with epoll.cpp as yesterday
+| [Thursday 13 January 2011] [09:02:59] <mikko>	im not sure if anyone has really tested extensively with 2.4 kernel
+| [Thursday 13 January 2011] [09:11:22] <jugg>	is there still plans for a zeromq conference in Budapest coming up?
+| [Thursday 13 January 2011] [09:12:23] <sustrik>	pieter was organising it
+| [Thursday 13 January 2011] [09:12:30] <sustrik>	but he got ill
+| [Thursday 13 January 2011] [09:12:42] <sustrik>	he's out of hospital for only a few days now
+| [Thursday 13 January 2011] [09:13:02] <sustrik>	so, hard to say
+| [Thursday 13 January 2011] [09:13:45] <sustrik>	depends on when he gets ok
+| [Thursday 13 January 2011] [09:14:30] <jugg>	He's recovering well?
+| [Thursday 13 January 2011] [09:16:14] <benoitc>	jugg: i'm not sure why assertion is here line 821. on 64 bits it's always false.
+| [Thursday 13 January 2011] [09:16:30] <benoitc>	removing it, pubrep works of course ..
+| [Thursday 13 January 2011] [09:16:43] <sustrik>	i believe so
+| [Thursday 13 January 2011] [09:17:30] <jugg>	I know why.  I'll have a fix soon. You can modify src/zmq_drv.erl line: 190 to be: <<(?ZMQ_POLL):8, (events_to_int(Events)):32>>
+| [Thursday 13 January 2011] [09:20:33] <jugg>	actually, I might change poll/send/recv flags to all be a byte size instead.
+| [Thursday 13 January 2011] [09:21:24] <jugg>	yes, that makes more sense
+| [Thursday 13 January 2011] [09:21:32] <benoitc>	k
+| [Thursday 13 January 2011] [09:21:41] 	 * benoitc just ordered k&r book
+| [Thursday 13 January 2011] [09:21:47] <benoitc>	need to refresh my C
+| [Thursday 13 January 2011] [09:22:27] <jugg>	so instead, change the assert in poll to: assert(sizeof(uint8_t) == size);
+| [Thursday 13 January 2011] [09:23:20] <benoitc>	works 
+| [Thursday 13 January 2011] [09:25:09] <efhache>	mikko: do you know if for zmq there is a use of "EPOLLET" (triggered mode) ??
+| [Thursday 13 January 2011] [09:27:12] <yawn>	is there a way to determine the underlying zmq version in jzmq?
+| [Thursday 13 January 2011] [09:42:28] <benoitc>	jugg: just did https://github.com/benoitc/erlzmq/commit/463d727dd90d7da94047e5cdb5b231672829d116 but anyway will wait your final fix
+| [Thursday 13 January 2011] [09:42:54] <benoitc>	rebar is working well on erlzmq btw
+| [Thursday 13 January 2011] [09:43:54] <jugg>	ok, almost ready.
+| [Thursday 13 January 2011] [09:45:41] <benoitc>	cool :)
+| [Thursday 13 January 2011] [09:48:02] <mikko>	efhache: i dont know what EPOLLET means
+| [Thursday 13 January 2011] [09:48:39] <mikko>	yawn: not sure if it's exposed
+| [Thursday 13 January 2011] [09:49:25] <mikko>	yawn: ZMQ::version_full() ?
+| [Thursday 13 January 2011] [09:49:57] <yawn>	mikko: not in my version - maybe an old build ...
+| [Thursday 13 January 2011] [09:50:15] <mikko>	https://github.com/zeromq/jzmq/blob/master/src/ZMQ.cpp#L30
+| [Thursday 13 January 2011] [09:50:22] <mikko>	at least that's what the source says
+| [Thursday 13 January 2011] [09:50:42] <sustrik>	mikko: it's edge-triggered
+| [Thursday 13 January 2011] [09:51:10] <sustrik>	efhache: the underlying file descriptor (ZMQ_FD) is edge-triggered
+| [Thursday 13 January 2011] [09:51:18] <mikko>	sustrik: EPOLLET stands for edge-triggered?
+| [Thursday 13 January 2011] [09:51:25] <sustrik>	i think so
+| [Thursday 13 January 2011] [09:51:30] <sustrik>	let me check
+| [Thursday 13 January 2011] [09:52:17] <sustrik>	yes
+| [Thursday 13 January 2011] [09:54:06] <mikko>	ok
+| [Thursday 13 January 2011] [09:59:30] <efhache>	mikko:  I've resolved the problem, I've used the export CPPFLAGS="-DZMQ_FORCE_SELECT"
+| [Thursday 13 January 2011] [10:03:44] <mikko>	efhache: cool
+| [Thursday 13 January 2011] [10:04:14] <mikko>	sustrik: i guess that makes sense if it standa for EPOLL Egde-Triggered
+| [Thursday 13 January 2011] [10:04:29] <yawn>	mikko: protected statics
+| [Thursday 13 January 2011] [10:04:52] <yawn>	mikko: one needs to do the usual dance & sing to make java return the values
+| [Thursday 13 January 2011] [10:25:12] <Hybelkanin>	Anyone with experience on zmq on osx 10.6 with the C# bindings?
+| [Thursday 13 January 2011] [10:27:14] <mikko>	Hybelkanin: unusual combination
+| [Thursday 13 January 2011] [10:27:21] <mikko>	can't say i've heard that combo before
+| [Thursday 13 January 2011] [10:27:28] <Hybelkanin>	:P
+| [Thursday 13 January 2011] [10:27:47] <mikko>	i have built and tested the c# bindings on linux
+| [Thursday 13 January 2011] [10:28:54] <Hybelkanin>	I think my problem may be monodevelop
+| [Thursday 13 January 2011] [10:29:10] <Hybelkanin>	So this might be the wrong channel
+| [Thursday 13 January 2011] [10:43:10] <amacleod>	My Python 0MQ REP server doesn't stop when I interrupt it with ^C.  How do I make it respect ^C?
+| [Thursday 13 January 2011] [10:49:35] <s0undt3ch>	ppl, pub/sub forward devices should connect_in and bind_out?
+| [Thursday 13 January 2011] [10:49:43] <s0undt3ch>	or should they bind_in and bind_out?
+| [Thursday 13 January 2011] [11:01:59] <mikko>	amacleod: i would i think it might be blocking on zmq_term
+| [Thursday 13 January 2011] [11:02:34] <mikko>	amacleod: i dont really know how things are implemented in python so its just guessing
+| [Thursday 13 January 2011] [11:02:35] <amacleod>	mikko, I wrote it like the examples with a "while True" loop.
+| [Thursday 13 January 2011] [11:05:11] <amacleod>	I can stop it from within just fine--if I set up a conditional where my message handler calls self.context.term () when it receives "EXIT" or something, it's okay.
+| [Thursday 13 January 2011] [11:05:18] <mikko>	amacleod: can you see where it's stuck?
+| [Thursday 13 January 2011] [11:05:42] <amacleod>	As far as I know, it's not stuck.  It's just completely ignoring ^C or SIGTERM.
+| [Thursday 13 January 2011] [11:06:11] <cremes>	amacleod: if it's blocked in zmq_term(), it won't let python's signal handler run to catch the signal
+| [Thursday 13 January 2011] [11:06:22] <cremes>	this has been reported a few times; i think sustrik is planning a fix
+| [Thursday 13 January 2011] [11:06:34] <cremes>	same thing happens with the ruby runtime
+| [Thursday 13 January 2011] [11:07:07] <amacleod>	Oh, interesting.
+| [Thursday 13 January 2011] [11:07:19] <amacleod>	If I hit ^C and then try sending something to it, it does get the KeyboardInterrupt exception.
+| [Thursday 13 January 2011] [11:07:43] <amacleod>	So it's actually probably blocking in recv()
+| [Thursday 13 January 2011] [11:07:52] <cremes>	huh, that might be a new problem
+| [Thursday 13 January 2011] [11:07:57] <cremes>	if you can reduce it, file an issue
+| [Thursday 13 January 2011] [11:08:33] <mikko>	recv should return on ctrl+c
+| [Thursday 13 January 2011] [11:20:58] <s0undt3ch>	sustrik, guido_g: I found out the issue about my forwarder problem
+| [Thursday 13 January 2011] [11:21:20] <s0undt3ch>	sustrik, guido_g: publishers were binding instead of connecting
+| [Thursday 13 January 2011] [11:21:41] <s0undt3ch>	sustrik, guido_g: the forwarder device was the one binding so, no one else should bind
+| [Thursday 13 January 2011] [11:29:08] <jugg>	benoitc, updates pushed.  All get/setsockopt options are tested now.  
+| [Thursday 13 January 2011] [11:38:27] <benoitc>	jugg: works
+| [Thursday 13 January 2011] [11:38:33] <benoitc>	thanks :)
+| [Thursday 13 January 2011] [11:39:10] <benoitc>	smth weird though when you launch pubsub test
+| [Thursday 13 January 2011] [11:39:24] <benoitc>	10 is sent but none of subclient get it
+| [Thursday 13 January 2011] [11:40:47] <benoitc>	jugg: adding a timer after the bind fix that but ...
+| [Thursday 13 January 2011] [11:42:09] <benoitc>	anyway https://github.com/benoitc/erlzmq/tree/rebar-socketprocess
+| [Thursday 13 January 2011] [11:44:29] <jugg>	yes, that is normal - not a binding issue.
+| [Thursday 13 January 2011] [11:44:50] <benoitc>	ok
+| [Thursday 13 January 2011] [11:45:13] <benoitc>	didn't check but did you add PUSH and PULL
+| [Thursday 13 January 2011] [11:45:25] <jugg>	yes
+| [Thursday 13 January 2011] [11:45:26] <benoitc>	or DOWNSTREAM, UPSTREAM are current names ?
+| [Thursday 13 January 2011] [11:45:29] <benoitc>	cool
+| [Thursday 13 January 2011] [11:45:49] <jugg>	using your rebar, I always get errors: fatal: No tags can describe '6944b664b20b525e210f1eaebea00bbcd21ec217'
+| [Thursday 13 January 2011] [11:45:55] <benoitc>	ok time to code this app then. more in the night
+| [Thursday 13 January 2011] [11:45:58] <jugg>	when doing $ make
+| [Thursday 13 January 2011] [11:46:00] <benoitc>	jugg: you have to tag
+| [Thursday 13 January 2011] [11:46:08] <jugg>	just to build ??
+| [Thursday 13 January 2011] [11:46:12] <benoitc>	i can remove it though
+| [Thursday 13 January 2011] [11:46:25] <benoitc>	jugg: this is for archive creation
+| [Thursday 13 January 2011] [11:46:26] <jugg>	yes, I build much more often than I tag
+| [Thursday 13 January 2011] [11:46:35] <jugg>	no, that happens when doing $ make
+| [Thursday 13 January 2011] [11:46:36] <benoitc>	let me edit this Makefile :)
+| [Thursday 13 January 2011] [11:46:40] <jugg>	k :)
+| [Thursday 13 January 2011] [11:46:55] <benoitc>	you could just do ./rebar compile anyway
+| [Thursday 13 January 2011] [11:52:09] <amacleod>	Should I file my test case as an attachment to https://github.com/zeromq/zeromq2/issues/#issue/127 , or start a new issue?
+| [Thursday 13 January 2011] [11:52:56] <mikko>	amacleod: is it python?
+| [Thursday 13 January 2011] [11:53:03] <amacleod>	mikko, yes, Python, not Ruby.
+| [Thursday 13 January 2011] [11:53:11] <mikko>	open it under https://github.com/zeromq/pyzmq
+| [Thursday 13 January 2011] [11:58:19] <benoitc>	jugg: fixed and pushed
+| [Thursday 13 January 2011] [12:07:32] <jugg>	benoitc, $git rebase -i can be your friend... :)
+| [Thursday 13 January 2011] [12:14:56] <benoitc>	mmm ?
+| [Thursday 13 January 2011] [12:15:05] <benoitc>	I've used rebase -i
+| [Thursday 13 January 2011] [12:15:14] <benoitc>	just cherry-picking last update
+| [Thursday 13 January 2011] [12:15:52] <jugg>	why not just rebase your commits ontop of the last update?
+| [Thursday 13 January 2011] [12:16:14] <benoitc>	in rebar-socketprocess
+| [Thursday 13 January 2011] [12:16:16] <benoitc>	dunno
+| [Thursday 13 January 2011] [12:16:24] <benoitc>	rebasing now
+| [Thursday 13 January 2011] [12:21:17] <benoitc>	jugg: done
+| [Thursday 13 January 2011] [12:25:22] <benoitc>	win 6
+| [Thursday 13 January 2011] [13:14:52] <amacleod>	Bleh.  Didn't realize pyzmq master won't build against zmq 2.1.0.
+| [Thursday 13 January 2011] [13:19:16] <benoitc>	mmm it is 
+| [Thursday 13 January 2011] [13:19:27] <benoitc>	at least it does
+| [Thursday 13 January 2011] [13:20:21] <amacleod>	Do I need to delete my previous installation of pyzmq in order to make use of the development version?
+| [Thursday 13 January 2011] [13:20:34] <benoitc>	i've installed it in my virtualenv
+| [Thursday 13 January 2011] [13:22:35] <amacleod>	I must be doing something wrong.  I built and installed pyzmq master, and when I try to import zmq, it gets an error, 'cause it can't import initthreads from zmq.util
+| [Thursday 13 January 2011] [13:23:27] <benoitc>	did you change paths in setup.cfg?
+| [Thursday 13 January 2011] [13:26:01] <amacleod>	Ah, nope.  That must be it.
+| [Thursday 13 January 2011] [13:26:38] <amacleod>	Does it not use /usr/local/lib and /usr/local/include by default?
+| [Thursday 13 January 2011] [13:33:18] <benoitc>	not sure
+| [Thursday 13 January 2011] [13:45:46] <amacleod>	The weird thing is that everything seems to get installed just fine.  It's only when I go to import zmq that the error occurs.
+| [Thursday 13 January 2011] [14:50:27] <mikko>	sustrik: https://github.com/danmar/cppcheck/commit/36c18072280d71e49d4d2a38d011666f792d6283
+| [Thursday 13 January 2011] [14:50:59] <mikko>	wrong one
+| [Thursday 13 January 2011] [14:51:34] <mikko>	maybe not, not sure if that affects the one you reported
+| [Thursday 13 January 2011] [14:52:42] <sustrik>	looks like
+| [Thursday 13 January 2011] [14:53:27] <mikko>	testing now
+| [Thursday 13 January 2011] [14:54:53] <mikko>	nope, still see those reported
+| [Thursday 13 January 2011] [17:56:15] <yrashk>	can push socket be shared across threads?
+| [Thursday 13 January 2011] [17:56:25] <yrashk>	or is it unsafe to do so?
+| [Thursday 13 January 2011] [18:29:59] <yrashk>	if zmq_send with ZMQ_NOBLOCK returns EAGAIN, do I have to reinitialize the message?
+| [Thursday 13 January 2011] [20:51:59] <jugg>	yrashk, in 2.1, you can migrate a socket between threads, but you can't share the socket simultaneously in multiple threads.
+| [Thursday 13 January 2011] [20:52:14] <jugg>	and no need to reinitialize.
+| [Friday 14 January 2011] [01:20:39] <potatodemon>	Hey Y'all.  I want to have a pub/sub queue.  Where these is no data persistance, if someone is not subscribed to the queue the data is not kept around.  Is this easy to do with 0mq?
+| [Friday 14 January 2011] [01:22:26] <potatodemon>	Oh this looks like it is the default behavior. word up
+| [Friday 14 January 2011] [03:28:11] <sustrik>	yes, it's default
+| [Friday 14 January 2011] [03:28:52] <sustrik>	yeashk: no need to re-initialise
+| [Friday 14 January 2011] [03:29:12] <sustrik>	ah, jugg answered already :)
+| [Friday 14 January 2011] [04:30:22] <yrashk>	jugg: thanks! already moved to two push sockets approach :)
+| [Friday 14 January 2011] [06:07:04] <CIA-21>	zeromq2: 03Martin Sustrik 07master * r8eae7d8 10/ (5 files): 
+| [Friday 14 January 2011] [06:07:04] <CIA-21>	zeromq2: 'message distribution mechanism' separated from XPUB socket
+| [Friday 14 January 2011] [06:07:04] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/eC63Tc
+| [Friday 14 January 2011] [06:15:46] <mikko>	good morning
+| [Friday 14 January 2011] [06:17:09] <sustrik>	morning
+| [Friday 14 January 2011] [06:26:28] <CIA-21>	zeromq2: 03Martin Sustrik 07master * r58c9830 10/ (src/xsub.cpp src/xsub.hpp): 
+| [Friday 14 January 2011] [06:26:28] <CIA-21>	zeromq2: XSUB socket has a subscription distributor
+| [Friday 14 January 2011] [06:26:28] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/fifGK7
+| [Friday 14 January 2011] [06:37:51] <CIA-21>	zeromq2: 03Martin Sustrik 07master * ra348d94 10/ (src/xpub.cpp src/xpub.hpp): 
+| [Friday 14 January 2011] [06:37:51] <CIA-21>	zeromq2: Fair queueing of subscriptions added to XPUB socket
+| [Friday 14 January 2011] [06:37:51] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/gZWsdO
+| [Friday 14 January 2011] [06:40:58] <CIA-21>	zeromq2: 03Martin Sustrik 07master * r59fa0c9 10/ AUTHORS : 
+| [Friday 14 January 2011] [06:40:58] <CIA-21>	zeromq2: Gerard Toonstra added to the authors file
+| [Friday 14 January 2011] [06:40:58] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/fNsKW7
+| [Friday 14 January 2011] [06:50:16] <guido_g>	howdy
+| [Friday 14 January 2011] [06:50:29] <guido_g>	any idea what is the cause of: Assertion failed: pending_bytes == 0 (pgm_receiver.cpp:141)
+| [Friday 14 January 2011] [06:51:34] <guido_g>	killing my subscriber randomly
+| [Friday 14 January 2011] [06:52:16] <guido_g>	looks like a heisen bug
+| [Friday 14 January 2011] [07:02:30] <sustrik>	guido_g: the assert shouldn't be there
+| [Friday 14 January 2011] [07:02:31] <sustrik>	imo
+| [Friday 14 January 2011] [07:02:53] <sustrik>	please, do report the problem on the mailing list so that steven can get a look at it
+| [Friday 14 January 2011] [07:17:26] <guido_g>	ok
+| [Friday 14 January 2011] [07:30:18] <benoitc>	mmm how would you authenticate consumers in a PUB/SUB schema ?
+| [Friday 14 January 2011] [07:31:50] <guido_g>	over a different connection
+| [Friday 14 January 2011] [07:32:31] <benoitc>	i'm not sur eto follow, if i setup a pub server
+| [Friday 14 January 2011] [07:32:46] <benoitc>	how can i make sure only authentciated consumer can have access to it ?
+| [Friday 14 January 2011] [07:32:56] <benoitc>	something in the message ?
+| [Friday 14 January 2011] [07:33:18] <guido_g>	mq does not provide authentication
+| [Friday 14 January 2011] [07:33:27] <guido_g>	so you've to do it yourself
+| [Friday 14 January 2011] [07:33:30] <benoitc>	i know
+| [Friday 14 January 2011] [07:33:37] <benoitc>	i'm looking for ideas
+| [Friday 14 January 2011] [07:33:47] <guido_g>	simple solution would be to use a req/rep
+| [Friday 14 January 2011] [07:34:28] <benoitc>	right, it would mean a dedicaced connection in this case then
+| [Friday 14 January 2011] [07:34:40] <guido_g>	for authentication
+| [Friday 14 January 2011] [07:35:01] <benoitc>	mmm ? 
+| [Friday 14 January 2011] [07:35:06] <benoitc>	i don't follow
+| [Friday 14 January 2011] [07:35:58] <jugg>	it'd be interesting if pub sockets could accept connections based on connecting sub socket identity.
+| [Friday 14 January 2011] [07:36:27] <guido_g>	i doubt that
+| [Friday 14 January 2011] [07:36:31] <jugg>	or reject them...
+| [Friday 14 January 2011] [07:36:47] <guido_g>	see where amqp went with all these "nice features"
+| [Friday 14 January 2011] [07:37:34] <jugg>	socket identity itself isn't a nice feature?
+| [Friday 14 January 2011] [07:37:54] <guido_g>	<jugg> it'd be interesting if pub sockets could accept connections based on connecting sub socket identity.
+| [Friday 14 January 2011] [07:38:10] <guido_g>	socket-ids are cheap
+| [Friday 14 January 2011] [07:38:21] <guido_g>	authentication is not
+| [Friday 14 January 2011] [07:38:29] <jugg>	thanks, I didn't realize I wrote that... :)
+| [Friday 14 January 2011] [07:38:55] <guido_g>	just to give the context for my point
+| [Friday 14 January 2011] [07:39:13] <benoitc>	well it could be just a filter on socket-id
+| [Friday 14 January 2011] [07:39:21] <benoitc>	whatever you do with that
+| [Friday 14 January 2011] [07:39:51] <jugg>	so, you'd reject subscription forwarding then?  It isn't much different.
+| [Friday 14 January 2011] [07:40:09] <guido_g>	yes
+| [Friday 14 January 2011] [07:40:28] <jugg>	yes you'd reject it, or yes it is different?
+| [Friday 14 January 2011] [07:40:33] <guido_g>	a)
+| [Friday 14 January 2011] [07:41:33] <jugg>	anyway...  the idea is still interesting, likable or not. :)
+| [Friday 14 January 2011] [07:43:21] <jugg>	probably could just add 'subscribe' socket option to a pub socket, and only identities that match the pub subscriptions can connect.  Too greatly overload the concept. :)
+| [Friday 14 January 2011] [07:44:06] <guido_g>	how would this work w/ pgm?
+| [Friday 14 January 2011] [07:44:58] <jugg>	I'll let someone else solve that :)
+| [Friday 14 January 2011] [07:45:08] <guido_g>	i knew that...
+| [Friday 14 January 2011] [07:45:39] <benoitc>	i guess i could encrypt messages in the pubserver
+| [Friday 14 January 2011] [07:45:56] <guido_g>	sure
+| [Friday 14 January 2011] [07:45:56] <benoitc>	so only authorized suscribers could read them
+| [Friday 14 January 2011] [07:46:10] <guido_g>	decode
+| [Friday 14 January 2011] [07:46:30] <benoitc>	yes
+| [Friday 14 January 2011] [07:46:32] <guido_g>	the message itself would still be readable by not autorized clients
+| [Friday 14 January 2011] [07:46:46] <benoitc>	right
+| [Friday 14 January 2011] [07:56:24] <jugg>	if it is an issue of sensitive data, then you need to encrypt the connection anyway.   I assumed you were solving an issue of limiting connections.  So, however you encrypt the connection could also encapsulate the authentication.
+| [Friday 14 January 2011] [07:57:26] <benoitc>	well not in a pubsub, i can't say don't send to this suscriber
+| [Friday 14 January 2011] [07:58:57] <benoitc>	what i can do on the other hand is to let trusted suscribers to decode
+| [Friday 14 January 2011] [09:21:56] <Steve-o>	so is anyone trying to write new transports for zmq?
+| [Friday 14 January 2011] [09:24:05] <mikko>	Steve-o: sustrik maybe?
+| [Friday 14 January 2011] [09:24:05] <mikko>	:)
+| [Friday 14 January 2011] [09:24:22] <sustrik>	Steve-o: why so?
+| [Friday 14 January 2011] [09:25:15] <sustrik>	Steve-o: btw, the problem reported by guido_g
+| [Friday 14 January 2011] [09:25:37] <Steve-o>	just wondering
+| [Friday 14 January 2011] [09:25:45] <sustrik>	what the semantics pending_bytes?
+| [Friday 14 January 2011] [09:25:48] <sustrik>	of
+| [Friday 14 January 2011] [09:26:06] <Steve-o>	zmq batches zmq messages into PGM packets
+| [Friday 14 January 2011] [09:26:22] <Steve-o>	the pending_bytes refers to data remaining in the batch not sent to the application
+| [Friday 14 January 2011] [09:26:32] <Steve-o>	I believe
+| [Friday 14 January 2011] [09:27:12] <sustrik>	as for the transport it would be nice to make adding new ones but atm the interface between the trasnport and the rest of 0mq is kind of fuzzy
+| [Friday 14 January 2011] [09:27:32] <sustrik>	adding new ones easy
+| [Friday 14 January 2011] [09:30:12] <sustrik>	guido_g: is the problem reproducible?
+| [Friday 14 January 2011] [09:30:59] <Steve-o>	something like a HTTP transport is quite complicated as you need timers and odd twist of push/pull characteristics unless you throw threads at it
+| [Friday 14 January 2011] [09:31:37] <Steve-o>	I haven't seen guido's problem otherwise I would have logged it
+| [Friday 14 January 2011] [09:34:24] <sustrik>	it's on the mailing list
+| [Friday 14 January 2011] [09:34:41] <sustrik>	you've already replied
+| [Friday 14 January 2011] [09:35:56] <mikko>	Steve-o: websocket transport might be a lot easier
+| [Friday 14 January 2011] [09:36:06] <sustrik>	afaiu the problem is that if data cannot be sent to the application due to HWM or somesuch (pending_bytes>0)
+| [Friday 14 January 2011] [09:36:21] <sustrik>	then pgm_receiver should unregister itself from polling on incoming data (reset_pollin)
+| [Friday 14 January 2011] [09:36:46] <sustrik>	if it does so, in_event() should not be invoked
+| [Friday 14 January 2011] [09:36:52] <sustrik>	and thus the assert doesn't happen
+| [Friday 14 January 2011] [09:37:15] <sustrik>	there's a bug somewhere...
+| [Friday 14 January 2011] [09:38:52] <sustrik>	mikko, Steve-o: HTTP, XMPP, SOAP and such are pretty complex, however, protocols like SCTP or UDP seem to make much better fit
+| [Friday 14 January 2011] [09:39:04] <sustrik>	UDT i meant
+| [Friday 14 January 2011] [09:44:49] <Steve-o>	HTTP is interesting as its really only the connection process that is different, the rest follows the TCP transport
+| [Friday 14 January 2011] [09:46:33] <guido_g>	re
+| [Friday 14 January 2011] [09:46:53] <guido_g>	sustrik: as I said, sometimes it happens sometimes not
+| [Friday 14 January 2011] [09:47:09] <guido_g>	so there is no way to trigger that on demand
+| [Friday 14 January 2011] [09:50:02] <guido_g>	msut be something in the packet because three independent subscribers crashed simultaniously
+| [Friday 14 January 2011] [09:50:05] <guido_g>	*must
+| [Friday 14 January 2011] [09:52:51] <Steve-o>	I guess you can tell if you had a dummy client that subs on the same transport but does no processing
+| [Friday 14 January 2011] [09:53:19] <guido_g>	is in the working atm
+| [Friday 14 January 2011] [09:53:34] <Steve-o>	Martin's implication is that the leading messages cause high CPU usage to cause the HWM to be hit
+| [Friday 14 January 2011] [09:57:00] <Steve-o>	I presume then it would be straight forward to reproduce with a sleeping client and reasonably expedient publisher
+| [Friday 14 January 2011] [09:59:08] <guido_g>	spoc works fine so far
+| [Friday 14 January 2011] [09:59:34] <guido_g>	spoc  := Simplest POssibile Client
+| [Friday 14 January 2011] [10:01:55] <guido_g>	other client still dies
+| [Friday 14 January 2011] [10:03:12] <guido_g>	what does this error mean?
+| [Friday 14 January 2011] [10:03:38] <Steve-o>	as Martin says, it is due to HWM on receiving side to app'
+| [Friday 14 January 2011] [10:04:02] <Steve-o>	i.e. slow consumer causes push from PGM to the app' the fail and leave unprocessed data
+| [Friday 14 January 2011] [10:04:52] <guido_g>	pardon?
+| [Friday 14 January 2011] [10:05:20] <Steve-o>	data is queuing up inside ZMQ for you app'
+| [Friday 14 January 2011] [10:05:29] <guido_g>	ok
+| [Friday 14 January 2011] [10:05:43] <Steve-o>	when it hits a certain level it pushes back to the transport
+| [Friday 14 January 2011] [10:05:52] <guido_g>	also ok and understood
+| [Friday 14 January 2011] [10:06:06] <Steve-o>	the transport, PGM, operates in batches of messages, one packet contains one batch
+| [Friday 14 January 2011] [10:06:19] <guido_g>	ok
+| [Friday 14 January 2011] [10:06:49] <Steve-o>	the queue limit is being reached before a packet batch of messages has completed
+| [Friday 14 January 2011] [10:07:19] <Steve-o>	leaving unprocessed bytes (pending_bytes > 0)
+| [Friday 14 January 2011] [10:07:54] <guido_g>	now it starts to make sense
+| [Friday 14 January 2011] [10:07:54] <Steve-o>	a subsequent event indicating further new incoming data occurs
+| [Friday 14 January 2011] [10:08:03] <Steve-o>	then the assertion is hit
+| [Friday 14 January 2011] [10:08:37] <guido_g>	so one way to circumvent this problem would be a high HWM on the subscriber?
+| [Friday 14 January 2011] [10:09:53] <Steve-o>	well the transport needs to unhook from future in_events until the queue hits the LWM I guess
+| [Friday 14 January 2011] [10:10:20] <guido_g>	iow, no easy way work around that bug
+| [Friday 14 January 2011] [10:11:08] <Steve-o>	higher watermark would be a workaround
+| [Friday 14 January 2011] [10:11:27] <guido_g>	i'll give it a try
+| [Friday 14 January 2011] [10:12:03] <guido_g>	does rate-limiting work on the receiver side?
+| [Friday 14 January 2011] [10:12:59] <Steve-o>	send side
+| [Friday 14 January 2011] [10:13:57] <Steve-o>	just looking at zmq receiver, it already does unhook some events
+| [Friday 14 January 2011] [10:14:21] <Steve-o>	line 222-231,
+| [Friday 14 January 2011] [10:15:58] <Steve-o>	maybe then its the timer event
+| [Friday 14 January 2011] [10:16:11] <sustrik>	hm
+| [Friday 14 January 2011] [10:16:15] <sustrik>	what is see is:
+| [Friday 14 January 2011] [10:16:16] <sustrik>	pending_bytes = received - processed;
+| [Friday 14 January 2011] [10:16:17] <sustrik>	...
+| [Friday 14 January 2011] [10:16:23] <sustrik>	reset_pollin (pipe_handle);
+| [Friday 14 January 2011] [10:16:23] <sustrik>	            reset_pollin (socket_handle);
+| [Friday 14 January 2011] [10:16:24] <Steve-o>	slow consumer with waiting packets
+| [Friday 14 January 2011] [10:16:43] <sustrik>	and the whole thing is under
+| [Friday 14 January 2011] [10:16:48] <sustrik>	if (processed < received) {
+| [Friday 14 January 2011] [10:17:16] <Steve-o>	but timer events call in_event()
+| [Friday 14 January 2011] [10:17:27] <sustrik>	it looks like there's no guarantee that reset_pollin will be triggered iff pending_bytes>0
+| [Friday 14 January 2011] [10:17:41] <sustrik>	the code is quite complex though...
+| [Friday 14 January 2011] [10:18:01] <Steve-o>	therefore the timer must skip if the pollin is in reset state
+| [Friday 14 January 2011] [10:18:20] <sustrik>	ah. maybe
+| [Friday 14 January 2011] [10:18:43] <sustrik>	that should be easy to test
+| [Friday 14 January 2011] [10:18:57] <Steve-o>	or simply add a cancel_timer with reset_pollin()
+| [Friday 14 January 2011] [10:19:29] <sustrik>	or just add a bool variable 'pollin_active'
+| [Friday 14 January 2011] [10:19:54] <sustrik>	and return immediately from in_event if it's false
+| [Friday 14 January 2011] [10:20:45] <Steve-o>	canceling the timer would be cleaner 
+| [Friday 14 January 2011] [10:20:51] <sustrik>	sure
+| [Friday 14 January 2011] [10:21:10] <Steve-o>	just copy the section in unplug()
+| [Friday 14 January 2011] [10:23:22] <Steve-o>	++229: if (has_rx_timer) { cancel_timer (rx_timer_id); has_rx_timer = false; }
+| [Friday 14 January 2011] [10:24:19] <Steve-o>	although ideally the timer should live until the reset state clears
+| [Friday 14 January 2011] [10:25:28] <Steve-o>	if there is no further incoming data but packets remain in the window they will not get flushed., depending the complex logic determing when in_event fires
+| [Friday 14 January 2011] [10:27:07] <Steve-o>	as in, after the queue is cleared
+| [Friday 14 January 2011] [10:38:26] <Steve-o>	but it's certainly a condition worthy of note, as without the assertion you have an incredibly high chance of data loss
+| [Friday 14 January 2011] [10:47:54] <guido_g>	ok, a very high HWM on the subscriber side does the trick so far
+| [Friday 14 January 2011] [10:54:46] <sustrik>	Steve-o: however, I assume the timer should be cancelled nontheless
+| [Friday 14 January 2011] [10:54:47] <sustrik>	right?

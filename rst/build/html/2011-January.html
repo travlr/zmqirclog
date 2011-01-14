@@ -180,49 +180,49 @@
 <div class="line">[Sunday 02 January 2011] [05:11:38] &lt;sustrik&gt; looking at the code...</div>
 <div class="line">[Sunday 02 January 2011] [05:12:00] &lt;sustrik&gt; hm, it can possibly happen when the socket is not yet fully initialised</div>
 <div class="line">[Sunday 02 January 2011] [05:31:08] &lt;sustrik&gt; do you have a test program to reproduce it?</div>
-<div class="line">[Sunday 02 January 2011] [17:20:36] &lt;<a href="#id77"><span class="problematic" id="id78">shykes_</span></a>&gt; Hello</div>
+<div class="line">[Sunday 02 January 2011] [17:20:36] &lt;<a href="#id79"><span class="problematic" id="id80">shykes_</span></a>&gt; Hello</div>
 <div class="line">[Sunday 02 January 2011] [17:29:28] &lt;mikko&gt;   hi</div>
-<div class="line">[Sunday 02 January 2011] [17:31:06] &lt;<a href="#id79"><span class="problematic" id="id80">shykes_</span></a>&gt; I&#8217;m weighing my options for a &#8220;smarter&#8221; req/rep device. Are you aware of any projects going in that direction?</div>
+<div class="line">[Sunday 02 January 2011] [17:31:06] &lt;<a href="#id81"><span class="problematic" id="id82">shykes_</span></a>&gt; I&#8217;m weighing my options for a &#8220;smarter&#8221; req/rep device. Are you aware of any projects going in that direction?</div>
 <div class="line">[Sunday 02 January 2011] [17:31:25] &lt;mikko&gt;   what do you mean by smarter?</div>
 <div class="line">[Sunday 02 January 2011] [17:31:27] &lt;mikko&gt;   brb</div>
-<div class="line">[Sunday 02 January 2011] [17:32:19] &lt;<a href="#id81"><span class="problematic" id="id82">shykes_</span></a>&gt; Currently we have a forwarder with bind on both sides</div>
-<div class="line">[Sunday 02 January 2011] [17:32:26] &lt;<a href="#id83"><span class="problematic" id="id84">shykes_</span></a>&gt; ie dynamic workers, dynamic clients</div>
-<div class="line">[Sunday 02 January 2011] [17:32:57] &lt;<a href="#id85"><span class="problematic" id="id86">shykes_</span></a>&gt; we use that to load-balance synchronous rpc. I&#8217;m guessing this is a classic use case</div>
-<div class="line">[Sunday 02 January 2011] [17:34:02] &lt;<a href="#id87"><span class="problematic" id="id88">shykes_</span></a>&gt; I&#8217;d like my device to stop forwarding requests to a worker which doesn&#8217;t behave properly</div>
-<div class="line">[Sunday 02 January 2011] [17:34:29] &lt;<a href="#id89"><span class="problematic" id="id90">shykes_</span></a>&gt; eg. a pre-configured timeout</div>
-<div class="line">[Sunday 02 January 2011] [17:37:18] &lt;<a href="#id91"><span class="problematic" id="id92">shykes_</span></a>&gt; Maybe I could implement this as a &#8216;proxy device&#8217; in front of each worker</div>
-<div class="line">[Sunday 02 January 2011] [17:38:00] &lt;<a href="#id93"><span class="problematic" id="id94">shykes_</span></a>&gt; each proxy has only one message to worry about at a time, which makes it simpler to write</div>
-<div class="line">[Sunday 02 January 2011] [17:38:06] &lt;<a href="#id95"><span class="problematic" id="id96">shykes_</span></a>&gt; Any insight would be much appreciated :)</div>
-<div class="line">[Sunday 02 January 2011] [19:47:25] &lt;Skaag&gt;   <a href="#id97"><span class="problematic" id="id98">shykes_</span></a>: sounds like an important and also &#8220;classical&#8221; use case to me, sounds like you need a sort of a &#8220;broker&#8221;? :-)</div>
-<div class="line">[Sunday 02 January 2011] [19:48:57] &lt;<a href="#id99"><span class="problematic" id="id100">shykes_</span></a>&gt; Correct. Although I already use zmq_forwarder as a broker</div>
-<div class="line">[Sunday 02 January 2011] [19:50:09] &lt;<a href="#id101"><span class="problematic" id="id102">shykes_</span></a>&gt; But before I reinvent the wheel, I&#8217;m trying to find out how much of it already exists</div>
-<div class="line">[Sunday 02 January 2011] [19:50:51] &lt;<a href="#id103"><span class="problematic" id="id104">shykes_</span></a>&gt; I&#8217;m guessing a lot of people use zeromq for the same purpose as me. How did all these people implement this?</div>
-<div class="line">[Sunday 02 January 2011] [19:55:14] &lt;<a href="#id105"><span class="problematic" id="id106">shykes_</span></a>&gt; Hum, I just found rabbitmq&#8217;s rmq-0mq plugin. Maybe that can help</div>
+<div class="line">[Sunday 02 January 2011] [17:32:19] &lt;<a href="#id83"><span class="problematic" id="id84">shykes_</span></a>&gt; Currently we have a forwarder with bind on both sides</div>
+<div class="line">[Sunday 02 January 2011] [17:32:26] &lt;<a href="#id85"><span class="problematic" id="id86">shykes_</span></a>&gt; ie dynamic workers, dynamic clients</div>
+<div class="line">[Sunday 02 January 2011] [17:32:57] &lt;<a href="#id87"><span class="problematic" id="id88">shykes_</span></a>&gt; we use that to load-balance synchronous rpc. I&#8217;m guessing this is a classic use case</div>
+<div class="line">[Sunday 02 January 2011] [17:34:02] &lt;<a href="#id89"><span class="problematic" id="id90">shykes_</span></a>&gt; I&#8217;d like my device to stop forwarding requests to a worker which doesn&#8217;t behave properly</div>
+<div class="line">[Sunday 02 January 2011] [17:34:29] &lt;<a href="#id91"><span class="problematic" id="id92">shykes_</span></a>&gt; eg. a pre-configured timeout</div>
+<div class="line">[Sunday 02 January 2011] [17:37:18] &lt;<a href="#id93"><span class="problematic" id="id94">shykes_</span></a>&gt; Maybe I could implement this as a &#8216;proxy device&#8217; in front of each worker</div>
+<div class="line">[Sunday 02 January 2011] [17:38:00] &lt;<a href="#id95"><span class="problematic" id="id96">shykes_</span></a>&gt; each proxy has only one message to worry about at a time, which makes it simpler to write</div>
+<div class="line">[Sunday 02 January 2011] [17:38:06] &lt;<a href="#id97"><span class="problematic" id="id98">shykes_</span></a>&gt; Any insight would be much appreciated :)</div>
+<div class="line">[Sunday 02 January 2011] [19:47:25] &lt;Skaag&gt;   <a href="#id99"><span class="problematic" id="id100">shykes_</span></a>: sounds like an important and also &#8220;classical&#8221; use case to me, sounds like you need a sort of a &#8220;broker&#8221;? :-)</div>
+<div class="line">[Sunday 02 January 2011] [19:48:57] &lt;<a href="#id101"><span class="problematic" id="id102">shykes_</span></a>&gt; Correct. Although I already use zmq_forwarder as a broker</div>
+<div class="line">[Sunday 02 January 2011] [19:50:09] &lt;<a href="#id103"><span class="problematic" id="id104">shykes_</span></a>&gt; But before I reinvent the wheel, I&#8217;m trying to find out how much of it already exists</div>
+<div class="line">[Sunday 02 January 2011] [19:50:51] &lt;<a href="#id105"><span class="problematic" id="id106">shykes_</span></a>&gt; I&#8217;m guessing a lot of people use zeromq for the same purpose as me. How did all these people implement this?</div>
+<div class="line">[Sunday 02 January 2011] [19:55:14] &lt;<a href="#id107"><span class="problematic" id="id108">shykes_</span></a>&gt; Hum, I just found rabbitmq&#8217;s rmq-0mq plugin. Maybe that can help</div>
 <div class="line">[Sunday 02 January 2011] [20:00:11] &lt;Skaag&gt;   we are porting our system from rabbitmq to 0mq</div>
 <div class="line">[Sunday 02 January 2011] [20:00:26] &lt;Skaag&gt;   because of scaling issues</div>
-<div class="line">[Sunday 02 January 2011] [20:00:43] &lt;<a href="#id107"><span class="problematic" id="id108">shykes_</span></a>&gt; Yeah, we were using rabbitmq too</div>
+<div class="line">[Sunday 02 January 2011] [20:00:43] &lt;<a href="#id109"><span class="problematic" id="id110">shykes_</span></a>&gt; Yeah, we were using rabbitmq too</div>
 <div class="line">[Sunday 02 January 2011] [20:00:46] &lt;Skaag&gt;   I think the case of a &#8220;dead&#8221; machine is handled well, but a misbehaving machine, that&#8217;s another story</div>
 <div class="line">[Sunday 02 January 2011] [20:01:23] &lt;Skaag&gt;   you&#8217;ll simply need to implement this yourself, or on the machine itself, decouple the process that receives the messages from the processes that do the actual work</div>
-<div class="line">[Sunday 02 January 2011] [20:01:31] &lt;<a href="#id109"><span class="problematic" id="id110">shykes_</span></a>&gt; yeah</div>
-<div class="line">[Sunday 02 January 2011] [20:01:39] &lt;<a href="#id111"><span class="problematic" id="id112">shykes_</span></a>&gt; sounds like less work than putting rabbitmq back into the mix :)</div>
+<div class="line">[Sunday 02 January 2011] [20:01:31] &lt;<a href="#id111"><span class="problematic" id="id112">shykes_</span></a>&gt; yeah</div>
+<div class="line">[Sunday 02 January 2011] [20:01:39] &lt;<a href="#id113"><span class="problematic" id="id114">shykes_</span></a>&gt; sounds like less work than putting rabbitmq back into the mix :)</div>
 <div class="line">[Sunday 02 January 2011] [20:01:44] &lt;Skaag&gt;   why are you using 0mq instead of the wicked rabbit if I may ask?</div>
 <div class="line">[Sunday 02 January 2011] [20:02:09] &lt;Skaag&gt;   yes, also in my opinion, it is less work.</div>
-<div class="line">[Sunday 02 January 2011] [20:02:16] &lt;<a href="#id113"><span class="problematic" id="id114">shykes_</span></a>&gt; A few reasons</div>
-<div class="line">[Sunday 02 January 2011] [20:02:29] &lt;<a href="#id115"><span class="problematic" id="id116">shykes_</span></a>&gt; 1. We encountered problems with our Celery+RabbitMQ setup</div>
+<div class="line">[Sunday 02 January 2011] [20:02:16] &lt;<a href="#id115"><span class="problematic" id="id116">shykes_</span></a>&gt; A few reasons</div>
+<div class="line">[Sunday 02 January 2011] [20:02:29] &lt;<a href="#id117"><span class="problematic" id="id118">shykes_</span></a>&gt; 1. We encountered problems with our Celery+RabbitMQ setup</div>
 <div class="line">[Sunday 02 January 2011] [20:02:30] &lt;Skaag&gt;   I wish I knew about the shortcomings before I started implementing with rabbit...</div>
-<div class="line">[Sunday 02 January 2011] [20:02:56] &lt;<a href="#id117"><span class="problematic" id="id118">shykes_</span></a>&gt; 2. We hit a major bug in the persister, which made it crash and not come back. Had to recover by hand...</div>
+<div class="line">[Sunday 02 January 2011] [20:02:56] &lt;<a href="#id119"><span class="problematic" id="id120">shykes_</span></a>&gt; 2. We hit a major bug in the persister, which made it crash and not come back. Had to recover by hand...</div>
 <div class="line">[Sunday 02 January 2011] [20:03:09] &lt;Skaag&gt;   crap</div>
 <div class="line">[Sunday 02 January 2011] [20:03:15] &lt;Skaag&gt;   (and now i&#8217;m told that our 16 node cluster is considered &#8220;very large&#8221; in rabbitmq terms...)</div>
-<div class="line">[Sunday 02 January 2011] [20:03:19] &lt;<a href="#id119"><span class="problematic" id="id120">shykes_</span></a>&gt; 3. I hate amqp. It&#8217;s too complicated</div>
+<div class="line">[Sunday 02 January 2011] [20:03:19] &lt;<a href="#id121"><span class="problematic" id="id122">shykes_</span></a>&gt; 3. I hate amqp. It&#8217;s too complicated</div>
 <div class="line">[Sunday 02 January 2011] [20:03:55] &lt;Skaag&gt;   well then we agree at least on 2 and 3, and about 1 is irrelevant to our own system</div>
-<div class="line">[Sunday 02 January 2011] [20:03:58] &lt;<a href="#id121"><span class="problematic" id="id122">shykes_</span></a>&gt; 4. more freedom in the topology</div>
+<div class="line">[Sunday 02 January 2011] [20:03:58] &lt;<a href="#id123"><span class="problematic" id="id124">shykes_</span></a>&gt; 4. more freedom in the topology</div>
 <div class="line">[Sunday 02 January 2011] [20:04:04] &lt;Skaag&gt;   right</div>
-<div class="line">[Sunday 02 January 2011] [20:04:13] &lt;<a href="#id123"><span class="problematic" id="id124">shykes_</span></a>&gt; for example, switch to multicast down the road</div>
+<div class="line">[Sunday 02 January 2011] [20:04:13] &lt;<a href="#id125"><span class="problematic" id="id126">shykes_</span></a>&gt; for example, switch to multicast down the road</div>
 <div class="line">[Sunday 02 January 2011] [20:04:16] &lt;Skaag&gt;   ok this gives me validation in my own path</div>
 <div class="line">[Sunday 02 January 2011] [20:04:20] &lt;Skaag&gt;   yep</div>
 <div class="line">[Sunday 02 January 2011] [20:04:28] &lt;Skaag&gt;   at least within a single DC</div>
 <div class="line">[Sunday 02 January 2011] [20:04:37] &lt;Skaag&gt;   I believe multicast over WAN is not feasible and may never be</div>
-<div class="line">[Sunday 02 January 2011] [20:04:51] &lt;<a href="#id125"><span class="problematic" id="id126">shykes_</span></a>&gt; yeah, we&#8217;re primarily on EC2 for now, so not relevant for us either</div>
+<div class="line">[Sunday 02 January 2011] [20:04:51] &lt;<a href="#id127"><span class="problematic" id="id128">shykes_</span></a>&gt; yeah, we&#8217;re primarily on EC2 for now, so not relevant for us either</div>
 <div class="line">[Sunday 02 January 2011] [20:21:22] &lt;Skaag&gt;   I constantly fail to see how EC2 helps with anything other than temporarily huge computations</div>
 <div class="line">[Sunday 02 January 2011] [20:21:38] &lt;Skaag&gt;   it&#8217;s more expensive than standard hosting</div>
 <div class="line">[Sunday 02 January 2011] [20:21:46] &lt;Skaag&gt;   by any calculation I made</div>
@@ -443,7 +443,7 @@
 <div class="line">[Tuesday 04 January 2011] [04:58:47] &lt;sustrik&gt;        i&#8217;ll have to look at it further</div>
 <div class="line">[Tuesday 04 January 2011] [04:58:59] &lt;mikko&gt;  man, year after year it&#8217;s harder to come back to work after holidays</div>
 <div class="line">[Tuesday 04 January 2011] [04:59:27] &lt;sustrik&gt;        same here :)</div>
-<div class="line">[Tuesday 04 January 2011] [05:15:22] &lt;neopallium&gt;     I hit this assertion in zeromq: Assertion failed: <a href="#id127"><span class="problematic" id="id128">msg_</span></a>-&gt;flags &amp; ZMQ_MSG_MORE (rep.cpp:80)</div>
+<div class="line">[Tuesday 04 January 2011] [05:15:22] &lt;neopallium&gt;     I hit this assertion in zeromq: Assertion failed: <a href="#id129"><span class="problematic" id="id130">msg_</span></a>-&gt;flags &amp; ZMQ_MSG_MORE (rep.cpp:80)</div>
 <div class="line">[Tuesday 04 January 2011] [05:15:53] &lt;neopallium&gt;     that is from a REP socket with a XREQ client.</div>
 <div class="line">[Tuesday 04 January 2011] [05:16:27] &lt;neopallium&gt;     is it bad to connect a XREQ socket to a REP socket?</div>
 <div class="line">[Tuesday 04 January 2011] [05:18:37] &lt;neopallium&gt;     hmm, looks like XREQ -&gt; REP is a supported setup.</div>
@@ -544,264 +544,264 @@
 <div class="line">[Tuesday 04 January 2011] [12:46:03] &lt;sustrik&gt;        but there&#8217;s still no special mechanism to inspect peers&#8217; identities</div>
 <div class="line">[Tuesday 04 January 2011] [12:48:35] &lt;s0undt3ch&gt;      Seta00: nope</div>
 <div class="line">[Tuesday 04 January 2011] [12:49:01] &lt;Seta00&gt; just checking if someone has a pyzmq build for Windows</div>
-<div class="line">[Tuesday 04 January 2011] [13:54:20] &lt;<a href="#id129"><span class="problematic" id="id130">Joes_</span></a>&gt;  Hello. It is very tempting for me to use ZeroMQ, but I&#8217;m trying to figure out how architecture would look like. So, we have chat server (a-la IRC) with chat rooms.</div>
-<div class="line">[Tuesday 04 January 2011] [13:54:40] &lt;<a href="#id131"><span class="problematic" id="id132">Joes_</span></a>&gt;  Users can join multiple rooms and I need to route messages between users in same room.</div>
-<div class="line">[Tuesday 04 January 2011] [13:54:53] &lt;<a href="#id133"><span class="problematic" id="id134">Joes_</span></a>&gt;  As far as I understood tutorials, I need 2 connections</div>
-<div class="line">[Tuesday 04 January 2011] [13:55:06] &lt;<a href="#id135"><span class="problematic" id="id136">Joes_</span></a>&gt;  one pubsub to send room events back to users</div>
-<div class="line">[Tuesday 04 January 2011] [13:55:16] &lt;<a href="#id137"><span class="problematic" id="id138">Joes_</span></a>&gt;  and one pubsub to send events from users to rooms?</div>
-<div class="line">[Tuesday 04 January 2011] [13:55:30] &lt;<a href="#id139"><span class="problematic" id="id140">Joes_</span></a>&gt;  can it be done with only one connection?</div>
-<div class="line">[Tuesday 04 January 2011] [13:55:38] &lt;<a href="#id141"><span class="problematic" id="id142">Joes_</span></a>&gt;  (or socket)</div>
-<div class="line">[Tuesday 04 January 2011] [14:16:49] &lt;mikko&gt;  <a href="#id143"><span class="problematic" id="id144">Joes_</span></a>: you would need two</div>
-<div class="line">[Tuesday 04 January 2011] [14:17:34] &lt;<a href="#id145"><span class="problematic" id="id146">Joes_</span></a>&gt;  in terms of low level communication with tcp transport - two tcp ports on the server will be used</div>
-<div class="line">[Tuesday 04 January 2011] [14:17:36] &lt;<a href="#id147"><span class="problematic" id="id148">Joes_</span></a>&gt;  correct?</div>
-<div class="line">[Tuesday 04 January 2011] [14:17:44] &lt;<a href="#id149"><span class="problematic" id="id150">Joes_</span></a>&gt;  (firewall setup, etc)</div>
-<div class="line">[Tuesday 04 January 2011] [14:18:04] &lt;mikko&gt;  <a href="#id151"><span class="problematic" id="id152">Joes_</span></a>: assuming you bind the two sockets then yet</div>
+<div class="line">[Tuesday 04 January 2011] [13:54:20] &lt;<a href="#id131"><span class="problematic" id="id132">Joes_</span></a>&gt;  Hello. It is very tempting for me to use ZeroMQ, but I&#8217;m trying to figure out how architecture would look like. So, we have chat server (a-la IRC) with chat rooms.</div>
+<div class="line">[Tuesday 04 January 2011] [13:54:40] &lt;<a href="#id133"><span class="problematic" id="id134">Joes_</span></a>&gt;  Users can join multiple rooms and I need to route messages between users in same room.</div>
+<div class="line">[Tuesday 04 January 2011] [13:54:53] &lt;<a href="#id135"><span class="problematic" id="id136">Joes_</span></a>&gt;  As far as I understood tutorials, I need 2 connections</div>
+<div class="line">[Tuesday 04 January 2011] [13:55:06] &lt;<a href="#id137"><span class="problematic" id="id138">Joes_</span></a>&gt;  one pubsub to send room events back to users</div>
+<div class="line">[Tuesday 04 January 2011] [13:55:16] &lt;<a href="#id139"><span class="problematic" id="id140">Joes_</span></a>&gt;  and one pubsub to send events from users to rooms?</div>
+<div class="line">[Tuesday 04 January 2011] [13:55:30] &lt;<a href="#id141"><span class="problematic" id="id142">Joes_</span></a>&gt;  can it be done with only one connection?</div>
+<div class="line">[Tuesday 04 January 2011] [13:55:38] &lt;<a href="#id143"><span class="problematic" id="id144">Joes_</span></a>&gt;  (or socket)</div>
+<div class="line">[Tuesday 04 January 2011] [14:16:49] &lt;mikko&gt;  <a href="#id145"><span class="problematic" id="id146">Joes_</span></a>: you would need two</div>
+<div class="line">[Tuesday 04 January 2011] [14:17:34] &lt;<a href="#id147"><span class="problematic" id="id148">Joes_</span></a>&gt;  in terms of low level communication with tcp transport - two tcp ports on the server will be used</div>
+<div class="line">[Tuesday 04 January 2011] [14:17:36] &lt;<a href="#id149"><span class="problematic" id="id150">Joes_</span></a>&gt;  correct?</div>
+<div class="line">[Tuesday 04 January 2011] [14:17:44] &lt;<a href="#id151"><span class="problematic" id="id152">Joes_</span></a>&gt;  (firewall setup, etc)</div>
+<div class="line">[Tuesday 04 January 2011] [14:18:04] &lt;mikko&gt;  <a href="#id153"><span class="problematic" id="id154">Joes_</span></a>: assuming you bind the two sockets then yet</div>
 <div class="line">[Tuesday 04 January 2011] [14:18:07] &lt;mikko&gt;  yes*</div>
-<div class="line">[Tuesday 04 January 2011] [14:18:10] &lt;<a href="#id153"><span class="problematic" id="id154">Joes_</span></a>&gt;  ok</div>
-<div class="line">[Tuesday 04 January 2011] [14:18:19] &lt;<a href="#id155"><span class="problematic" id="id156">Joes_</span></a>&gt;  and second question - any bindings for Javascript?</div>
+<div class="line">[Tuesday 04 January 2011] [14:18:10] &lt;<a href="#id155"><span class="problematic" id="id156">Joes_</span></a>&gt;  ok</div>
+<div class="line">[Tuesday 04 January 2011] [14:18:19] &lt;<a href="#id157"><span class="problematic" id="id158">Joes_</span></a>&gt;  and second question - any bindings for Javascript?</div>
 <div class="line">[Tuesday 04 January 2011] [14:18:31] &lt;mikko&gt;  i think someone was working for node.js bindings</div>
-<div class="line">[Tuesday 04 January 2011] [14:18:34] &lt;<a href="#id157"><span class="problematic" id="id158">Joes_</span></a>&gt;  using WebSockets/socketjs/etc</div>
-<div class="line">[Tuesday 04 January 2011] [14:18:42] &lt;<a href="#id159"><span class="problematic" id="id160">Joes_</span></a>&gt;  saw them</div>
-<div class="line">[Tuesday 04 January 2011] [14:18:52] &lt;<a href="#id161"><span class="problematic" id="id162">Joes_</span></a>&gt;  includes native C code</div>
-<div class="line">[Tuesday 04 January 2011] [14:19:02] &lt;<a href="#id163"><span class="problematic" id="id164">Joes_</span></a>&gt;  is wire protocol documented?</div>
+<div class="line">[Tuesday 04 January 2011] [14:18:34] &lt;<a href="#id159"><span class="problematic" id="id160">Joes_</span></a>&gt;  using WebSockets/socketjs/etc</div>
+<div class="line">[Tuesday 04 January 2011] [14:18:42] &lt;<a href="#id161"><span class="problematic" id="id162">Joes_</span></a>&gt;  saw them</div>
+<div class="line">[Tuesday 04 January 2011] [14:18:52] &lt;<a href="#id163"><span class="problematic" id="id164">Joes_</span></a>&gt;  includes native C code</div>
+<div class="line">[Tuesday 04 January 2011] [14:19:02] &lt;<a href="#id165"><span class="problematic" id="id166">Joes_</span></a>&gt;  is wire protocol documented?</div>
 <div class="line">[Tuesday 04 January 2011] [14:19:08] &lt;mikko&gt;  yes, i think it is</div>
 <div class="line">[Tuesday 04 January 2011] [14:19:19] &lt;mikko&gt;  gimme a sec</div>
 <div class="line">[Tuesday 04 January 2011] [14:20:39] &lt;mikko&gt;  here is the message format <a class="reference external" href="http://rfc.zeromq.org/spec:2">http://rfc.zeromq.org/spec:2</a></div>
-<div class="line">[Tuesday 04 January 2011] [14:20:54] &lt;<a href="#id165"><span class="problematic" id="id166">Joes_</span></a>&gt;  thanks</div>
+<div class="line">[Tuesday 04 January 2011] [14:20:54] &lt;<a href="#id167"><span class="problematic" id="id168">Joes_</span></a>&gt;  thanks</div>
 <div class="line">[Tuesday 04 January 2011] [14:20:57] &lt;mikko&gt;  let me see if the rest is documented</div>
-<div class="line">[Tuesday 04 January 2011] [14:21:02] &lt;<a href="#id167"><span class="problematic" id="id168">Joes_</span></a>&gt;  going to see how long it will take to write dumb client in JS</div>
-<div class="line">[Tuesday 04 January 2011] [14:21:25] &lt;<a href="#id169"><span class="problematic" id="id170">Joes_</span></a>&gt;  there&#8217;s one for AMQP, but nothing for ZeroMQ</div>
-<div class="line">[Tuesday 04 January 2011] [14:21:33] &lt;<a href="#id171"><span class="problematic" id="id172">Joes_</span></a>&gt;  and I don&#8217;t need 95% of AMQP features...</div>
+<div class="line">[Tuesday 04 January 2011] [14:21:02] &lt;<a href="#id169"><span class="problematic" id="id170">Joes_</span></a>&gt;  going to see how long it will take to write dumb client in JS</div>
+<div class="line">[Tuesday 04 January 2011] [14:21:25] &lt;<a href="#id171"><span class="problematic" id="id172">Joes_</span></a>&gt;  there&#8217;s one for AMQP, but nothing for ZeroMQ</div>
+<div class="line">[Tuesday 04 January 2011] [14:21:33] &lt;<a href="#id173"><span class="problematic" id="id174">Joes_</span></a>&gt;  and I don&#8217;t need 95% of AMQP features...</div>
 <div class="line">[Tuesday 04 January 2011] [14:22:38] &lt;mikko&gt;  are you going to do communications from browser straight to 0mq?</div>
-<div class="line">[Tuesday 04 January 2011] [14:22:46] &lt;<a href="#id173"><span class="problematic" id="id174">Joes_</span></a>&gt;  well, that would be ideal</div>
+<div class="line">[Tuesday 04 January 2011] [14:22:46] &lt;<a href="#id175"><span class="problematic" id="id176">Joes_</span></a>&gt;  well, that would be ideal</div>
 <div class="line">[Tuesday 04 January 2011] [14:22:55] &lt;mikko&gt;  i don&#8217;t think that&#8217;s going to work</div>
 <div class="line">[Tuesday 04 January 2011] [14:23:00] &lt;mikko&gt;  at least with websockets</div>
 <div class="line">[Tuesday 04 January 2011] [14:23:12] &lt;mikko&gt;  as websockets have their own framing as well</div>
-<div class="line">[Tuesday 04 January 2011] [14:23:25] &lt;<a href="#id175"><span class="problematic" id="id176">Joes_</span></a>&gt;  instead of making own wire protocol</div>
-<div class="line">[Tuesday 04 January 2011] [14:23:40] &lt;<a href="#id177"><span class="problematic" id="id178">Joes_</span></a>&gt;  hm</div>
+<div class="line">[Tuesday 04 January 2011] [14:23:25] &lt;<a href="#id177"><span class="problematic" id="id178">Joes_</span></a>&gt;  instead of making own wire protocol</div>
+<div class="line">[Tuesday 04 January 2011] [14:23:40] &lt;<a href="#id179"><span class="problematic" id="id180">Joes_</span></a>&gt;  hm</div>
 <div class="line">[Tuesday 04 January 2011] [14:23:43] &lt;mikko&gt;  have you looked into mongrel2?</div>
-<div class="line">[Tuesday 04 January 2011] [14:24:04] &lt;<a href="#id179"><span class="problematic" id="id180">Joes_</span></a>&gt;  I did</div>
-<div class="line">[Tuesday 04 January 2011] [14:24:14] &lt;<a href="#id181"><span class="problematic" id="id182">Joes_</span></a>&gt;  however, I can&#8217;t find any benchmarks</div>
-<div class="line">[Tuesday 04 January 2011] [14:24:20] &lt;<a href="#id183"><span class="problematic" id="id184">Joes_</span></a>&gt;  or who&#8217;s using it in production</div>
+<div class="line">[Tuesday 04 January 2011] [14:24:04] &lt;<a href="#id181"><span class="problematic" id="id182">Joes_</span></a>&gt;  I did</div>
+<div class="line">[Tuesday 04 January 2011] [14:24:14] &lt;<a href="#id183"><span class="problematic" id="id184">Joes_</span></a>&gt;  however, I can&#8217;t find any benchmarks</div>
+<div class="line">[Tuesday 04 January 2011] [14:24:20] &lt;<a href="#id185"><span class="problematic" id="id186">Joes_</span></a>&gt;  or who&#8217;s using it in production</div>
 <div class="line">[Tuesday 04 January 2011] [14:24:38] &lt;mikko&gt;  it&#8217;s very new tech, i would be surprised if there are large installations yet</div>
 <div class="line">[Tuesday 04 January 2011] [14:25:03] &lt;mikko&gt;  and i tend to find benchmarks mainly useless as there are a lot of people who don&#8217;t know how to benchmark the software</div>
 <div class="line">[Tuesday 04 January 2011] [14:25:08] &lt;mikko&gt;  or optimize it for benchmarking</div>
-<div class="line">[Tuesday 04 January 2011] [14:25:27] &lt;<a href="#id185"><span class="problematic" id="id186">Joes_</span></a>&gt;  well, at least some rough numbers would help</div>
-<div class="line">[Tuesday 04 January 2011] [14:25:34] &lt;<a href="#id187"><span class="problematic" id="id188">Joes_</span></a>&gt;  like faster than X Y times</div>
+<div class="line">[Tuesday 04 January 2011] [14:25:27] &lt;<a href="#id187"><span class="problematic" id="id188">Joes_</span></a>&gt;  well, at least some rough numbers would help</div>
+<div class="line">[Tuesday 04 January 2011] [14:25:34] &lt;<a href="#id189"><span class="problematic" id="id190">Joes_</span></a>&gt;  like faster than X Y times</div>
 <div class="line">[Tuesday 04 January 2011] [14:27:12] &lt;mikko&gt;  but very often i find they are comparing apples to oranges</div>
 <div class="line">[Tuesday 04 January 2011] [14:27:35] &lt;mikko&gt;  one tool with highly optimized config against incorrect config of other</div>
-<div class="line">[Tuesday 04 January 2011] [14:27:49] &lt;<a href="#id189"><span class="problematic" id="id190">Joes_</span></a>&gt;  I see.</div>
+<div class="line">[Tuesday 04 January 2011] [14:27:49] &lt;<a href="#id191"><span class="problematic" id="id192">Joes_</span></a>&gt;  I see.</div>
 <div class="line">[Tuesday 04 January 2011] [14:28:17] &lt;mikko&gt;  it&#8217;s very hard to create good benchmarks</div>
 <div class="line">[Tuesday 04 January 2011] [14:32:13] &lt;mikko&gt;  but communicating from browser you most likely need some sort of middle piece</div>
 <div class="line">[Tuesday 04 January 2011] [14:32:36] &lt;mikko&gt;  probably doesn&#8217;t need to be complicated but something that converts websocket messages to 0mq messages</div>
-<div class="line">[Tuesday 04 January 2011] [14:32:40] &lt;<a href="#id191"><span class="problematic" id="id192">Joes_</span></a>&gt;  Let&#8217;s assume I have middlepiece - some kind of broker between browser and 0MQ</div>
-<div class="line">[Tuesday 04 January 2011] [14:32:45] &lt;<a href="#id193"><span class="problematic" id="id194">Joes_</span></a>&gt;  (thought about it)</div>
-<div class="line">[Tuesday 04 January 2011] [14:32:49] &lt;<a href="#id195"><span class="problematic" id="id196">Joes_</span></a>&gt;  with some simple wire protocol</div>
+<div class="line">[Tuesday 04 January 2011] [14:32:40] &lt;<a href="#id193"><span class="problematic" id="id194">Joes_</span></a>&gt;  Let&#8217;s assume I have middlepiece - some kind of broker between browser and 0MQ</div>
+<div class="line">[Tuesday 04 January 2011] [14:32:45] &lt;<a href="#id195"><span class="problematic" id="id196">Joes_</span></a>&gt;  (thought about it)</div>
+<div class="line">[Tuesday 04 January 2011] [14:32:49] &lt;<a href="#id197"><span class="problematic" id="id198">Joes_</span></a>&gt;  with some simple wire protocol</div>
 <div class="line">[Tuesday 04 January 2011] [14:32:56] &lt;sustrik&gt;        i think that&#8217;s mostly what mongrel2 does</div>
-<div class="line">[Tuesday 04 January 2011] [14:33:01] &lt;<a href="#id197"><span class="problematic" id="id198">Joes_</span></a>&gt;  but I have following issues:</div>
-<div class="line">[Tuesday 04 January 2011] [14:33:12] &lt;<a href="#id199"><span class="problematic" id="id200">Joes_</span></a>&gt;  1. Who will guarantee delivery, if client drops connection</div>
-<div class="line">[Tuesday 04 January 2011] [14:33:26] &lt;<a href="#id201"><span class="problematic" id="id202">Joes_</span></a>&gt;  (I will need to queue up messages for this client till his next connection)</div>
-<div class="line">[Tuesday 04 January 2011] [14:33:53] &lt;<a href="#id203"><span class="problematic" id="id204">Joes_</span></a>&gt;  well, there some other issues, but I don&#8217;t remember them all :-)</div>
+<div class="line">[Tuesday 04 January 2011] [14:33:01] &lt;<a href="#id199"><span class="problematic" id="id200">Joes_</span></a>&gt;  but I have following issues:</div>
+<div class="line">[Tuesday 04 January 2011] [14:33:12] &lt;<a href="#id201"><span class="problematic" id="id202">Joes_</span></a>&gt;  1. Who will guarantee delivery, if client drops connection</div>
+<div class="line">[Tuesday 04 January 2011] [14:33:26] &lt;<a href="#id203"><span class="problematic" id="id204">Joes_</span></a>&gt;  (I will need to queue up messages for this client till his next connection)</div>
+<div class="line">[Tuesday 04 January 2011] [14:33:53] &lt;<a href="#id205"><span class="problematic" id="id206">Joes_</span></a>&gt;  well, there some other issues, but I don&#8217;t remember them all :-)</div>
 <div class="line">[Tuesday 04 January 2011] [14:33:57] &lt;mikko&gt;  if client drops connection do you want to queue messages?</div>
 <div class="line">[Tuesday 04 January 2011] [14:34:08] &lt;mikko&gt;  for how long time after client leaves?</div>
-<div class="line">[Tuesday 04 January 2011] [14:34:19] &lt;<a href="#id205"><span class="problematic" id="id206">Joes_</span></a>&gt;  I don&#8217;t know if client dropped or temporary lost connection to the server and will reconnect shortly</div>
+<div class="line">[Tuesday 04 January 2011] [14:34:19] &lt;<a href="#id207"><span class="problematic" id="id208">Joes_</span></a>&gt;  I don&#8217;t know if client dropped or temporary lost connection to the server and will reconnect shortly</div>
 <div class="line">[Tuesday 04 January 2011] [14:34:30] &lt;sustrik&gt;        can be done using ZMQ_IDENTITY</div>
-<div class="line">[Tuesday 04 January 2011] [14:34:39] &lt;<a href="#id207"><span class="problematic" id="id208">Joes_</span></a>&gt;  em</div>
-<div class="line">[Tuesday 04 January 2011] [14:34:51] &lt;<a href="#id209"><span class="problematic" id="id210">Joes_</span></a>&gt;  let&#8217;s say I&#8217;m am the server which handles requests from browsers.</div>
-<div class="line">[Tuesday 04 January 2011] [14:34:59] &lt;<a href="#id211"><span class="problematic" id="id212">Joes_</span></a>&gt;  I accepted raw TCP connection (or websocket connection)</div>
-<div class="line">[Tuesday 04 January 2011] [14:35:16] &lt;<a href="#id213"><span class="problematic" id="id214">Joes_</span></a>&gt;  so, for this connection, I will create 0MQ socket (or two, but it does not matter now)</div>
-<div class="line">[Tuesday 04 January 2011] [14:35:24] &lt;<a href="#id215"><span class="problematic" id="id216">Joes_</span></a>&gt;  and will connect to the chat server</div>
+<div class="line">[Tuesday 04 January 2011] [14:34:39] &lt;<a href="#id209"><span class="problematic" id="id210">Joes_</span></a>&gt;  em</div>
+<div class="line">[Tuesday 04 January 2011] [14:34:51] &lt;<a href="#id211"><span class="problematic" id="id212">Joes_</span></a>&gt;  let&#8217;s say I&#8217;m am the server which handles requests from browsers.</div>
+<div class="line">[Tuesday 04 January 2011] [14:34:59] &lt;<a href="#id213"><span class="problematic" id="id214">Joes_</span></a>&gt;  I accepted raw TCP connection (or websocket connection)</div>
+<div class="line">[Tuesday 04 January 2011] [14:35:16] &lt;<a href="#id215"><span class="problematic" id="id216">Joes_</span></a>&gt;  so, for this connection, I will create 0MQ socket (or two, but it does not matter now)</div>
+<div class="line">[Tuesday 04 January 2011] [14:35:24] &lt;<a href="#id217"><span class="problematic" id="id218">Joes_</span></a>&gt;  and will connect to the chat server</div>
 <div class="line">[Tuesday 04 January 2011] [14:35:31] &lt;sustrik&gt;        right</div>
-<div class="line">[Tuesday 04 January 2011] [14:35:41] &lt;<a href="#id217"><span class="problematic" id="id218">Joes_</span></a>&gt;  if incoming (browser) connection will drop</div>
-<div class="line">[Tuesday 04 January 2011] [14:35:48] &lt;<a href="#id219"><span class="problematic" id="id220">Joes_</span></a>&gt;  I should close socket?</div>
-<div class="line">[Tuesday 04 January 2011] [14:35:54] &lt;<a href="#id221"><span class="problematic" id="id222">Joes_</span></a>&gt;  (0MQ socket)</div>
+<div class="line">[Tuesday 04 January 2011] [14:35:41] &lt;<a href="#id219"><span class="problematic" id="id220">Joes_</span></a>&gt;  if incoming (browser) connection will drop</div>
+<div class="line">[Tuesday 04 January 2011] [14:35:48] &lt;<a href="#id221"><span class="problematic" id="id222">Joes_</span></a>&gt;  I should close socket?</div>
+<div class="line">[Tuesday 04 January 2011] [14:35:54] &lt;<a href="#id223"><span class="problematic" id="id224">Joes_</span></a>&gt;  (0MQ socket)</div>
 <div class="line">[Tuesday 04 January 2011] [14:36:08] &lt;sustrik&gt;        no, 0MQ socket represents all the connections</div>
 <div class="line">[Tuesday 04 January 2011] [14:36:17] &lt;sustrik&gt;        so closing it means closing all the connections</div>
-<div class="line">[Tuesday 04 January 2011] [14:36:20] &lt;<a href="#id223"><span class="problematic" id="id224">Joes_</span></a>&gt;  hm</div>
-<div class="line">[Tuesday 04 January 2011] [14:36:27] &lt;<a href="#id225"><span class="problematic" id="id226">Joes_</span></a>&gt;  1 socket for all incoming clients?</div>
+<div class="line">[Tuesday 04 January 2011] [14:36:20] &lt;<a href="#id225"><span class="problematic" id="id226">Joes_</span></a>&gt;  hm</div>
+<div class="line">[Tuesday 04 January 2011] [14:36:27] &lt;<a href="#id227"><span class="problematic" id="id228">Joes_</span></a>&gt;  1 socket for all incoming clients?</div>
 <div class="line">[Tuesday 04 January 2011] [14:36:31] &lt;sustrik&gt;        yes</div>
-<div class="line">[Tuesday 04 January 2011] [14:37:03] &lt;<a href="#id227"><span class="problematic" id="id228">Joes_</span></a>&gt;  who will be doing queuing of the messages for temporary disconnected clients?</div>
+<div class="line">[Tuesday 04 January 2011] [14:37:03] &lt;<a href="#id229"><span class="problematic" id="id230">Joes_</span></a>&gt;  who will be doing queuing of the messages for temporary disconnected clients?</div>
 <div class="line">[Tuesday 04 January 2011] [14:37:14] &lt;sustrik&gt;        the server</div>
-<div class="line">[Tuesday 04 January 2011] [14:37:39] &lt;<a href="#id229"><span class="problematic" id="id230">Joes_</span></a>&gt;  I see</div>
+<div class="line">[Tuesday 04 January 2011] [14:37:39] &lt;<a href="#id231"><span class="problematic" id="id232">Joes_</span></a>&gt;  I see</div>
 <div class="line">[Tuesday 04 January 2011] [14:37:41] &lt;sustrik&gt;        to be precise, the 0MQ socket in the server</div>
-<div class="line">[Tuesday 04 January 2011] [14:37:45] &lt;<a href="#id231"><span class="problematic" id="id232">Joes_</span></a>&gt;  hm</div>
+<div class="line">[Tuesday 04 January 2011] [14:37:45] &lt;<a href="#id233"><span class="problematic" id="id234">Joes_</span></a>&gt;  hm</div>
 <div class="line">[Tuesday 04 January 2011] [14:38:03] &lt;sustrik&gt;        all you need to do is set the ZMQ_IDENTITY socket option on the client</div>
 <div class="line">[Tuesday 04 January 2011] [14:38:37] &lt;sustrik&gt;        that way the server socket would know that is should not deallocate the connection when it accidentally breaks</div>
 <div class="line">[Tuesday 04 January 2011] [14:38:46] &lt;sustrik&gt;        the messages will be stored</div>
 <div class="line">[Tuesday 04 January 2011] [14:38:58] &lt;sustrik&gt;        and once the same client re-connects they will be sent</div>
-<div class="line">[Tuesday 04 January 2011] [14:39:03] &lt;<a href="#id233"><span class="problematic" id="id234">Joes_</span></a>&gt;  that&#8217;s the problem - I will have to write proxy between browser and 0MQ server</div>
+<div class="line">[Tuesday 04 January 2011] [14:39:03] &lt;<a href="#id235"><span class="problematic" id="id236">Joes_</span></a>&gt;  that&#8217;s the problem - I will have to write proxy between browser and 0MQ server</div>
 <div class="line">[Tuesday 04 January 2011] [14:39:05] &lt;mikko&gt;  i think you are talking about separate issue</div>
 <div class="line">[Tuesday 04 January 2011] [14:39:10] &lt;mikko&gt;  in this case:</div>
 <div class="line">[Tuesday 04 January 2011] [14:39:33] &lt;mikko&gt;  chat server &lt;&#8211; 0mq &#8211;&gt; broker &lt;&#8211; raw tcp &#8211;&gt; client</div>
-<div class="line">[Tuesday 04 January 2011] [14:39:38] &lt;<a href="#id235"><span class="problematic" id="id236">Joes_</span></a>&gt;  yep</div>
-<div class="line">[Tuesday 04 January 2011] [14:40:33] &lt;<a href="#id237"><span class="problematic" id="id238">Joes_</span></a>&gt;  so, my question is - I&#8217;m adding extra logic on broker side to handle another wire protocol, message queuing (connection persistence logic like in 0MQ)</div>
-<div class="line">[Tuesday 04 January 2011] [14:40:42] &lt;<a href="#id239"><span class="problematic" id="id240">Joes_</span></a>&gt;  is it worth of the trouble?</div>
-<div class="line">[Tuesday 04 January 2011] [14:41:01] &lt;<a href="#id241"><span class="problematic" id="id242">Joes_</span></a>&gt;  broker can be &#8220;end point&#8221;</div>
-<div class="line">[Tuesday 04 January 2011] [14:41:34] &lt;<a href="#id243"><span class="problematic" id="id244">Joes_</span></a>&gt;  not scalable solution, though</div>
+<div class="line">[Tuesday 04 January 2011] [14:39:38] &lt;<a href="#id237"><span class="problematic" id="id238">Joes_</span></a>&gt;  yep</div>
+<div class="line">[Tuesday 04 January 2011] [14:40:33] &lt;<a href="#id239"><span class="problematic" id="id240">Joes_</span></a>&gt;  so, my question is - I&#8217;m adding extra logic on broker side to handle another wire protocol, message queuing (connection persistence logic like in 0MQ)</div>
+<div class="line">[Tuesday 04 January 2011] [14:40:42] &lt;<a href="#id241"><span class="problematic" id="id242">Joes_</span></a>&gt;  is it worth of the trouble?</div>
+<div class="line">[Tuesday 04 January 2011] [14:41:01] &lt;<a href="#id243"><span class="problematic" id="id244">Joes_</span></a>&gt;  broker can be &#8220;end point&#8221;</div>
+<div class="line">[Tuesday 04 January 2011] [14:41:34] &lt;<a href="#id245"><span class="problematic" id="id246">Joes_</span></a>&gt;  not scalable solution, though</div>
 <div class="line">[Tuesday 04 January 2011] [14:41:35] &lt;mikko&gt;  the only thing you have described about the application this far that it&#8217;s a chat like irc</div>
-<div class="line">[Tuesday 04 January 2011] [14:41:56] &lt;<a href="#id245"><span class="problematic" id="id246">Joes_</span></a>&gt;  yep, pretty much</div>
+<div class="line">[Tuesday 04 January 2011] [14:41:56] &lt;<a href="#id247"><span class="problematic" id="id248">Joes_</span></a>&gt;  yep, pretty much</div>
 <div class="line">[Tuesday 04 January 2011] [14:42:03] &lt;mikko&gt;  is this from scratch or do you have something running already?</div>
-<div class="line">[Tuesday 04 January 2011] [14:42:07] &lt;<a href="#id247"><span class="problematic" id="id248">Joes_</span></a>&gt;  scratch</div>
-<div class="line">[Tuesday 04 January 2011] [14:42:12] &lt;<a href="#id249"><span class="problematic" id="id250">Joes_</span></a>&gt;  prototyping</div>
-<div class="line">[Tuesday 04 January 2011] [14:43:04] &lt;<a href="#id251"><span class="problematic" id="id252">Joes_</span></a>&gt;  well, in terms of possible load - ~12k users average online</div>
-<div class="line">[Tuesday 04 January 2011] [14:43:30] &lt;<a href="#id253"><span class="problematic" id="id254">Joes_</span></a>&gt;  each making ~1 message in 5 seconds (worst case)</div>
-<div class="line">[Tuesday 04 January 2011] [14:43:49] &lt;<a href="#id255"><span class="problematic" id="id256">Joes_</span></a>&gt;  ajax with long polling does not suit very well</div>
+<div class="line">[Tuesday 04 January 2011] [14:42:07] &lt;<a href="#id249"><span class="problematic" id="id250">Joes_</span></a>&gt;  scratch</div>
+<div class="line">[Tuesday 04 January 2011] [14:42:12] &lt;<a href="#id251"><span class="problematic" id="id252">Joes_</span></a>&gt;  prototyping</div>
+<div class="line">[Tuesday 04 January 2011] [14:43:04] &lt;<a href="#id253"><span class="problematic" id="id254">Joes_</span></a>&gt;  well, in terms of possible load - ~12k users average online</div>
+<div class="line">[Tuesday 04 January 2011] [14:43:30] &lt;<a href="#id255"><span class="problematic" id="id256">Joes_</span></a>&gt;  each making ~1 message in 5 seconds (worst case)</div>
+<div class="line">[Tuesday 04 January 2011] [14:43:49] &lt;<a href="#id257"><span class="problematic" id="id258">Joes_</span></a>&gt;  ajax with long polling does not suit very well</div>
 <div class="line">[Tuesday 04 January 2011] [14:44:17] &lt;mikko&gt;  why do you need to queue the messages if the client drops?</div>
-<div class="line">[Tuesday 04 January 2011] [14:44:20] &lt;<a href="#id257"><span class="problematic" id="id258">Joes_</span></a>&gt;  so, trying to find other possibilities apart of writing custom protocol on top of raw sockets</div>
-<div class="line">[Tuesday 04 January 2011] [14:44:36] &lt;<a href="#id259"><span class="problematic" id="id260">Joes_</span></a>&gt;  to keep state of the room and its recent history</div>
-<div class="line">[Tuesday 04 January 2011] [14:45:03] &lt;<a href="#id261"><span class="problematic" id="id262">Joes_</span></a>&gt;  it is doable by resending last N items on reconnect</div>
-<div class="line">[Tuesday 04 January 2011] [14:45:19] &lt;<a href="#id263"><span class="problematic" id="id264">Joes_</span></a>&gt;  which solves the problem, but.. if 0MQ provides it for free..</div>
+<div class="line">[Tuesday 04 January 2011] [14:44:20] &lt;<a href="#id259"><span class="problematic" id="id260">Joes_</span></a>&gt;  so, trying to find other possibilities apart of writing custom protocol on top of raw sockets</div>
+<div class="line">[Tuesday 04 January 2011] [14:44:36] &lt;<a href="#id261"><span class="problematic" id="id262">Joes_</span></a>&gt;  to keep state of the room and its recent history</div>
+<div class="line">[Tuesday 04 January 2011] [14:45:03] &lt;<a href="#id263"><span class="problematic" id="id264">Joes_</span></a>&gt;  it is doable by resending last N items on reconnect</div>
+<div class="line">[Tuesday 04 January 2011] [14:45:19] &lt;<a href="#id265"><span class="problematic" id="id266">Joes_</span></a>&gt;  which solves the problem, but.. if 0MQ provides it for free..</div>
 <div class="line">[Tuesday 04 January 2011] [14:49:14] &lt;mikko&gt;  let me think for a sec</div>
 <div class="line">[Tuesday 04 January 2011] [14:49:28] &lt;mikko&gt;  the biggest problem is the last part to the browser</div>
-<div class="line">[Tuesday 04 January 2011] [14:49:32] &lt;<a href="#id265"><span class="problematic" id="id266">Joes_</span></a>&gt;  yep</div>
-<div class="line">[Tuesday 04 January 2011] [14:49:45] &lt;<a href="#id267"><span class="problematic" id="id268">Joes_</span></a>&gt;  I want to get rid of it by having simple, yet functional, 0mq client</div>
-<div class="line">[Tuesday 04 January 2011] [14:50:01] &lt;<a href="#id269"><span class="problematic" id="id270">Joes_</span></a>&gt;  let&#8217;s assume there&#8217;s no WebSocket wrapping for now.</div>
-<div class="line">[Tuesday 04 January 2011] [14:50:05] &lt;<a href="#id271"><span class="problematic" id="id272">Joes_</span></a>&gt;  plain tcp sockets</div>
+<div class="line">[Tuesday 04 January 2011] [14:49:32] &lt;<a href="#id267"><span class="problematic" id="id268">Joes_</span></a>&gt;  yep</div>
+<div class="line">[Tuesday 04 January 2011] [14:49:45] &lt;<a href="#id269"><span class="problematic" id="id270">Joes_</span></a>&gt;  I want to get rid of it by having simple, yet functional, 0mq client</div>
+<div class="line">[Tuesday 04 January 2011] [14:50:01] &lt;<a href="#id271"><span class="problematic" id="id272">Joes_</span></a>&gt;  let&#8217;s assume there&#8217;s no WebSocket wrapping for now.</div>
+<div class="line">[Tuesday 04 January 2011] [14:50:05] &lt;<a href="#id273"><span class="problematic" id="id274">Joes_</span></a>&gt;  plain tcp sockets</div>
 <div class="line">[Tuesday 04 January 2011] [14:50:54] &lt;mikko&gt;  you are not in control of the client side i assume?</div>
 <div class="line">[Tuesday 04 January 2011] [14:51:04] &lt;mikko&gt;  as in installing 0mq on client :)</div>
-<div class="line">[Tuesday 04 January 2011] [14:51:16] &lt;<a href="#id273"><span class="problematic" id="id274">Joes_</span></a>&gt;  nope.</div>
-<div class="line">[Tuesday 04 January 2011] [14:51:19] &lt;<a href="#id275"><span class="problematic" id="id276">Joes_</span></a>&gt;  plain HTML+JS</div>
-<div class="line">[Tuesday 04 January 2011] [14:51:28] &lt;<a href="#id277"><span class="problematic" id="id278">Joes_</span></a>&gt;  and, maybe, some Flash.</div>
-<div class="line">[Tuesday 04 January 2011] [14:51:50] &lt;<a href="#id279"><span class="problematic" id="id280">Joes_</span></a>&gt;  (I already checked almost all language integrations - all of them are dependent on the native C library)</div>
+<div class="line">[Tuesday 04 January 2011] [14:51:16] &lt;<a href="#id275"><span class="problematic" id="id276">Joes_</span></a>&gt;  nope.</div>
+<div class="line">[Tuesday 04 January 2011] [14:51:19] &lt;<a href="#id277"><span class="problematic" id="id278">Joes_</span></a>&gt;  plain HTML+JS</div>
+<div class="line">[Tuesday 04 January 2011] [14:51:28] &lt;<a href="#id279"><span class="problematic" id="id280">Joes_</span></a>&gt;  and, maybe, some Flash.</div>
+<div class="line">[Tuesday 04 January 2011] [14:51:50] &lt;<a href="#id281"><span class="problematic" id="id282">Joes_</span></a>&gt;  (I already checked almost all language integrations - all of them are dependent on the native C library)</div>
 <div class="line">[Tuesday 04 January 2011] [14:54:36] &lt;mikko&gt;  yes, i think you would need to implement some logic in your broker</div>
-<div class="line">[Tuesday 04 January 2011] [14:55:52] &lt;<a href="#id281"><span class="problematic" id="id282">Joes_</span></a>&gt;  in terms of code, for 1 incoming browser it will create 0mq socket or it will handle all incoming browser connections through 1 0mq socket?</div>
-<div class="line">[Tuesday 04 January 2011] [14:55:55] &lt;<a href="#id283"><span class="problematic" id="id284">Joes_</span></a>&gt;  what is better approach?</div>
-<div class="line">[Tuesday 04 January 2011] [14:56:37] &lt;<a href="#id285"><span class="problematic" id="id286">Joes_</span></a>&gt;  multiple sockets - free message queuing</div>
-<div class="line">[Tuesday 04 January 2011] [14:56:57] &lt;<a href="#id287"><span class="problematic" id="id288">Joes_</span></a>&gt;  one socket - easier overall architecture (and speed?), but manual queuing on the broker</div>
-<div class="line">[Tuesday 04 January 2011] [14:57:17] &lt;<a href="#id289"><span class="problematic" id="id290">Joes_</span></a>&gt;  plus, custom wire protocol from broker to browser</div>
-<div class="line">[Tuesday 04 January 2011] [14:57:20] &lt;<a href="#id291"><span class="problematic" id="id292">Joes_</span></a>&gt;  etc.</div>
+<div class="line">[Tuesday 04 January 2011] [14:55:52] &lt;<a href="#id283"><span class="problematic" id="id284">Joes_</span></a>&gt;  in terms of code, for 1 incoming browser it will create 0mq socket or it will handle all incoming browser connections through 1 0mq socket?</div>
+<div class="line">[Tuesday 04 January 2011] [14:55:55] &lt;<a href="#id285"><span class="problematic" id="id286">Joes_</span></a>&gt;  what is better approach?</div>
+<div class="line">[Tuesday 04 January 2011] [14:56:37] &lt;<a href="#id287"><span class="problematic" id="id288">Joes_</span></a>&gt;  multiple sockets - free message queuing</div>
+<div class="line">[Tuesday 04 January 2011] [14:56:57] &lt;<a href="#id289"><span class="problematic" id="id290">Joes_</span></a>&gt;  one socket - easier overall architecture (and speed?), but manual queuing on the broker</div>
+<div class="line">[Tuesday 04 January 2011] [14:57:17] &lt;<a href="#id291"><span class="problematic" id="id292">Joes_</span></a>&gt;  plus, custom wire protocol from broker to browser</div>
+<div class="line">[Tuesday 04 January 2011] [14:57:20] &lt;<a href="#id293"><span class="problematic" id="id294">Joes_</span></a>&gt;  etc.</div>
 <div class="line">[Tuesday 04 January 2011] [14:57:31] &lt;mikko&gt;  one socket also requires custom filtering i guess</div>
 <div class="line">[Tuesday 04 January 2011] [14:57:49] &lt;mikko&gt;  you got messages coming in 1 socket destined to ~12k clients</div>
-<div class="line">[Tuesday 04 January 2011] [14:57:51] &lt;<a href="#id293"><span class="problematic" id="id294">Joes_</span></a>&gt;  well, I can read address from the message</div>
+<div class="line">[Tuesday 04 January 2011] [14:57:51] &lt;<a href="#id295"><span class="problematic" id="id296">Joes_</span></a>&gt;  well, I can read address from the message</div>
 <div class="line">[Tuesday 04 January 2011] [14:58:00] &lt;mikko&gt;  so you need to write them to correct handles on other side</div>
-<div class="line">[Tuesday 04 January 2011] [14:58:12] &lt;<a href="#id295"><span class="problematic" id="id296">Joes_</span></a>&gt;  and then pick proper browser socket and send it there</div>
-<div class="line">[Tuesday 04 January 2011] [14:58:12] &lt;<a href="#id297"><span class="problematic" id="id298">Joes_</span></a>&gt;  yep</div>
-<div class="line">[Tuesday 04 January 2011] [14:58:20] &lt;<a href="#id299"><span class="problematic" id="id300">Joes_</span></a>&gt;  it = message</div>
+<div class="line">[Tuesday 04 January 2011] [14:58:12] &lt;<a href="#id297"><span class="problematic" id="id298">Joes_</span></a>&gt;  and then pick proper browser socket and send it there</div>
+<div class="line">[Tuesday 04 January 2011] [14:58:12] &lt;<a href="#id299"><span class="problematic" id="id300">Joes_</span></a>&gt;  yep</div>
+<div class="line">[Tuesday 04 January 2011] [14:58:20] &lt;<a href="#id301"><span class="problematic" id="id302">Joes_</span></a>&gt;  it = message</div>
 <div class="line">[Tuesday 04 January 2011] [14:59:02] &lt;mikko&gt;  one socket might be easier to handle for events as well</div>
 <div class="line">[Tuesday 04 January 2011] [14:59:09] &lt;mikko&gt;  otherwise you got a pollset of 12k items</div>
 <div class="line">[Tuesday 04 January 2011] [14:59:13] &lt;mikko&gt;  that you need to maintain</div>
-<div class="line">[Tuesday 04 January 2011] [14:59:15] &lt;<a href="#id301"><span class="problematic" id="id302">Joes_</span></a>&gt;  yeah</div>
-<div class="line">[Tuesday 04 January 2011] [14:59:19] &lt;<a href="#id303"><span class="problematic" id="id304">Joes_</span></a>&gt;  bad idea.</div>
-<div class="line">[Tuesday 04 January 2011] [14:59:27] &lt;<a href="#id305"><span class="problematic" id="id306">Joes_</span></a>&gt;  ok, another idea.</div>
-<div class="line">[Tuesday 04 January 2011] [14:59:39] &lt;<a href="#id307"><span class="problematic" id="id308">Joes_</span></a>&gt;  I write pure JS implementation of the wire protocol</div>
-<div class="line">[Tuesday 04 January 2011] [14:59:43] &lt;<a href="#id309"><span class="problematic" id="id310">Joes_</span></a>&gt;  it&#8217;s pretty simple</div>
-<div class="line">[Tuesday 04 January 2011] [14:59:57] &lt;<a href="#id311"><span class="problematic" id="id312">Joes_</span></a>&gt;  and broker will be dump WebSocket negotiator and TCP proxy</div>
-<div class="line">[Tuesday 04 January 2011] [15:00:07] &lt;<a href="#id313"><span class="problematic" id="id314">Joes_</span></a>&gt;  (forwards tcp connection to the real 0MQ server port)</div>
-<div class="line">[Tuesday 04 January 2011] [15:00:14] &lt;<a href="#id315"><span class="problematic" id="id316">Joes_</span></a>&gt;  I assume it might work.</div>
-<div class="line">[Tuesday 04 January 2011] [15:00:33] &lt;<a href="#id317"><span class="problematic" id="id318">Joes_</span></a>&gt;  each message sent will have address as a first chunk</div>
-<div class="line">[Tuesday 04 January 2011] [15:00:46] &lt;<a href="#id319"><span class="problematic" id="id320">Joes_</span></a>&gt;  so chat server knows who sent it</div>
-<div class="line">[Tuesday 04 January 2011] [15:00:54] &lt;<a href="#id321"><span class="problematic" id="id322">Joes_</span></a>&gt;  and, maybe, where</div>
-<div class="line">[Tuesday 04 January 2011] [15:01:07] &lt;<a href="#id323"><span class="problematic" id="id324">Joes_</span></a>&gt;  dump = dumb</div>
+<div class="line">[Tuesday 04 January 2011] [14:59:15] &lt;<a href="#id303"><span class="problematic" id="id304">Joes_</span></a>&gt;  yeah</div>
+<div class="line">[Tuesday 04 January 2011] [14:59:19] &lt;<a href="#id305"><span class="problematic" id="id306">Joes_</span></a>&gt;  bad idea.</div>
+<div class="line">[Tuesday 04 January 2011] [14:59:27] &lt;<a href="#id307"><span class="problematic" id="id308">Joes_</span></a>&gt;  ok, another idea.</div>
+<div class="line">[Tuesday 04 January 2011] [14:59:39] &lt;<a href="#id309"><span class="problematic" id="id310">Joes_</span></a>&gt;  I write pure JS implementation of the wire protocol</div>
+<div class="line">[Tuesday 04 January 2011] [14:59:43] &lt;<a href="#id311"><span class="problematic" id="id312">Joes_</span></a>&gt;  it&#8217;s pretty simple</div>
+<div class="line">[Tuesday 04 January 2011] [14:59:57] &lt;<a href="#id313"><span class="problematic" id="id314">Joes_</span></a>&gt;  and broker will be dump WebSocket negotiator and TCP proxy</div>
+<div class="line">[Tuesday 04 January 2011] [15:00:07] &lt;<a href="#id315"><span class="problematic" id="id316">Joes_</span></a>&gt;  (forwards tcp connection to the real 0MQ server port)</div>
+<div class="line">[Tuesday 04 January 2011] [15:00:14] &lt;<a href="#id317"><span class="problematic" id="id318">Joes_</span></a>&gt;  I assume it might work.</div>
+<div class="line">[Tuesday 04 January 2011] [15:00:33] &lt;<a href="#id319"><span class="problematic" id="id320">Joes_</span></a>&gt;  each message sent will have address as a first chunk</div>
+<div class="line">[Tuesday 04 January 2011] [15:00:46] &lt;<a href="#id321"><span class="problematic" id="id322">Joes_</span></a>&gt;  so chat server knows who sent it</div>
+<div class="line">[Tuesday 04 January 2011] [15:00:54] &lt;<a href="#id323"><span class="problematic" id="id324">Joes_</span></a>&gt;  and, maybe, where</div>
+<div class="line">[Tuesday 04 January 2011] [15:01:07] &lt;<a href="#id325"><span class="problematic" id="id326">Joes_</span></a>&gt;  dump = dumb</div>
 <div class="line">[Tuesday 04 January 2011] [15:01:18] &lt;mikko&gt;  i think i wrote websocket daemon ages ago using libev</div>
 <div class="line">[Tuesday 04 January 2011] [15:01:29] &lt;mikko&gt;  it wasn&#8217;t complicated</div>
-<div class="line">[Tuesday 04 January 2011] [15:03:57] &lt;<a href="#id325"><span class="problematic" id="id326">Joes_</span></a>&gt;  hm, someone already did it for Ruby</div>
-<div class="line">[Tuesday 04 January 2011] [15:04:10] &lt;<a href="#id327"><span class="problematic" id="id328">Joes_</span></a>&gt;  <a class="reference external" href="https://github.com/andrewvc/dripdrop">https://github.com/andrewvc/dripdrop</a></div>
-<div class="line">[Tuesday 04 January 2011] [15:04:28] &lt;<a href="#id329"><span class="problematic" id="id330">Joes_</span></a>&gt;  custom wire format from client</div>
+<div class="line">[Tuesday 04 January 2011] [15:03:57] &lt;<a href="#id327"><span class="problematic" id="id328">Joes_</span></a>&gt;  hm, someone already did it for Ruby</div>
+<div class="line">[Tuesday 04 January 2011] [15:04:10] &lt;<a href="#id329"><span class="problematic" id="id330">Joes_</span></a>&gt;  <a class="reference external" href="https://github.com/andrewvc/dripdrop">https://github.com/andrewvc/dripdrop</a></div>
+<div class="line">[Tuesday 04 January 2011] [15:04:28] &lt;<a href="#id331"><span class="problematic" id="id332">Joes_</span></a>&gt;  custom wire format from client</div>
 <div class="line">[Tuesday 04 January 2011] [15:04:32] &lt;andrewvc&gt;       hey, that&#8217;s me</div>
-<div class="line">[Tuesday 04 January 2011] [15:04:35] &lt;<a href="#id331"><span class="problematic" id="id332">Joes_</span></a>&gt;  browser that is</div>
-<div class="line">[Tuesday 04 January 2011] [15:04:36] &lt;<a href="#id333"><span class="problematic" id="id334">Joes_</span></a>&gt;  :-)</div>
-<div class="line">[Tuesday 04 January 2011] [15:04:39] &lt;<a href="#id335"><span class="problematic" id="id336">Joes_</span></a>&gt;  wonderful</div>
-<div class="line">[Tuesday 04 January 2011] [15:04:54] &lt;<a href="#id337"><span class="problematic" id="id338">Joes_</span></a>&gt;  there was pretty long discussion</div>
+<div class="line">[Tuesday 04 January 2011] [15:04:35] &lt;<a href="#id333"><span class="problematic" id="id334">Joes_</span></a>&gt;  browser that is</div>
+<div class="line">[Tuesday 04 January 2011] [15:04:36] &lt;<a href="#id335"><span class="problematic" id="id336">Joes_</span></a>&gt;  :-)</div>
+<div class="line">[Tuesday 04 January 2011] [15:04:39] &lt;<a href="#id337"><span class="problematic" id="id338">Joes_</span></a>&gt;  wonderful</div>
+<div class="line">[Tuesday 04 January 2011] [15:04:54] &lt;<a href="#id339"><span class="problematic" id="id340">Joes_</span></a>&gt;  there was pretty long discussion</div>
 <div class="line">[Tuesday 04 January 2011] [15:05:04] &lt;andrewvc&gt;       oh?</div>
-<div class="line">[Tuesday 04 January 2011] [15:05:16] &lt;<a href="#id339"><span class="problematic" id="id340">Joes_</span></a>&gt;  but, to sum it up - any plans for pure JS 0mq client instead of custom protocol?</div>
-<div class="line">[Tuesday 04 January 2011] [15:05:18] &lt;<a href="#id341"><span class="problematic" id="id342">Joes_</span></a>&gt;  (or message format)</div>
-<div class="line">[Tuesday 04 January 2011] [15:05:39] &lt;<a href="#id343"><span class="problematic" id="id344">Joes_</span></a>&gt;  so, you can get rid of Ruby server and just relay messages to 0mq</div>
-<div class="line">[Tuesday 04 January 2011] [15:05:42] &lt;<a href="#id345"><span class="problematic" id="id346">Joes_</span></a>&gt;  straight</div>
+<div class="line">[Tuesday 04 January 2011] [15:05:16] &lt;<a href="#id341"><span class="problematic" id="id342">Joes_</span></a>&gt;  but, to sum it up - any plans for pure JS 0mq client instead of custom protocol?</div>
+<div class="line">[Tuesday 04 January 2011] [15:05:18] &lt;<a href="#id343"><span class="problematic" id="id344">Joes_</span></a>&gt;  (or message format)</div>
+<div class="line">[Tuesday 04 January 2011] [15:05:39] &lt;<a href="#id345"><span class="problematic" id="id346">Joes_</span></a>&gt;  so, you can get rid of Ruby server and just relay messages to 0mq</div>
+<div class="line">[Tuesday 04 January 2011] [15:05:42] &lt;<a href="#id347"><span class="problematic" id="id348">Joes_</span></a>&gt;  straight</div>
 <div class="line">[Tuesday 04 January 2011] [15:05:46] &lt;andrewvc&gt;       oh</div>
 <div class="line">[Tuesday 04 January 2011] [15:05:54] &lt;andrewvc&gt;       well, there&#8217;s a node JS project</div>
 <div class="line">[Tuesday 04 January 2011] [15:06:05] &lt;andrewvc&gt;       and I was going to implement zmq_devices as part of ffi-rzmq as well</div>
 <div class="line">[Tuesday 04 January 2011] [15:06:14] &lt;andrewvc&gt;       or do those options not cover it?</div>
-<div class="line">[Tuesday 04 January 2011] [15:06:19] &lt;<a href="#id347"><span class="problematic" id="id348">Joes_</span></a>&gt;  node JS is using native C library</div>
-<div class="line">[Tuesday 04 January 2011] [15:06:28] &lt;<a href="#id349"><span class="problematic" id="id350">Joes_</span></a>&gt;  I want something like DripDrop</div>
+<div class="line">[Tuesday 04 January 2011] [15:06:19] &lt;<a href="#id349"><span class="problematic" id="id350">Joes_</span></a>&gt;  node JS is using native C library</div>
+<div class="line">[Tuesday 04 January 2011] [15:06:28] &lt;<a href="#id351"><span class="problematic" id="id352">Joes_</span></a>&gt;  I want something like DripDrop</div>
 <div class="line">[Tuesday 04 January 2011] [15:06:31] &lt;andrewvc&gt;       oh</div>
 <div class="line">[Tuesday 04 January 2011] [15:06:33] &lt;andrewvc&gt;       interesting</div>
-<div class="line">[Tuesday 04 January 2011] [15:06:33] &lt;<a href="#id351"><span class="problematic" id="id352">Joes_</span></a>&gt;  browser &lt;-&gt; 0mq</div>
-<div class="line">[Tuesday 04 January 2011] [15:06:40] &lt;<a href="#id353"><span class="problematic" id="id354">Joes_</span></a>&gt;  and simple TCP proxy</div>
-<div class="line">[Tuesday 04 January 2011] [15:06:42] &lt;<a href="#id355"><span class="problematic" id="id356">Joes_</span></a>&gt;  in between</div>
+<div class="line">[Tuesday 04 January 2011] [15:06:33] &lt;<a href="#id353"><span class="problematic" id="id354">Joes_</span></a>&gt;  browser &lt;-&gt; 0mq</div>
+<div class="line">[Tuesday 04 January 2011] [15:06:40] &lt;<a href="#id355"><span class="problematic" id="id356">Joes_</span></a>&gt;  and simple TCP proxy</div>
+<div class="line">[Tuesday 04 January 2011] [15:06:42] &lt;<a href="#id357"><span class="problematic" id="id358">Joes_</span></a>&gt;  in between</div>
 <div class="line">[Tuesday 04 January 2011] [15:06:49] &lt;andrewvc&gt;       well, dripdrop doesn&#8217;t really require zeromq</div>
-<div class="line">[Tuesday 04 January 2011] [15:06:50] &lt;<a href="#id357"><span class="problematic" id="id358">Joes_</span></a>&gt;  which knows how to handle WebSocket handshake</div>
+<div class="line">[Tuesday 04 January 2011] [15:06:50] &lt;<a href="#id359"><span class="problematic" id="id360">Joes_</span></a>&gt;  which knows how to handle WebSocket handshake</div>
 <div class="line">[Tuesday 04 January 2011] [15:06:53] &lt;andrewvc&gt;       it works well with websockets</div>
 <div class="line">[Tuesday 04 January 2011] [15:06:56] &lt;andrewvc&gt;       and http</div>
 <div class="line">[Tuesday 04 January 2011] [15:06:57] &lt;andrewvc&gt;       all evented</div>
 <div class="line">[Tuesday 04 January 2011] [15:07:18] &lt;andrewvc&gt;       I&#8217;m a bit confused as to the actual question still I guess</div>
 <div class="line">[Tuesday 04 January 2011] [15:07:21] &lt;mikko&gt;  andrewvc: but he wants to run this in browser</div>
 <div class="line">[Tuesday 04 January 2011] [15:07:28] &lt;mikko&gt;  andrewvc: hence the pure js implementation i guess</div>
-<div class="line">[Tuesday 04 January 2011] [15:07:34] &lt;<a href="#id359"><span class="problematic" id="id360">Joes_</span></a>&gt;  yes</div>
+<div class="line">[Tuesday 04 January 2011] [15:07:34] &lt;<a href="#id361"><span class="problematic" id="id362">Joes_</span></a>&gt;  yes</div>
 <div class="line">[Tuesday 04 January 2011] [15:07:43] &lt;andrewvc&gt;       ohhh, well who would the browser talk to. Itself?</div>
-<div class="line">[Tuesday 04 January 2011] [15:07:51] &lt;<a href="#id361"><span class="problematic" id="id362">Joes_</span></a>&gt;  0mq server, preferably.</div>
-<div class="line">[Tuesday 04 January 2011] [15:08:09] &lt;<a href="#id363"><span class="problematic" id="id364">Joes_</span></a>&gt;  here&#8217;s another example: online real-time game.</div>
+<div class="line">[Tuesday 04 January 2011] [15:07:51] &lt;<a href="#id363"><span class="problematic" id="id364">Joes_</span></a>&gt;  0mq server, preferably.</div>
+<div class="line">[Tuesday 04 January 2011] [15:08:09] &lt;<a href="#id365"><span class="problematic" id="id366">Joes_</span></a>&gt;  here&#8217;s another example: online real-time game.</div>
 <div class="line">[Tuesday 04 January 2011] [15:08:11] &lt;andrewvc&gt;       oh, well, as far as I know you can&#8217;t open a raw TCP conn from any browser still</div>
 <div class="line">[Tuesday 04 January 2011] [15:08:17] &lt;andrewvc&gt;       so you&#8217;re using websockets in the yes?</div>
-<div class="line">[Tuesday 04 January 2011] [15:08:29] &lt;<a href="#id365"><span class="problematic" id="id366">Joes_</span></a>&gt;  socketjs also works</div>
-<div class="line">[Tuesday 04 January 2011] [15:09:01] &lt;<a href="#id367"><span class="problematic" id="id368">Joes_</span></a>&gt;  (embeds small Flash object to proxy sockets)</div>
-<div class="line">[Tuesday 04 January 2011] [15:09:09] &lt;<a href="#id369"><span class="problematic" id="id370">Joes_</span></a>&gt;  gives plain sockets in JS</div>
+<div class="line">[Tuesday 04 January 2011] [15:08:29] &lt;<a href="#id367"><span class="problematic" id="id368">Joes_</span></a>&gt;  socketjs also works</div>
+<div class="line">[Tuesday 04 January 2011] [15:09:01] &lt;<a href="#id369"><span class="problematic" id="id370">Joes_</span></a>&gt;  (embeds small Flash object to proxy sockets)</div>
+<div class="line">[Tuesday 04 January 2011] [15:09:09] &lt;<a href="#id371"><span class="problematic" id="id372">Joes_</span></a>&gt;  gives plain sockets in JS</div>
 <div class="line">[Tuesday 04 January 2011] [15:09:41] &lt;andrewvc&gt;       yeah, so, that&#8217;s an interesting idea</div>
-<div class="line">[Tuesday 04 January 2011] [15:09:56] &lt;<a href="#id371"><span class="problematic" id="id372">Joes_</span></a>&gt;  I mean - sure, I can create custom protocol</div>
-<div class="line">[Tuesday 04 January 2011] [15:10:00] &lt;<a href="#id373"><span class="problematic" id="id374">Joes_</span></a>&gt;  write custom server software</div>
+<div class="line">[Tuesday 04 January 2011] [15:09:56] &lt;<a href="#id373"><span class="problematic" id="id374">Joes_</span></a>&gt;  I mean - sure, I can create custom protocol</div>
+<div class="line">[Tuesday 04 January 2011] [15:10:00] &lt;<a href="#id375"><span class="problematic" id="id376">Joes_</span></a>&gt;  write custom server software</div>
 <div class="line">[Tuesday 04 January 2011] [15:10:00] &lt;andrewvc&gt;       what kinds of implementation were you guys thinking?</div>
-<div class="line">[Tuesday 04 January 2011] [15:10:06] &lt;<a href="#id375"><span class="problematic" id="id376">Joes_</span></a>&gt;  which will parse messages, etc</div>
-<div class="line">[Tuesday 04 January 2011] [15:10:11] &lt;<a href="#id377"><span class="problematic" id="id378">Joes_</span></a>&gt;  but I dont see a point</div>
+<div class="line">[Tuesday 04 January 2011] [15:10:06] &lt;<a href="#id377"><span class="problematic" id="id378">Joes_</span></a>&gt;  which will parse messages, etc</div>
+<div class="line">[Tuesday 04 January 2011] [15:10:11] &lt;<a href="#id379"><span class="problematic" id="id380">Joes_</span></a>&gt;  but I dont see a point</div>
 <div class="line">[Tuesday 04 January 2011] [15:10:52] &lt;andrewvc&gt;       what would the api look like, in JS?</div>
-<div class="line">[Tuesday 04 January 2011] [15:11:04] &lt;<a href="#id379"><span class="problematic" id="id380">Joes_</span></a>&gt;  so, DripDrop already doing it - checked JS files, it is encapsulating messages into DD.Message</div>
+<div class="line">[Tuesday 04 January 2011] [15:11:04] &lt;<a href="#id381"><span class="problematic" id="id382">Joes_</span></a>&gt;  so, DripDrop already doing it - checked JS files, it is encapsulating messages into DD.Message</div>
 <div class="line">[Tuesday 04 January 2011] [15:11:05] &lt;andrewvc&gt;       I think that&#8217;s probably a good place to start, if you can throw up a gist for a simple case</div>
 <div class="line">[Tuesday 04 January 2011] [15:11:09] &lt;andrewvc&gt;       yep</div>
 <div class="line">[Tuesday 04 January 2011] [15:11:37] &lt;andrewvc&gt;       the JS prolly needs a little love at this point</div>
-<div class="line">[Tuesday 04 January 2011] [15:12:15] &lt;<a href="#id381"><span class="problematic" id="id382">Joes_</span></a>&gt;  so, imagine that there&#8217;s no need to have custom wire protocol (json serialized) and JS would just talk to 0mq server using 0mq wire protocol</div>
-<div class="line">[Tuesday 04 January 2011] [15:12:48] &lt;<a href="#id383"><span class="problematic" id="id384">Joes_</span></a>&gt;  that&#8217;s the simpliest case</div>
+<div class="line">[Tuesday 04 January 2011] [15:12:15] &lt;<a href="#id383"><span class="problematic" id="id384">Joes_</span></a>&gt;  so, imagine that there&#8217;s no need to have custom wire protocol (json serialized) and JS would just talk to 0mq server using 0mq wire protocol</div>
+<div class="line">[Tuesday 04 January 2011] [15:12:48] &lt;<a href="#id385"><span class="problematic" id="id386">Joes_</span></a>&gt;  that&#8217;s the simpliest case</div>
 <div class="line">[Tuesday 04 January 2011] [15:13:18] &lt;andrewvc&gt;       hmmm, the 0mq wire protocol doesn&#8217;t handle that much really</div>
 <div class="line">[Tuesday 04 January 2011] [15:13:43] &lt;andrewvc&gt;       I mean, you could express multipart stuff, like socket identities for stuff like xreq/xrep</div>
-<div class="line">[Tuesday 04 January 2011] [15:13:45] &lt;<a href="#id385"><span class="problematic" id="id386">Joes_</span></a>&gt;  browser won&#8217;t be server either</div>
+<div class="line">[Tuesday 04 January 2011] [15:13:45] &lt;<a href="#id387"><span class="problematic" id="id388">Joes_</span></a>&gt;  browser won&#8217;t be server either</div>
 <div class="line">[Tuesday 04 January 2011] [15:13:49] &lt;andrewvc&gt;       but I&#8217;m not sure how useful that is</div>
-<div class="line">[Tuesday 04 January 2011] [15:13:50] &lt;<a href="#id387"><span class="problematic" id="id388">Joes_</span></a>&gt;  sub or pub, mostly</div>
-<div class="line">[Tuesday 04 January 2011] [15:13:59] &lt;<a href="#id389"><span class="problematic" id="id390">Joes_</span></a>&gt;  maybe req</div>
+<div class="line">[Tuesday 04 January 2011] [15:13:50] &lt;<a href="#id389"><span class="problematic" id="id390">Joes_</span></a>&gt;  sub or pub, mostly</div>
+<div class="line">[Tuesday 04 January 2011] [15:13:59] &lt;<a href="#id391"><span class="problematic" id="id392">Joes_</span></a>&gt;  maybe req</div>
 <div class="line">[Tuesday 04 January 2011] [15:14:13] &lt;andrewvc&gt;       I&#8217;m off to grab some lunch, but it&#8217;s an interesting idea</div>
 <div class="line">[Tuesday 04 January 2011] [15:14:20] &lt;andrewvc&gt;       I&#8217;d love to see a gist of a proposed API</div>
-<div class="line">[Tuesday 04 January 2011] [15:14:26] &lt;<a href="#id391"><span class="problematic" id="id392">Joes_</span></a>&gt;  actually, from wire perspective it can be req</div>
-<div class="line">[Tuesday 04 January 2011] [15:14:28] &lt;<a href="#id393"><span class="problematic" id="id394">Joes_</span></a>&gt;  always</div>
-<div class="line">[Tuesday 04 January 2011] [15:14:37] &lt;<a href="#id395"><span class="problematic" id="id396">Joes_</span></a>&gt;  em, no.</div>
-<div class="line">[Tuesday 04 January 2011] [15:14:40] &lt;<a href="#id397"><span class="problematic" id="id398">Joes_</span></a>&gt;  I need to get updates from server.</div>
-<div class="line">[Tuesday 04 January 2011] [15:14:44] &lt;<a href="#id399"><span class="problematic" id="id400">Joes_</span></a>&gt;  anyway, I&#8217;ll think about it.</div>
+<div class="line">[Tuesday 04 January 2011] [15:14:26] &lt;<a href="#id393"><span class="problematic" id="id394">Joes_</span></a>&gt;  actually, from wire perspective it can be req</div>
+<div class="line">[Tuesday 04 January 2011] [15:14:28] &lt;<a href="#id395"><span class="problematic" id="id396">Joes_</span></a>&gt;  always</div>
+<div class="line">[Tuesday 04 January 2011] [15:14:37] &lt;<a href="#id397"><span class="problematic" id="id398">Joes_</span></a>&gt;  em, no.</div>
+<div class="line">[Tuesday 04 January 2011] [15:14:40] &lt;<a href="#id399"><span class="problematic" id="id400">Joes_</span></a>&gt;  I need to get updates from server.</div>
+<div class="line">[Tuesday 04 January 2011] [15:14:44] &lt;<a href="#id401"><span class="problematic" id="id402">Joes_</span></a>&gt;  anyway, I&#8217;ll think about it.</div>
 <div class="line">[Tuesday 04 January 2011] [15:14:53] &lt;andrewvc&gt;       yeah, I&#8217;d like to hear more</div>
-<div class="line">[Tuesday 04 January 2011] [15:15:00] &lt;<a href="#id401"><span class="problematic" id="id402">Joes_</span></a>&gt;  it won&#8217;t be full-scale 0mq implementation anyway</div>
+<div class="line">[Tuesday 04 January 2011] [15:15:00] &lt;<a href="#id403"><span class="problematic" id="id404">Joes_</span></a>&gt;  it won&#8217;t be full-scale 0mq implementation anyway</div>
 <div class="line">[Tuesday 04 January 2011] [15:15:04] &lt;andrewvc&gt;       If you could ping me at &#64;andrewvc on twitter when you have something I&#8217;d be interested</div>
 <div class="line">[Tuesday 04 January 2011] [15:15:09] &lt;andrewvc&gt;       anyway, off to lunch</div>
-<div class="line">[Tuesday 04 January 2011] [15:15:12] &lt;<a href="#id403"><span class="problematic" id="id404">Joes_</span></a>&gt;  k</div>
-<div class="line">[Tuesday 04 January 2011] [15:15:24] &lt;<a href="#id405"><span class="problematic" id="id406">Joes_</span></a>&gt;  bon appetit</div>
-<div class="line">[Tuesday 04 January 2011] [15:17:32] &lt;<a href="#id407"><span class="problematic" id="id408">Joes_</span></a>&gt;  Disconnected question - how do you handle security? If you don&#8217;t want particular client to be connected, what you can do?</div>
-<div class="line">[Tuesday 04 January 2011] [15:17:48] &lt;<a href="#id409"><span class="problematic" id="id410">Joes_</span></a>&gt;  so, I don&#8217;t want malicious client to DOS my message queue</div>
-<div class="line">[Tuesday 04 January 2011] [15:17:52] &lt;<a href="#id411"><span class="problematic" id="id412">Joes_</span></a>&gt;  can I forcibly disconnect him?</div>
-<div class="line">[Tuesday 04 January 2011] [15:17:58] &lt;<a href="#id413"><span class="problematic" id="id414">Joes_</span></a>&gt;  (in my application)</div>
+<div class="line">[Tuesday 04 January 2011] [15:15:12] &lt;<a href="#id405"><span class="problematic" id="id406">Joes_</span></a>&gt;  k</div>
+<div class="line">[Tuesday 04 January 2011] [15:15:24] &lt;<a href="#id407"><span class="problematic" id="id408">Joes_</span></a>&gt;  bon appetit</div>
+<div class="line">[Tuesday 04 January 2011] [15:17:32] &lt;<a href="#id409"><span class="problematic" id="id410">Joes_</span></a>&gt;  Disconnected question - how do you handle security? If you don&#8217;t want particular client to be connected, what you can do?</div>
+<div class="line">[Tuesday 04 January 2011] [15:17:48] &lt;<a href="#id411"><span class="problematic" id="id412">Joes_</span></a>&gt;  so, I don&#8217;t want malicious client to DOS my message queue</div>
+<div class="line">[Tuesday 04 January 2011] [15:17:52] &lt;<a href="#id413"><span class="problematic" id="id414">Joes_</span></a>&gt;  can I forcibly disconnect him?</div>
+<div class="line">[Tuesday 04 January 2011] [15:17:58] &lt;<a href="#id415"><span class="problematic" id="id416">Joes_</span></a>&gt;  (in my application)</div>
 <div class="line">[Tuesday 04 January 2011] [15:20:29] &lt;mikko&gt;  hmm</div>
 <div class="line">[Tuesday 04 January 2011] [15:20:47] &lt;mikko&gt;  was searching for 0mq on twitter and most of the results are people using &#8220;0mq&#8221; instead of &#8220;omg&#8221;</div>
-<div class="line">[Tuesday 04 January 2011] [15:20:53] &lt;<a href="#id415"><span class="problematic" id="id416">Joes_</span></a>&gt;  :-)</div>
-<div class="line">[Tuesday 04 January 2011] [15:24:09] &lt;<a href="#id417"><span class="problematic" id="id418">Joes_</span></a>&gt;  mikko: any hints on how to forcibly drop connections on server side?</div>
-<div class="line">[Tuesday 04 January 2011] [15:25:44] &lt;<a href="#id419"><span class="problematic" id="id420">Joes_</span></a>&gt;  or 0mq not really suited for client-facing functionality?</div>
+<div class="line">[Tuesday 04 January 2011] [15:20:53] &lt;<a href="#id417"><span class="problematic" id="id418">Joes_</span></a>&gt;  :-)</div>
+<div class="line">[Tuesday 04 January 2011] [15:24:09] &lt;<a href="#id419"><span class="problematic" id="id420">Joes_</span></a>&gt;  mikko: any hints on how to forcibly drop connections on server side?</div>
+<div class="line">[Tuesday 04 January 2011] [15:25:44] &lt;<a href="#id421"><span class="problematic" id="id422">Joes_</span></a>&gt;  or 0mq not really suited for client-facing functionality?</div>
 <div class="line">[Tuesday 04 January 2011] [15:26:51] &lt;mikko&gt;  there is really no way to forcibly drop a connection</div>
-<div class="line">[Tuesday 04 January 2011] [15:27:02] &lt;<a href="#id421"><span class="problematic" id="id422">Joes_</span></a>&gt;  ouch.</div>
+<div class="line">[Tuesday 04 January 2011] [15:27:02] &lt;<a href="#id423"><span class="problematic" id="id424">Joes_</span></a>&gt;  ouch.</div>
 <div class="line">[Tuesday 04 January 2011] [15:27:12] &lt;mikko&gt;  apart from closing the socket</div>
-<div class="line">[Tuesday 04 January 2011] [15:27:20] &lt;<a href="#id423"><span class="problematic" id="id424">Joes_</span></a>&gt;  on client side, I assume</div>
-<div class="line">[Tuesday 04 January 2011] [15:27:21] &lt;<a href="#id425"><span class="problematic" id="id426">Joes_</span></a>&gt;  ?</div>
+<div class="line">[Tuesday 04 January 2011] [15:27:20] &lt;<a href="#id425"><span class="problematic" id="id426">Joes_</span></a>&gt;  on client side, I assume</div>
+<div class="line">[Tuesday 04 January 2011] [15:27:21] &lt;<a href="#id427"><span class="problematic" id="id428">Joes_</span></a>&gt;  ?</div>
 <div class="line">[Tuesday 04 January 2011] [15:27:31] &lt;mikko&gt;  on the server-side but that closes all connections</div>
-<div class="line">[Tuesday 04 January 2011] [15:27:39] &lt;<a href="#id427"><span class="problematic" id="id428">Joes_</span></a>&gt;  oops.</div>
-<div class="line">[Tuesday 04 January 2011] [15:28:40] &lt;<a href="#id429"><span class="problematic" id="id430">Joes_</span></a>&gt;  means, 0mq not really suitable for client-facing stuff, as clients might misbehave</div>
-<div class="line">[Tuesday 04 January 2011] [15:28:47] &lt;<a href="#id431"><span class="problematic" id="id432">Joes_</span></a>&gt;  plus, if there&#8217;s some sort of authentication</div>
-<div class="line">[Tuesday 04 January 2011] [15:28:56] &lt;<a href="#id433"><span class="problematic" id="id434">Joes_</span></a>&gt;  it&#8217;s easier to disconnect client</div>
-<div class="line">[Tuesday 04 January 2011] [15:29:01] &lt;<a href="#id435"><span class="problematic" id="id436">Joes_</span></a>&gt;  than to ignore all his sent messages</div>
+<div class="line">[Tuesday 04 January 2011] [15:27:39] &lt;<a href="#id429"><span class="problematic" id="id430">Joes_</span></a>&gt;  oops.</div>
+<div class="line">[Tuesday 04 January 2011] [15:28:40] &lt;<a href="#id431"><span class="problematic" id="id432">Joes_</span></a>&gt;  means, 0mq not really suitable for client-facing stuff, as clients might misbehave</div>
+<div class="line">[Tuesday 04 January 2011] [15:28:47] &lt;<a href="#id433"><span class="problematic" id="id434">Joes_</span></a>&gt;  plus, if there&#8217;s some sort of authentication</div>
+<div class="line">[Tuesday 04 January 2011] [15:28:56] &lt;<a href="#id435"><span class="problematic" id="id436">Joes_</span></a>&gt;  it&#8217;s easier to disconnect client</div>
+<div class="line">[Tuesday 04 January 2011] [15:29:01] &lt;<a href="#id437"><span class="problematic" id="id438">Joes_</span></a>&gt;  than to ignore all his sent messages</div>
 <div class="line">[Tuesday 04 January 2011] [15:43:17] &lt;sustrik&gt;        what&#8217;s the difference? a malevolent client can reconnect immediately and sent another malformed message</div>
 <div class="line">[Tuesday 04 January 2011] [15:43:59] &lt;sustrik&gt;        the only consequence is that the server would use much more CPU to handle the reconnecting instead of simply dropping the messages</div>
-<div class="line">[Tuesday 04 January 2011] [15:47:25] &lt;<a href="#id437"><span class="problematic" id="id438">Joes_</span></a>&gt;  yep</div>
-<div class="line">[Tuesday 04 January 2011] [15:47:28] &lt;<a href="#id439"><span class="problematic" id="id440">Joes_</span></a>&gt;  but</div>
-<div class="line">[Tuesday 04 January 2011] [15:47:35] &lt;<a href="#id441"><span class="problematic" id="id442">Joes_</span></a>&gt;  let&#8217;s assume that it is pub/sub</div>
-<div class="line">[Tuesday 04 January 2011] [15:47:41] &lt;<a href="#id443"><span class="problematic" id="id444">Joes_</span></a>&gt;  with, let&#8217;s say 10 subscribers</div>
-<div class="line">[Tuesday 04 January 2011] [15:48:15] &lt;<a href="#id445"><span class="problematic" id="id446">Joes_</span></a>&gt;  so, bad clients sends 1 message</div>
-<div class="line">[Tuesday 04 January 2011] [15:48:47] &lt;<a href="#id447"><span class="problematic" id="id448">Joes_</span></a>&gt;  and 10 messages total are sent to subscribers</div>
-<div class="line">[Tuesday 04 January 2011] [15:49:01] &lt;<a href="#id449"><span class="problematic" id="id450">Joes_</span></a>&gt;  effectively, network topology creates nice DOS environment</div>
-<div class="line">[Tuesday 04 January 2011] [15:49:31] &lt;<a href="#id451"><span class="problematic" id="id452">Joes_</span></a>&gt;  bad client sends*</div>
-<div class="line">[Tuesday 04 January 2011] [15:49:55] &lt;<a href="#id453"><span class="problematic" id="id454">Joes_</span></a>&gt;  I mean - there&#8217;s no built-in security, so there&#8217;s no way to filter these messages before they get into &#8220;internal&#8221; network</div>
-<div class="line">[Tuesday 04 January 2011] [15:50:08] &lt;<a href="#id455"><span class="problematic" id="id456">Joes_</span></a>&gt;  where workers sit</div>
-<div class="line">[Tuesday 04 January 2011] [15:56:16] &lt;<a href="#id457"><span class="problematic" id="id458">Joes_</span></a>&gt;  however, I think broker which will relay messages to internal network will work</div>
-<div class="line">[Tuesday 04 January 2011] [15:56:26] &lt;<a href="#id459"><span class="problematic" id="id460">Joes_</span></a>&gt;  and he&#8217;ll do the authentication stuff too</div>
-<div class="line">[Tuesday 04 January 2011] [16:13:42] &lt;mikko&gt;  <a href="#id461"><span class="problematic" id="id462">Joes_</span></a>: it sounds like a sensible approach</div>
+<div class="line">[Tuesday 04 January 2011] [15:47:25] &lt;<a href="#id439"><span class="problematic" id="id440">Joes_</span></a>&gt;  yep</div>
+<div class="line">[Tuesday 04 January 2011] [15:47:28] &lt;<a href="#id441"><span class="problematic" id="id442">Joes_</span></a>&gt;  but</div>
+<div class="line">[Tuesday 04 January 2011] [15:47:35] &lt;<a href="#id443"><span class="problematic" id="id444">Joes_</span></a>&gt;  let&#8217;s assume that it is pub/sub</div>
+<div class="line">[Tuesday 04 January 2011] [15:47:41] &lt;<a href="#id445"><span class="problematic" id="id446">Joes_</span></a>&gt;  with, let&#8217;s say 10 subscribers</div>
+<div class="line">[Tuesday 04 January 2011] [15:48:15] &lt;<a href="#id447"><span class="problematic" id="id448">Joes_</span></a>&gt;  so, bad clients sends 1 message</div>
+<div class="line">[Tuesday 04 January 2011] [15:48:47] &lt;<a href="#id449"><span class="problematic" id="id450">Joes_</span></a>&gt;  and 10 messages total are sent to subscribers</div>
+<div class="line">[Tuesday 04 January 2011] [15:49:01] &lt;<a href="#id451"><span class="problematic" id="id452">Joes_</span></a>&gt;  effectively, network topology creates nice DOS environment</div>
+<div class="line">[Tuesday 04 January 2011] [15:49:31] &lt;<a href="#id453"><span class="problematic" id="id454">Joes_</span></a>&gt;  bad client sends*</div>
+<div class="line">[Tuesday 04 January 2011] [15:49:55] &lt;<a href="#id455"><span class="problematic" id="id456">Joes_</span></a>&gt;  I mean - there&#8217;s no built-in security, so there&#8217;s no way to filter these messages before they get into &#8220;internal&#8221; network</div>
+<div class="line">[Tuesday 04 January 2011] [15:50:08] &lt;<a href="#id457"><span class="problematic" id="id458">Joes_</span></a>&gt;  where workers sit</div>
+<div class="line">[Tuesday 04 January 2011] [15:56:16] &lt;<a href="#id459"><span class="problematic" id="id460">Joes_</span></a>&gt;  however, I think broker which will relay messages to internal network will work</div>
+<div class="line">[Tuesday 04 January 2011] [15:56:26] &lt;<a href="#id461"><span class="problematic" id="id462">Joes_</span></a>&gt;  and he&#8217;ll do the authentication stuff too</div>
+<div class="line">[Tuesday 04 January 2011] [16:13:42] &lt;mikko&gt;  <a href="#id463"><span class="problematic" id="id464">Joes_</span></a>: it sounds like a sensible approach</div>
 <div class="line">[Tuesday 04 January 2011] [20:47:48] &lt;jugg&gt;   sustrik, it would appear that 2.1.x C zmq_poll function needs to check ZMQ_EVENTS prior to polling the FD... yes?</div>
 <div class="line">[Tuesday 04 January 2011] [20:49:53] &lt;jugg&gt;   btw, erlang bindings are functioning again... still some clean up work and consideration on how to expose certain aspects, but it is fairly usable now.</div>
 <div class="line">[Tuesday 04 January 2011] [21:30:33] &lt;jugg&gt;   documentation bug: <a class="reference external" href="http://api.zeromq.org/zmq_send.html">http://api.zeromq.org/zmq_send.html</a> -&gt; EFAULT incorrectly references &#8216;context&#8217; rather than &#8216;socket&#8217;.</div>
@@ -1658,7 +1658,7 @@
 <div class="line">[Saturday 08 January 2011] [08:47:34] &lt;s0undt3ch&gt;     instead of req/rep?</div>
 <div class="line">[Saturday 08 January 2011] [08:52:19] &lt;s0undt3ch&gt;     hmm, I think I should look closely to the heartbeat example</div>
 <div class="line">[Saturday 08 January 2011] [11:01:58] &lt;mikko&gt; afternoon</div>
-<div class="line">[Saturday 08 January 2011] [12:21:13] &lt;<a href="#id463"><span class="problematic" id="id464">andrewvc_</span></a>&gt;     cremes: Around?</div>
+<div class="line">[Saturday 08 January 2011] [12:21:13] &lt;<a href="#id465"><span class="problematic" id="id466">andrewvc_</span></a>&gt;     cremes: Around?</div>
 <div class="line">[Saturday 08 January 2011] [12:21:56] Notice  -ChanServ- [#gentoo] Welcome to #gentoo || Acceptable Usage Policy &#64; <a class="reference external" href="http://www.gentoo.org/main/en/irc.xml">http://www.gentoo.org/main/en/irc.xml</a> || Keep the language clean || Google is your friend || No bots or scripts that talk || Turn off public away messages || More than three lines to #flood or a pastebin service, no spam!</div>
 <div class="line">[Saturday 08 January 2011] [12:26:37] &lt;mikko&gt; sustrik: shutdown stress failing on freebsd 8.1</div>
 <div class="line">[Saturday 08 January 2011] [12:27:13] Error   You are not on #gentoo.</div>
@@ -1795,15 +1795,15 @@
 <div class="line">[Monday 10 January 2011] [12:48:25] &lt;s0undt3ch&gt;       hello ppl</div>
 <div class="line">[Monday 10 January 2011] [12:48:27] &lt;s0undt3ch&gt;       using pyzmq</div>
 <div class="line">[Monday 10 January 2011] [12:48:47] &lt;s0undt3ch&gt;       if we want to filter PUB/SUB messages, we need to send them multipart?</div>
-<div class="line">[Monday 10 January 2011] [12:50:55] &lt;<a href="#id31"><span class="problematic" id="id32">Vince__</span></a>&gt; hey</div>
-<div class="line">[Monday 10 January 2011] [12:53:15] &lt;<a href="#id31"><span class="problematic" id="id33">Vince__</span></a>&gt; I&#8217;ve making a wrapper and zmq_bind crashes. I am certain I am sending the right information at the API zmq_bind%(pSoc%,psAddr$):&#8221;zmq_bind&#8221;  and RetVal = zmq_bind(pSoc, &#8220;<a class="reference external" href="tcp://">tcp://</a><a href="#id17"><span class="problematic" id="id18">*</span></a>:5555&#8221;)</div>
+<div class="line">[Monday 10 January 2011] [12:50:55] &lt;<a href="#id33"><span class="problematic" id="id34">Vince__</span></a>&gt; hey</div>
+<div class="line">[Monday 10 January 2011] [12:53:15] &lt;<a href="#id33"><span class="problematic" id="id35">Vince__</span></a>&gt; I&#8217;ve making a wrapper and zmq_bind crashes. I am certain I am sending the right information at the API zmq_bind%(pSoc%,psAddr$):&#8221;zmq_bind&#8221;  and RetVal = zmq_bind(pSoc, &#8220;<a class="reference external" href="tcp://">tcp://</a><a href="#id17"><span class="problematic" id="id18">*</span></a>:5555&#8221;)</div>
 <div class="line">[Monday 10 January 2011] [12:53:20] &lt;sustrik&gt; s0undt3ch: no</div>
 <div class="line">[Monday 10 January 2011] [12:53:34] &lt;s0undt3ch&gt;       sustrik: plain send right?</div>
 <div class="line">[Monday 10 January 2011] [12:53:41] &lt;sustrik&gt; yes</div>
-<div class="line">[Monday 10 January 2011] [12:54:06] &lt;sustrik&gt; <a href="#id31"><span class="problematic" id="id34">Vince__</span></a>: what&#8217;s the crash?</div>
+<div class="line">[Monday 10 January 2011] [12:54:06] &lt;sustrik&gt; <a href="#id33"><span class="problematic" id="id36">Vince__</span></a>: what&#8217;s the crash?</div>
 <div class="line">[Monday 10 January 2011] [12:54:15] &lt;s0undt3ch&gt;       send_pyobj won&#8217;t allow this :</div>
 <div class="line">[Monday 10 January 2011] [12:54:50] &lt;sustrik&gt; how come?</div>
-<div class="line">[Monday 10 January 2011] [12:55:16] &lt;<a href="#id31"><span class="problematic" id="id35">Vince__</span></a>&gt; Unfortunately I don&#8217;t know because this is a user library for Blitz Basic and the debugger crashes with no output.</div>
+<div class="line">[Monday 10 January 2011] [12:55:16] &lt;<a href="#id33"><span class="problematic" id="id37">Vince__</span></a>&gt; Unfortunately I don&#8217;t know because this is a user library for Blitz Basic and the debugger crashes with no output.</div>
 <div class="line">[Monday 10 January 2011] [12:55:49] &lt;sustrik&gt; hard to help then</div>
 <div class="line">[Monday 10 January 2011] [12:56:19] &lt;sustrik&gt; but i haven&#8217;t seen any reports about zmq_bind crashing yet</div>
 <div class="line">[Monday 10 January 2011] [12:56:33] &lt;sustrik&gt; so maybe you should look at the layers above first</div>
@@ -1811,9 +1811,9 @@
 <div class="line">[Monday 10 January 2011] [12:57:08] &lt;sustrik&gt; i see</div>
 <div class="line">[Monday 10 January 2011] [12:57:19] &lt;sustrik&gt; then maybe make a pyzmq patch</div>
 <div class="line">[Monday 10 January 2011] [12:57:26] &lt;sustrik&gt; to allow simple pub/sub messages</div>
-<div class="line">[Monday 10 January 2011] [12:57:30] &lt;<a href="#id31"><span class="problematic" id="id36">Vince__</span></a>&gt; Is it possible to make zeromq to a debug dump as API access occurs? Maybe to a text file or something?</div>
+<div class="line">[Monday 10 January 2011] [12:57:30] &lt;<a href="#id33"><span class="problematic" id="id38">Vince__</span></a>&gt; Is it possible to make zeromq to a debug dump as API access occurs? Maybe to a text file or something?</div>
 <div class="line">[Monday 10 January 2011] [12:58:00] &lt;s0undt3ch&gt;       sustrik: simple pub/sub messages, text messages, it supports them, I just wanted the pickling/unpickling to be automated ;)</div>
-<div class="line">[Monday 10 January 2011] [12:58:15] &lt;sustrik&gt; <a href="#id31"><span class="problematic" id="id37">Vince__</span></a>: you can create a core dump and inspect it in debugger afterwards</div>
+<div class="line">[Monday 10 January 2011] [12:58:15] &lt;sustrik&gt; <a href="#id33"><span class="problematic" id="id39">Vince__</span></a>: you can create a core dump and inspect it in debugger afterwards</div>
 <div class="line">[Monday 10 January 2011] [12:58:38] &lt;s0undt3ch&gt;       If I pickle/unpickle myself, I can do, &#8216;filter &lt;pickled_string&gt;&#8217;</div>
 <div class="line">[Monday 10 January 2011] [12:58:50] &lt;s0undt3ch&gt;       but then I have to be the one pickling and unpickling</div>
 <div class="line">[Monday 10 January 2011] [13:00:41] &lt;sustrik&gt; i see</div>
@@ -2220,91 +2220,91 @@
 <div class="line">[Wednesday 12 January 2011] [11:36:45] &lt;seb`&gt; yes</div>
 <div class="line">[Wednesday 12 January 2011] [11:56:16] &lt;zchrish&gt;      In the PUBSUB pattern, is there a way for the publisher to know something about the subscriber set?</div>
 <div class="line">[Wednesday 12 January 2011] [11:57:48] &lt;zchrish&gt;      like subscriber IPs.</div>
-<div class="line">[Wednesday 12 January 2011] [11:59:01] &lt;<a href="#id31"><span class="problematic" id="id38">Vince__</span></a>&gt;      my wrapper has been throwing this message at me today &#8220;Operation cannot be accomplished in current state&#8221; anyone seen that before? This happens with zmq_recv()</div>
+<div class="line">[Wednesday 12 January 2011] [11:59:01] &lt;<a href="#id33"><span class="problematic" id="id40">Vince__</span></a>&gt;      my wrapper has been throwing this message at me today &#8220;Operation cannot be accomplished in current state&#8221; anyone seen that before? This happens with zmq_recv()</div>
 <div class="line">[Wednesday 12 January 2011] [11:59:20] &lt;zchrish&gt;      If not, I suppose it could be easy enough to broadcast a call-in message which causes the subscriber set to respond.</div>
-<div class="line">[Wednesday 12 January 2011] [12:00:19] &lt;<a href="#id31"><span class="problematic" id="id39">Vince__</span></a>&gt;      Seems the actual point which throws this error is here:</div>
+<div class="line">[Wednesday 12 January 2011] [12:00:19] &lt;<a href="#id33"><span class="problematic" id="id41">Vince__</span></a>&gt;      Seems the actual point which throws this error is here:</div>
 <div class="line">[Wednesday 12 January 2011] [12:00:19] &lt;cremes&gt;       zchrish: no, it&#8217;s not possible because that kind of information doesn&#8217;t fit into the pub/sub pattern</div>
-<div class="line">[Wednesday 12 January 2011] [12:00:24] &lt;<a href="#id31"><span class="problematic" id="id40">Vince__</span></a>&gt;         //  In blocking scenario, commands are processed over and over again until     //  we are able to fetch a message.     while (rc != 0) {         if (errno != EAGAIN)</div>
+<div class="line">[Wednesday 12 January 2011] [12:00:24] &lt;<a href="#id33"><span class="problematic" id="id42">Vince__</span></a>&gt;         //  In blocking scenario, commands are processed over and over again until     //  we are able to fetch a message.     while (rc != 0) {         if (errno != EAGAIN)</div>
 <div class="line">[Wednesday 12 January 2011] [12:00:29] &lt;cremes&gt;       zchrish: use a separate pair of sockets to share that information</div>
-<div class="line">[Wednesday 12 January 2011] [12:00:50] &lt;<a href="#id31"><span class="problematic" id="id41">Vince__</span></a>&gt;      whats a blocking scenario? How do I over come it?</div>
-<div class="line">[Wednesday 12 January 2011] [12:00:53] &lt;cremes&gt;       <a href="#id31"><span class="problematic" id="id42">Vince__</span></a>: that is happening with a req/rep pair, yes?</div>
+<div class="line">[Wednesday 12 January 2011] [12:00:50] &lt;<a href="#id33"><span class="problematic" id="id43">Vince__</span></a>&gt;      whats a blocking scenario? How do I over come it?</div>
+<div class="line">[Wednesday 12 January 2011] [12:00:53] &lt;cremes&gt;       <a href="#id33"><span class="problematic" id="id44">Vince__</span></a>: that is happening with a req/rep pair, yes?</div>
 <div class="line">[Wednesday 12 January 2011] [12:00:59] &lt;zchrish&gt;      OK; thanks.</div>
-<div class="line">[Wednesday 12 January 2011] [12:01:00] &lt;<a href="#id31"><span class="problematic" id="id43">Vince__</span></a>&gt;      yes</div>
-<div class="line">[Wednesday 12 January 2011] [12:01:34] &lt;cremes&gt;       <a href="#id31"><span class="problematic" id="id44">Vince__</span></a>: you need to call send/recv/send/recv in that pattern for each one; you must be trying to call send/send or recv/recv somewhere</div>
+<div class="line">[Wednesday 12 January 2011] [12:01:00] &lt;<a href="#id33"><span class="problematic" id="id45">Vince__</span></a>&gt;      yes</div>
+<div class="line">[Wednesday 12 January 2011] [12:01:34] &lt;cremes&gt;       <a href="#id33"><span class="problematic" id="id46">Vince__</span></a>: you need to call send/recv/send/recv in that pattern for each one; you must be trying to call send/send or recv/recv somewhere</div>
 <div class="line">[Wednesday 12 January 2011] [12:01:45] &lt;cremes&gt;       which violates the request/reply state machine</div>
 <div class="line">[Wednesday 12 January 2011] [12:02:17] &lt;potatodemon&gt;  Are pyzmq zmq socket sends non-bocking ?</div>
-<div class="line">[Wednesday 12 January 2011] [12:02:18] &lt;<a href="#id31"><span class="problematic" id="id45">Vince__</span></a>&gt;      recv/recv on a server demo in a loop........ I guess that was wrong then</div>
-<div class="line">[Wednesday 12 January 2011] [12:02:30] &lt;cremes&gt;       <a href="#id31"><span class="problematic" id="id46">Vince__</span></a>: yep, that&#8217;s wrong</div>
+<div class="line">[Wednesday 12 January 2011] [12:02:18] &lt;<a href="#id33"><span class="problematic" id="id47">Vince__</span></a>&gt;      recv/recv on a server demo in a loop........ I guess that was wrong then</div>
+<div class="line">[Wednesday 12 January 2011] [12:02:30] &lt;cremes&gt;       <a href="#id33"><span class="problematic" id="id48">Vince__</span></a>: yep, that&#8217;s wrong</div>
 <div class="line">[Wednesday 12 January 2011] [12:02:53] &lt;cremes&gt;       potatodemon: i doubt sends are nonblocking by default; there is likely a flag you can pass to make it so</div>
 <div class="line">[Wednesday 12 January 2011] [12:02:57] &lt;cremes&gt;       otherwise it blocks by default</div>
-<div class="line">[Wednesday 12 January 2011] [12:03:04] &lt;<a href="#id31"><span class="problematic" id="id47">Vince__</span></a>&gt;      Seems like I need to rethink the design then</div>
-<div class="line">[Wednesday 12 January 2011] [12:03:31] &lt;<a href="#id31"><span class="problematic" id="id48">Vince__</span></a>&gt;      the server won&#8217;t be sending anything usually though so now I&#8217;m confused...</div>
-<div class="line">[Wednesday 12 January 2011] [12:03:33] &lt;cremes&gt;       <a href="#id31"><span class="problematic" id="id49">Vince__</span></a>: tell us what you are trying to do and we can probably make suggestions</div>
-<div class="line">[Wednesday 12 January 2011] [12:05:15] &lt;<a href="#id31"><span class="problematic" id="id50">Vince__</span></a>&gt;      I wrote a wrapper for a basic language that not many people use (blitz) it needed safe types so I wrote an addition to the ZMQ API to use safe types as well. Everything seems to be fine except for this issue. I created a server in basic that right now has zmq_recv() running in a while loop. Obviously thats not right.</div>
-<div class="line">[Wednesday 12 January 2011] [12:05:50] &lt;cremes&gt;       <a href="#id31"><span class="problematic" id="id51">Vince__</span></a>: explain what the client is supposed to do and what the server is supposed to do</div>
-<div class="line">[Wednesday 12 January 2011] [12:06:26] &lt;<a href="#id31"><span class="problematic" id="id52">Vince__</span></a>&gt;      server recieves messages from client and sends it to other clients</div>
-<div class="line">[Wednesday 12 January 2011] [12:06:55] &lt;<a href="#id31"><span class="problematic" id="id53">Vince__</span></a>&gt;      pretty simple</div>
+<div class="line">[Wednesday 12 January 2011] [12:03:04] &lt;<a href="#id33"><span class="problematic" id="id49">Vince__</span></a>&gt;      Seems like I need to rethink the design then</div>
+<div class="line">[Wednesday 12 January 2011] [12:03:31] &lt;<a href="#id33"><span class="problematic" id="id50">Vince__</span></a>&gt;      the server won&#8217;t be sending anything usually though so now I&#8217;m confused...</div>
+<div class="line">[Wednesday 12 January 2011] [12:03:33] &lt;cremes&gt;       <a href="#id33"><span class="problematic" id="id51">Vince__</span></a>: tell us what you are trying to do and we can probably make suggestions</div>
+<div class="line">[Wednesday 12 January 2011] [12:05:15] &lt;<a href="#id33"><span class="problematic" id="id52">Vince__</span></a>&gt;      I wrote a wrapper for a basic language that not many people use (blitz) it needed safe types so I wrote an addition to the ZMQ API to use safe types as well. Everything seems to be fine except for this issue. I created a server in basic that right now has zmq_recv() running in a while loop. Obviously thats not right.</div>
+<div class="line">[Wednesday 12 January 2011] [12:05:50] &lt;cremes&gt;       <a href="#id33"><span class="problematic" id="id53">Vince__</span></a>: explain what the client is supposed to do and what the server is supposed to do</div>
+<div class="line">[Wednesday 12 January 2011] [12:06:26] &lt;<a href="#id33"><span class="problematic" id="id54">Vince__</span></a>&gt;      server recieves messages from client and sends it to other clients</div>
+<div class="line">[Wednesday 12 January 2011] [12:06:55] &lt;<a href="#id33"><span class="problematic" id="id55">Vince__</span></a>&gt;      pretty simple</div>
 <div class="line">[Wednesday 12 January 2011] [12:06:55] &lt;cremes&gt;       and what does the client do?</div>
 <div class="line">[Wednesday 12 January 2011] [12:07:08] &lt;cremes&gt;       send requests only?</div>
-<div class="line">[Wednesday 12 January 2011] [12:07:39] &lt;<a href="#id31"><span class="problematic" id="id54">Vince__</span></a>&gt;      client sends messages to the server and recieves messages from the server</div>
+<div class="line">[Wednesday 12 January 2011] [12:07:39] &lt;<a href="#id33"><span class="problematic" id="id56">Vince__</span></a>&gt;      client sends messages to the server and recieves messages from the server</div>
 <div class="line">[Wednesday 12 January 2011] [12:07:44] &lt;yawn&gt; mikko: yes.</div>
 <div class="line">[Wednesday 12 January 2011] [12:07:48] &lt;cremes&gt;       ok</div>
 <div class="line">[Wednesday 12 January 2011] [12:08:17] &lt;cremes&gt;       so which one of these (client or server) is currently sitting in a while loop doing recv?</div>
-<div class="line">[Wednesday 12 January 2011] [12:08:26] &lt;<a href="#id31"><span class="problematic" id="id55">Vince__</span></a>&gt;      server</div>
+<div class="line">[Wednesday 12 January 2011] [12:08:26] &lt;<a href="#id33"><span class="problematic" id="id57">Vince__</span></a>&gt;      server</div>
 <div class="line">[Wednesday 12 January 2011] [12:09:01] &lt;cremes&gt;       does that server ever need to respond back to the client, e.g. return a result?</div>
-<div class="line">[Wednesday 12 January 2011] [12:09:16] &lt;<a href="#id31"><span class="problematic" id="id56">Vince__</span></a>&gt;      I was hoping to just let the server sit there and wait for a connection/message from client</div>
+<div class="line">[Wednesday 12 January 2011] [12:09:16] &lt;<a href="#id33"><span class="problematic" id="id58">Vince__</span></a>&gt;      I was hoping to just let the server sit there and wait for a connection/message from client</div>
 <div class="line">[Wednesday 12 January 2011] [12:09:48] &lt;cremes&gt;       ok; so does the server ever need to respond back to its clients?</div>
 <div class="line">[Wednesday 12 January 2011] [12:10:07] &lt;cremes&gt;       i&#8217;m trying to understand the message flow.... it&#8217;s unclear</div>
-<div class="line">[Wednesday 12 January 2011] [12:10:33] &lt;<a href="#id31"><span class="problematic" id="id57">Vince__</span></a>&gt;      the server needs to communicate messages from ClientA to B,C,D,E,F etc... the server doesn&#8217;t need to talk back to the client that connected. All I need to know is if the client connected successfully.</div>
+<div class="line">[Wednesday 12 January 2011] [12:10:33] &lt;<a href="#id33"><span class="problematic" id="id59">Vince__</span></a>&gt;      the server needs to communicate messages from ClientA to B,C,D,E,F etc... the server doesn&#8217;t need to talk back to the client that connected. All I need to know is if the client connected successfully.</div>
 <div class="line">[Wednesday 12 January 2011] [12:10:52] &lt;cremes&gt;       ok</div>
 <div class="line">[Wednesday 12 January 2011] [12:11:16] &lt;cremes&gt;       do clients B,C,D,etc need to respond to A or is the message flow uni-directional?</div>
 <div class="line">[Wednesday 12 January 2011] [12:11:42] &lt;cremes&gt;       that is, A only ever sends and never receives, B,C,D,etc only recv and never send</div>
-<div class="line">[Wednesday 12 January 2011] [12:11:48] &lt;<a href="#id31"><span class="problematic" id="id58">Vince__</span></a>&gt;      Easiest example I can think of is a game server where the client moves and the movement is sent to all the other clients</div>
+<div class="line">[Wednesday 12 January 2011] [12:11:48] &lt;<a href="#id33"><span class="problematic" id="id60">Vince__</span></a>&gt;      Easiest example I can think of is a game server where the client moves and the movement is sent to all the other clients</div>
 <div class="line">[Wednesday 12 January 2011] [12:12:03] &lt;cremes&gt;       ok</div>
 <div class="line">[Wednesday 12 January 2011] [12:12:22] &lt;cremes&gt;       you should look at the pub/sub sockets; req/rep is the <em>wrong</em> pattern</div>
-<div class="line">[Wednesday 12 January 2011] [12:12:46] &lt;<a href="#id31"><span class="problematic" id="id59">Vince__</span></a>&gt;      hmmm</div>
+<div class="line">[Wednesday 12 January 2011] [12:12:46] &lt;<a href="#id33"><span class="problematic" id="id61">Vince__</span></a>&gt;      hmmm</div>
 <div class="line">[Wednesday 12 January 2011] [12:12:47] &lt;cremes&gt;       client A would have a PUB socket</div>
 <div class="line">[Wednesday 12 January 2011] [12:12:57] &lt;cremes&gt;       the server would be a FORWARDER device</div>
 <div class="line">[Wednesday 12 January 2011] [12:13:18] &lt;cremes&gt;       the clients of the server would all have SUB sockets and would subscribe to the topics they want</div>
 <div class="line">[Wednesday 12 January 2011] [12:13:37] &lt;cremes&gt;       does that make sense?</div>
 <div class="line">[Wednesday 12 January 2011] [12:13:53] &lt;cremes&gt;       if not, tell me where it&#8217;s confusing or wrong</div>
-<div class="line">[Wednesday 12 January 2011] [12:14:21] &lt;<a href="#id31"><span class="problematic" id="id60">Vince__</span></a>&gt;      I guess I need to make sure I understand what you are saying.</div>
+<div class="line">[Wednesday 12 January 2011] [12:14:21] &lt;<a href="#id33"><span class="problematic" id="id62">Vince__</span></a>&gt;      I guess I need to make sure I understand what you are saying.</div>
 <div class="line">[Wednesday 12 January 2011] [12:14:40] &lt;cremes&gt;       ok, i&#8217;ll break it down a bit more</div>
 <div class="line">[Wednesday 12 January 2011] [12:14:58] &lt;cremes&gt;       client A <em>only</em> sends data and never cares about a response to what it sent</div>
-<div class="line">[Wednesday 12 January 2011] [12:15:02] &lt;<a href="#id31"><span class="problematic" id="id61">Vince__</span></a>&gt;      is there a simple example anywhere?</div>
+<div class="line">[Wednesday 12 January 2011] [12:15:02] &lt;<a href="#id33"><span class="problematic" id="id63">Vince__</span></a>&gt;      is there a simple example anywhere?</div>
 <div class="line">[Wednesday 12 January 2011] [12:15:10] &lt;cremes&gt;       ...</div>
 <div class="line">[Wednesday 12 January 2011] [12:15:18] &lt;cremes&gt;       did you read the guide linked off of the website?</div>
 <div class="line">[Wednesday 12 January 2011] [12:15:26] &lt;cremes&gt;       it covers all of these patterns in detail with code</div>
-<div class="line">[Wednesday 12 January 2011] [12:15:28] &lt;<a href="#id31"><span class="problematic" id="id62">Vince__</span></a>&gt;      Yes I did actually</div>
+<div class="line">[Wednesday 12 January 2011] [12:15:28] &lt;<a href="#id33"><span class="problematic" id="id64">Vince__</span></a>&gt;      Yes I did actually</div>
 <div class="line">[Wednesday 12 January 2011] [12:15:49] &lt;cremes&gt;       and the PUB section didn&#8217;t seem appropriate for some reason?</div>
-<div class="line">[Wednesday 12 January 2011] [12:16:10] &lt;<a href="#id31"><span class="problematic" id="id63">Vince__</span></a>&gt;      It is probably. I just did the tutorials a few weeks ago.</div>
-<div class="line">[Wednesday 12 January 2011] [12:16:19] &lt;<a href="#id31"><span class="problematic" id="id64">Vince__</span></a>&gt;      Forwarder seems to be throwing me.</div>
-<div class="line">[Wednesday 12 January 2011] [12:17:44] &lt;<a href="#id31"><span class="problematic" id="id65">Vince__</span></a>&gt;      I am looking at the guide now.</div>
+<div class="line">[Wednesday 12 January 2011] [12:16:10] &lt;<a href="#id33"><span class="problematic" id="id65">Vince__</span></a>&gt;      It is probably. I just did the tutorials a few weeks ago.</div>
+<div class="line">[Wednesday 12 January 2011] [12:16:19] &lt;<a href="#id33"><span class="problematic" id="id66">Vince__</span></a>&gt;      Forwarder seems to be throwing me.</div>
+<div class="line">[Wednesday 12 January 2011] [12:17:44] &lt;<a href="#id33"><span class="problematic" id="id67">Vince__</span></a>&gt;      I am looking at the guide now.</div>
 <div class="line">[Wednesday 12 January 2011] [12:18:12] &lt;cremes&gt;       forwarder is a pretty simple device... let me see if i can help clarify its use</div>
 <div class="line">[Wednesday 12 January 2011] [12:18:39] &lt;cremes&gt;       a forwarder device will have a SUB socket and a PUB socket</div>
-<div class="line">[Wednesday 12 January 2011] [12:18:50] &lt;<a href="#id31"><span class="problematic" id="id66">Vince__</span></a>&gt;      k</div>
+<div class="line">[Wednesday 12 January 2011] [12:18:50] &lt;<a href="#id33"><span class="problematic" id="id68">Vince__</span></a>&gt;      k</div>
 <div class="line">[Wednesday 12 January 2011] [12:18:54] &lt;cremes&gt;       both sockets will <em>bind</em> to some addresses</div>
 <div class="line">[Wednesday 12 January 2011] [12:19:30] &lt;cremes&gt;       a publisher (client A) connects to the forwarder and sends its messages there</div>
 <div class="line">[Wednesday 12 January 2011] [12:20:02] &lt;cremes&gt;       subscribers interested in what client A have to say subscribe to the forwarder without needing to know the address of client A</div>
-<div class="line">[Wednesday 12 January 2011] [12:20:25] &lt;<a href="#id31"><span class="problematic" id="id67">Vince__</span></a>&gt;      aha! thats what I want indeed</div>
+<div class="line">[Wednesday 12 January 2011] [12:20:25] &lt;<a href="#id33"><span class="problematic" id="id69">Vince__</span></a>&gt;      aha! thats what I want indeed</div>
 <div class="line">[Wednesday 12 January 2011] [12:20:28] &lt;cremes&gt;       now along comes client B who <em>also</em> wants to publish data to an unknown number of subscribers</div>
 <div class="line">[Wednesday 12 January 2011] [12:20:41] &lt;cremes&gt;       it also connects to the forwarder and starts publishing</div>
 <div class="line">[Wednesday 12 January 2011] [12:21:08] &lt;cremes&gt;       a forwarder is a device for linking up multiple subscribers with multiple publishers</div>
 <div class="line">[Wednesday 12 January 2011] [12:21:34] &lt;cremes&gt;       does this help?</div>
 <div class="line">[Wednesday 12 January 2011] [12:22:09] &lt;cremes&gt;       the forwarder can be thought of as a way to get &#8220;multicast&#8221;/spread delivery via tcp</div>
-<div class="line">[Wednesday 12 January 2011] [12:23:06] &lt;<a href="#id31"><span class="problematic" id="id68">Vince__</span></a>&gt;      so what happens with the forwarder in terms of the application. Do I not need to actively tell it to recv messages?</div>
+<div class="line">[Wednesday 12 January 2011] [12:23:06] &lt;<a href="#id33"><span class="problematic" id="id70">Vince__</span></a>&gt;      so what happens with the forwarder in terms of the application. Do I not need to actively tell it to recv messages?</div>
 <div class="line">[Wednesday 12 January 2011] [12:23:24] &lt;cremes&gt;       nope</div>
 <div class="line">[Wednesday 12 January 2011] [12:23:37] &lt;cremes&gt;       take a look at the code in the repository.... it&#8217;s super simple</div>
 <div class="line">[Wednesday 12 January 2011] [12:24:03] &lt;cremes&gt;       it essentially sits in a while loop; every time it receives something it immediately sends it out to all subscribers</div>
-<div class="line">[Wednesday 12 January 2011] [12:24:14] &lt;<a href="#id31"><span class="problematic" id="id69">Vince__</span></a>&gt;      ah</div>
-<div class="line">[Wednesday 12 January 2011] [12:24:44] &lt;<a href="#id31"><span class="problematic" id="id70">Vince__</span></a>&gt;      I&#8217;m starting to think something like</div>
-<div class="line">[Wednesday 12 January 2011] [12:24:47] &lt;<a href="#id31"><span class="problematic" id="id71">Vince__</span></a>&gt;      zmq_init() //  Socket facing clients zmq_socket() //  Socket facing services zmq_bind() zmq_socket() //  Start built-in device zmq_device()</div>
-<div class="line">[Wednesday 12 January 2011] [12:40:54] &lt;<a href="#id31"><span class="problematic" id="id72">Vince__</span></a>&gt;      cremes how can I determine if a subscriber connects to the published socket from the server application?</div>
-<div class="line">[Wednesday 12 January 2011] [13:15:50] &lt;cremes&gt;       <a href="#id31"><span class="problematic" id="id73">Vince__</span></a>: that information is not exposed by the 0mq library; you would need a separate pair of sockets to transmit that info</div>
+<div class="line">[Wednesday 12 January 2011] [12:24:14] &lt;<a href="#id33"><span class="problematic" id="id71">Vince__</span></a>&gt;      ah</div>
+<div class="line">[Wednesday 12 January 2011] [12:24:44] &lt;<a href="#id33"><span class="problematic" id="id72">Vince__</span></a>&gt;      I&#8217;m starting to think something like</div>
+<div class="line">[Wednesday 12 January 2011] [12:24:47] &lt;<a href="#id33"><span class="problematic" id="id73">Vince__</span></a>&gt;      zmq_init() //  Socket facing clients zmq_socket() //  Socket facing services zmq_bind() zmq_socket() //  Start built-in device zmq_device()</div>
+<div class="line">[Wednesday 12 January 2011] [12:40:54] &lt;<a href="#id33"><span class="problematic" id="id74">Vince__</span></a>&gt;      cremes how can I determine if a subscriber connects to the published socket from the server application?</div>
+<div class="line">[Wednesday 12 January 2011] [13:15:50] &lt;cremes&gt;       <a href="#id33"><span class="problematic" id="id75">Vince__</span></a>: that information is not exposed by the 0mq library; you would need a separate pair of sockets to transmit that info</div>
 <div class="line">[Wednesday 12 January 2011] [13:15:54] &lt;cremes&gt;       at the application level</div>
-<div class="line">[Wednesday 12 January 2011] [13:19:19] &lt;<a href="#id31"><span class="problematic" id="id74">Vince__</span></a>&gt;      thanks for all your help cremes!</div>
-<div class="line">[Wednesday 12 January 2011] [13:19:34] &lt;cremes&gt;       <a href="#id31"><span class="problematic" id="id75">Vince__</span></a>: you&#8217;re welcome</div>
-<div class="line">[Wednesday 12 January 2011] [13:19:50] &lt;<a href="#id31"><span class="problematic" id="id76">Vince__</span></a>&gt;      pub/sub is certainly what I was looking for</div>
+<div class="line">[Wednesday 12 January 2011] [13:19:19] &lt;<a href="#id33"><span class="problematic" id="id76">Vince__</span></a>&gt;      thanks for all your help cremes!</div>
+<div class="line">[Wednesday 12 January 2011] [13:19:34] &lt;cremes&gt;       <a href="#id33"><span class="problematic" id="id77">Vince__</span></a>: you&#8217;re welcome</div>
+<div class="line">[Wednesday 12 January 2011] [13:19:50] &lt;<a href="#id33"><span class="problematic" id="id78">Vince__</span></a>&gt;      pub/sub is certainly what I was looking for</div>
 <div class="line">[Wednesday 12 January 2011] [14:24:06] &lt;mikko&gt;        good evening</div>
 <div class="line">[Wednesday 12 January 2011] [15:26:47] &lt;mikko&gt;        sustrik: there?</div>
 <div class="line">[Wednesday 12 January 2011] [15:37:19] &lt;sustrik&gt;      mikko: hi</div>
@@ -2392,6 +2392,484 @@
 <div class="line">[Thursday 13 January 2011] [04:02:54] &lt;sustrik&gt;       try contacting serge aleynikov</div>
 <div class="line">[Thursday 13 January 2011] [04:03:15] &lt;sustrik&gt;       <a class="reference external" href="mailto:serge&#37;&#52;&#48;aleynikov&#46;org">serge<span>&#64;</span>aleynikov<span>&#46;</span>org</a></div>
 <div class="line">[Thursday 13 January 2011] [04:03:50] &lt;sustrik&gt;       yrashk: what&#8217;s the error?</div>
+<div class="line">[Thursday 13 January 2011] [04:08:24] &lt;yrashk&gt;        sustrik: the one in the gist i mentioned</div>
+<div class="line">[Thursday 13 January 2011] [04:08:43] &lt;sustrik&gt;       there&#8217;s no error there</div>
+<div class="line">[Thursday 13 January 2011] [04:10:01] &lt;jugg&gt;  benoitc, you may want to look at <a class="reference external" href="http://github.com/csrl/erlzmq">http://github.com/csrl/erlzmq</a> for what I believe is a usable erlang binding</div>
+<div class="line">[Thursday 13 January 2011] [04:10:35] &lt;sustrik&gt;       jugg: any answer from serge?</div>
+<div class="line">[Thursday 13 January 2011] [04:11:07] &lt;yrashk&gt;        sustrik: its a segfault point inspected in gdb</div>
+<div class="line">[Thursday 13 January 2011] [04:11:41] &lt;sustrik&gt;       ah, segfault</div>
+<div class="line">[Thursday 13 January 2011] [04:11:43] &lt;jugg&gt;  sustrik, ?  I think I may have missed something.</div>
+<div class="line">[Thursday 13 January 2011] [04:12:00] &lt;jugg&gt;  I take it I should contact him. :)</div>
+<div class="line">[Thursday 13 January 2011] [04:12:08] &lt;sustrik&gt;       doyrashk: can you provide a minimal test case?</div>
+<div class="line">[Thursday 13 January 2011] [04:12:22] &lt;sustrik&gt;       jugg: well, try to ask him to pull the changes</div>
+<div class="line">[Thursday 13 January 2011] [04:12:52] &lt;jugg&gt;  does he handle pull requests on zeromq/erlzmq?</div>
+<div class="line">[Thursday 13 January 2011] [04:13:14] &lt;yrashk&gt;        sustrik: im trying but this segfault is only randomly reproducible :(</div>
+<div class="line">[Thursday 13 January 2011] [04:13:17] &lt;sustrik&gt;       he did so a week ago</div>
+<div class="line">[Thursday 13 January 2011] [04:13:24] &lt;jugg&gt;  k</div>
+<div class="line">[Thursday 13 January 2011] [04:13:26] &lt;sustrik&gt;       so he&#8217;s probably still maintaining the project</div>
+<div class="line">[Thursday 13 January 2011] [04:13:35] &lt;sustrik&gt;       anyway, if he doesn&#8217;t answer, ping me</div>
+<div class="line">[Thursday 13 January 2011] [04:13:45] &lt;sustrik&gt;       i&#8217;ll grant you commit access to the project</div>
+<div class="line">[Thursday 13 January 2011] [04:13:50] &lt;jugg&gt;  ok</div>
+<div class="line">[Thursday 13 January 2011] [04:14:16] &lt;sustrik&gt;       yrashk: maybe be using a loop in your test program?</div>
+<div class="line">[Thursday 13 January 2011] [04:15:04] &lt;yrashk&gt;        sustrik: may be, i just have to narrow it down somehow</div>
+<div class="line">[Thursday 13 January 2011] [04:15:15] &lt;sustrik&gt;       goodo</div>
+<div class="line">[Thursday 13 January 2011] [04:15:20] &lt;yrashk&gt;        i have a pushing thread and a pulling thread</div>
+<div class="line">[Thursday 13 January 2011] [04:15:30] &lt;yrashk&gt;        not sure how this can affect it</div>
+<div class="line">[Thursday 13 January 2011] [04:15:53] &lt;yrashk&gt;        given i use ffn to deallocate stuff</div>
+<div class="line">[Thursday 13 January 2011] [04:16:38] &lt;benoitc&gt;       sustrik: k</div>
+<div class="line">[Thursday 13 January 2011] [04:19:43] &lt;benoitc&gt;       jugg: does it change the use of erlzmq ?</div>
+<div class="line">[Thursday 13 January 2011] [04:20:32] &lt;benoitc&gt;       ah yes so you create one context / socket</div>
+<div class="line">[Thursday 13 January 2011] [04:20:48] &lt;jugg&gt;  sustrik, to close the loop on an old discussion from a few weeks ago.  The problems I was seeing with bogus blank messages seems to have gone away with the updated erlang bindings, and I believe I have an explanation as to what was causing. As such I don&#8217;t believe the issue exists but is masked, but that the issue was in the bindings.</div>
+<div class="line">[Thursday 13 January 2011] [04:21:05] &lt;jugg&gt;  benoitc, no, there are multiple sockets per context.</div>
+<div class="line">[Thursday 13 January 2011] [04:21:23] &lt;jugg&gt;  There is one erlang process per socket.</div>
+<div class="line">[Thursday 13 January 2011] [04:21:42] &lt;sustrik&gt;       jugg: great</div>
+<div class="line">[Thursday 13 January 2011] [04:21:56] &lt;benoitc&gt;       right parsing pursub server ex</div>
+<div class="line">[Thursday 13 January 2011] [04:22:53] &lt;jugg&gt;  the main difference is that zmq:start_link no longer exists (which used to initialize a zmq context).  Now you must call zmq:init/1 instead to establish a context.  And you must pass the context to zmq:socket/2.  Also, the returned socket from zmq:socket/2 must be passed around.</div>
+<div class="line">[Thursday 13 January 2011] [04:23:28] &lt;benoitc&gt;       mmm ok</div>
+<div class="line">[Thursday 13 January 2011] [04:23:54] &lt;benoitc&gt;       would be good if the change happen soon, so i could test it on couch_zmq</div>
+<div class="line">[Thursday 13 January 2011] [04:23:58] &lt;jugg&gt;  basically you can treat the erlang bindings very much like the C bindings.  See: <a class="reference external" href="http://csrl.github.com/erlzmq/">http://csrl.github.com/erlzmq/</a>  for documented differences.</div>
+<div class="line">[Thursday 13 January 2011] [04:24:16] &lt;jugg&gt;  (under architecture)</div>
+<div class="line">[Thursday 13 January 2011] [04:25:40] &lt;benoitc&gt;       jugg: i will provide a branch using rebar with that in coming hour</div>
+<div class="line">[Thursday 13 January 2011] [04:25:47] &lt;jugg&gt;  however, if you want low level control, you can utilize the zmq_drv:xxx functions directly, however there are certain constraints to respect.  I don&#8217;t have those documented yet.</div>
+<div class="line">[Thursday 13 January 2011] [04:26:03] &lt;benoitc&gt;       cool</div>
+<div class="line">[Thursday 13 January 2011] [04:26:22] &lt;jugg&gt;  benoitc, great, I saw your rebar update and was waiting to see if my fork would get merged before integrating.</div>
+<div class="line">[Thursday 13 January 2011] [04:26:52] &lt;benoitc&gt;       i&#8217;m trying to only se rebar these days (hopefully it will be integrated in erlang)</div>
+<div class="line">[Thursday 13 January 2011] [04:26:55] &lt;benoitc&gt;       so I need it</div>
+<div class="line">[Thursday 13 January 2011] [04:31:32] &lt;sustrik&gt;       jugg: btw, i like the idea of erlzmq looking more alike to C API and other bindings</div>
+<div class="line">[Thursday 13 January 2011] [04:32:41] &lt;jugg&gt;  things started coming together better once I took that approach.</div>
+<div class="line">[Thursday 13 January 2011] [04:33:22] &lt;sustrik&gt;       nice</div>
+<div class="line">[Thursday 13 January 2011] [04:36:30] &lt;jugg&gt;  ok, pull request sent.</div>
+<div class="line">[Thursday 13 January 2011] [04:36:36] &lt;yrashk&gt;        jugg: how stable erlzmq now? I have another project in the pipeline and I am again trying to choose between zeromq and rabbitmq (I used both, although more of rabbitmq)</div>
+<div class="line">[Thursday 13 January 2011] [04:36:40] &lt;yrashk&gt;        is now*</div>
+<div class="line">[Thursday 13 January 2011] [04:37:32] &lt;jugg&gt;  fairly.  I haven&#8217;t tested all of the get/setsockopt however, so I might have a bug in there - hopefully not.  And it&#8217;ll be going into production use within two weeks here.</div>
+<div class="line">[Thursday 13 January 2011] [04:37:43] &lt;yrashk&gt;        oh nice</div>
+<div class="line">[Thursday 13 January 2011] [04:37:56] &lt;mikko&gt; sustrik: im wondering that do we currently provide a way to remove subscription?</div>
+<div class="line">[Thursday 13 January 2011] [04:38:24] &lt;mikko&gt; sustrik: im thinking about internet like usage scenario where subscribers with identities might come and go</div>
+<div class="line">[Thursday 13 January 2011] [04:50:39] &lt;sustrik&gt;       mikko: ZMQ_UNSUBSCRIBE</div>
+<div class="line">[Thursday 13 January 2011] [05:08:16] &lt;benoitc&gt;       jugg: i&#8217;ve an error while building your version :</div>
+<div class="line">[Thursday 13 January 2011] [05:08:17] &lt;benoitc&gt;       c_src/zmq_drv.cpp: In function void zmqdrv_ready_input(_erl_drv_data*, _erl_drv_event*):</div>
+<div class="line">[Thursday 13 January 2011] [05:08:20] &lt;benoitc&gt;       c_src/zmq_drv.cpp:939: error: cast from _erl_drv_event* to int loses precision</div>
+<div class="line">[Thursday 13 January 2011] [05:08:42] &lt;benoitc&gt;       mmm maybe I miss a flag</div>
+<div class="line">[Thursday 13 January 2011] [05:11:52] &lt;mikko&gt; sustrik: i meant from server side</div>
+<div class="line">[Thursday 13 January 2011] [05:12:07] &lt;mikko&gt; i&#8217;ve never used PUB/SUB with identities</div>
+<div class="line">[Thursday 13 January 2011] [05:12:24] &lt;mikko&gt; but i understand if subscriber with identity goes away the messages are buffered</div>
+<div class="line">[Thursday 13 January 2011] [05:12:30] &lt;mikko&gt; are they buffered up to HWM?</div>
+<div class="line">[Thursday 13 January 2011] [05:12:40] &lt;sustrik&gt;       yes</div>
+<div class="line">[Thursday 13 January 2011] [05:12:57] &lt;sustrik&gt;       basically, identity defines a &#8220;permanent connection&#8221;</div>
+<div class="line">[Thursday 13 January 2011] [05:13:26] &lt;sustrik&gt;       one that remains even though reconnect happens, one application is shut down or alike</div>
+<div class="line">[Thursday 13 January 2011] [05:13:46] &lt;sustrik&gt;       then there&#8217;s orthogonal issue of how many massages can be buffered</div>
+<div class="line">[Thursday 13 January 2011] [05:13:52] &lt;sustrik&gt;       that&#8217;s HWM and SWAP</div>
+<div class="line">[Thursday 13 January 2011] [05:13:55] &lt;mikko&gt; but it&#8217;s good that HWM limits it</div>
+<div class="line">[Thursday 13 January 2011] [05:14:06] &lt;sustrik&gt;       yes, it&#8217;s orthogonal</div>
+<div class="line">[Thursday 13 January 2011] [05:14:17] &lt;mikko&gt; i was thinking about untrusted subscribers creating a resource exchaustion</div>
+<div class="line">[Thursday 13 January 2011] [05:14:43] &lt;sustrik&gt;       it can still happen</div>
+<div class="line">[Thursday 13 January 2011] [05:14:45] &lt;seb`&gt;  do sockets get a randomly assigned identity if it&#8217;s not set?</div>
+<div class="line">[Thursday 13 January 2011] [05:14:49] &lt;sustrik&gt;       it there&#8217;s a lot of them</div>
+<div class="line">[Thursday 13 January 2011] [05:14:56] &lt;mikko&gt; yes, i guess so</div>
+<div class="line">[Thursday 13 January 2011] [05:14:57] &lt;sustrik&gt;       is it wise to ude identities?</div>
+<div class="line">[Thursday 13 January 2011] [05:15:00] &lt;sustrik&gt;       use</div>
+<div class="line">[Thursday 13 January 2011] [05:15:12] &lt;sustrik&gt;       seb&#8217;: kind of</div>
+<div class="line">[Thursday 13 January 2011] [05:15:20] &lt;mikko&gt; i guess a sockopt disabling permanent connections even if client requests might be good</div>
+<div class="line">[Thursday 13 January 2011] [05:15:35] &lt;mikko&gt; if clients are untrusted it might prove to be useful</div>
+<div class="line">[Thursday 13 January 2011] [05:15:43] &lt;sustrik&gt;       seb&#8217;: but the connection is not persistent in the sense the resources are deallocated once the connection breaks</div>
+<div class="line">[Thursday 13 January 2011] [05:16:05] &lt;seb`&gt;  I see</div>
+<div class="line">[Thursday 13 January 2011] [05:44:42] &lt;CIA-21&gt;        zeromq2: 03Martin Sustrik 07master * r18f29de 10/ (52 files):</div>
+<div class="line">[Thursday 13 January 2011] [05:44:42] &lt;CIA-21&gt;        zeromq2: Make cppcheck not complain about &#8220;&#8216;operator=&#8217; should return something&#8221;</div>
+<div class="line">[Thursday 13 January 2011] [05:44:42] &lt;CIA-21&gt;        zeromq2: Signed-off-by: Martin Sustrik &lt;<a class="reference external" href="mailto:sustrik&#37;&#52;&#48;250bpm&#46;com">sustrik<span>&#64;</span>250bpm<span>&#46;</span>com</a>&gt; - <a class="reference external" href="http://bit.ly/hUiXv8">http://bit.ly/hUiXv8</a></div>
+<div class="line">[Thursday 13 January 2011] [05:45:18] &lt;mikko&gt; heh, i wonder other static analysis tools are there</div>
+<div class="line">[Thursday 13 January 2011] [05:45:34] &lt;mikko&gt; currently it runs cppcheck, duplicate code check and soon sloccount</div>
+<div class="line">[Thursday 13 January 2011] [05:50:45] &lt;sustrik&gt;       let me first fix these :)</div>
+<div class="line">[Thursday 13 January 2011] [05:51:03] &lt;sustrik&gt;       mikko: btw, is it possible to switch off certain types of errors?</div>
+<div class="line">[Thursday 13 January 2011] [05:51:17] &lt;mikko&gt; sustrik: i can create a suppressions file</div>
+<div class="line">[Thursday 13 January 2011] [05:51:21] &lt;mikko&gt; which ones specifically?</div>
+<div class="line">[Thursday 13 January 2011] [05:51:37] &lt;sustrik&gt;       Redundant condition. It is safe to deallocate a NULL pointer</div>
+<div class="line">[Thursday 13 January 2011] [05:51:59] &lt;sustrik&gt;       The code is redundant but it improves readability</div>
+<div class="line">[Thursday 13 January 2011] [05:52:07] &lt;sustrik&gt;       so I would prefer to leave it in</div>
+<div class="line">[Thursday 13 January 2011] [05:52:25] &lt;sustrik&gt;       cppCheckId=     redundantIfDelete0</div>
+<div class="line">[Thursday 13 January 2011] [05:53:24] &lt;mikko&gt; ok, i&#8217;ll try adding suppressions file</div>
+<div class="line">[Thursday 13 January 2011] [05:53:25] &lt;mikko&gt; just a sec</div>
+<div class="line">[Thursday 13 January 2011] [06:19:03] &lt;jugg&gt;  benoitc, 32bit or 64bit?</div>
+<div class="line">[Thursday 13 January 2011] [06:22:07] &lt;jugg&gt;  benoitc, looks like for some reason I changed the cast from a long to an int.  I&#8217;ll take a look and see if I can figure out why.</div>
+<div class="line">[Thursday 13 January 2011] [06:29:59] &lt;mikko&gt; sustrik: <a class="reference external" href="http://build.valokuva.org/job/ZeroMQ2-core-master_static-analysis/12/cppcheckResult/">http://build.valokuva.org/job/ZeroMQ2-core-master_static-analysis/12/cppcheckResult/</a>?</div>
+<div class="line">[Thursday 13 January 2011] [06:30:04] &lt;mikko&gt; suppressed now</div>
+<div class="line">[Thursday 13 January 2011] [06:31:10] &lt;mikko&gt; still a couple of redundant ones but fixing later</div>
+<div class="line">[Thursday 13 January 2011] [06:34:33] &lt;sustrik&gt;       mikko: strange that it is analysing the system header files</div>
+<div class="line">[Thursday 13 January 2011] [06:34:43] &lt;sustrik&gt;       like /usr/include/stdlib.h</div>
+<div class="line">[Thursday 13 January 2011] [06:36:22] &lt;mikko&gt; yeah, i removed those</div>
+<div class="line">[Thursday 13 January 2011] [06:36:24] &lt;mikko&gt; <a class="reference external" href="http://build.valokuva.org/job/ZeroMQ2-core-master_static-analysis/14/cppcheckResult/">http://build.valokuva.org/job/ZeroMQ2-core-master_static-analysis/14/cppcheckResult/</a>?</div>
+<div class="line">[Thursday 13 January 2011] [06:46:18] &lt;sustrik&gt;       great</div>
+<div class="line">[Thursday 13 January 2011] [06:46:28] &lt;sustrik&gt;       i have a look at remaining problems later on</div>
+<div class="line">[Thursday 13 January 2011] [06:46:42] &lt;mikko&gt; let me know if more suppressions are needed</div>
+<div class="line">[Thursday 13 January 2011] [06:47:26] &lt;jugg&gt;  benoitc, It is because zeromq returns an &#8216;int&#8217; for that value, so the conversion is harmless, but the warning should be suppressed.</div>
+<div class="line">[Thursday 13 January 2011] [06:53:06] &lt;benoitc&gt;       jugg: sound like there are other error</div>
+<div class="line">[Thursday 13 January 2011] [06:53:11] &lt;benoitc&gt;       yes 64 bits</div>
+<div class="line">[Thursday 13 January 2011] [06:53:37] &lt;benoitc&gt;       jugg: there is also a problem l 446 and 820</div>
+<div class="line">[Thursday 13 January 2011] [06:53:45] &lt;benoitc&gt;       int e = (uintptr_t)event;</div>
+<div class="line">[Thursday 13 January 2011] [06:53:52] &lt;benoitc&gt;       solve the first one</div>
+<div class="line">[Thursday 13 January 2011] [06:54:03] &lt;benoitc&gt;       on 446 i&#8217;ve to assert((sizeof(uint8_t)+ n+1) == size);</div>
+<div class="line">[Thursday 13 January 2011] [06:54:12] &lt;benoitc&gt;       but my C is really rosten</div>
+<div class="line">[Thursday 13 January 2011] [06:54:39] &lt;benoitc&gt;       rusty</div>
+<div class="line">[Thursday 13 January 2011] [07:00:22] &lt;jugg&gt;  hmm, that 446 error is strange.  I don&#8217;t yet understand why your change would be correct.</div>
+<div class="line">[Thursday 13 January 2011] [07:01:16] &lt;jugg&gt;  size should be equal to n + 1</div>
+<div class="line">[Thursday 13 January 2011] [07:01:25] &lt;jugg&gt;  sizeof(uint8_t) == 1</div>
+<div class="line">[Thursday 13 January 2011] [07:01:37] &lt;jugg&gt;  so, sizeof(uint8_t) + n should be correct...</div>
+<div class="line">[Thursday 13 January 2011] [07:04:04] &lt;zchrish&gt;       I have a use case and am wondering whether zeromq is the right implementation method :</div>
+<div class="line">[Thursday 13 January 2011] [07:04:21] &lt;jugg&gt;  benoitc, what is the error on 820?</div>
+<div class="line">[Thursday 13 January 2011] [07:04:58] &lt;zchrish&gt;        Actually will send to the discussion group; sorry.</div>
+<div class="line">[Thursday 13 January 2011] [07:07:01] &lt;jugg&gt;  benoitc, I believe I&#8217;ve understood the problem at 446.  Verifying...</div>
+<div class="line">[Thursday 13 January 2011] [07:13:43] &lt;jugg&gt;  yes,  &#8216;n&#8217; is not byte size, it is the number of options.  So what is being asserted itself is bogus.  I&#8217;m making a fix and will push it shortly.</div>
+<div class="line">[Thursday 13 January 2011] [07:38:22] &lt;jugg&gt;  benoitc, I have the fixes in place for the first two issues.  Is there anything to fix for line 820?</div>
+<div class="line">[Thursday 13 January 2011] [07:57:53] &lt;benoitc&gt;       jugg: testing</div>
+<div class="line">[Thursday 13 January 2011] [08:00:38] &lt;benoitc&gt;       jugg: new error c_src/zmq_drv.cpp: In function void wrap_zmq_setsockopt(zmq_drv_t*, const uint8_t*, size_t):</div>
+<div class="line">[Thursday 13 January 2011] [08:00:41] &lt;benoitc&gt;       c_src/zmq_drv.cpp:492: error: optvalen was not declared in this scope</div>
+<div class="line">[Thursday 13 January 2011] [08:00:47] &lt;jugg&gt;  eh</div>
+<div class="line">[Thursday 13 January 2011] [08:01:24] &lt;jugg&gt;  wow, how is my compiler not giving me an error there?</div>
+<div class="line">[Thursday 13 January 2011] [08:02:07] &lt;benoitc&gt;       -Wl isn&#8217;t an option on osx</div>
+<div class="line">[Thursday 13 January 2011] [08:02:35] &lt;benoitc&gt;       ah yes a typo</div>
+<div class="line">[Thursday 13 January 2011] [08:03:37] &lt;benoitc&gt;       and now have a new warning c_src/zmq_drv.cpp:492: warning: comparison between signed and unsigned integer expressions</div>
+<div class="line">[Thursday 13 January 2011] [08:04:07] &lt;jugg&gt;  ah NDEBUG is defined in my build environment... no wonder I&#8217;m not finding these problems.</div>
+<div class="line">[Thursday 13 January 2011] [08:04:11]          * jugg slaps head</div>
+<div class="line">[Thursday 13 January 2011] [08:04:21] &lt;benoitc&gt;       heh</div>
+<div class="line">[Thursday 13 January 2011] [08:05:09] &lt;jugg&gt;  sorry... too many things going at once; missing these types of details.</div>
+<div class="line">[Thursday 13 January 2011] [08:05:15] &lt;benoitc&gt;       np</div>
+<div class="line">[Thursday 13 January 2011] [08:05:38] &lt;benoitc&gt;       that&#8217; where opensource helps :)</div>
+<div class="line">[Thursday 13 January 2011] [08:05:52] &lt;jugg&gt;  quite so :)</div>
+<div class="line">[Thursday 13 January 2011] [08:08:45] &lt;jugg&gt;  there we go... now I&#8217;m getting the errors.</div>
+<div class="line">[Thursday 13 January 2011] [08:09:18] &lt;benoitc&gt;       i&#8217;m not sure it is, but cool :-)</div>
+<div class="line">[Thursday 13 January 2011] [08:20:09] &lt;jugg&gt;  fix pushed</div>
+<div class="line">[Thursday 13 January 2011] [08:22:45] &lt;benoitc&gt;       one last sorry :(</div>
+<div class="line">[Thursday 13 January 2011] [08:22:46] &lt;benoitc&gt;       10&gt; Assertion failed: (sizeof(uint32_t) == size), function wrap_zmq_poll, file c_src/zmq_drv.cpp, line 821. Abort trap</div>
+<div class="line">[Thursday 13 January 2011] [08:22:51] &lt;jugg&gt;  I guess I should re-run my tests now that the asserts are actually</div>
+<div class="line">[Thursday 13 January 2011] [08:22:55] &lt;benoitc&gt;       the one I had with my fixes</div>
+<div class="line">[Thursday 13 January 2011] [08:23:38] &lt;benoitc&gt;       jugg: btw rebared version <a class="reference external" href="https://github.com/benoitc/erlzmq/tree/rebar-socketprocess">https://github.com/benoitc/erlzmq/tree/rebar-socketprocess</a></div>
+<div class="line">[Thursday 13 January 2011] [08:24:38] &lt;benoitc&gt;       the pubtest is ok here</div>
+<div class="line">[Thursday 13 January 2011] [08:24:53] &lt;benoitc&gt;       only repserver hangs</div>
+<div class="line">[Thursday 13 January 2011] [08:29:51] &lt;jugg&gt;  yes, I have another bug there. I&#8217;ll have to rerun my tests now that asserts are actually being checked.</div>
+<div class="line">[Thursday 13 January 2011] [08:30:26] &lt;benoitc&gt;       k i will concentrate on app level for now</div>
+<div class="line">[Thursday 13 January 2011] [08:34:54] &lt;efhache&gt;       mikko: hi do you have seen how i can configure zmq 2.0.7  to work under linux 2.4 without epooll ?</div>
+<div class="line">[Thursday 13 January 2011] [08:35:13] &lt;mikko&gt; efhache: take a look at src/poller.h</div>
+<div class="line">[Thursday 13 January 2011] [08:35:28] &lt;mikko&gt; i reckon you could change ZMQ_HAVE_LINUX condition to use poll instead of epoll</div>
+<div class="line">[Thursday 13 January 2011] [08:35:36] &lt;mikko&gt; not sure if that&#8217;s the only thing you need to do</div>
+<div class="line">[Thursday 13 January 2011] [08:35:59] &lt;mikko&gt; maybe we could add a configure flag in the future to choose poller implementation</div>
+<div class="line">[Thursday 13 January 2011] [08:37:32] &lt;efhache&gt;       so the define become : elif defined ZMQ_HAVE_LINUX     typedef epoll_t poller_t; // fhn modification 20110113 epoll_t poller_t;</div>
+<div class="line">[Thursday 13 January 2011] [08:37:38] &lt;efhache&gt;       are you ok with me?</div>
+<div class="line">[Thursday 13 January 2011] [08:37:55] &lt;mikko&gt; no</div>
+<div class="line">[Thursday 13 January 2011] [08:38:04] &lt;efhache&gt;       sorry typedef : poll_t poller_t;</div>
+<div class="line">[Thursday 13 January 2011] [08:38:08] &lt;mikko&gt; yes</div>
+<div class="line">[Thursday 13 January 2011] [08:38:10] &lt;mikko&gt; try that</div>
+<div class="line">[Thursday 13 January 2011] [08:38:18] &lt;efhache&gt;       yes sorry wrong copy past   ;-)</div>
+<div class="line">[Thursday 13 January 2011] [08:39:52] &lt;sustrik&gt;       efhache: you can use ZMQ_FORCE_POLL or somesuch</div>
+<div class="line">[Thursday 13 January 2011] [08:40:29] &lt;mikko&gt; did we have that in 2.0.7 ?</div>
+<div class="line">[Thursday 13 January 2011] [08:40:58] &lt;mikko&gt; oh</div>
+<div class="line">[Thursday 13 January 2011] [08:41:00] &lt;mikko&gt; it is there</div>
+<div class="line">[Thursday 13 January 2011] [08:41:07] &lt;mikko&gt; so no modification should be needed</div>
+<div class="line">[Thursday 13 January 2011] [08:41:20] &lt;mikko&gt; export CPPFLAGS=&#8221;-DZMQ_FORCE_POLL&#8221; ./configure</div>
+<div class="line">[Thursday 13 January 2011] [08:45:47] &lt;efhache&gt;       ah sorry I&#8217;ve modified source... it recompile it, I&#8217;ll test and come back... if ok I&#8217;ll retry with the flag</div>
+<div class="line">[Thursday 13 January 2011] [08:45:56] &lt;efhache&gt;       thanks a lot and SYL ;-)</div>
+<div class="line">[Thursday 13 January 2011] [08:46:29] &lt;mikko&gt; you should really look into making the software work with 2.1.0 as well</div>
+<div class="line">[Thursday 13 January 2011] [08:46:42] &lt;mikko&gt; there aren&#8217;t that many modifications needed usually</div>
+<div class="line">[Thursday 13 January 2011] [08:52:08] &lt;efhache&gt;       mmhh  I&#8217;&#8216;ve begun with 2.0.6  and then update to 2.0.7 thath normally &#8220;no many modification&#8221;  but in result I&#8217;ve rework all the code... So now I fix it  and later I&#8217;ll update the library if need it</div>
+<div class="line">[Thursday 13 January 2011] [09:02:03] &lt;efhache&gt;       mikko: it does not work more, i&#8217;ve test with poller.h modified and obtain another problem : &#8220;Assertion failed: !(it-&gt;revents &amp; POLLNVAL) (poll.cpp:171)&#8221;</div>
+<div class="line">[Thursday 13 January 2011] [09:02:30] &lt;efhache&gt;       with the export of the FORCE POLL FLAG  I reobtain the assetion with epoll.cpp as yesterday</div>
+<div class="line">[Thursday 13 January 2011] [09:02:59] &lt;mikko&gt; im not sure if anyone has really tested extensively with 2.4 kernel</div>
+<div class="line">[Thursday 13 January 2011] [09:11:22] &lt;jugg&gt;  is there still plans for a zeromq conference in Budapest coming up?</div>
+<div class="line">[Thursday 13 January 2011] [09:12:23] &lt;sustrik&gt;       pieter was organising it</div>
+<div class="line">[Thursday 13 January 2011] [09:12:30] &lt;sustrik&gt;       but he got ill</div>
+<div class="line">[Thursday 13 January 2011] [09:12:42] &lt;sustrik&gt;       he&#8217;s out of hospital for only a few days now</div>
+<div class="line">[Thursday 13 January 2011] [09:13:02] &lt;sustrik&gt;       so, hard to say</div>
+<div class="line">[Thursday 13 January 2011] [09:13:45] &lt;sustrik&gt;       depends on when he gets ok</div>
+<div class="line">[Thursday 13 January 2011] [09:14:30] &lt;jugg&gt;  He&#8217;s recovering well?</div>
+<div class="line">[Thursday 13 January 2011] [09:16:14] &lt;benoitc&gt;       jugg: i&#8217;m not sure why assertion is here line 821. on 64 bits it&#8217;s always false.</div>
+<div class="line">[Thursday 13 January 2011] [09:16:30] &lt;benoitc&gt;       removing it, pubrep works of course ..</div>
+<div class="line">[Thursday 13 January 2011] [09:16:43] &lt;sustrik&gt;       i believe so</div>
+<div class="line">[Thursday 13 January 2011] [09:17:30] &lt;jugg&gt;  I know why.  I&#8217;ll have a fix soon. You can modify src/zmq_drv.erl line: 190 to be: &lt;&lt;(?ZMQ_POLL):8, (events_to_int(Events)):32&gt;&gt;</div>
+<div class="line">[Thursday 13 January 2011] [09:20:33] &lt;jugg&gt;  actually, I might change poll/send/recv flags to all be a byte size instead.</div>
+<div class="line">[Thursday 13 January 2011] [09:21:24] &lt;jugg&gt;  yes, that makes more sense</div>
+<div class="line">[Thursday 13 January 2011] [09:21:32] &lt;benoitc&gt;       k</div>
+<div class="line">[Thursday 13 January 2011] [09:21:41]          * benoitc just ordered k&amp;r book</div>
+<div class="line">[Thursday 13 January 2011] [09:21:47] &lt;benoitc&gt;       need to refresh my C</div>
+<div class="line">[Thursday 13 January 2011] [09:22:27] &lt;jugg&gt;  so instead, change the assert in poll to: assert(sizeof(uint8_t) == size);</div>
+<div class="line">[Thursday 13 January 2011] [09:23:20] &lt;benoitc&gt;       works</div>
+<div class="line">[Thursday 13 January 2011] [09:25:09] &lt;efhache&gt;       mikko: do you know if for zmq there is a use of &#8220;EPOLLET&#8221; (triggered mode) ??</div>
+<div class="line">[Thursday 13 January 2011] [09:27:12] &lt;yawn&gt;  is there a way to determine the underlying zmq version in jzmq?</div>
+<div class="line">[Thursday 13 January 2011] [09:42:28] &lt;benoitc&gt;       jugg: just did <a class="reference external" href="https://github.com/benoitc/erlzmq/commit/463d727dd90d7da94047e5cdb5b231672829d116">https://github.com/benoitc/erlzmq/commit/463d727dd90d7da94047e5cdb5b231672829d116</a> but anyway will wait your final fix</div>
+<div class="line">[Thursday 13 January 2011] [09:42:54] &lt;benoitc&gt;       rebar is working well on erlzmq btw</div>
+<div class="line">[Thursday 13 January 2011] [09:43:54] &lt;jugg&gt;  ok, almost ready.</div>
+<div class="line">[Thursday 13 January 2011] [09:45:41] &lt;benoitc&gt;       cool :)</div>
+<div class="line">[Thursday 13 January 2011] [09:48:02] &lt;mikko&gt; efhache: i dont know what EPOLLET means</div>
+<div class="line">[Thursday 13 January 2011] [09:48:39] &lt;mikko&gt; yawn: not sure if it&#8217;s exposed</div>
+<div class="line">[Thursday 13 January 2011] [09:49:25] &lt;mikko&gt; yawn: ZMQ::version_full() ?</div>
+<div class="line">[Thursday 13 January 2011] [09:49:57] &lt;yawn&gt;  mikko: not in my version - maybe an old build ...</div>
+<div class="line">[Thursday 13 January 2011] [09:50:15] &lt;mikko&gt; <a class="reference external" href="https://github.com/zeromq/jzmq/blob/master/src/ZMQ.cpp#L30">https://github.com/zeromq/jzmq/blob/master/src/ZMQ.cpp#L30</a></div>
+<div class="line">[Thursday 13 January 2011] [09:50:22] &lt;mikko&gt; at least that&#8217;s what the source says</div>
+<div class="line">[Thursday 13 January 2011] [09:50:42] &lt;sustrik&gt;       mikko: it&#8217;s edge-triggered</div>
+<div class="line">[Thursday 13 January 2011] [09:51:10] &lt;sustrik&gt;       efhache: the underlying file descriptor (ZMQ_FD) is edge-triggered</div>
+<div class="line">[Thursday 13 January 2011] [09:51:18] &lt;mikko&gt; sustrik: EPOLLET stands for edge-triggered?</div>
+<div class="line">[Thursday 13 January 2011] [09:51:25] &lt;sustrik&gt;       i think so</div>
+<div class="line">[Thursday 13 January 2011] [09:51:30] &lt;sustrik&gt;       let me check</div>
+<div class="line">[Thursday 13 January 2011] [09:52:17] &lt;sustrik&gt;       yes</div>
+<div class="line">[Thursday 13 January 2011] [09:54:06] &lt;mikko&gt; ok</div>
+<div class="line">[Thursday 13 January 2011] [09:59:30] &lt;efhache&gt;       mikko:  I&#8217;ve resolved the problem, I&#8217;ve used the export CPPFLAGS=&#8221;-DZMQ_FORCE_SELECT&#8221;</div>
+<div class="line">[Thursday 13 January 2011] [10:03:44] &lt;mikko&gt; efhache: cool</div>
+<div class="line">[Thursday 13 January 2011] [10:04:14] &lt;mikko&gt; sustrik: i guess that makes sense if it standa for EPOLL Egde-Triggered</div>
+<div class="line">[Thursday 13 January 2011] [10:04:29] &lt;yawn&gt;  mikko: protected statics</div>
+<div class="line">[Thursday 13 January 2011] [10:04:52] &lt;yawn&gt;  mikko: one needs to do the usual dance &amp; sing to make java return the values</div>
+<div class="line">[Thursday 13 January 2011] [10:25:12] &lt;Hybelkanin&gt;    Anyone with experience on zmq on osx 10.6 with the C# bindings?</div>
+<div class="line">[Thursday 13 January 2011] [10:27:14] &lt;mikko&gt; Hybelkanin: unusual combination</div>
+<div class="line">[Thursday 13 January 2011] [10:27:21] &lt;mikko&gt; can&#8217;t say i&#8217;ve heard that combo before</div>
+<div class="line">[Thursday 13 January 2011] [10:27:28] &lt;Hybelkanin&gt;    :P</div>
+<div class="line">[Thursday 13 January 2011] [10:27:47] &lt;mikko&gt; i have built and tested the c# bindings on linux</div>
+<div class="line">[Thursday 13 January 2011] [10:28:54] &lt;Hybelkanin&gt;    I think my problem may be monodevelop</div>
+<div class="line">[Thursday 13 January 2011] [10:29:10] &lt;Hybelkanin&gt;    So this might be the wrong channel</div>
+<div class="line">[Thursday 13 January 2011] [10:43:10] &lt;amacleod&gt;      My Python 0MQ REP server doesn&#8217;t stop when I interrupt it with ^C.  How do I make it respect ^C?</div>
+<div class="line">[Thursday 13 January 2011] [10:49:35] &lt;s0undt3ch&gt;     ppl, pub/sub forward devices should connect_in and bind_out?</div>
+<div class="line">[Thursday 13 January 2011] [10:49:43] &lt;s0undt3ch&gt;     or should they bind_in and bind_out?</div>
+<div class="line">[Thursday 13 January 2011] [11:01:59] &lt;mikko&gt; amacleod: i would i think it might be blocking on zmq_term</div>
+<div class="line">[Thursday 13 January 2011] [11:02:34] &lt;mikko&gt; amacleod: i dont really know how things are implemented in python so its just guessing</div>
+<div class="line">[Thursday 13 January 2011] [11:02:35] &lt;amacleod&gt;      mikko, I wrote it like the examples with a &#8220;while True&#8221; loop.</div>
+<div class="line">[Thursday 13 January 2011] [11:05:11] &lt;amacleod&gt;      I can stop it from within just fine&#8211;if I set up a conditional where my message handler calls self.context.term () when it receives &#8220;EXIT&#8221; or something, it&#8217;s okay.</div>
+<div class="line">[Thursday 13 January 2011] [11:05:18] &lt;mikko&gt; amacleod: can you see where it&#8217;s stuck?</div>
+<div class="line">[Thursday 13 January 2011] [11:05:42] &lt;amacleod&gt;      As far as I know, it&#8217;s not stuck.  It&#8217;s just completely ignoring ^C or SIGTERM.</div>
+<div class="line">[Thursday 13 January 2011] [11:06:11] &lt;cremes&gt;        amacleod: if it&#8217;s blocked in zmq_term(), it won&#8217;t let python&#8217;s signal handler run to catch the signal</div>
+<div class="line">[Thursday 13 January 2011] [11:06:22] &lt;cremes&gt;        this has been reported a few times; i think sustrik is planning a fix</div>
+<div class="line">[Thursday 13 January 2011] [11:06:34] &lt;cremes&gt;        same thing happens with the ruby runtime</div>
+<div class="line">[Thursday 13 January 2011] [11:07:07] &lt;amacleod&gt;      Oh, interesting.</div>
+<div class="line">[Thursday 13 January 2011] [11:07:19] &lt;amacleod&gt;      If I hit ^C and then try sending something to it, it does get the KeyboardInterrupt exception.</div>
+<div class="line">[Thursday 13 January 2011] [11:07:43] &lt;amacleod&gt;      So it&#8217;s actually probably blocking in recv()</div>
+<div class="line">[Thursday 13 January 2011] [11:07:52] &lt;cremes&gt;        huh, that might be a new problem</div>
+<div class="line">[Thursday 13 January 2011] [11:07:57] &lt;cremes&gt;        if you can reduce it, file an issue</div>
+<div class="line">[Thursday 13 January 2011] [11:08:33] &lt;mikko&gt; recv should return on ctrl+c</div>
+<div class="line">[Thursday 13 January 2011] [11:20:58] &lt;s0undt3ch&gt;     sustrik, guido_g: I found out the issue about my forwarder problem</div>
+<div class="line">[Thursday 13 January 2011] [11:21:20] &lt;s0undt3ch&gt;     sustrik, guido_g: publishers were binding instead of connecting</div>
+<div class="line">[Thursday 13 January 2011] [11:21:41] &lt;s0undt3ch&gt;     sustrik, guido_g: the forwarder device was the one binding so, no one else should bind</div>
+<div class="line">[Thursday 13 January 2011] [11:29:08] &lt;jugg&gt;  benoitc, updates pushed.  All get/setsockopt options are tested now.</div>
+<div class="line">[Thursday 13 January 2011] [11:38:27] &lt;benoitc&gt;       jugg: works</div>
+<div class="line">[Thursday 13 January 2011] [11:38:33] &lt;benoitc&gt;       thanks :)</div>
+<div class="line">[Thursday 13 January 2011] [11:39:10] &lt;benoitc&gt;       smth weird though when you launch pubsub test</div>
+<div class="line">[Thursday 13 January 2011] [11:39:24] &lt;benoitc&gt;       10 is sent but none of subclient get it</div>
+<div class="line">[Thursday 13 January 2011] [11:40:47] &lt;benoitc&gt;       jugg: adding a timer after the bind fix that but ...</div>
+<div class="line">[Thursday 13 January 2011] [11:42:09] &lt;benoitc&gt;       anyway <a class="reference external" href="https://github.com/benoitc/erlzmq/tree/rebar-socketprocess">https://github.com/benoitc/erlzmq/tree/rebar-socketprocess</a></div>
+<div class="line">[Thursday 13 January 2011] [11:44:29] &lt;jugg&gt;  yes, that is normal - not a binding issue.</div>
+<div class="line">[Thursday 13 January 2011] [11:44:50] &lt;benoitc&gt;       ok</div>
+<div class="line">[Thursday 13 January 2011] [11:45:13] &lt;benoitc&gt;       didn&#8217;t check but did you add PUSH and PULL</div>
+<div class="line">[Thursday 13 January 2011] [11:45:25] &lt;jugg&gt;  yes</div>
+<div class="line">[Thursday 13 January 2011] [11:45:26] &lt;benoitc&gt;       or DOWNSTREAM, UPSTREAM are current names ?</div>
+<div class="line">[Thursday 13 January 2011] [11:45:29] &lt;benoitc&gt;       cool</div>
+<div class="line">[Thursday 13 January 2011] [11:45:49] &lt;jugg&gt;  using your rebar, I always get errors: fatal: No tags can describe &#8216;6944b664b20b525e210f1eaebea00bbcd21ec217&#8217;</div>
+<div class="line">[Thursday 13 January 2011] [11:45:55] &lt;benoitc&gt;       ok time to code this app then. more in the night</div>
+<div class="line">[Thursday 13 January 2011] [11:45:58] &lt;jugg&gt;  when doing $ make</div>
+<div class="line">[Thursday 13 January 2011] [11:46:00] &lt;benoitc&gt;       jugg: you have to tag</div>
+<div class="line">[Thursday 13 January 2011] [11:46:08] &lt;jugg&gt;  just to build ??</div>
+<div class="line">[Thursday 13 January 2011] [11:46:12] &lt;benoitc&gt;       i can remove it though</div>
+<div class="line">[Thursday 13 January 2011] [11:46:25] &lt;benoitc&gt;       jugg: this is for archive creation</div>
+<div class="line">[Thursday 13 January 2011] [11:46:26] &lt;jugg&gt;  yes, I build much more often than I tag</div>
+<div class="line">[Thursday 13 January 2011] [11:46:35] &lt;jugg&gt;  no, that happens when doing $ make</div>
+<div class="line">[Thursday 13 January 2011] [11:46:36] &lt;benoitc&gt;       let me edit this Makefile :)</div>
+<div class="line">[Thursday 13 January 2011] [11:46:40] &lt;jugg&gt;  k :)</div>
+<div class="line">[Thursday 13 January 2011] [11:46:55] &lt;benoitc&gt;       you could just do ./rebar compile anyway</div>
+<div class="line">[Thursday 13 January 2011] [11:52:09] &lt;amacleod&gt;      Should I file my test case as an attachment to <a class="reference external" href="https://github.com/zeromq/zeromq2/issues/#issue/127">https://github.com/zeromq/zeromq2/issues/#issue/127</a> , or start a new issue?</div>
+<div class="line">[Thursday 13 January 2011] [11:52:56] &lt;mikko&gt; amacleod: is it python?</div>
+<div class="line">[Thursday 13 January 2011] [11:53:03] &lt;amacleod&gt;      mikko, yes, Python, not Ruby.</div>
+<div class="line">[Thursday 13 January 2011] [11:53:11] &lt;mikko&gt; open it under <a class="reference external" href="https://github.com/zeromq/pyzmq">https://github.com/zeromq/pyzmq</a></div>
+<div class="line">[Thursday 13 January 2011] [11:58:19] &lt;benoitc&gt;       jugg: fixed and pushed</div>
+<div class="line">[Thursday 13 January 2011] [12:07:32] &lt;jugg&gt;  benoitc, $git rebase -i can be your friend... :)</div>
+<div class="line">[Thursday 13 January 2011] [12:14:56] &lt;benoitc&gt;       mmm ?</div>
+<div class="line">[Thursday 13 January 2011] [12:15:05] &lt;benoitc&gt;       I&#8217;ve used rebase -i</div>
+<div class="line">[Thursday 13 January 2011] [12:15:14] &lt;benoitc&gt;       just cherry-picking last update</div>
+<div class="line">[Thursday 13 January 2011] [12:15:52] &lt;jugg&gt;  why not just rebase your commits ontop of the last update?</div>
+<div class="line">[Thursday 13 January 2011] [12:16:14] &lt;benoitc&gt;       in rebar-socketprocess</div>
+<div class="line">[Thursday 13 January 2011] [12:16:16] &lt;benoitc&gt;       dunno</div>
+<div class="line">[Thursday 13 January 2011] [12:16:24] &lt;benoitc&gt;       rebasing now</div>
+<div class="line">[Thursday 13 January 2011] [12:21:17] &lt;benoitc&gt;       jugg: done</div>
+<div class="line">[Thursday 13 January 2011] [12:25:22] &lt;benoitc&gt;       win 6</div>
+<div class="line">[Thursday 13 January 2011] [13:14:52] &lt;amacleod&gt;      Bleh.  Didn&#8217;t realize pyzmq master won&#8217;t build against zmq 2.1.0.</div>
+<div class="line">[Thursday 13 January 2011] [13:19:16] &lt;benoitc&gt;       mmm it is</div>
+<div class="line">[Thursday 13 January 2011] [13:19:27] &lt;benoitc&gt;       at least it does</div>
+<div class="line">[Thursday 13 January 2011] [13:20:21] &lt;amacleod&gt;      Do I need to delete my previous installation of pyzmq in order to make use of the development version?</div>
+<div class="line">[Thursday 13 January 2011] [13:20:34] &lt;benoitc&gt;       i&#8217;ve installed it in my virtualenv</div>
+<div class="line">[Thursday 13 January 2011] [13:22:35] &lt;amacleod&gt;      I must be doing something wrong.  I built and installed pyzmq master, and when I try to import zmq, it gets an error, &#8216;cause it can&#8217;t import initthreads from zmq.util</div>
+<div class="line">[Thursday 13 January 2011] [13:23:27] &lt;benoitc&gt;       did you change paths in setup.cfg?</div>
+<div class="line">[Thursday 13 January 2011] [13:26:01] &lt;amacleod&gt;      Ah, nope.  That must be it.</div>
+<div class="line">[Thursday 13 January 2011] [13:26:38] &lt;amacleod&gt;      Does it not use /usr/local/lib and /usr/local/include by default?</div>
+<div class="line">[Thursday 13 January 2011] [13:33:18] &lt;benoitc&gt;       not sure</div>
+<div class="line">[Thursday 13 January 2011] [13:45:46] &lt;amacleod&gt;      The weird thing is that everything seems to get installed just fine.  It&#8217;s only when I go to import zmq that the error occurs.</div>
+<div class="line">[Thursday 13 January 2011] [14:50:27] &lt;mikko&gt; sustrik: <a class="reference external" href="https://github.com/danmar/cppcheck/commit/36c18072280d71e49d4d2a38d011666f792d6283">https://github.com/danmar/cppcheck/commit/36c18072280d71e49d4d2a38d011666f792d6283</a></div>
+<div class="line">[Thursday 13 January 2011] [14:50:59] &lt;mikko&gt; wrong one</div>
+<div class="line">[Thursday 13 January 2011] [14:51:34] &lt;mikko&gt; maybe not, not sure if that affects the one you reported</div>
+<div class="line">[Thursday 13 January 2011] [14:52:42] &lt;sustrik&gt;       looks like</div>
+<div class="line">[Thursday 13 January 2011] [14:53:27] &lt;mikko&gt; testing now</div>
+<div class="line">[Thursday 13 January 2011] [14:54:53] &lt;mikko&gt; nope, still see those reported</div>
+<div class="line">[Thursday 13 January 2011] [17:56:15] &lt;yrashk&gt;        can push socket be shared across threads?</div>
+<div class="line">[Thursday 13 January 2011] [17:56:25] &lt;yrashk&gt;        or is it unsafe to do so?</div>
+<div class="line">[Thursday 13 January 2011] [18:29:59] &lt;yrashk&gt;        if zmq_send with ZMQ_NOBLOCK returns EAGAIN, do I have to reinitialize the message?</div>
+<div class="line">[Thursday 13 January 2011] [20:51:59] &lt;jugg&gt;  yrashk, in 2.1, you can migrate a socket between threads, but you can&#8217;t share the socket simultaneously in multiple threads.</div>
+<div class="line">[Thursday 13 January 2011] [20:52:14] &lt;jugg&gt;  and no need to reinitialize.</div>
+<div class="line">[Friday 14 January 2011] [01:20:39] &lt;potatodemon&gt;     Hey Y&#8217;all.  I want to have a pub/sub queue.  Where these is no data persistance, if someone is not subscribed to the queue the data is not kept around.  Is this easy to do with 0mq?</div>
+<div class="line">[Friday 14 January 2011] [01:22:26] &lt;potatodemon&gt;     Oh this looks like it is the default behavior. word up</div>
+<div class="line">[Friday 14 January 2011] [03:28:11] &lt;sustrik&gt; yes, it&#8217;s default</div>
+<div class="line">[Friday 14 January 2011] [03:28:52] &lt;sustrik&gt; yeashk: no need to re-initialise</div>
+<div class="line">[Friday 14 January 2011] [03:29:12] &lt;sustrik&gt; ah, jugg answered already :)</div>
+<div class="line">[Friday 14 January 2011] [04:30:22] &lt;yrashk&gt;  jugg: thanks! already moved to two push sockets approach :)</div>
+<div class="line">[Friday 14 January 2011] [06:07:04] &lt;CIA-21&gt;  zeromq2: 03Martin Sustrik 07master * r8eae7d8 10/ (5 files):</div>
+<div class="line">[Friday 14 January 2011] [06:07:04] &lt;CIA-21&gt;  zeromq2: &#8216;message distribution mechanism&#8217; separated from XPUB socket</div>
+<div class="line">[Friday 14 January 2011] [06:07:04] &lt;CIA-21&gt;  zeromq2: Signed-off-by: Martin Sustrik &lt;<a class="reference external" href="mailto:sustrik&#37;&#52;&#48;250bpm&#46;com">sustrik<span>&#64;</span>250bpm<span>&#46;</span>com</a>&gt; - <a class="reference external" href="http://bit.ly/eC63Tc">http://bit.ly/eC63Tc</a></div>
+<div class="line">[Friday 14 January 2011] [06:15:46] &lt;mikko&gt;   good morning</div>
+<div class="line">[Friday 14 January 2011] [06:17:09] &lt;sustrik&gt; morning</div>
+<div class="line">[Friday 14 January 2011] [06:26:28] &lt;CIA-21&gt;  zeromq2: 03Martin Sustrik 07master * r58c9830 10/ (src/xsub.cpp src/xsub.hpp):</div>
+<div class="line">[Friday 14 January 2011] [06:26:28] &lt;CIA-21&gt;  zeromq2: XSUB socket has a subscription distributor</div>
+<div class="line">[Friday 14 January 2011] [06:26:28] &lt;CIA-21&gt;  zeromq2: Signed-off-by: Martin Sustrik &lt;<a class="reference external" href="mailto:sustrik&#37;&#52;&#48;250bpm&#46;com">sustrik<span>&#64;</span>250bpm<span>&#46;</span>com</a>&gt; - <a class="reference external" href="http://bit.ly/fifGK7">http://bit.ly/fifGK7</a></div>
+<div class="line">[Friday 14 January 2011] [06:37:51] &lt;CIA-21&gt;  zeromq2: 03Martin Sustrik 07master * ra348d94 10/ (src/xpub.cpp src/xpub.hpp):</div>
+<div class="line">[Friday 14 January 2011] [06:37:51] &lt;CIA-21&gt;  zeromq2: Fair queueing of subscriptions added to XPUB socket</div>
+<div class="line">[Friday 14 January 2011] [06:37:51] &lt;CIA-21&gt;  zeromq2: Signed-off-by: Martin Sustrik &lt;<a class="reference external" href="mailto:sustrik&#37;&#52;&#48;250bpm&#46;com">sustrik<span>&#64;</span>250bpm<span>&#46;</span>com</a>&gt; - <a class="reference external" href="http://bit.ly/gZWsdO">http://bit.ly/gZWsdO</a></div>
+<div class="line">[Friday 14 January 2011] [06:40:58] &lt;CIA-21&gt;  zeromq2: 03Martin Sustrik 07master * r59fa0c9 10/ AUTHORS :</div>
+<div class="line">[Friday 14 January 2011] [06:40:58] &lt;CIA-21&gt;  zeromq2: Gerard Toonstra added to the authors file</div>
+<div class="line">[Friday 14 January 2011] [06:40:58] &lt;CIA-21&gt;  zeromq2: Signed-off-by: Martin Sustrik &lt;<a class="reference external" href="mailto:sustrik&#37;&#52;&#48;250bpm&#46;com">sustrik<span>&#64;</span>250bpm<span>&#46;</span>com</a>&gt; - <a class="reference external" href="http://bit.ly/fNsKW7">http://bit.ly/fNsKW7</a></div>
+<div class="line">[Friday 14 January 2011] [06:50:16] &lt;guido_g&gt; howdy</div>
+<div class="line">[Friday 14 January 2011] [06:50:29] &lt;guido_g&gt; any idea what is the cause of: Assertion failed: pending_bytes == 0 (pgm_receiver.cpp:141)</div>
+<div class="line">[Friday 14 January 2011] [06:51:34] &lt;guido_g&gt; killing my subscriber randomly</div>
+<div class="line">[Friday 14 January 2011] [06:52:16] &lt;guido_g&gt; looks like a heisen bug</div>
+<div class="line">[Friday 14 January 2011] [07:02:30] &lt;sustrik&gt; guido_g: the assert shouldn&#8217;t be there</div>
+<div class="line">[Friday 14 January 2011] [07:02:31] &lt;sustrik&gt; imo</div>
+<div class="line">[Friday 14 January 2011] [07:02:53] &lt;sustrik&gt; please, do report the problem on the mailing list so that steven can get a look at it</div>
+<div class="line">[Friday 14 January 2011] [07:17:26] &lt;guido_g&gt; ok</div>
+<div class="line">[Friday 14 January 2011] [07:30:18] &lt;benoitc&gt; mmm how would you authenticate consumers in a PUB/SUB schema ?</div>
+<div class="line">[Friday 14 January 2011] [07:31:50] &lt;guido_g&gt; over a different connection</div>
+<div class="line">[Friday 14 January 2011] [07:32:31] &lt;benoitc&gt; i&#8217;m not sur eto follow, if i setup a pub server</div>
+<div class="line">[Friday 14 January 2011] [07:32:46] &lt;benoitc&gt; how can i make sure only authentciated consumer can have access to it ?</div>
+<div class="line">[Friday 14 January 2011] [07:32:56] &lt;benoitc&gt; something in the message ?</div>
+<div class="line">[Friday 14 January 2011] [07:33:18] &lt;guido_g&gt; mq does not provide authentication</div>
+<div class="line">[Friday 14 January 2011] [07:33:27] &lt;guido_g&gt; so you&#8217;ve to do it yourself</div>
+<div class="line">[Friday 14 January 2011] [07:33:30] &lt;benoitc&gt; i know</div>
+<div class="line">[Friday 14 January 2011] [07:33:37] &lt;benoitc&gt; i&#8217;m looking for ideas</div>
+<div class="line">[Friday 14 January 2011] [07:33:47] &lt;guido_g&gt; simple solution would be to use a req/rep</div>
+<div class="line">[Friday 14 January 2011] [07:34:28] &lt;benoitc&gt; right, it would mean a dedicaced connection in this case then</div>
+<div class="line">[Friday 14 January 2011] [07:34:40] &lt;guido_g&gt; for authentication</div>
+<div class="line">[Friday 14 January 2011] [07:35:01] &lt;benoitc&gt; mmm ?</div>
+<div class="line">[Friday 14 January 2011] [07:35:06] &lt;benoitc&gt; i don&#8217;t follow</div>
+<div class="line">[Friday 14 January 2011] [07:35:58] &lt;jugg&gt;    it&#8217;d be interesting if pub sockets could accept connections based on connecting sub socket identity.</div>
+<div class="line">[Friday 14 January 2011] [07:36:27] &lt;guido_g&gt; i doubt that</div>
+<div class="line">[Friday 14 January 2011] [07:36:31] &lt;jugg&gt;    or reject them...</div>
+<div class="line">[Friday 14 January 2011] [07:36:47] &lt;guido_g&gt; see where amqp went with all these &#8220;nice features&#8221;</div>
+<div class="line">[Friday 14 January 2011] [07:37:34] &lt;jugg&gt;    socket identity itself isn&#8217;t a nice feature?</div>
+<div class="line">[Friday 14 January 2011] [07:37:54] &lt;guido_g&gt; &lt;jugg&gt; it&#8217;d be interesting if pub sockets could accept connections based on connecting sub socket identity.</div>
+<div class="line">[Friday 14 January 2011] [07:38:10] &lt;guido_g&gt; socket-ids are cheap</div>
+<div class="line">[Friday 14 January 2011] [07:38:21] &lt;guido_g&gt; authentication is not</div>
+<div class="line">[Friday 14 January 2011] [07:38:29] &lt;jugg&gt;    thanks, I didn&#8217;t realize I wrote that... :)</div>
+<div class="line">[Friday 14 January 2011] [07:38:55] &lt;guido_g&gt; just to give the context for my point</div>
+<div class="line">[Friday 14 January 2011] [07:39:13] &lt;benoitc&gt; well it could be just a filter on socket-id</div>
+<div class="line">[Friday 14 January 2011] [07:39:21] &lt;benoitc&gt; whatever you do with that</div>
+<div class="line">[Friday 14 January 2011] [07:39:51] &lt;jugg&gt;    so, you&#8217;d reject subscription forwarding then?  It isn&#8217;t much different.</div>
+<div class="line">[Friday 14 January 2011] [07:40:09] &lt;guido_g&gt; yes</div>
+<div class="line">[Friday 14 January 2011] [07:40:28] &lt;jugg&gt;    yes you&#8217;d reject it, or yes it is different?</div>
+<div class="line">[Friday 14 January 2011] [07:40:33] &lt;guido_g&gt; a)</div>
+<div class="line">[Friday 14 January 2011] [07:41:33] &lt;jugg&gt;    anyway...  the idea is still interesting, likable or not. :)</div>
+<div class="line">[Friday 14 January 2011] [07:43:21] &lt;jugg&gt;    probably could just add &#8216;subscribe&#8217; socket option to a pub socket, and only identities that match the pub subscriptions can connect.  Too greatly overload the concept. :)</div>
+<div class="line">[Friday 14 January 2011] [07:44:06] &lt;guido_g&gt; how would this work w/ pgm?</div>
+<div class="line">[Friday 14 January 2011] [07:44:58] &lt;jugg&gt;    I&#8217;ll let someone else solve that :)</div>
+<div class="line">[Friday 14 January 2011] [07:45:08] &lt;guido_g&gt; i knew that...</div>
+<div class="line">[Friday 14 January 2011] [07:45:39] &lt;benoitc&gt; i guess i could encrypt messages in the pubserver</div>
+<div class="line">[Friday 14 January 2011] [07:45:56] &lt;guido_g&gt; sure</div>
+<div class="line">[Friday 14 January 2011] [07:45:56] &lt;benoitc&gt; so only authorized suscribers could read them</div>
+<div class="line">[Friday 14 January 2011] [07:46:10] &lt;guido_g&gt; decode</div>
+<div class="line">[Friday 14 January 2011] [07:46:30] &lt;benoitc&gt; yes</div>
+<div class="line">[Friday 14 January 2011] [07:46:32] &lt;guido_g&gt; the message itself would still be readable by not autorized clients</div>
+<div class="line">[Friday 14 January 2011] [07:46:46] &lt;benoitc&gt; right</div>
+<div class="line">[Friday 14 January 2011] [07:56:24] &lt;jugg&gt;    if it is an issue of sensitive data, then you need to encrypt the connection anyway.   I assumed you were solving an issue of limiting connections.  So, however you encrypt the connection could also encapsulate the authentication.</div>
+<div class="line">[Friday 14 January 2011] [07:57:26] &lt;benoitc&gt; well not in a pubsub, i can&#8217;t say don&#8217;t send to this suscriber</div>
+<div class="line">[Friday 14 January 2011] [07:58:57] &lt;benoitc&gt; what i can do on the other hand is to let trusted suscribers to decode</div>
+<div class="line">[Friday 14 January 2011] [09:21:56] &lt;Steve-o&gt; so is anyone trying to write new transports for zmq?</div>
+<div class="line">[Friday 14 January 2011] [09:24:05] &lt;mikko&gt;   Steve-o: sustrik maybe?</div>
+<div class="line">[Friday 14 January 2011] [09:24:05] &lt;mikko&gt;   :)</div>
+<div class="line">[Friday 14 January 2011] [09:24:22] &lt;sustrik&gt; Steve-o: why so?</div>
+<div class="line">[Friday 14 January 2011] [09:25:15] &lt;sustrik&gt; Steve-o: btw, the problem reported by guido_g</div>
+<div class="line">[Friday 14 January 2011] [09:25:37] &lt;Steve-o&gt; just wondering</div>
+<div class="line">[Friday 14 January 2011] [09:25:45] &lt;sustrik&gt; what the semantics pending_bytes?</div>
+<div class="line">[Friday 14 January 2011] [09:25:48] &lt;sustrik&gt; of</div>
+<div class="line">[Friday 14 January 2011] [09:26:06] &lt;Steve-o&gt; zmq batches zmq messages into PGM packets</div>
+<div class="line">[Friday 14 January 2011] [09:26:22] &lt;Steve-o&gt; the pending_bytes refers to data remaining in the batch not sent to the application</div>
+<div class="line">[Friday 14 January 2011] [09:26:32] &lt;Steve-o&gt; I believe</div>
+<div class="line">[Friday 14 January 2011] [09:27:12] &lt;sustrik&gt; as for the transport it would be nice to make adding new ones but atm the interface between the trasnport and the rest of 0mq is kind of fuzzy</div>
+<div class="line">[Friday 14 January 2011] [09:27:32] &lt;sustrik&gt; adding new ones easy</div>
+<div class="line">[Friday 14 January 2011] [09:30:12] &lt;sustrik&gt; guido_g: is the problem reproducible?</div>
+<div class="line">[Friday 14 January 2011] [09:30:59] &lt;Steve-o&gt; something like a HTTP transport is quite complicated as you need timers and odd twist of push/pull characteristics unless you throw threads at it</div>
+<div class="line">[Friday 14 January 2011] [09:31:37] &lt;Steve-o&gt; I haven&#8217;t seen guido&#8217;s problem otherwise I would have logged it</div>
+<div class="line">[Friday 14 January 2011] [09:34:24] &lt;sustrik&gt; it&#8217;s on the mailing list</div>
+<div class="line">[Friday 14 January 2011] [09:34:41] &lt;sustrik&gt; you&#8217;ve already replied</div>
+<div class="line">[Friday 14 January 2011] [09:35:56] &lt;mikko&gt;   Steve-o: websocket transport might be a lot easier</div>
+<div class="line">[Friday 14 January 2011] [09:36:06] &lt;sustrik&gt; afaiu the problem is that if data cannot be sent to the application due to HWM or somesuch (pending_bytes&gt;0)</div>
+<div class="line">[Friday 14 January 2011] [09:36:21] &lt;sustrik&gt; then pgm_receiver should unregister itself from polling on incoming data (reset_pollin)</div>
+<div class="line">[Friday 14 January 2011] [09:36:46] &lt;sustrik&gt; if it does so, in_event() should not be invoked</div>
+<div class="line">[Friday 14 January 2011] [09:36:52] &lt;sustrik&gt; and thus the assert doesn&#8217;t happen</div>
+<div class="line">[Friday 14 January 2011] [09:37:15] &lt;sustrik&gt; there&#8217;s a bug somewhere...</div>
+<div class="line">[Friday 14 January 2011] [09:38:52] &lt;sustrik&gt; mikko, Steve-o: HTTP, XMPP, SOAP and such are pretty complex, however, protocols like SCTP or UDP seem to make much better fit</div>
+<div class="line">[Friday 14 January 2011] [09:39:04] &lt;sustrik&gt; UDT i meant</div>
+<div class="line">[Friday 14 January 2011] [09:44:49] &lt;Steve-o&gt; HTTP is interesting as its really only the connection process that is different, the rest follows the TCP transport</div>
+<div class="line">[Friday 14 January 2011] [09:46:33] &lt;guido_g&gt; re</div>
+<div class="line">[Friday 14 January 2011] [09:46:53] &lt;guido_g&gt; sustrik: as I said, sometimes it happens sometimes not</div>
+<div class="line">[Friday 14 January 2011] [09:47:09] &lt;guido_g&gt; so there is no way to trigger that on demand</div>
+<div class="line">[Friday 14 January 2011] [09:50:02] &lt;guido_g&gt; msut be something in the packet because three independent subscribers crashed simultaniously</div>
+<div class="line">[Friday 14 January 2011] [09:50:05] &lt;guido_g&gt; <a href="#id31"><span class="problematic" id="id32">*</span></a>must</div>
+<div class="line">[Friday 14 January 2011] [09:52:51] &lt;Steve-o&gt; I guess you can tell if you had a dummy client that subs on the same transport but does no processing</div>
+<div class="line">[Friday 14 January 2011] [09:53:19] &lt;guido_g&gt; is in the working atm</div>
+<div class="line">[Friday 14 January 2011] [09:53:34] &lt;Steve-o&gt; Martin&#8217;s implication is that the leading messages cause high CPU usage to cause the HWM to be hit</div>
+<div class="line">[Friday 14 January 2011] [09:57:00] &lt;Steve-o&gt; I presume then it would be straight forward to reproduce with a sleeping client and reasonably expedient publisher</div>
+<div class="line">[Friday 14 January 2011] [09:59:08] &lt;guido_g&gt; spoc works fine so far</div>
+<div class="line">[Friday 14 January 2011] [09:59:34] &lt;guido_g&gt; spoc  := Simplest POssibile Client</div>
+<div class="line">[Friday 14 January 2011] [10:01:55] &lt;guido_g&gt; other client still dies</div>
+<div class="line">[Friday 14 January 2011] [10:03:12] &lt;guido_g&gt; what does this error mean?</div>
+<div class="line">[Friday 14 January 2011] [10:03:38] &lt;Steve-o&gt; as Martin says, it is due to HWM on receiving side to app&#8217;</div>
+<div class="line">[Friday 14 January 2011] [10:04:02] &lt;Steve-o&gt; i.e. slow consumer causes push from PGM to the app&#8217; the fail and leave unprocessed data</div>
+<div class="line">[Friday 14 January 2011] [10:04:52] &lt;guido_g&gt; pardon?</div>
+<div class="line">[Friday 14 January 2011] [10:05:20] &lt;Steve-o&gt; data is queuing up inside ZMQ for you app&#8217;</div>
+<div class="line">[Friday 14 January 2011] [10:05:29] &lt;guido_g&gt; ok</div>
+<div class="line">[Friday 14 January 2011] [10:05:43] &lt;Steve-o&gt; when it hits a certain level it pushes back to the transport</div>
+<div class="line">[Friday 14 January 2011] [10:05:52] &lt;guido_g&gt; also ok and understood</div>
+<div class="line">[Friday 14 January 2011] [10:06:06] &lt;Steve-o&gt; the transport, PGM, operates in batches of messages, one packet contains one batch</div>
+<div class="line">[Friday 14 January 2011] [10:06:19] &lt;guido_g&gt; ok</div>
+<div class="line">[Friday 14 January 2011] [10:06:49] &lt;Steve-o&gt; the queue limit is being reached before a packet batch of messages has completed</div>
+<div class="line">[Friday 14 January 2011] [10:07:19] &lt;Steve-o&gt; leaving unprocessed bytes (pending_bytes &gt; 0)</div>
+<div class="line">[Friday 14 January 2011] [10:07:54] &lt;guido_g&gt; now it starts to make sense</div>
+<div class="line">[Friday 14 January 2011] [10:07:54] &lt;Steve-o&gt; a subsequent event indicating further new incoming data occurs</div>
+<div class="line">[Friday 14 January 2011] [10:08:03] &lt;Steve-o&gt; then the assertion is hit</div>
+<div class="line">[Friday 14 January 2011] [10:08:37] &lt;guido_g&gt; so one way to circumvent this problem would be a high HWM on the subscriber?</div>
+<div class="line">[Friday 14 January 2011] [10:09:53] &lt;Steve-o&gt; well the transport needs to unhook from future in_events until the queue hits the LWM I guess</div>
+<div class="line">[Friday 14 January 2011] [10:10:20] &lt;guido_g&gt; iow, no easy way work around that bug</div>
+<div class="line">[Friday 14 January 2011] [10:11:08] &lt;Steve-o&gt; higher watermark would be a workaround</div>
+<div class="line">[Friday 14 January 2011] [10:11:27] &lt;guido_g&gt; i&#8217;ll give it a try</div>
+<div class="line">[Friday 14 January 2011] [10:12:03] &lt;guido_g&gt; does rate-limiting work on the receiver side?</div>
+<div class="line">[Friday 14 January 2011] [10:12:59] &lt;Steve-o&gt; send side</div>
+<div class="line">[Friday 14 January 2011] [10:13:57] &lt;Steve-o&gt; just looking at zmq receiver, it already does unhook some events</div>
+<div class="line">[Friday 14 January 2011] [10:14:21] &lt;Steve-o&gt; line 222-231,</div>
+<div class="line">[Friday 14 January 2011] [10:15:58] &lt;Steve-o&gt; maybe then its the timer event</div>
+<div class="line">[Friday 14 January 2011] [10:16:11] &lt;sustrik&gt; hm</div>
+<div class="line">[Friday 14 January 2011] [10:16:15] &lt;sustrik&gt; what is see is:</div>
+<div class="line">[Friday 14 January 2011] [10:16:16] &lt;sustrik&gt; pending_bytes = received - processed;</div>
+<div class="line">[Friday 14 January 2011] [10:16:17] &lt;sustrik&gt; ...</div>
+<div class="line">[Friday 14 January 2011] [10:16:23] &lt;sustrik&gt; reset_pollin (pipe_handle);</div>
+<div class="line">[Friday 14 January 2011] [10:16:23] &lt;sustrik&gt;             reset_pollin (socket_handle);</div>
+<div class="line">[Friday 14 January 2011] [10:16:24] &lt;Steve-o&gt; slow consumer with waiting packets</div>
+<div class="line">[Friday 14 January 2011] [10:16:43] &lt;sustrik&gt; and the whole thing is under</div>
+<div class="line">[Friday 14 January 2011] [10:16:48] &lt;sustrik&gt; if (processed &lt; received) {</div>
+<div class="line">[Friday 14 January 2011] [10:17:16] &lt;Steve-o&gt; but timer events call in_event()</div>
+<div class="line">[Friday 14 January 2011] [10:17:27] &lt;sustrik&gt; it looks like there&#8217;s no guarantee that reset_pollin will be triggered iff pending_bytes&gt;0</div>
+<div class="line">[Friday 14 January 2011] [10:17:41] &lt;sustrik&gt; the code is quite complex though...</div>
+<div class="line">[Friday 14 January 2011] [10:18:01] &lt;Steve-o&gt; therefore the timer must skip if the pollin is in reset state</div>
+<div class="line">[Friday 14 January 2011] [10:18:20] &lt;sustrik&gt; ah. maybe</div>
+<div class="line">[Friday 14 January 2011] [10:18:43] &lt;sustrik&gt; that should be easy to test</div>
+<div class="line">[Friday 14 January 2011] [10:18:57] &lt;Steve-o&gt; or simply add a cancel_timer with reset_pollin()</div>
+<div class="line">[Friday 14 January 2011] [10:19:29] &lt;sustrik&gt; or just add a bool variable &#8216;pollin_active&#8217;</div>
+<div class="line">[Friday 14 January 2011] [10:19:54] &lt;sustrik&gt; and return immediately from in_event if it&#8217;s false</div>
+<div class="line">[Friday 14 January 2011] [10:20:45] &lt;Steve-o&gt; canceling the timer would be cleaner</div>
+<div class="line">[Friday 14 January 2011] [10:20:51] &lt;sustrik&gt; sure</div>
+<div class="line">[Friday 14 January 2011] [10:21:10] &lt;Steve-o&gt; just copy the section in unplug()</div>
+<div class="line">[Friday 14 January 2011] [10:23:22] &lt;Steve-o&gt; ++229: if (has_rx_timer) { cancel_timer (rx_timer_id); has_rx_timer = false; }</div>
+<div class="line">[Friday 14 January 2011] [10:24:19] &lt;Steve-o&gt; although ideally the timer should live until the reset state clears</div>
+<div class="line">[Friday 14 January 2011] [10:25:28] &lt;Steve-o&gt; if there is no further incoming data but packets remain in the window they will not get flushed., depending the complex logic determing when in_event fires</div>
+<div class="line">[Friday 14 January 2011] [10:27:07] &lt;Steve-o&gt; as in, after the queue is cleared</div>
+<div class="line">[Friday 14 January 2011] [10:38:26] &lt;Steve-o&gt; but it&#8217;s certainly a condition worthy of note, as without the assertion you have an incredibly high chance of data loss</div>
+<div class="line">[Friday 14 January 2011] [10:47:54] &lt;guido_g&gt; ok, a very high HWM on the subscriber side does the trick so far</div>
+<div class="line">[Friday 14 January 2011] [10:54:46] &lt;sustrik&gt; Steve-o: however, I assume the timer should be cancelled nontheless</div>
+<div class="line">[Friday 14 January 2011] [10:54:47] &lt;sustrik&gt; right?</div>
 </div>
 </div>
 
