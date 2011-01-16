@@ -2870,6 +2870,181 @@
 <div class="line">[Friday 14 January 2011] [10:47:54] &lt;guido_g&gt; ok, a very high HWM on the subscriber side does the trick so far</div>
 <div class="line">[Friday 14 January 2011] [10:54:46] &lt;sustrik&gt; Steve-o: however, I assume the timer should be cancelled nontheless</div>
 <div class="line">[Friday 14 January 2011] [10:54:47] &lt;sustrik&gt; right?</div>
+<div class="line">[Friday 14 January 2011] [12:36:33] &lt;mikko&gt;   sustrik: is PUSH socket supposed to block when HWM is reached even if ZMQ_NOBLOCK is used?</div>
+<div class="line">[Friday 14 January 2011] [13:39:59] &lt;sustrik&gt; mikko: no</div>
+<div class="line">[Friday 14 January 2011] [13:40:09] &lt;sustrik&gt; it should return EAGAIN</div>
+<div class="line">[Friday 14 January 2011] [13:53:08] &lt;mikko&gt;   sustrik: ok, i wonder why i&#8217;m seeing this behavior</div>
+<div class="line">[Friday 14 January 2011] [13:53:19] &lt;mikko&gt;   let me recheck the code</div>
+<div class="line">[Friday 14 January 2011] [13:55:02] &lt;mikko&gt;   ah, found it</div>
+<div class="line">[Friday 14 January 2011] [13:55:44] &lt;sustrik&gt; what&#8217;s going on?</div>
+<div class="line">[Friday 14 January 2011] [13:57:02] &lt;mikko&gt;   launched on debugger and noticed that it&#8217;s blocking on lingering messages rather than send ()</div>
+<div class="line">[Friday 14 January 2011] [13:57:48] &lt;mikko&gt;   i&#8217;m adding a test case for hwm</div>
+<div class="line">[Friday 14 January 2011] [13:58:31] &lt;mikko&gt;   hmm, looks like it depends differently depending on whether i bind or connect</div>
+<div class="line">[Friday 14 January 2011] [14:04:26] &lt;sustrik&gt; yes, they are different</div>
+<div class="line">[Friday 14 January 2011] [14:04:35] &lt;sustrik&gt; when you bind there&#8217;s no pipe there</div>
+<div class="line">[Friday 14 January 2011] [14:04:44] &lt;sustrik&gt; so send blocks immediately</div>
+<div class="line">[Friday 14 January 2011] [14:05:12] &lt;sustrik&gt; with connect, the pipe is created straight away, so you can send messages immediately</div>
+<div class="line">[Friday 14 January 2011] [14:05:32] &lt;sustrik&gt; i mean, with bind the pipes are created as individual peers connect</div>
+<div class="line">[Friday 14 January 2011] [14:08:01] &lt;mikko&gt;   sustrik: is that the same with inproc?</div>
+<div class="line">[Friday 14 January 2011] [14:09:41] &lt;sustrik&gt; yes, the same principle</div>
+<div class="line">[Friday 14 January 2011] [14:10:53] &lt;mikko&gt;   is there any difference between HWM handling between transports / socket types (apart from inproc)</div>
+<div class="line">[Friday 14 January 2011] [14:10:53] &lt;sustrik&gt; it&#8217;s an inherent issue, the HWM is per peer</div>
+<div class="line">[Friday 14 January 2011] [14:11:25] &lt;sustrik&gt; so it doesn&#8217;t even make sense to talk about HWM until there is no peer connected</div>
+<div class="line">[Friday 14 January 2011] [14:11:36] &lt;sustrik&gt; it&#8217;s the same for all transports</div>
+<div class="line">[Friday 14 January 2011] [14:12:01] &lt;sustrik&gt; although... pgm is kind of different</div>
+<div class="line">[Friday 14 January 2011] [14:12:18] &lt;sustrik&gt; on the pub side it treats all the subs as a single &#8220;connection&#8221;</div>
+<div class="line">[Friday 14 January 2011] [14:12:39] &lt;sustrik&gt; (it&#8217;s multicast so that&#8217;s the only way to do it)</div>
+<div class="line">[Friday 14 January 2011] [14:28:47] &lt;mikko&gt;   sustrik: does the socket come out from exceptional state after all pending messages have been consumed?</div>
+<div class="line">[Friday 14 January 2011] [17:29:17] &lt;sustrik&gt; mikko: no, it comes out after LWM is reached</div>
+<div class="line">[Friday 14 January 2011] [17:43:28] &lt;mikko&gt;   sustrik: noticed</div>
+<div class="line">[Friday 14 January 2011] [17:54:10] &lt;mikko&gt;   sustrik: <a class="reference external" href="https://gist.github.com/cd0cd7d8407c30456c23">https://gist.github.com/cd0cd7d8407c30456c23</a></div>
+<div class="line">[Friday 14 January 2011] [17:54:18] &lt;mikko&gt;   shouldn&#8217;t the SUB recv the second message?</div>
+<div class="line">[Friday 14 January 2011] [17:54:23] &lt;mikko&gt;   or am i being silly again?</div>
+<div class="line">[Friday 14 January 2011] [19:34:39] &lt;mvolkov&gt; I am the first day 0MQ user and after going through docs I understand that 0MQ has capability of doing multiplexing between a few sockets with zmq_poll() function</div>
+<div class="line">[Friday 14 January 2011] [19:35:57] &lt;mvolkov&gt; however, I can&#8217;t seems to find how one define a list of resources/items in Python</div>
+<div class="line">[Friday 14 January 2011] [19:37:18] &lt;mvolkov&gt; Can anyone please give me a hint? Or white paper or doc link?</div>
+<div class="line">[Friday 14 January 2011] [19:37:27] &lt;mvolkov&gt; on this topic?</div>
+<div class="line">[Saturday 15 January 2011] [06:16:19] &lt;mikko&gt; mvolkov: there should be examples of poll under pyzmq github</div>
+<div class="line">[Saturday 15 January 2011] [06:40:19] &lt;CIA-21&gt;        zeromq2: 03Martin Sustrik 07sub-forward * rbe94000 10/ (5 files):</div>
+<div class="line">[Saturday 15 January 2011] [06:40:19] &lt;CIA-21&gt;        zeromq2: Forwarding subscriptions up the stream implemented</div>
+<div class="line">[Saturday 15 January 2011] [06:40:19] &lt;CIA-21&gt;        zeromq2: Signed-off-by: Martin Sustrik &lt;<a class="reference external" href="mailto:sustrik&#37;&#52;&#48;250bpm&#46;com">sustrik<span>&#64;</span>250bpm<span>&#46;</span>com</a>&gt; - <a class="reference external" href="http://bit.ly/eLjdU0">http://bit.ly/eLjdU0</a></div>
+<div class="line">[Saturday 15 January 2011] [06:40:20] &lt;CIA-21&gt;        zeromq2: 03Martin Sustrik 07sub-forward * r706296d 10/ (src/trie.cpp src/trie.hpp src/xsub.cpp src/xsub.hpp):</div>
+<div class="line">[Saturday 15 January 2011] [06:40:20] &lt;CIA-21&gt;        zeromq2: Subscriptions from XSUB socketare sent to each new peer.</div>
+<div class="line">[Saturday 15 January 2011] [06:40:20] &lt;CIA-21&gt;        zeromq2: Signed-off-by: Martin Sustrik &lt;<a class="reference external" href="mailto:sustrik&#37;&#52;&#48;250bpm&#46;com">sustrik<span>&#64;</span>250bpm<span>&#46;</span>com</a>&gt; - <a class="reference external" href="http://bit.ly/gAfivp">http://bit.ly/gAfivp</a></div>
+<div class="line">[Saturday 15 January 2011] [06:40:22] &lt;CIA-21&gt;        zeromq2: 03Martin Sustrik 07sub-forward * r3d26c3d 10/ (5 files):</div>
+<div class="line">[Saturday 15 January 2011] [06:40:22] &lt;CIA-21&gt;        zeromq2: econnection should now trigger subscription re-sending</div>
+<div class="line">[Saturday 15 January 2011] [06:40:22] &lt;CIA-21&gt;        zeromq2: Signed-off-by: Martin Sustrik &lt;<a class="reference external" href="mailto:sustrik&#37;&#52;&#48;250bpm&#46;com">sustrik<span>&#64;</span>250bpm<span>&#46;</span>com</a>&gt; - <a class="reference external" href="http://bit.ly/gdt449">http://bit.ly/gdt449</a></div>
+<div class="line">[Saturday 15 January 2011] [06:47:19] &lt;CIA-21&gt;        zeromq2: 03Martin Sustrik 07sub-forward * rbb605e0 10/ src/pub.cpp :</div>
+<div class="line">[Saturday 15 January 2011] [06:47:19] &lt;CIA-21&gt;        zeromq2: Print out subscriptions in PUB socket (for testing purposes)</div>
+<div class="line">[Saturday 15 January 2011] [06:47:20] &lt;CIA-21&gt;        zeromq2: Signed-off-by: Martin Sustrik &lt;<a class="reference external" href="mailto:sustrik&#37;&#52;&#48;250bpm&#46;com">sustrik<span>&#64;</span>250bpm<span>&#46;</span>com</a>&gt; - <a class="reference external" href="http://bit.ly/eV0jas">http://bit.ly/eV0jas</a></div>
+<div class="line">[Saturday 15 January 2011] [06:47:45] &lt;mikko&gt; sustrik: busy morning!</div>
+<div class="line">[Saturday 15 January 2011] [06:47:53] &lt;sustrik&gt;       mikko: morning</div>
+<div class="line">[Saturday 15 January 2011] [06:48:23] &lt;sustrik&gt;       i finally found some time to spent on subscription forwarding</div>
+<div class="line">[Saturday 15 January 2011] [06:50:03] &lt;mikko&gt; sustrik: did you see my paste from yesterday?</div>
+<div class="line">[Saturday 15 January 2011] [06:50:13] &lt;sustrik&gt;       no</div>
+<div class="line">[Saturday 15 January 2011] [06:50:15] &lt;sustrik&gt;       let me see</div>
+<div class="line">[Saturday 15 January 2011] [06:50:21] &lt;mikko&gt; <a class="reference external" href="https://gist.github.com/cd0cd7d8407c30456c23">https://gist.github.com/cd0cd7d8407c30456c23</a></div>
+<div class="line">[Saturday 15 January 2011] [06:51:14] &lt;sustrik&gt;       hm, hard to say</div>
+<div class="line">[Saturday 15 January 2011] [06:51:20] &lt;sustrik&gt;       it depends much on the timing</div>
+<div class="line">[Saturday 15 January 2011] [06:51:29] &lt;sustrik&gt;       zmq_close is async</div>
+<div class="line">[Saturday 15 January 2011] [06:51:52] &lt;sustrik&gt;       so the socket may actually still exist at the time you are sending second message</div>
+<div class="line">[Saturday 15 January 2011] [06:52:04] &lt;sustrik&gt;       so it gets the message and terminates</div>
+<div class="line">[Saturday 15 January 2011] [06:52:05] &lt;mikko&gt; i tried adding sleep(5); before the second message</div>
+<div class="line">[Saturday 15 January 2011] [06:52:08] &lt;mikko&gt; but that didn&#8217;t work</div>
+<div class="line">[Saturday 15 January 2011] [06:52:09] &lt;sustrik&gt;       same thing?</div>
+<div class="line">[Saturday 15 January 2011] [06:52:22] &lt;sustrik&gt;       that it looks like a bug imo</div>
+<div class="line">[Saturday 15 January 2011] [06:52:30] &lt;sustrik&gt;       can you fill in a ticket?</div>
+<div class="line">[Saturday 15 January 2011] [06:52:56] &lt;mikko&gt; this is actually one of the test cases i&#8217;ve been preparing</div>
+<div class="line">[Saturday 15 January 2011] [06:53:17] &lt;sustrik&gt;       great</div>
+<div class="line">[Saturday 15 January 2011] [06:53:31] &lt;mikko&gt; HWM and identity</div>
+<div class="line">[Saturday 15 January 2011] [06:53:40] &lt;mikko&gt; testing with sleep 20 now</div>
+<div class="line">[Saturday 15 January 2011] [06:53:50] &lt;mikko&gt; just in case</div>
+<div class="line">[Saturday 15 January 2011] [06:54:17] &lt;mikko&gt; hmm, i could also try running the subscriber in it&#8217;s own thread</div>
+<div class="line">[Saturday 15 January 2011] [06:59:28] &lt;sustrik&gt;       mikko: i assume it&#8217;s a bug</div>
+<div class="line">[Saturday 15 January 2011] [06:59:34] &lt;sustrik&gt;       the test looks ok</div>
+<div class="line">[Saturday 15 January 2011] [07:01:14] &lt;mikko&gt; i&#8217;ll open issue</div>
+<div class="line">[Saturday 15 January 2011] [07:09:59] &lt;mikko&gt; issue #150</div>
+<div class="line">[Saturday 15 January 2011] [07:10:41] &lt;mikko&gt; the HWM test-case is in <a class="reference external" href="http://valokuva.org/~mikko/0002-Added-test-for-HWM.patch">http://valokuva.org/~mikko/0002-Added-test-for-HWM.patch</a></div>
+<div class="line">[Saturday 15 January 2011] [07:14:08] &lt;sustrik&gt;       thanks</div>
+<div class="line">[Saturday 15 January 2011] [07:41:40] &lt;jugg&gt;  sustrik, such a minor single word change to warrant a patch... The pull request was just so it got noticed, not so I got credit...  but anyway.</div>
+<div class="line">[Saturday 15 January 2011] [07:57:27] &lt;sustrik&gt;       jugg: as you wish</div>
+<div class="line">[Saturday 15 January 2011] [07:57:47] &lt;sustrik&gt;       let me fix it</div>
+<div class="line">[Saturday 15 January 2011] [07:58:57] &lt;sustrik&gt;       jugg: have you sent the patch or not?</div>
+<div class="line">[Saturday 15 January 2011] [07:59:05] &lt;jugg&gt;  I did...</div>
+<div class="line">[Saturday 15 January 2011] [07:59:16] &lt;sustrik&gt;       haven&#8217;t got it yet</div>
+<div class="line">[Saturday 15 January 2011] [08:00:11] &lt;jugg&gt;  I use gmane, sometimes it moves slowly.</div>
+<div class="line">[Saturday 15 January 2011] [08:00:19] &lt;sustrik&gt;       np</div>
+<div class="line">[Saturday 15 January 2011] [08:00:51] &lt;jugg&gt;  anyway, if it doesn&#8217;t show up, feel free to make the change on your own.</div>
+<div class="line">[Saturday 15 January 2011] [08:00:57] &lt;sustrik&gt;       sure</div>
+<div class="line">[Saturday 15 January 2011] [08:01:26] &lt;sustrik&gt;       it&#8217;s kind of strange following the process for trivial changes like this one</div>
+<div class="line">[Saturday 15 January 2011] [08:01:41] &lt;sustrik&gt;       but it&#8217;s hard to set a boundary between trivial and non-trivial</div>
+<div class="line">[Saturday 15 January 2011] [09:04:27] &lt;gancient&gt;      hi all, i am trying to implement a distributed matrix multiplication algorithm in python using zmq , what would be the best approach ? (I am new to zmq , so any suggestions / comments are useful )</div>
+<div class="line">[Saturday 15 January 2011] [10:29:01] &lt;mvolkov&gt;       mikko: Thank you for the answer. The issue is the not all zguide tutorial examples are translated to Python, however, I found examples at <a class="reference external" href="http://nullege.com/">http://nullege.com/</a> - hopefully they&#8217;ll work.</div>
+<div class="line">[Saturday 15 January 2011] [10:29:24] &lt;mikko&gt; mvolkov: <a class="reference external" href="https://github.com/zeromq/pyzmq/tree/master/examples">https://github.com/zeromq/pyzmq/tree/master/examples</a></div>
+<div class="line">[Saturday 15 January 2011] [10:30:08] &lt;mvolkov&gt;       oh... then we are talking about the same thing. Thank you</div>
+<div class="line">[Saturday 15 January 2011] [13:31:40] &lt;mikko&gt; sustrik: seems like msvc build files are out of date (?)</div>
+<div class="line">[Saturday 15 January 2011] [14:07:50] &lt;sustrik&gt;       mikko: right</div>
+<div class="line">[Saturday 15 January 2011] [14:07:53] &lt;sustrik&gt;       let me fix it</div>
+<div class="line">[Saturday 15 January 2011] [14:15:30] &lt;CIA-21&gt;        zeromq2: 03Martin Sustrik 07master * ra249d15 10/ builds/msvc/libzmq/libzmq.vcproj :</div>
+<div class="line">[Saturday 15 January 2011] [14:15:30] &lt;CIA-21&gt;        zeromq2: Fix MSVC build</div>
+<div class="line">[Saturday 15 January 2011] [14:15:30] &lt;CIA-21&gt;        zeromq2: Signed-off-by: Martin Sustrik &lt;<a class="reference external" href="mailto:sustrik&#37;&#52;&#48;250bpm&#46;com">sustrik<span>&#64;</span>250bpm<span>&#46;</span>com</a>&gt; - <a class="reference external" href="http://bit.ly/i0HCXP">http://bit.ly/i0HCXP</a></div>
+<div class="line">[Saturday 15 January 2011] [14:17:58] &lt;sustrik&gt;       mikko: ok, done</div>
+<div class="line">[Saturday 15 January 2011] [16:13:51] &lt;mikko&gt; <a href="#id467"><span class="problematic" id="id468">sustrik_</span></a>: thanks</div>
+<div class="line">[Saturday 15 January 2011] [18:13:56] &lt;mvolkov&gt;       Q: is there a way in 0MQ to know whether socked is busy doing something so message is not sent until it is ready?</div>
+<div class="line">[Saturday 15 January 2011] [18:15:06] &lt;mvolkov&gt;       or in 0MQ terminology how this &#8220;check and wait&#8221; behavior would be called?</div>
+<div class="line">[Saturday 15 January 2011] [18:15:22] &lt;mvolkov&gt;       appreciate any input</div>
+<div class="line">[Saturday 15 January 2011] [18:22:04] &lt;mikko&gt; mvolkov: there are different kind of behaviors with different socket types</div>
+<div class="line">[Saturday 15 January 2011] [18:22:18] &lt;mikko&gt; mvolkov: for example PUB socket drops the message if there are no subscribers</div>
+<div class="line">[Saturday 15 January 2011] [18:23:08] &lt;mikko&gt; mvolkov: im not sure whether this answers your question as i am not sure what &#8220;socket is busy doing something&#8221; means</div>
+<div class="line">[Saturday 15 January 2011] [18:54:18] &lt;Skaag&gt; mikko: is this channel logged somewhere?</div>
+<div class="line">[Saturday 15 January 2011] [19:23:48] &lt;mvolkov&gt;       mikko: I am interested in load balancing work to the different tcp: sockets and so far I understand that this is achievable with zmd.poll() function</div>
+<div class="line">[Saturday 15 January 2011] [19:24:19] &lt;mvolkov&gt;       the objective is basically send message to less busy device</div>
+<div class="line">[Saturday 15 January 2011] [19:24:38] &lt;mvolkov&gt;       or device which is doing nothing</div>
+<div class="line">[Saturday 15 January 2011] [19:31:03] &lt;mikko&gt; Skaag: not as far as i know</div>
+<div class="line">[Saturday 15 January 2011] [19:31:12] &lt;Skaag&gt; that is too bad</div>
+<div class="line">[Saturday 15 January 2011] [19:31:17] &lt;mikko&gt; mvolkov: load-balancing based on least busy is really not achievable using poll</div>
+<div class="line">[Saturday 15 January 2011] [19:31:21] &lt;Skaag&gt; a lot of very good answers here, to very good questions...</div>
+<div class="line">[Saturday 15 January 2011] [19:31:27] &lt;mikko&gt; mvolkov: you would need additional logic on top of the polling</div>
+<div class="line">[Saturday 15 January 2011] [19:31:40] &lt;mikko&gt; mvolkov: as in the poll really doesn&#8217;t know which one of the sockets is least busy</div>
+<div class="line">[Saturday 15 January 2011] [19:31:59] &lt;mikko&gt; mvolkov: the built-in algorithm uses round-robin for balancing</div>
+<div class="line">[Saturday 15 January 2011] [19:32:14] &lt;mikko&gt; Skaag: i think i got logs since around last Feb</div>
+<div class="line">[Saturday 15 January 2011] [19:32:32] &lt;Skaag&gt; that&#8217;s awesome. upload them somewhere.</div>
+<div class="line">[Saturday 15 January 2011] [19:33:22] &lt;mvolkov&gt;       mikko: oh, so zmd.poll() has by default round robin built in? do I understand this right?</div>
+<div class="line">[Saturday 15 January 2011] [19:36:55] &lt;mikko&gt; Skaag: sec</div>
+<div class="line">[Saturday 15 January 2011] [19:36:57] &lt;mikko&gt; mvolkov: nope</div>
+<div class="line">[Saturday 15 January 2011] [19:37:21] &lt;mikko&gt; mvolkov: zmq_poll just indicates which sockets are readable/writable depending on parameters passed</div>
+<div class="line">[Saturday 15 January 2011] [19:37:38] &lt;mikko&gt; mvolkov: what i meant is that PUSH/PULL has round-robin balancing built in</div>
+<div class="line">[Saturday 15 January 2011] [19:38:03] &lt;mikko&gt; mvolkov: so if you zmq_connect PUSH socket multiple times the messages sent to the socket are balanced between the underlying transport sockets (tcp, ipc etc)</div>
+<div class="line">[Saturday 15 January 2011] [19:38:17] &lt;mvolkov&gt;       mikko: thank you I&#8217;ll try that &#8211; greatly appreciate your inp</div>
+<div class="line">[Saturday 15 January 2011] [19:39:05] &lt;mvolkov&gt;       ut</div>
+<div class="line">[Saturday 15 January 2011] [19:42:52] &lt;mikko&gt; Skaag: <a class="reference external" href="http://valokuva.org/~mikko/zeromq.log">http://valokuva.org/~mikko/zeromq.log</a></div>
+<div class="line">[Saturday 15 January 2011] [19:42:54] &lt;mikko&gt; since last march</div>
+<div class="line">[Saturday 15 January 2011] [19:43:13] &lt;Skaag&gt; awesome :)</div>
+<div class="line">[Saturday 15 January 2011] [19:43:21] &lt;Skaag&gt; thanks</div>
+<div class="line">[Saturday 15 January 2011] [21:01:05] &lt;xchen&gt; hi, guys.</div>
+<div class="line">[Saturday 15 January 2011] [21:01:41] &lt;mikko&gt; hi</div>
+<div class="line">[Saturday 15 January 2011] [21:02:08] &lt;xchen&gt; I have a question about zeromq, I want to use the zeromq in a cluster which is connected using infiniband</div>
+<div class="line">[Saturday 15 January 2011] [21:02:27] &lt;xchen&gt; hi, mikko, thank you for your reply</div>
+<div class="line">[Saturday 15 January 2011] [21:03:00] &lt;xchen&gt; How can I configure the zeromq to make sure it use the infiniband, not the ethenet</div>
+<div class="line">[Saturday 15 January 2011] [21:03:43] &lt;xchen&gt; since the cluster is connected using both eth and ib</div>
+<div class="line">[Saturday 15 January 2011] [21:05:33] &lt;mikko&gt; i haven&#8217;t really got experience with infiniband</div>
+<div class="line">[Saturday 15 January 2011] [21:05:34] &lt;xchen&gt; I googled and find nothing about the configuration of zeromq over infiniband, and it is not explained in the manual,</div>
+<div class="line">[Saturday 15 January 2011] [21:05:41] &lt;xchen&gt; thanks</div>
+<div class="line">[Saturday 15 January 2011] [21:05:46] &lt;mikko&gt; you might want to ask your question tomorrow morning CET</div>
+<div class="line">[Saturday 15 January 2011] [21:05:54] &lt;mikko&gt; <a href="#id469"><span class="problematic" id="id470">sustrik_</span></a> would probably be able to answer it</div>
+<div class="line">[Saturday 15 January 2011] [21:06:19] &lt;xchen&gt; ok, thanks very much. He will be online then?</div>
+<div class="line">[Saturday 15 January 2011] [21:06:28] &lt;mikko&gt; usually is</div>
+<div class="line">[Saturday 15 January 2011] [21:06:43] &lt;mikko&gt; are you running tcp/ip over infiniband?</div>
+<div class="line">[Saturday 15 January 2011] [21:07:42] &lt;xchen&gt; I didn&#8217;t get you question. Zeromq is over tcp/ip than infiniband?</div>
+<div class="line">[Saturday 15 January 2011] [21:07:53] &lt;xchen&gt; I didn&#8217;t get you question. Zeromq is over tcp/ip then infiniband?</div>
+<div class="line">[Saturday 15 January 2011] [21:08:52] &lt;mikko&gt; <a class="reference external" href="http://www.zeromq.org/results:ib-tests-v031">http://www.zeromq.org/results:ib-tests-v031</a></div>
+<div class="line">[Saturday 15 January 2011] [21:09:57] &lt;mikko&gt; ah</div>
+<div class="line">[Saturday 15 January 2011] [21:09:59] &lt;xchen&gt; Yes, I saw this page. But I do not know how do they get this result.</div>
+<div class="line">[Saturday 15 January 2011] [21:10:07] &lt;mikko&gt; found an old mailing list entry about infiniband</div>
+<div class="line">[Saturday 15 January 2011] [21:10:33] &lt;mikko&gt; xchen: <a class="reference external" href="http://lists.zeromq.org/pipermail/zeromq-dev/2009-December/001472.html">http://lists.zeromq.org/pipermail/zeromq-dev/2009-December/001472.html</a></div>
+<div class="line">[Saturday 15 January 2011] [21:11:30] &lt;xchen&gt; Thank you very much. I have found this. But it seems do not answer my question</div>
+<div class="line">[Saturday 15 January 2011] [21:11:47] &lt;mikko&gt; xchen: best wait for sustrik to be online in that case</div>
+<div class="line">[Saturday 15 January 2011] [21:12:07] &lt;mikko&gt; you could also try posting to the mailing-lists</div>
+<div class="line">[Saturday 15 January 2011] [21:12:18] &lt;xchen&gt; ok, thanks.</div>
+<div class="line">[Saturday 15 January 2011] [21:12:40] &lt;xchen&gt; thank you for so much help.</div>
+<div class="line">[Saturday 15 January 2011] [21:13:02] &lt;mikko&gt; no problem, i can&#8217;t really be much more help as i haven&#8217;t really used infiniband to any extent</div>
+<div class="line">[Saturday 15 January 2011] [21:13:56] &lt;xchen&gt; A question about the basic concept of 0mq, is the source code I get built on tcpip?</div>
+<div class="line">[Saturday 15 January 2011] [21:14:22] &lt;mikko&gt; there are different transports</div>
+<div class="line">[Saturday 15 January 2011] [21:14:31] &lt;xchen&gt; I get means download from the homepage</div>
+<div class="line">[Saturday 15 January 2011] [21:14:31] &lt;mikko&gt; ipc, inproc, tcp and pgm</div>
+<div class="line">[Saturday 15 January 2011] [21:15:22] &lt;xchen&gt; ok, so , tcp can build on infiniband, am I right?</div>
+<div class="line">[Saturday 15 January 2011] [21:18:55] &lt;mikko&gt; what does &#8216;can build on&#8217; mean in this context?</div>
+<div class="line">[Saturday 15 January 2011] [21:24:33] &lt;xchen&gt; sorry, I sould say tcp can be built on infiniband</div>
+<div class="line">[Saturday 15 January 2011] [21:24:46] &lt;xchen&gt; sorry, I should say tcp can be built on infiniband</div>
+<div class="line">[Saturday 15 January 2011] [21:25:32] &lt;mikko&gt; it looks like you should be able to LD_PRELOAD the SDP library and use zeromq over infiniband</div>
+<div class="line">[Saturday 15 January 2011] [21:25:54] &lt;mikko&gt; i would assume that if the SDP library is loaded it would use infiniband and not the eth interface</div>
+<div class="line">[Saturday 15 January 2011] [21:26:08] &lt;mikko&gt; you should be able to see this from throughput of messages as well i assume</div>
+<div class="line">[Saturday 15 January 2011] [21:29:13] &lt;mikko&gt; looking at the following material <a class="reference external" href="http://pkg-ofed.alioth.debian.org/howto/infiniband-howto-7.html">http://pkg-ofed.alioth.debian.org/howto/infiniband-howto-7.html</a> it would look so</div>
+<div class="line">[Saturday 15 January 2011] [21:35:10] &lt;xchen&gt; Yeah, I think I get it. Thanks a lot.</div>
+<div class="line">[Saturday 15 January 2011] [21:35:27] &lt;mikko&gt; cool</div>
+<div class="line">[Saturday 15 January 2011] [21:35:39] &lt;mikko&gt; i need to sleep, it&#8217;s 3am soon</div>
+<div class="line">[Saturday 15 January 2011] [21:35:42] &lt;mikko&gt; good night</div>
+<div class="line">[Saturday 15 January 2011] [21:36:04] &lt;xchen&gt; thank</div>
 </div>
 </div>
 

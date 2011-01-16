@@ -2825,3 +2825,178 @@
 | [Friday 14 January 2011] [10:47:54] <guido_g>	ok, a very high HWM on the subscriber side does the trick so far
 | [Friday 14 January 2011] [10:54:46] <sustrik>	Steve-o: however, I assume the timer should be cancelled nontheless
 | [Friday 14 January 2011] [10:54:47] <sustrik>	right?
+| [Friday 14 January 2011] [12:36:33] <mikko>	sustrik: is PUSH socket supposed to block when HWM is reached even if ZMQ_NOBLOCK is used?
+| [Friday 14 January 2011] [13:39:59] <sustrik>	mikko: no
+| [Friday 14 January 2011] [13:40:09] <sustrik>	it should return EAGAIN
+| [Friday 14 January 2011] [13:53:08] <mikko>	sustrik: ok, i wonder why i'm seeing this behavior
+| [Friday 14 January 2011] [13:53:19] <mikko>	let me recheck the code
+| [Friday 14 January 2011] [13:55:02] <mikko>	ah, found it
+| [Friday 14 January 2011] [13:55:44] <sustrik>	what's going on?
+| [Friday 14 January 2011] [13:57:02] <mikko>	launched on debugger and noticed that it's blocking on lingering messages rather than send ()
+| [Friday 14 January 2011] [13:57:48] <mikko>	i'm adding a test case for hwm
+| [Friday 14 January 2011] [13:58:31] <mikko>	hmm, looks like it depends differently depending on whether i bind or connect
+| [Friday 14 January 2011] [14:04:26] <sustrik>	yes, they are different
+| [Friday 14 January 2011] [14:04:35] <sustrik>	when you bind there's no pipe there
+| [Friday 14 January 2011] [14:04:44] <sustrik>	so send blocks immediately
+| [Friday 14 January 2011] [14:05:12] <sustrik>	with connect, the pipe is created straight away, so you can send messages immediately
+| [Friday 14 January 2011] [14:05:32] <sustrik>	i mean, with bind the pipes are created as individual peers connect
+| [Friday 14 January 2011] [14:08:01] <mikko>	sustrik: is that the same with inproc?
+| [Friday 14 January 2011] [14:09:41] <sustrik>	yes, the same principle
+| [Friday 14 January 2011] [14:10:53] <mikko>	is there any difference between HWM handling between transports / socket types (apart from inproc)
+| [Friday 14 January 2011] [14:10:53] <sustrik>	it's an inherent issue, the HWM is per peer
+| [Friday 14 January 2011] [14:11:25] <sustrik>	so it doesn't even make sense to talk about HWM until there is no peer connected
+| [Friday 14 January 2011] [14:11:36] <sustrik>	it's the same for all transports
+| [Friday 14 January 2011] [14:12:01] <sustrik>	although... pgm is kind of different
+| [Friday 14 January 2011] [14:12:18] <sustrik>	on the pub side it treats all the subs as a single "connection"
+| [Friday 14 January 2011] [14:12:39] <sustrik>	(it's multicast so that's the only way to do it)
+| [Friday 14 January 2011] [14:28:47] <mikko>	sustrik: does the socket come out from exceptional state after all pending messages have been consumed?
+| [Friday 14 January 2011] [17:29:17] <sustrik>	mikko: no, it comes out after LWM is reached
+| [Friday 14 January 2011] [17:43:28] <mikko>	sustrik: noticed
+| [Friday 14 January 2011] [17:54:10] <mikko>	sustrik: https://gist.github.com/cd0cd7d8407c30456c23
+| [Friday 14 January 2011] [17:54:18] <mikko>	shouldn't the SUB recv the second message?
+| [Friday 14 January 2011] [17:54:23] <mikko>	or am i being silly again?
+| [Friday 14 January 2011] [19:34:39] <mvolkov>	I am the first day 0MQ user and after going through docs I understand that 0MQ has capability of doing multiplexing between a few sockets with zmq_poll() function
+| [Friday 14 January 2011] [19:35:57] <mvolkov>	however, I can't seems to find how one define a list of resources/items in Python
+| [Friday 14 January 2011] [19:37:18] <mvolkov>	Can anyone please give me a hint? Or white paper or doc link?
+| [Friday 14 January 2011] [19:37:27] <mvolkov>	on this topic?
+| [Saturday 15 January 2011] [06:16:19] <mikko>	mvolkov: there should be examples of poll under pyzmq github 
+| [Saturday 15 January 2011] [06:40:19] <CIA-21>	zeromq2: 03Martin Sustrik 07sub-forward * rbe94000 10/ (5 files): 
+| [Saturday 15 January 2011] [06:40:19] <CIA-21>	zeromq2: Forwarding subscriptions up the stream implemented
+| [Saturday 15 January 2011] [06:40:19] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/eLjdU0
+| [Saturday 15 January 2011] [06:40:20] <CIA-21>	zeromq2: 03Martin Sustrik 07sub-forward * r706296d 10/ (src/trie.cpp src/trie.hpp src/xsub.cpp src/xsub.hpp): 
+| [Saturday 15 January 2011] [06:40:20] <CIA-21>	zeromq2: Subscriptions from XSUB socketare sent to each new peer.
+| [Saturday 15 January 2011] [06:40:20] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/gAfivp
+| [Saturday 15 January 2011] [06:40:22] <CIA-21>	zeromq2: 03Martin Sustrik 07sub-forward * r3d26c3d 10/ (5 files): 
+| [Saturday 15 January 2011] [06:40:22] <CIA-21>	zeromq2: econnection should now trigger subscription re-sending
+| [Saturday 15 January 2011] [06:40:22] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/gdt449
+| [Saturday 15 January 2011] [06:47:19] <CIA-21>	zeromq2: 03Martin Sustrik 07sub-forward * rbb605e0 10/ src/pub.cpp : 
+| [Saturday 15 January 2011] [06:47:19] <CIA-21>	zeromq2: Print out subscriptions in PUB socket (for testing purposes)
+| [Saturday 15 January 2011] [06:47:20] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/eV0jas
+| [Saturday 15 January 2011] [06:47:45] <mikko>	sustrik: busy morning!
+| [Saturday 15 January 2011] [06:47:53] <sustrik>	mikko: morning
+| [Saturday 15 January 2011] [06:48:23] <sustrik>	i finally found some time to spent on subscription forwarding
+| [Saturday 15 January 2011] [06:50:03] <mikko>	sustrik: did you see my paste from yesterday?
+| [Saturday 15 January 2011] [06:50:13] <sustrik>	no
+| [Saturday 15 January 2011] [06:50:15] <sustrik>	let me see
+| [Saturday 15 January 2011] [06:50:21] <mikko>	https://gist.github.com/cd0cd7d8407c30456c23
+| [Saturday 15 January 2011] [06:51:14] <sustrik>	hm, hard to say
+| [Saturday 15 January 2011] [06:51:20] <sustrik>	it depends much on the timing
+| [Saturday 15 January 2011] [06:51:29] <sustrik>	zmq_close is async
+| [Saturday 15 January 2011] [06:51:52] <sustrik>	so the socket may actually still exist at the time you are sending second message
+| [Saturday 15 January 2011] [06:52:04] <sustrik>	so it gets the message and terminates
+| [Saturday 15 January 2011] [06:52:05] <mikko>	i tried adding sleep(5); before the second message
+| [Saturday 15 January 2011] [06:52:08] <mikko>	but that didn't work
+| [Saturday 15 January 2011] [06:52:09] <sustrik>	same thing?
+| [Saturday 15 January 2011] [06:52:22] <sustrik>	that it looks like a bug imo
+| [Saturday 15 January 2011] [06:52:30] <sustrik>	can you fill in a ticket?
+| [Saturday 15 January 2011] [06:52:56] <mikko>	this is actually one of the test cases i've been preparing
+| [Saturday 15 January 2011] [06:53:17] <sustrik>	great
+| [Saturday 15 January 2011] [06:53:31] <mikko>	HWM and identity
+| [Saturday 15 January 2011] [06:53:40] <mikko>	testing with sleep 20 now
+| [Saturday 15 January 2011] [06:53:50] <mikko>	just in case 
+| [Saturday 15 January 2011] [06:54:17] <mikko>	hmm, i could also try running the subscriber in it's own thread
+| [Saturday 15 January 2011] [06:59:28] <sustrik>	mikko: i assume it's a bug
+| [Saturday 15 January 2011] [06:59:34] <sustrik>	the test looks ok
+| [Saturday 15 January 2011] [07:01:14] <mikko>	i'll open issue
+| [Saturday 15 January 2011] [07:09:59] <mikko>	issue #150
+| [Saturday 15 January 2011] [07:10:41] <mikko>	the HWM test-case is in http://valokuva.org/~mikko/0002-Added-test-for-HWM.patch
+| [Saturday 15 January 2011] [07:14:08] <sustrik>	thanks
+| [Saturday 15 January 2011] [07:41:40] <jugg>	sustrik, such a minor single word change to warrant a patch... The pull request was just so it got noticed, not so I got credit...  but anyway.
+| [Saturday 15 January 2011] [07:57:27] <sustrik>	jugg: as you wish
+| [Saturday 15 January 2011] [07:57:47] <sustrik>	let me fix it
+| [Saturday 15 January 2011] [07:58:57] <sustrik>	jugg: have you sent the patch or not?
+| [Saturday 15 January 2011] [07:59:05] <jugg>	I did... 
+| [Saturday 15 January 2011] [07:59:16] <sustrik>	haven't got it yet
+| [Saturday 15 January 2011] [08:00:11] <jugg>	I use gmane, sometimes it moves slowly.
+| [Saturday 15 January 2011] [08:00:19] <sustrik>	np
+| [Saturday 15 January 2011] [08:00:51] <jugg>	anyway, if it doesn't show up, feel free to make the change on your own.
+| [Saturday 15 January 2011] [08:00:57] <sustrik>	sure
+| [Saturday 15 January 2011] [08:01:26] <sustrik>	it's kind of strange following the process for trivial changes like this one
+| [Saturday 15 January 2011] [08:01:41] <sustrik>	but it's hard to set a boundary between trivial and non-trivial
+| [Saturday 15 January 2011] [09:04:27] <gancient>	hi all, i am trying to implement a distributed matrix multiplication algorithm in python using zmq , what would be the best approach ? (I am new to zmq , so any suggestions / comments are useful )
+| [Saturday 15 January 2011] [10:29:01] <mvolkov>	mikko: Thank you for the answer. The issue is the not all zguide tutorial examples are translated to Python, however, I found examples at http://nullege.com/ - hopefully they'll work.
+| [Saturday 15 January 2011] [10:29:24] <mikko>	mvolkov: https://github.com/zeromq/pyzmq/tree/master/examples
+| [Saturday 15 January 2011] [10:30:08] <mvolkov>	oh... then we are talking about the same thing. Thank you
+| [Saturday 15 January 2011] [13:31:40] <mikko>	sustrik: seems like msvc build files are out of date (?) 
+| [Saturday 15 January 2011] [14:07:50] <sustrik>	mikko: right
+| [Saturday 15 January 2011] [14:07:53] <sustrik>	let me fix it
+| [Saturday 15 January 2011] [14:15:30] <CIA-21>	zeromq2: 03Martin Sustrik 07master * ra249d15 10/ builds/msvc/libzmq/libzmq.vcproj : 
+| [Saturday 15 January 2011] [14:15:30] <CIA-21>	zeromq2: Fix MSVC build
+| [Saturday 15 January 2011] [14:15:30] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/i0HCXP
+| [Saturday 15 January 2011] [14:17:58] <sustrik>	mikko: ok, done
+| [Saturday 15 January 2011] [16:13:51] <mikko>	sustrik_: thanks
+| [Saturday 15 January 2011] [18:13:56] <mvolkov>	Q: is there a way in 0MQ to know whether socked is busy doing something so message is not sent until it is ready?
+| [Saturday 15 January 2011] [18:15:06] <mvolkov>	or in 0MQ terminology how this "check and wait" behavior would be called?
+| [Saturday 15 January 2011] [18:15:22] <mvolkov>	appreciate any input
+| [Saturday 15 January 2011] [18:22:04] <mikko>	mvolkov: there are different kind of behaviors with different socket types
+| [Saturday 15 January 2011] [18:22:18] <mikko>	mvolkov: for example PUB socket drops the message if there are no subscribers
+| [Saturday 15 January 2011] [18:23:08] <mikko>	mvolkov: im not sure whether this answers your question as i am not sure what "socket is busy doing something" means
+| [Saturday 15 January 2011] [18:54:18] <Skaag>	mikko: is this channel logged somewhere?
+| [Saturday 15 January 2011] [19:23:48] <mvolkov>	mikko: I am interested in load balancing work to the different tcp: sockets and so far I understand that this is achievable with zmd.poll() function
+| [Saturday 15 January 2011] [19:24:19] <mvolkov>	the objective is basically send message to less busy device
+| [Saturday 15 January 2011] [19:24:38] <mvolkov>	or device which is doing nothing
+| [Saturday 15 January 2011] [19:31:03] <mikko>	Skaag: not as far as i know
+| [Saturday 15 January 2011] [19:31:12] <Skaag>	that is too bad
+| [Saturday 15 January 2011] [19:31:17] <mikko>	mvolkov: load-balancing based on least busy is really not achievable using poll
+| [Saturday 15 January 2011] [19:31:21] <Skaag>	a lot of very good answers here, to very good questions...
+| [Saturday 15 January 2011] [19:31:27] <mikko>	mvolkov: you would need additional logic on top of the polling
+| [Saturday 15 January 2011] [19:31:40] <mikko>	mvolkov: as in the poll really doesn't know which one of the sockets is least busy
+| [Saturday 15 January 2011] [19:31:59] <mikko>	mvolkov: the built-in algorithm uses round-robin for balancing
+| [Saturday 15 January 2011] [19:32:14] <mikko>	Skaag: i think i got logs since around last Feb
+| [Saturday 15 January 2011] [19:32:32] <Skaag>	that's awesome. upload them somewhere.
+| [Saturday 15 January 2011] [19:33:22] <mvolkov>	mikko: oh, so zmd.poll() has by default round robin built in? do I understand this right?
+| [Saturday 15 January 2011] [19:36:55] <mikko>	Skaag: sec
+| [Saturday 15 January 2011] [19:36:57] <mikko>	mvolkov: nope
+| [Saturday 15 January 2011] [19:37:21] <mikko>	mvolkov: zmq_poll just indicates which sockets are readable/writable depending on parameters passed
+| [Saturday 15 January 2011] [19:37:38] <mikko>	mvolkov: what i meant is that PUSH/PULL has round-robin balancing built in
+| [Saturday 15 January 2011] [19:38:03] <mikko>	mvolkov: so if you zmq_connect PUSH socket multiple times the messages sent to the socket are balanced between the underlying transport sockets (tcp, ipc etc)
+| [Saturday 15 January 2011] [19:38:17] <mvolkov>	mikko: thank you I'll try that -- greatly appreciate your inp
+| [Saturday 15 January 2011] [19:39:05] <mvolkov>	ut
+| [Saturday 15 January 2011] [19:42:52] <mikko>	Skaag: http://valokuva.org/~mikko/zeromq.log
+| [Saturday 15 January 2011] [19:42:54] <mikko>	since last march
+| [Saturday 15 January 2011] [19:43:13] <Skaag>	awesome :)
+| [Saturday 15 January 2011] [19:43:21] <Skaag>	thanks
+| [Saturday 15 January 2011] [21:01:05] <xchen>	hi, guys.
+| [Saturday 15 January 2011] [21:01:41] <mikko>	hi
+| [Saturday 15 January 2011] [21:02:08] <xchen>	I have a question about zeromq, I want to use the zeromq in a cluster which is connected using infiniband
+| [Saturday 15 January 2011] [21:02:27] <xchen>	hi, mikko, thank you for your reply
+| [Saturday 15 January 2011] [21:03:00] <xchen>	How can I configure the zeromq to make sure it use the infiniband, not the ethenet
+| [Saturday 15 January 2011] [21:03:43] <xchen>	since the cluster is connected using both eth and ib
+| [Saturday 15 January 2011] [21:05:33] <mikko>	i haven't really got experience with infiniband
+| [Saturday 15 January 2011] [21:05:34] <xchen>	I googled and find nothing about the configuration of zeromq over infiniband, and it is not explained in the manual, 
+| [Saturday 15 January 2011] [21:05:41] <xchen>	thanks
+| [Saturday 15 January 2011] [21:05:46] <mikko>	you might want to ask your question tomorrow morning CET
+| [Saturday 15 January 2011] [21:05:54] <mikko>	sustrik_ would probably be able to answer it 
+| [Saturday 15 January 2011] [21:06:19] <xchen>	ok, thanks very much. He will be online then?
+| [Saturday 15 January 2011] [21:06:28] <mikko>	usually is 
+| [Saturday 15 January 2011] [21:06:43] <mikko>	are you running tcp/ip over infiniband?
+| [Saturday 15 January 2011] [21:07:42] <xchen>	I didn't get you question. Zeromq is over tcp/ip than infiniband?
+| [Saturday 15 January 2011] [21:07:53] <xchen>	I didn't get you question. Zeromq is over tcp/ip then infiniband?
+| [Saturday 15 January 2011] [21:08:52] <mikko>	http://www.zeromq.org/results:ib-tests-v031
+| [Saturday 15 January 2011] [21:09:57] <mikko>	ah
+| [Saturday 15 January 2011] [21:09:59] <xchen>	Yes, I saw this page. But I do not know how do they get this result.
+| [Saturday 15 January 2011] [21:10:07] <mikko>	found an old mailing list entry about infiniband
+| [Saturday 15 January 2011] [21:10:33] <mikko>	xchen: http://lists.zeromq.org/pipermail/zeromq-dev/2009-December/001472.html
+| [Saturday 15 January 2011] [21:11:30] <xchen>	Thank you very much. I have found this. But it seems do not answer my question
+| [Saturday 15 January 2011] [21:11:47] <mikko>	xchen: best wait for sustrik to be online in that case
+| [Saturday 15 January 2011] [21:12:07] <mikko>	you could also try posting to the mailing-lists
+| [Saturday 15 January 2011] [21:12:18] <xchen>	ok, thanks. 
+| [Saturday 15 January 2011] [21:12:40] <xchen>	thank you for so much help.
+| [Saturday 15 January 2011] [21:13:02] <mikko>	no problem, i can't really be much more help as i haven't really used infiniband to any extent
+| [Saturday 15 January 2011] [21:13:56] <xchen>	A question about the basic concept of 0mq, is the source code I get built on tcpip?
+| [Saturday 15 January 2011] [21:14:22] <mikko>	there are different transports 
+| [Saturday 15 January 2011] [21:14:31] <xchen>	I get means download from the homepage
+| [Saturday 15 January 2011] [21:14:31] <mikko>	ipc, inproc, tcp and pgm
+| [Saturday 15 January 2011] [21:15:22] <xchen>	ok, so , tcp can build on infiniband, am I right?
+| [Saturday 15 January 2011] [21:18:55] <mikko>	what does 'can build on' mean in this context?
+| [Saturday 15 January 2011] [21:24:33] <xchen>	sorry, I sould say tcp can be built on infiniband
+| [Saturday 15 January 2011] [21:24:46] <xchen>	sorry, I should say tcp can be built on infiniband
+| [Saturday 15 January 2011] [21:25:32] <mikko>	it looks like you should be able to LD_PRELOAD the SDP library and use zeromq over infiniband
+| [Saturday 15 January 2011] [21:25:54] <mikko>	i would assume that if the SDP library is loaded it would use infiniband and not the eth interface
+| [Saturday 15 January 2011] [21:26:08] <mikko>	you should be able to see this from throughput of messages as well i assume 
+| [Saturday 15 January 2011] [21:29:13] <mikko>	looking at the following material http://pkg-ofed.alioth.debian.org/howto/infiniband-howto-7.html it would look so
+| [Saturday 15 January 2011] [21:35:10] <xchen>	Yeah, I think I get it. Thanks a lot.
+| [Saturday 15 January 2011] [21:35:27] <mikko>	cool
+| [Saturday 15 January 2011] [21:35:39] <mikko>	i need to sleep, it's 3am soon
+| [Saturday 15 January 2011] [21:35:42] <mikko>	good night
+| [Saturday 15 January 2011] [21:36:04] <xchen>	thank
