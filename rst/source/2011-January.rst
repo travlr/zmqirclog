@@ -3000,3 +3000,96 @@
 | [Saturday 15 January 2011] [21:35:39] <mikko>	i need to sleep, it's 3am soon
 | [Saturday 15 January 2011] [21:35:42] <mikko>	good night
 | [Saturday 15 January 2011] [21:36:04] <xchen>	thank
+| [Monday 17 January 2011] [00:18:11] <andrewvc>	cremes: around?
+| [Monday 17 January 2011] [01:30:32] <yrashk>	hmm, after reinstalling osx I am getting absolutely reproducible Bad file descriptor nbytes != -1 (mailbox.cpp:241) 
+| [Monday 17 January 2011] [01:30:34] <yrashk>	:-\
+| [Monday 17 January 2011] [02:36:34] <sustrik_>	yrashk: please do report the bug
+| [Monday 17 January 2011] [02:36:58] <yrashk>	I need to narrow the scope first
+| [Monday 17 January 2011] [02:37:02] <yrashk>	but this is getting interesting
+| [Monday 17 January 2011] [02:37:19] <sustrik_>	is that with shutdown_stress test?
+| [Monday 17 January 2011] [02:37:26] <yrashk>	although I still hope it's my bug
+| [Monday 17 January 2011] [02:37:28] <yrashk>	no
+| [Monday 17 January 2011] [02:37:46] <sustrik_>	ok
+| [Monday 17 January 2011] [05:33:17] <mikko>	howdy
+| [Monday 17 January 2011] [05:46:31] <Evet>	fine
+| [Monday 17 January 2011] [06:10:21] <ivan-korobkov>	Hello. I need to access a sub socket from another thread in Java. Is it enough to synchronize this method?
+| [Monday 17 January 2011] [06:14:20] <mikko>	ivan-korobkov: not sure how java handles this
+| [Monday 17 January 2011] [06:14:34] <mikko>	ivan-korobkov: i tend to use inproc pipe between the threads in such a scenario
+| [Monday 17 January 2011] [06:16:07] <ivan-korobkov>	Ok, thanks.
+| [Monday 17 January 2011] [06:55:30] <mikko>	mingw is being a pain
+| [Monday 17 January 2011] [06:58:08] <mikko>	sustrik_: i pushed the new tests into a branch in github if you want to take a look
+| [Monday 17 January 2011] [06:58:16] <mikko>	test_identity is failing atm
+| [Monday 17 January 2011] [07:57:20] <lestrrat>	if you're specifying a char * buffer to zmq_msg_init_data(...), do you need to give it a zmq_free_fn ?
+| [Monday 17 January 2011] [08:11:39] <Steve-o>	it takes a zero-copy reference, doesn't matter what the target is
+| [Monday 17 January 2011] [08:15:56] <stimpie>	somebody knows an key value pair serialization library?
+| [Monday 17 January 2011] [08:18:11] <Steve-o>	google protobufs
+| [Monday 17 January 2011] [08:18:20] <Steve-o>	thrift
+| [Monday 17 January 2011] [08:18:28] <Steve-o>	xdr
+| [Monday 17 January 2011] [08:18:41] <Steve-o>	json, yaml, etc
+| [Monday 17 January 2011] [08:22:23] <stimpie>	thanks for the pointers
+| [Monday 17 January 2011] [08:23:07] <sustrik_>	lestrrat: free_fn is needed only when you pass your buffer to 0mq and you want it to deallocate it once it's sent
+| [Monday 17 January 2011] [08:23:56] <lestrrat>	thanks steve, sustrik
+| [Monday 17 January 2011] [08:26:04] <Evet>	oh, zeromq built by imatix?
+| [Monday 17 January 2011] [08:28:41] <Steve-o>	Evet: they're trying to steer to full flossy project, like apache
+| [Monday 17 January 2011] [08:29:32] <Evet>	i have learnt perl in xitami more than ten years ago
+| [Monday 17 January 2011] [08:30:08] <Steve-o>	sustrik: guido_g:  any feedback on the pgm_receiver assert?
+| [Monday 17 January 2011] [08:32:15] <sustrik_>	i haven't tried it myself
+| [Monday 17 January 2011] [08:32:26] <sustrik_>	what about the patch you proposed?
+| [Monday 17 January 2011] [08:32:31] <sustrik_>	(removing the timer)
+| [Monday 17 January 2011] [08:32:45] <sustrik_>	it seems that it should be patched anyway, no?
+| [Monday 17 January 2011] [08:34:48] <Steve-o>	looks like it
+| [Monday 17 January 2011] [08:35:01] <sustrik_>	would you submit a patch?
+| [Monday 17 January 2011] [08:35:10] <sustrik_>	or should I fix it?
+| [Monday 17 January 2011] [08:35:19] <Steve-o>	there's one on the list replying to Guido
+| [Monday 17 January 2011] [08:35:28] <sustrik_>	let me see
+| [Monday 17 January 2011] [08:37:02] <sustrik_>	ok, got it
+| [Monday 17 January 2011] [08:37:29] <sustrik_>	when sending a patch use [PATCH] in subject
+| [Monday 17 January 2011] [08:37:43] <Steve-o>	I was waiting for Guido to catch it first
+| [Monday 17 January 2011] [08:37:51] <sustrik_>	i see
+| [Monday 17 January 2011] [08:38:11] <Steve-o>	I've only got my Sparc up in the office presently, I can't test too much
+| [Monday 17 January 2011] [08:38:21] <sustrik_>	but this is something that should be done anyway, right?
+| [Monday 17 January 2011] [08:38:32] <sustrik_>	irrespective whether it solves guido's problem or not
+| [Monday 17 January 2011] [08:38:57] <Steve-o>	well it looks right
+| [Monday 17 January 2011] [08:39:13] <Steve-o>	so go ahead
+| [Monday 17 January 2011] [08:39:18] <sustrik_>	ok, let me apply it
+| [Monday 17 January 2011] [08:39:42] <Steve-o>	for autoconf, waiting for any further feedback from mikko
+| [Monday 17 January 2011] [08:40:15] <sustrik_>	ack
+| [Monday 17 January 2011] [08:42:06] <Steve-o>	I'm sure the devs using OSX will shout soon enough as master should be broken for them currently
+| [Monday 17 January 2011] [08:42:27] <mikko>	Steve-o: i will start testing today
+| [Monday 17 January 2011] [08:42:48] <mikko>	had suprisingly busy weekend
+| [Monday 17 January 2011] [08:43:34] <mikko>	what is the current view regarding openpgm and zeromq?
+| [Monday 17 January 2011] [08:43:42] <Steve-o>	no worries, I'm mid buying a house
+| [Monday 17 January 2011] [08:43:55] <mikko>	do we bundle a version with zeromq2 and allow people to specify directory as well?
+| [Monday 17 January 2011] [08:44:10] <Steve-o>	sounds good
+| [Monday 17 January 2011] [08:44:31] <Steve-o>	I actually have autoconf making a shared library, but not really recommended
+| [Monday 17 January 2011] [08:44:42] <mikko>	so by default the value of --with-pgm is foreign/...
+| [Monday 17 January 2011] [08:44:44] <Steve-o>	came free with libtool I think :D
+| [Monday 17 January 2011] [08:44:54] <mikko>	but you can specify --with-pgm=/opt/xyz
+| [Monday 17 January 2011] [08:45:03] <mikko>	does that sound like a sensible approach?
+| [Monday 17 January 2011] [08:45:20] <Steve-o>	sounds good, then distros can choose their packaging preference
+| [Monday 17 January 2011] [08:45:44] <mikko>	yeah, distros don't like static linking between two projects they package
+| [Monday 17 January 2011] [08:46:15] <CIA-21>	zeromq2: 03Steven McCoy 07master * r667b247 10/ src/pgm_receiver.cpp : 
+| [Monday 17 January 2011] [08:46:15] <CIA-21>	zeromq2: Cancel pending timers when decoder for PGM stalls
+| [Monday 17 January 2011] [08:46:15] <CIA-21>	zeromq2: Otherwise the timer event can raise an input event
+| [Monday 17 January 2011] [08:46:15] <CIA-21>	zeromq2: causing assertion on unprocessed data.
+| [Monday 17 January 2011] [08:46:15] <CIA-21>	zeromq2: Signed-off-by: Steven McCoy <steven.mccoy@miru.hk> - http://bit.ly/eJNCcf
+| [Monday 17 January 2011] [08:47:11] <Steve-o>	once I start to see packages created I can copy the build script and then zeromq can be split up
+| [Monday 17 January 2011] [08:48:29] <Steve-o>	The only future work I see is on FEC unless some University project picks up congestion control
+| [Monday 17 January 2011] [08:49:18] <Steve-o>	the congestion protocol is broken above 10,000 packets-per-second
+| [Monday 17 January 2011] [08:49:28] <guido_g>	Steve-o: i used a very high HWM on the subscriber as proposed and it worked
+| [Monday 17 January 2011] [08:50:55] <Steve-o>	great, otherwise you would get application induced dataloss
+| [Monday 17 January 2011] [08:51:37] <CIA-21>	zeromq2: 03Martin Sustrik 07master * rb262f2f 10/ doc/zmq_send.txt : 
+| [Monday 17 January 2011] [08:51:37] <CIA-21>	zeromq2: Typo fixed in zmq_send(3) man page.
+| [Monday 17 January 2011] [08:51:37] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/g9l7cN
+| [Monday 17 January 2011] [08:52:14] <Steve-o>	definitely need to work on some feedback for admins around that issue in the future
+| [Monday 17 January 2011] [08:53:04] <Steve-o>	but then that's the logging system which is rather awkward 
+| [Monday 17 January 2011] [09:11:57] <sustrik_>	funny video here btw
+| [Monday 17 January 2011] [09:11:58] <sustrik_>	http://cfkarsten.blip.tv/file/4639616
+| [Monday 17 January 2011] [09:12:15] <sustrik_>	using 0mq to create a cloud of 1978 vintage computers :)
+| [Monday 17 January 2011] [09:17:33] <stimpie>	Iam doing some performanc benchmarks (with the provided perf code)  on 1000G ethernet I get 936 Mb/s on infiband (32 Gb/s) this only goes up to 2070 Mb/s
+| [Monday 17 January 2011] [09:17:58] <stimpie>	is this an expected resulted or should this be higher?
+| [Monday 17 January 2011] [09:25:27] <sustrik_>	stimpie: what's your message size?
+| [Monday 17 January 2011] [09:27:23] <sustrik_>	there are some test results here: http://www.zeromq.org/results:ib-tests-v206
+| [Monday 17 January 2011] [09:28:32] <stimpie>	message size used is 100 bytes
+| [Monday 17 January 2011] [09:29:23] <stimpie>	my result is similar to those in your link
+| [Monday 17 January 2011] [09:29:53] <sustrik_>	yes, looks like
