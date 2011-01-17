@@ -3045,6 +3045,99 @@
 <div class="line">[Saturday 15 January 2011] [21:35:39] &lt;mikko&gt; i need to sleep, it&#8217;s 3am soon</div>
 <div class="line">[Saturday 15 January 2011] [21:35:42] &lt;mikko&gt; good night</div>
 <div class="line">[Saturday 15 January 2011] [21:36:04] &lt;xchen&gt; thank</div>
+<div class="line">[Monday 17 January 2011] [00:18:11] &lt;andrewvc&gt;        cremes: around?</div>
+<div class="line">[Monday 17 January 2011] [01:30:32] &lt;yrashk&gt;  hmm, after reinstalling osx I am getting absolutely reproducible Bad file descriptor nbytes != -1 (mailbox.cpp:241)</div>
+<div class="line">[Monday 17 January 2011] [01:30:34] &lt;yrashk&gt;  :-</div>
+<div class="line">[Monday 17 January 2011] [02:36:34] &lt;<a href="#id471"><span class="problematic" id="id472">sustrik_</span></a>&gt;        yrashk: please do report the bug</div>
+<div class="line">[Monday 17 January 2011] [02:36:58] &lt;yrashk&gt;  I need to narrow the scope first</div>
+<div class="line">[Monday 17 January 2011] [02:37:02] &lt;yrashk&gt;  but this is getting interesting</div>
+<div class="line">[Monday 17 January 2011] [02:37:19] &lt;<a href="#id473"><span class="problematic" id="id474">sustrik_</span></a>&gt;        is that with shutdown_stress test?</div>
+<div class="line">[Monday 17 January 2011] [02:37:26] &lt;yrashk&gt;  although I still hope it&#8217;s my bug</div>
+<div class="line">[Monday 17 January 2011] [02:37:28] &lt;yrashk&gt;  no</div>
+<div class="line">[Monday 17 January 2011] [02:37:46] &lt;<a href="#id475"><span class="problematic" id="id476">sustrik_</span></a>&gt;        ok</div>
+<div class="line">[Monday 17 January 2011] [05:33:17] &lt;mikko&gt;   howdy</div>
+<div class="line">[Monday 17 January 2011] [05:46:31] &lt;Evet&gt;    fine</div>
+<div class="line">[Monday 17 January 2011] [06:10:21] &lt;ivan-korobkov&gt;   Hello. I need to access a sub socket from another thread in Java. Is it enough to synchronize this method?</div>
+<div class="line">[Monday 17 January 2011] [06:14:20] &lt;mikko&gt;   ivan-korobkov: not sure how java handles this</div>
+<div class="line">[Monday 17 January 2011] [06:14:34] &lt;mikko&gt;   ivan-korobkov: i tend to use inproc pipe between the threads in such a scenario</div>
+<div class="line">[Monday 17 January 2011] [06:16:07] &lt;ivan-korobkov&gt;   Ok, thanks.</div>
+<div class="line">[Monday 17 January 2011] [06:55:30] &lt;mikko&gt;   mingw is being a pain</div>
+<div class="line">[Monday 17 January 2011] [06:58:08] &lt;mikko&gt;   <a href="#id477"><span class="problematic" id="id478">sustrik_</span></a>: i pushed the new tests into a branch in github if you want to take a look</div>
+<div class="line">[Monday 17 January 2011] [06:58:16] &lt;mikko&gt;   test_identity is failing atm</div>
+<div class="line">[Monday 17 January 2011] [07:57:20] &lt;lestrrat&gt;        if you&#8217;re specifying a char * buffer to zmq_msg_init_data(...), do you need to give it a zmq_free_fn ?</div>
+<div class="line">[Monday 17 January 2011] [08:11:39] &lt;Steve-o&gt; it takes a zero-copy reference, doesn&#8217;t matter what the target is</div>
+<div class="line">[Monday 17 January 2011] [08:15:56] &lt;stimpie&gt; somebody knows an key value pair serialization library?</div>
+<div class="line">[Monday 17 January 2011] [08:18:11] &lt;Steve-o&gt; google protobufs</div>
+<div class="line">[Monday 17 January 2011] [08:18:20] &lt;Steve-o&gt; thrift</div>
+<div class="line">[Monday 17 January 2011] [08:18:28] &lt;Steve-o&gt; xdr</div>
+<div class="line">[Monday 17 January 2011] [08:18:41] &lt;Steve-o&gt; json, yaml, etc</div>
+<div class="line">[Monday 17 January 2011] [08:22:23] &lt;stimpie&gt; thanks for the pointers</div>
+<div class="line">[Monday 17 January 2011] [08:23:07] &lt;<a href="#id479"><span class="problematic" id="id480">sustrik_</span></a>&gt;        lestrrat: free_fn is needed only when you pass your buffer to 0mq and you want it to deallocate it once it&#8217;s sent</div>
+<div class="line">[Monday 17 January 2011] [08:23:56] &lt;lestrrat&gt;        thanks steve, sustrik</div>
+<div class="line">[Monday 17 January 2011] [08:26:04] &lt;Evet&gt;    oh, zeromq built by imatix?</div>
+<div class="line">[Monday 17 January 2011] [08:28:41] &lt;Steve-o&gt; Evet: they&#8217;re trying to steer to full flossy project, like apache</div>
+<div class="line">[Monday 17 January 2011] [08:29:32] &lt;Evet&gt;    i have learnt perl in xitami more than ten years ago</div>
+<div class="line">[Monday 17 January 2011] [08:30:08] &lt;Steve-o&gt; sustrik: guido_g:  any feedback on the pgm_receiver assert?</div>
+<div class="line">[Monday 17 January 2011] [08:32:15] &lt;<a href="#id481"><span class="problematic" id="id482">sustrik_</span></a>&gt;        i haven&#8217;t tried it myself</div>
+<div class="line">[Monday 17 January 2011] [08:32:26] &lt;<a href="#id483"><span class="problematic" id="id484">sustrik_</span></a>&gt;        what about the patch you proposed?</div>
+<div class="line">[Monday 17 January 2011] [08:32:31] &lt;<a href="#id485"><span class="problematic" id="id486">sustrik_</span></a>&gt;        (removing the timer)</div>
+<div class="line">[Monday 17 January 2011] [08:32:45] &lt;<a href="#id487"><span class="problematic" id="id488">sustrik_</span></a>&gt;        it seems that it should be patched anyway, no?</div>
+<div class="line">[Monday 17 January 2011] [08:34:48] &lt;Steve-o&gt; looks like it</div>
+<div class="line">[Monday 17 January 2011] [08:35:01] &lt;<a href="#id489"><span class="problematic" id="id490">sustrik_</span></a>&gt;        would you submit a patch?</div>
+<div class="line">[Monday 17 January 2011] [08:35:10] &lt;<a href="#id491"><span class="problematic" id="id492">sustrik_</span></a>&gt;        or should I fix it?</div>
+<div class="line">[Monday 17 January 2011] [08:35:19] &lt;Steve-o&gt; there&#8217;s one on the list replying to Guido</div>
+<div class="line">[Monday 17 January 2011] [08:35:28] &lt;<a href="#id493"><span class="problematic" id="id494">sustrik_</span></a>&gt;        let me see</div>
+<div class="line">[Monday 17 January 2011] [08:37:02] &lt;<a href="#id495"><span class="problematic" id="id496">sustrik_</span></a>&gt;        ok, got it</div>
+<div class="line">[Monday 17 January 2011] [08:37:29] &lt;<a href="#id497"><span class="problematic" id="id498">sustrik_</span></a>&gt;        when sending a patch use [PATCH] in subject</div>
+<div class="line">[Monday 17 January 2011] [08:37:43] &lt;Steve-o&gt; I was waiting for Guido to catch it first</div>
+<div class="line">[Monday 17 January 2011] [08:37:51] &lt;<a href="#id499"><span class="problematic" id="id500">sustrik_</span></a>&gt;        i see</div>
+<div class="line">[Monday 17 January 2011] [08:38:11] &lt;Steve-o&gt; I&#8217;ve only got my Sparc up in the office presently, I can&#8217;t test too much</div>
+<div class="line">[Monday 17 January 2011] [08:38:21] &lt;<a href="#id501"><span class="problematic" id="id502">sustrik_</span></a>&gt;        but this is something that should be done anyway, right?</div>
+<div class="line">[Monday 17 January 2011] [08:38:32] &lt;<a href="#id503"><span class="problematic" id="id504">sustrik_</span></a>&gt;        irrespective whether it solves guido&#8217;s problem or not</div>
+<div class="line">[Monday 17 January 2011] [08:38:57] &lt;Steve-o&gt; well it looks right</div>
+<div class="line">[Monday 17 January 2011] [08:39:13] &lt;Steve-o&gt; so go ahead</div>
+<div class="line">[Monday 17 January 2011] [08:39:18] &lt;<a href="#id505"><span class="problematic" id="id506">sustrik_</span></a>&gt;        ok, let me apply it</div>
+<div class="line">[Monday 17 January 2011] [08:39:42] &lt;Steve-o&gt; for autoconf, waiting for any further feedback from mikko</div>
+<div class="line">[Monday 17 January 2011] [08:40:15] &lt;<a href="#id507"><span class="problematic" id="id508">sustrik_</span></a>&gt;        ack</div>
+<div class="line">[Monday 17 January 2011] [08:42:06] &lt;Steve-o&gt; I&#8217;m sure the devs using OSX will shout soon enough as master should be broken for them currently</div>
+<div class="line">[Monday 17 January 2011] [08:42:27] &lt;mikko&gt;   Steve-o: i will start testing today</div>
+<div class="line">[Monday 17 January 2011] [08:42:48] &lt;mikko&gt;   had suprisingly busy weekend</div>
+<div class="line">[Monday 17 January 2011] [08:43:34] &lt;mikko&gt;   what is the current view regarding openpgm and zeromq?</div>
+<div class="line">[Monday 17 January 2011] [08:43:42] &lt;Steve-o&gt; no worries, I&#8217;m mid buying a house</div>
+<div class="line">[Monday 17 January 2011] [08:43:55] &lt;mikko&gt;   do we bundle a version with zeromq2 and allow people to specify directory as well?</div>
+<div class="line">[Monday 17 January 2011] [08:44:10] &lt;Steve-o&gt; sounds good</div>
+<div class="line">[Monday 17 January 2011] [08:44:31] &lt;Steve-o&gt; I actually have autoconf making a shared library, but not really recommended</div>
+<div class="line">[Monday 17 January 2011] [08:44:42] &lt;mikko&gt;   so by default the value of &#8211;with-pgm is foreign/...</div>
+<div class="line">[Monday 17 January 2011] [08:44:44] &lt;Steve-o&gt; came free with libtool I think :D</div>
+<div class="line">[Monday 17 January 2011] [08:44:54] &lt;mikko&gt;   but you can specify &#8211;with-pgm=/opt/xyz</div>
+<div class="line">[Monday 17 January 2011] [08:45:03] &lt;mikko&gt;   does that sound like a sensible approach?</div>
+<div class="line">[Monday 17 January 2011] [08:45:20] &lt;Steve-o&gt; sounds good, then distros can choose their packaging preference</div>
+<div class="line">[Monday 17 January 2011] [08:45:44] &lt;mikko&gt;   yeah, distros don&#8217;t like static linking between two projects they package</div>
+<div class="line">[Monday 17 January 2011] [08:46:15] &lt;CIA-21&gt;  zeromq2: 03Steven McCoy 07master * r667b247 10/ src/pgm_receiver.cpp :</div>
+<div class="line">[Monday 17 January 2011] [08:46:15] &lt;CIA-21&gt;  zeromq2: Cancel pending timers when decoder for PGM stalls</div>
+<div class="line">[Monday 17 January 2011] [08:46:15] &lt;CIA-21&gt;  zeromq2: Otherwise the timer event can raise an input event</div>
+<div class="line">[Monday 17 January 2011] [08:46:15] &lt;CIA-21&gt;  zeromq2: causing assertion on unprocessed data.</div>
+<div class="line">[Monday 17 January 2011] [08:46:15] &lt;CIA-21&gt;  zeromq2: Signed-off-by: Steven McCoy &lt;<a class="reference external" href="mailto:steven&#46;mccoy&#37;&#52;&#48;miru&#46;hk">steven<span>&#46;</span>mccoy<span>&#64;</span>miru<span>&#46;</span>hk</a>&gt; - <a class="reference external" href="http://bit.ly/eJNCcf">http://bit.ly/eJNCcf</a></div>
+<div class="line">[Monday 17 January 2011] [08:47:11] &lt;Steve-o&gt; once I start to see packages created I can copy the build script and then zeromq can be split up</div>
+<div class="line">[Monday 17 January 2011] [08:48:29] &lt;Steve-o&gt; The only future work I see is on FEC unless some University project picks up congestion control</div>
+<div class="line">[Monday 17 January 2011] [08:49:18] &lt;Steve-o&gt; the congestion protocol is broken above 10,000 packets-per-second</div>
+<div class="line">[Monday 17 January 2011] [08:49:28] &lt;guido_g&gt; Steve-o: i used a very high HWM on the subscriber as proposed and it worked</div>
+<div class="line">[Monday 17 January 2011] [08:50:55] &lt;Steve-o&gt; great, otherwise you would get application induced dataloss</div>
+<div class="line">[Monday 17 January 2011] [08:51:37] &lt;CIA-21&gt;  zeromq2: 03Martin Sustrik 07master * rb262f2f 10/ doc/zmq_send.txt :</div>
+<div class="line">[Monday 17 January 2011] [08:51:37] &lt;CIA-21&gt;  zeromq2: Typo fixed in zmq_send(3) man page.</div>
+<div class="line">[Monday 17 January 2011] [08:51:37] &lt;CIA-21&gt;  zeromq2: Signed-off-by: Martin Sustrik &lt;<a class="reference external" href="mailto:sustrik&#37;&#52;&#48;250bpm&#46;com">sustrik<span>&#64;</span>250bpm<span>&#46;</span>com</a>&gt; - <a class="reference external" href="http://bit.ly/g9l7cN">http://bit.ly/g9l7cN</a></div>
+<div class="line">[Monday 17 January 2011] [08:52:14] &lt;Steve-o&gt; definitely need to work on some feedback for admins around that issue in the future</div>
+<div class="line">[Monday 17 January 2011] [08:53:04] &lt;Steve-o&gt; but then that&#8217;s the logging system which is rather awkward</div>
+<div class="line">[Monday 17 January 2011] [09:11:57] &lt;<a href="#id509"><span class="problematic" id="id510">sustrik_</span></a>&gt;        funny video here btw</div>
+<div class="line">[Monday 17 January 2011] [09:11:58] &lt;<a href="#id511"><span class="problematic" id="id512">sustrik_</span></a>&gt;        <a class="reference external" href="http://cfkarsten.blip.tv/file/4639616">http://cfkarsten.blip.tv/file/4639616</a></div>
+<div class="line">[Monday 17 January 2011] [09:12:15] &lt;<a href="#id513"><span class="problematic" id="id514">sustrik_</span></a>&gt;        using 0mq to create a cloud of 1978 vintage computers :)</div>
+<div class="line">[Monday 17 January 2011] [09:17:33] &lt;stimpie&gt; Iam doing some performanc benchmarks (with the provided perf code)  on 1000G ethernet I get 936 Mb/s on infiband (32 Gb/s) this only goes up to 2070 Mb/s</div>
+<div class="line">[Monday 17 January 2011] [09:17:58] &lt;stimpie&gt; is this an expected resulted or should this be higher?</div>
+<div class="line">[Monday 17 January 2011] [09:25:27] &lt;<a href="#id515"><span class="problematic" id="id516">sustrik_</span></a>&gt;        stimpie: what&#8217;s your message size?</div>
+<div class="line">[Monday 17 January 2011] [09:27:23] &lt;<a href="#id517"><span class="problematic" id="id518">sustrik_</span></a>&gt;        there are some test results here: <a class="reference external" href="http://www.zeromq.org/results:ib-tests-v206">http://www.zeromq.org/results:ib-tests-v206</a></div>
+<div class="line">[Monday 17 January 2011] [09:28:32] &lt;stimpie&gt; message size used is 100 bytes</div>
+<div class="line">[Monday 17 January 2011] [09:29:23] &lt;stimpie&gt; my result is similar to those in your link</div>
+<div class="line">[Monday 17 January 2011] [09:29:53] &lt;<a href="#id519"><span class="problematic" id="id520">sustrik_</span></a>&gt;        yes, looks like</div>
 </div>
 </div>
 
