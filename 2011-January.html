@@ -3138,6 +3138,89 @@
 <div class="line">[Monday 17 January 2011] [09:28:32] &lt;stimpie&gt; message size used is 100 bytes</div>
 <div class="line">[Monday 17 January 2011] [09:29:23] &lt;stimpie&gt; my result is similar to those in your link</div>
 <div class="line">[Monday 17 January 2011] [09:29:53] &lt;<a href="#id519"><span class="problematic" id="id520">sustrik_</span></a>&gt;        yes, looks like</div>
+<div class="line">[Monday 17 January 2011] [11:55:51] &lt;Guest10403&gt;      Hi There,  I am just beginning to use ZeroMQ and am experimenting with some of the samples.  I am using the C# language bindings and have run into an issue with getting a DllNotFound Exception</div>
+<div class="line">[Monday 17 January 2011] [11:56:05] &lt;Guest10403&gt;      Has anyone else run into this issue?</div>
+<div class="line">[Monday 17 January 2011] [11:56:31] &lt;mikko&gt;   Guest10403: dll not found sounds like the libzmq.dll can not be found</div>
+<div class="line">[Monday 17 January 2011] [11:56:41] &lt;mikko&gt;   is it in a path where the loader can find it?</div>
+<div class="line">[Monday 17 January 2011] [11:57:09] &lt;Guest10403&gt;      I can Load on My development machine, but when I move things to other servers, I get the error despite copying the libzmq.dll into both the folder the samples are running from and into Windows/System32</div>
+<div class="line">[Monday 17 January 2011] [11:57:20] &lt;Guest10403&gt;      Hi Mikko</div>
+<div class="line">[Monday 17 January 2011] [11:57:25] &lt;Guest10403&gt;      Thanks for your response</div>
+<div class="line">[Monday 17 January 2011] [11:57:36] &lt;Guest10403&gt;      Windows should be able to find it, but does not seem to be able to</div>
+<div class="line">[Monday 17 January 2011] [11:58:40] &lt;mikko&gt;   hmm</div>
+<div class="line">[Monday 17 January 2011] [11:58:46] &lt;mikko&gt;   not an ACL issue?</div>
+<div class="line">[Monday 17 January 2011] [11:59:51] &lt;Guest10403&gt;      I have put clzmq.dll into the Folder the sample app is in and also libzmq.dll  Also, i put libzmq into c:Windows/System32</div>
+<div class="line">[Monday 17 January 2011] [12:00:06] &lt;Guest10403&gt;      I don&#8217;t understand your question ACL?</div>
+<div class="line">[Monday 17 January 2011] [12:00:19] &lt;Guest10403&gt;      What does ACL stand for?</div>
+<div class="line">[Monday 17 January 2011] [12:00:25] &lt;mikko&gt;   i mean file permissions on either one of the dll diles</div>
+<div class="line">[Monday 17 January 2011] [12:00:28] &lt;mikko&gt;   files*</div>
+<div class="line">[Monday 17 January 2011] [12:00:33] &lt;mikko&gt;   acl = access control list</div>
+<div class="line">[Monday 17 January 2011] [12:00:41] &lt;Guest10403&gt;      Good question</div>
+<div class="line">[Monday 17 January 2011] [12:01:07] &lt;Guest10403&gt;      It should not be that sort of issue, the user I am running as on the server has administrative rights</div>
+<div class="line">[Monday 17 January 2011] [12:01:16] &lt;Guest10403&gt;      I&#8217;ll check again</div>
+<div class="line">[Monday 17 January 2011] [12:02:45] &lt;Guest10403&gt;      I have admin rights and am Running on Windows Server 2003 Service pack2</div>
+<div class="line">[Monday 17 January 2011] [12:03:25] &lt;mikko&gt;   maybe send an email to mailing-lists</div>
+<div class="line">[Monday 17 January 2011] [12:03:35] &lt;mikko&gt;   i dont really run windows anywhere so i cant help much</div>
+<div class="line">[Monday 17 January 2011] [12:04:05] &lt;Guest10403&gt;      Thanks for the suggestion</div>
+<div class="line">[Monday 17 January 2011] [18:05:13] &lt;mikko&gt;   lestrrat: looks like perl build is failing for some reason</div>
+<div class="line">[Monday 17 January 2011] [18:06:53] &lt;lestrrat&gt;        whoa</div>
+<div class="line">[Monday 17 January 2011] [18:08:24] &lt;lestrrat&gt;        it says build timed out</div>
+<div class="line">[Monday 17 January 2011] [18:08:31] &lt;lestrrat&gt;        does hudson have a timeout for tests?</div>
+<div class="line">[Monday 17 January 2011] [18:26:52] &lt;mikko&gt;   lestrrat: yes</div>
+<div class="line">[Monday 17 January 2011] [18:26:56] &lt;mikko&gt;   lestrrat: it will eventually time out</div>
+<div class="line">[Monday 17 January 2011] [18:26:58] &lt;lestrrat&gt;        what&#8217;s the timeout?</div>
+<div class="line">[Monday 17 January 2011] [18:27:01] &lt;mikko&gt;   let me check</div>
+<div class="line">[Monday 17 January 2011] [18:27:14] &lt;mikko&gt;   five minutes</div>
+<div class="line">[Monday 17 January 2011] [18:27:18] &lt;mikko&gt;   is that enough for the build?</div>
+<div class="line">[Monday 17 January 2011] [18:27:18] &lt;lestrrat&gt;        hmmm</div>
+<div class="line">[Monday 17 January 2011] [18:27:26] &lt;lestrrat&gt;        should be</div>
+<div class="line">[Monday 17 January 2011] [18:27:41] &lt;lestrrat&gt;        I added new tests that take up some time, but I&#8217;m pretty sure it doesn&#8217;t go over 5 minutes. odd</div>
+<div class="line">[Monday 17 January 2011] [18:27:43] &lt;mikko&gt;   looking at the trends the time is normally around &lt;2min</div>
+<div class="line">[Monday 17 January 2011] [18:28:02] &lt;lestrrat&gt;        I&#8217;ll make the tests shorter for now, and see what happens</div>
+<div class="line">[Monday 17 January 2011] [18:28:18] &lt;mikko&gt;   i can increase the build timeout as well</div>
+<div class="line">[Monday 17 January 2011] [18:28:25] &lt;mikko&gt;   just to see if it passes with more time</div>
+<div class="line">[Monday 17 January 2011] [18:28:49] &lt;lestrrat&gt;        well, let me change this first, and if it still doesn&#8217;t work, I might ask you to change the timeout</div>
+<div class="line">[Monday 17 January 2011] [18:29:25] &lt;mikko&gt;   <a class="reference external" href="http://build.valokuva.org/job/ZeroMQPerl-master_ZeroMQ2-master_GCC/buildTimeTrend">http://build.valokuva.org/job/ZeroMQPerl-master_ZeroMQ2-master_GCC/buildTimeTrend</a></div>
+<div class="line">[Monday 17 January 2011] [18:29:31] &lt;mikko&gt;   you can see build time trend from there</div>
+<div class="line">[Monday 17 January 2011] [18:29:58] &lt;lestrrat&gt;        oh man. didn&#8217;t know about that in hudson. that&#8217;s nice :)</div>
+<div class="line">[Monday 17 January 2011] [18:30:18] &lt;mikko&gt;   all kind of cool toys in hudson</div>
+<div class="line">[Monday 17 January 2011] [18:30:24] &lt;mikko&gt;   like the static analysis plugins: <a class="reference external" href="http://build.valokuva.org/job/ZeroMQ2-core-master_static-analysis/">http://build.valokuva.org/job/ZeroMQ2-core-master_static-analysis/</a></div>
+<div class="line">[Monday 17 January 2011] [18:34:02] &lt;lestrrat&gt;        well, as of my latest commit, the test should run in about 12 seconds :/</div>
+<div class="line">[Monday 17 January 2011] [18:34:42] &lt;lestrrat&gt;        so if the hudson runs were taking on average 1 min+, presumably most of that time is spent checking out git</div>
+<div class="line">[Monday 17 January 2011] [18:37:49] &lt;lestrrat&gt;        well let&#8217;s see what the next run brings up</div>
+<div class="line">[Monday 17 January 2011] [18:39:30] &lt;mikko&gt;   pass</div>
+<div class="line">[Monday 17 January 2011] [18:39:43] &lt;lestrrat&gt;        so soon? lol</div>
+<div class="line">[Monday 17 January 2011] [18:39:45] &lt;lestrrat&gt;        thanks!</div>
+<div class="line">[Monday 17 January 2011] [18:39:53] &lt;mikko&gt;   it will run quicker when there is no load</div>
+<div class="line">[Monday 17 January 2011] [18:40:02] &lt;mikko&gt;   usually the build runs alongside with 4 other builds</div>
+<div class="line">[Monday 17 January 2011] [18:40:05] &lt;mikko&gt;   so it takes longer</div>
+<div class="line">[Monday 17 January 2011] [19:30:04] &lt;traviscline&gt;     i&#8217;m investigating getting the pyzmq polling integrated into gevent (cython wrapping of libevent) and wanted to ask if anyone had any &#8216;to-reads&#8217; other than the eventlet implementation</div>
+<div class="line">[Monday 17 January 2011] [19:31:59] &lt;mikko&gt;   i think there was someone here who was integrating with gevent</div>
+<div class="line">[Monday 17 January 2011] [19:32:05] &lt;mikko&gt;   the process is very simple</div>
+<div class="line">[Monday 17 January 2011] [19:32:18] &lt;mikko&gt;   i can walk you through it if you like?</div>
+<div class="line">[Monday 17 January 2011] [19:34:42] &lt;traviscline&gt;     mikko: yeah if you have any input that&#8217;d be great</div>
+<div class="line">[Monday 17 January 2011] [19:35:08] &lt;mikko&gt;   so, first you need zeromq 2.1.x</div>
+<div class="line">[Monday 17 January 2011] [19:35:12] &lt;traviscline&gt;     rgr</div>
+<div class="line">[Monday 17 January 2011] [19:35:22] &lt;mikko&gt;   what you need to do roughly is:</div>
+<div class="line">[Monday 17 January 2011] [19:35:35] &lt;mikko&gt;   you create a zmq socket and connect/bind it</div>
+<div class="line">[Monday 17 January 2011] [19:35:51] &lt;mikko&gt;   you call getsockopt ZMQ_FD on the socket to get a filehandle</div>
+<div class="line">[Monday 17 January 2011] [19:36:03] &lt;mikko&gt;   then you add gevent io watcher on that filehandle</div>
+<div class="line">[Monday 17 January 2011] [19:36:18] &lt;mikko&gt;   and your callback should be signaled when the socket is readable/writable</div>
+<div class="line">[Monday 17 January 2011] [19:36:50] &lt;traviscline&gt;     <a class="reference external" href="http://www.mail-archive.com/zeromq-dev&#64;lists.zeromq.org/msg00030.html">http://www.mail-archive.com/zeromq-dev&#64;lists.zeromq.org/msg00030.html</a> that list posting discouraged me from taking that path</div>
+<div class="line">[Monday 17 January 2011] [19:36:55] &lt;traviscline&gt;     but thanks, I&#8217;ll give that a go</div>
+<div class="line">[Monday 17 January 2011] [19:37:36] &lt;mikko&gt;   zeromq doesnt support io completion ports</div>
+<div class="line">[Monday 17 January 2011] [19:37:38] &lt;mikko&gt;   that is true</div>
+<div class="line">[Monday 17 January 2011] [19:38:38] &lt;traviscline&gt;     mikko: shit sorry, meant this <a class="reference external" href="http://www.mail-archive.com/zeromq-dev&#64;lists.zeromq.org/msg06253.html">http://www.mail-archive.com/zeromq-dev&#64;lists.zeromq.org/msg06253.html</a></div>
+<div class="line">[Monday 17 January 2011] [19:39:29] &lt;mikko&gt;   he is probably missing a fact that zeromq is edge-triggered</div>
+<div class="line">[Monday 17 January 2011] [19:39:48] &lt;mikko&gt;   so when gevent signals that socket is readable you need to read until you get EAGAIN</div>
+<div class="line">[Monday 17 January 2011] [19:40:11] &lt;mikko&gt;   so do nonblocking recv in a loop (in the callback) and break out from loop when you get EAGAIN from recv</div>
+<div class="line">[Monday 17 January 2011] [19:40:55] &lt;mikko&gt;   edge-triggered means that the callback gets called on state changes, not necessarily on every new message</div>
+<div class="line">[Monday 17 January 2011] [19:43:22] &lt;traviscline&gt;     <em>nods</em></div>
+<div class="line">[Monday 17 January 2011] [19:45:01] &lt;traviscline&gt;     mikko: !! thanks</div>
+<div class="line">[Monday 17 January 2011] [19:45:03] &lt;traviscline&gt;     works</div>
+<div class="line">[Monday 17 January 2011] [19:48:41] &lt;mikko&gt;   cool</div>
+<div class="line">[Monday 17 January 2011] [19:51:39] &lt;traviscline&gt;     mikko: straight port as of now <a class="reference external" href="https://gist.github.com/783810">https://gist.github.com/783810</a> of eventlet&#8217;s stuff</div>
+<div class="line">[Monday 17 January 2011] [19:51:42] &lt;traviscline&gt;     but works</div>
+<div class="line">[Monday 17 January 2011] [19:51:47] &lt;traviscline&gt;     on initial testing</div>
 </div>
 </div>
 
