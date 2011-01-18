@@ -3093,3 +3093,86 @@
 | [Monday 17 January 2011] [09:28:32] <stimpie>	message size used is 100 bytes
 | [Monday 17 January 2011] [09:29:23] <stimpie>	my result is similar to those in your link
 | [Monday 17 January 2011] [09:29:53] <sustrik_>	yes, looks like
+| [Monday 17 January 2011] [11:55:51] <Guest10403>	Hi There,  I am just beginning to use ZeroMQ and am experimenting with some of the samples.  I am using the C# language bindings and have run into an issue with getting a DllNotFound Exception
+| [Monday 17 January 2011] [11:56:05] <Guest10403>	Has anyone else run into this issue?
+| [Monday 17 January 2011] [11:56:31] <mikko>	Guest10403: dll not found sounds like the libzmq.dll can not be found
+| [Monday 17 January 2011] [11:56:41] <mikko>	is it in a path where the loader can find it?
+| [Monday 17 January 2011] [11:57:09] <Guest10403>	I can Load on My development machine, but when I move things to other servers, I get the error despite copying the libzmq.dll into both the folder the samples are running from and into Windows/System32
+| [Monday 17 January 2011] [11:57:20] <Guest10403>	Hi Mikko
+| [Monday 17 January 2011] [11:57:25] <Guest10403>	Thanks for your response
+| [Monday 17 January 2011] [11:57:36] <Guest10403>	Windows should be able to find it, but does not seem to be able to
+| [Monday 17 January 2011] [11:58:40] <mikko>	hmm
+| [Monday 17 January 2011] [11:58:46] <mikko>	not an ACL issue?
+| [Monday 17 January 2011] [11:59:51] <Guest10403>	I have put clzmq.dll into the Folder the sample app is in and also libzmq.dll  Also, i put libzmq into c:\Windows/System32
+| [Monday 17 January 2011] [12:00:06] <Guest10403>	I don't understand your question ACL?
+| [Monday 17 January 2011] [12:00:19] <Guest10403>	What does ACL stand for?
+| [Monday 17 January 2011] [12:00:25] <mikko>	i mean file permissions on either one of the dll diles
+| [Monday 17 January 2011] [12:00:28] <mikko>	files*
+| [Monday 17 January 2011] [12:00:33] <mikko>	acl = access control list
+| [Monday 17 January 2011] [12:00:41] <Guest10403>	Good question
+| [Monday 17 January 2011] [12:01:07] <Guest10403>	It should not be that sort of issue, the user I am running as on the server has administrative rights
+| [Monday 17 January 2011] [12:01:16] <Guest10403>	I'll check again
+| [Monday 17 January 2011] [12:02:45] <Guest10403>	I have admin rights and am Running on Windows Server 2003 Service pack2
+| [Monday 17 January 2011] [12:03:25] <mikko>	maybe send an email to mailing-lists 
+| [Monday 17 January 2011] [12:03:35] <mikko>	i dont really run windows anywhere so i cant help much
+| [Monday 17 January 2011] [12:04:05] <Guest10403>	Thanks for the suggestion
+| [Monday 17 January 2011] [18:05:13] <mikko>	lestrrat: looks like perl build is failing for some reason
+| [Monday 17 January 2011] [18:06:53] <lestrrat>	whoa
+| [Monday 17 January 2011] [18:08:24] <lestrrat>	it says build timed out
+| [Monday 17 January 2011] [18:08:31] <lestrrat>	does hudson have a timeout for tests?
+| [Monday 17 January 2011] [18:26:52] <mikko>	lestrrat: yes
+| [Monday 17 January 2011] [18:26:56] <mikko>	lestrrat: it will eventually time out
+| [Monday 17 January 2011] [18:26:58] <lestrrat>	what's the timeout?
+| [Monday 17 January 2011] [18:27:01] <mikko>	let me check
+| [Monday 17 January 2011] [18:27:14] <mikko>	five minutes
+| [Monday 17 January 2011] [18:27:18] <mikko>	is that enough for the build?
+| [Monday 17 January 2011] [18:27:18] <lestrrat>	hmmm
+| [Monday 17 January 2011] [18:27:26] <lestrrat>	should be
+| [Monday 17 January 2011] [18:27:41] <lestrrat>	I added new tests that take up some time, but I'm pretty sure it doesn't go over 5 minutes. odd
+| [Monday 17 January 2011] [18:27:43] <mikko>	looking at the trends the time is normally around <2min
+| [Monday 17 January 2011] [18:28:02] <lestrrat>	I'll make the tests shorter for now, and see what happens
+| [Monday 17 January 2011] [18:28:18] <mikko>	i can increase the build timeout as well
+| [Monday 17 January 2011] [18:28:25] <mikko>	just to see if it passes with more time
+| [Monday 17 January 2011] [18:28:49] <lestrrat>	well, let me change this first, and if it still doesn't work, I might ask you to change the timeout
+| [Monday 17 January 2011] [18:29:25] <mikko>	http://build.valokuva.org/job/ZeroMQPerl-master_ZeroMQ2-master_GCC/buildTimeTrend
+| [Monday 17 January 2011] [18:29:31] <mikko>	you can see build time trend from there
+| [Monday 17 January 2011] [18:29:58] <lestrrat>	oh man. didn't know about that in hudson. that's nice :)
+| [Monday 17 January 2011] [18:30:18] <mikko>	all kind of cool toys in hudson
+| [Monday 17 January 2011] [18:30:24] <mikko>	like the static analysis plugins: http://build.valokuva.org/job/ZeroMQ2-core-master_static-analysis/
+| [Monday 17 January 2011] [18:34:02] <lestrrat>	well, as of my latest commit, the test should run in about 12 seconds :/
+| [Monday 17 January 2011] [18:34:42] <lestrrat>	so if the hudson runs were taking on average 1 min+, presumably most of that time is spent checking out git
+| [Monday 17 January 2011] [18:37:49] <lestrrat>	well let's see what the next run brings up
+| [Monday 17 January 2011] [18:39:30] <mikko>	pass
+| [Monday 17 January 2011] [18:39:43] <lestrrat>	so soon? lol
+| [Monday 17 January 2011] [18:39:45] <lestrrat>	thanks!
+| [Monday 17 January 2011] [18:39:53] <mikko>	it will run quicker when there is no load
+| [Monday 17 January 2011] [18:40:02] <mikko>	usually the build runs alongside with 4 other builds
+| [Monday 17 January 2011] [18:40:05] <mikko>	so it takes longer
+| [Monday 17 January 2011] [19:30:04] <traviscline>	i'm investigating getting the pyzmq polling integrated into gevent (cython wrapping of libevent) and wanted to ask if anyone had any 'to-reads' other than the eventlet implementation
+| [Monday 17 January 2011] [19:31:59] <mikko>	i think there was someone here who was integrating with gevent
+| [Monday 17 January 2011] [19:32:05] <mikko>	the process is very simple
+| [Monday 17 January 2011] [19:32:18] <mikko>	i can walk you through it if you like?
+| [Monday 17 January 2011] [19:34:42] <traviscline>	mikko: yeah if you have any input that'd be great
+| [Monday 17 January 2011] [19:35:08] <mikko>	so, first you need zeromq 2.1.x
+| [Monday 17 January 2011] [19:35:12] <traviscline>	rgr
+| [Monday 17 January 2011] [19:35:22] <mikko>	what you need to do roughly is:
+| [Monday 17 January 2011] [19:35:35] <mikko>	you create a zmq socket and connect/bind it 
+| [Monday 17 January 2011] [19:35:51] <mikko>	you call getsockopt ZMQ_FD on the socket to get a filehandle 
+| [Monday 17 January 2011] [19:36:03] <mikko>	then you add gevent io watcher on that filehandle 
+| [Monday 17 January 2011] [19:36:18] <mikko>	and your callback should be signaled when the socket is readable/writable 
+| [Monday 17 January 2011] [19:36:50] <traviscline>	http://www.mail-archive.com/zeromq-dev@lists.zeromq.org/msg00030.html that list posting discouraged me from taking that path
+| [Monday 17 January 2011] [19:36:55] <traviscline>	but thanks, I'll give that a go
+| [Monday 17 January 2011] [19:37:36] <mikko>	zeromq doesnt support io completion ports
+| [Monday 17 January 2011] [19:37:38] <mikko>	that is true
+| [Monday 17 January 2011] [19:38:38] <traviscline>	mikko: shit sorry, meant this http://www.mail-archive.com/zeromq-dev@lists.zeromq.org/msg06253.html
+| [Monday 17 January 2011] [19:39:29] <mikko>	he is probably missing a fact that zeromq is edge-triggered
+| [Monday 17 January 2011] [19:39:48] <mikko>	so when gevent signals that socket is readable you need to read until you get EAGAIN
+| [Monday 17 January 2011] [19:40:11] <mikko>	so do nonblocking recv in a loop (in the callback) and break out from loop when you get EAGAIN from recv
+| [Monday 17 January 2011] [19:40:55] <mikko>	edge-triggered means that the callback gets called on state changes, not necessarily on every new message
+| [Monday 17 January 2011] [19:43:22] <traviscline>	*nods*
+| [Monday 17 January 2011] [19:45:01] <traviscline>	mikko: !! thanks
+| [Monday 17 January 2011] [19:45:03] <traviscline>	works
+| [Monday 17 January 2011] [19:48:41] <mikko>	cool
+| [Monday 17 January 2011] [19:51:39] <traviscline>	mikko: straight port as of now https://gist.github.com/783810 of eventlet's stuff
+| [Monday 17 January 2011] [19:51:42] <traviscline>	but works
+| [Monday 17 January 2011] [19:51:47] <traviscline>	on initial testing
