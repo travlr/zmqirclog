@@ -3176,3 +3176,805 @@
 | [Monday 17 January 2011] [19:51:39] <traviscline>	mikko: straight port as of now https://gist.github.com/783810 of eventlet's stuff
 | [Monday 17 January 2011] [19:51:42] <traviscline>	but works
 | [Monday 17 January 2011] [19:51:47] <traviscline>	on initial testing
+| [Tuesday 18 January 2011] [06:02:25] <mikko>	sustrik_: im having slightly odd behavior with HWM
+| [Tuesday 18 January 2011] [06:03:21] <mikko>	i am trying to word it
+| [Tuesday 18 January 2011] [06:34:04] <Steve-o_>	mikko: made advances on PGM on Windows
+| [Tuesday 18 January 2011] [06:34:27] <Steve-o_>	I have CMake working again, and can even make a GUI installer pretty easily
+| [Tuesday 18 January 2011] [06:34:39] <mikko>	Steve-o_: nice!
+| [Tuesday 18 January 2011] [06:34:51] <Steve-o_>	its like a few lines of CMake to build a NSIS installer package
+| [Tuesday 18 January 2011] [06:35:03] <mikko>	i wonder how windows install is best handled
+| [Tuesday 18 January 2011] [06:35:14] <mikko>	currently we got mingw and MSVC builds
+| [Tuesday 18 January 2011] [06:35:31] <mikko>	with mingw you should be able to reuse the autoconf builds
+| [Tuesday 18 January 2011] [06:35:35] <mikko>	but not sure about MSVC
+| [Tuesday 18 January 2011] [06:35:51] <Steve-o_>	shared libraries and exes wont build for me, maybe because of x86/x64 difference with the compiler, with CMake that is
+| [Tuesday 18 January 2011] [06:36:21] <Steve-o_>	well I've gone for autoconf for unix and cmake for windows, and scons for development
+| [Tuesday 18 January 2011] [06:36:26] <Evet>	is zeromq right tool to build a production http server?
+| [Tuesday 18 January 2011] [06:36:42] <Steve-o_>	Evet: have a look at Mongrel
+| [Tuesday 18 January 2011] [06:36:59] <Steve-o_>	http://mongrel2.org/home
+| [Tuesday 18 January 2011] [06:38:08] <Steve-o_>	mikko: I have cygwin on Windows but not tried mingw32, I usually cross compile with that instead
+| [Tuesday 18 January 2011] [06:38:25] <Steve-o_>	due to Python in Cygwin crashing on fork constantly
+| [Tuesday 18 January 2011] [06:38:51] <Evet>	Steve-o_: thanks. it looks promising. but, do you have a suggestion for c?
+| [Tuesday 18 January 2011] [06:39:06] <mikko>	mingw32 wont build
+| [Tuesday 18 January 2011] [06:39:16] <mikko>	currently it's missing group_source_req in ws2tcpip.h
+| [Tuesday 18 January 2011] [06:39:23] <mikko>	i debugged this a bit over the weekend
+| [Tuesday 18 January 2011] [06:39:27] <Steve-o_>	I have a lot of patches
+| [Tuesday 18 January 2011] [06:39:37] <Steve-o_>	two sets, one for mingw32 and one for mingw-w64
+| [Tuesday 18 January 2011] [06:39:49] <mikko>	it seems that mingw64 includes these upstream (based on #mingw)
+| [Tuesday 18 January 2011] [06:39:55] <mikko>	but it has not been synced to mingw32
+| [Tuesday 18 January 2011] [06:40:03] <Steve-o_>	not all of them though, at last check
+| [Tuesday 18 January 2011] [06:40:05] <mikko>	which sounds slightly strange
+| [Tuesday 18 January 2011] [06:40:24] <Steve-o_>	http://code.google.com/p/openpgm/source/browse/trunk/openpgm/pgm/win64/mingw-w64-bin_x86-64-linux_4.4.1-1openpgm1.diff
+| [Tuesday 18 January 2011] [06:40:31] <Steve-o_>	and http://code.google.com/p/openpgm/source/browse/#svn%2Ftrunk%2Fopenpgm%2Fpgm%2Fwin
+| [Tuesday 18 January 2011] [06:40:37] <mikko>	Evet: what would you use zeromq for in http server?
+| [Tuesday 18 January 2011] [06:40:54] <mikko>	Steve-o_: yeah, i stumbled onto those over the weekend
+| [Tuesday 18 January 2011] [06:41:10] <mikko>	if you google 'struct group_source_req mingw' they are about the only results 
+| [Tuesday 18 January 2011] [06:41:20] <Steve-o_>	you also need to force WCACMSG header thingy too
+| [Tuesday 18 January 2011] [06:42:51] <Steve-o_>	cmsghdr or _WSACMSGHDR or wsacmsghdr depending on the compiler
+| [Tuesday 18 January 2011] [06:44:22] <Steve-o_>	I think that's how the Wine developers have noted my project, I've seen it mentioned a few times in their bug tracker
+| [Tuesday 18 January 2011] [06:45:18] <Steve-o_>	Evet: are you after a bespoke zmq-http forwarder (router/gateway)?
+| [Tuesday 18 January 2011] [06:45:55] <Steve-o_>	Evet: its certainly fast enough, but it all depends what you requirements are beyond or aside to Mongrel
+| [Tuesday 18 January 2011] [06:46:45] <Evet>	Steve-o_: i need to embed to my c application
+| [Tuesday 18 January 2011] [06:47:04] <Steve-o_>	mikko: the mingw-w64 team still haven't released a version yet though have they?  that's why I picked one random version and stuck with it
+| [Tuesday 18 January 2011] [06:47:56] <Evet>	currently using libevent's http module. but zeromq looks cleaner
+| [Tuesday 18 January 2011] [06:48:09] <Steve-o_>	ok
+| [Tuesday 18 January 2011] [06:48:28] <Steve-o_>	I've been looking at using libevent or libcurl to implement a basic integration of HTTP and 0MQ
+| [Tuesday 18 January 2011] [06:49:18] <Steve-o_>	but you also have Boost which has a lot of scalability features already in for HTTP multi-core usage
+| [Tuesday 18 January 2011] [06:49:50] <Steve-o_>	is this a high or load load HTTP server though?
+| [Tuesday 18 January 2011] [06:51:04] <Evet>	Steve-o_: it needs to handle high loads
+| [Tuesday 18 January 2011] [06:51:44] <Evet>	Boost's ASIO module looks great, but i dont really know about c++'s oop thing
+| [Tuesday 18 January 2011] [06:52:00] <Steve-o_>	otherwise integrating with Nginx might be more likely
+| [Tuesday 18 January 2011] [06:54:00] <mikko>	Evet: you can't really communicate with clients over zeromq
+| [Tuesday 18 January 2011] [06:54:18] <mikko>	Evet: i've created libevent http based webserver but it uses zeromq for inter-thread communication
+| [Tuesday 18 January 2011] [06:55:24] <Evet>	hmm
+| [Tuesday 18 January 2011] [06:56:31] <Steve-o_>	I wrote my own HTTP admin interface for PGM using async-io, but its definitely not multi-core IO scalable
+| [Tuesday 18 January 2011] [06:56:49] <Steve-o_>	they are two very large different domains
+| [Tuesday 18 January 2011] [06:57:11] <Steve-o_>	for basic C you can also use libsoup
+| [Tuesday 18 January 2011] [06:58:54] <Steve-o_>	but application and HTTP server don't really go together, you should use a dedicated http-zmq gateway and a zmq-based application server for the core logic
+| [Tuesday 18 January 2011] [07:03:55] <mikko>	Steve-o_: i guess in which case you could just use mongrel2
+| [Tuesday 18 January 2011] [07:04:17] <Evet>	in fact, a request-reply tcp server is sufficient for me
+| [Tuesday 18 January 2011] [07:04:19] <Steve-o_>	correct, but the question comes back to what is high load
+| [Tuesday 18 January 2011] [07:04:37] <Steve-o_>	thousands of requests per second?
+| [Tuesday 18 January 2011] [07:05:04] <Evet>	8k requests/second per cpu core
+| [Tuesday 18 January 2011] [07:06:35] <Steve-o_>	then typical design you would have basic edge gateways managing the HTTP requests and core application servers processing ZMQ messages at high speed
+| [Tuesday 18 January 2011] [07:08:07] <Evet>	i can implement RFC rules
+| [Tuesday 18 January 2011] [07:08:55] <Evet>	i have wrote some core modules for nginx, but its overcomplicated for a single application
+| [Tuesday 18 January 2011] [07:11:17] <mikko>	does it have to be http?
+| [Tuesday 18 January 2011] [07:11:40] <Steve-o_>	in comparison Wikipedia is up to 90k requests per second http://www.nedworks.org/~mark/reqstats//reqstats-weekly.png for hundreds of servers (300+)
+| [Tuesday 18 January 2011] [07:12:01] <mikko>	they run tons of squid servers iirc
+| [Tuesday 18 January 2011] [07:13:09] <Evet>	mikko: no, i can handle http parsing
+| [Tuesday 18 January 2011] [07:17:21] <Steve-o_>	is this with an additional load balancer in front?
+| [Tuesday 18 January 2011] [07:19:47] <Steve-o_>	the point being in regular HTTP traffic 8k/s is quite high for even one machine
+| [Tuesday 18 January 2011] [07:20:40] <Evet>	a quad-core desktop pc can handle ~30k non-keepalive requests per second
+| [Tuesday 18 January 2011] [07:22:00] <Steve-o_>	it all depends what you are serving though
+| [Tuesday 18 January 2011] [07:22:18] <Steve-o_>	which is why it's rather difficult to help you out
+| [Tuesday 18 January 2011] [07:22:38] <Evet>	dynamic content through embedded caching
+| [Tuesday 18 January 2011] [07:23:40] <Evet>	i have reached 90k req/sec with keepalive with an in-memory hashtable library
+| [Tuesday 18 January 2011] [07:24:55] <Steve-o_>	ok, so basically a higher protocol memcached?  closer to amazon s3?
+| [Tuesday 18 January 2011] [07:25:18] <Evet>	not really
+| [Tuesday 18 January 2011] [07:25:40] <Steve-o_>	:D
+| [Tuesday 18 January 2011] [07:25:56] <Evet>	an embedded database library without ACID overhead
+| [Tuesday 18 January 2011] [07:26:12] <mikko>	in-memory hashtable that has ACID ?
+| [Tuesday 18 January 2011] [07:26:31] <Evet>	ofcourse not :)
+| [Tuesday 18 January 2011] [07:26:37] <mikko>	memcached really is nothing more than a distributed hashtable
+| [Tuesday 18 January 2011] [07:26:47] <Steve-o_>	amazon simpledb then? 
+| [Tuesday 18 January 2011] [07:26:48] <mikko>	distributed in the very lose definition of the term
+| [Tuesday 18 January 2011] [07:27:47] <Evet>	im going to use zeromq for brokerless replication
+| [Tuesday 18 January 2011] [07:28:28] <Evet>	tokyo cabinet as embedded database library, which also able to append in-memory hashtable to disk
+| [Tuesday 18 January 2011] [07:28:53] <mikko>	you should look into kyoto cabinet as well
+| [Tuesday 18 January 2011] [07:29:04] <Evet>	have been using nginx, but its overcomplicated
+| [Tuesday 18 January 2011] [07:29:09] <mikko>	i'm testing kyoto cabinet in current project
+| [Tuesday 18 January 2011] [07:29:58] <Evet>	mikko: really? im testing kyoto cabinet for months too. nice to meet another kyoto* user
+| [Tuesday 18 January 2011] [07:30:34] <Steve-o_>	didn't Oracle release their replication transport recently
+| [Tuesday 18 January 2011] [07:30:36] <mikko>	i remember tokyo cabinet hash database is O(log n) for retrieval?
+| [Tuesday 18 January 2011] [07:30:50] <Evet>	mikko: nope. o(1)
+| [Tuesday 18 January 2011] [07:31:10] <mikko>	Evet: but with hash database you have collisions 
+| [Tuesday 18 January 2011] [07:31:26] <mikko>	i don't see how you handle collision in O(1)
+| [Tuesday 18 January 2011] [07:32:25] <Evet>	mikko: im generating uuid. but, is it what you asked?
+| [Tuesday 18 January 2011] [07:32:48] <mikko>	no
+| [Tuesday 18 January 2011] [07:33:31] <Evet>	could you rephrase then, im not good at english
+| [Tuesday 18 January 2011] [07:33:53] <mikko>	if you don't know all the keys beforehand it's impossible to create perfect hash function
+| [Tuesday 18 January 2011] [07:34:30] <mikko>	http://en.wikipedia.org/wiki/Hash_table#Collision_resolution
+| [Tuesday 18 January 2011] [07:35:45] <mikko>	Steve-o_: have you had issues with zmq_poll ?
+| [Tuesday 18 January 2011] [07:36:15] <mikko>	im seeing weird behavior that i have reached HWM but the socket has revents ZMQ_POLLOUT 
+| [Tuesday 18 January 2011] [07:36:19] <Steve-o_>	haven't used it yet
+| [Tuesday 18 January 2011] [07:37:18] <mikko>	and i seem to be losing messages somewhere
+| [Tuesday 18 January 2011] [07:37:40] <mikko>	need to debug further to see whether it's actually my software causing this
+| [Tuesday 18 January 2011] [07:37:57] <mikko>	anyway, lunch time. bbl
+| [Tuesday 18 January 2011] [07:39:17] <Evet>	mikko: http://translate.google.com.tr/translate?hl=en&sl=ja&u=http://fallabs.com/mikio/tech/promenade.cgi%3Fid%3D42&ei=gYk1TcX9JM3GswbroYW0Cg&sa=X&oi=translate&ct=result&resnum=1&ved=0CBcQ7gEwAA&prev=/search%3Fq%3Dsite:fallabs.com%2B%25E8%25A1%259D%25E7%25AA%2581%26num%3D100%26hl%3Den%26safe%3Doff%26qscrl%3D1%26prmd%3Divns
+| [Tuesday 18 January 2011] [07:39:18] <Evet>	hmm
+| [Tuesday 18 January 2011] [07:49:49] <Evet>	Steve-o_: so in sum of; is zeromq suitable to write an asynchronous request-respond tcp server?
+| [Tuesday 18 January 2011] [08:47:03] <zchrish>	I have a realtime server connected and am sending packets at least once per second. But my subscriber is receiving them only every few seconds. I assume this is due to the NAGLE algorithm; could this be the case?
+| [Tuesday 18 January 2011] [08:47:47] <sustrik_>	zchrish: nagle is turned off
+| [Tuesday 18 January 2011] [08:48:24] <sustrik_>	0mq should definitely not behave that way
+| [Tuesday 18 January 2011] [08:48:44] <sustrik_>	do you have a minimal test case?
+| [Tuesday 18 January 2011] [08:48:45] <zchrish>	I see. I am sure it is somewhere else then. Thank you.
+| [Tuesday 18 January 2011] [08:49:00] <sustrik_>	np
+| [Tuesday 18 January 2011] [08:49:39] <zchrish>	Actually I am converting my server code over to zeromq and probably didn't activate my heartbeat.
+| [Tuesday 18 January 2011] [09:17:06] Notice	-NickServ- travlr_ is not a registered nickname.
+| [Tuesday 18 January 2011] [09:29:15] <ptrb>	there should be no problem dynamically connecting and disconnecting an active ZMQ_SUB socket to various ZMQ_PUB sockets, right?
+| [Tuesday 18 January 2011] [09:30:52] <ptrb>	hmm, except there is no disconnect :)
+| [Tuesday 18 January 2011] [09:38:38] 435	travlr_ travlr #gentoo-qt Cannot change nickname while banned on channel
+| [Tuesday 18 January 2011] [09:58:39] <CIA-21>	zeromq2: 03Martin Sustrik 07master * r56bdba5 10/ (8 files): 
+| [Tuesday 18 January 2011] [09:58:39] <CIA-21>	zeromq2: Fix cppcheck warnings: Prefer prefix ++/-- operators for non-primitive types.
+| [Tuesday 18 January 2011] [09:58:39] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/eksLeo
+| [Tuesday 18 January 2011] [09:59:16] <mikko>	sustrik_: i'm seeing something weird
+| [Tuesday 18 January 2011] [09:59:25] <sustrik_>	yes?
+| [Tuesday 18 January 2011] [09:59:35] <mikko>	sustrik_: effectively what i am trying to do is a device that stores messages if HWM is reached
+| [Tuesday 18 January 2011] [09:59:50] <mikko>	PULL/PUSH sockets over tcp
+| [Tuesday 18 January 2011] [09:59:55] <sustrik_>	right
+| [Tuesday 18 January 2011] [10:00:08] <mikko>	my hwm on the PUSH socket is set to 5 for testing
+| [Tuesday 18 January 2011] [10:00:15] <mikko>	i connect producer to pull socket
+| [Tuesday 18 January 2011] [10:00:36] <mikko>	send 100 messages and i can see five being within the zeromq buffer and 95 go to the persistent storage
+| [Tuesday 18 January 2011] [10:00:46] <mikko>	now i connect a consumer that consumes five messages
+| [Tuesday 18 January 2011] [10:01:20] <mikko>	well, i bind a consumer and the device connects to it
+| [Tuesday 18 January 2011] [10:01:29] <mikko>	the consumer process exits after consuming five messages
+| [Tuesday 18 January 2011] [10:01:54] <mikko>	so my assumption was that 5 messages should now go to socket, it would hit hwm and return EAGAIN
+| [Tuesday 18 January 2011] [10:02:22] <mikko>	but what i see:
+| [Tuesday 18 January 2011] [10:02:38] <mikko>	the out_socket is constantly signaling ZMQ_POLLOUT 
+| [Tuesday 18 January 2011] [10:02:44] <mikko>	and it keeps accepting messages
+| [Tuesday 18 January 2011] [10:02:55] <sustrik_>	that's because the messages are stored in TCP buffers at that moment
+| [Tuesday 18 January 2011] [10:02:57] <mikko>	until my persistent store is empty and turn off polling on outsocket
+| [Tuesday 18 January 2011] [10:03:01] <sustrik_>	so 0mq's queue is empty
+| [Tuesday 18 January 2011] [10:03:12] <mikko>	then, i connect the consumer again
+| [Tuesday 18 January 2011] [10:03:24] <mikko>	which is blocked on recv and no messages coming
+| [Tuesday 18 January 2011] [10:08:19] <mikko>	is that the expected behavior?
+| [Tuesday 18 January 2011] [10:22:36] <sustrik_>	i think so
+| [Tuesday 18 January 2011] [10:22:47] <sustrik_>	the messages are stored in TCP buffers
+| [Tuesday 18 January 2011] [10:22:58] <sustrik_>	thus 0MQ buffers are empty
+| [Tuesday 18 January 2011] [10:23:31] <sustrik_>	you can set the size of TCP buffers using ZMQ_SNDBUF/ZMQ_RCVBUF
+| [Tuesday 18 January 2011] [10:25:20] <mikko>	i'll give that a go
+| [Tuesday 18 January 2011] [10:38:24] <mikko>	sustrik_: i set the SNDBUF to 10 on the PUSH socket and still seeing the same behavior
+| [Tuesday 18 January 2011] [10:38:31] <mikko>	it could be just something silly im doing as well
+| [Tuesday 18 January 2011] [10:39:00] <sustrik_>	i think the OS it not guaranteed to limit the TCP buffer to the value you supply
+| [Tuesday 18 January 2011] [10:39:04] <sustrik_>	it's more of a hint
+| [Tuesday 18 January 2011] [10:39:05] <mikko>	https://gist.github.com/92d9ef10d280c2ccf2f0
+| [Tuesday 18 January 2011] [10:39:21] <mikko>	DataStore is the implementation or persistent storage
+| [Tuesday 18 January 2011] [10:39:31] <mikko>	hmm
+| [Tuesday 18 January 2011] [10:39:37] <sustrik_>	10-byte TCP buffer seems strange
+| [Tuesday 18 January 2011] [10:39:40] <mikko>	ill test with larger messages in a mit
+| [Tuesday 18 January 2011] [10:39:42] <mikko>	min*
+| [Tuesday 18 January 2011] [10:40:56] <mikko>	hmm
+| [Tuesday 18 January 2011] [10:41:04] <mikko>	10KB messages i still lose some messages
+| [Tuesday 18 January 2011] [10:41:07] <mikko>	but not as many
+| [Tuesday 18 January 2011] [10:41:44] <sustrik_>	lose?
+| [Tuesday 18 January 2011] [10:41:46] <mikko>	consume 5 messages and lose 10 - 20 messages in between
+| [Tuesday 18 January 2011] [10:41:53] <mikko>	the consumer never receives them
+| [Tuesday 18 January 2011] [10:42:07] <mikko>	i got sequence in each message
+| [Tuesday 18 January 2011] [10:42:17] <sustrik_>	that looks like a bug
+| [Tuesday 18 January 2011] [10:42:19] <mikko>	when i consume the first five i get 0 - 4
+| [Tuesday 18 January 2011] [10:42:32] <mikko>	next time i might get 23 onwards
+| [Tuesday 18 January 2011] [10:43:16] <sustrik_>	is there 1 connection involved?
+| [Tuesday 18 January 2011] [10:43:19] <mikko>	yes
+| [Tuesday 18 January 2011] [10:43:19] <sustrik_>	or 2 of them?
+| [Tuesday 18 January 2011] [10:43:21] <mikko>	1
+| [Tuesday 18 January 2011] [10:43:23] <sustrik_>	hm
+| [Tuesday 18 January 2011] [10:43:29] <mikko>	odd thing:
+| [Tuesday 18 January 2011] [10:43:37] <sustrik_>	do you restart either peer?
+| [Tuesday 18 January 2011] [10:43:41] <mikko>	yes
+| [Tuesday 18 January 2011] [10:43:45] <mikko>	the consumer is a script
+| [Tuesday 18 January 2011] [10:43:53] <mikko>	it consumes 5 and exits
+| [Tuesday 18 January 2011] [10:44:35] <sustrik_>	then there's another connection created?
+| [Tuesday 18 January 2011] [10:45:05] <mikko>	yes
+| [Tuesday 18 January 2011] [10:45:09] <mikko>	consume 5 at a time
+| [Tuesday 18 January 2011] [10:45:18] <sustrik_>	i see 
+| [Tuesday 18 January 2011] [10:45:34] <sustrik_>	the messages are presumably dispatched to the old connection
+| [Tuesday 18 January 2011] [10:45:45] <sustrik_>	and are dropped when the application exits
+| [Tuesday 18 January 2011] [10:46:02] <sustrik_>	thus you see gaps in the sequence
+| [Tuesday 18 January 2011] [10:47:48] <mikko>	is there any merit in XPUSH/XPULL sockets where the communication is two way, a bit like XPUB/XSUB forwarding but rather for a small ACK that the message has been received
+| [Tuesday 18 January 2011] [10:48:35] <mikko>	i think a script that consumes five messages or so would not be a unique use-case for scripting languages
+| [Tuesday 18 January 2011] [10:48:42] <mikko>	as the processes are often short-lived
+| [Tuesday 18 January 2011] [10:53:09] <mikko>	and with load-balancing it's very hard to rely on seq
+| [Tuesday 18 January 2011] [10:56:18] <guido_g>	or retrieve and re-dispatch the messages when a new connection is established
+| [Tuesday 18 January 2011] [10:57:22] <mikko>	are the messages currently dropped after zeromq?
+| [Tuesday 18 January 2011] [11:00:46] <guido_g>	as far as i understood what sustrik_ said, they're dropped when the connection closes
+| [Tuesday 18 January 2011] [11:02:19] <mikko>	i understood that they are  already in the network buffer (out of reach for zeromq)
+| [Tuesday 18 January 2011] [11:03:45] <guido_g>	yes, this is the main part of the problem
+| [Tuesday 18 January 2011] [11:04:08] <guido_g>	at least for small messages
+| [Tuesday 18 January 2011] [11:06:39] <guido_g>	it seems the meta-pattern for mq is that you always need at least one other socket to manage the one you care about
+| [Tuesday 18 January 2011] [11:07:29] <mikko>	hmm
+| [Tuesday 18 January 2011] [11:08:53] <sustrik_>	to get precise hwm, duplicit ack mechanism can be implemented on 0mq level
+| [Tuesday 18 January 2011] [11:09:24] <mikko>	i see some merit to that
+| [Tuesday 18 January 2011] [11:09:32] <sustrik_>	thus, TCP would ack packets, whereas 0mq would ack messages
+| [Tuesday 18 January 2011] [11:10:44] <mikko>	sustrik_: im trying to create a device which would allow replaying streams
+| [Tuesday 18 January 2011] [11:11:01] <sustrik_>	what does that mean exactly?
+| [Tuesday 18 January 2011] [11:11:33] <mikko>	well, guys i know are looking at kafka and it provides a mechanism to replay N minutes of rstream
+| [Tuesday 18 January 2011] [11:11:40] <mikko>	so a persistent storage is involved there
+| [Tuesday 18 January 2011] [11:12:10] <mikko>	what i was planning is to store messages and push them out to normal push socket and have separate XREP socket where you can ask for "deltas"
+| [Tuesday 18 January 2011] [11:12:34] <mikko>	so if a consumer needs N amount of data to be productive you could request last 1000 messages or so
+| [Tuesday 18 January 2011] [11:12:44] <mikko>	and then start consuming the pull feed
+| [Tuesday 18 January 2011] [11:13:02] <sustrik_>	how does that work with PUSH socket?
+| [Tuesday 18 January 2011] [11:13:08] <sustrik_>	shouldn't it be PUB?
+| [Tuesday 18 January 2011] [11:13:32] <guido_g>	something like ZMQ_RECOVERY_IVL?
+| [Tuesday 18 January 2011] [11:13:50] <mikko>	it could be PUB as well but with PUB i have no information when HWM is reached
+| [Tuesday 18 January 2011] [11:14:14] <mikko>	i started by creatign a device which writes to store when hwm is reached
+| [Tuesday 18 January 2011] [11:14:32] <guido_g>	hwm is per connected pull, right?
+| [Tuesday 18 January 2011] [11:14:38] <mikko>	yes
+| [Tuesday 18 January 2011] [11:14:48] <guido_g>	so there is no overall hwm on the push side
+| [Tuesday 18 January 2011] [11:14:52] <mikko>	no
+| [Tuesday 18 January 2011] [11:15:17] <guido_g>	then i cant figure out why you need hwm here
+| [Tuesday 18 January 2011] [11:15:53] <mikko>	guido_g: the behavior for PUB is to drop messages when there are no consumers
+| [Tuesday 18 January 2011] [11:16:01] <guido_g>	ack
+| [Tuesday 18 January 2011] [11:16:06] <Evet>	mikko: are you going to use kyoto cabinet as cache server?
+| [Tuesday 18 January 2011] [11:16:08] <mikko>	guido_g: by writing to a PUB socket i don't really know if consumer has got it
+| [Tuesday 18 January 2011] [11:16:33] <guido_g>	mikko: i know
+| [Tuesday 18 January 2011] [11:16:54] <guido_g>	but you need a per client sequence management anyway
+| [Tuesday 18 January 2011] [11:17:08] <mikko>	guido_g: i dont need all clients receiving all messages
+| [Tuesday 18 January 2011] [11:17:13] <sustrik_>	but what you want to do is to distribute the messages to *all* consumers, not load balanace them among consumers, right?
+| [Tuesday 18 January 2011] [11:17:16] <mikko>	guido_g: im not maybe explaining this well
+| [Tuesday 18 January 2011] [11:17:39] <guido_g>	mikko: and don't follow you well :)
+| [Tuesday 18 January 2011] [11:17:47] <sustrik_>	maybe explain the use case
+| [Tuesday 18 January 2011] [11:18:29] <mikko>	so, what i am mixing up here is the end-system and what i have now. in the end-system i will have two kinds of consumers
+| [Tuesday 18 January 2011] [11:18:55] <mikko>	consumer A is consuming from PUSH socket and receives every Nth message based on load-balancing
+| [Tuesday 18 January 2011] [11:19:10] <mikko>	and consumer B which might want messages from last 20 minutes
+| [Tuesday 18 January 2011] [11:19:26] <mikko>	the B would be XREP/XREQ i guess
+| [Tuesday 18 January 2011] [11:19:49] <guido_g>	right
+| [Tuesday 18 January 2011] [11:19:56] <sustrik_>	so B only wants a log of message
+| [Tuesday 18 January 2011] [11:20:06] <sustrik_>	some of those are already processed etc.
+| [Tuesday 18 January 2011] [11:20:08] <guido_g>	and the A type is not allowed to loose messages if one client crashes
+| [Tuesday 18 January 2011] [11:20:15] <mikko>	guido_g: yes
+| [Tuesday 18 January 2011] [11:20:17] <mikko>	sustrik_: yes
+| [Tuesday 18 January 2011] [11:20:22] <guido_g>	ah ok
+| [Tuesday 18 January 2011] [11:20:32] <mikko>	i need to be sure that each message is processed at least once
+| [Tuesday 18 January 2011] [11:20:39] <mikko>	and some _might_ be processed multiple times
+| [Tuesday 18 January 2011] [11:20:47] <sustrik_>	mikko: there's no way to solve that
+| [Tuesday 18 January 2011] [11:21:07] <guido_g>	except w/ a control socket per client
+| [Tuesday 18 January 2011] [11:21:14] <sustrik_>	it's the classis "guaranteed delivery" problem
+| [Tuesday 18 January 2011] [11:21:48] <sustrik_>	when failure happens there are always some messages in "dubious" state
+| [Tuesday 18 January 2011] [11:22:05] <mikko>	sustrik_: i am fine with that
+| [Tuesday 18 January 2011] [11:22:18] <mikko>	sustrik_: but in the current situation i lose messages in "normal" operation
+| [Tuesday 18 January 2011] [11:22:39] <sustrik_>	i see
+| [Tuesday 18 January 2011] [11:22:44] <mikko>	a script connecting, consuming 5 and exiting
+| [Tuesday 18 January 2011] [11:22:51] <mikko>	another script connecting, consuming 10 and exiting
+| [Tuesday 18 January 2011] [11:22:59] <mikko>	i lose large amount of messages there
+| [Tuesday 18 January 2011] [11:23:21] <mikko>	by lose i mean i have no visibility where they have gone 
+| [Tuesday 18 January 2011] [11:23:37] <mikko>	from my device point of view i have sent them and from consumer point of view nothing has been sent
+| [Tuesday 18 January 2011] [11:24:27] <sustrik_>	right, the only solution is to implement acks at 0mq level
+| [Tuesday 18 January 2011] [11:24:31] <mikko>	if the consumer sent back "got it in 0mq, thanks" it would be enough for normal operation
+| [Tuesday 18 January 2011] [11:24:34] <mikko>	yes
+| [Tuesday 18 January 2011] [11:24:58] <mikko>	i don't think this is required for all use-cases but certainly it seems useful for scripting languages
+| [Tuesday 18 January 2011] [11:25:33] <stimpie>	Iam running an experiment where several threads send messages to one other thread using tcp. All sending threads have setHWM(2). When I suspend the receiving thread the others keep sending.
+| [Tuesday 18 January 2011] [11:25:39] <guido_g>	also for the classic butterfly pattern
+| [Tuesday 18 January 2011] [11:26:00] <stimpie>	If I resume the receiving thread after more then 100 sent messages it receives them all.
+| [Tuesday 18 January 2011] [11:26:21] <sustrik_>	mikko, guido_g: yes, it's specific to push/pull pattern
+| [Tuesday 18 January 2011] [11:26:27] <stimpie>	I was expecting only 2 messages would be queued 
+| [Tuesday 18 January 2011] [11:26:59] <sustrik_>	stimpie: you have to use latest version of 0mq from github and set HWM on both sending and receiving side
+| [Tuesday 18 January 2011] [11:27:24] <sustrik_>	mikko, guido_g: i see two options here
+| [Tuesday 18 January 2011] [11:27:31] <sustrik_>	1. standard acks
+| [Tuesday 18 January 2011] [11:27:40] <guido_g>	i'm atm writing something for this in python, a thing that acts as start and endpoint of a butterfly like systems
+| [Tuesday 18 January 2011] [11:28:34] <sustrik_>	the obvious problem with acks is that if the peer exits without acking all the messages dispatched to it, those have to be rescheduled
+| [Tuesday 18 January 2011] [11:28:39] <sustrik_>	to another peer
+| [Tuesday 18 January 2011] [11:28:49] <sustrik_>	thus ordering is not preserved
+| [Tuesday 18 January 2011] [11:28:57] <guido_g>	right, so one need to keep a backlog
+| [Tuesday 18 January 2011] [11:29:07] <guido_g>	right
+| [Tuesday 18 January 2011] [11:29:18] <sustrik_>	for example, peer may get messages 1,2,3,7,8,9,4,5,6
+| [Tuesday 18 January 2011] [11:29:44] <sustrik_>	another option would be implementing an explicit shutdown handshake
+| [Tuesday 18 January 2011] [11:29:51] <guido_g>	but you can't preserve order on a push -> multiple pull system anyway
+| [Tuesday 18 January 2011] [11:30:08] <sustrik_>	client says "i am about to exit"
+| [Tuesday 18 January 2011] [11:30:21] <guido_g>	ahh like shutdown(1)
+| [Tuesday 18 January 2011] [11:30:25] <sustrik_>	then it consumes all remaining messages
+| [Tuesday 18 January 2011] [11:30:29] <sustrik_>	then it exits
+| [Tuesday 18 January 2011] [11:30:41] <sustrik_>	there's no re-ordering problem there
+| [Tuesday 18 January 2011] [11:30:46] <mikko>	so like linger for incoming 
+| [Tuesday 18 January 2011] [11:30:50] <guido_g>	nice, but wouldn't help much in case if failure
+| [Tuesday 18 January 2011] [11:30:54] <guido_g>	*of failure
+| [Tuesday 18 January 2011] [11:30:56] <sustrik_>	but, otoh, the shudown sequence may hang up
+| [Tuesday 18 January 2011] [11:31:07] <sustrik_>	yes, same as linger, just in opposite direction
+| [Tuesday 18 January 2011] [11:31:27] <sustrik_>	yes, it would work only for orderly shutdown
+| [Tuesday 18 January 2011] [11:31:40] <sustrik_>	however, reliable delivery in case of failure is a myth
+| [Tuesday 18 January 2011] [11:32:09] <sustrik_>	the problem can be mitigated, but never solved
+| [Tuesday 18 January 2011] [11:33:46] <guido_g>	right
+| [Tuesday 18 January 2011] [11:34:12] <guido_g>	but the mitigation would/does help a lot in most cases
+| [Tuesday 18 January 2011] [11:34:44] <mikko>	i am inclined to say that ACK makes it a bit more resilient. maybe we can document that the trade-off is that delivery order will not be guaranteed
+| [Tuesday 18 January 2011] [11:35:18] <sustrik_>	yes, possibly
+| [Tuesday 18 January 2011] [11:35:25] <mikko>	also there is a throughput trade-off as well
+| [Tuesday 18 January 2011] [11:35:37] <mikko>	but there always is
+| [Tuesday 18 January 2011] [11:35:59] <sustrik_>	actually, with butterfly pattern there's no overall ordering guaranteed anyway
+| [Tuesday 18 January 2011] [11:36:08] <guido_g>	as i said
+| [Tuesday 18 January 2011] [11:36:12] <sustrik_>	if you have at least 2 workers
+| [Tuesday 18 January 2011] [11:36:21] <guido_g>	hehe
+| [Tuesday 18 January 2011] [11:36:29] <sustrik_>	they can process messages at different speeds
+| [Tuesday 18 January 2011] [11:36:36] <sustrik_>	and thus mix the stream
+| [Tuesday 18 January 2011] [11:36:50] <sustrik_>	when it gets joined in the next step
+| [Tuesday 18 January 2011] [11:37:14] <sustrik_>	mikko: i don't think there's much of throughput impact
+| [Tuesday 18 January 2011] [11:37:29] <sustrik_>	the acks can be sent oportunistically
+| [Tuesday 18 January 2011] [11:37:34] <sustrik_>	just once in a while
+| [Tuesday 18 January 2011] [11:37:45] <sustrik_>	thus having close to zero performance impact
+| [Tuesday 18 January 2011] [11:40:32] <mikko>	hmm, that sounds pretty good
+| [Tuesday 18 January 2011] [11:41:19] <mikko>	is the same infrastructure that is used in subscription forwarding suitable for this?
+| [Tuesday 18 January 2011] [11:41:52] <sustrik_>	the nice thing is that at most 1 message would be lost even in the case of failure
+| [Tuesday 18 January 2011] [11:42:02] <sustrik_>	the one that was being processed at the moment
+| [Tuesday 18 January 2011] [11:42:10] <sustrik_>	mikko: not really
+| [Tuesday 18 January 2011] [11:42:50] <sustrik_>	different functionality is needed
+| [Tuesday 18 January 2011] [11:43:15] <sustrik_>	the socket would have to keep list of sent but unacked messages
+| [Tuesday 18 January 2011] [11:43:25] <sustrik_>	trim it when ack is received
+| [Tuesday 18 January 2011] [11:43:47] <sustrik_>	and resend the messages in case of connection failure
+| [Tuesday 18 January 2011] [11:44:15] <sustrik_>	there are some strange corner cases involved
+| [Tuesday 18 January 2011] [11:44:32] <sustrik_>	say, what if connection fails and there's no other connection to resend the messages?
+| [Tuesday 18 January 2011] [11:45:37] <mikko>	buffer the messages and honor HWM?
+| [Tuesday 18 January 2011] [11:45:53] <sustrik_>	dunno
+| [Tuesday 18 January 2011] [11:45:59] <sustrik_>	i'm just thinking aloud
+| [Tuesday 18 January 2011] [11:46:19] <mikko>	there also might be duplicate delivery
+| [Tuesday 18 January 2011] [11:46:25] <mikko>	i guess
+| [Tuesday 18 January 2011] [11:46:42] <sustrik_>	yes
+| [Tuesday 18 January 2011] [11:46:47] <mikko>	unless you ACK the ACK
+| [Tuesday 18 January 2011] [11:46:56] <mikko>	then you need to ACK the ACK ACK with ACK
+| [Tuesday 18 January 2011] [11:47:02] <sustrik_>	as i said
+| [Tuesday 18 January 2011] [11:47:08] <sustrik_>	it's unsiolvable problem
+| [Tuesday 18 January 2011] [11:47:23] <sustrik_>	you can mitigate it ba adding more acks
+| [Tuesday 18 January 2011] [11:47:23] <mikko>	but if we optimize for normal operation
+| [Tuesday 18 January 2011] [11:47:27] <sustrik_>	and ackacks etc;
+| [Tuesday 18 January 2011] [11:48:28] <mikko>	i think ACK is good enough for majority of the cases
+| [Tuesday 18 January 2011] [11:48:32] <sustrik_>	yes
+| [Tuesday 18 January 2011] [11:50:59] <traviscline>	if there are any geventers: https://github.com/traviscline/gevent-zeromq
+| [Tuesday 18 January 2011] [11:51:17] <traviscline>	mikko: thanks again for the input, going to get a little perf bench set up and cythonify it
+| [Tuesday 18 January 2011] [13:30:51] <lechon>	hello, is anyone having problems with the lua binding?
+| [Tuesday 18 January 2011] [13:31:43] <lechon>	i just installed a fresh zeromq, lua, and lua-zmq bindings: http://codepad.org/W55ZpKIh
+| [Tuesday 18 January 2011] [13:32:01] <lechon>	zmq.DOWNSTREAM is nil?
+| [Tuesday 18 January 2011] [13:35:07] <guido_g>	ouch
+| [Tuesday 18 January 2011] [13:35:15] <guido_g>	DOWNSTRWAM is old
+| [Tuesday 18 January 2011] [13:35:18] <guido_g>	very old
+| [Tuesday 18 January 2011] [13:35:38] <guido_g>	so i guess the bindings are not up to date
+| [Tuesday 18 January 2011] [13:36:35] <lechon>	ohh
+| [Tuesday 18 January 2011] [13:36:59] <lechon>	i see PUSH and PULL work
+| [Tuesday 18 January 2011] [13:37:01] <lechon>	whoops
+| [Tuesday 18 January 2011] [13:37:30] <guido_g>	case closed :)
+| [Tuesday 18 January 2011] [14:55:22] <ngerakines>	hey folks
+| [Tuesday 18 January 2011] [14:55:41] <ngerakines>	I've got a question about connection timeouts
+| [Tuesday 18 January 2011] [14:55:45] <ngerakines>	anyone around?
+| [Tuesday 18 January 2011] [14:59:31] <traviscline>	ngerakines: general irc etiquette is to just ask, don't ask to ask
+| [Tuesday 18 January 2011] [14:59:41] <ngerakines>	fair enough
+| [Tuesday 18 January 2011] [15:23:49] <cremes>	ngerakines: so what's your questino?
+| [Tuesday 18 January 2011] [15:28:27] <lechon>	is any kind of unreliable transport like udp supported?
+| [Tuesday 18 January 2011] [15:29:26] <cremes>	lechon: not right now but new transports can be added
+| [Tuesday 18 January 2011] [15:29:32] <cremes>	search the mailing list for earlier discussions
+| [Tuesday 18 January 2011] [15:29:51] <cremes>	i think the main devs want to clean up that api a bit to make this easier; having someone actually work on adding UDP
+| [Tuesday 18 January 2011] [15:30:00] <cremes>	would be a great exercise for doing that cleanup
+| [Tuesday 18 January 2011] [15:30:47] <mikko>	udp is slightly problematic for certain semantics
+| [Tuesday 18 January 2011] [15:31:32] <lechon>	is there some kind of state overhead that needs to be reliable?
+| [Tuesday 18 January 2011] [15:32:14] <mikko>	lechon: well, for example it's guaranteed that you will only receive full messages 
+| [Tuesday 18 January 2011] [15:32:31] <mikko>	sending larger messages over udp means that all packets must arrive
+| [Tuesday 18 January 2011] [15:32:39] <mikko>	if you lose a packet in the middle you need retransmission
+| [Tuesday 18 January 2011] [15:33:09] <lechon>	handling it the naive way would just be inefficient
+| [Tuesday 18 January 2011] [15:33:47] <lechon>	yet probably acceptable for applications electing to use udp (where perhaps a single dropped packet renders the entire message useless)
+| [Tuesday 18 January 2011] [15:36:28] <mikko>	there hasn't been that much talk about UDP to be fair
+| [Tuesday 18 January 2011] [15:36:38] <mikko>	i remember there has been discussion about SCTP
+| [Tuesday 18 January 2011] [15:36:43] <mikko>	and a few others
+| [Tuesday 18 January 2011] [15:38:09] <mikko>	i remember UDT being mentioned at some point
+| [Tuesday 18 January 2011] [15:39:17] <lechon>	i was able to find these two on the mailing list archive: http://lists.zeromq.org/pipermail/zeromq-dev/2010-January/001910.html, http://lists.zeromq.org/pipermail/zeromq-dev/2010-January/001700.html
+| [Tuesday 18 January 2011] [15:40:12] <mikko>	yes, you can use openpgm over udp
+| [Tuesday 18 January 2011] [15:40:22] <mikko>	but that's not strictly UDP semantics 
+| [Tuesday 18 January 2011] [15:41:38] <lechon>	i'm trying to stream over the internet and can cope with lost packets so unreliable would be preferable 
+| [Tuesday 18 January 2011] [15:53:29] <ngerakines>	Sorry, got pulled into a meeting
+| [Tuesday 18 January 2011] [15:54:08] <ngerakines>	Is there any further documentation on handling connection timouts?
+| [Tuesday 18 January 2011] [15:55:23] <mikko>	ngerakines: no, not really
+| [Tuesday 18 January 2011] [15:55:31] <ngerakines>	bummer
+| [Tuesday 18 January 2011] [15:55:37] <mikko>	ngerakines: what sort of situation?
+| [Tuesday 18 January 2011] [15:55:48] <mikko>	ngerakines: in most cases you shouldn't care about connection timeouts etc
+| [Tuesday 18 January 2011] [15:55:57] <mikko>	as zeromq takes care of reconnecting under the hood
+| [Tuesday 18 January 2011] [15:56:17] <ngerakines>	I've got a small client executable that creates a request to  a daemon that may or may not be up, but when it isn't, the app hangs until a connection can be established
+| [Tuesday 18 January 2011] [15:56:41] <mikko>	you can use zmq_poll
+| [Tuesday 18 January 2011] [15:56:48] <ngerakines>	with my understand of things, the next thing to do would be use a while loop and zmq_poll ... yeah
+| [Tuesday 18 January 2011] [15:57:01] <mikko>	or you can do non blocking send
+| [Tuesday 18 January 2011] [15:57:17] <ngerakines>	reference?
+| [Tuesday 18 January 2011] [15:57:21] <mikko>	depends on what you want to do if the daemon is not up
+| [Tuesday 18 January 2011] [15:57:35] <mikko>	wait or just forget about it
+| [Tuesday 18 January 2011] [15:59:23] <ngerakines>	just forget about it is preferable 
+| [Tuesday 18 January 2011] [16:00:07] <mikko>	ok, then you can use a non-blocking send
+| [Tuesday 18 January 2011] [16:00:12] <mikko>	which language are you using?
+| [Tuesday 18 January 2011] [16:00:13] <ngerakines>	this executable is called hundreds of thousands to millions of times a day
+| [Tuesday 18 January 2011] [16:00:14] <ngerakines>	c++
+| [Tuesday 18 January 2011] [16:00:29] <ngerakines>	so when it hangs, it can cause system/resource issues
+| [Tuesday 18 January 2011] [16:00:33] <mikko>	pass ZMQ_NOBLOCK as second arg to ->send ()
+| [Tuesday 18 January 2011] [16:00:35] <ngerakines>	ok
+| [Tuesday 18 January 2011] [16:00:42] <ngerakines>	thanks much!
+| [Tuesday 18 January 2011] [16:00:53] <mikko>	it will return false if the message was not sent
+| [Tuesday 18 January 2011] [16:00:59] <mikko>	and errno will be set to EAGAIN
+| [Tuesday 18 January 2011] [16:01:26] <ngerakines>	great, i'll readup on it as well
+| [Tuesday 18 January 2011] [17:03:50] <lechon>	mikko, from browsing the source a i get the feeling that udp versions of tcp_connecter and tcp_listener would need to be written
+| [Tuesday 18 January 2011] [17:09:44] <mikko>	and possibly tcp_socket 
+| [Tuesday 18 January 2011] [17:09:49] <mikko>	not sure if that is identical
+| [Tuesday 18 January 2011] [17:10:34] <mikko>	the problematic thing with udp is that you might connect to let's say 10 endpoints
+| [Tuesday 18 January 2011] [17:10:46] <mikko>	and if 8 of them go down how do you know about it?
+| [Tuesday 18 January 2011] [17:11:09] <mikko>	somehow i think in the context of zeromq tcp makes a lot more sense
+| [Tuesday 18 January 2011] [17:11:35] <lechon>	hmm
+| [Tuesday 18 January 2011] [17:11:49] <mikko>	like for example PUSH socket will load-balance between connections
+| [Tuesday 18 January 2011] [17:12:03] <mikko>	and stops dispatching messages to peers that fail 
+| [Tuesday 18 January 2011] [17:12:11] <mikko>	with udp this semantic doesn't really work
+| [Tuesday 18 January 2011] [17:12:24] <mikko>	unless you do explicit ACKs from the consumers
+| [Tuesday 18 January 2011] [17:15:27] <lechon>	i see what you mean
+| [Tuesday 18 January 2011] [17:15:37] <cremes>	i think for udp you would just say this is transport-specific behavior
+| [Tuesday 18 January 2011] [17:15:41] <cremes>	delivery is best effort
+| [Tuesday 18 January 2011] [17:16:01] <cremes>	if you start adding acks, you are duplicating tcp (and probably poorly)
+| [Tuesday 18 January 2011] [17:16:12] <mikko>	i don't see whether there is that much merit to udp in message oriented communications
+| [Tuesday 18 January 2011] [17:16:13] <lechon>	yeah. when you elect to use udp you probably have some out-of-channel way to determine when to stop sending to a particular host
+| [Tuesday 18 January 2011] [17:16:35] <lechon>	its not zeromq's concern
+| [Tuesday 18 January 2011] [17:16:59] <cremes>	right
+| [Tuesday 18 January 2011] [17:17:31] <cremes>	as for keeping message delivery atomic, i think that would be transport-specific too
+| [Tuesday 18 January 2011] [17:17:47] <cremes>	if a message part gets lost in delivery, drop the whole message
+| [Tuesday 18 January 2011] [17:17:56] <lechon>	yep
+| [Tuesday 18 January 2011] [17:18:12] <cremes>	udp packets can be up to 64k in length, right?
+| [Tuesday 18 January 2011] [17:19:02] <lechon>	yes
+| [Tuesday 18 January 2011] [17:19:21] <lechon>	including header
+| [Tuesday 18 January 2011] [17:19:50] <cremes>	perhaps the udp transport could just coalesce all parts into one packet before sending, kind of like the nagle algo
+| [Tuesday 18 January 2011] [17:20:13] <lechon>	what do you mean "all parts"?
+| [Tuesday 18 January 2011] [17:20:15] <cremes>	and then set a max of 64k (minus headers) for messages using that transport
+| [Tuesday 18 January 2011] [17:20:35] <cremes>	are you aware of the RCV_MORE and SND_MORE flags?
+| [Tuesday 18 January 2011] [17:20:44] <mikko>	cremes: assuming the total size is < 64k
+| [Tuesday 18 January 2011] [17:20:47] <lechon>	no :/
+| [Tuesday 18 January 2011] [17:20:53] <cremes>	mikko: yes
+| [Tuesday 18 January 2011] [17:21:17] <cremes>	lechon: check those out; they let you logically split up a message into parts for 0mq to deliver as an atomic whole
+| [Tuesday 18 January 2011] [17:21:26] <cremes>	i.e. message-oriented streaming
+| [Tuesday 18 January 2011] [17:21:45] <mikko>	the thing i am wondering is whether you actually need zeromq for udp? most of the functionality will be specifc to udp
+| [Tuesday 18 January 2011] [17:22:12] <cremes>	0mq still provides some neat abstractions for it
+| [Tuesday 18 January 2011] [17:22:14] <mikko>	effectively you just need to frame the messages and you are about at the same point as you are with zeromq + udp
+| [Tuesday 18 January 2011] [17:22:14] <lechon>	mikko, the zeromq interface is nice :]
+| [Tuesday 18 January 2011] [17:22:22] <cremes>	though it's less useful for udp than other protocols
+| [Tuesday 18 January 2011] [17:24:39] <lechon>	yes, coalescing all of the parts of those split messages would make sense
+| [Tuesday 18 January 2011] [17:26:09] <lechon>	the receiving end would need to drop the entire message if it all of the parts couldn't fit into one udp packet and one got lost
+| [Tuesday 18 January 2011] [17:28:22] <lechon>	when sending multipart messages like that does 0mq have a protocol for communicating the number of parts the receiver should expect?
+| [Tuesday 18 January 2011] [17:30:39] <mikko>	looks like the udp transport earlier was epgm
+| [Tuesday 18 January 2011] [17:30:43] <mikko>	looking at changelog
+| [Tuesday 18 January 2011] [17:30:51] <mikko>	so there never was a real UDP transport
+| [Tuesday 18 January 2011] [17:33:25] <lechon>	looks like it is used in resolve_nic_name for solaris/aix/hpux :P
+| [Tuesday 18 January 2011] [17:44:05] <lechon>	or is the number of parts usually encoded in the tcp packets?
+| [Tuesday 18 January 2011] [17:46:34] <mikko>	lechon: sorry?
+| [Tuesday 18 January 2011] [17:49:13] <lechon>	i was referring to my previous question about how multipart messages are delivered with the existing transports
+| [Tuesday 18 January 2011] [17:50:19] <traviscline>	ngerakines: general irc etiquette is to just ask, don't ask to ask
+| [Tuesday 18 January 2011] [17:50:32] <traviscline>	ngerakines: hey sorry, accidentlly hit up-enter
+| [Tuesday 18 January 2011] [17:50:45] <ngerakines>	np
+| [Tuesday 18 January 2011] [17:53:23] <mikko>	lechon: the number of parts doesn't need to be known beforehand
+| [Tuesday 18 January 2011] [17:53:49] <mikko>	on the sender size ZMQ_SNDMORE flag indicates that the next part will be a part of multipart message
+| [Tuesday 18 January 2011] [17:54:10] <mikko>	a message after one or more ZMQ_SNDMORE sends terminates the multipart message
+| [Tuesday 18 January 2011] [17:54:29] <mikko>	on the receivers size there ZMQ_RCVMORE which indicates whether more parts are coming
+| [Tuesday 18 January 2011] [17:56:01] <lechon>	it is up to the user to make sure that the receiver calls RCVMORE the same number of times that the sender calls SNDMORE?
+| [Tuesday 18 January 2011] [17:56:27] <mikko>	well, if the user wants to be aware of multipart messages
+| [Tuesday 18 January 2011] [17:56:46] <mikko>	you could just receive a message at a time without having to acknowledge that it's actually one multipart message
+| [Tuesday 18 January 2011] [17:57:46] <lechon>	that should work fine with udp and coalesced packets
+| [Tuesday 18 January 2011] [17:58:01] <cremes>	lechon: yes, you loop on receiving msg parts until getsockopt(RCVMORE) becomes false
+| [Tuesday 18 January 2011] [17:59:19] <mikko>	lechon: how do you maintain low latency in cases where you dont have constant throughput?
+| [Tuesday 18 January 2011] [17:59:52] <mikko>	lets say user pushes 2K to the buffer. would there be a timer that waits for more?
+| [Tuesday 18 January 2011] [18:00:08] <mikko>	well, a timer that triggers after certain period if no more messages come?
+| [Tuesday 18 January 2011] [18:00:23] <lechon>	hmm, thats an interesting problem
+| [Tuesday 18 January 2011] [18:00:50] <lechon>	it would have to be a user defined timer, and that might (?) be a messy interface change
+| [Tuesday 18 January 2011] [18:01:23] <mikko>	probably not messy
+| [Tuesday 18 January 2011] [18:01:29] <mikko>	sockopt that says the timeout
+| [Tuesday 18 January 2011] [18:01:49] <mikko>	but any kind of timeout would probably introduce latency in environment where you are not constantly pushing message
+| [Tuesday 18 January 2011] [18:01:52] <mikko>	s
+| [Tuesday 18 January 2011] [18:02:40] <lechon>	for asynchronous sends it would be kind of easy. messages could be coalesced on the queue.
+| [Tuesday 18 January 2011] [18:04:05] <lechon>	in many cases the user would probably not want additional latency... udp was selected for a reason
+| [Tuesday 18 January 2011] [18:04:35] <mikko>	all sends are asyncronous in a way when dealing with zeromq
+| [Tuesday 18 January 2011] [18:04:56] <mikko>	you are pushing the message to io thread rather than actually dealing with a socket
+| [Tuesday 18 January 2011] [18:05:02] <lechon>	so sock:send(msg) just queues msg up and returns immediately?
+| [Tuesday 18 January 2011] [18:05:20] <mikko>	lechon: there are different socket options affecting the behavior
+| [Tuesday 18 January 2011] [18:05:29] <mikko>	and there are different behaviors with different socket types
+| [Tuesday 18 January 2011] [18:05:38] <mikko>	in some cases it might block
+| [Tuesday 18 January 2011] [18:06:19] <lechon>	ok. sorry, i haven't really used 0mq yet
+| [Tuesday 18 January 2011] [18:06:40] <mikko>	what is the use-case you are looking udp for?
+| [Tuesday 18 January 2011] [18:07:12] <mikko>	also, it might possibly be beneficial to look into UDT
+| [Tuesday 18 January 2011] [18:07:13] <lechon>	given that, it might make sense to only attempt packet coalescing when in "async mode" and things can be grouped on the internal queue
+| [Tuesday 18 January 2011] [18:07:25] <mikko>	as it seems to provide some semantics that are common for zeromq sockets
+| [Tuesday 18 January 2011] [18:07:55] <lechon>	reliable, yuck :P
+| [Tuesday 18 January 2011] [18:08:20] <lechon>	my use-case is streaming video over internet
+| [Tuesday 18 January 2011] [18:08:36] <mikko>	a certain amount of reliability on transport layer makes sense with message oriented approach in my opinion
+| [Tuesday 18 January 2011] [18:08:58] <mikko>	as you are not really dealing with packets or streams but rather with a concept of message
+| [Tuesday 18 January 2011] [18:11:44] <lechon>	streams are just a sequence of messages, but i get your point
+| [Tuesday 18 January 2011] [18:11:50] <mikko>	as in i assume if you stream video you are not actually dealing with messages but rather packets. and the next packet doesnt really depend on the previous packet
+| [Tuesday 18 January 2011] [18:12:05] <mikko>	so in case of losing packet here or there the sound might jump a bit or so
+| [Tuesday 18 January 2011] [18:12:22] <mikko>	but in case of a concept of message losing a packet means that your whole message is void
+| [Tuesday 18 January 2011] [18:12:31] <mikko>	brb
+| [Tuesday 18 January 2011] [18:13:58] <cremes>	i would only suggest msg part coalescing into 1 udp packet when someone is sending multipart messages
+| [Tuesday 18 January 2011] [18:14:04] <cremes>	otherwise, just send them asap
+| [Tuesday 18 January 2011] [18:14:21] <cremes>	i don't see why you would ever want a timer for sending udp
+| [Tuesday 18 January 2011] [18:15:30] <lechon>	how do you know they are finished sending more?
+| [Tuesday 18 January 2011] [18:15:52] <cremes>	lechon: how does who know? the receiver?
+| [Tuesday 18 January 2011] [18:16:26] <cremes>	the sender knows because he doesn't pass the SNMORE flag to send
+| [Tuesday 18 January 2011] [18:16:45] <cremes>	the receiver knows where the multipart msg ends because getsockopt(RCVMORE) returns false
+| [Tuesday 18 January 2011] [18:17:06] <cremes>	lechon: you should really read the docs; a lot of this will get cleared up once you understand 0mq a bit better
+| [Tuesday 18 January 2011] [18:17:33] <lechon>	there might be a large delay between the last send(SNDMORE) and the following send()
+| [Tuesday 18 January 2011] [18:18:05] <cremes>	in that case, the i/o thread should keep the message parts in the queue until the last part is sent
+| [Tuesday 18 January 2011] [18:18:14] <cremes>	0mq is a message queue after all!
+| [Tuesday 18 January 2011] [18:18:50] <lechon>	heh right, but the timeout could be used to expedite that, so things dont hang round in the queue for too long
+| [Tuesday 18 January 2011] [18:19:26] <cremes>	then that breaks my suggestion for all msg parts to be coalesced into a single packet for udp transport
+| [Tuesday 18 January 2011] [18:19:49] <cremes>	it also makes it harder on the receiving application; now it has to deal with fragmented messages
+| [Tuesday 18 January 2011] [18:20:13] <cremes>	recall that udp doesn't guarantee order, so parts could also show up in a random order
+| [Tuesday 18 January 2011] [18:20:44] <cremes>	i think forcing msg part coalescing to one packet for udp is a pretty good idea otherwise you break a lot of 0mq guarantees that other transports ge
+| [Tuesday 18 January 2011] [18:20:49] <cremes>	s/ge/get
+| [Tuesday 18 January 2011] [18:21:02] <cremes>	in that case, no timer is desired
+| [Tuesday 18 January 2011] [18:21:28] <lechon>	even if you try to coalesce all parts into a single packet, you might not be able to... the sum of all the packets may be > 64k
+| [Tuesday 18 January 2011] [18:21:45] <lechon>	all the parts*
+| [Tuesday 18 January 2011] [18:22:00] <cremes>	true; so the udp transport would need to specify that 64k (minus headers) is the max message size *for that transport*
+| [Tuesday 18 January 2011] [18:22:22] <lechon>	ok, sure
+| [Tuesday 18 January 2011] [18:22:46] <cremes>	we've now come full circle; udp isn't a good choice for transport in 0mq
+| [Tuesday 18 January 2011] [18:23:02] <cremes>	it will likely gain other "special" cases which will make it less suitable
+| [Tuesday 18 January 2011] [18:23:09] <mikko>	23:14 < cremes> i don't see why you would ever want a timer for sending udp
+| [Tuesday 18 January 2011] [18:23:16] <mikko>	there might be processing in creating the parts
+| [Tuesday 18 January 2011] [18:23:21] <cremes>	one of the great things about 0mq is being able to change transports without modifying your code
+| [Tuesday 18 January 2011] [18:23:35] <mikko>	1. send part with ZMQ_SNDMORE 2. process for 10 seconds 3. send the last part
+| [Tuesday 18 January 2011] [18:23:57] <cremes>	mikko: tell me how the receiving end should handle missing msg parts
+| [Tuesday 18 January 2011] [18:24:09] <mikko>	cremes: there are no missing parts there
+| [Tuesday 18 January 2011] [18:24:18] <mikko>	cremes: but your problem is the sender
+| [Tuesday 18 January 2011] [18:24:18] <lechon>	if udp drops one part
+| [Tuesday 18 January 2011] [18:24:25] <cremes>	ok, then we're talking about different things
+| [Tuesday 18 January 2011] [18:24:30] <mikko>	that would destroy the sequence
+| [Tuesday 18 January 2011] [18:24:32] <cremes>	why do you want a timer? 
+| [Tuesday 18 January 2011] [18:24:45] <mikko>	cremes: if you want to coalesce into packets you need a timer
+| [Tuesday 18 January 2011] [18:24:52] <cremes>	explain why
+| [Tuesday 18 January 2011] [18:25:01] <mikko>	cremes: let's say i push 2KB to zmq_socket
+| [Tuesday 18 January 2011] [18:25:07] <mikko>	there 62K in the packet left
+| [Tuesday 18 January 2011] [18:25:08] <mikko>	right?
+| [Tuesday 18 January 2011] [18:25:13] <cremes>	with you so far
+| [Tuesday 18 January 2011] [18:25:20] <mikko>	now let's say i do processing for 10 seconds
+| [Tuesday 18 January 2011] [18:25:27] <mikko>	and send 100K after that
+| [Tuesday 18 January 2011] [18:25:37] <mikko>	is the 2KB pending until packet boundary is full?
+| [Tuesday 18 January 2011] [18:25:58] <cremes>	is the 2kb its own message part or is it a piece of a multipart message?
+| [Tuesday 18 January 2011] [18:26:05] <mikko>	either way
+| [Tuesday 18 January 2011] [18:26:27] <lechon>	it should be part of a multipart for the argument to make sense i think.
+| [Tuesday 18 January 2011] [18:26:28] <cremes>	if it is NOT a message part, it should be sent immediately; no reason to coalesce
+| [Tuesday 18 January 2011] [18:26:49] <mikko>	so let's say it's part of multipart message
+| [Tuesday 18 January 2011] [18:27:17] <mikko>	when does the 2K message leave the buffer?
+| [Tuesday 18 January 2011] [18:27:33] <cremes>	then your example doesn't work; the second/last part (100k) exceeds the max size of a single udp packet
+| [Tuesday 18 January 2011] [18:27:45] <mikko>	cremes: my message might be larger than udp packet
+| [Tuesday 18 January 2011] [18:27:53] <cremes>	and i think it's a really bad idea to split 0mq messages over multiple udp pakcets
+| [Tuesday 18 January 2011] [18:28:14] <cremes>	mikko: if it's too big, pick a different transport; udp is not a good choice
+| [Tuesday 18 January 2011] [18:28:31] <mikko>	this is why i don't see udp as zeromq transport
+| [Tuesday 18 January 2011] [18:28:40] <lechon>	what if the second message was 50K?
+| [Tuesday 18 January 2011] [18:28:49] <cremes>	we agree then
+| [Tuesday 18 January 2011] [18:28:52] <mikko>	it's still problematic
+| [Tuesday 18 January 2011] [18:28:59] <mikko>	because if my second part 20K
+| [Tuesday 18 January 2011] [18:29:10] <mikko>	when would my first 2K leave the buffer?
+| [Tuesday 18 January 2011] [18:29:17] <mikko>	after the message sequence is complete?
+| [Tuesday 18 January 2011] [18:29:23] <cremes>	yes
+| [Tuesday 18 January 2011] [18:29:48] <lechon>	the idea is to never send multipart parts separately
+| [Tuesday 18 January 2011] [18:29:50] <cremes>	udp transport would be limited to 64k packets; no other transport has a limitation like that
+| [Tuesday 18 January 2011] [18:30:20] <mikko>	cremes: hence im wondering if it's aligned with the existing transports
+| [Tuesday 18 January 2011] [18:30:43] <mikko>	UDT and SCTP seem to be more suitable imho but maybe im not seeing the benefits
+| [Tuesday 18 January 2011] [18:31:55] <lechon>	why not allow all of the udp issues to leak to the user?
+| [Tuesday 18 January 2011] [18:32:06] <lechon>	if things are out of order, users problem.
+| [Tuesday 18 January 2011] [18:32:15] <lechon>	if a piece of the packet drops, users problem
+| [Tuesday 18 January 2011] [18:32:16] <lechon>	etc.
+| [Tuesday 18 January 2011] [18:32:21] <mikko>	lechon: because thats one of the thing zeromq2 does for you, abstracts all that away from user
+| [Tuesday 18 January 2011] [18:32:57] <mikko>	well, not in all cases
+| [Tuesday 18 January 2011] [18:33:06] <mikko>	but the idea is not to care about the network transport
+| [Tuesday 18 January 2011] [18:33:13] <cremes>	exactly
+| [Tuesday 18 January 2011] [18:33:14] <mikko>	rather think about in terms of messages
+| [Tuesday 18 January 2011] [18:34:45] <lechon>	"unreliable messages" could be a way to think about it, but i see how that would not allow interchangeable transports (unless apps were written assuming unreliability)
+| [Tuesday 18 January 2011] [18:36:00] <mikko>	maybe there is some merit to fire-and-forget type messages
+| [Tuesday 18 January 2011] [18:36:52] <lechon>	another option could be to disallow multipart messages with udp
+| [Tuesday 18 January 2011] [18:37:46] <mikko>	your message could still be very large
+| [Tuesday 18 January 2011] [18:38:05] <mikko>	so the limitation of 64K per message + no multipart would require user to worry about transport type quite a lot
+| [Tuesday 18 January 2011] [18:38:29] <lechon>	without multipart, would 64K be that big of a problem?
+| [Tuesday 18 January 2011] [18:38:57] <lechon>	if one packet is dropped then the whole message is dropped
+| [Tuesday 18 January 2011] [18:39:49] <mikko>	hmm
+| [Tuesday 18 January 2011] [18:40:14] <mikko>	i don't know, somehow i don't see it fitting the model
+| [Tuesday 18 January 2011] [18:40:23] <mikko>	but maybe have a chat with sustrik_ as well
+| [Tuesday 18 January 2011] [18:40:40] <mikko>	i need to sleep in any case
+| [Tuesday 18 January 2011] [18:40:46] <mikko>	good night 
+| [Tuesday 18 January 2011] [18:43:59] <lechon>	night
+| [Tuesday 18 January 2011] [18:56:20] <mikko>	couldn't sleep
+| [Tuesday 18 January 2011] [18:56:30] <mikko>	lechon: you could also send your ideas to mailing-list
+| [Tuesday 18 January 2011] [18:56:36] <mikko>	for wider feedbackd
+| [Tuesday 18 January 2011] [20:41:11] <lechon>	mikko, i hope you've been able to get to sleep by now :]
+| [Tuesday 18 January 2011] [20:41:34] <lechon>	i will think about the proposal a bit more and will send out some ideas soon
+| [Tuesday 18 January 2011] [20:42:43] <mikko>	no
+| [Tuesday 18 January 2011] [20:42:44] <mikko>	still up
+| [Tuesday 18 January 2011] [20:42:55] <mikko>	looked into udt sockets a bit
+| [Tuesday 18 January 2011] [20:43:10] <lechon>	what do you think about them?
+| [Tuesday 18 January 2011] [20:43:55] <mikko>	seems like a nice idea
+| [Tuesday 18 January 2011] [20:44:08] <mikko>	the api is very friendly if you have done socket programming
+| [Tuesday 18 January 2011] [20:44:42] <lechon>	udt.sf.net?
+| [Tuesday 18 January 2011] [20:45:08] <mikko>	yes
+| [Tuesday 18 January 2011] [20:56:32] <lechon>	yeah, just like sockets
+| [Tuesday 18 January 2011] [21:12:25] <jhawk28>	https://github.com/bittorrent/libutp is another one
+| [Wednesday 19 January 2011] [00:55:15] <traviscline>	i'm writing a compat layer with pyzmq and a greenlet lib (gevent) and want to do some performance testing of a few configurations: namely: pure c, vanilla pyzmq, my pure python greened version, and a cython verision of my greened code
+| [Wednesday 19 January 2011] [00:55:46] <traviscline>	I initially set up a little harness to send 1mil random ints from a c producer and just saw how fast I consumed with the various configurations
+| [Wednesday 19 January 2011] [00:56:16] <traviscline>	I want to know if this seems like a valid test to compare the basic overhead of the alternate python options
+| [Wednesday 19 January 2011] [00:56:42] <traviscline>	I basically want to determine how much overhead is incurred by using the greened version of pyzmq (and do some work to minimize it)
+| [Wednesday 19 January 2011] [00:56:46] <traviscline>	thoughts?
+| [Wednesday 19 January 2011] [01:05:38] <Steve-o>	Similar to the pyzmq graphs previously published?
+| [Wednesday 19 January 2011] [04:14:08] <mikko>	good morning
+| [Wednesday 19 January 2011] [04:21:20] <guido_g>	morning
+| [Wednesday 19 January 2011] [05:17:52] <kabs>	Hello, I tried writing hello-world application for pub-sub system in c, but when I complile it , I get these errors http://pastebin.com/n8F3CG8c ,  what libs it is looking for , I have already installed zeromq-2.0.10 on my system
+| [Wednesday 19 January 2011] [05:19:09] <mikko>	-lzmq
+| [Wednesday 19 January 2011] [05:19:19] <mikko>	you are not linking against libs
+| [Wednesday 19 January 2011] [05:33:32] <kabs>	Thanks you, it worked!!
+| [Wednesday 19 January 2011] [08:44:34] <benoitc>	/j/win 18
+| [Wednesday 19 January 2011] [09:31:18] <pythonirc1011>	I'm trying to build zeromq python bindings on win 7 64-bit with 32-bit python installed and am getting in trouble. Can anyone help please?
+| [Wednesday 19 January 2011] [09:31:49] <pythonirc1011>	the compilation of libzmq.dll is fine. but "python setup.py build" looks for libzmq.lib ? 
+| [Wednesday 19 January 2011] [09:32:05] <mikko>	pythonirc1011: yes
+| [Wednesday 19 January 2011] [09:32:21] <mikko>	as far as i understand windows is that you link against .libs
+| [Wednesday 19 January 2011] [09:33:00] <mikko>	.dll for runtime and .lib for linking
+| [Wednesday 19 January 2011] [09:33:05] <pythonirc1011>	mikko: the problem is that when i try to create .lib files from zeromq code, it fails on VS2010
+| [Wednesday 19 January 2011] [09:33:18] <mikko>	pythonirc1011: whats the issue?
+| [Wednesday 19 January 2011] [09:33:33] <pythonirc1011>	lots of unresolved symbols
+| [Wednesday 19 January 2011] [09:34:32] <pythonirc1011>	stuff like this -- http://paste.pocoo.org/show/323265/
+| [Wednesday 19 January 2011] [09:35:38] <mikko>	how do you create .lib files?
+| [Wednesday 19 January 2011] [09:35:45] <mikko>	shouldnt they be build by default when .dll is built?
+| [Wednesday 19 January 2011] [09:36:07] <mikko>	and can you use 64bit zeromq with 32bit python?
+| [Wednesday 19 January 2011] [09:36:53] <mikko>	pythonirc1011: that looks like you are building static libraries
+| [Wednesday 19 January 2011] [09:36:56] <mikko>	rather than dlls
+| [Wednesday 19 January 2011] [09:37:21] <pythonirc1011>	mikko: i can build dlls, no problem
+| [Wednesday 19 January 2011] [09:37:45] <mikko>	pythonirc1011: it seems that when i do the continous integration builds the dll and lib are built to same directory
+| [Wednesday 19 January 2011] [09:37:54] <mikko>	without using any special options
+| [Wednesday 19 January 2011] [09:38:08] <pythonirc1011>	but the pyzeromq, wants a .lib file --LINK : fatal error LNK1181: cannot open input file 'libzmq.lib'
+| [Wednesday 19 January 2011] [09:38:42] <mikko>	pythonirc1011: yes, the build should generate you .lib and .dll into the lib/ directory
+| [Wednesday 19 January 2011] [09:38:46] <pythonirc1011>	mikko: In my case i only see the .dll built, no lib there...I changed the configuration to Release. Thats all i changed.
+| [Wednesday 19 January 2011] [09:38:58] <mikko>	hmm
+| [Wednesday 19 January 2011] [09:39:10] <mikko>	pythonirc1011: and thats 64bit build?
+| [Wednesday 19 January 2011] [09:39:37] <sustrik_>	with msvc2008 the lib was generated alongside the dll
+| [Wednesday 19 January 2011] [09:39:53] <mikko>	do you need something special with 2010?
+| [Wednesday 19 January 2011] [09:40:04] <mikko>	im building with 2008 atm
+| [Wednesday 19 January 2011] [09:40:13] <sustrik_>	maybe some msvc2010 quirk?
+| [Wednesday 19 January 2011] [09:40:21] <pythonirc1011>	no idea
+| [Wednesday 19 January 2011] [09:40:31] <mikko>	do we support 64bit windows?
+| [Wednesday 19 January 2011] [09:40:39] <sustrik_>	no idea
+| [Wednesday 19 January 2011] [09:40:45] <sustrik_>	some people complained
+| [Wednesday 19 January 2011] [09:40:55] <sustrik_>	some have noted that the 64bit build it ok
+| [Wednesday 19 January 2011] [09:40:59] <mikko>	and i dont think 64bit zeromq works with 32bit python
+| [Wednesday 19 January 2011] [09:41:01] <sustrik_>	i don't habe win64
+| [Wednesday 19 January 2011] [09:41:31] <sustrik_>	so i can't check myself
+| [Wednesday 19 January 2011] [09:41:38] <pythonirc1011>	mikko: can i just build 32-bit zeromq on 64-bit machines? 
+| [Wednesday 19 January 2011] [09:41:40] <mikko>	i think i got win7 64bit image somewhere
+| [Wednesday 19 January 2011] [09:41:44] <pythonirc1011>	I think i did...
+| [Wednesday 19 January 2011] [09:41:47] <mikko>	pythonirc1011: sure
+| [Wednesday 19 January 2011] [09:41:51] <pythonirc1011>	lemme try again
+| [Wednesday 19 January 2011] [09:42:17] <pythonirc1011>	building now
+| [Wednesday 19 January 2011] [09:42:48] <pythonirc1011>	only .dll file there
+| [Wednesday 19 January 2011] [09:42:58] <pythonirc1011>	win32 build + release -- no .lib there
+| [Wednesday 19 January 2011] [09:43:34] <mikko>	pythonirc1011: what does it say under Properties->Configuration Properties->Linker->Advanced 
+| [Wednesday 19 January 2011] [09:43:39] <mikko>	and import library there
+| [Wednesday 19 January 2011] [09:44:01] <mikko>	foudn a reference online that it might be msvc2008 -> 2010 project conversion issue
+| [Wednesday 19 January 2011] [09:44:34] <pythonirc1011>	Import library there is void
+| [Wednesday 19 January 2011] [09:44:52] <pythonirc1011>	i can add something there...if you need me to
+| [Wednesday 19 January 2011] [09:45:33] <mikko>	libzmq.lib
+| [Wednesday 19 January 2011] [09:45:40] <mikko>	is what it should output
+| [Wednesday 19 January 2011] [09:46:33] <pythonirc1011>	mikko: http://paste.pocoo.org/show/323272/ -- no .lib file still
+| [Wednesday 19 January 2011] [09:52:06] <mikko>	pythonirc1011: see the error message
+| [Wednesday 19 January 2011] [09:52:44] <pythonirc1011>	ah! $(OutDir), $(TargetName) and $(TargetExt) match? 
+| [Wednesday 19 January 2011] [09:52:53] <mikko>	maybe $(TargetName).lib
+| [Wednesday 19 January 2011] [09:52:58] <mikko>	as the import library name
+| [Wednesday 19 January 2011] [09:54:29] <pythonirc1011>	still trying to find where they are ...
+| [Wednesday 19 January 2011] [09:55:05] <mikko>	i dont have msvc2010 at hand here
+| [Wednesday 19 January 2011] [09:56:13] <pythonirc1011>	got it
+| [Wednesday 19 January 2011] [09:57:20] <pythonirc1011>	General->Taget Ext -> .lib (from .dll)
+| [Wednesday 19 January 2011] [09:57:23] <pythonirc1011>	that works
+| [Wednesday 19 January 2011] [09:57:31] <mikko>	ahmm
+| [Wednesday 19 January 2011] [09:57:36] <mikko>	did you rename the .dll to lib?
+| [Wednesday 19 January 2011] [09:57:45] <pythonirc1011>	i tried that...that didnt work
+| [Wednesday 19 January 2011] [09:57:48] <pythonirc1011>	pyzmq complained
+| [Wednesday 19 January 2011] [09:58:08] <mikko>	yes, because these are two different things
+| [Wednesday 19 January 2011] [09:58:12] <mikko>	import library and dll
+| [Wednesday 19 January 2011] [09:58:26] <pythonirc1011>	>>> import zmq --> Traceback (most recent call last):  File "<stdin>", line 1, in <module>  File "zmq\__init__.py", line 26, in <module>    from zmq.utils import initthreads # initialize threads ImportError: cannot import name initthreads
+| [Wednesday 19 January 2011] [09:58:36] <mikko>	pythonirc1011: http://msdn.microsoft.com/en-us/library/9yd93633%28v=vs.80%29.aspx
+| [Wednesday 19 January 2011] [09:58:38] <pythonirc1011>	could compile and install pyzmq, but now when i try to import, get this
+| [Wednesday 19 January 2011] [09:58:48] <mikko>	hmm
+| [Wednesday 19 January 2011] [09:59:06] <mikko>	did you download pyzmq matching 2.0.10 version?
+| [Wednesday 19 January 2011] [09:59:18] <pythonirc1011>	yes indeed
+| [Wednesday 19 January 2011] [09:59:27] <pythonirc1011>	zeromq-2.0.10 == pyzmq-2.0.10
+| [Wednesday 19 January 2011] [09:59:57] <mikko>	it tries to import something called "initthreads" ?
+| [Wednesday 19 January 2011] [10:00:06] <mikko>	from zmq.utils
+| [Wednesday 19 January 2011] [10:00:08] <pythonirc1011>	i did a python setup.py build_ext and python setup.py install...anything wrong there?
+| [Wednesday 19 January 2011] [10:00:39] <mikko>	pythonirc1011: not that i know of. however i dont really use python or windows
+| [Wednesday 19 January 2011] [10:01:38] <mikko>	the process we run for pyzmq on linux is 
+| [Wednesday 19 January 2011] [10:01:47] <mikko>	python setup.py cython
+| [Wednesday 19 January 2011] [10:01:55] <mikko>	python setup.py build_ext
+| [Wednesday 19 January 2011] [10:02:29] <mikko>	python setup.py test
+| [Wednesday 19 January 2011] [10:34:58] <traviscline>	any instructions on running the pyzmq perf tests?
+| [Wednesday 19 January 2011] [10:36:55] <mikko>	none
+| [Wednesday 19 January 2011] [10:40:40] 	 * traviscline is reading them 
+| [Wednesday 19 January 2011] [10:40:46] <traviscline>	but if anyone has a 'how to run' lemme know
+| [Wednesday 19 January 2011] [10:43:00] <pythonirc1011>	anyone using pyzeromq on win 7 + VS2010 + python 32-bit here? 
+| [Wednesday 19 January 2011] [10:53:49] <traviscline>	figured it out
+| [Wednesday 19 January 2011] [14:24:57] <sam`>	hi
+| [Wednesday 19 January 2011] [14:26:49] <sam`>	is it possible to provide a static/self-contained "package" of the java binding to include in a java project for deployment?
+| [Wednesday 19 January 2011] [14:27:17] <sam`>	currently when you build the java binding it creates the libjzmq shared library and the zmq jar which loads the library
+| [Wednesday 19 January 2011] [14:27:42] <sam`>	but that makes it a real pain to deploy to other machines where jzmq is not installed
+| [Wednesday 19 January 2011] [14:27:50] <sam`>	any hints?
+| [Wednesday 19 January 2011] [15:09:18] <lt_schmidt_jr>	Hello
+| [Wednesday 19 January 2011] [15:10:26] <lt_schmidt_jr>	Looking for someone to shoot holes in an approach to implement pub/sub for web clients
+| [Wednesday 19 January 2011] [15:11:25] <s0undt3ch>	ppl, with 2.1.0, on the call socket.recv_pyobj() I'm getting:
+| [Wednesday 19 January 2011] [15:11:27] <s0undt3ch>	File "socket.pyx", line 657, in zmq.core.socket.Socket.recv_pyobj (zmq/core/socket.c:5470)
+| [Wednesday 19 January 2011] [15:11:33] <s0undt3ch>	File "socket.pyx", line 94, in zmq.core.socket.Socket.__cinit__ (zmq/core/socket.c:1036)
+| [Wednesday 19 January 2011] [15:11:39] <s0undt3ch>	TypeError: __cinit__() takes exactly 2 positional arguments (0 given)
+| [Wednesday 19 January 2011] [15:11:47] <s0undt3ch>	why is this!?
+| [Wednesday 19 January 2011] [15:15:07] <traviscline>	s0undt3ch:  up to date with cython?
+| [Wednesday 19 January 2011] [15:15:20] <s0undt3ch>	traviscline: think so
+| [Wednesday 19 January 2011] [15:15:36] <s0undt3ch>	traviscline: at least, up to date with my distro's cython
+| [Wednesday 19 January 2011] [15:15:49] <traviscline>	built with 0.14 fine
+| [Wednesday 19 January 2011] [15:15:51] <s0undt3ch>	traviscline: and on another piece of code, it works good
+| [Wednesday 19 January 2011] [15:19:40] <Skaag>	lt_schmidt_jr: shoo
+| [Wednesday 19 January 2011] [15:19:41] <Skaag>	shoot
+| [Wednesday 19 January 2011] [15:40:19] <lt_schmidt_jr>	Thanks Skaag
+| [Wednesday 19 January 2011] [15:40:53] <Skaag>	lt_schmidt_jr: We actually are looking to implement the same, sort of a clone of pubnub.com
+| [Wednesday 19 January 2011] [15:41:54] <lt_schmidt_jr>	not familiar with that, but ours is domain specific to allow multiple clients to manipulate graph data
+| [Wednesday 19 January 2011] [15:44:05] <lt_schmidt_jr>	but the basic idea is to use Jetty Websocket (with Flash Socket when necessary) and have the instance specify what it is working on throgh the socket, establishing a pub and sub zeromq socket for each client and hooking it up using devices depending on deployment
+| [Wednesday 19 January 2011] [15:44:18] <lt_schmidt_jr>	single machine  - no devices
+| [Wednesday 19 January 2011] [15:44:42] <lt_schmidt_jr>	using ICP (if I remember correctly)
+| [Wednesday 19 January 2011] [15:44:55] <lt_schmidt_jr>	sorry single machine - local device with interproc
+| [Wednesday 19 January 2011] [15:45:19] <lt_schmidt_jr>	multiple machines - somehow put the devices together
+| [Wednesday 19 January 2011] [15:45:23] <lt_schmidt_jr>	not sure how though
+| [Wednesday 19 January 2011] [15:45:33] <lt_schmidt_jr>	does this make any sense?
+| [Wednesday 19 January 2011] [15:46:37] <lt_schmidt_jr>	On my earlier comment about no devices - I don't think that is possible with many pubs and subs 
+| [Wednesday 19 January 2011] [15:47:04] <lt_schmidt_jr>	unless they can discover each other somehow
+| [Wednesday 19 January 2011] [15:48:09] <lt_schmidt_jr>	I am thinking about using zookeeper perhaps at a later time
+| [Wednesday 19 January 2011] [15:48:36] <Skaag>	ok, we've been down the same road
+| [Wednesday 19 January 2011] [15:48:59] <Skaag>	at the moment, zookeeper is good for a fixed (unchanging) number of nodes
+| [Wednesday 19 January 2011] [15:49:37] <Skaag>	where it can help you, is in the notification on services that go up/down on those nodes
+| [Wednesday 19 January 2011] [15:49:47] <Skaag>	and in leader election, among the fixed set of nodes
+| [Wednesday 19 January 2011] [15:52:56] <lt_schmidt_jr>	Our number of nodes is fairly low (in terms of what we want to subscribe to)
+| [Wednesday 19 January 2011] [15:53:41] <lt_schmidt_jr>	we are thinking of it more like channels vs individual components
+| [Wednesday 19 January 2011] [15:54:07] <lt_schmidt_jr>	otherwise the client has to mirror whole state to the server
+| [Wednesday 19 January 2011] [15:54:26] <lt_schmidt_jr>	Skaag are you using a similar Java stack?
+| [Wednesday 19 January 2011] [15:55:00] <Skaag>	I'm not sure I understand how you use the term 'component'
+| [Wednesday 19 January 2011] [15:56:02] <lt_schmidt_jr>	leaf nodes , which are many  - we are looking to route fairly close to the base of the tree - if that makes sense
+| [Wednesday 19 January 2011] [15:56:21] <Skaag>	also I recommend you make a spreadsheet to calculate data packet sizes, to avoid bottlenecks, and to properly shape your data structures/sizes, it helps a lot to manage expectations
+| [Wednesday 19 January 2011] [15:56:31] <Skaag>	(unrelated to the issue but important)
+| [Wednesday 19 January 2011] [15:56:51] <Skaag>	yes understood
+| [Wednesday 19 January 2011] [15:57:01] <lt_schmidt_jr>	I see
+| [Wednesday 19 January 2011] [15:57:39] <lt_schmidt_jr>	so you are currently using zookeeper?
+| [Wednesday 19 January 2011] [15:57:45] <Skaag>	not anymore
+| [Wednesday 19 January 2011] [15:57:55] <Skaag>	I installed it, tried it, and found out it does not know how to add new nodes to the cluster
+| [Wednesday 19 January 2011] [15:58:03] <Skaag>	the list of nodes is hardcoded in a config file
+| [Wednesday 19 January 2011] [15:58:14] <Skaag>	quite annoying, and kinda defeating the purpose in my opinion
+| [Wednesday 19 January 2011] [15:58:22] <lt_schmidt_jr>	you are talking about Zookeeper nodes?
+| [Wednesday 19 January 2011] [15:58:43] <Skaag>	well in our case the idea was that machines would suddenly show up in a cluster
+| [Wednesday 19 January 2011] [15:59:07] <Skaag>	now I have some idea about using some sort of gnutella variant :-)
+| [Wednesday 19 January 2011] [15:59:16] <Skaag>	decentralized, etc.
+| [Wednesday 19 January 2011] [15:59:27] <lt_schmidt_jr>	interesting
+| [Wednesday 19 January 2011] [16:00:01] <lt_schmidt_jr>	so do you have a similar topology with many publishers and subscribers on the same channels?
+| [Wednesday 19 January 2011] [16:00:07] <Skaag>	yes
+| [Wednesday 19 January 2011] [16:00:17] <Skaag>	at the moment, we have a POC cluster of 16 nodes
+| [Wednesday 19 January 2011] [16:00:21] <Skaag>	it's tiny
+| [Wednesday 19 January 2011] [16:00:25] <Skaag>	we used Rabbitmq-server at first
+| [Wednesday 19 January 2011] [16:00:45] <Skaag>	but I was told by one of their team members that 16 nodes is considered a large cluster for them
+| [Wednesday 19 January 2011] [16:00:55] <lt_schmidt_jr>	I see
+| [Wednesday 19 January 2011] [16:00:59] <Skaag>	and since we're looking to scale to thousands of nodes, we had to abandon it
+| [Wednesday 19 January 2011] [16:01:20] <lt_schmidt_jr>	I was looking at RabbitMq and XMPP pubsub initially
+| [Wednesday 19 January 2011] [16:01:26] <lt_schmidt_jr>	as well
+| [Wednesday 19 January 2011] [16:01:34] <Skaag>	same here
+| [Wednesday 19 January 2011] [16:01:44] <lt_schmidt_jr>	how are you bridging pubsub between nodes?
+| [Wednesday 19 January 2011] [16:01:58] <Skaag>	this is at the moment done naively
+| [Wednesday 19 January 2011] [16:02:02] <lt_schmidt_jr>	are you also using a forwarder on each machine
+| [Wednesday 19 January 2011] [16:02:04] <lt_schmidt_jr>	?
+| [Wednesday 19 January 2011] [16:02:10] <Skaag>	all nodes are publishing to all nodes with zmq
+| [Wednesday 19 January 2011] [16:02:17] <Skaag>	yes with forwarders
+| [Wednesday 19 January 2011] [16:02:36] <lt_schmidt_jr>	this is too funny
+| [Wednesday 19 January 2011] [16:03:14] <lt_schmidt_jr>	so 2 forwarders per machine?
+| [Wednesday 19 January 2011] [16:03:21] <lt_schmidt_jr>	one in each direction?
+| [Wednesday 19 January 2011] [16:03:38] <Skaag>	I need to check with my team member who implemented that part
+| [Wednesday 19 January 2011] [16:03:46] <Skaag>	(we're a tiny team)
+| [Wednesday 19 January 2011] [16:04:06] <lt_schmidt_jr>	I am a team of 1 right now, building  a small POC
+| [Wednesday 19 January 2011] [16:04:44] <lt_schmidt_jr>	are you also using jetty - or are you non-http system?
+| [Wednesday 19 January 2011] [16:07:55] <Skaag>	yes we plan to use jetty
+| [Wednesday 19 January 2011] [16:08:02] <Skaag>	since we are 99% java based
+| [Wednesday 19 January 2011] [16:08:21] <lt_schmidt_jr>	Have you looked at Atmosphere?
+| [Wednesday 19 January 2011] [16:08:52] <lt_schmidt_jr>	its attractive, but I am not sure that frameworks fits well with zmq
+| [Wednesday 19 January 2011] [16:29:14] <Skaag>	no I haven't
+| [Wednesday 19 January 2011] [16:29:16] <Skaag>	checking it out
+| [Wednesday 19 January 2011] [16:37:14] <mikko>	good evening
+| [Wednesday 19 January 2011] [16:37:36] <lt_schmidt_jr>	Hello
+| [Wednesday 19 January 2011] [16:37:54] <mikko>	sustrik_: there?
+| [Wednesday 19 January 2011] [17:03:29] <lt_schmidt_jr>	Skaag, what is your application doing, if you don't mind me asking?
+| [Wednesday 19 January 2011] [17:04:46] <Skaag>	the system that uses zmq is intended to send/collect statistics information and aggregate them into a single body of statistical data
+| [Wednesday 19 January 2011] [17:04:54] <Skaag>	then inject it back to all nodes via same route
+| [Wednesday 19 January 2011] [17:05:29] <lt_schmidt_jr>	I see
+| [Wednesday 19 January 2011] [17:06:57] <mikko>	Skaag: you went ahead with the POC?
+| [Wednesday 19 January 2011] [17:07:06] <Skaag>	yes
+| [Wednesday 19 January 2011] [17:07:14] <mikko>	how is it working?
+| [Wednesday 19 January 2011] [17:07:18] <Skaag>	we are launching it tomorrow, hopefully
+| [Wednesday 19 January 2011] [17:07:21] <Skaag>	so far so good!
+| [Wednesday 19 January 2011] [17:08:01] <lt_schmidt_jr>	that is encouraging to hear
+| [Wednesday 19 January 2011] [17:11:18] <lt_schmidt_jr>	Skaag, what versions are you running for zmq and jzmq?
+| [Wednesday 19 January 2011] [17:11:37] <Skaag>	the very latest I guess
+| [Wednesday 19 January 2011] [17:25:39] <pythonirc101>	is it easy to use zeromq to communicate between machines behind nats?
+| [Wednesday 19 January 2011] [17:30:20] <pythonirc101>	anyone using pyzmq on win 7 here? 
+| [Wednesday 19 January 2011] [17:40:29] <traviscline>	\whois beppu 
+| [Wednesday 19 January 2011] [17:40:32] <traviscline>	whoops
+| [Wednesday 19 January 2011] [17:40:34] <traviscline>	does anyone know if MinRK (benjamin) or Brian Granger hang out in here?
+| [Wednesday 19 January 2011] [17:40:49] <traviscline>	looking for pyzmq authors 
+| [Wednesday 19 January 2011] [17:41:52] <mikko>	traviscline: they do occasionally
+| [Wednesday 19 January 2011] [17:42:01] <traviscline>	cool, thanks
+| [Wednesday 19 January 2011] [17:42:14] <mikko>	mr granger is bgranger
+| [Wednesday 19 January 2011] [17:42:18] <mikko>	and MinRK is MinRK
+| [Wednesday 19 January 2011] [17:42:30] <traviscline>	failing with some cython interop stuff and wanted to toss some Qs their way
+| [Wednesday 19 January 2011] [17:42:33] <traviscline>	rgr
+| [Wednesday 19 January 2011] [18:10:45] <traviscline>	pushed gevent compat with very basic cython support -- if any cython folks have input/critique please provide https://github.com/traviscline/gevent-zeromq
