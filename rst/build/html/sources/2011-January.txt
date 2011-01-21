@@ -3978,3 +3978,565 @@
 | [Wednesday 19 January 2011] [17:42:30] <traviscline>	failing with some cython interop stuff and wanted to toss some Qs their way
 | [Wednesday 19 January 2011] [17:42:33] <traviscline>	rgr
 | [Wednesday 19 January 2011] [18:10:45] <traviscline>	pushed gevent compat with very basic cython support -- if any cython folks have input/critique please provide https://github.com/traviscline/gevent-zeromq
+| [Wednesday 19 January 2011] [18:57:39] <andrewvc>	cremes: around?
+| [Wednesday 19 January 2011] [19:52:58] <cremes>	andrewvc: what's up?
+| [Wednesday 19 January 2011] [19:57:31] <cremes>	andrewvc: just send me an email...
+| [Wednesday 19 January 2011] [20:43:47] <mvolkov>	I am connecting to multiple sockets with "tcp://" in attempt to loadbalance load. Result: only first socket does the work, the rest do fail with following error: "Assertion failed: msg_->flags & ZMQ_MSG_MORE (rep.cpp:80)"
+| [Wednesday 19 January 2011] [20:45:20] <mvolkov>	I am using pyzmq. zmq.PUSH --->zmq.PULL
+| [Wednesday 19 January 2011] [20:45:45] <mvolkov>	is that a bug?
+| [Wednesday 19 January 2011] [23:21:36] <StockMQ>	Hi All!
+| [Wednesday 19 January 2011] [23:26:36] <StockMQ>	I am developing a middleware which will basically listen feed from Exchange, decompress it, read and process it and then publish the cleansed feed to subscribers
+| [Wednesday 19 January 2011] [23:27:18] <StockMQ>	after reading the elaborate docs and articles.. I have arrived to the decision to use 0MQ.. but have a few queires
+| [Wednesday 19 January 2011] [23:27:50] <StockMQ>	The first one being.. the feed from the exchange is a UDP multicast
+| [Wednesday 19 January 2011] [23:28:20] <StockMQ>	so in my middleware app can i listen to it using PGM SUB
+| [Wednesday 19 January 2011] [23:44:55] <cremes>	StockMQ: that's a good question for the mailing list; there is more pgm expertise there than on irc usually
+| [Wednesday 19 January 2011] [23:47:15] <guido_g>	in principle you need to convert between the formats, mq itself has its own wire format
+| [Wednesday 19 January 2011] [23:49:23] <StockMQ>	ohk.. I was looking to know that.. can i connect my zeroMQ client to a non zeroMQ server
+| [Wednesday 19 January 2011] [23:49:54] <guido_g>	as i said, mq has its own wire format
+| [Wednesday 19 January 2011] [23:49:59] <StockMQ>	the reason being i understand that zeroMQ is based on messaging and frames 
+| [Wednesday 19 January 2011] [23:50:48] <guido_g>	just use the normal way to connect to your fix/fast stream and read the data as usual
+| [Wednesday 19 January 2011] [23:51:14] <guido_g>	then you might send it out using mq
+| [Wednesday 19 January 2011] [23:54:43] <StockMQ>	guido_g:
+| [Wednesday 19 January 2011] [23:54:49] <StockMQ>	by normal way you mean
+| [Wednesday 19 January 2011] [23:55:08] <guido_g>	the you did it before
+| [Wednesday 19 January 2011] [23:55:11] <guido_g>	*the way
+| [Wednesday 19 January 2011] [23:55:24] <StockMQ>	ohk
+| [Wednesday 19 January 2011] [23:56:11] <StockMQ>	So it is better i connect to the fast stream using my VC++ application
+| [Wednesday 19 January 2011] [23:56:46] <StockMQ>	Then maybe i can implement a pipeline in 0MQ where the worker threads can process the feed packets and then send it downstream to Publisher
+| [Wednesday 19 January 2011] [23:57:04] <StockMQ>	Does that sound right
+| [Thursday 20 January 2011] [01:06:44] <StockMQ>	How different is Push/Pull from Publish/Subscribe??
+| [Thursday 20 January 2011] [01:07:17] <StockMQ>	Apart from the fact that Subscribe makes filtering easy
+| [Thursday 20 January 2011] [01:09:32] <guido_g>	see http://api.zeromq.org/zmq_socket.html
+| [Thursday 20 January 2011] [01:53:23] <CIA-21>	zeromq2: 03Dhammika Pathirana 07master * rc91bf25 10/ (src/decoder.hpp src/zmq_engine.cpp): 
+| [Thursday 20 January 2011] [01:53:23] <CIA-21>	zeromq2: Fix handle connection reset during session init
+| [Thursday 20 January 2011] [01:53:23] <CIA-21>	zeromq2: Patch to handle nmap version probes.
+| [Thursday 20 January 2011] [01:53:23] <CIA-21>	zeromq2: Signed-off-by: Dhammika Pathirana <dhammika@gmail.com> - http://bit.ly/hZescC
+| [Thursday 20 January 2011] [02:07:11] <Evet>	would you use zeromq as front-end for several protocols? for example, an http server
+| [Thursday 20 January 2011] [02:12:49] <guido_g>	what do you mean w/ frontend?
+| [Thursday 20 January 2011] [02:16:51] <Evet>	guido_g: im planning to build my web app in c; i think zeromq would be a good framework for request/respond based tcp servers
+| [Thursday 20 January 2011] [02:17:10] <guido_g>	no its not
+| [Thursday 20 January 2011] [02:17:17] <guido_g>	mq is not a tcp lib
+| [Thursday 20 January 2011] [02:17:26] <guido_g>	it uses its own wire format
+| [Thursday 20 January 2011] [02:27:53] <Evet>	guido_g: then, which event loop library you suggest for bsd sockets?
+| [Thursday 20 January 2011] [02:28:16] <guido_g>	the one you have most knowledge of
+| [Thursday 20 January 2011] [04:27:28] <mikko>	good morning
+| [Thursday 20 January 2011] [04:45:05] <Evet>	howdy mikko 
+| [Thursday 20 January 2011] [06:07:49] <kabs>	Hello, I was going through the guide on ZeroMQ at http://zguide.zeromq.org/chapter:all#toc0, If you use c code directly from it under the heading "Getting the Message Out", which is a simple pub-sub code, it doesn't work.
+| [Thursday 20 January 2011] [06:08:32] <kabs>	Sever is subscribing data but client is stuck at this step sscanf (string, "%d %d %d",   &zipcode, &temperature, &relhumidity); 
+| [Thursday 20 January 2011] [06:09:22] <kabs>	Anyone , who can tell me how I can debug this client code, or does this code work, I found the code above it to be working , now sure about this pub-sub code, please help ...
+| [Thursday 20 January 2011] [06:33:56] <sustrik_>	are you sure the client is able to connect to the server?
+| [Thursday 20 January 2011] [08:10:09] <stockMQ>	Hi. Just started with 0MQ today
+| [Thursday 20 January 2011] [08:10:14] <stockMQ>	am using it with VC++
+| [Thursday 20 January 2011] [08:10:41] <stockMQ>	I am trying to create the socket in constructor
+| [Thursday 20 January 2011] [08:10:49] <stockMQ>	use it in other method of my class
+| [Thursday 20 January 2011] [08:12:08] <stockMQ>	But the constructor socket_t (const socket_t&); seems to be private in zmq.hpp
+| [Thursday 20 January 2011] [08:12:45] <mikko>	stockMQ: isnt that copy constructor?
+| [Thursday 20 January 2011] [08:14:58] <sustrik_>	it is
+| [Thursday 20 January 2011] [08:15:09] <sustrik_>	you cannot copy the socket
+| [Thursday 20 January 2011] [08:15:13] <mikko>	this->socket = new socket_t(context, ZMQ_PUSH); 
+| [Thursday 20 January 2011] [08:15:19] <mikko>	and in destructor delete it
+| [Thursday 20 January 2011] [08:15:26] <sustrik_>	or:
+| [Thursday 20 January 2011] [08:15:38] <mikko>	initializer list is another option i guess
+| [Thursday 20 January 2011] [08:15:39] <sustrik_>	socket_t s (context, ZMQ_PUSH);
+| [Thursday 20 January 2011] [08:20:00] <stockMQ>	ok
+| [Thursday 20 January 2011] [08:20:10] <stockMQ>	lemme try the above
+| [Thursday 20 January 2011] [08:28:50] <stockMQ>	 this->publisher = new socket_t(context, ZMQ_PUSH);
+| [Thursday 20 January 2011] [08:28:52] <stockMQ>	gave
+| [Thursday 20 January 2011] [08:29:11] <stockMQ>	error C2512: 'zmq::socket_t' : no appropriate default constructor available
+| [Thursday 20 January 2011] [08:34:46] <sustrik_>	strange
+| [Thursday 20 January 2011] [08:35:15] <sustrik_>	can you have a look at your zmq.hpp file?
+| [Thursday 20 January 2011] [08:35:23] <sustrik_>	there should be this line there:
+| [Thursday 20 January 2011] [08:35:25] <sustrik_>	    inline socket_t (context_t &context_, int type_)
+| [Thursday 20 January 2011] [08:35:36] <sustrik_>	is it?
+| [Thursday 20 January 2011] [08:35:40] <stockMQ>	yes
+| [Thursday 20 January 2011] [08:35:41] <mikko>	and what is 'context' in this case?
+| [Thursday 20 January 2011] [08:35:43] <stockMQ>	i see that line
+| [Thursday 20 January 2011] [08:35:58] <sustrik_>	zmq:::context_t&
+| [Thursday 20 January 2011] [08:36:09] <mikko>	i mean in this 13:28 < stockMQ>  this->publisher = new socket_t(context, ZMQ_PUSH);
+| [Thursday 20 January 2011] [08:36:09] <sustrik_>	zmq::context_t ctx(1);
+| [Thursday 20 January 2011] [08:36:20] <sustrik_>	zmq::socket_t s(ctx, ZMQ_PUSH);
+| [Thursday 20 January 2011] [08:36:27] <mikko>	if type of context was something funny it wouldnt find constructor i assume
+| [Thursday 20 January 2011] [08:36:48] <stockMQ>	 context_t context(1); 	 socket_t publisher(context, ZMQ_PUSH);
+| [Thursday 20 January 2011] [08:36:55] <stockMQ>	This work without any problem
+| [Thursday 20 January 2011] [08:37:10] <sustrik_>	great
+| [Thursday 20 January 2011] [08:37:26] <stockMQ>	My issue is i need a pointer to publisher socket in other method of my class. 
+| [Thursday 20 January 2011] [08:37:28] <mikko>	i see
+| [Thursday 20 January 2011] [08:37:30] <stockMQ>	so if i do 
+| [Thursday 20 January 2011] [08:37:37] <stockMQ>	socket_t publisher(context, ZMQ_PUSH);
+| [Thursday 20 January 2011] [08:37:48] <mikko>	the member needs to be zms::socket_t *publisher;
+| [Thursday 20 January 2011] [08:37:48] <stockMQ>	the visibility is restricted to the constructor
+| [Thursday 20 January 2011] [08:37:57] <mikko>	not zmq::socket_t publisher;
+| [Thursday 20 January 2011] [08:38:20] <mikko>	as the latter would try to call empty constructor (assuming no initializer list) 
+| [Thursday 20 January 2011] [08:40:03] <sustrik_>	you can either make the socket member of the class, or you can pass it *pointer* to the socket as an argument
+| [Thursday 20 January 2011] [08:40:03] <stockMQ>	that makes sense
+| [Thursday 20 January 2011] [08:40:08] <stockMQ>	but i am referring to https://github.com/imatix/zguide/blob/master/examples/C++/durapub.cpp
+| [Thursday 20 January 2011] [08:40:50] <mikko>	stockMQ: not sure i understand
+| [Thursday 20 January 2011] [08:42:57] <stockMQ>	Ok here is the scenario
+| [Thursday 20 January 2011] [08:43:30] <stockMQ>	1. I receive fast feed from the exchange which i want to inturn publish to other subscribers
+| [Thursday 20 January 2011] [08:44:01] <stockMQ>	2. So i want to intialize the publisher in the constructor
+| [Thursday 20 January 2011] [08:44:21] <stockMQ>	and Send whenever a packet is recvd from the fast feed
+| [Thursday 20 January 2011] [08:44:39] <stockMQ>	sustrik...did u see that link
+| [Thursday 20 January 2011] [08:44:45] <sustrik_>	yup
+| [Thursday 20 January 2011] [08:44:57] <sustrik_>	why not make the socket a member of the class?
+| [Thursday 20 January 2011] [08:45:23] <stockMQ>	yes i want to do that
+| [Thursday 20 January 2011] [08:45:27] <stockMQ>	for example
+| [Thursday 20 January 2011] [08:45:41] <stockMQ>	socket_t* publisher;
+| [Thursday 20 January 2011] [08:45:47] <stockMQ>	In constructor
+| [Thursday 20 January 2011] [08:45:55] <stockMQ>	publisher = ? ? ?
+| [Thursday 20 January 2011] [08:46:16] <sustrik_>	new socket_t (ctx, ZMQ_PUSH);
+| [Thursday 20 January 2011] [08:46:41] <mikko>	context must be a member or passed as param as well
+| [Thursday 20 January 2011] [08:49:44] <mikko>	so for example https://gist.github.com/01386aebde16bfb65672 should work
+| [Thursday 20 January 2011] [08:51:40] <mikko>	sustrik_: i took a brief look at UDT sockets
+| [Thursday 20 January 2011] [08:52:34] <stockMQ>	Thanks guyz
+| [Thursday 20 January 2011] [08:52:55] <sustrik_>	mikko: what have you found out?
+| [Thursday 20 January 2011] [08:53:01] <sustrik_>	stockMQ: np
+| [Thursday 20 January 2011] [08:53:31] <mikko>	sustrik_: 1. there are two libraries, neither of them packaged with distros it seems
+| [Thursday 20 January 2011] [08:53:47] <mikko>	they got their own type for sockets
+| [Thursday 20 January 2011] [08:53:58] <mikko>	zeromq seems to be keen on "fd_t" in places
+| [Thursday 20 January 2011] [08:54:19] <sustrik_>	you mean, user-space pseudosockets, right?
+| [Thursday 20 January 2011] [08:54:32] <mikko>	yes
+| [Thursday 20 January 2011] [08:54:36] <sustrik_>	ok
+| [Thursday 20 January 2011] [08:54:46] <stockMQ>	I am new to the world of pointers.. Just curious..  zmq::socket_t publisher (context, ZMQ_PUB);     publisher.bind("tcp://*:5565");
+| [Thursday 20 January 2011] [08:54:53] <stockMQ>	how would this work
+| [Thursday 20 January 2011] [08:55:04] <stockMQ>	should it not be publisher->bind
+| [Thursday 20 January 2011] [08:55:19] <mikko>	stockMQ: no, because publisher is not a pointer
+| [Thursday 20 January 2011] [08:55:31] <sustrik_>	stockMQ: if you are not familiar with pointers I would suggest using C API
+| [Thursday 20 January 2011] [08:55:38] <sustrik_>	it's less complex
+| [Thursday 20 January 2011] [08:55:39] <mikko>	sustrik_: however their api is pretty close to normal socket api
+| [Thursday 20 January 2011] [08:55:53] <stockMQ>	ok
+| [Thursday 20 January 2011] [08:55:59] <sustrik_>	mikko: i see
+| [Thursday 20 January 2011] [08:56:01] <mikko>	sustrik_: http://udt.sourceforge.net/udt4/index.htm
+| [Thursday 20 January 2011] [08:56:13] <mikko>	if you look at the example code it probably looks familiar immediately
+| [Thursday 20 January 2011] [08:56:51] <sustrik_>	yes, it does
+| [Thursday 20 January 2011] [08:58:24] <sustrik_>	there looks there is no way to get the underlying file descriptor
+| [Thursday 20 January 2011] [08:58:52] <mikko>	yes, it's very likely that you can't
+| [Thursday 20 January 2011] [08:59:29] <sustrik_>	that would mean that each UDT worker would have to run in a separate thread
+| [Thursday 20 January 2011] [08:59:32] <mikko>	they seem to have their own epoll implementation
+| [Thursday 20 January 2011] [08:59:38] <mikko>	UDT::epoll
+| [Thursday 20 January 2011] [09:00:07] <sustrik_>	the problem is that it accepts only UDT sockets
+| [Thursday 20 January 2011] [09:00:19] <sustrik_>	so it can't be combined with TCP
+| [Thursday 20 January 2011] [09:00:28] <sustrik_>	or PGM
+| [Thursday 20 January 2011] [09:00:32] <sustrik_>	or whatever
+| [Thursday 20 January 2011] [09:00:37] <mikko>	yes
+| [Thursday 20 January 2011] [09:00:50] <mikko>	and probably we wouldn't like to use theirs as main implementation
+| [Thursday 20 January 2011] [09:01:14] <sustrik_>	Ah!
+| [Thursday 20 January 2011] [09:01:15] <sustrik_>	lrfds
+| [Thursday 20 January 2011] [09:01:15] <sustrik_>	    [out] Optional pointer to a set of system sockets that are ready to read.
+| [Thursday 20 January 2011] [09:01:15] <sustrik_>	lwfds
+| [Thursday 20 January 2011] [09:01:15] <sustrik_>	    [out] Optional pointer to a set of system sockets that are ready to write, or are broken.
+| [Thursday 20 January 2011] [09:01:43] <sustrik_>	so there's a way to combine UDT sockets with OS sockets
+| [Thursday 20 January 2011] [09:02:06] <sustrik_>	we would have to create a new poller though
+| [Thursday 20 January 2011] [09:02:14] <sustrik_>	one that uses UDT epoll
+| [Thursday 20 January 2011] [09:02:28] <sustrik_>	instead of select/poll/epoll/kqueue etc.
+| [Thursday 20 January 2011] [09:03:13] <sustrik_>	it's doable though
+| [Thursday 20 January 2011] [09:04:27] <mikko>	luckily it should be very similar to epoll
+| [Thursday 20 January 2011] [09:05:32] <sustrik_>	yeah, i think it can be done
+| [Thursday 20 January 2011] [09:05:55] <sustrik_>	the question is whether anyone needs that kind of thing
+| [Thursday 20 January 2011] [09:06:27] <sustrik_>	(UDT via 0MQ i mean)
+| [Thursday 20 January 2011] [09:07:18] <mikko>	the other option would be to run separate thread?
+| [Thursday 20 January 2011] [09:07:28] <mikko>	oh
+| [Thursday 20 January 2011] [09:07:31] <mikko>	got you now
+| [Thursday 20 January 2011] [09:07:48] <mikko>	yes, it might be slightly faster than tcp assuming there is no network issues
+| [Thursday 20 January 2011] [09:08:02] <mikko>	not sure if anyone has burning need for that sort of speeds
+| [Thursday 20 January 2011] [09:08:44] <sustrik_>	it would be nice to have, the obvious question is who will bear the maintenance burden
+| [Thursday 20 January 2011] [09:08:52] <sustrik_>	and whether it's worth of it
+| [Thursday 20 January 2011] [09:09:22] <sustrik_>	viable approach would be to cooperate with the author of UDT library
+| [Thursday 20 January 2011] [09:09:30] <sustrik_>	same way as we do with steven
+| [Thursday 20 January 2011] [09:10:15] <mikko>	that would be ideal i guess
+| [Thursday 20 January 2011] [09:10:27] <mikko>	the other udt library is by bittorrent
+| [Thursday 20 January 2011] [09:10:34] <mikko>	someone mentioned a github link
+| [Thursday 20 January 2011] [09:11:10] <mikko>	hmm, it's actually utp
+| [Thursday 20 January 2011] [09:11:30] <mikko>	https://github.com/bittorrent/libutp
+| [Thursday 20 January 2011] [09:12:33] <mikko>	that sounds a bit like UDT
+| [Thursday 20 January 2011] [09:14:32] <sustrik_>	we had few people asking for UDP-based transports
+| [Thursday 20 January 2011] [09:14:47] <sustrik_>	however, afaik we have no idea what specifically they are interested in
+| [Thursday 20 January 2011] [09:14:54] <sustrik_>	it may be:
+| [Thursday 20 January 2011] [09:15:05] <sustrik_>	1. unreliable transport without re-transmissions
+| [Thursday 20 January 2011] [09:15:49] <sustrik_>	2. UDT-like fast transfer for large chunks of data
+| [Thursday 20 January 2011] [09:15:57] <sustrik_>	3. unreliable multicast
+| [Thursday 20 January 2011] [09:16:14] <sustrik_>	it would be good figuring that out...
+| [Thursday 20 January 2011] [09:16:35] <mikko>	there was one guy here the other night
+| [Thursday 20 January 2011] [09:16:40] <mikko>	he was after 1.
+| [Thursday 20 January 2011] [09:16:53] <mikko>	but i dont think udp alone fits into zeromq model that well
+| [Thursday 20 January 2011] [09:17:16] <sustrik_>	you can at least do pub/sub
+| [Thursday 20 January 2011] [09:18:06] <sustrik_>	anyway, there are many different transports that can be implemented
+| [Thursday 20 January 2011] [09:18:20] <sustrik_>	sctp, udp+dccp, udt etc.
+| [Thursday 20 January 2011] [09:18:41] <sustrik_>	what's missing imo is a clear interface for writing new transports
+| [Thursday 20 January 2011] [09:18:49] <mikko>	it looks like there is no strict abstraction of transports at the moment
+| [Thursday 20 January 2011] [09:18:56] <sustrik_>	exactly
+| [Thursday 20 January 2011] [09:18:57] <mikko>	from the experience of starting udt impl
+| [Thursday 20 January 2011] [09:20:01] <sustrik_>	that's something that i would like to have, however, it's not clear how the interface should look like
+| [Thursday 20 January 2011] [09:22:04] <sustrik_>	mikko: any idea?
+| [Thursday 20 January 2011] [09:22:12] <mikko>	it's very hard to say
+| [Thursday 20 January 2011] [09:22:18] <mikko>	there are so many parts to the interface
+| [Thursday 20 January 2011] [09:22:38] <mikko>	such as receiving / sending, polling etc
+| [Thursday 20 January 2011] [09:22:46] <sustrik_>	:(
+| [Thursday 20 January 2011] [09:23:10] <mikko>	and some sockets might have their own poll, some might have callback driven interface
+| [Thursday 20 January 2011] [09:23:23] <sustrik_>	yuck
+| [Thursday 20 January 2011] [09:23:28] <mikko>	it's very hard to create a "plug&play" api for all these
+| [Thursday 20 January 2011] [09:23:41] <sustrik_>	well
+| [Thursday 20 January 2011] [09:23:53] <sustrik_>	we have an interface for different polling mechanisms
+| [Thursday 20 January 2011] [09:24:18] <sustrik_>	there's already select, poll, epoll, kqueue & dev/poll
+| [Thursday 20 January 2011] [09:24:40] <mikko>	because thinking about the larger picture you probably want pluggable transports that users can create
+| [Thursday 20 January 2011] [09:24:46] <mikko>	which would drive contributions
+| [Thursday 20 January 2011] [09:24:56] <sustrik_>	yes
+| [Thursday 20 January 2011] [09:25:22] <sustrik_>	so, i think the polling part is not that big a problem
+| [Thursday 20 January 2011] [09:25:25] <sustrik_>	so for example
+| [Thursday 20 January 2011] [09:25:27] <mikko>	true
+| [Thursday 20 January 2011] [09:25:38] <sustrik_>	with udt you would write a udt_epoll polling mechanism
+| [Thursday 20 January 2011] [09:25:44] <sustrik_>	and...
+| [Thursday 20 January 2011] [09:25:48] <sustrik_>	a sec
+| [Thursday 20 January 2011] [09:26:15] <sustrik_>	add following to the poller.hpp:
+| [Thursday 20 January 2011] [09:26:29] <sustrik_>	#elif defined ZMQ_HAVE_UDT
+| [Thursday 20 January 2011] [09:26:29] <sustrik_>	    typedef udt_epoll_t poller_t;
+| [Thursday 20 January 2011] [09:26:39] <mikko>	yeah
+| [Thursday 20 January 2011] [09:27:12] <sustrik_>	hm, one problem would be if there are 2 such transports, the pollers would collide
+| [Thursday 20 January 2011] [09:28:39] <mikko>	or maybe we limit to transports that have pollable fd
+| [Thursday 20 January 2011] [09:28:45] <mikko>	but does that limit too much?
+| [Thursday 20 January 2011] [09:29:02] <mikko>	maybe it would be possible to have pollable fd in udt but they havent had the request yet
+| [Thursday 20 January 2011] [09:29:02] <sustrik_>	i don't think so
+| [Thursday 20 January 2011] [09:29:19] <sustrik_>	thay have to use sockets underneath anyway
+| [Thursday 20 January 2011] [09:29:41] <mikko>	yes
+| [Thursday 20 January 2011] [09:29:45] <sustrik_>	so it's only a question of exposing them to the user
+| [Thursday 20 January 2011] [09:29:49] <sustrik_>	which is nasty
+| [Thursday 20 January 2011] [09:29:49] <mikko>	if the fd was strictly for polling
+| [Thursday 20 January 2011] [09:29:58] <sustrik_>	but needed every now and then
+| [Thursday 20 January 2011] [09:30:07] <sustrik_>	yes
+| [Thursday 20 January 2011] [09:30:11] <mikko>	integration is prime example
+| [Thursday 20 January 2011] [09:30:21] <mikko>	people using udt only wont probably need it
+| [Thursday 20 January 2011] [09:30:29] <sustrik_>	same with 0mq itself, there's ZMQ_FD
+| [Thursday 20 January 2011] [09:30:37] <sustrik_>	OpenPGM does the same thing
+| [Thursday 20 January 2011] [09:31:18] <mikko>	if udt exposed an fd it would be far from tcp socket
+| [Thursday 20 January 2011] [09:31:23] <mikko>	wouldnt*
+| [Thursday 20 January 2011] [09:31:51] <sustrik_>	right, that's the another question
+| [Thursday 20 January 2011] [09:32:09] <sustrik_>	how to abstract the socket behaviour
+| [Thursday 20 January 2011] [09:32:53] <sustrik_>	i.e. how should the transport interface dealing with actual connection negotiation and transfer look like
+| [Thursday 20 January 2011] [09:33:12] <sustrik_>	my feeling is that there are 2 distinct cases:
+| [Thursday 20 January 2011] [09:33:17] <sustrik_>	1. connected transport
+| [Thursday 20 January 2011] [09:33:24] <sustrik_>	2. unconnected transports
+| [Thursday 20 January 2011] [09:33:34] <sustrik_>	example of 1. is TCP, example of 2. is PGM
+| [Thursday 20 January 2011] [09:33:43] <mikko>	yes
+| [Thursday 20 January 2011] [09:33:51] <mikko>	common things for both are:
+| [Thursday 20 January 2011] [09:33:58] <mikko>	read/write, connect/bind
+| [Thursday 20 January 2011] [09:34:12] <mikko>	some sort of "is alive"
+| [Thursday 20 January 2011] [09:35:01] <sustrik_>	actually, connect/bind doesn't make much sense for 2.
+| [Thursday 20 January 2011] [09:35:14] <sustrik_>	with pgm, both connect and bind do the same thing
+| [Thursday 20 January 2011] [09:35:34] <sustrik_>	which would be more properly called "initialisation"
+| [Thursday 20 January 2011] [09:35:47] <mikko>	yes, probably initialization
+| [Thursday 20 January 2011] [09:35:51] <mikko>	hmm
+| [Thursday 20 January 2011] [09:36:39] <mikko>	i assume getting pollable fd would be a common thing
+| [Thursday 20 January 2011] [09:37:23] <sustrik_>	probably
+| [Thursday 20 January 2011] [09:38:34] <mikko>	ideally the transport would be as dummy as possible
+| [Thursday 20 January 2011] [09:38:35] <sustrik_>	the transport would provide an fd, 0mq would use it *only* for polling
+| [Thursday 20 January 2011] [09:38:40] <mikko>	shifting bytes left and right
+| [Thursday 20 January 2011] [09:38:48] <sustrik_>	and forward the handling of the event back to the transport
+| [Thursday 20 January 2011] [09:38:59] <mikko>	yes
+| [Thursday 20 January 2011] [09:39:05] <sustrik_>	sorry?
+| [Thursday 20 January 2011] [09:39:08] <sustrik_>	whay bytes?
+| [Thursday 20 January 2011] [09:39:10] <sustrik_>	what
+| [Thursday 20 January 2011] [09:39:36] <sustrik_>	ah, the messages, right?
+| [Thursday 20 January 2011] [09:39:39] <mikko>	yes
+| [Thursday 20 January 2011] [09:39:49] <mikko>	but from transport point of view bytes
+| [Thursday 20 January 2011] [09:40:05] <mikko>	just data
+| [Thursday 20 January 2011] [09:40:34] <sustrik_>	hm, that would limit the range of possible transports severely
+| [Thursday 20 January 2011] [09:40:40] <sustrik_>	think of HTTP transport
+| [Thursday 20 January 2011] [09:40:48] <sustrik_>	it has to know about message boundaries
+| [Thursday 20 January 2011] [09:41:00] <sustrik_>	so that it can attach HTTP header to each message
+| [Thursday 20 January 2011] [09:41:02] <mikko>	i don't think http transport is realistic in core
+| [Thursday 20 January 2011] [09:41:14] <sustrik_>	it's just an example
+| [Thursday 20 January 2011] [09:41:17] <sustrik_>	think of SCTP
+| [Thursday 20 January 2011] [09:41:24] <sustrik_>	it has its own framing
+| [Thursday 20 January 2011] [09:41:34] <sustrik_>	thus it needs to know about 0mq message boundaries
+| [Thursday 20 January 2011] [09:41:50] <sustrik_>	so that it can frame each 0mq message into SCTP message
+| [Thursday 20 January 2011] [09:42:24] <stockMQ>	sorry to interrupt guys
+| [Thursday 20 January 2011] [09:42:32] <stockMQ>	using this->context = new zmq::context_t (1);      this->publisher = new zmq::socket_t (*this->context, ZMQ_PUB); 	 //publisher(context, ZMQ_PUB); 	 this->publisher->bind("tcp://*:5565");
+| [Thursday 20 January 2011] [09:42:45] <mikko>	sustrik_: hmm
+| [Thursday 20 January 2011] [09:43:01] <stockMQ>	and whenever i receive a packet from exchange which is in ms
+| [Thursday 20 January 2011] [09:43:01] <mikko>	sustrik_: let's think about it in this way:
+| [Thursday 20 January 2011] [09:43:07] <mikko>	i am sending 1MB message
+| [Thursday 20 January 2011] [09:43:13] <sustrik_>	stockMQ: what's wrong with that?
+| [Thursday 20 January 2011] [09:43:14] <stockMQ>	i do 
+| [Thursday 20 January 2011] [09:43:20] <stockMQ>	 s_send (this->publisher,"TEST");
+| [Thursday 20 January 2011] [09:43:37] <stockMQ>	here the code breaks with an Access Violation
+| [Thursday 20 January 2011] [09:43:46] <mikko>	you probably want s_send(*this->publisher, "TEST");
+| [Thursday 20 January 2011] [09:43:47] <stockMQ>	but instead if on every packet receipt
+| [Thursday 20 January 2011] [09:43:57] <stockMQ>	if i do
+| [Thursday 20 January 2011] [09:44:15] <mikko>	stockMQ: how is s_send defined?
+| [Thursday 20 January 2011] [09:44:18] <stockMQ>	context_t context(1);      socket_t publisher(context, ZMQ_PUB); 	 //publisher(context, ZMQ_PUB); 	 publisher.bind("tcp://*:5565"); 	// s_send() 	 s_send (publisher,"END");
+| [Thursday 20 January 2011] [09:44:20] <sustrik_>	i think s_send works on C API
+| [Thursday 20 January 2011] [09:44:24] <sustrik_>	not C++ API
+| [Thursday 20 January 2011] [09:44:28] <stockMQ>	it works fine
+| [Thursday 20 January 2011] [09:45:07] <mikko>	stockMQ: did you try s_send (*this->publisher, "TEST"); ?
+| [Thursday 20 January 2011] [09:45:13] <mikko>	sustrik_: so
+| [Thursday 20 January 2011] [09:45:32] <mikko>	so what i am thinking is for example sending large message which cant be sent in one go
+| [Thursday 20 January 2011] [09:45:45] <mikko>	would the chunking be handled in transport?
+| [Thursday 20 January 2011] [09:47:19] <sustrik_>	can't be sent in one go = multi-part?
+| [Thursday 20 January 2011] [09:58:26] <mikko>	no
+| [Thursday 20 January 2011] [09:58:28] <mikko>	transport layer
+| [Thursday 20 January 2011] [09:58:33] <mikko>	EAGAIN for example
+| [Thursday 20 January 2011] [11:28:05] <Skaag>	weird, i'm compiling on a fresh machine a very simple test and I get test.c:(.text+0x3c): undefined reference to `zmq_socket', etc.
+| [Thursday 20 January 2011] [11:44:14] <mikko>	Skaag: are you linking against zmq?
+| [Thursday 20 January 2011] [11:44:20] <mikko>	Skaag: looks like not
+| [Thursday 20 January 2011] [12:28:22] <sustrik_>	mikko: re
+| [Thursday 20 January 2011] [12:28:31] <sustrik_>	i see
+| [Thursday 20 January 2011] [12:29:03] <sustrik_>	in any case 0mq is not able to send a message that doesn't fit into memory
+| [Thursday 20 January 2011] [12:29:26] <mikko>	sure
+| [Thursday 20 January 2011] [12:29:34] <mikko>	i mean if you have non-blocking socket
+| [Thursday 20 January 2011] [12:29:35] <sustrik_>	and how do large messages affect whether trasport should frame messages or not?
+| [Thursday 20 January 2011] [12:29:41] <mikko>	you send 200K, get EAGAIN
+| [Thursday 20 January 2011] [12:29:52] <mikko>	does the transport buffer the message and retry?
+| [Thursday 20 January 2011] [12:30:11] <sustrik_>	you mane EAGAIN from the underlying socket?
+| [Thursday 20 January 2011] [12:30:15] <mikko>	yes
+| [Thursday 20 January 2011] [12:30:15] <sustrik_>	TCP socket
+| [Thursday 20 January 2011] [12:30:49] <sustrik_>	the transports are event driven
+| [Thursday 20 January 2011] [12:31:06] <sustrik_>	so once the underlying tcp socket is ready for writing
+| [Thursday 20 January 2011] [12:31:11] <mikko>	ok
+| [Thursday 20 January 2011] [12:31:15] <sustrik_>	transport is notified
+| [Thursday 20 January 2011] [12:31:22] <sustrik_>	and tries to write some data
+| [Thursday 20 January 2011] [12:31:30] <sustrik_>	how much is up to the transport
+| [Thursday 20 January 2011] [12:31:52] <sustrik_>	anyway, the data can be sent partially
+| [Thursday 20 January 2011] [12:32:09] <sustrik_>	so the transport has to remember the reamining part
+| [Thursday 20 January 2011] [12:32:17] <sustrik_>	and send it on next "can send" event
+| [Thursday 20 January 2011] [12:32:36] <mikko>	so the buffering of messages happen all the way down in transport?
+| [Thursday 20 January 2011] [12:33:00] <sustrik_>	transport has to buffer one message
+| [Thursday 20 January 2011] [12:33:05] <sustrik_>	(the partially sent one)
+| [Thursday 20 January 2011] [12:33:08] <mikko>	ok
+| [Thursday 20 January 2011] [12:33:20] <sustrik_>	the remaining messages are buffered in pipes
+| [Thursday 20 January 2011] [12:33:22] <mikko>	so the write () method for transport would take a message
+| [Thursday 20 January 2011] [12:34:02] <sustrik_>	it flow of command is in opposite direction
+| [Thursday 20 January 2011] [12:34:12] <sustrik_>	it's not that pipe calls write() function on transport
+| [Thursday 20 January 2011] [12:34:22] <sustrik_>	rather trasport calls read() on the pipe
+| [Thursday 20 January 2011] [12:35:00] <mikko>	hmm
+| [Thursday 20 January 2011] [12:35:41] <sustrik_>	it's poller who actually invokes the transport
+| [Thursday 20 January 2011] [12:35:52] <sustrik_>	saying "you can read from TCP socket"
+| [Thursday 20 January 2011] [12:35:59] <sustrik_>	or "you can write to TCP socket"
+| [Thursday 20 January 2011] [12:47:51] <mikko>	sustrik_: im gonna make windows dlls available
+| [Thursday 20 January 2011] [12:47:51] <mikko>	from daily builds
+| [Thursday 20 January 2011] [12:47:51] <mikko>	as "snapshots"
+| [Thursday 20 January 2011] [12:47:51] <sustrik_>	mikko: great
+| [Thursday 20 January 2011] [12:49:12] <sustrik_>	mingw or msvc?
+| [Thursday 20 January 2011] [12:50:11] <mikko>	both even
+| [Thursday 20 January 2011] [12:51:08] <lt_schmidt_jr>	about jzmq  maven package is making eclipse quite unhappy because of the file hierarchy 
+| [Thursday 20 January 2011] [12:51:24] <lt_schmidt_jr>	I have fixed it up locally
+| [Thursday 20 January 2011] [12:51:35] <sustrik_>	then submit a patch to jzmq project
+| [Thursday 20 January 2011] [12:51:36] <mikko>	jzmq doesnt use maven?
+| [Thursday 20 January 2011] [12:51:48] <lt_schmidt_jr>	there is a pom.xml
+| [Thursday 20 January 2011] [12:52:10] <lt_schmidt_jr>	Mikko is that a question ?
+| [Thursday 20 January 2011] [12:52:22] <mikko>	it was a question in a way
+| [Thursday 20 January 2011] [12:52:30] <mikko>	i've only used the autoconf build
+| [Thursday 20 January 2011] [12:52:39] <lt_schmidt_jr>	and the jar?
+| [Thursday 20 January 2011] [12:53:35] <mikko>	oh, there is a pom
+| [Thursday 20 January 2011] [12:53:44] <lt_schmidt_jr>	sans instructions I  used the autoconf build  and then ran mvn install
+| [Thursday 20 January 2011] [12:54:05] <lt_schmidt_jr>	seemed to do the right things - but the file hierarchy was a bit off
+| [Thursday 20 January 2011] [12:54:29] <lt_schmidt_jr>	eclipse would compile but complained bitterly and would red the dependencies
+| [Thursday 20 January 2011] [12:54:52] <lt_schmidt_jr>	it was not wrong - just not quite regular 
+| [Thursday 20 January 2011] [12:55:59] <lt_schmidt_jr>	sorry - this is a new thing for me - how do I submit a patch?
+| [Thursday 20 January 2011] [12:56:08] <sustrik_>	send it to the mailing list
+| [Thursday 20 January 2011] [12:56:24] <lt_schmidt_jr>	as a tar.gz?
+| [Thursday 20 January 2011] [12:56:27] <sustrik_>	ah
+| [Thursday 20 January 2011] [12:56:33] <lt_schmidt_jr>	ok, will do
+| [Thursday 20 January 2011] [12:56:46] <sustrik_>	a diff presumably
+| [Thursday 20 January 2011] [12:57:01] <lt_schmidt_jr>	ok
+| [Thursday 20 January 2011] [12:57:59] <lt_schmidt_jr>	since I have you here:  I was looking at this thread
+| [Thursday 20 January 2011] [12:58:00] <lt_schmidt_jr>	http://lists.zeromq.org/pipermail/zeromq-dev/2010-July/004411.html
+| [Thursday 20 January 2011] [12:59:00] <lt_schmidt_jr>	is this a serviceable way to create a local message bus ?
+| [Thursday 20 January 2011] [12:59:20] <sustrik_>	what do you mean by "serviceable" ?
+| [Thursday 20 January 2011] [12:59:28] <lt_schmidt_jr>	will this work?
+| [Thursday 20 January 2011] [12:59:29] <lt_schmidt_jr>	:)
+| [Thursday 20 January 2011] [12:59:31] <sustrik_>	yes
+| [Thursday 20 January 2011] [12:59:54] <sustrik_>	also check the devices
+| [Thursday 20 January 2011] [13:00:11] <sustrik_>	the component in the middle comes precompiled with 0mq
+| [Thursday 20 January 2011] [13:00:17] <sustrik_>	zmq_forwarder
+| [Thursday 20 January 2011] [13:00:41] <lt_schmidt_jr>	I was assuming I could use the ZMQForwarder on a Java thread
+| [Thursday 20 January 2011] [13:00:44] <mikko>	for jzmq you could possibly send a pull request?
+| [Thursday 20 January 2011] [13:00:53] <mikko>	or do they follow the same model of signed patches?
+| [Thursday 20 January 2011] [13:01:07] <sustrik_>	i don't think so
+| [Thursday 20 January 2011] [13:01:21] <sustrik_>	lt_schidt_jr: sure, you can do that
+| [Thursday 20 January 2011] [13:02:31] <lt_schmidt_jr>	thank you - and I should be able to have sockets connecting to the device specify what they are interested in - the thread some insist on subscribing for "all"?
+| [Thursday 20 January 2011] [13:02:59] <sustrik_>	you can subscribe for whatever you want
+| [Thursday 20 January 2011] [13:03:31] <lt_schmidt_jr>	sustrik_:  excellent, thank you  
+| [Thursday 20 January 2011] [13:03:50] <sustrik_>	you are welcome
+| [Thursday 20 January 2011] [13:21:20] <sam`>	this may seem like a silly question, but is it possible to use ZMQ to connect to "normal" sockets?
+| [Thursday 20 January 2011] [13:23:13] <sustrik_>	normal sockets = TCP sockets?
+| [Thursday 20 January 2011] [13:23:32] <sustrik_>	if so, then the normal socket would have to speak 0mq wire protocol
+| [Thursday 20 January 2011] [13:23:40] <sustrik_>	see here rfc.zeromq.org
+| [Thursday 20 January 2011] [13:27:21] <sam`>	sustrik_: thanks
+| [Thursday 20 January 2011] [14:49:17] <mikko>	sustrik_: http://snapshot.valokuva.org/
+| [Thursday 20 January 2011] [14:49:24] <mikko>	now each build generates a snapshot
+| [Thursday 20 January 2011] [14:50:24] <sustrik_>	great
+| [Thursday 20 January 2011] [14:50:31] <sustrik_>	is that mingw or msvc build?
+| [Thursday 20 January 2011] [14:50:37] <mikko>	msvc
+| [Thursday 20 January 2011] [14:50:43] <mikko>	i think i need to add that notion
+| [Thursday 20 January 2011] [14:50:59] <sustrik_>	i see
+| [Thursday 20 January 2011] [14:51:21] <sustrik_>	maybe link it from the website somewhere...
+| [Thursday 20 January 2011] [14:51:47] <mikko>	mingw doesnt pass make check on windows at the moment
+| [Thursday 20 January 2011] [14:51:52] <mikko>	due to ipc lacking
+| [Thursday 20 January 2011] [14:52:14] <mikko>	maybe ipc tests should be excluded on mingw
+| [Thursday 20 January 2011] [15:03:14] <sustrik_>	ipc is missing on win altogether
+| [Thursday 20 January 2011] [15:40:53] <mikko>	sustrik_: sent two patches to list
+| [Thursday 20 January 2011] [16:02:17] <sustrik_>	ok, let me see
+| [Thursday 20 January 2011] [16:07:15] <sustrik_>	mikko: what's the visibility stuff about?
+| [Thursday 20 January 2011] [16:13:56] <CIA-21>	zeromq2: 03Mikko Koppanen 07master * r8561a55 10/ src/zmq.cpp : 
+| [Thursday 20 January 2011] [16:13:56] <CIA-21>	zeromq2: Remove unnecessary visibility pragmas
+| [Thursday 20 January 2011] [16:13:56] <CIA-21>	zeromq2: Signed-off-by: Mikko Koppanen <mkoppanen@php.net> - http://bit.ly/haVGtq
+| [Thursday 20 January 2011] [16:14:01] <CIA-21>	zeromq2: 03Mikko Koppanen 07master * r8e61a11 10/ tests/Makefile.am : 
+| [Thursday 20 January 2011] [16:14:01] <CIA-21>	zeromq2: Do not execute ipc tests under MinGW
+| [Thursday 20 January 2011] [16:14:01] <CIA-21>	zeromq2: Signed-off-by: Mikko Koppanen <mkoppanen@php.net> - http://bit.ly/e2t6TF
+| [Thursday 20 January 2011] [16:15:01] <sustrik_>	ok, applied
+| [Thursday 20 January 2011] [16:15:27] <sustrik_>	luckily, i am not a maintainer of the build system, i don't have to understand what's going on :)
+| [Thursday 20 January 2011] [17:08:20] <mikko>	sustrik_: the visibility is defined in declaration
+| [Thursday 20 January 2011] [17:08:26] <mikko>	as far as i understand
+| [Thursday 20 January 2011] [17:08:36] <mikko>	so the implementation doesn't really need that pragma
+| [Thursday 20 January 2011] [17:08:56] <mikko>	and we fixed a bug regarding visibility where we moved from that pragma push/pop to ZMQ_EXPORT
+| [Thursday 20 January 2011] [17:09:04] <mikko>	so it seems that statement had no effect
+| [Thursday 20 January 2011] [18:07:45] <Skaag>	mikko: yes, sorry, the -lzmq line was commented out in the makefile for some weird reason...
+| [Thursday 20 January 2011] [19:11:04] <sam`>	is there a way to have a fan-in pattern but which discards messages if the downstream node is not present ?
+| [Thursday 20 January 2011] [20:29:10] <nathanmarz>	hey all - is there any way to do a push socket that does fan-out instead of load-balancing?
+| [Thursday 20 January 2011] [20:29:49] <nathanmarz>	or should i just have the push node open a socket for every node it needs to send data to and do the send for each receiver
+| [Thursday 20 January 2011] [20:29:50] <nathanmarz>	?
+| [Friday 21 January 2011] [00:01:39] <stockMQ>	Hi
+| [Friday 21 January 2011] [00:01:44] <stockMQ>	I am facing a problem
+| [Friday 21 January 2011] [00:02:03] <stockMQ>	I am trying publish a struct
+| [Friday 21 January 2011] [00:03:58] <stockMQ>	I do it as follows
+| [Friday 21 January 2011] [00:03:59] <stockMQ>		 						ScripRecord* scrip = &scripStatus[token]; 						char message[sizeof(*scrip)]; 						memcpy(&message,scrip, sizeof(scripStatus[token])); 						s_send (*this->publisher,message);
+| [Friday 21 January 2011] [00:04:15] <stockMQ>	where scrip* is the pointer to the strcut
+| [Friday 21 January 2011] [00:04:39] <stockMQ>	But the first message i recv at receiver is of size 1
+| [Friday 21 January 2011] [00:04:46] <stockMQ>	the struct is 
+| [Friday 21 January 2011] [00:05:07] <stockMQ>	struct ScripRecord { 	int test; 	int token; 	float open,high,low,close; 	double volume, volumeTradedToday, dateTime, buyVolume, sellVolume; 	float bid, ask, openInterest;  	float dayOpen, dayLow, dayHigh, previousClose;  	ScripRecord() 	{ 		memset(this, 0, sizeof(ScripRecord)); 	} };
+| [Friday 21 January 2011] [00:05:12] <stockMQ>	and its size is 92
+| [Friday 21 January 2011] [00:13:25] <stockMQ>	Any help ??
+| [Friday 21 January 2011] [00:32:16] <stockMQ>	I tried sending a sinple String "Hi"
+| [Friday 21 January 2011] [00:32:20] <stockMQ>	and that works fine
+| [Friday 21 January 2011] [02:11:23] <sustrik_>	sam`: PUB/SUB
+| [Friday 21 January 2011] [02:11:48] <sustrik_>	nathanmarz: PUB/SUB
+| [Friday 21 January 2011] [02:13:36] <sustrik_>	stockMQ: s_send is only for sending stings AFAIU
+| [Friday 21 January 2011] [02:13:46] <sustrik_>	use standard 0mq API
+| [Friday 21 January 2011] [02:13:54] <sustrik_>	zmq_send()
+| [Friday 21 January 2011] [02:51:47] <Evet>	have you ever used zeromq for layer 7 routing?
+| [Friday 21 January 2011] [03:02:35] <mikko>	Evet: what do you mean by that?
+| [Friday 21 January 2011] [03:03:31] <mikko>	and good morning 
+| [Friday 21 January 2011] [03:04:00] <guido_g>	'morning all
+| [Friday 21 January 2011] [03:10:24] <Evet>	mikko: zeromq between front-end loadbalancer and back-end servers
+| [Friday 21 January 2011] [03:10:56] <mikko>	Evet: that is what mongrel2 does 
+| [Friday 21 January 2011] [03:15:59] <Evet>	mikko: sure. but i need to implement some other protocols
+| [Friday 21 January 2011] [03:16:44] <mikko>	what is the question here actually?
+| [Friday 21 January 2011] [03:16:58] <mikko>	is the message coming in from front a zeromq message
+| [Friday 21 January 2011] [03:17:11] <mikko>	or are you proxying other protocols?
+| [Friday 21 January 2011] [03:20:16] <Evet>	mikko: i want to do what mongrel2 does, but for other protocols. the actual question is
+| [Friday 21 January 2011] [03:20:24] <Evet>	im afraid to run multiple event loop in a process
+| [Friday 21 January 2011] [03:20:43] <Evet>	one for accepting real world connections, and other for zeromq
+| [Friday 21 January 2011] [03:21:10] <Evet>	how can i implement real world protocols to zeromq's event-loop?
+| [Friday 21 January 2011] [03:21:12] <mikko>	why?
+| [Friday 21 January 2011] [03:21:18] <mikko>	just run them on separate threads?
+| [Friday 21 January 2011] [03:21:26] <mikko>	or run a one bigger loop
+| [Friday 21 January 2011] [03:21:43] <Evet>	yes, one bigger loop is what i need
+| [Friday 21 January 2011] [03:21:58] <mikko>	you can also run two threads
+| [Friday 21 January 2011] [03:22:08] <mikko>	and send messages between the threads using inproc://
+| [Friday 21 January 2011] [03:22:46] <Evet>	i want to use all cores for that two jobs
+| [Friday 21 January 2011] [03:23:10] <mikko>	well, then you need multiple threads in any case i guess
+| [Friday 21 January 2011] [03:24:31] <mikko>	is there a large overhead to protocol parsing?
+| [Friday 21 January 2011] [03:26:00] <Evet>	mikko: no, almost zero overhead for parsing
+| [Friday 21 January 2011] [03:26:51] <mikko>	so you could accept front-end connections in a single thread i assume
+| [Friday 21 January 2011] [03:28:05] <Evet>	single cpu core cant respond more than 8k requests per second
+| [Friday 21 January 2011] [03:28:23] <mikko>	what does responding mean?
+| [Friday 21 January 2011] [03:29:06] <Evet>	the request-reply pattern
+| [Friday 21 January 2011] [03:29:29] <mikko>	that depends on what kind of processing needs to be done to generate reply
+| [Friday 21 January 2011] [03:29:46] <mikko>	otherwise its just accept, read, write 
+| [Friday 21 January 2011] [03:32:19] <Evet>	yes, and i need more than one thread for a simple accept-read-write job, which is enough to serve dynamic content through embedded in-memory database
+| [Friday 21 January 2011] [03:33:07] <mikko>	isn't it quite common to have one thread accepting and then pass down to worker threads?
+| [Friday 21 January 2011] [03:33:55] <mikko>	Evet: if i remember correctly for example memcached performs a lot better when used single-threaded
+| [Friday 21 January 2011] [03:34:13] <mikko>	and it sounds very much like memcached you are creating there
+| [Friday 21 January 2011] [03:37:14] <mikko>	maybe thats different with UDP
+| [Friday 21 January 2011] [03:37:21] <mikko>	(the performance)
+| [Friday 21 January 2011] [03:43:19] <Evet>	well
+| [Friday 21 January 2011] [03:43:24] <Evet>	inproc:// makes sense now
+| [Friday 21 January 2011] [03:44:28] <mikko>	Evet: also, if you have single thread accessing the hash database it probably reduces lock congestion
+| [Friday 21 January 2011] [03:46:03] <mikko>	assuming you write as well
+| [Friday 21 January 2011] [03:46:26] <Evet>	oh wait, youre also using kyoto cabinet, right?
+| [Friday 21 January 2011] [03:47:55] <mikko>	i've used tokyo cabinet/tyrant in the past
+| [Friday 21 January 2011] [03:47:59] <mikko>	and now testing kyoto cabinet
+| [Friday 21 January 2011] [03:48:42] <Evet>	for caching only?
+| [Friday 21 January 2011] [03:49:06] <mikko>	no, persistence
+| [Friday 21 January 2011] [03:49:50] <Evet>	do you store relationships?
+| [Friday 21 January 2011] [03:50:07] <mikko>	no, not really
+| [Friday 21 January 2011] [03:53:42] <Evet>	im building an SQL and SPARQL api on top of kyoto cabinet
+| [Friday 21 January 2011] [03:53:54] <Evet>	and planning to use zeromq for backup-restore logic
+| [Friday 21 January 2011] [03:56:23] <sustrik_>	8k 0MQ requests per second?
+| [Friday 21 January 2011] [03:56:46] <sustrik_>	doesn't seem likely unless you are doing it in lock-step manner
+| [Friday 21 January 2011] [03:57:36] <Evet>	single core of a single desktop pc
+| [Friday 21 January 2011] [03:59:25] <stockMQ>	I am typecasting stuct to char*
+| [Friday 21 January 2011] [03:59:30] <stockMQ>	before sending
+| [Friday 21 January 2011] [03:59:45] <mikko>	stockMQ: sure, but first null character would cut your char*
+| [Friday 21 January 2011] [03:59:55] <mikko>	stockMQ: s_send uses strlen () probably
+| [Friday 21 January 2011] [04:00:08] <stockMQ>	ohk.. will pack help?
+| [Friday 21 January 2011] [04:00:33] <mikko>	stockMQ: can you show the code?
+| [Friday 21 January 2011] [04:00:36] <mikko>	gist.github.com
+| [Friday 21 January 2011] [04:01:20] <stockMQ>	i have pasted it before.. coz now i do not have access to it :(
+| [Friday 21 January 2011] [04:01:53] <mikko>	are you running the same architecture on all your nodes?
+| [Friday 21 January 2011] [04:02:03] <mikko>	as sending a struct is not portable
+| [Friday 21 January 2011] [04:02:28] <mikko>	unless you serialize it for transport (protobufs, thrift etc)
+| [Friday 21 January 2011] [05:36:17] <nathanmarz>	sustrik_: but my sender already knows who all the recievers are going to be
+| [Friday 21 January 2011] [05:36:44] <nathanmarz>	sustrik_: seems simpler to not have to worry about synchronization of pub/sub (so that messages don't get lost)
+| [Friday 21 January 2011] [10:11:52] <mikko>	i to the b
+| [Friday 21 January 2011] [12:59:04] <Evet>	sustrik_: why do you think 8k request/second is very high for a desktop pc?
+| [Friday 21 January 2011] [13:05:04] <mikko>	so finally things working properly
+| [Friday 21 January 2011] [13:05:05] <mikko>	http://snapshot.valokuva.org/
+| [Friday 21 January 2011] [13:05:12] <mikko>	mingw32 and msvc2008 snapshot
+| [Friday 21 January 2011] [13:05:50] <Evet>	congrats
+| [Friday 21 January 2011] [14:52:18] <mikko>	sustrik_: seen #153
+| [Friday 21 January 2011] [14:52:20] <mikko>	?
+| [Friday 21 January 2011] [15:05:23] <sustrik_>	Evet: i think it's too low
+| [Friday 21 January 2011] [15:06:09] <sustrik_>	the rate should go up to 100,000's or millions, depending on the hardware
+| [Friday 21 January 2011] [15:06:41] <sustrik_>	8000 can result from lock-step processing
+| [Friday 21 January 2011] [15:07:28] <sustrik_>	if the roundtrip time on the network is kind of low (~120us)
+| [Friday 21 January 2011] [15:07:45] <sustrik_>	mikko: let me see
+| [Friday 21 January 2011] [15:09:25] <Evet>	sustrik_: what about inproc and ipc performance?
+| [Friday 21 January 2011] [15:10:29] <sustrik_>	in the range of millions per sec
+| [Friday 21 January 2011] [15:10:48] <Evet>	wow
+| [Friday 21 January 2011] [15:10:53] <Evet>	does it use b+tree?
+| [Friday 21 January 2011] [15:11:01] <sustrik_>	for what?
+| [Friday 21 January 2011] [15:11:13] <sustrik_>	subscription matching?
+| [Friday 21 January 2011] [15:11:21] <Evet>	storing messages in memory
+| [Friday 21 January 2011] [15:11:38] <Evet>	and yes, subscription matching
+| [Friday 21 January 2011] [15:11:59] <sustrik_>	storage in memory is linear, plain fifo
+| [Friday 21 January 2011] [15:12:21] <sustrik_>	so no need for searching
+| [Friday 21 January 2011] [15:12:32] <sustrik_>	as for subscription, the algorithm is "trie"
+| [Friday 21 January 2011] [15:15:33] <sustrik_>	mikko: ok, #153 answered
+| [Friday 21 January 2011] [15:15:43] <Evet>	hmm
+| [Friday 21 January 2011] [15:19:06] <cleifer>	hi, was having a little bit of trouble with the hello example -- i'm not sure i'm compiling it right, but ("cc -o hello hello.c /usr/local/lib/libzmq.so") it runs and just hangs.  connecting to it, sending data, aren't seeming to work
+| [Friday 21 January 2011] [15:19:08] <Evet>	sustrik_: is it possible to implement a snapshot to disk mechanism for those fifo
+| [Friday 21 January 2011] [15:20:48] <sustrik_>	cleifer: are you sure the connection exists? can you check netstat?
+| [Friday 21 January 2011] [15:21:01] <sustrik_>	Evet: how would that work?
+| [Friday 21 January 2011] [15:21:09] <cleifer>	let me do that, just as ec
+| [Friday 21 January 2011] [15:22:17] <cleifer>	sustrik_, tcp        0      0 localhost:5555          localhost:48696         ESTABLISHED
+| [Friday 21 January 2011] [15:22:30] <cleifer>	and another the other way
+| [Friday 21 January 2011] [15:22:44] <sustrik_>	looks ok
+| [Friday 21 January 2011] [15:22:54] <cleifer>	when i recv from the other, all i get is \x01\x00
+| [Friday 21 January 2011] [15:23:11] <cleifer>	and then nothing :-/  -- i see in the code that it'll print when a connection is established but that's not happening
+| [Friday 21 January 2011] [15:23:13] <sustrik_>	that's connection initialisation
+| [Friday 21 January 2011] [15:23:14] <Evet>	sustrik_: it may need a broker
+| [Friday 21 January 2011] [15:23:47] <cleifer>	sustrik_, i'm connecting to it in python using a raw socket, maybe that's the problem?
+| [Friday 21 January 2011] [15:24:02] <sustrik_>	you mean TCP socket?
+| [Friday 21 January 2011] [15:24:12] <cleifer>	yah
+| [Friday 21 January 2011] [15:24:27] <sustrik_>	then you have to follow the 0mq protocol
+| [Friday 21 January 2011] [15:24:32] <cleifer>	s.connect(('localhost', 5555))
+| [Friday 21 January 2011] [15:24:50] 	 * cleifer facepalms
+| [Friday 21 January 2011] [15:24:55] <sustrik_>	first, send \x01\x00
+| [Friday 21 January 2011] [15:25:02] <sustrik_>	that's connection initialisation
+| [Friday 21 January 2011] [15:25:22] <sustrik_>	then you can exchange messages
+| [Friday 21 January 2011] [15:25:41] <sustrik_>	the format of message is described in zmq_tcp(7)
+| [Friday 21 January 2011] [15:25:58] <cleifer>	coolio
+| [Friday 21 January 2011] [15:26:21] <cleifer>	thanks sustrik_ !
+| [Friday 21 January 2011] [16:02:34] <drbobbeaty>	Got a question for the ZeroMQ TCP usage... is it possible to have a ZeroMQ server create a TCP connection on an ephermal port and then obtain that port number so that it can provide a good URL to a client?  I'm thinking of a use-case where I want to fire up a TCP PUB server, on an arbitrary port and then get that port (and URL) and provide it to clients for their connection. Can this be done?
+| [Friday 21 January 2011] [16:02:52] <drbobbeaty>	I'm thinking "No", but I wanted to ask to make sure.
+| [Friday 21 January 2011] [16:06:52] <sustrik_>	no
+| [Friday 21 January 2011] [16:24:53] <iDude>	IOT/Abort trap in pthread_kill at 0xd005f734 ($t1) 0xd005f734 (pthread_kill+0x88) 80410014         lwz   r2,0x14(r1) 
+| [Friday 21 January 2011] [16:25:40] <iDude>	I am using the 2.1.0 version of zmq on AIX 5.3... any ideas to get it working?
+| [Friday 21 January 2011] [16:28:10] <sustrik_>	hm, i've made AIX port work some time ago
+| [Friday 21 January 2011] [16:28:26] <sustrik_>	no idea of what version though
+| [Friday 21 January 2011] [16:28:39] <sustrik_>	can you provide a backtrace for the problem?
+| [Friday 21 January 2011] [16:31:09] <iDude>	pthread_kill(??, ??) at 0xd005f734 _p_raise(??) at 0xd005f1a4 raise.raise(??) at 0xd02a38f0 abort() at 0xd0307778 myabort()() at 0xd0244aac terminate()() at 0xd0242df0 terminate()() at 0xd024424c __DoThrowV6() at 0xd02468f0 _Xlen__Q2_3std6vectorXTQ3_3zmq6poll_t10fd_entry_tTQ2_3std9allocatorXTQ3_3zmq6poll_t10fd_entry_t__CFv(0x2000b990) at 0xd6bccb10 insert__Q2_3std6vectorXTQ3_3zmq6poll_t10fd_entry_tTQ2_3std9allocatorXTQ3_3zmq6poll_t10fd
+| [Friday 21 January 2011] [16:31:55] <iDude>	sorry... I am new to the whole IRC chatting thing... how can I format the text to show on multiple lines?
+| [Friday 21 January 2011] [16:37:02] <sustrik_>	paste the baktrace to gist or somesuch and provide the link
+| [Friday 21 January 2011] [16:47:58] <iDude>	here you go: https://gist.github.com/790486
+| [Friday 21 January 2011] [16:48:12] <iDude>	I have included the source code and the Makefile used
