@@ -4540,3 +4540,67 @@
 | [Friday 21 January 2011] [16:37:02] <sustrik_>	paste the baktrace to gist or somesuch and provide the link
 | [Friday 21 January 2011] [16:47:58] <iDude>	here you go: https://gist.github.com/790486
 | [Friday 21 January 2011] [16:48:12] <iDude>	I have included the source code and the Makefile used
+| [Friday 21 January 2011] [20:24:08] <mikko>	iDude: is that with 2.0.10 ?
+| [Saturday 22 January 2011] [01:32:47] <sustrik_>	iDude: the problem seems to be here:
+| [Saturday 22 January 2011] [01:32:48] <sustrik_>	    int rc = getrlimit (RLIMIT_NOFILE, &rl);
+| [Saturday 22 January 2011] [01:32:48] <sustrik_>	    errno_assert (rc != -1);
+| [Saturday 22 January 2011] [01:32:48] <sustrik_>	    fd_table.resize (rl.rlim_cur);
+| [Saturday 22 January 2011] [01:33:11] <sustrik_>	It looks like the RLIMIT_NOFILE is -1 on AIX
+| [Saturday 22 January 2011] [01:33:27] <sustrik_>	which causes resize to fail
+| [Saturday 22 January 2011] [08:45:02] <lestrrat>	can somebody please update this page to point to my github repo? http://www.zeromq.org/bindings:perl
+| [Saturday 22 January 2011] [08:45:12] <lestrrat>	http://github.com/lestrrat/ZeroMQ-Perl
+| [Saturday 22 January 2011] [10:34:10] <mikko>	lestrrat: done
+| [Saturday 22 January 2011] [14:37:52] <mikko>	github has been pretty flaky
+| [Saturday 22 January 2011] [21:27:33] <kan>	hi guys, so I've been looking at 0mq for a couple of days and I want to know if it's advisable to publish different types of messages (eg, ping message, some business object message) on the same socket, or would one create a different socket for every type of message? I'm using the Java binding btw.
+| [Saturday 22 January 2011] [21:37:04] <kan>	hang on, i guess you have one socket and bind multiple URIs to the socket, then clients can subscribe to the URI they want to listen to?
+| [Sunday 23 January 2011] [05:04:44] <kanch>	hey guys if I want to have multiple publishers and have clients only listen to some of the publishers mesages, do I have a socket per publisher?
+| [Sunday 23 January 2011] [05:20:32] <mikko>	kanch: you would normally use topics maybe
+| [Sunday 23 January 2011] [05:21:14] <mikko>	so each subscriber would subscribe to the messages they are interested in
+| [Sunday 23 January 2011] [05:21:33] <kanch>	mikko, so your saying i should use multiple topics with one socket?
+| [Sunday 23 January 2011] [05:21:55] <kanch>	ie bind multiple urls to a socket?
+| [Sunday 23 January 2011] [05:23:04] <mikko>	kanch: not sure i follow, bind what urls?
+| [Sunday 23 January 2011] [05:24:12] <mikko>	kanch: on the publisher side you would publish messages in for example "test.A", "test.B", "test.C" topics and each subscriber would subscribe to one or more topics
+| [Sunday 23 January 2011] [05:25:41] <kanch>	mikko, yes I understand the publish/subscribe model, but I'm not sure how to apply it to zeromq. How do I create the topics? I thought they were URLs you bind to the sockets?
+| [Sunday 23 January 2011] [05:26:08] <mikko>	kanch: you don't really need to create topics. topic is just prefix matching
+| [Sunday 23 January 2011] [05:26:35] <mikko>	so you publish a message "test.A|hello there" and on subscriber side you subscribe to "test.A|"
+| [Sunday 23 January 2011] [05:27:12] <mikko>	kanch: have you read the zguide?
+| [Sunday 23 January 2011] [05:28:06] <kanch>	mikko, not in depth obviously :)
+| [Sunday 23 January 2011] [05:29:40] <kanch>	mikko, let me read the docs then. I couldn't find this information before
+| [Sunday 23 January 2011] [05:32:23] <mikko>	http://zguide.zeromq.org/chapter:all#toc7
+| [Sunday 23 January 2011] [05:32:28] <mikko>	examples/C/wuclient
+| [Sunday 23 January 2011] [05:38:43] <kanch>	thanks
+| [Sunday 23 January 2011] [05:54:26] <kanch>	mikko, so in the case of sending Java objects over the wire, i could use reflection on the client side to determine what type of message i am receiving?
+| [Sunday 23 January 2011] [05:55:02] <mikko>	kanch: i don't really code java so wouldn't know
+| [Sunday 23 January 2011] [05:55:37] <kanch>	mikko, no worries, thanks for help though. It's starting to make sense now
+| [Sunday 23 January 2011] [05:59:04] <kanch>	mikko, there is one thing that bothers me though. If the subscriber is filtering the messages, then they would be receiving messages that they don't need. Isn't that a waste?
+| [Sunday 23 January 2011] [05:59:37] <mikko>	kanch: yes, subscription forwarding is currently being worked on
+| [Sunday 23 January 2011] [05:59:53] <mikko>	in that scenario the publisher does the filtering
+| [Sunday 23 January 2011] [06:01:59] <kanch>	mikko, ok, and is there any draw backs to having multiple publisher sockets, that have different urls bound to them. Then subscribers could just connect to these URLs?
+| [Sunday 23 January 2011] [06:03:28] <mikko>	i guess not apart from more configuration
+| [Sunday 23 January 2011] [06:03:52] <mikko>	and slightly more resource usage
+| [Sunday 23 January 2011] [06:06:07] <kanch>	ok, so on that note then it's better to use filtering because of less resource usage
+| [Sunday 23 January 2011] [06:06:52] <mikko>	well, not quite true either
+| [Sunday 23 January 2011] [06:07:06] <mikko>	it depends on what is likely to be the bottleneck
+| [Sunday 23 January 2011] [06:07:35] <mikko>	with the current filtering system (before subscription forwarding is in place) there is more network usage as the messages are sent to all subscribers
+| [Sunday 23 January 2011] [06:08:10] <mikko>	but with multiple sockets you will have to create more physical connections on publisher and subscriber
+| [Sunday 23 January 2011] [06:08:53] <mikko>	there is really no harm in having multiple different sockets if you find it easy to manage
+| [Sunday 23 January 2011] [06:09:52] <kanch>	mikko, is it not possible to have the subscriber socket connect to multiple publisher sockets?
+| [Sunday 23 January 2011] [06:10:04] <mikko>	it is 
+| [Sunday 23 January 2011] [06:10:50] <kanch>	mikko, ok thanks for all the information. You've been a real help
+| [Sunday 23 January 2011] [10:51:20] Notice	-NickServ- travlr_ is not a registered nickname.
+| [Sunday 23 January 2011] [10:57:45] Notice	-NickServ- travlr_ is not a registered nickname.
+| [Sunday 23 January 2011] [11:28:58] <codebeaker>	hi all, what's the right way to deal with errors from zmq_init and zmq_term, is it zmq_strerror(errono) or zmq_strerror(zmq_errno) ?
+| [Sunday 23 January 2011] [11:32:56] <codebeaker>	I ask because out of an (apparently failing) zmq_term(*context) "no such file or directroy"
+| [Sunday 23 January 2011] [11:47:26] <dbudworth>	What's the preferred mechanism to implement a bidirectional streaming connection?  ie: client1 -> server1 where each can send a message asynchronously (similar to a regular socket between two points).
+| [Sunday 23 January 2011] [11:50:49] <dbudworth>	also, is there any means of using ephemeral ports?  Say I have ~50 services + a lookup server.  The alternative of assigning fixed service ports becomes a pain (especially with multiple instances on one box)
+| [Sunday 23 January 2011] [11:52:49] <codebeaker>	dbudworth: aren't there kernel methods to get a random unused port ?
+| [Sunday 23 January 2011] [11:53:12] <codebeaker>	(I read sth. about it in TLPI, but I didn't read closely enough to tell you what function)
+| [Sunday 23 January 2011] [11:55:49] <dbudworth>	codebeaker: yep, but it's always a race condition.  I could create a regular socket, close it then hope I can use it before someone else does.
+| [Sunday 23 January 2011] [12:03:24] <codebeaker>	ach so, good point :) my bad
+| [Sunday 23 January 2011] [12:50:04] <cremes>	codebeaker: use zmq_strerror(zmq_errno()); the call to zmq_errno() is a wrapper of errno for unix systems so that a consistent api
+| [Sunday 23 January 2011] [12:50:07] <cremes>	can be used for windows too
+| [Sunday 23 January 2011] [12:50:36] <cremes>	dbudworth: no, 0mq doesn't support ephemeral ports; you could build such a service using 0mq but it isn't support out of the box
+| [Sunday 23 January 2011] [12:50:46] <codebeaker>	ah, thanks - cremes I'm on a Mac, actually - but if all goes well, this code will go to Windows, I hope one day
+| [Sunday 23 January 2011] [12:51:06] <cremes>	yeah... mac == unix 
+| [Sunday 23 January 2011] [12:51:12] <codebeaker>	(right!)
+| [Sunday 23 January 2011] [12:51:20] <codebeaker>	cremes: does it make sense for zmq_strerror(zmq_errno())  to return "no such file or directory" ?
