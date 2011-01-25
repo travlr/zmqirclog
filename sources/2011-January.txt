@@ -4604,3 +4604,130 @@
 | [Sunday 23 January 2011] [12:51:06] <cremes>	yeah... mac == unix 
 | [Sunday 23 January 2011] [12:51:12] <codebeaker>	(right!)
 | [Sunday 23 January 2011] [12:51:20] <codebeaker>	cremes: does it make sense for zmq_strerror(zmq_errno())  to return "no such file or directory" ?
+| [Monday 24 January 2011] [04:04:07] <tecnalia>	Hellow
+| [Monday 24 January 2011] [04:04:46] <tecnalia>	I have a quetion related with ZMQ and the checkSum or CRC at the end of the ZMQ datagrams?
+| [Monday 24 January 2011] [04:05:13] <tecnalia>	Someone cpuld tellme where can I find info about this topic
+| [Monday 24 January 2011] [04:12:13] <tecnalia>	Hellow
+| [Monday 24 January 2011] [07:13:21] <benoitc>	mmm how would you handle a publisher in a daemon that forkk process ?
+| [Monday 24 January 2011] [07:14:15] <benoitc>	I have some workers launched in python that should send message and different listeners . number of workers can be dynamically changed
+| [Monday 24 January 2011] [08:35:48] <kabs>	Hi
+| [Monday 24 January 2011] [08:35:52] <kabs>	Hello, I created one sample pub-sub model in c using ZeroMQ library, my pub runs while(true)  and sends 1 2 3 4 5 in each loop , my sub code spawns 5 thread each thread filter one number send by pub, I finish the thread once it gets two instance of each number.
+| [Monday 24 January 2011] [08:37:05] <kabs>	I run pub and then sub. Now sub don't exit though pub is sending infinitly but once I do ctrl c for sub,  pub gets all the messages
+| [Monday 24 January 2011] [08:37:35] <kabs>	Can someone tell me why I need to do control c to pub so that sub gets all the messages ??
+| [Monday 24 January 2011] [08:59:32] <sustrik>	benoitc: you have to create new context in the forked process
+| [Monday 24 January 2011] [09:00:59] <sustrik>	kabs: strange
+| [Monday 24 January 2011] [09:01:10] <sustrik>	can you create a minimal test case?
+| [Monday 24 January 2011] [09:02:04] <kabs>	benoitc: I am using same context for each thread
+| [Monday 24 January 2011] [09:02:52] <benoitc>	sustrik: yes figured it :) I've changed my design now , i've my workers doing REQ to all connected consummers and consumerers putting their uri in a conf checked each time by workers
+| [Monday 24 January 2011] [09:03:21] <benoitc>	i'm actually using redis to save temporary tasks waiting a better design
+| [Monday 24 January 2011] [09:03:25] <kabs>	benoitc: So I create sockets corresponding to each thread using same context and pass this socket to each thread
+| [Monday 24 January 2011] [09:03:42] <benoitc>	i see
+| [Monday 24 January 2011] [09:03:58] <sustrik>	kabs: that works for different threads in a single process
+| [Monday 24 January 2011] [09:04:10] <sustrik>	when you for new process, you need a new context
+| [Monday 24 January 2011] [09:05:17] <kabs>	sustrik: I am using same main to spawn these threads , so it is a same process I guess so I needn't have new context for each thread right?
+| [Monday 24 January 2011] [09:07:35] <sustrik>	kabs: right
+| [Monday 24 January 2011] [09:09:24] <kabs>	sustrik: then why my subs( threads)  are not able to get all the messages. Some of the subs ( threads ) get all messages while others don't . But when I press ctrl c on pub, all subs( threads) gets messages and they exit as expecte
+| [Monday 24 January 2011] [09:12:07] <kabs>	sustrik: I tried different context for different threads and it worked!
+| [Monday 24 January 2011] [09:14:01] <sustrik>	you have to provide a minimal test case
+| [Monday 24 January 2011] [09:14:14] <sustrik>	so that people can look at what's going on
+| [Monday 24 January 2011] [09:26:29] <benoitc>	mmm what happen when socket we connect is closed at the end ? in case i do multiple connect ?
+| [Monday 24 January 2011] [09:26:38] <benoitc>	is this cleanly closed ?
+| [Monday 24 January 2011] [09:28:23] <toni>	hi there. I am using the pyzmq binding. I have to pack an auto-generated envelope as part of the payload. My payload format is json. The encode raises a "'utf8' codec can't decode byte". Any hints how I could solve the problem? 
+| [Monday 24 January 2011] [09:28:55] <toni>	I know, this is more python or encoding specific than it is zmq-specific, but maybe someone can help me?
+| [Monday 24 January 2011] [09:29:21] <benoitc>	ther is an encode_string option in json.dumps
+| [Monday 24 January 2011] [09:29:36] <benoitc>	or you can do json.dumps(..).encode('utf-8')
+| [Monday 24 January 2011] [09:29:40] <benoitc>	smth like it
+| [Monday 24 January 2011] [09:32:00] <sustrik>	benoitc: it's cleanly closed
+| [Monday 24 January 2011] [09:32:09] <benoitc>	cool, thanks
+| [Monday 24 January 2011] [09:34:49] <toni>	benoitc: the real problem is the envelope ("...8.."). I tried to encode it as utf-8, but as I do so, I get a UnicodeDecodeError t0o.
+| [Monday 24 January 2011] [09:37:45] <benoitc>	ah
+| [Monday 24 January 2011] [09:38:00] <benoitc>	if you have some binary in your json you will have to base64 it
+| [Monday 24 January 2011] [09:55:56] <toni>	benotitc: thanks, Ill try this
+| [Monday 24 January 2011] [10:07:46] <kabs>	Hello, I tried pub-sub model with both pub and sub on same machine,so, one pub is running infinite loop and sending data, I tried 50 subs first and they were able to get data, then I tried increasing number of subs to 500 and it gave "to many files open error", I changed the ulimit to 65535 and it worked, now I want subs to be around 5000. How can I scale my pub-sub model??
+| [Monday 24 January 2011] [10:09:52] <kabs>	with 5000 subs , it took lot of time for even a single subscriber to get data and once subscribers started getting data, it hanged after sometime. I am running subs in threads. Any help in increasing scalability??
+| [Monday 24 January 2011] [10:13:56] <spht>	kabs:  5000 threads? Have you lowered your thread stack size? 
+| [Monday 24 January 2011] [10:14:20] <kabs>	Yes 5000 threads, no didn't lower that, don't know about it
+| [Monday 24 January 2011] [10:14:49] <spht>	kabs:  on linux IIRC the default thread stack size is 8mb....
+| [Monday 24 January 2011] [10:15:28] <spht>	kabs:  but if you want to run a lot of clients on a single machine I would probably use an async mechanism instead of threading and then have worker threads for any computation needed
+| [Monday 24 January 2011] [10:15:38] <kabs>	spht: actually I want to know is as subscriber increases how can I increase the scalability of pub-sub model
+| [Monday 24 January 2011] [10:16:00] <kabs>	spht: since in my application , number of subs can increase to any number
+| [Monday 24 January 2011] [10:16:45] <kabs>	spht: can you give me more info on "async mechanism instead of threading and then have worker threads for any computation needed" or some link where I can read this stuff you mentioned
+| [Monday 24 January 2011] [10:17:16] <spht>	kabs:  what are these clients, processes on the same machine? Remote machines?
+| [Monday 24 January 2011] [10:17:51] <kabs>	spht: same machine, I am making test programs to learn this model using zeroMQ
+| [Monday 24 January 2011] [10:18:47] <sustrik>	kabs: the error means there are too much connections open
+| [Monday 24 January 2011] [10:19:04] <sustrik>	check your OS settings for the max value
+| [Monday 24 January 2011] [10:19:21] <kabs>	sustrik: yes, so how can I go for scalable system, increasing max value everytime doesn't seems to be right way of doing it
+| [Monday 24 January 2011] [10:19:54] <sustrik>	shrug, if your system limit is 1000 sockets, you cannot handle 5000 connections
+| [Monday 24 January 2011] [10:20:42] <spht>	kabs:  it's extremely hard to write good test cases for c10k-problems, especially on a single machine. That said, on quick solution to minimize the # of threads used would be to create several sockets from every thread and monitor them with zmq_poll
+| [Monday 24 January 2011] [10:22:40] <kabs>	spht: didn't understood you solution well, can you please elaborate or send some link that mentions this??
+| [Monday 24 January 2011] [10:23:56] <spht>	kabs:   For general c10k info: http://www.kegel.com/c10k.html  // for zmq_poll see docs
+| [Monday 24 January 2011] [10:24:57] <spht>	the point is,  for a large number of threads, the overhead of the threads themselves are significant, both for the kernel context switching and memory use
+| [Monday 24 January 2011] [10:30:00] <kabs>	spht: thanks! will read about zmq_poll and will see if I can think of scaling my system
+| [Monday 24 January 2011] [14:59:45] <drbobbeaty>	Question about ZeroMQ 2.1.0 (from the git repo) on Ubuntu 10.04.1... I have a program that's running fine on CentOS 5, but on Ubuntu 10.04.1 when I try to open the URL epgm://bond0;225.1.1.1;77777 I get the message: The protocol is not compatible with the socket type.
+| [Monday 24 January 2011] [15:00:10] <drbobbeaty>	Is this some kind of IPV6/IPV4 issue? Or something that's been seen.
+| [Monday 24 January 2011] [15:00:20] <drbobbeaty>	I don't see anything in my Google searches on this.
+| [Monday 24 January 2011] [15:28:37] <sustrik>	drbobbeaty: it's that mutlicast makes sense only with PUB/SUB sockets
+| [Monday 24 January 2011] [15:31:43] <drbobbeaty>	sustrik: but when I run the exact same code - as a SUB, in this case, on CentOS5 it's fine. Have you heard of any CentOS vs. Ubuntu differences?
+| [Monday 24 January 2011] [15:32:38] <sustrik>	it's a SUBV socket and epgm transport and you get "The protocol is not compatible with the socket type" error?
+| [Monday 24 January 2011] [15:34:23] <sustrik>	last version of 0MQ from github?
+| [Monday 24 January 2011] [15:35:49] <drbobbeaty>	It's a SUB socket and it's the latest on github for Ubuntu. For CentOS, it's a week or so ago off github, but still "post-2.1.0".
+| [Monday 24 January 2011] [15:36:25] <drbobbeaty>	Works great on CentOS, fails with that error on Ubuntu. I have boxes running side-by side.
+| [Monday 24 January 2011] [15:52:34] <sustrik>	there were some recent changes that may have caused the behaviour
+| [Monday 24 January 2011] [15:53:07] <drbobbeaty>	Really? OK... what should I do?
+| [Monday 24 January 2011] [15:53:19] <sustrik>	can you provide a minimal test case?
+| [Monday 24 January 2011] [15:53:26] <sustrik>	it should be easy
+| [Monday 24 January 2011] [15:53:45] <sustrik>	probably just create a socket and bind
+| [Monday 24 January 2011] [15:53:46] <drbobbeaty>	Sure. I'll try to write one up.
+| [Monday 24 January 2011] [15:53:49] <sustrik>	thanks
+| [Monday 24 January 2011] [16:41:55] <drbobbeaty>	sustrik: if you use this gist: https://gist.github.com/634738 , you can even delete lines 69 to 94, you'll get the same error I see. On CentOS5 it's fine. On Ubuntu 10.04.1 it fails on the connect() call (line 68).
+| [Monday 24 January 2011] [16:46:44] <drbobbeaty>	I'm going to send it to the mailing list as well... just in case you're gone for the day.
+| [Monday 24 January 2011] [17:31:27] <benoitc>	hum /win 8
+| [Monday 24 January 2011] [17:36:47] <pythonirc101>	can i use zeromq to communicate between two machines behind NATs?
+| [Monday 24 January 2011] [18:56:46] <mikko>	pythonirc101: what do you mean?
+| [Monday 24 January 2011] [21:05:25] <oaror>	Hi there!
+| [Monday 24 January 2011] [21:05:47] <oaror>	I am having trouble setting up pyzmq on windows 7
+| [Monday 24 January 2011] [21:06:37] <oaror>	it fails with the error : "Setup script exited with the error: \Mozilla was unexpected at this time"
+| [Monday 24 January 2011] [21:06:52] <oaror>	This happens with easy_install
+| [Monday 24 January 2011] [21:08:00] <oaror>	Also downloaded pyzmq-2.0.10 and tried executing "python setup.py install" after building libzmq.dll with VS 2008
+| [Monday 24 January 2011] [21:08:09] <oaror>	same result
+| [Monday 24 January 2011] [21:08:32] <oaror>	any ideas how I can fix this?
+| [Monday 24 January 2011] [21:14:59] <oaror>	In particular this procedure has not worked for me :- http://www.zeromq.org/docs:windows-installations
+| [Monday 24 January 2011] [21:15:22] <oaror>	oops.
+| [Monday 24 January 2011] [21:15:39] <oaror>	that procedure did now work for me.
+| [Monday 24 January 2011] [21:16:23] <oaror>	I have it running on my Ubuntu desktop no  issues. However we use windows 7 at the office - sigh.
+| [Tuesday 25 January 2011] [00:29:23] <stockMQ>	Hello!
+| [Tuesday 25 January 2011] [00:30:13] <stockMQ>	Though this does not really come under the scope of zeromq but am sure most who have used it would have tackled it and i am looking for some suggestions
+| [Tuesday 25 January 2011] [00:30:37] <stockMQ>	I have a PUB-SUB pattern
+| [Tuesday 25 January 2011] [00:31:12] <stockMQ>	On the Subscriber end when the stock feed is received currently I write it as binary to a file
+| [Tuesday 25 January 2011] [03:43:32] <stockMQ>	Hi
+| [Tuesday 25 January 2011] [03:43:45] <stockMQ>	In a PUB-SUB pattern
+| [Tuesday 25 January 2011] [03:43:53] <stockMQ>	i want to save the feed recvd at SUB side
+| [Tuesday 25 January 2011] [03:44:01] <stockMQ>	what is advisable
+| [Tuesday 25 January 2011] [03:44:10] <stockMQ>	saving it in file as binary ?
+| [Tuesday 25 January 2011] [03:46:42] <stockMQ>	I am sure many have dealt with this
+| [Tuesday 25 January 2011] [03:46:50] <stockMQ>	please share your experiences
+| [Tuesday 25 January 2011] [03:50:14] <sustrik>	stockMQ: there's no single answer
+| [Tuesday 25 January 2011] [03:50:23] <sustrik>	depends on what do you want to do with the file
+| [Tuesday 25 January 2011] [03:51:00] <stockMQ>	basically there will be other analysis applications which will be reading from the file 
+| [Tuesday 25 January 2011] [03:51:22] <stockMQ>	this could happen during market open thus could create a race condition
+| [Tuesday 25 January 2011] [03:51:35] <stockMQ>	and also after market close when the write is not happening
+| [Tuesday 25 January 2011] [03:52:07] <stockMQ>	i want to save all the intra day data
+| [Tuesday 25 January 2011] [03:58:11] <stockMQ>	any suggestions?
+| [Tuesday 25 January 2011] [04:20:18] <mikko>	stockMQ: how many days are you storing?
+| [Tuesday 25 January 2011] [04:20:38] <mikko>	and how many messages per second are you handling (roughly)
+| [Tuesday 25 January 2011] [04:20:43] <stockMQ>	every day a new file will be created
+| [Tuesday 25 January 2011] [04:20:45] <mikko>	what is the size of a single message?
+| [Tuesday 25 January 2011] [04:20:59] <stockMQ>	I am handling around 1 message every 20ms
+| [Tuesday 25 January 2011] [04:21:06] <stockMQ>	so 50messages per second
+| [Tuesday 25 January 2011] [04:21:47] <mikko>	so not a huge amount but decent flow
+| [Tuesday 25 January 2011] [04:22:13] <stockMQ>	and each message say about 256B
+| [Tuesday 25 January 2011] [04:23:02] <mikko>	and each day is a separate file?
+| [Tuesday 25 January 2011] [04:23:42] <stockMQ>	for now yes
+| [Tuesday 25 January 2011] [04:23:53] <stockMQ>	but i also have a separate file for certain scrips
+| [Tuesday 25 January 2011] [04:24:17] <stockMQ>	In that case each scrip will have its own file and each file could have data across days
+| [Tuesday 25 January 2011] [04:24:37] <mikko>	maybe use some sort of database?
+| [Tuesday 25 January 2011] [04:24:47] <stockMQ>	so i would like to design a solution which will be scalable as far as the size is concerned
+| [Tuesday 25 January 2011] [04:24:58] <stockMQ>	actually the issue is
+| [Tuesday 25 January 2011] [04:25:13] <stockMQ>	i cannot expect the Subscribers to setup and configure a DB
+| [Tuesday 25 January 2011] [04:25:25] <stockMQ>	they are lay men brokers
+| [Tuesday 25 January 2011] [04:25:30] <stockMQ>	not IT educated
