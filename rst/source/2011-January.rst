@@ -4731,3 +4731,612 @@
 | [Tuesday 25 January 2011] [04:25:13] <stockMQ>	i cannot expect the Subscribers to setup and configure a DB
 | [Tuesday 25 January 2011] [04:25:25] <stockMQ>	they are lay men brokers
 | [Tuesday 25 January 2011] [04:25:30] <stockMQ>	not IT educated
+| [Tuesday 25 January 2011] [04:26:40] <mikko>	stockMQ: it doesn't have to be a centralised db
+| [Tuesday 25 January 2011] [04:27:27] <stockMQ>	it cannot be a centralized db..
+| [Tuesday 25 January 2011] [04:27:37] <mikko>	bdb, kyoto cabinet, firebird etc
+| [Tuesday 25 January 2011] [04:27:42] <stockMQ>	The publisher publishes the feed
+| [Tuesday 25 January 2011] [04:27:50] <mikko>	there is a large amount of embedded databases available
+| [Tuesday 25 January 2011] [04:27:58] <stockMQ>	okk
+| [Tuesday 25 January 2011] [04:28:25] <stockMQ>	how are they in handling real time fast data
+| [Tuesday 25 January 2011] [04:28:29] <stockMQ>	in your experience
+| [Tuesday 25 January 2011] [04:29:03] <mikko>	different kind of databases have different models for handling concurrency and consistency
+| [Tuesday 25 January 2011] [04:29:54] <mikko>	i am testing kyoto cabinet at the moment and it provides different levels of consistency
+| [Tuesday 25 January 2011] [04:30:08] <stockMQ>	okk
+| [Tuesday 25 January 2011] [04:30:12] <mikko>	you can execute transactions, force sync to disk etc
+| [Tuesday 25 January 2011] [04:30:50] <stockMQ>	okk
+| [Tuesday 25 January 2011] [04:31:21] <stockMQ>	apart from db do you think it is possible to handle race condition in file storage
+| [Tuesday 25 January 2011] [04:31:31] <stockMQ>	The database is an option
+| [Tuesday 25 January 2011] [04:31:32] <mikko>	what sort of race conditions?
+| [Tuesday 25 January 2011] [04:31:37] <stockMQ>	The issue is
+| [Tuesday 25 January 2011] [04:31:53] <stockMQ>	when the feed is being written into a file at SUB end
+| [Tuesday 25 January 2011] [04:32:13] <stockMQ>	there could be Technical analysis tools reading data from the same file simultaneously
+| [Tuesday 25 January 2011] [04:32:25] <stockMQ>	though the OS should handle synchronization
+| [Tuesday 25 January 2011] [04:32:42] <stockMQ>	but i suspect there will be a case since the feed is being recvd so fast that
+| [Tuesday 25 January 2011] [04:33:02] <stockMQ>	the write will be given more time slice and the read may have to wait
+| [Tuesday 25 January 2011] [04:33:27] <stockMQ>	Database is an option..but i think the TA tools are designed to take .dat files as input
+| [Tuesday 25 January 2011] [04:34:26] <mikko>	can't really comment on that side as i don't really know the tools you are talking about
+| [Tuesday 25 January 2011] [04:35:50] <stockMQ>	That is right.. in fact just think that when the file is being written, there are another applications reading/wanting to read from it
+| [Tuesday 25 January 2011] [04:36:14] <stockMQ>	A DB would handle concurrency.. But any experience with file storage
+| [Tuesday 25 January 2011] [05:36:05] <sustrik>	you would have to ensure consistency yourself
+| [Tuesday 25 January 2011] [05:36:20] <sustrik>	which is kind of like writing a little database engine of your own
+| [Tuesday 25 January 2011] [05:36:35] <sustrik>	it's definitely better to use an existing product
+| [Tuesday 25 January 2011] [05:37:42] <sustrik>	ha, Vint Cerf talks at LCA: "We currently have no equivalent to the Erlang distribution to describe usage at the edges of the network, making provisioning and scaling difficult."
+| [Tuesday 25 January 2011] [05:37:48] <sustrik>	actually, we do :)
+| [Tuesday 25 January 2011] [05:38:36] <benoitc>	erlang OTP for supervision and such + zeromq make a good couple
+| [Tuesday 25 January 2011] [06:34:02] <pieterhintjens>	hi guys
+| [Tuesday 25 January 2011] [06:36:27] <mikko>	pieterh!
+| [Tuesday 25 January 2011] [06:36:28] <pieterh>	sustrik: where can I find the summary of changes between 2.0.10 and 2.1.0?
+| [Tuesday 25 January 2011] [06:36:31] <mikko>	been a while
+| [Tuesday 25 January 2011] [06:36:33] <pieterh>	hi mikko :-)
+| [Tuesday 25 January 2011] [06:36:38] <pieterh>	yeah, I was a bit sick
+| [Tuesday 25 January 2011] [06:36:47] <mikko>	i had a question about zfl
+| [Tuesday 25 January 2011] [06:36:51] <pieterh>	shoot
+| [Tuesday 25 January 2011] [06:36:55] <mikko>	is it supposed to work on windows?
+| [Tuesday 25 January 2011] [06:37:05] <sustrik>	pieterh: check the ChangeLog
+| [Tuesday 25 January 2011] [06:37:06] <pieterh>	yes, it's supposed to be a portability layer
+| [Tuesday 25 January 2011] [06:37:09] <sustrik>	in the main directory
+| [Tuesday 25 January 2011] [06:37:09] <mikko>	i noticed the use of pthreads while building on mingw32
+| [Tuesday 25 January 2011] [06:37:10] <pieterh>	sustrik: thanks
+| [Tuesday 25 January 2011] [06:37:27] <pieterh>	but like all such layers, until it's actually used on an OS it won't work on the OS
+| [Tuesday 25 January 2011] [06:38:02] <pieterh>	the idea is to put stuff like #ifdef _WIN32_ into one layer rather than sprinkled through apps
+| [Tuesday 25 January 2011] [06:38:54] <pieterh>	at least for the basic functionality a typical 0MQ app needs...
+| [Tuesday 25 January 2011] [06:39:11] <mikko>	cool
+| [Tuesday 25 January 2011] [06:39:11] <pieterh>	I should add something about porting ZFL to the docs, maybe
+| [Tuesday 25 January 2011] [06:39:34] <pieterh>	we did this for years with SFL, an older C library, the approach works nicely
+| [Tuesday 25 January 2011] [06:39:50] <mikko>	kinda the same that apache httpd does with apr
+| [Tuesday 25 January 2011] [06:40:06] <mikko>	i'll take a look at providing a patch for mingw32 etc
+| [Tuesday 25 January 2011] [06:42:08] <pieterh>	yes, APR is very similar in concept but (a) doesn't use a class model, which makes the code messy, and (b) is rather heavy
+| [Tuesday 25 January 2011] [06:42:18] <pieterh>	patches will be welcome :-)
+| [Tuesday 25 January 2011] [06:48:08] <drbobbeaty>	sustrik: you around? Did you get a look at the gist with the issue re: Ubuntu 10.04.1 and OpenPGM failing on the connect()?
+| [Tuesday 25 January 2011] [06:49:18] <sustrik>	the gist was dead in the morning
+| [Tuesday 25 January 2011] [06:49:25] <sustrik>	let me have a look now
+| [Tuesday 25 January 2011] [06:50:35] <sustrik>	drbobbeaty: can you please try using different port numbers for individual connections?
+| [Tuesday 25 January 2011] [06:50:59] <drbobbeaty>	sustrik: Sure, let me generate a new gist with the minimal code.
+| [Tuesday 25 January 2011] [06:51:28] <sustrik>	i mean, isn't the problem caused by connecting twice to the same port number?
+| [Tuesday 25 January 2011] [06:51:50] <drbobbeaty>	Nope, it's just plain connecting. On Ubuntu only. CentOS is fine.
+| [Tuesday 25 January 2011] [06:54:57] <drbobbeaty>	This is the minimal code sample: https://gist.github.com/794827 -- it jsut creates the context, creates the socket, and then calls connect(). It works great on CentOS 5 but fails on Ubuntu 10.04.1.
+| [Tuesday 25 January 2011] [06:55:02] <sustrik>	have you tried using different port numbers?
+| [Tuesday 25 January 2011] [06:55:16] <sustrik>	ah, ok
+| [Tuesday 25 January 2011] [06:55:42] <sustrik>	i'll check it out shortly
+| [Tuesday 25 January 2011] [06:55:59] <drbobbeaty>	thanks so much - any help you can provide would be greatly appreciated.
+| [Tuesday 25 January 2011] [07:04:48] <pieterh>	sustrik: there is no ChangeLog in the git repository
+| [Tuesday 25 January 2011] [07:05:28] <pieterh>	however there is a summary of changes in NEWS
+| [Tuesday 25 January 2011] [07:05:48] <sustrik>	right
+| [Tuesday 25 January 2011] [07:05:58] <sustrik>	ChangeLog is auto generated
+| [Tuesday 25 January 2011] [07:06:08] <sustrik>	you have to look into the package
+| [Tuesday 25 January 2011] [07:06:15] <sustrik>	if you want complete changelog
+| [Tuesday 25 January 2011] [07:06:20] <pieterh>	right, it's not in the git even after building
+| [Tuesday 25 January 2011] [07:06:48] <sustrik>	generating ChangeLog is part of the release proces
+| [Tuesday 25 January 2011] [07:06:56] <sustrik>	so have a look in 2.1.0 package
+| [Tuesday 25 January 2011] [07:07:07] <pieterh>	it's not documented on the wiki
+| [Tuesday 25 January 2011] [07:07:16] <pieterh>	there is a link to NEWS, which is rather more readable
+| [Tuesday 25 January 2011] [07:07:44] <sustrik>	is it sufficient for you?
+| [Tuesday 25 January 2011] [07:08:06] <pieterh>	I'll fix the wiki to explicitly answer the question, "what's changed in this version"
+| [Tuesday 25 January 2011] [07:08:18] <mikko>	"a lot"
+| [Tuesday 25 January 2011] [07:08:35] <sustrik>	if you need a comlete change log from the head version just use "git log"
+| [Tuesday 25 January 2011] [07:09:00] <pieterh>	a lot changed, but most users just want the headlines
+| [Tuesday 25 January 2011] [07:09:10] <pieterh>	a git log is close to useless for that
+| [Tuesday 25 January 2011] [07:09:39] <pieterh>	my question, for example, is "what do I need to change in the Guide"
+| [Tuesday 25 January 2011] [07:09:54] <pieterh>	other people will want to know, "what do I need to change in my apps, and what cool new stuff is there?"
+| [Tuesday 25 January 2011] [07:10:12] <pieterh>	NEWS looks like the best source, hand written and clear
+| [Tuesday 25 January 2011] [07:14:51] <sustrik>	yes, i think so
+| [Tuesday 25 January 2011] [07:31:00] <kabs>	Hello, in most of the zeroMQ examples server binds to for example : tcp://*:5560 while client connects to  for example tcp://localhost:5560, if I replace * with localhost for server it doesn't work , didn't understand why , any one??
+| [Tuesday 25 January 2011] [07:32:19] <traviscline>	I'm working on a libevent zeromq integration and have a question (that might require libevent knowledge): libevent is optionally edge-trigger aware (EV_ET) on some backends (kqueue, epoll) -- is this feature desirable/useful in conjunction with a zmq socket? read events seem to be triggered fine without the EV_ET flag -- as of now i'm handling the "edge-triggered" nature of the zmq.FD by setting a readable and writable flag until respective EAGAIN
+| [Tuesday 25 January 2011] [07:35:48] <kabs>	Forgot to mention, examples I am talking about is from the guide http://zguide.zeromq.org/chapter:all#toc0 and my client servers are on same machine
+| [Tuesday 25 January 2011] [07:36:25] <traviscline>	mikko: you had some great input for me before, ^ that rambling make any sense?
+| [Tuesday 25 January 2011] [07:36:43] <traviscline>	i'm getting my feet wet with this stuff so I may be missing/misunderstanding concepts
+| [Tuesday 25 January 2011] [07:37:37] <mikko>	traviscline: not sure i understand what the question is
+| [Tuesday 25 January 2011] [07:38:06] <mikko>	you dont have to use edge-triggered event loop with zeromq but you need to handle the zeromq fd in edge-triggered fashion
+| [Tuesday 25 January 2011] [07:38:20] <traviscline>	mikko: if libevent's support of edge-triggered events makes sense in the context of ZMQ_FD descriptors
+| [Tuesday 25 January 2011] [07:38:30] <traviscline>	ok that's what I thought
+| [Tuesday 25 January 2011] [07:38:37] <traviscline>	thank you
+| [Tuesday 25 January 2011] [07:38:51] <traviscline>	I think my implementation is correct then
+| [Tuesday 25 January 2011] [07:39:06] <mikko>	i haven't seen any problems with level-triggered loop this far
+| [Tuesday 25 January 2011] [07:39:17] <mikko>	doing a loop in callback and reading until EAGAIN
+| [Tuesday 25 January 2011] [07:39:24] <mikko>	or checking ZMQ_EVENTS 
+| [Tuesday 25 January 2011] [07:41:00] <traviscline>	what i'm doing is waiting on an internal read (and write) event and then when ZMQ_FD is readable checking EVENTS to see which internal events to set and unsetting them on EAGAIN and if after a read|write EVENTS no longer shows the read|write as available
+| [Tuesday 25 January 2011] [07:41:07] <traviscline>	maybe I could simplify it a bit
+| [Tuesday 25 January 2011] [07:59:20] <stockMQ>	Anyone used HDF5
+| [Tuesday 25 January 2011] [08:03:58] <sustrik>	kabs: you are binding to a network interface
+| [Tuesday 25 January 2011] [08:04:11] <kabs>	sustrik: yes
+| [Tuesday 25 January 2011] [08:04:14] <sustrik>	so, on linux, the loopback interface is called "lo"
+| [Tuesday 25 January 2011] [08:04:21] <sustrik>	"localhost" is a hostname
+| [Tuesday 25 January 2011] [08:04:37] <kabs>	sustrik: even if I change both client and server to lo , it doesn't work
+| [Tuesday 25 January 2011] [08:04:51] <sustrik>	connect  connects to host
+| [Tuesday 25 January 2011] [08:04:53] <kabs>	sustrik: I tried with ip address, it worked, 
+| [Tuesday 25 January 2011] [08:05:01] <sustrik>	so it's "lo" on bind side
+| [Tuesday 25 January 2011] [08:05:09] <sustrik>	and "localhost" on connect side
+| [Tuesday 25 January 2011] [08:05:28] <kabs>	sustrik: hmm ...
+| [Tuesday 25 January 2011] [08:06:08] <kabs>	sustrik: got your point, thanks!
+| [Tuesday 25 January 2011] [08:06:12] <sustrik>	np
+| [Tuesday 25 January 2011] [08:07:26] <pythonirc101>	mikko: I've two machines behind NATs and I want to do publish/subs for them (mutual). Is this something that can be done using zeromq?
+| [Tuesday 25 January 2011] [08:13:19] <drbobbeaty>	sustrik: I think I have a lead to the problem with OpenPGM... It appears in socket_base.cpp (line 195) that in order to use the epgm protocol I need to NOT have options.requies_in and options.requires_out set to TRUE. Yet, in the constructor in sub.cpp (line 27), the superclass constructor - xsub_t (line 33 in xsub.cpp) is setting them BOTH to be TRUE. With the subclass, sub_t not chancing these values, it appears that they are going to be TRUE for all 
+| [Tuesday 25 January 2011] [08:13:19] <drbobbeaty>	sockets.
+| [Tuesday 25 January 2011] [08:13:53] <sustrik>	yes, that's the recent change i was referring to
+| [Tuesday 25 January 2011] [08:14:27] <drbobbeaty>	Ah... OK, perfect. So I'll just wait for your resolution. Thanks.
+| [Tuesday 25 January 2011] [08:25:57] <spht>	pythonirc101:  without a proxy in between you need to look at UPnP
+| [Tuesday 25 January 2011] [08:29:51] <pythonirc101>	spht: I could use a proxy for connection establishment, but not for data transfer...
+| [Tuesday 25 January 2011] [08:31:39] <spht>	pythonirc101:  Except for manual NAT config this is your only option: http://en.wikipedia.org/wiki/Internet_Gateway_Device_Protocol
+| [Tuesday 25 January 2011] [08:32:15] <spht>	though note that it's not implemented by all vendors/devices
+| [Tuesday 25 January 2011] [10:32:02] <traviscline>	ANN: much improved gevent-zeromq compatibility pushed at https://github.com/traviscline/gevent-zeromq
+| [Tuesday 25 January 2011] [10:52:05] <seb`>	traviscline: thank you for that by the way
+| [Tuesday 25 January 2011] [10:52:31] <seb`>	I have been playing with gevent + zeromq all weekend
+| [Tuesday 25 January 2011] [10:53:10] <traviscline>	seb`: cool, more than happy to work out any kinks but feel much more confident with the recent changes
+| [Tuesday 25 January 2011] [10:53:25] <traviscline>	seb`: I wonder if the zguide guys would take some python-gevent submissions
+| [Tuesday 25 January 2011] [10:53:56] <seb`>	that would be cool indeed
+| [Tuesday 25 January 2011] [10:54:10] <traviscline>	thought part of the point is the ease in going multi-proc, it's nice seeing lots going on in one process smoothly
+| [Tuesday 25 January 2011] [10:54:51] <seb`>	yes
+| [Tuesday 25 January 2011] [10:54:56] <seb`>	that is huge for me
+| [Tuesday 25 January 2011] [10:55:26] <seb`>	of course I had to switch my req/rep sockets to xrep/xreq
+| [Tuesday 25 January 2011] [10:55:30] <seb`>	:-p
+| [Tuesday 25 January 2011] [10:58:12] <pieterh>	traviscline: anything you want to submit to zguide, more than welcome!
+| [Tuesday 25 January 2011] [10:58:29] 	 * pieterh is the 'zguide guy'
+| [Tuesday 25 January 2011] [10:58:44] 	 * traviscline was just looking at git log to see if he was
+| [Tuesday 25 January 2011] [10:59:06] <pieterh>	so you have a specific API for python-gevent?
+| [Tuesday 25 January 2011] [10:59:16] <traviscline>	pieterh: trouble is the single threaded examples are the same sans a different import
+| [Tuesday 25 January 2011] [10:59:23] <traviscline>	when you go multi-threaded it'd change
+| [Tuesday 25 January 2011] [10:59:41] <traviscline>	pieterh: they may not be different enough to be that useful but i'll compare
+| [Tuesday 25 January 2011] [11:00:12] <traviscline>	pieterh: it's meant to be the pyzmq api but it replaces parts that would block and gets the FD into libevent's loop
+| [Tuesday 25 January 2011] [11:00:45] <pieterh>	do you expect this to become the standard pyzmq eventually?
+| [Tuesday 25 January 2011] [11:01:18] <traviscline>	I've been talking to the guys while working on this but it's possible it'd end up in some sort of 'green' submodule somewhere
+| [Tuesday 25 January 2011] [11:01:37] <traviscline>	haven't had that discussion in detail
+| [Tuesday 25 January 2011] [11:02:16] <pieterh>	you consider this a fork / improvement of pyzmq, right?
+| [Tuesday 25 January 2011] [11:02:58] <traviscline>	it's not uncommon in gevent land to provide compat libs which mirror and/or patch the apis of other libs
+| [Tuesday 25 January 2011] [11:03:16] <traviscline>	i don't bundle pyzmq, i depend on it and wrap it
+| [Tuesday 25 January 2011] [11:03:30] <traviscline>	but as I said, it could change, depends on what hte pyzmq guys think
+| [Tuesday 25 January 2011] [11:03:38] <pieterh>	ok...
+| [Tuesday 25 January 2011] [11:03:48] <seb`>	but it would be cool to have this as a sub module in pyzmq someday
+| [Tuesday 25 January 2011] [11:03:59] <pieterh>	what I'd suggest is translate the interesting examples to python-gevent-zmq
+| [Tuesday 25 January 2011] [11:04:06] <seb`>	that is usable once you install gevent
+| [Tuesday 25 January 2011] [11:04:08] <pieterh>	package them at least with your code
+| [Tuesday 25 January 2011] [11:04:12] <traviscline>	pieterh: if you're interested in the gevent bits: here's all the rr* stuff in one file
+| [Tuesday 25 January 2011] [11:04:18] <pieterh>	and then we'll also package them with zguide
+| [Tuesday 25 January 2011] [11:04:20] <traviscline>	seb`: agreed
+| [Tuesday 25 January 2011] [11:04:27] <traviscline>	pieterh: cool, can do
+| [Tuesday 25 January 2011] [11:04:33] <traviscline>	pieterh: whoops, link: https://github.com/traviscline/gevent-zeromq/blob/master/examples/reqrep.py
+| [Tuesday 25 January 2011] [11:04:42] <pieterh>	send me a zip with everything when it's ready
+| [Tuesday 25 January 2011] [11:04:45] <pieterh>	ph@imatix.com
+| [Tuesday 25 January 2011] [11:04:48] <traviscline>	rgr
+| [Tuesday 25 January 2011] [11:04:54] <pieterh>	or better, to zeromq-dev so it's public
+| [Tuesday 25 January 2011] [11:05:47] <pieterh>	i'll add Python-gevent as a 'Language'
+| [Tuesday 25 January 2011] [11:06:11] 	 * pieterh is not entirely sure about that last
+| [Tuesday 25 January 2011] [11:06:35] <pieterh>	we have variants of other language APIs too, and have solved this simply by adding the examples to the relevant directory
+| [Tuesday 25 January 2011] [11:06:42] <traviscline>	hmm
+| [Tuesday 25 January 2011] [11:06:48] <pieterh>	they don't show up when people read the guide online but they are in the git if they clone it
+| [Tuesday 25 January 2011] [11:06:57] <traviscline>	taskvent-gevent.py or the like?
+| [Tuesday 25 January 2011] [11:07:01] <pieterh>	yes
+| [Tuesday 25 January 2011] [11:07:24] <pieterh>	at the least we archive and publish the examples
+| [Tuesday 25 January 2011] [11:07:55] <pieterh>	i may add 'variants' to the languages if we get this happening more
+| [Tuesday 25 January 2011] [11:07:56] <traviscline>	roger, pieterh one place the gevent compat is interesting is that you can do multi-thread/proc stuff in one file -- as I mentioned before that kind of defeats the purpose, any interest in examples like that or is that a little too off the reservation?
+| [Tuesday 25 January 2011] [11:08:24] <pieterh>	what purpose does this defeat?
+| [Tuesday 25 January 2011] [11:08:25] <traviscline>	defeats the purpose in terms of zmq scalability and whatnot
+| [Tuesday 25 January 2011] [11:08:28] <pieterh>	ah
+| [Tuesday 25 January 2011] [11:08:42] <pieterh>	i'd not say this defeats the purpose
+| [Tuesday 25 January 2011] [11:08:48] <seb`>	me neither
+| [Tuesday 25 January 2011] [11:08:51] <pieterh>	rather it lets you build properly MT apps
+| [Tuesday 25 January 2011] [11:09:01] <pieterh>	which you can later scale out over other transports if needed
+| [Tuesday 25 January 2011] [11:09:08] <traviscline>	alright, cool
+| [Tuesday 25 January 2011] [11:09:28] <pieterh>	in the guide I switch between the two architectures (initial examples are multiple processes, later examples are MT in one process)
+| [Tuesday 25 January 2011] [11:09:32] <seb`>	and It's useful to server multiple request at once
+| [Tuesday 25 January 2011] [11:09:37] <pieterh>	being able to do real MT in one process is actually really valuable
+| [Tuesday 25 January 2011] [11:09:50] <pieterh>	it lets you build realistic brokers, for example
+| [Tuesday 25 January 2011] [11:09:52] <seb`>	when one of the requests in waiting for the database for example
+| [Tuesday 25 January 2011] [11:10:07] <seb`>	much higher throuput
+| [Tuesday 25 January 2011] [11:10:12] <seb`>	throughput
+| [Tuesday 25 January 2011] [11:10:20] <pieterh>	since this is one of the big limitations with pyzmq, the gevent stuff is very significant
+| [Tuesday 25 January 2011] [11:10:43] <pieterh>	so yes, definite interest in such examples
+| [Tuesday 25 January 2011] [11:15:55] <seb`>	traviscline: what problems have you found before todays changes?
+| [Tuesday 25 January 2011] [11:16:53] <seb`>	traviscline: and is the removal of 'track' intended? (https://github.com/traviscline/gevent-zeromq/commit/91d79f1c5fb2715d788a6b628e35d1c1f0e0af7d#L2L77)
+| [Tuesday 25 January 2011] [11:26:39] <traviscline>	seb`: none, ano
+| [Tuesday 25 January 2011] [11:26:43] <traviscline>	s/ano/no/
+| [Tuesday 25 January 2011] [11:28:34] <traviscline>	seb`: pushed
+| [Tuesday 25 January 2011] [11:28:45] <seb`>	thanks
+| [Tuesday 25 January 2011] [11:28:46] <seb`>	:-)
+| [Tuesday 25 January 2011] [11:31:31] <seb`>	oh it uses cython too!
+| [Tuesday 25 January 2011] [11:31:33] <seb`>	:-)
+| [Tuesday 25 January 2011] [11:31:51] <seb`>	traviscline: did you compare performance?
+| [Tuesday 25 January 2011] [11:32:11] <traviscline>	between cython and not? yes, for a straight tight loop it's about 50% faster with cython
+| [Tuesday 25 January 2011] [11:32:28] <traviscline>	i'm working through a couple issues with the pyzmq guys on further cython intergration
+| [Tuesday 25 January 2011] [11:32:35] <seb`>	nice
+| [Tuesday 25 January 2011] [11:32:39] <traviscline>	i should be able to eliminate virtually all python overhead
+| [Tuesday 25 January 2011] [11:33:03] <traviscline>	i think libevents loop is still going to be slower than zmq's but I'll do some performance testing
+| [Tuesday 25 January 2011] [11:33:18] <traviscline>	I have a small perf bench that I'll commit once it's a bit cleaner
+| [Tuesday 25 January 2011] [11:33:45] <seb`>	I benched it a bit
+| [Tuesday 25 January 2011] [11:33:50] <seb`>	and it seems to be slower
+| [Tuesday 25 January 2011] [11:34:04] <seb`>	but that does not matter much to me
+| [Tuesday 25 January 2011] [11:34:05] <seb`>	now
+| [Tuesday 25 January 2011] [11:37:58] <seb`>	ah you depend on the gevent trunk now?
+| [Tuesday 25 January 2011] [11:38:03] <seb`>	(...get_hub().reactor...)
+| [Tuesday 25 January 2011] [11:39:12] <seb`>	It does not matter much for me but it makes things a tiny bit harder to setup
+| [Tuesday 25 January 2011] [11:40:25] <traviscline>	seb`: about to push a 0.13 compat fix
+| [Tuesday 25 January 2011] [11:42:44] <seb`>	traviscline: awesome your edge triggering patch fixed a bug I was hunting!
+| [Tuesday 25 January 2011] [11:43:00] <traviscline>	good
+| [Tuesday 25 January 2011] [11:43:11] <seb`>	I was sending multiple request at the same time and always missing one response
+| [Tuesday 25 January 2011] [11:44:24] <seb`>	maybe the eventlets guys would be interested by the fix
+| [Tuesday 25 January 2011] [11:47:49] <traviscline>	seb`: pushed compat
+| [Tuesday 25 January 2011] [11:56:04] <seb`>	because it's a setuptools option, not distutils
+| [Tuesday 25 January 2011] [11:57:40] <traviscline>	seb`: works with pip
+| [Tuesday 25 January 2011] [13:09:22] <benoitc>	mmm please don't :)
+| [Tuesday 25 January 2011] [13:09:53] <benoitc>	you can add a requirements.txt for people that need to install gevent and other first
+| [Tuesday 25 January 2011] [13:22:47] <seb`>	it was already there
+| [Tuesday 25 January 2011] [13:25:14] <benoitc>	i mean adding setuptools dependancy
+| [Tuesday 25 January 2011] [13:25:27] <benoitc>	hopefully we will all use distutils2 soon :)
+| [Tuesday 25 January 2011] [13:27:56] <seb`>	the way he did it it's not a dep
+| [Tuesday 25 January 2011] [13:28:07] <seb`>	it fallbacks to distutils silently
+| [Tuesday 25 January 2011] [15:11:24] <traviscline>	getting this error when using pyzmq: Assertion failed: !more || pipes [current] != pipe_ (fq.cpp:61) traceback down into zmq: https://gist.github.com/4fa28274b1c08bb1c976
+| [Tuesday 25 January 2011] [15:13:48] <traviscline>	oh there's a todo above it
+| [Tuesday 25 January 2011] [15:15:06] <traviscline>	( https://github.com/zeromq/zeromq2/blob/master/src/fq.cpp#L61 )
+| [Tuesday 25 January 2011] [16:34:17] <traviscline>	odd. goes away if i try again on EAGAIN without waiting for the fd to be marked as readable
+| [Tuesday 25 January 2011] [16:34:29] <traviscline>	mikko: ^ that sound right?
+| [Tuesday 25 January 2011] [16:41:25] <traviscline>	what I was/am doing is on first EAGAIN sleeping until the fd marks readable and EVENTS shows writable
+| [Tuesday 25 January 2011] [16:48:30] <minrk>	It seems like you might not handle multipart messages properly
+| [Tuesday 25 January 2011] [16:50:28] <traviscline>	details?
+| [Tuesday 25 January 2011] [16:50:56] <minrk>	oh, maybe I'm wrong
+| [Tuesday 25 January 2011] [16:51:05] <minrk>	I misinterpreted your loop, I think
+| [Tuesday 25 January 2011] [16:51:20] <minrk>	I'm not familiar with gevent, so the event logic isn't obvious to me
+| [Tuesday 25 January 2011] [16:54:02] <traviscline>	the wait suspends the current green thread until the file descriptor is marked readable (based on EVENTS)
+| [Tuesday 25 January 2011] [16:54:15] <traviscline>	or writable obviously
+| [Tuesday 25 January 2011] [16:58:47] <seb`>	I wonder what would happen if you share a socket between multiple green threads
+| [Tuesday 25 January 2011] [17:01:19] <seb`>	for example 2 sends on the same XREQ in two different greenlets
+| [Tuesday 25 January 2011] [17:01:22] <traviscline>	seb`: don't
+| [Tuesday 25 January 2011] [17:01:33] <traviscline>	use an inproc or a gevent queue or something
+| [Tuesday 25 January 2011] [17:01:53] <seb`>	makes sense
+| [Tuesday 25 January 2011] [17:02:14] <traviscline>	i'm not sure both greenlets would get triggered by libevent's picking up of the file descriptors read state
+| [Tuesday 25 January 2011] [17:02:36] <traviscline>	that little problem could be solved, but i don't think you'd ever want to do that
+| [Tuesday 25 January 2011] [17:04:05] <seb`>	the order could maybe be messed up
+| [Tuesday 25 January 2011] [17:04:15] <seb`>	not sure
+| [Tuesday 25 January 2011] [17:04:22] <seb`>	seems unsafe anyway
+| [Tuesday 25 January 2011] [18:33:38] <andrewvc>	cremes: around?
+| [Tuesday 25 January 2011] [19:22:09] <danlarkin>	hey all. Is there a tool [equivalent | similar] to netcat that I can use to test zmq services?
+| [Tuesday 25 January 2011] [22:18:30] <traviscline>	danlarkin: without a client library it isnt' going to be very useful
+| [Tuesday 25 January 2011] [22:18:49] <traviscline>	i'd just use a flexible language for your tests
+| [Tuesday 25 January 2011] [22:20:46] <danlarkin>	yes, I suppose I will. Thanks
+| [Tuesday 25 January 2011] [23:03:09] <stockMQ>	Hi..
+| [Tuesday 25 January 2011] [23:03:32] <stockMQ>	I read in an old post that pgm multicast was only supported for Linux
+| [Tuesday 25 January 2011] [23:04:05] <stockMQ>	Can anybody confirm if it is now available and working for Windows
+| [Wednesday 26 January 2011] [01:02:42] <CIA-23>	zeromq2: 03Thijs Terlouw 07master * rf7f1dfc 10/ (8 files in 4 dirs): 
+| [Wednesday 26 January 2011] [01:02:42] <CIA-23>	zeromq2: ZMQ_RECONNECT_IVL_MAX socket option added
+| [Wednesday 26 January 2011] [01:02:42] <CIA-23>	zeromq2: It allows for exponential back-off strategy when reconnecting.
+| [Wednesday 26 January 2011] [01:02:42] <CIA-23>	zeromq2: Signed-off-by: Thijs Terlouw <thijsterlouw@gmail.com> - http://bit.ly/gCNsRo
+| [Wednesday 26 January 2011] [01:52:49] <jugg>	is there any guidelines being followed when creating socket options? There seems to be no apparent method to the selection of the socket option value type: int/uint32/int64/uint64...
+| [Wednesday 26 January 2011] [02:11:54] <sustrik>	jugg: it's a mess
+| [Wednesday 26 January 2011] [02:12:06] <sustrik>	as for new options, use int whenever possible
+| [Wednesday 26 January 2011] [02:12:22] <sustrik>	that's in line with BSD socket API (POSIX)
+| [Wednesday 26 January 2011] [02:12:45] <jugg>	ok
+| [Wednesday 26 January 2011] [08:26:08] <toni__>	Hi there. I have a XREQ-XREP specific question. I described my issue here: https://gist.github.com/796675 . Would be great if someone could take a look at it. Thanks
+| [Wednesday 26 January 2011] [08:29:23] <sustrik>	in general reply should return via the same route the request was passed through
+| [Wednesday 26 January 2011] [08:29:34] <sustrik>	you can hack in a different behaviour
+| [Wednesday 26 January 2011] [08:29:51] <sustrik>	but it's not really advisable
+| [Wednesday 26 January 2011] [08:32:01] <toni__>	okay, but does the XREQ socket accept a reply from a broker, different to the one he sent the request? 
+| [Wednesday 26 January 2011] [08:34:15] <toni__>	if it works, wouldnt it be simpler do go this way as to route the message back to the original server which send then sends the message back to the client? 
+| [Wednesday 26 January 2011] [08:43:38] <stockMQ>	Hi guys
+| [Wednesday 26 January 2011] [08:43:50] <stockMQ>	Google protobuf or Thrift??
+| [Wednesday 26 January 2011] [08:43:58] <stockMQ>	suggestions?
+| [Wednesday 26 January 2011] [08:53:25] <sustrik>	drbobbeaty: hi, are you there?
+| [Wednesday 26 January 2011] [08:53:36] <drbobbeaty>	sustrik: yup
+| [Wednesday 26 January 2011] [08:53:48] <sustrik>	i've had a look at the problem you've had
+| [Wednesday 26 January 2011] [08:54:10] <drbobbeaty>	thanks. I appreciate it.
+| [Wednesday 26 January 2011] [08:54:11] <sustrik>	what you say is "It appears in socket_base.cpp (line 195) that in order to use the epgm protocol I need to NOT have options.requies_in and options.requires_out set to TRUE. Yet, in the constructor in sub.cpp (line 27), the superclass constructor - xsub_t (line 33 in xsub.cpp) is setting them BOTH to be TRUE."
+| [Wednesday 26 January 2011] [08:54:29] <sustrik>	what i see on like 195 is:
+| [Wednesday 26 January 2011] [08:54:30] <sustrik>	if ((protocol_ == "pgm" || protocol_ == "epgm") &&
+| [Wednesday 26 January 2011] [08:54:30] <sustrik>	          options.type != ZMQ_PUB && options.type != ZMQ_SUB && options.type !=
+| [Wednesday 26 January 2011] [08:54:30] <sustrik>	          ZMQ_XPUB && options.type != ZMQ_XSUB) {
+| [Wednesday 26 January 2011] [08:54:51] <sustrik>	what version are you referring to?
+| [Wednesday 26 January 2011] [08:55:14] <drbobbeaty>	I had pulled it from the git master on github.
+| [Wednesday 26 January 2011] [08:55:23] <drbobbeaty>	I can pull it again, and try again.
+| [Wednesday 26 January 2011] [08:55:31] <sustrik>	how does your line 195 look like?
+| [Wednesday 26 January 2011] [08:56:19] <drbobbeaty>	It reads:
+| [Wednesday 26 January 2011] [08:56:58] <drbobbeaty>	if ((protocol_ == "pgm" || protocol_ == "epgm") &&
+| [Wednesday 26 January 2011] [08:57:19] <drbobbeaty>	options.requires_in && options.requires_out) {
+| [Wednesday 26 January 2011] [08:57:30] <sustrik>	that looks outdated
+| [Wednesday 26 January 2011] [08:57:32] <drbobbeaty>	...no mention of the exclusion on the XPUB
+| [Wednesday 26 January 2011] [08:57:38] <drbobbeaty>	Let me pull again.
+| [Wednesday 26 January 2011] [08:58:04] <sustrik>	drbobbeary: wait a sec!
+| [Wednesday 26 January 2011] [08:58:11] <drbobbeaty>	OK
+| [Wednesday 26 January 2011] [08:58:22] <sustrik>	i'm looking at the sub-forward branch
+| [Wednesday 26 January 2011] [08:58:27] <sustrik>	let me check the master
+| [Wednesday 26 January 2011] [08:59:36] <sustrik>	drbobbeaty: you are right!
+| [Wednesday 26 January 2011] [08:59:59] <sustrik>	can you try to replace the condition there with the one I've pasted above?
+| [Wednesday 26 January 2011] [09:00:00] <drbobbeaty>	sustrik: thanks... I was getting worried
+| [Wednesday 26 January 2011] [09:00:18] <sustrik>	let me know if it solves the problem
+| [Wednesday 26 January 2011] [09:00:25] <drbobbeaty>	OK, will do.
+| [Wednesday 26 January 2011] [09:00:29] <sustrik>	thanks
+| [Wednesday 26 January 2011] [09:17:21] <stockMQ>	I am dealing with exchange feed and for me Performance and Size are priority
+| [Wednesday 26 January 2011] [09:18:07] <stockMQ>	I am looking at options like Google protobuff,thrift and JSON + zlib ...
+| [Wednesday 26 January 2011] [09:18:44] <sustrik>	stockMQ: you have to test the performance yourself
+| [Wednesday 26 January 2011] [09:19:02] <stockMQ>	ok
+| [Wednesday 26 January 2011] [09:19:04] <sustrik>	there's no such thing as generic performance
+| [Wednesday 26 January 2011] [09:19:33] <sustrik>	it depends on hardware, different layers of software etc.
+| [Wednesday 26 January 2011] [09:20:17] <stockMQ>	yes but looking from the size perspective
+| [Wednesday 26 January 2011] [09:20:43] <stockMQ>	obviously protobuf and thrift will have a serialization wrapper around
+| [Wednesday 26 January 2011] [09:21:39] <stockMQ>	so i just wanted to know say if a struct with two Int was to be serialized using protobuf or thrift will the resulting message size increase very much
+| [Wednesday 26 January 2011] [09:22:11] <stockMQ>	I am assuming that a lot of zeroMQ users would be using any of the above messaging
+| [Wednesday 26 January 2011] [09:23:44] <drbobbeaty>	If you're talking about Exchange Feeds like NASDAQ or SIAC/OPRA, then I use ZeroMQ for that and push a lot of messages a sec through my ticker plants.
+| [Wednesday 26 January 2011] [09:24:35] <stockMQ>	yes.. I am from India and I am talking about NSE (National stock exchange ) feed similar to Nasdaq
+| [Wednesday 26 January 2011] [09:25:10] <drbobbeaty>	Then, yes. I use ZMQ for these Quote, Trade, etc. messages. 
+| [Wednesday 26 January 2011] [09:25:22] <stockMQ>	ok..
+| [Wednesday 26 January 2011] [09:25:33] <drbobbeaty>	I do NOT use protobufs, but do use the Google VarInt encoding to pack ints.
+| [Wednesday 26 January 2011] [09:26:05] <stockMQ>	so my understanding is once you receive the feed you might be processing it (aggregating maybe) and then publish
+| [Wednesday 26 January 2011] [09:27:32] <stockMQ>	am i right ?
+| [Wednesday 26 January 2011] [09:27:44] <drbobbeaty>	Actually, I decode the feed, make a message for each 'tick', and then serialize that message into a ZMQ message and send it. On the receiver, I get the payload, deserialize it into a message and use it.
+| [Wednesday 26 January 2011] [09:28:11] <drbobbeaty>	I also add in conflation, use multiple multicast channels to distribute the load, etc.
+| [Wednesday 26 January 2011] [09:28:16] <drbobbeaty>	But that's the basic picture.
+| [Wednesday 26 January 2011] [09:28:33] <stockMQ>	okk.. your use case sounds similar
+| [Wednesday 26 January 2011] [09:28:56] <stockMQ>	once i receive the feed..for each tick i create this struct
+| [Wednesday 26 January 2011] [09:28:57] <stockMQ>	struct ScripRecord { 	int test; 	int token; 	float open,high,low,close; 	double volume, volumeTradedToday, dateTime, buyVolume, sellVolume; 	float bid, ask, openInterest;  	float dayOpen, dayLow, dayHigh, previousClose;  	ScripRecord() 	{ 		memset(this, 0, sizeof(ScripRecord)); 	} };
+| [Wednesday 26 January 2011] [09:29:05] <drbobbeaty>	The serialization scheme is more like boost's serialization scheme - with a version component for changes in the messages. But it's not hard. You can use about anything.
+| [Wednesday 26 January 2011] [09:29:41] <stockMQ>	and i have a PUB-SUB pattern and i want to publish this struct to all my subscribers
+| [Wednesday 26 January 2011] [09:29:43] <seb`>	stockMQ: I don't do stocks but I use msgpack (http://msgpack.org/) a lot for serialization
+| [Wednesday 26 January 2011] [09:30:06] <stockMQ>	I understand that i cannot just typecast into char* and send
+| [Wednesday 26 January 2011] [09:30:16] <stockMQ>	so i was exploring options like protobufs
+| [Wednesday 26 January 2011] [09:30:32] <drbobbeaty>	You can do a lot. Msgpack is pretty popular... as is protobufs.
+| [Wednesday 26 January 2011] [09:31:19] <stockMQ>	But if I am not wrong you are suggesting that if I am sure that both PUB and SUB are on the same platform (or need not be)..instead of protobufs i can use 0MQ messages
+| [Wednesday 26 January 2011] [09:31:40] <stockMQ>	@seb.. thanks .. i shall have a look 
+| [Wednesday 26 January 2011] [09:32:18] <drbobbeaty>	What I'm saying is that ZeroMQ is a *channel*... you have to decide what the "payload" is going to be and how you are going to pack/unpack/encode/decode it.
+| [Wednesday 26 January 2011] [09:32:47] <drbobbeaty>	I need C++/Java compatibility, so I have to pack on C++ and unpack on C++ and Java. That means I can't just do a memcpy() of a struct.
+| [Wednesday 26 January 2011] [09:32:52] <drbobbeaty>	But that's me.
+| [Wednesday 26 January 2011] [09:33:09] <drbobbeaty>	You have to decide what to put in your messages so you can get the data out you need.
+| [Wednesday 26 January 2011] [09:33:23] <drbobbeaty>	protobufs and msgpack are both ways to do this cross-platform.
+| [Wednesday 26 January 2011] [09:33:45] <drbobbeaty>	The ZeroMQ message, itself, is agnostic to this.
+| [Wednesday 26 January 2011] [09:34:54] <stockMQ>	yep.. i need C++ compatibility..but memcpy does not really work
+| [Wednesday 26 January 2011] [09:35:19] <stockMQ>	But yes i would like to design the solution keeping in mind to scale to other platforms in future
+| [Wednesday 26 January 2011] [09:37:25] <drbobbeaty>	It's up to you, but I'd think of a serialization/deserialization scheme as independent of the ZeroMQ choice. Then, if your company picks 29West or Tibco, or RabbitMQ, you're safe in your serialization scheme. For many reasons, I'm using ZeroMQ and am very happy with it, but you mileage may vary.
+| [Wednesday 26 January 2011] [09:38:03] <stockMQ>	I am sorry..but should i be calling you Bob?
+| [Wednesday 26 January 2011] [09:39:37] <drbobbeaty>	That's fine... don't care :)
+| [Wednesday 26 January 2011] [09:41:03] <stockMQ>	anyways.. ZeroMQ does not provide any serialization/deserialization above their ZeroMQ message.. do they..?So if i have to send structured data via zeroMQ..I will have to create a protobuf/thrift/etc message object..then serialize that object and send it across
+| [Wednesday 26 January 2011] [09:41:23] <stockMQ>	Just want to confirm i have got it absolutely right
+| [Wednesday 26 January 2011] [09:42:42] <drbobbeaty>	You have this absolutely right. ZeroMQ is a "delivery system" - a very fancy one, but just a delivery system. What you ask it to deliver is up to you. 100%.
+| [Wednesday 26 January 2011] [09:43:38] <drbobbeaty>	You will find, I think, that when you look at protobufs, or msgpack, it'll be obvious as they won't talk about "delivery" -- only the "package".
+| [Wednesday 26 January 2011] [09:43:51] <stockMQ>	coool.. Now i will look into VarInt and msgpack
+| [Wednesday 26 January 2011] [09:43:57] <drbobbeaty>	Same with boost serialization
+| [Wednesday 26 January 2011] [09:44:44] <stockMQ>	For your solution did u get a chance to compare performance of the various options
+| [Wednesday 26 January 2011] [09:46:20] <stockMQ>	I meant the "package" options available
+| [Wednesday 26 January 2011] [09:48:53] <drbobbeaty>	Yes.
+| [Wednesday 26 January 2011] [09:49:12] <drbobbeaty>	I wasn't thrilled with boost serialization -- too much overhead for me
+| [Wednesday 26 January 2011] [09:49:59] <drbobbeaty>	protobufs was "OK", and I love the VarInt encoding and decoding in that, but the rest wasn't needed and I've had experiences in the past where major version changes in the protobufs libraries causes a big problem to clients.
+| [Wednesday 26 January 2011] [09:50:11] <drbobbeaty>	I also needed cross-platform support.
+| [Wednesday 26 January 2011] [09:50:49] <drbobbeaty>	At the same time, another group at The Shop had a data codec for serialization on sockets, and it was working well. If I used that, then I would not have to write anything for the Java side.
+| [Wednesday 26 January 2011] [09:51:03] <drbobbeaty>	So I picked it and optimized it a bit for speed, and it's been very good for me.
+| [Wednesday 26 January 2011] [09:51:43] <drbobbeaty>	I looked at it this way... the exchange data is very simple: int, float, string - that's about it. Very easy to make a codec fast for these data types.
+| [Wednesday 26 January 2011] [09:52:10] <drbobbeaty>	floats are simple byte copy... strings are packed easily - or not - they aren't all that big.
+| [Wednesday 26 January 2011] [09:52:23] <drbobbeaty>	int were the challenge - hence the VarInt encoding.
+| [Wednesday 26 January 2011] [09:52:31] <drbobbeaty>	(sorry for going on and on... I'll stop now)
+| [Wednesday 26 January 2011] [09:53:31] <stockMQ>	It has been extremely helful
+| [Wednesday 26 January 2011] [09:53:37] <stockMQ>	I would not like you to stop
+| [Wednesday 26 January 2011] [09:53:40] <stockMQ>	:)
+| [Wednesday 26 January 2011] [09:55:24] <stockMQ>	Even my data has just int,double and float
+| [Wednesday 26 January 2011] [09:56:52] <drbobbeaty>	I'm usually here... if you have questions, ask.
+| [Wednesday 26 January 2011] [09:59:20] <stockMQ>	cool.. I was just looking at VarInt and i understand that with varInt encoding that when an int is serialized it will occupy variable bits
+| [Wednesday 26 January 2011] [10:00:33] <drbobbeaty>	Yes, and that's a good thing. Volumes, Size, Qty - all ints but vastly different sizes. They take only what they need with VarInt
+| [Wednesday 26 January 2011] [10:01:09] <stockMQ>	but is that restricted to just int datatype or i can use it for floats and doubles too
+| [Wednesday 26 January 2011] [10:01:20] <drbobbeaty>	Just integers.
+| [Wednesday 26 January 2011] [10:01:38] <drbobbeaty>	If you look at the code, it's clear why. But it's just ints.
+| [Wednesday 26 January 2011] [10:08:07] <stockMQ>	is there a reason you used VarInt but not protocol buffer to serialize
+| [Wednesday 26 January 2011] [10:08:25] <stockMQ>	Is it because it only serialized to a stream
+| [Wednesday 26 January 2011] [10:10:08] <drbobbeaty>	No, my reason for not choosing protobufs is my experience with it has been "less than wonderful", and I had a very good alternative. Had my own serialization not been up to the task, I'd have looked hard at msgpack.
+| [Wednesday 26 January 2011] [10:12:51] <stockMQ>	ok.. so i get that you are not FOR protobuf and BOOST..:)
+| [Wednesday 26 January 2011] [10:13:43] <stockMQ>	http://redmine.msgpack.org/projects/msgpack/wiki/FormatDesign
+| [Wednesday 26 January 2011] [10:13:49] <stockMQ>	It does not look very bad
+| [Wednesday 26 January 2011] [10:14:01] <stockMQ>	comparable to VarInt in my opinion
+| [Wednesday 26 January 2011] [10:18:40] <stockMQ>	You there? 
+| [Wednesday 26 January 2011] [10:18:56] <stockMQ>	I will tell you what i tried without the "Packages"
+| [Wednesday 26 January 2011] [10:19:06] <stockMQ>	I had the struct like i posted above
+| [Wednesday 26 January 2011] [10:19:16] <stockMQ>	In C++ i used the pragma directive
+| [Wednesday 26 January 2011] [10:19:28] <stockMQ>	 #pragma pack(1)
+| [Wednesday 26 January 2011] [10:20:57] <stockMQ>	and i typecast the struct (char *) and send it using zeroMQ
+| [Wednesday 26 January 2011] [10:21:20] <stockMQ>	but if the size of the struct was say 92 at PUB
+| [Wednesday 26 January 2011] [10:21:40] <stockMQ>	at the receiving end it always came as 1Byte
+| [Wednesday 26 January 2011] [10:21:44] <drbobbeaty>	I'm here... 
+| [Wednesday 26 January 2011] [10:22:29] <stockMQ>	I figured that ZEROMQ message..which basically is a null terminated String would be the issue and i will have to use a buffer and serializer
+| [Wednesday 26 January 2011] [10:22:35] <drbobbeaty>	My suggestion is to make a serialization/deserialization scheme - based on something. Then write a test app to prove that you can encode and decode the messages.
+| [Wednesday 26 January 2011] [10:23:10] <drbobbeaty>	Once you have that, then you'll know exactly what a message encodes to. Do a hex dump of the data before sending. Do another on the receiver. Look for differences.
+| [Wednesday 26 January 2011] [10:23:19] <drbobbeaty>	I did. It helps a lot in getting this going.
+| [Wednesday 26 January 2011] [10:24:01] <stockMQ>	ohkk
+| [Wednesday 26 January 2011] [10:24:06] <drbobbeaty>	Assume nothing. Check everything. It saves time in the end to be careful in the beginning - especially on the encoding/decoding.
+| [Wednesday 26 January 2011] [10:24:16] <stockMQ>	true
+| [Wednesday 26 January 2011] [10:24:48] <drbobbeaty>	Plus, that way you can see how long it takes to decode 1000 msgs and to what size. You can play with the codec to get it to the optimal size/speed you need.
+| [Wednesday 26 January 2011] [10:24:55] <guido_g>	mq messages are not 0 terminated
+| [Wednesday 26 January 2011] [10:25:18] <drbobbeaty>	guido_g is totally right... it's a set of bytes. Period.
+| [Wednesday 26 January 2011] [10:25:26] <guido_g>	ack
+| [Wednesday 26 January 2011] [10:25:36] <guido_g>	except for pub/sub :)
+| [Wednesday 26 January 2011] [10:25:55] <guido_g>	there might be an issue w/ the topic
+| [Wednesday 26 January 2011] [10:26:26] <stockMQ>	ok
+| [Wednesday 26 January 2011] [10:28:00] <drbobbeaty>	In my experience with the ZMQ_PUB/ZMQ_SUB sockets and OpenPGM, the data you get from a recv() call is the "payload" -- no topic in that zmq::message_t
+| [Wednesday 26 January 2011] [10:28:57] <guido_g>	the topic is simply the start of the message
+| [Wednesday 26 January 2011] [10:29:09] <cremes>	stockMQ: here's some generic benchmarking results of some of the top serialization packages
+| [Wednesday 26 January 2011] [10:29:10] <cremes>	http://code.google.com/p/thrift-protobuf-compare/wiki/Benchmarking
+| [Wednesday 26 January 2011] [10:29:18] <guido_g>	so if one _sends_ w/ a topic, it become a problem
+| [Wednesday 26 January 2011] [10:29:20] <cremes>	it doesn't include msgpack... that's probably too new
+| [Wednesday 26 January 2011] [10:29:39] <cremes>	as always, test against *your* data structures to make sure the algo is fast enough
+| [Wednesday 26 January 2011] [10:30:01] <stockMQ>	Thanks cremes
+| [Wednesday 26 January 2011] [10:30:13] <stockMQ>	guido if i show a snippet of the code
+| [Wednesday 26 January 2011] [10:30:23] <stockMQ>	will it help to see if topic could be an issue
+| [Wednesday 26 January 2011] [10:30:49] <guido_g>	you should know what you send
+| [Wednesday 26 January 2011] [10:32:07] <guido_g>	https://gist.github.com/796852  <- even from python msgpack isn't that bad
+| [Wednesday 26 January 2011] [10:32:10] <stockMQ>	Well .. I just bind the publisher to pgm socket and try sending the struct typecasted to char*
+| [Wednesday 26 January 2011] [10:33:03] <stockMQ>	and on receive i expected that on typecasting back to struct it should work..which did not..I am not sure i understand the TOPIC.. i am not explicitly creating a topic
+| [Wednesday 26 January 2011] [10:33:06] <cremes>	stockMQ: i have a suggestion... make sure to abstract out the calls to encode/decode
+| [Wednesday 26 January 2011] [10:33:19] <cremes>	for testing purposes, use a simple and human-readable encoding like json
+| [Wednesday 26 January 2011] [10:33:24] <cremes>	this makes debugging very easy
+| [Wednesday 26 January 2011] [10:33:37] <cremes>	when you need to worry about perf, switch to a tighter encoding
+| [Wednesday 26 January 2011] [10:33:50] <cremes>	which should be simple if you abstracted your code proeprly
+| [Wednesday 26 January 2011] [10:34:01] <guido_g>	jepp, readable serialization format can save the day
+| [Wednesday 26 January 2011] [10:34:13] <cremes>	that is what i have done for the trading system i wrote; using json early on was a great call on my part for making debugging easy
+| [Wednesday 26 January 2011] [10:35:10] <cremes>	and unless you are counting nanoseconds for a HFT, even json is often fast enough
+| [Wednesday 26 January 2011] [10:35:11] <stockMQ>	ok..cremes .. but since json srting will act like just another string i think it will not be an issue. I have tried the sockets with test strings and everything works perfect
+| [Wednesday 26 January 2011] [10:35:55] <cremes>	stockMQ: oh, i see; you are still figuring out how to use 0mq multi-part messages
+| [Wednesday 26 January 2011] [10:36:10] <drbobbeaty>	sustrik: your change got rid of the error in the first call to connect(), but it did NOT allow messages to flow from the ZMQ_PUB server. To be fair, the ZMQ_PUB was running a slightly older version of ZMQ (still post-2.1.0). If this is an issue, let me know, but it looks like there is something else going on that's causing the messages to not be picked up by the ZMQ_SUB.
+| [Wednesday 26 January 2011] [10:36:12] <cremes>	you definitely don't want your "encoding" to include that delimter
+| [Wednesday 26 January 2011] [10:37:38] <sustrik>	drbobbeaty: ok
+| [Wednesday 26 January 2011] [10:37:41] <stockMQ>	actually i have not dabbled with multi part yet.. I figured i should be able to send a C++ struct typecasted to char* in just a single message
+| [Wednesday 26 January 2011] [10:38:14] <drbobbeaty>	sustrik: if you have any other ideas for me to try, please let me know. I'll be glad to try them.
+| [Wednesday 26 January 2011] [10:38:20] <stockMQ>	I could be wrong though..Just started using zeroMQ a couple of days back
+| [Wednesday 26 January 2011] [10:38:24] <cremes>	stockMQ: no, that isn't supported because the struct memcpy could contain the magic byte used as a message delimiter
+| [Wednesday 26 January 2011] [10:38:39] <stockMQ>	ohk
+| [Wednesday 26 January 2011] [10:38:59] <cremes>	and if you are using pub/sub, the topic byte-string is terminated with /0 too
+| [Wednesday 26 January 2011] [10:39:20] <cremes>	please read the guide and the man page on the protocol wire format
+| [Wednesday 26 January 2011] [10:40:10] <cremes>	and definitely read about multi-part messages
+| [Wednesday 26 January 2011] [10:40:14] <stockMQ>	cremes..if it is ok..can i request for an elaboration..maybe an example..if the struct is say struct ScripRecord { 	int token;
+| [Wednesday 26 January 2011] [10:40:16] <stockMQ>	 	float open,high,low,close;
+| [Wednesday 26 January 2011] [10:40:20] <stockMQ>	};
+| [Wednesday 26 January 2011] [10:40:28] <cremes>	sure...
+| [Wednesday 26 January 2011] [10:40:42] <sustrik>	drbobbeaty: does it work with release 2.1.0?
+| [Wednesday 26 January 2011] [10:40:44] <cremes>	you can't always control how the compiler will lay that struct out in memory
+| [Wednesday 26 January 2011] [10:40:53] <stockMQ>	okk
+| [Wednesday 26 January 2011] [10:41:02] <cremes>	it may add padding bytes in various places to align structures for fast memory access
+| [Wednesday 26 January 2011] [10:41:18] <drbobbeaty>	sustrik: don't know... let me double-check.
+| [Wednesday 26 January 2011] [10:41:19] <cremes>	it just isn't safe to do
+| [Wednesday 26 January 2011] [10:41:19] <stockMQ>	okk
+| [Wednesday 26 January 2011] [10:41:35] <stockMQ>	you mean a memcpy
+| [Wednesday 26 January 2011] [10:41:51] <cremes>	stockMQ: also, if you are doing any cross-platform messaging (unix to windows to mac) then memory alignments could change
+| [Wednesday 26 January 2011] [10:42:06] <cremes>	and trying to "cast" the message on another platform could result in garbage
+| [Wednesday 26 January 2011] [10:42:12] <cremes>	just don't do it; it isn't portable
+| [Wednesday 26 January 2011] [10:42:28] <stockMQ>	ok
+| [Wednesday 26 January 2011] [10:42:49] <cremes>	and i really doubt you need that much "speed" anyway; don't get too hung up on performance yet
+| [Wednesday 26 January 2011] [10:42:59] <stockMQ>	okk
+| [Wednesday 26 January 2011] [10:43:04] <cremes>	make your program work correctly first, then worry about micro-optimizations like serialization
+| [Wednesday 26 January 2011] [10:44:14] <stockMQ>	okk
+| [Wednesday 26 January 2011] [10:45:21] <stockMQ>	so i should use JSON/protobuf/thrift/msgpack/JSON+zlib/custom encoding
+| [Wednesday 26 January 2011] [10:45:33] <cremes>	for portability, yes
+| [Wednesday 26 January 2011] [10:45:33] <stockMQ>	Is that the gist guys..Isnt it
+| [Wednesday 26 January 2011] [10:46:46] <cremes>	i don't know who the gist guys are
+| [Wednesday 26 January 2011] [10:47:15] <stockMQ>	:) i just meant that 'to summarize the discussion'
+| [Wednesday 26 January 2011] [10:48:17] <cremes>	ah! ok. ;)
+| [Wednesday 26 January 2011] [10:50:49] <stockMQ>	Thank you very much bob,Cremes,seb , guido,sustrik :)
+| [Wednesday 26 January 2011] [10:52:42] <stockMQ>	Another advice i need is on the storage of tick data at SUB end
+| [Wednesday 26 January 2011] [10:53:02] <stockMQ>	i am just writing it as binary to a file.
+| [Wednesday 26 January 2011] [10:53:26] <stockMQ>	But the issue is there could be other Technical Analysis apps reading from it parallely
+| [Wednesday 26 January 2011] [10:53:28] <cremes>	stockMQ: whatever is convenient for you; you are likely going to feed intra-day ticks to consumers via an in-memory db
+| [Wednesday 26 January 2011] [10:53:53] <cremes>	and anything older (historical data) can be sourced from just about any database you like
+| [Wednesday 26 January 2011] [10:54:18] <stockMQ>	the tick data takes the following route basically Exchange->PUB->SUB
+| [Wednesday 26 January 2011] [10:54:42] <stockMQ>	now the SUBs are going to be basic laymen brokers
+| [Wednesday 26 January 2011] [10:55:00] <stockMQ>	So i cannot expect them to maintain/setup a RDBMS
+| [Wednesday 26 January 2011] [10:55:40] <stockMQ>	i was looking at options like binary flat file,HDF5,embedded DBs like BDB,Kyoto cabinet etc
+| [Wednesday 26 January 2011] [10:56:03] <stockMQ>	but the issue is with flat file and HDF5 it will still not handle concurrency
+| [Wednesday 26 January 2011] [10:57:45] <cremes>	stockMQ: i don't like that design so i have no opinion about flat file, hdf5, etc
+| [Wednesday 26 January 2011] [10:58:09] <cremes>	besides, all db access should be abstracted away as another service on your 0mq bus
+| [Wednesday 26 January 2011] [10:58:22] <cremes>	that way each of your "brokers" doesn't need to set up a DB connection
+| [Wednesday 26 January 2011] [10:58:41] <cremes>	it merely needs to know how to ask for what it wants on the 0mq bus and the service responsible for DB work can respond
+| [Wednesday 26 January 2011] [10:59:18] <cremes>	and you can scale that with push/pull or req/rep sockets that do auto load balancing for you
+| [Wednesday 26 January 2011] [10:59:35] <cremes>	stockMQ: you mentioned you were new to 0mq; that's obvious now
+| [Wednesday 26 January 2011] [10:59:53] <cremes>	make sure to read the guide... the concepts it covers will help you figure out a better design for your system
+| [Wednesday 26 January 2011] [10:59:55] <stockMQ>	yes i am new
+| [Wednesday 26 January 2011] [11:00:33] <cremes>	let 0mq help improve the design; right now you are starting out with a design and trying to wedge 0mq sockets into it
+| [Wednesday 26 January 2011] [11:00:54] <cremes>	good luck, bbiab
+| [Wednesday 26 January 2011] [11:01:20] <stockMQ>	bbiab?
+| [Wednesday 26 January 2011] [11:05:04] <traviscline>	be back in a bit
+| [Wednesday 26 January 2011] [11:05:10] <stockMQ>	:)
+| [Wednesday 26 January 2011] [11:09:01] <stockMQ>	Actually..Cremes by broker it did not mean the "ZeroMQ Broker" but the stock broker as clients who will be using the SUB app
+| [Wednesday 26 January 2011] [11:19:20] <drbobbeaty>	sustrik: I've run my tests with three versions: 2.1.0 (ref), my 2.1.0 w/ the RECOVERY_IVL patch (me), and git master (master). All are ZMQ_PUB/ZMQ_SUB socket apps. When sending from 'ref' to 'ref' - OK. When sending from 'me' to 'me' - OK. When sending from 'ref' to 'ref' - nothing received. When sending from 'me' to 'ref' - OK. So the git master (ref) is not receiving - but not generating errors, either.
+| [Wednesday 26 January 2011] [11:19:57] <drbobbeaty>	sustrik: That third test was 'master' to 'master'.
+| [Wednesday 26 January 2011] [11:27:23] <francois__>	Hi all! I have multiple producers and multiple consumers for my messages, but each message must be processed only once, on any consumer. What socket types am I supposed to use? PUSH / PULL doesn't work since PUSH will only bind once.
+| [Wednesday 26 January 2011] [11:33:48] <mikko>	francois__: yes, you can either connect all subscribers to all publishers or you can use a device in the middle
+| [Wednesday 26 January 2011] [11:36:46] <francois__>	I understand how the device works, but how would "connect all subscribers to all publishers" work? Each consumer / subscribers would need to know about all producers / publishers?
+| [Wednesday 26 January 2011] [11:38:06] <mikko>	francois__: for all consumers you would need to know all publishers
+| [Wednesday 26 January 2011] [11:38:20] <francois__>	Makes sense, yes. Thanks for your help!
+| [Wednesday 26 January 2011] [11:38:25] <francois__>	Going the device route for now.
+| [Wednesday 26 January 2011] [11:38:41] <mikko>	i think there are examples in zguide regarding routing
+| [Wednesday 26 January 2011] [12:15:05] <francois__>	@mikko Thank you again very much: a device that binds to both sides is what I was looking for. I was under the false impression that the side that wanted to receive had to bind - even though the docs are correct and say either side can bind/connect.
+| [Wednesday 26 January 2011] [12:17:16] <mikko>	francois__: cool
+| [Wednesday 26 January 2011] [12:21:45] <cremes>	francois__: you might want to check this out for more ruby examples
+| [Wednesday 26 January 2011] [12:21:46] <cremes>	https://github.com/andrewvc/learn-ruby-zeromq
+| [Wednesday 26 January 2011] [12:22:26] <cremes>	btw, ruby can do all of the same stuff as all of the other bindings; there are no limitations by choosing ruby
+| [Wednesday 26 January 2011] [13:06:34] <seb`>	traviscline: I think you broke your code with your last commit
+| [Wednesday 26 January 2011] [13:07:14] <seb`>	the examples are freezing
+| [Wednesday 26 January 2011] [13:09:11] <borior>	Hi all. I'm just getting started with 0MQ, coding up a messaging channel between a piece of numerical code and a python user interface, and would appreciate some input on the design.
+| [Wednesday 26 January 2011] [13:09:24] <borior>	There are two main messaging channels: data, and control
+| [Wednesday 26 January 2011] [13:10:18] <borior>	At the moment, I envisage data being PUSH/PULL from the numerical side to the UI, and control being REQ/REP from the UI to the numerical stuff.
+| [Wednesday 26 January 2011] [13:11:45] <borior>	Does that sound sensible? And if so, how do I deal with the fact that I want to be sending many more messages down the PUSH pipe than I expect to receive from the REQ/REP control pipe from the UI? It seems like if I make a blocking call to control_sock.recv() I then can't send any messages down the data socket until a control message is sent...?
+| [Wednesday 26 January 2011] [13:22:58] <seb`>	borior: if you want the sockets in the same process/tread you will need to poll them
+| [Wednesday 26 January 2011] [13:26:55] <borior>	seb`: ah, thank you. I didn't know that was possible.
+| [Wednesday 26 January 2011] [13:27:18] <seb`>	look at the pyzmq examples
+| [Wednesday 26 January 2011] [13:27:19] <borior>	silly me. I should have grepped the guide for "poll". thanks for the pointer
+| [Wednesday 26 January 2011] [13:27:24] <seb`>	there is a poller:-p
+| [Wednesday 26 January 2011] [14:40:16] <traviscline>	seb`: details?
+| [Wednesday 26 January 2011] [14:40:19] <codebeaker>	Hi all, is "no such file or directory" a sane response to zmq_term() /
+| [Wednesday 26 January 2011] [14:40:51] <seb`>	traviscline: did you try the examples?
+| [Wednesday 26 January 2011] [14:41:08] <traviscline>	yes
+| [Wednesday 26 January 2011] [14:41:16] <seb`>	traviscline: huh weird
+| [Wednesday 26 January 2011] [14:41:29] <seb`>	I'll show you
+| [Wednesday 26 January 2011] [14:41:34] <traviscline>	ah i see
+| [Wednesday 26 January 2011] [14:41:35] <traviscline>	one sec
+| [Wednesday 26 January 2011] [14:41:37] <traviscline>	sorry about that
+| [Wednesday 26 January 2011] [14:43:03] <seb`>	traviscline: http://pastie.org/private/0ppr4oyq0p4547lzb8btaw
+| [Wednesday 26 January 2011] [14:43:15] <seb`>	haven't started debugging yet
+| [Wednesday 26 January 2011] [14:43:24] <traviscline>	i'll push in a bit
+| [Wednesday 26 January 2011] [14:43:30] <seb`>	thanks!
+| [Wednesday 26 January 2011] [14:47:53] <traviscline>	seb`: pushed
+| [Wednesday 26 January 2011] [14:47:58] <traviscline>	sorry again, thanks for alerting me
+| [Wednesday 26 January 2011] [14:48:11] <traviscline>	i have a testing branch i'm working on so that sort of thing will not happen in the future
+| [Wednesday 26 January 2011] [14:49:32] <seb`>	no worries
+| [Wednesday 26 January 2011] [14:49:34] <seb`>	thanks
+| [Wednesday 26 January 2011] [14:51:12] <seb`>	traviscline: everything works again
+| [Wednesday 26 January 2011] [14:51:31] <traviscline>	seb`: great, doing some profiling and working on some optimizations now
+| [Wednesday 26 January 2011] [14:51:56] <seb`>	cool
+| [Wednesday 26 January 2011] [14:52:06] <seb`>	what kind of optimizations?
+| [Wednesday 26 January 2011] [14:52:23] <traviscline>	just reducing overhead with some type hints in cython
+| [Wednesday 26 January 2011] [15:04:20] <mikko>	codebeaker: what do you mean?
+| [Wednesday 26 January 2011] [15:05:17] <codebeaker>	mikko: (first time using zmq) I'm using the zmq_term on a context that appears to have been initialized successfully (0 return) - and I get (from zmq_strerror(errno)) "no such file or directory"
+| [Wednesday 26 January 2011] [15:05:46] <codebeaker>	hrm :\
+| [Wednesday 26 January 2011] [15:06:48] <codebeaker>	looks like my mistake actually, I had a !zmq_term() so there must be an errno set already from some other piece of code :\
+| [Wednesday 26 January 2011] [15:08:02] <mikko>	codebeaker: most likely
+| [Wednesday 26 January 2011] [15:08:09] <mikko>	codebeaker: it will return != 0 on error
+| [Wednesday 26 January 2011] [15:08:15] <codebeaker>	yeah, thanks mikko 
+| [Wednesday 26 January 2011] [15:08:36] <codebeaker>	I actually didn't look at the code ^ today before asking, it's a problem since a day ago and I just needed fresh eyes I gues
+| [Wednesday 26 January 2011] [15:08:45] <mikko>	have you read zguide ?
+| [Wednesday 26 January 2011] [15:08:56] <codebeaker>	reading if(zmq_term()){ /* log error */}  is still strange on my eyes (new to C)
+| [Wednesday 26 January 2011] [15:08:58] <mikko>	it's a very good resource to kick-start development
+| [Wednesday 26 January 2011] [15:09:17] <codebeaker>	yeah, the long, long, guide with the zmw helpers and so forth is exceptionally good
+| [Wednesday 26 January 2011] [15:31:26] <pieterhintjens>	codebreaker: usually it's clearer to write 'if (zmq_term () != 0) { /* log error */'
+| [Wednesday 26 January 2011] [15:31:42] <codebeaker>	pieterh: good call :)
+| [Wednesday 26 January 2011] [15:32:13] <codebeaker>	because there's some inconsistency, at least between libs about how that should work, although afaik the "non zero on error" is supposed to be ubuquitos 
+| [Wednesday 26 January 2011] [15:32:24] <pieterh>	every library has its own rules
+| [Wednesday 26 January 2011] [15:32:44] <pieterh>	zero = OK is the most common but it's not universal
+| [Wednesday 26 January 2011] [15:33:13] <codebeaker>	ja, good tip about making the if() more explicit though
+| [Wednesday 26 January 2011] [15:33:28] <codebeaker>	do you more experienced guys usually wrap these kind of functions?
+| [Wednesday 26 January 2011] [15:33:37] <codebeaker>	I have done, into a zmq_up() and zmq_down()
+| [Wednesday 26 January 2011] [15:33:48] <pieterh>	yes, very often
+| [Wednesday 26 January 2011] [15:33:58] <codebeaker>	ok, cool - so I'm not acting like a complete noob :)
+| [Wednesday 26 January 2011] [15:34:08] <pieterh>	perhaps not the context initialization and term, those are not used all over the place
+| [Wednesday 26 January 2011] [15:34:21] <pieterh>	certainly other functions, like sending / receiving messages
+| [Wednesday 26 January 2011] [15:35:11] <codebeaker>	sure, actually I'm over engineering slightly here - the code I'm writing is a library, so I don't want the stuff linked against it to care about the implementation, so it's hidden
+| [Wednesday 26 January 2011] [15:35:16] <codebeaker>	"up" and "down"
+| [Wednesday 26 January 2011] [15:35:32] <codebeaker>	but, I recognised from the long (and epic) guide - that the zmq_helpers are very good
+| [Wednesday 26 January 2011] [15:36:11] <pieterh>	when you can systematically replace 10 lines of code with one call, it's profitable
+| [Wednesday 26 January 2011] [15:36:32] <pieterh>	the ZFL library takes this a step further but it's also more complex to understand and use
+| [Wednesday 26 January 2011] [15:36:47] <pieterh>	https://github.com/zeromq/zfl
+| [Wednesday 26 January 2011] [15:37:02] <codebeaker>	ah, cool
+| [Wednesday 26 January 2011] [15:37:21] <codebeaker>	Ohh, pieterh I see you know a little about mq :)
+| [Wednesday 26 January 2011] [15:37:46] <pieterh>	a little, as a user
+| [Wednesday 26 January 2011] [15:39:14] <codebeaker>	I'm a little under two weeks into learning C
+| [Wednesday 26 January 2011] [15:39:16] <codebeaker>	the hard way :)
+| [Wednesday 26 January 2011] [15:39:39] <codebeaker>	like setting out to build an assistant for my media synchronisation hobbies at home :) with ZMQ as the transport method to sync hosts
+| [Wednesday 26 January 2011] [15:40:00] <codebeaker>	^ it's been incredibly helpful, sockets are a disaster :)
+| [Wednesday 26 January 2011] [15:42:29] <pieterh>	codebreaker: you can use any language you like, C can be quite tricky to learn
+| [Wednesday 26 January 2011] [15:42:35] <codebeaker>	still lots and lots to learn
+| [Wednesday 26 January 2011] [15:42:44] <codebeaker>	ah, pieterh there's some reasons I have to use C :)
+| [Wednesday 26 January 2011] [15:42:53] <codebeaker>	but - yeah, I saw zmq has some great bindings for other languages
+| [Wednesday 26 January 2011] [15:43:39] <pieterh>	you might want to read the ZFL docs & code, it's a nice way of writing C as classes
+| [Wednesday 26 January 2011] [15:44:28] <codebeaker>	^ I saw that, nice stuff - I just had to learn some tricky stuff in C with using structs to store state between function calls it felt pretty ugly (but it's lightweight, and works very well) - but I like your idea
+| [Wednesday 26 January 2011] [15:44:44] <codebeaker>	Im still figuring out what is sane, and insane with C compared to my background plains :)
+| [Wednesday 26 January 2011] [15:46:11] <codebeaker>	if I might ask - since I don't want to have to set up every machine like a dev server I should be able to find a way to load the whole of ZMQ into my app, at compile time- something like a static link, right ?
+| [Wednesday 26 January 2011] [15:47:08] <pieterh>	yes, static linking should be possible
+| [Wednesday 26 January 2011] [15:47:23] <codebeaker>	hrm, cool - learning way more than my brain can handle at the moment :)
+| [Wednesday 26 January 2011] [15:47:47] <codebeaker>	and, pieterh I just saw your name CEO of iMatix nice, nice work
+| [Wednesday 26 January 2011] [15:47:58] <pieterh>	np :-)
+| [Wednesday 26 January 2011] [15:48:01] <codebeaker>	I can't believe how good zmq is, compared to the alternatives
+| [Wednesday 26 January 2011] [15:48:12] <pieterh>	there are alternatives? 
+| [Wednesday 26 January 2011] [15:48:14] <pieterh>	:-)
+| [Wednesday 26 January 2011] [15:48:18] <codebeaker>	( coming from a company where the business back bone was AMQP :-\ )
+| [Wednesday 26 January 2011] [15:48:34] <pieterh>	AMQP is pretty OK compared to its own alternatives
+| [Wednesday 26 January 2011] [15:48:52] <pieterh>	but the knowledge of "how to do messaging" has moved forwards really quickly
+| [Wednesday 26 January 2011] [15:48:55] <mikko>	hmm
+| [Wednesday 26 January 2011] [15:48:58] <codebeaker>	I remember about a week after the infrastructure was "finished" mq got some real press, and lots of us figured this might have been a smarter move but 4 months invested in AMQP - the business wasn't even going to give us a shot at experimenting
+| [Wednesday 26 January 2011] [15:49:47] <pieterh>	mikko: ?
+| [Wednesday 26 January 2011] [15:52:38] <mikko>	humming out loud
+| [Wednesday 26 January 2011] [15:52:42] <mikko>	looking at the dns issue
+| [Wednesday 26 January 2011] [16:15:20] <codebeaker>	pieterh: thanks for your help, and advice :)
+| [Wednesday 26 January 2011] [16:15:22] <codebeaker>	*bow*
+| [Wednesday 26 January 2011] [16:15:34] <pieterh>	codebeaker: np, anytime
+| [Wednesday 26 January 2011] [16:15:45] <codebeaker>	hehe, I might just take you up on that see you again
+| [Wednesday 26 January 2011] [17:32:22] <mikko>	sustrik: there?
