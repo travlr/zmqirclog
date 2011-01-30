@@ -5340,3 +5340,621 @@
 | [Wednesday 26 January 2011] [16:15:34] <pieterh>	codebeaker: np, anytime
 | [Wednesday 26 January 2011] [16:15:45] <codebeaker>	hehe, I might just take you up on that see you again
 | [Wednesday 26 January 2011] [17:32:22] <mikko>	sustrik: there?
+| [Wednesday 26 January 2011] [18:45:57] <traviscline>	II run into "Assertion failed: !more || pipes [current] != pipe_ (fq.cpp:61)" from python if I don't try several recvs (and get EAGAINS) before switching to polling the file descriptor from a socket
+| [Wednesday 26 January 2011] [18:49:25] <traviscline>	If I don't start waiting until I've seen 10 of them I can't produce the error
+| [Wednesday 26 January 2011] [18:50:34] <traviscline>	at 3 I got the error, at 4 i've yet to, kind of unnerving
+| [Wednesday 26 January 2011] [19:19:21] <stodge>	I just started reading about zeromq, so my quick question is, can it be used to create a jgroups-like technology?
+| [Wednesday 26 January 2011] [19:19:50] <stodge>	I'm reading about publish/suscribe
+| [Wednesday 26 January 2011] [19:20:28] <stodge>	Wondering if it could work as a heartbeat mechanism between an unknown number of peers (talking less than 100)
+| [Wednesday 26 January 2011] [19:20:47] <stodge>	Reading to see if zeromq could be used for peer discovery
+| [Wednesday 26 January 2011] [19:40:52] <lt_schmidt_jr>	why not use zookeeper for something like that?
+| [Wednesday 26 January 2011] [19:45:19] <lt_schmidt_jr>	comment aimed at stodge
+| [Wednesday 26 January 2011] [19:45:54] <stodge>	I haven't read about zookeeper yet - it's on my list. My system is primarily (95%) Python so I jumped at zeromq when I saw the Python API.
+| [Wednesday 26 January 2011] [19:45:57] <stodge>	Thanks
+| [Wednesday 26 January 2011] [19:47:48] <lt_schmidt_jr>	stodge, NP, I believe there is a python binding. not that you should not use zeromq, but I think zookeeper is probably better suited for this particular task (and simpler)
+| [Wednesday 26 January 2011] [19:48:08] <stodge>	ok Thanks, I'll definitely read up on zookeeper
+| [Wednesday 26 January 2011] [19:48:08] <lt_schmidt_jr>	simpler for the task - not in general
+| [Wednesday 26 January 2011] [20:09:29] <stockMQ>	Hi.. Can anyone confirm that pgm multicast will work on Windows and not restricted to LINUX
+| [Wednesday 26 January 2011] [23:48:39] <stockMQ>	Anyone doing multicast on windows?
+| [Wednesday 26 January 2011] [23:51:42] <jugg>	http://www.google.com/search?hl=en&q=site:lists.zeromq.org+multicast+windows
+| [Wednesday 26 January 2011] [23:59:45] <stockMQ>	I see there were some issues in the past for support of pgm for windows
+| [Thursday 27 January 2011] [00:00:10] <stockMQ>	hence just would like to know if it is supported now before i get into using it
+| [Thursday 27 January 2011] [00:06:43] <stockMQ>	http://lists.zeromq.org/pipermail/zeromq-dev/2010-September/006274.html
+| [Thursday 27 January 2011] [00:07:12] <stockMQ>	I am on windows and have a similar requirement to do multicast using PUB-SUB
+| [Thursday 27 January 2011] [00:07:28] <stockMQ>	does this problem still persist??
+| [Thursday 27 January 2011] [00:43:31] <stockMQ>	anyone?
+| [Thursday 27 January 2011] [02:26:34] <sustrik>	mikko: morning
+| [Thursday 27 January 2011] [02:53:53] <mikko>	sustrik: hi
+| [Thursday 27 January 2011] [02:54:13] <mikko>	sustrik: what is the policy on constructor errors ? i noticed that there arent really throws
+| [Thursday 27 January 2011] [02:57:00] <sustrik>	mikko: the exceptions are not used at all
+| [Thursday 27 January 2011] [02:57:07] <sustrik>	when you need an error in constructor
+| [Thursday 27 January 2011] [02:57:19] <sustrik>	you separate the construction into 2 phases
+| [Thursday 27 January 2011] [02:57:33] <sustrik>	1. the part that cannot fail (constructor)
+| [Thursday 27 January 2011] [02:57:46] <sustrik>	2. the part that can fail (init function)
+| [Thursday 27 January 2011] [02:58:00] <sustrik>	the latter can return error
+| [Thursday 27 January 2011] [03:08:33] <stockMQ>	 http://lists.zeromq.org/pipermail/zeromq-dev/2010-September/006274.html
+| [Thursday 27 January 2011] [03:08:40] <stockMQ>	does this problem still persist??
+| [Thursday 27 January 2011] [03:08:50] <stockMQ>	I am on windows and have a similar requirement to do multicast using PUB-SUB
+| [Thursday 27 January 2011] [03:12:04] <sustrik>	stockMQ: i have no idea what's the status quo wrt OpenPGM on Windows
+| [Thursday 27 January 2011] [03:12:23] <sustrik>	there's definitely no MSVC intrgrated build
+| [Thursday 27 January 2011] [03:12:30] <sustrik>	but you may try MinGW
+| [Thursday 27 January 2011] [03:13:34] <stockMQ>	ok..Please confirm my understanding
+| [Thursday 27 January 2011] [03:13:53] <stockMQ>	to multicast two options available are pgm,epgm
+| [Thursday 27 January 2011] [03:14:16] <stockMQ>	But there does not seem to be a support for windows and maybe a minGW port could only be the option
+| [Thursday 27 January 2011] [03:14:23] <stockMQ>	Is that right?
+| [Thursday 27 January 2011] [03:18:17] <stockMQ>	??
+| [Thursday 27 January 2011] [03:47:10] <sustrik>	stockMQ: it should work on Windows
+| [Thursday 27 January 2011] [03:47:33] <sustrik>	the problem is that the build system is not at all obvious
+| [Thursday 27 January 2011] [03:47:51] <sustrik>	so, it's hard to build, but once you build it, it should work :)
+| [Thursday 27 January 2011] [04:01:31] <stockMQ>	okk.:).. Any ideas if i can test the pgm multicast on the same host.. meaning both pub and sub being on the same machine
+| [Thursday 27 January 2011] [04:03:06] <sustrik>	yes, you can
+| [Thursday 27 January 2011] [04:03:22] <sustrik>	but it's actually a simulation rather than real multicast then
+| [Thursday 27 January 2011] [04:03:28] <sustrik>	different code is used
+| [Thursday 27 January 2011] [04:03:52] <sustrik>	so if you want to test the real multicast code, use it over the network
+| [Thursday 27 January 2011] [04:08:50] <stockMQ>	yes.. i will be doing the real testing but i dont have access to the network full time..so was thinking of testing it on the simulation and then go ahead
+| [Thursday 27 January 2011] [04:09:51] <stockMQ>	actually the loopback would do it right
+| [Thursday 27 January 2011] [04:12:04] <guido_g>	hmm... i don't think that the loopback device is multicast capable, wouldn't make sense
+| [Thursday 27 January 2011] [04:12:20] <guido_g>	you need to use the external ip of the box
+| [Thursday 27 January 2011] [04:12:47] <guido_g>	adn this leads to a lot of free floating traffic in the network
+| [Thursday 27 January 2011] [04:13:28] <mikko>	sustrik: hmmm, thats not exception safe (?)
+| [Thursday 27 January 2011] [04:15:03] <stockMQ>	publisher->bind(" pgm://161.144.100.162;234.1.2.10:5555")
+| [Thursday 27 January 2011] [04:15:17] <stockMQ>	the first IP is the NIC i want to bind to
+| [Thursday 27 January 2011] [04:15:25] <stockMQ>	and the second one is the multicast group IP
+| [Thursday 27 January 2011] [04:15:41] <stockMQ>	now how would this change if i wanted to test it on localhost
+| [Thursday 27 January 2011] [04:15:56] <stockMQ>	Or will this not work on Windows altogether
+| [Thursday 27 January 2011] [04:29:00] <stockMQ>	guido?
+| [Thursday 27 January 2011] [04:31:13] <guido_g>	hm?
+| [Thursday 27 January 2011] [04:31:59] <stockMQ>	any insights/
+| [Thursday 27 January 2011] [04:32:01] <stockMQ>	?
+| [Thursday 27 January 2011] [04:32:34] <guido_g>	into what?
+| [Thursday 27 January 2011] [04:35:06] <stockMQ>	publisher->bind(" pgm://161.144.10.162;234.1.20.10:5555")
+| [Thursday 27 January 2011] [04:35:24] <stockMQ>	Now how would this change for for localhost
+| [Thursday 27 January 2011] [04:35:39] <stockMQ>	I believe the first IP is the NIC i want to bind to 
+| [Thursday 27 January 2011] [04:35:46] <stockMQ>	and second one is the multicast group ip
+| [Thursday 27 January 2011] [04:35:58] <guido_g>	did you ever read the mq docs?
+| [Thursday 27 January 2011] [04:36:13] <stockMQ>	I read the guide
+| [Thursday 27 January 2011] [04:36:47] <guido_g>	there is more
+| [Thursday 27 January 2011] [04:37:13] <stockMQ>	http://zguide.zeromq.org/chapter:all
+| [Thursday 27 January 2011] [04:39:40] <stockMQ>	http://api.zeromq.org/zmq_pgm.html
+| [Thursday 27 January 2011] [04:39:52] <stockMQ>	this says first IP is the network interface
+| [Thursday 27 January 2011] [04:40:10] <stockMQ>	that is what i think i mentioned..
+| [Thursday 27 January 2011] [04:57:59] <sustrik>	mikko: what do you mean by exception-safe?
+| [Thursday 27 January 2011] [04:58:10] <sustrik>	there are no exceptions used in the codebase
+| [Thursday 27 January 2011] [05:38:17] <mikko>	sustrik: ok
+| [Thursday 27 January 2011] [05:38:32] <mikko>	sustrik: i was thinking about situations where the initialisation method might throw
+| [Thursday 27 January 2011] [05:38:45] <mikko>	but i guess if there is no exceptions that is not so much an issue
+| [Thursday 27 January 2011] [05:39:39] <sustrik>	exactly
+| [Thursday 27 January 2011] [05:39:55] <sustrik>	exceptions are good for programs with low reliabity requirement
+| [Thursday 27 January 2011] [05:40:09] <sustrik>	say: "if something bad happens show a dialog box"
+| [Thursday 27 January 2011] [05:41:17] <sustrik>	for systems that should run 24/7 without user intervention the errors should not be handled in generic manner (the practice encouraged by exceptions)
+| [Thursday 27 January 2011] [05:41:25] <sustrik>	rather on one-by-one basis
+| [Thursday 27 January 2011] [06:36:58] <stimpie>	Is it possible to acknowledge a message after it has been processed (not when received)?
+| [Thursday 27 January 2011] [06:44:14] <mikko>	stimpie: what do you mean?
+| [Thursday 27 January 2011] [06:44:40] <mikko>	stimpie: you would probably want to use REQ/REP pattern and reply only after the message has been processed
+| [Thursday 27 January 2011] [06:44:53] <stimpie>	I would like a message to stay in the buffer of the send until the receiver has finished processing (stored) the message
+| [Thursday 27 January 2011] [06:45:19] <mikko>	stimpie: that sounds more like application level thing 
+| [Thursday 27 January 2011] [06:45:47] <mikko>	stimpie: i think request-reply would work well for that 
+| [Thursday 27 January 2011] [06:47:13] <stimpie>	req/rep will be sufficient indeed but I was wondering if it could be done more efficient 
+| [Thursday 27 January 2011] [07:33:09] <sustrik>	stimpie: you are after guaranteed delivery, right?
+| [Thursday 27 January 2011] [07:33:49] <stimpie>	yes
+| [Thursday 27 January 2011] [07:37:35] <sustrik>	the standard way to do that in 0mq
+| [Thursday 27 January 2011] [07:37:51] <sustrik>	is the requester sends a request then waits for a reply for some time
+| [Thursday 27 January 2011] [07:38:10] <sustrik>	if the reply is not delivered untill the time runs out
+| [Thursday 27 January 2011] [07:38:17] <sustrik>	it resends the request
+| [Thursday 27 January 2011] [07:39:03] <sustrik>	that way you can guarantee the request is processed no matter what SW/HW/network failures occur
+| [Thursday 27 January 2011] [07:59:01] <stimpie>	sustrik, I guess the standard way is usually the best way ;-) 
+| [Thursday 27 January 2011] [07:59:19] <sustrik>	i think so :)
+| [Thursday 27 January 2011] [09:44:09] <Steve-o>	lol, someone still signed in with the name stockMQ?
+| [Thursday 27 January 2011] [09:44:30] <mikko>	Steve-o: yep
+| [Thursday 27 January 2011] [09:45:32] <Steve-o>	Got into NY last night and all snowed in.
+| [Thursday 27 January 2011] [09:46:15] <mikko>	i've never been to that coast
+| [Thursday 27 January 2011] [09:46:21] <mikko>	only west coast
+| [Thursday 27 January 2011] [09:46:40] <Steve-o>	not much snow in san francisco
+| [Thursday 27 January 2011] [09:46:56] <mikko>	no, but i understand that seattle is colder?
+| [Thursday 27 January 2011] [09:47:34] <mikko>	i've only been to san diego and once driven from LA to SF
+| [Thursday 27 January 2011] [09:48:45] <Steve-o>	ok, NY is a lot further south than North Europe for sure
+| [Thursday 27 January 2011] [09:49:03] <Steve-o>	it certainly isn't many feet of snow that I used to see
+| [Thursday 27 January 2011] [09:50:25] <sustrik>	ah, speaking of SF, I'm going to Bay Area in Feb or so
+| [Thursday 27 January 2011] [09:50:36] <sustrik>	maybe it's time for another meetup
+| [Thursday 27 January 2011] [09:50:55] <mikko>	hmm i'm going to be in San Diego around end of May
+| [Thursday 27 January 2011] [09:51:14] <sustrik>	well, you can do a meetup of your own
+| [Thursday 27 January 2011] [09:51:28] <sustrik>	if there's interest from folks down there
+| [Thursday 27 January 2011] [09:52:08] <sustrik>	drbobbeaty: are you there?
+| [Thursday 27 January 2011] [09:52:14] <mikko>	would be interesting to see where the users are from
+| [Thursday 27 January 2011] [09:52:18] <drbobbeaty>	sustrik: yup
+| [Thursday 27 January 2011] [09:52:29] <sustrik>	the problem you had with OpenPGM
+| [Thursday 27 January 2011] [09:52:33] <sustrik>	Steve-o is online
+| [Thursday 27 January 2011] [09:52:44] <sustrik>	he's author of OpenPGM
+| [Thursday 27 January 2011] [09:52:48] <mikko>	sustrik: are you interested in the additional tests?
+| [Thursday 27 January 2011] [09:52:59] <mikko>	the HWM and identity tests are sitting somewhere in github
+| [Thursday 27 January 2011] [09:53:00] <drbobbeaty>	Very nice. Sure, if he's interested.
+| [Thursday 27 January 2011] [09:53:28] <sustrik>	mikko: definitely the HWM tests
+| [Thursday 27 January 2011] [09:53:54] <sustrik>	the identity is kind of leaky
+| [Thursday 27 January 2011] [09:54:09] <mikko>	https://github.com/mkoppanen/zeromq2/blob/build-test/tests/test_hwm.cpp
+| [Thursday 27 January 2011] [09:54:16] <mikko>	does that look correct?
+| [Thursday 27 January 2011] [09:54:25] <sustrik>	not sure we can have a good tests until we understand how the identity is supposed to work exactly
+| [Thursday 27 January 2011] [09:54:30] <sustrik>	let me see
+| [Thursday 27 January 2011] [09:55:06] <sustrik>	looks good
+| [Thursday 27 January 2011] [09:55:09] <Steve-o>	who made the previous set of Windows MSIs for 0mq?
+| [Thursday 27 January 2011] [09:55:30] <sustrik>	would you send that as a patch?
+| [Thursday 27 January 2011] [09:55:38] <mikko>	sustrik: will do this evening
+| [Thursday 27 January 2011] [09:55:43] <sustrik>	Steve-o: You mean the MSI two years ago?
+| [Thursday 27 January 2011] [09:55:51] <mikko>	i'm fairly busy with work stuff for this and next week
+| [Thursday 27 January 2011] [09:55:52] <sustrik>	0MQ/0.4 or somesuch
+| [Thursday 27 January 2011] [09:55:59] <sustrik>	mikko: sure, no haste
+| [Thursday 27 January 2011] [09:56:09] <Steve-o>	I think there is a directory full of MSIs somewhere
+| [Thursday 27 January 2011] [09:56:30] <mikko>	Steve-o: on the topic of windows there are win snapshots available now
+| [Thursday 27 January 2011] [09:56:39] <mikko>	mingw and msvc http://snapshot.valokuva.org/
+| [Thursday 27 January 2011] [09:56:56] <sustrik>	afai am aware there was just one MSI created ~2 years ago by Tamara, an intern we used to have at FastMQ
+| [Thursday 27 January 2011] [09:57:45] <Steve-o>	ok, all the old ones here:  http://download.zeromq.org/historic/
+| [Thursday 27 January 2011] [09:59:39] <Steve-o>	Wondered about making a quick CPack script to get 0MQ + PGM packages wrapped
+| [Thursday 27 January 2011] [09:59:48] <sustrik>	mikko: the location of users...
+| [Thursday 27 January 2011] [10:00:03] <sustrik>	for 2010 google analytics says: 246,087 visits came from 9,211 cities
+| [Thursday 27 January 2011] [10:00:11] <sustrik>	let me upload the map...
+| [Thursday 27 January 2011] [10:01:23] <sustrik>	quarter of million visits, not bad...
+| [Thursday 27 January 2011] [10:01:35] <sustrik>	here you go:
+| [Thursday 27 January 2011] [10:01:36] <sustrik>	http://zeromq.wdfiles.com/local--files/community/map.png
+| [Thursday 27 January 2011] [10:01:40] <Steve-o>	I think I messed up the licensing notes for the Windows binary distribution, need to find a nice source to c&p something for the installer confirmation window 
+| [Thursday 27 January 2011] [10:02:01] <sustrik>	what about LGPL?
+| [Thursday 27 January 2011] [10:02:32] <Steve-o>	The Regents of California
+| [Thursday 27 January 2011] [10:02:55] <Steve-o>	a bsd advertising clause
+| [Thursday 27 January 2011] [10:03:34] <Steve-o>	Yup, for IP header details, http://code.google.com/p/openpgm/source/browse/trunk/openpgm/pgm/include/impl/ip.h
+| [Thursday 27 January 2011] [10:03:54] <Steve-o>	"Redistributions in binary form must reproduce the above copyright  *    notice, this list of conditions and the following disclaimer in the  *    documentation and/or other materials provided with the distribution."
+| [Thursday 27 January 2011] [10:04:55] <sustrik>	i see
+| [Thursday 27 January 2011] [10:10:10] <Steve-o>	mikko: If I give you WIndows PGM installers can you make Hudson use that to build 0MQ+PGM builds?
+| [Thursday 27 January 2011] [10:10:47] <mikko>	Steve-o: you mean the msvc ones?
+| [Thursday 27 January 2011] [10:11:03] <Steve-o>	yes
+| [Thursday 27 January 2011] [10:11:15] <mikko>	do i need to modify the build files ?
+| [Thursday 27 January 2011] [10:12:21] <Steve-o>	yes, you need ZMQ_HAVE_OPENPGM defined alongside the additional include & libpath
+| [Thursday 27 January 2011] [10:12:54] <mikko>	Steve-o: ok, i think that should be possible
+| [Thursday 27 January 2011] [10:15:24] <Steve-o>	I have Windows on this laptop, let me setup a build environment and check that using the static PGM library isn't too problematic for 0MQ first
+| [Thursday 27 January 2011] [10:15:44] <Steve-o>	then I can send you the links and try out Hudson on it
+| [Thursday 27 January 2011] [10:17:40] <Steve-o>	CPack might also be handy for OSX, the other targets not too sure about, http://www.cmake.org/Wiki/CMake:CPackPackageGenerators
+| [Thursday 27 January 2011] [10:19:15] <sustrik>	Steve-o: still in NY?
+| [Thursday 27 January 2011] [10:19:29] <Steve-o>	first day
+| [Thursday 27 January 2011] [10:19:30] <sustrik>	there must be lots of 0MQ/OpenPGM users there as well
+| [Thursday 27 January 2011] [10:19:48] <sustrik>	especially on wall street i suppose
+| [Thursday 27 January 2011] [10:20:01] <sustrik>	why not meet them?
+| [Thursday 27 January 2011] [10:21:56] <Steve-o>	Honestly no idea who is using it
+| [Thursday 27 January 2011] [10:22:23] <sustrik>	try sending an email to the mailing list
+| [Thursday 27 January 2011] [10:22:32] <sustrik>	there are ~600 subscribers there
+| [Thursday 27 January 2011] [10:22:34] <Steve-o>	Saw an interesting job position at Goldmans looking after their RV, EMS, & MQ infrastructure though
+| [Thursday 27 January 2011] [10:22:45] <sustrik>	heh
+| [Thursday 27 January 2011] [10:23:11] <sustrik>	i bet couple of the guys on mailing list won't mind meeting for a beer
+| [Thursday 27 January 2011] [10:24:16] <Steve-o>	Will give a shout then
+| [Thursday 27 January 2011] [11:50:33] <pieterhintjens>	sustrik: ping
+| [Thursday 27 January 2011] [11:50:50] <sustrik>	pong
+| [Thursday 27 January 2011] [11:51:04] <pieterh>	I stuck that (nice) map on the community page
+| [Thursday 27 January 2011] [11:51:14] <pieterh>	changed the colors a little to have more contrast
+| [Thursday 27 January 2011] [11:51:49] <sustrik>	great
+| [Thursday 27 January 2011] [11:51:55] <sustrik>	where it is linked from?
+| [Thursday 27 January 2011] [11:51:57] <pieterh>	is that what you were intending?
+| [Thursday 27 January 2011] [11:52:11] <pieterh>	http://www.zeromq.org/community
+| [Thursday 27 January 2011] [11:52:16] <sustrik>	not really, i just don't have another place for uploads :)
+| [Thursday 27 January 2011] [11:52:23] <pieterh>	ah
+| [Thursday 27 January 2011] [11:53:10] <sustrik>	not bad
+| [Thursday 27 January 2011] [11:53:18] <sustrik>	what about adding a caption?
+| [Thursday 27 January 2011] [11:53:28] <sustrik>	246,087 visits came from 9,211 cities during 2010
+| [Thursday 27 January 2011] [11:53:43] <pieterh>	ah, I like the notion that this is the "0MQ Community"
+| [Thursday 27 January 2011] [11:53:49] <pieterh>	so page title = caption
+| [Thursday 27 January 2011] [11:54:20] <mikko>	do we have "Upcoming Talks" page?
+| [Thursday 27 January 2011] [11:54:36] <mikko>	i think there are several talks about 0MQ in different conferences during the spring
+| [Thursday 27 January 2011] [11:55:04] <pieterh>	mikko: good idea
+| [Thursday 27 January 2011] [11:55:15] <pieterh>	we can IMO just add them to the community page
+| [Thursday 27 January 2011] [11:55:19] <pieterh>	top right
+| [Thursday 27 January 2011] [11:56:04] <pieterh>	I'll do that and ask folk to add their own talks...
+| [Thursday 27 January 2011] [11:57:11] <mikko>	ianbarber is having talk next month
+| [Thursday 27 January 2011] [11:57:23] <mikko>	i think there was a couple of others in the list as well
+| [Thursday 27 January 2011] [12:00:51] <mikko>	pieterh: what days are you going to be at FOSDEM?
+| [Thursday 27 January 2011] [12:00:52] <ianbarber>	i'm speaking at PHP Tek in may in chicago about 0MQ as well
+| [Thursday 27 January 2011] [12:01:22] <pieterh>	mikko: 5th Feb
+| [Thursday 27 January 2011] [12:01:22] <pieterh>	ianbarber: would you like to edit the community page?
+| [Thursday 27 January 2011] [12:01:36] <pieterh>	I've made a section for upcoming events
+| [Thursday 27 January 2011] [12:01:54] <pieterh>	order by date, I'd suggest
+| [Thursday 27 January 2011] [12:02:04] <ianbarber>	sure!
+| [Thursday 27 January 2011] [12:02:14] <mikko>	hmmm
+| [Thursday 27 January 2011] [12:02:31] <mikko>	might be possible to take a train from london to brussels on the 5th
+| [Thursday 27 January 2011] [12:04:04] <mikko>	34.50 by train
+| [Thursday 27 January 2011] [12:04:52] <pieterh>	mikko: sure, if you book in advance it's quite reasonable
+| [Thursday 27 January 2011] [12:05:18] <pieterh>	allow time to get from the station to FOSDEM, that is quite far from the center
+| [Thursday 27 January 2011] [12:05:51] <pieterh>	I suspect it's 34.50 each way, though
+| [Thursday 27 January 2011] [12:05:57] <mikko>	yeah
+| [Thursday 27 January 2011] [12:07:18] <ianbarber>	irritatingly i'm helping my brother move on the fifth, otherwise i'd have been keen on going too
+| [Thursday 27 January 2011] [12:07:41] <ianbarber>	pieterh: not to be clueless, but how do you edit the page? i'm signed in but am missing the edit link
+| [Thursday 27 January 2011] [12:07:57] <pieterh>	it might be at the bottom of the page
+| [Thursday 27 January 2011] [12:08:02] <pieterh>	otherwise, press Ctrl+E
+| [Thursday 27 January 2011] [12:08:38] <mikko>	not enough rights?
+| [Thursday 27 January 2011] [12:08:44] <sustrik>	maybe press the "join wiki" button first
+| [Thursday 27 January 2011] [12:08:46] <ianbarber>	ah, yeah , looks like it
+| [Thursday 27 January 2011] [12:08:48] <ianbarber>	Sorry, you can not edit this page. Only owner (creator) of this page, site administrators and perhaps selected moderators are allowed to do it.
+| [Thursday 27 January 2011] [12:08:53] <pieterh>	Let me fix permissions to show the page actions to all members
+| [Thursday 27 January 2011] [12:08:55] <pieterh>	hang on...
+| [Thursday 27 January 2011] [12:09:18] <pieterh>	hmm
+| [Thursday 27 January 2011] [12:09:57] <pieterh>	ianbarber: try reloading, you will have to have joined the site
+| [Thursday 27 January 2011] [12:10:20] <ianbarber>	yep, that's it, they're there now
+| [Thursday 27 January 2011] [12:10:59] <pieterh>	it's because this page is '/community' and thus in the default category, which had strict permissions... normally the wiki pages are in categories like doc: and binding: which had open permissions
+| [Thursday 27 January 2011] [13:25:57] <stockMQ>	Hi..anyone tested pgm/epgm on localhost..?
+| [Thursday 27 January 2011] [16:31:11] <mikko>	sustrik: interesting, i increased socket buffers and recv/send buffers on freebsd and shutdown stress still fails
+| [Thursday 27 January 2011] [17:20:14] <drbobbeaty>	Steve-o: I have a question about the OpenPGM UDP receive buffer sizes. One of my users is looking at the UDP receive buffers and they are seeing a size of 128kB and they say it appears to never empty. Having not seen this myself, I'm asking you if this is normal behavior for OpenPGM? Specifically, they are worried that the buffer is full and we're dropping messages. I'm guessing if we suffer unrecoverable data loss in ZMQ, we'd get an exception or somet
+| [Thursday 27 January 2011] [17:20:14] <drbobbeaty>	on the recv().
+| [Thursday 27 January 2011] [17:21:13] <drbobbeaty>	Steve-o: I'll send this question to the mailing list in case you aren't online.
+| [Thursday 27 January 2011] [19:54:43] <stodge>	Do I need to install openpgm for zeroconf to support the protocol?
+| [Thursday 27 January 2011] [20:06:35] <stodge>	Or do I compile zeromq with pgm support
+| [Friday 28 January 2011] [01:37:11] <stockMQ>	Hi I am using pgmping to do some tests
+| [Friday 28 January 2011] [01:37:20] <stockMQ>	Anyone here using it?
+| [Friday 28 January 2011] [01:44:03] <sustrik>	mikko: what size did you set up?
+| [Friday 28 January 2011] [01:52:16] <CIA-21>	zeromq2: 03Martin Sustrik 07master * r1b15eba 10/ src/socket_base.cpp : 
+| [Friday 28 January 2011] [01:52:16] <CIA-21>	zeromq2: Fixed the problem of subscription forwarding and PGM interaction
+| [Friday 28 January 2011] [01:52:16] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/eCdQFd
+| [Friday 28 January 2011] [02:01:29] <stockMQ>	??
+| [Friday 28 January 2011] [02:05:07] <Evet>	zeromq client-side javascript binding would be great
+| [Friday 28 January 2011] [02:06:59] <Evet>	s/javascript/html5/
+| [Friday 28 January 2011] [02:34:12] <sustrik>	Evet: afaiu java script doesn't allow for invoking C binaries
+| [Friday 28 January 2011] [02:35:47] <Evet>	sustrik: protocol compatibility with websockets isnt enough?
+| [Friday 28 January 2011] [02:37:39] <sustrik>	well, you need some code
+| [Friday 28 January 2011] [02:38:02] <sustrik>	compatibility is an abstract concept
+| [Friday 28 January 2011] [02:38:07] <sustrik>	no much help
+| [Friday 28 January 2011] [04:21:45] <boothead>	Hi all, is there an easy (or possible) way to get a list of a socket's connections or binds... I'm using pyzmq
+| [Friday 28 January 2011] [04:24:42] <thoward>	hello
+| [Friday 28 January 2011] [04:24:56] <thoward>	anyone here familiar with pyzmq on windows? 
+| [Friday 28 January 2011] [04:25:32] <boothead>	thoward - i've built it using VS, but that's about it!
+| [Friday 28 January 2011] [04:25:32] <mikko>	thoward: not very
+| [Friday 28 January 2011] [04:25:42] <mikko>	thoward: but there are many pyzmq+win users here
+| [Friday 28 January 2011] [04:26:07] <thoward>	i've had success building it on windows and so far there have been no problems there.. 
+| [Friday 28 January 2011] [04:26:19] <thoward>	i'm now trying to deploy it to a box that doesn't have a compiler on it.. 
+| [Friday 28 January 2011] [04:26:38] <thoward>	i'm having no success with that
+| [Friday 28 January 2011] [04:39:03] <sustrik>	what's the error?
+| [Friday 28 January 2011] [04:39:14] <sustrik>	mikko: how large buffer did you used on bsd?
+| [Friday 28 January 2011] [04:39:48] <thoward>	sustrik: DLL Load failed
+| [Friday 28 January 2011] [04:40:09] <sustrik>	bad paths?
+| [Friday 28 January 2011] [04:40:17] <thoward>	doesn't say which DLL. have tried the normal tricks (updated path to include location of libzmq.dll and copied the dll all over the place
+| [Friday 28 January 2011] [04:40:37] <sustrik>	you can also try to check the dll with depeds.exe
+| [Friday 28 January 2011] [04:40:41] <sustrik>	depends.exe
+| [Friday 28 January 2011] [04:40:50] <sustrik>	it'll show missing dlls in red
+| [Friday 28 January 2011] [04:41:03] <thoward>	you mean dependencies of libzmq.dll? 
+| [Friday 28 January 2011] [04:41:10] <sustrik>	yes
+| [Friday 28 January 2011] [04:41:20] <mikko>	sustrik: let me check
+| [Friday 28 January 2011] [04:41:48] <mikko>	sustrik: 
+| [Friday 28 January 2011] [04:41:48] <mikko>	kern.ipc.maxsockbuf=4000000
+| [Friday 28 January 2011] [04:41:52] <mikko>	net.inet.tcp.sendbuf_max=16777216
+| [Friday 28 January 2011] [04:41:56] <mikko>	net.inet.tcp.recvbuf_max=16777216
+| [Friday 28 January 2011] [04:42:00] <mikko>	are those right buffers?
+| [Friday 28 January 2011] [04:42:04] <sustrik>	nope
+| [Friday 28 January 2011] [04:42:08] <sustrik>	it's socket pair
+| [Friday 28 January 2011] [04:42:13] <sustrik>	so no TCP is involved
+| [Friday 28 January 2011] [04:42:25] <sustrik>	it's unix domain socket afaict
+| [Friday 28 January 2011] [04:42:39] <mikko>	sustrik: kern.ipc.maxsockbuf ?
+| [Friday 28 January 2011] [04:42:50] <sustrik>	no idea
+| [Friday 28 January 2011] [04:43:47] <sustrik>	maybe you can retrieve the buffer size in mailbox.cpp
+| [Friday 28 January 2011] [04:43:56] <sustrik>	when the socketpair is created
+| [Friday 28 January 2011] [04:43:59] <sustrik>	and print it out
+| [Friday 28 January 2011] [04:44:19] <sustrik>	that way you can check whether the setting had the desirable effect
+| [Friday 28 January 2011] [05:12:08] <thoward>	yay! i got it working.
+| [Friday 28 January 2011] [05:12:19] <thoward>	thanks to: 
+| [Friday 28 January 2011] [05:12:19] <thoward>	http://www.lfd.uci.edu/~gohlke/pythonlibs/
+| [Friday 28 January 2011] [05:25:19] <sustrik>	nice
+| [Friday 28 January 2011] [05:38:16] <dermoth|home>	humm any known issues with the streamer devices? We build a new system based on them and to overcome some issues moved to them a bit early in the testing phase... First night it runs and all 4 streamers atops forwarding data until I restart them. It seems their memory usage steadily grows (one I checked was at 74M when I restarted it)...
+| [Friday 28 January 2011] [05:39:46] <dermoth|home>	worth noting I have over 3000 connection to each devices at all times (file limit is set way higher)
+| [Friday 28 January 2011] [05:47:21] <sustrik>	no issues i am aware of
+| [Friday 28 January 2011] [05:47:25] <sustrik>	what version is that?
+| [Friday 28 January 2011] [05:47:32] <dermoth|home>	2.0.10
+| [Friday 28 January 2011] [05:48:13] <sustrik>	it looks like the I/O threads are still working, receiving messages
+| [Friday 28 January 2011] [05:48:23] <dermoth|home>	i'll save stdout/err from the worker this time,,,
+| [Friday 28 January 2011] [05:48:27] <sustrik>	but the application thread doesn't get notified about the traffic
+| [Friday 28 January 2011] [05:48:48] <sustrik>	it looks like device problem imo
+| [Friday 28 January 2011] [05:48:52] <dermoth|home>	I don't think so, as when I restarted them I got a batch of traffic
+| [Friday 28 January 2011] [05:49:27] <sustrik>	i was just deducing because of the growing memory you referred to
+| [Friday 28 January 2011] [05:49:31] <dermoth|home>	I meant i'll save stdout/err from the streamer this time,,,
+| [Friday 28 January 2011] [05:50:17] <dermoth|home>	well it starts high actually - in the 40M - probably due to the number of connections.. maybe some event/connection info leak
+| [Friday 28 January 2011] [05:50:35] <sustrik>	hm
+| [Friday 28 January 2011] [05:50:51] <sustrik>	if it was completely stuck i would just remain on stable mem usage
+| [Friday 28 January 2011] [05:50:53] <dermoth|home>	it doesn't grow very fast, and does so while I can pull events 
+| [Friday 28 January 2011] [05:51:07] <dermoth|home>	I guess it was stable on stuck
+| [Friday 28 January 2011] [05:51:10] <dermoth|home>	once
+| [Friday 28 January 2011] [05:51:30] <sustrik>	i assume there's no way to reproduce the problem?
+| [Friday 28 January 2011] [05:51:42] <dermoth|home>	just wait...
+| [Friday 28 January 2011] [05:52:37] <sustrik>	i guess you'll have to attach debugger to the stuck device and find out what's going on then
+| [Friday 28 January 2011] [05:54:29] <dermoth|home>	ok... anything I should be looking at? the backtrace I guess...
+| [Friday 28 January 2011] [05:55:29] <sustrik>	yes, first have a look at backtrace
+| [Friday 28 January 2011] [05:55:36] <sustrik>	all the threads in the process
+| [Friday 28 January 2011] [05:55:59] 	 * dermoth|home never debugged threaded processes...
+| [Friday 28 January 2011] [05:56:22] <sustrik>	using gdb?
+| [Friday 28 January 2011] [05:56:49] <dermoth|home>	yes, is that a specific command to look at all the threads?
+| [Friday 28 January 2011] [05:56:55] <sustrik>	info threads
+| [Friday 28 January 2011] [05:56:59] <dermoth|home>	ok
+| [Friday 28 January 2011] [05:57:04] <sustrik>	that will give you list of all threads
+| [Friday 28 January 2011] [05:57:07] <sustrik>	then thread 1
+| [Friday 28 January 2011] [05:57:15] <sustrik>	to switch to thread 1
+| [Friday 28 January 2011] [05:57:18] <sustrik>	thread 2
+| [Friday 28 January 2011] [05:57:24] <sustrik>	to switch to thread 2 etc.
+| [Friday 28 January 2011] [05:57:32] <dermoth|home>	thanks
+| [Friday 28 January 2011] [05:57:35] <sustrik>	np
+| [Friday 28 January 2011] [06:04:56] <mikko>	on the topic of gdb this might be interesting as well http://blog.ksplice.com/2011/01/8-gdb-tricks/
+| [Friday 28 January 2011] [06:08:50] <sustrik>	nice, i wasn't aware -ggdb3 thing
+| [Friday 28 January 2011] [06:11:23] <dermoth|home>	thanks mikko 
+| [Friday 28 January 2011] [06:35:41] <zchrish>	I am building a zeromq application and would like to stress test it. Can anyone point me to a free or low-cost server farm whereby I can connect 1000-10000 clients?
+| [Friday 28 January 2011] [06:40:18] <zchrish>	I have a set of server(s) that I want to test and would like to use this server farm to simulate a "client cloud". I realize it isn't terribly realistic because, in use, my application would be accessed by people on the internet across the world.
+| [Friday 28 January 2011] [06:40:46] <zchrish>	But at least I would like to test the "number" of client connects.
+| [Friday 28 January 2011] [06:47:10] <zchrish>	Has anyone done this before? If so, what types of issues should I expect and, therefore, plan on. For example, I expect my server to hang from time-2-time and will need to kill and restart it but I don't necessarily have a strategy in mind yet.
+| [Friday 28 January 2011] [06:57:02] <CIA-21>	zeromq2: 03Martin Sustrik 07sub-forward * r95356d6 10/ (5 files): 
+| [Friday 28 January 2011] [06:57:02] <CIA-21>	zeromq2: Re-creating subscription pipes after disconnect
+| [Friday 28 January 2011] [06:57:02] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/eeeiXr
+| [Friday 28 January 2011] [07:06:24] <sustrik>	zchrish: no idea, sorry
+| [Friday 28 January 2011] [07:09:22] <zchrish>	sustrik: Has anyone built an application that serves 1000-100000 client yet? I will be using a combination of REQ/REP and PUB/SUB to communicate with my central servers and these clients.
+| [Friday 28 January 2011] [07:10:05] <sustrik>	dermoth|home just mentioned having 3000 connections
+| [Friday 28 January 2011] [07:13:27] <zchrish>	Oh, that's great and encouraging. I am staying close (read exact) to the model patterns described in "The Guide" to prepare my server software. I saw a company named "Sabalcore" that rents computer time. 
+| [Friday 28 January 2011] [07:14:52] <zchrish>	Anyway, it is somewhat of an unknown to me now what types of issues will pop-up since the zeromq software is designed to shield this level of detail from my view which is ok. 
+| [Friday 28 January 2011] [07:53:52] <dermoth|home>	2800 actually (I originally counted some connections twice) - obviously you need to raise the max open file limit if it defaults to 1024
+| [Friday 28 January 2011] [07:54:46] <mikko>	i think Skaag has a fairly large test environment
+| [Friday 28 January 2011] [07:54:59] <mikko>	and plans to use it on large production environment
+| [Friday 28 January 2011] [07:55:04] <mikko>	if i remember correctly
+| [Friday 28 January 2011] [07:55:24] <Skaag>	it's already being used right now
+| [Friday 28 January 2011] [07:55:31] <Skaag>	our test cluster has 16 ~ 20 nodes
+| [Friday 28 January 2011] [07:55:45] <mikko>	wow, that happened quick
+| [Friday 28 January 2011] [07:55:52] <Skaag>	not really, 2 weeks ;0
+| [Friday 28 January 2011] [07:55:54] <Skaag>	:-)
+| [Friday 28 January 2011] [07:56:08] <mikko>	i'm used to working with enterprises
+| [Friday 28 January 2011] [07:56:18] <mikko>	where two weeks is spent on planning the planning phase
+| [Friday 28 January 2011] [07:56:23] <dermoth|home>	lol
+| [Friday 28 January 2011] [07:56:46] <Skaag>	right, you're 100% correct ;)
+| [Friday 28 January 2011] [07:57:13] <Skaag>	we calculated bottlenecks, planned our message sizes and structure carefully, and just went ahead with it
+| [Friday 28 January 2011] [07:57:29] <zchrish>	I am using a master that will fan-out to a configurable number of intermdiaries. Is there a rule of thumb to know when to add another node? I suppose I can either (1) theoretically determine the load or (2) watch the activity and add another node based on heuristics.
+| [Friday 28 January 2011] [07:57:31] <Skaag>	and I have to say it's looking very good now
+| [Friday 28 January 2011] [07:58:05] <Skaag>	zchrish: the way we plan to do it, is based on actual load + some other factors (strategic)
+| [Friday 28 January 2011] [07:58:56] <zchrish>	I see; thank you.
+| [Friday 28 January 2011] [08:00:53] <mikko>	http://twitter.com/taotetek/statuses/30949638219505664
+| [Friday 28 January 2011] [08:00:56] <mikko>	cool
+| [Friday 28 January 2011] [08:06:47] <Skaag>	yes :)
+| [Friday 28 January 2011] [08:07:02] <Skaag>	my next task, is to replicate the pubnub.com functionality on our own system
+| [Friday 28 January 2011] [08:07:19] <Skaag>	and then make some really cool and interactive web based widgets with that
+| [Friday 28 January 2011] [08:07:28] <Skaag>	that involve live video streaming, etc.
+| [Friday 28 January 2011] [08:08:46] <Skaag>	and the next big step is synchronizing flash objects between many media servers, and that will really be game changing for the media industry.
+| [Friday 28 January 2011] [08:08:57] <Skaag>	hopefully, all this can also happen in the next 2 ~ 3 weeks.
+| [Friday 28 January 2011] [08:11:41] <sustrik>	changing the media industry in 2-3 weeks, wow! :)
+| [Friday 28 January 2011] [08:12:25] <sustrik>	anyway, the idea is to build large-scale distribution trees for media delivery?
+| [Friday 28 January 2011] [08:12:30] <mikko>	i think UDT would of interest for the media industry
+| [Friday 28 January 2011] [08:13:23] <sustrik>	my impression was that UDT makes sense when you are trying to transfer you 10TB database over the WAN
+| [Friday 28 January 2011] [08:13:33] <sustrik>	no idea about UDT & media
+| [Friday 28 January 2011] [08:13:44] <sustrik>	UDT & real time to be more precise
+| [Friday 28 January 2011] [08:14:25] <Skaag>	video distribution, we do already, with Wowza
+| [Friday 28 January 2011] [08:14:41] <Skaag>	WowzaMediaServer is a replacement for Adobe's FMS
+| [Friday 28 January 2011] [08:14:54] <Skaag>	but imagine a developer wants to create a large scale application right now - he can't really...
+| [Friday 28 January 2011] [08:15:00] <Skaag>	he's limited by what a single FMS can provide
+| [Friday 28 January 2011] [08:15:20] <sustrik>	what's FMS?
+| [Friday 28 January 2011] [08:15:24] <Skaag>	when you talk to Adobe about FMS, they talk to you in terms of hundreds of channels
+| [Friday 28 January 2011] [08:15:29] <Skaag>	FMS = Flash Media Server
+| [Friday 28 January 2011] [08:15:40] <Skaag>	with all its cool object synchronization, etc.
+| [Friday 28 January 2011] [08:15:40] <sustrik>	i see
+| [Friday 28 January 2011] [08:15:55] <Skaag>	So I want to attack that + also do this for html5 with json object sync
+| [Friday 28 January 2011] [08:16:16] <Skaag>	you send the server some update to an object, all other subscribers receive it at once
+| [Friday 28 January 2011] [08:16:20] <Skaag>	like pubnub.com really
+| [Friday 28 January 2011] [08:16:33] <Skaag>	I wonder what they use in their backends in place of zmq
+| [Friday 28 January 2011] [08:18:40] <sustrik>	aha
+| [Friday 28 January 2011] [08:18:53] <sustrik>	so basically large-scale delivery of PUB/SUB streams
+| [Friday 28 January 2011] [08:19:57] <sustrik>	have you seen my article about scaling 0mq-like system to internet scale?
+| [Friday 28 January 2011] [08:19:58] <sustrik>	http://www.250bpm.com/hits
+| [Friday 28 January 2011] [08:21:03] <sustrik>	one of the points is that with such a system any participant can add new devices to the distribution tree
+| [Friday 28 January 2011] [08:21:10] <sustrik>	thus making it infinitely scalable
+| [Friday 28 January 2011] [08:22:05] <sustrik>	this applies not only to the provider of the service but also to end-user, ISPs etc. virtually everyone
+| [Friday 28 January 2011] [09:03:46] <Skaag>	I need to read it because i'm not sure about the infinity thing :)
+| [Friday 28 January 2011] [09:03:52] 	 * Skaag hits that article
+| [Friday 28 January 2011] [09:23:07] <CIA-21>	zeromq2: 03Martin Sustrik 07sub-forward * rf267287 10/ (src/Makefile.am src/matcher.cpp src/matcher.hpp): 
+| [Friday 28 January 2011] [09:23:07] <CIA-21>	zeromq2: Simple ad hoc message matcher added
+| [Friday 28 January 2011] [09:23:07] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/dSNqlA
+| [Friday 28 January 2011] [10:12:21] <cremes>	zchrish: the applications i built with 0mq use around 9k sockets at their steady state
+| [Friday 28 January 2011] [10:12:34] <cremes>	the main thing i learned from building this can be broken out to 3 pieces
+| [Friday 28 January 2011] [10:13:00] <cremes>	1. on linux/osx, make sure your OS buffers are sized correctly (maxsockbuf & friends)
+| [Friday 28 January 2011] [10:13:16] <cremes>	2. 0mq needs to be rebuilt to allow for more than the default of 512 sockets
+| [Friday 28 January 2011] [10:13:49] <cremes>	3. make sure your code cleans up after itself (e.g. closes sockets) when a 0mq resource is no longer needed
+| [Friday 28 January 2011] [10:20:56] <zchrish>	Great; thank you.
+| [Friday 28 January 2011] [10:26:17] <Skaag>	sustrik: ok for the infinity thing, every device you add, adds its own (albeit small) delay factor, then yes, in theory infinity is possible
+| [Friday 28 January 2011] [10:26:22] <Skaag>	we do this right now with video
+| [Friday 28 January 2011] [10:26:44] <Skaag>	every media server repeats a single channel from a publishing box
+| [Friday 28 January 2011] [10:27:20] <Skaag>	and publishes it to thousands of people
+| [Friday 28 January 2011] [10:27:41] <sustrik>	Skaag: great
+| [Friday 28 January 2011] [10:28:13] <sustrik>	the scalability thing is the "big deal" with 0mq
+| [Friday 28 January 2011] [10:28:30] <sustrik>	we've had different messaging systems up to now
+| [Friday 28 January 2011] [10:28:50] <sustrik>	but afaik none of them was designed specifically to be scalable to global level
+| [Friday 28 January 2011] [10:29:34] <sustrik>	so i would be interested to hear about any scalability results you may get
+| [Friday 28 January 2011] [10:31:02] <Skaag>	well - our next step is quite interesting
+| [Friday 28 January 2011] [10:31:15] <Skaag>	the challenge is to decide how to route between the forwarder devices intelligentl
+| [Friday 28 January 2011] [10:31:33] <Skaag>	and by intelligently, I mean, taking into account latency, cost of traffic, etc.
+| [Friday 28 January 2011] [10:31:47] <Skaag>	and to do all this almost in real-time
+| [Friday 28 January 2011] [10:32:52] <sustrik>	yes, it's a bandwidth/latency trade-off
+| [Friday 28 January 2011] [10:33:04] <sustrik>	depends on the user requirements i guess
+| [Friday 28 January 2011] [10:41:36] <francois_>	Does anybody see issues with sending 500,000+ messages using ZMQ_SNDMORE? I have a unit of work that's based on 500,000 and more records. I want either all of it or none of it to proceed.
+| [Friday 28 January 2011] [10:43:19] <sustrik>	the message is stored in the memory
+| [Friday 28 January 2011] [10:43:31] <francois_>	Until SNDMORE is left unset?
+| [Friday 28 January 2011] [10:43:36] <sustrik>	so all the 1/2M parts have to fit into memroy
+| [Friday 28 January 2011] [10:43:43] <sustrik>	yes
+| [Friday 28 January 2011] [10:44:26] <francois_>	Thanks for the info
+| [Friday 28 January 2011] [10:45:32] <sustrik>	np
+| [Friday 28 January 2011] [15:08:16] <francois_>	I have a ZMQ_PUSH socket with a ZMQ_HWM set to 1. My code can call zmq_send multiple times, even though no peers are connected. I created the socket using zmq_socket(ctx, ZMQ_PUSH); and zmq_connect(socket, ENDPOINT). What am I doing wrong? Calling getsockopt right before zmq_send correctly reports the HWM set to 1.
+| [Friday 28 January 2011] [15:09:09] <mikko>	francois_: what is the behaviour you are seeing?
+| [Friday 28 January 2011] [15:09:17] <mikko>	the messages are accepted by the socket?
+| [Friday 28 January 2011] [15:09:38] <francois_>	mikko: https://gist.github.com/800852
+| [Friday 28 January 2011] [15:09:53] <francois_>	mikko: That's the sending side, the one doing zmq_send
+| [Friday 28 January 2011] [15:10:03] <mikko>	that's the output of the sending code
+| [Friday 28 January 2011] [15:10:14] <francois_>	Right, and I want the caller of zmq_send to block
+| [Friday 28 January 2011] [15:10:21] <mikko>	what version of zeromq?
+| [Friday 28 January 2011] [15:10:39] <francois_>	2.0.10
+| [Friday 28 January 2011] [15:11:01] <mikko>	it's been a while since i've ran 2.0.x
+| [Friday 28 January 2011] [15:11:09] <mikko>	but let me test with 2.1.x quickly
+| [Friday 28 January 2011] [15:11:15] <francois_>	Thanks
+| [Friday 28 January 2011] [15:11:16] <mikko>	the expected behaviour is to block
+| [Friday 28 January 2011] [15:11:28] <francois_>	That was my understanding from the documentation
+| [Friday 28 January 2011] [15:14:08] <mikko>	francois_: are you setting the HWM before connecting?
+| [Friday 28 January 2011] [15:14:28] <francois_>	Ah no: I call zmq_socket, zmq_connect, then zmq_setsockopt
+| [Friday 28 January 2011] [15:14:30] <francois_>	Let me try that
+| [Friday 28 January 2011] [15:14:32] <mikko>	thats the most common thing causing this sort of behaviour
+| [Friday 28 January 2011] [15:14:43] <mikko>	the HWM affects subsequent connects/binds
+| [Friday 28 January 2011] [15:14:53] <mikko>	i think that has been fixed in documentation for the later versions
+| [Friday 28 January 2011] [15:15:09] <mikko>	you need zmq_socket, zmq_setsockopt, zmq_connect
+| [Friday 28 January 2011] [15:15:48] <francois_>	Yay: correctly blocked.
+| [Friday 28 January 2011] [15:15:50] <francois_>	Thanks again!
+| [Friday 28 January 2011] [15:16:18] <mikko>	no problem
+| [Friday 28 January 2011] [15:18:13] <francois_>	That's why my ZMQ_IDENTITY was left unset then.
+| [Friday 28 January 2011] [15:28:36] <_jrideout>	is there a way to identify the originating host that published a message on the subscription side, when using pub/sub?
+| [Friday 28 January 2011] [15:31:46] <mikko>	_jrideout: no, not really
+| [Friday 28 January 2011] [15:31:53] <cremes>	_jrideout: no, the 0mq lib doesn't expose that; you would need to include that information as part of the message payload
+| [Friday 28 January 2011] [15:31:55] <mikko>	_jrideout: what defines originating host?
+| [Friday 28 January 2011] [15:32:22] <_jrideout>	ip, or hostname would work
+| [Friday 28 January 2011] [15:32:42] <_jrideout>	even an aribtrary identifier declared on the publish side
+| [Friday 28 January 2011] [15:32:58] <mikko>	_jrideout: what about if there is a publisher and a device in the middle that does fan-out?
+| [Friday 28 January 2011] [15:33:06] <cremes>	_jrideout: again, no; you would need to do this at the application level
+| [Friday 28 January 2011] [15:33:08] <mikko>	is the originator the device or the actual publisher?
+| [Friday 28 January 2011] [15:33:18] <_jrideout>	my current implentation transfers the hostname with a delimeter as the first set of bytes in the message, but this sends a ton of redundant data
+| [Friday 28 January 2011] [15:33:39] <_jrideout>	what would be the distinction between device and publisher?
+| [Friday 28 January 2011] [15:33:51] <_jrideout>	application and machine?
+| [Friday 28 January 2011] [15:33:57] <mikko>	_jrideout: conceptual
+| [Friday 28 January 2011] [15:34:01] <_jrideout>	in my case, they are one and the same
+| [Friday 28 January 2011] [15:34:22] <mikko>	but as cremes said, zeromq doesnt expose this information
+| [Friday 28 January 2011] [15:35:24] <_jrideout>	is there an internal location where this information could be accessed? I wouldn't mind modifying the library
+| [Friday 28 January 2011] [15:40:07] <_jrideout>	could you point me to the .cpp file where messages are put onto the fq/pipe?
+| [Friday 28 January 2011] [15:43:32] <cremes>	_jrideout: why modify the application to send this data out when you can do it at the application layer without changing the library?
+| [Friday 28 January 2011] [15:43:44] <cremes>	what you are proposing doesn't make any sense to me
+| [Friday 28 January 2011] [15:51:33] <_jrideout>	cremes: I'm not sure what distinguishes the application and application layer in your above comment. I have numerous publishing clients connecting to a single subscribing server. The server needs to know which publisher sent each particular message. My current implementation sends a message such as "hostname|messageBody" this allows the server to take appropriate action based on the hostname. It seems like a waste of bytes, though, to send the s
+| [Friday 28 January 2011] [15:52:51] <cremes>	why don't you do a pair of pub/sub sockets for each publisher? you'll know where you connected to when you
+| [Friday 28 January 2011] [15:52:59] <cremes>	start them, so no need to transmit any data at all
+| [Friday 28 January 2011] [15:53:14] <cremes>	pubA connects to subA
+| [Friday 28 January 2011] [15:53:20] <cremes>	pubB connects to subB
+| [Friday 28 January 2011] [15:53:25] <cremes>	pubC connects to subC
+| [Friday 28 January 2011] [15:53:42] <cremes>	when you get a message on subA, you know it came from pubA
+| [Friday 28 January 2011] [15:53:58] <_jrideout>	cremes: would I need to use a different port for each pub/sub pair?
+| [Friday 28 January 2011] [15:54:18] <cremes>	of course
+| [Friday 28 January 2011] [15:54:31] <cremes>	you can't bind multiple sockets to the same port
+| [Friday 28 January 2011] [15:55:12] <cremes>	i'm just trying to point out other solutions so you don't make a lot of additional work for yourself
+| [Friday 28 January 2011] [15:55:21] <cremes>	by digging into the library's innards
+| [Friday 28 January 2011] [15:55:38] <_jrideout>	cremes: of course, thank you, i appreciate it
+| [Friday 28 January 2011] [15:55:45] <cremes>	sure
+| [Friday 28 January 2011] [15:56:13] <cremes>	another alternative is to publish your "hostname|messageBody" format every X messages where X could be a large number
+| [Friday 28 January 2011] [15:56:26] <cremes>	or publish it every X seconds
+| [Friday 28 January 2011] [15:56:32] <cremes>	lots of possibilities here...
+| [Friday 28 January 2011] [15:58:27] <_jrideout>	cremes: the larger, batched message probably makes the most sense for my application. thanks for the idea -i'll explore that a bit more
+| [Friday 28 January 2011] [18:14:30] <mikko>	Steve-o: building
+| [Friday 28 January 2011] [18:14:55] <mikko>	Steve-o: i created a wrapper csproj file that sets the properties and includes the zeromq .sln file
+| [Friday 28 January 2011] [18:15:06] <Steve-o>	nifty
+| [Friday 28 January 2011] [18:24:13] <Steve-o>	mikko: looks like it worked
+| [Friday 28 January 2011] [18:25:16] <mikko>	nope
+| [Friday 28 January 2011] [18:25:24] <mikko>	the constant is not defined for some reason
+| [Friday 28 January 2011] [18:25:26] <mikko>	debugging atm
+| [Friday 28 January 2011] [18:26:10] <Steve-o>	its not inherited
+| [Friday 28 January 2011] [18:27:40] <mikko>	that was my first stab 
+| [Friday 28 January 2011] [18:27:43] <mikko>	writing the xml by hand
+| [Friday 28 January 2011] [18:27:49] <mikko>	trying to create one using visual studio now
+| [Friday 28 January 2011] [18:29:26] <Steve-o>	visual studio is odd at times
+| [Friday 28 January 2011] [18:29:54] <Steve-o>	building the openpgm examples using cl.exe on the command line breaks something, but studio works fine
+| [Friday 28 January 2011] [18:33:45] <mikko>	because if i edit the csproj file the next checkout will wipe it
+| [Friday 28 January 2011] [18:33:56] <mikko>	unless there is some local patch hackery or so
+| [Saturday 29 January 2011] [03:16:34] <Kev699>	hi any1
+| [Saturday 29 January 2011] [03:41:57] <sustrik>	hi
+| [Saturday 29 January 2011] [07:38:20] <stockMQ>	Any remote_thr local_thr users here?
+| [Saturday 29 January 2011] [07:49:20] <sustrik>	what's the problem?
+| [Saturday 29 January 2011] [07:52:03] <stockMQ>	well .. remote_thr "epgm://;239.192.0.1:7500" 1 1000 works successfully..and on the same machine i have local_thr "epgm://;239.192.0.1:7500" 1 100
+| [Saturday 29 January 2011] [07:52:38] <stockMQ>	nothing happens at local_thr end.. I think its blocked to receive..but does not recv any message
+| [Saturday 29 January 2011] [07:52:45] <stockMQ>	I am on windows by the way
+| [Saturday 29 January 2011] [08:01:08] <sustrik>	no idea, sorry
+| [Saturday 29 January 2011] [08:01:15] <sustrik>	maybe try speaking to steven
+| [Saturday 29 January 2011] [08:03:11] <stockMQ>	sure..thanks Martin
+| [Saturday 29 January 2011] [10:39:22] <dermoth|home>	sustrik, I've got some more info on the streamer bug... it happens when the httpd workers gets restarted (which means lots of reconnections happens at that time), and the two workers I've looked at blocked on send() on fd 3 (which seems to be a unix socket??)
+| [Saturday 29 January 2011] [10:39:31] <dermoth|home>	i'll send an email in the bl with the backtrace...
+| [Saturday 29 January 2011] [10:39:36] <dermoth|home>	in the ML
+| [Saturday 29 January 2011] [12:10:37] <CIA-21>	rbzmq: 03Brian Buchanan 07master * r1879463 10/ (README.md README): Merge branch 'master' of https://github.com/francois/rbzmq into francois-master - http://bit.ly/eov7Bx
+| [Saturday 29 January 2011] [15:27:41] <mikko>	sustrik: there?
+| [Saturday 29 January 2011] [15:51:53] <mikko>	Steve-o: see mailing list
+| [Saturday 29 January 2011] [15:52:14] <mikko>	with that patch it should be possible to: msbuild.exe msvc.sln /p:Configuration=WithOpenPGM
+| [Saturday 29 January 2011] [15:56:57] <Steve-o>	nice
+| [Saturday 29 January 2011] [15:58:14] <Steve-o>	just working on pfSense, dual-WAN is frustrating.  I have one WAN link that has lost connectivity to HK but other parts of the Internet are fine
+| [Saturday 29 January 2011] [16:02:25] <mikko>	Steve-o: pfsense uses zeromq as well, i think
+| [Saturday 29 January 2011] [16:03:19] <Steve-o>	I need to try the 2.0 pre-RC
+| [Saturday 29 January 2011] [16:18:56] <Steve-o>	oh spinlocks are entertaining
+| [Saturday 29 January 2011] [16:19:27] <Steve-o>	I wonder if I'm the only one where spinlocks on a uniprocessor are actually faster than mutexes
+| [Saturday 29 January 2011] [16:35:28] <mikko>	Steve-o: well, i would imagine so
+| [Saturday 29 January 2011] [17:54:01] <mikko>	hmm
+| [Saturday 29 January 2011] [17:54:33] <mikko>	interesting: posted a link on twitter and immediately robots rush in to index it and among them three microsoft ip addresses
+| [Saturday 29 January 2011] [18:10:48] <Steve-o>	ugh, getaddrinfo() is returning different order of addresses to what ping is using
+| [Saturday 29 January 2011] [18:11:43] <Steve-o>	somehow ping is skipping 127.0.1.1 address which is returned first
+| [Sunday 30 January 2011] [06:01:45] <CIA-21>	zeromq2: 03Mikko Koppanen 07master * r72d3203 10/ (tests/Makefile.am tests/test_hwm.cpp): 
+| [Sunday 30 January 2011] [06:01:45] <CIA-21>	zeromq2: Added test for HWM
+| [Sunday 30 January 2011] [06:01:45] <CIA-21>	zeromq2: Signed-off-by: Mikko Koppanen <mkoppanen@php.net> - http://bit.ly/hzLvh4
+| [Sunday 30 January 2011] [06:20:55] <mikko>	good morning
+| [Sunday 30 January 2011] [06:45:12] <sustrik>	morning
+| [Sunday 30 January 2011] [06:46:29] <CIA-21>	zeromq2: 03Mikko Koppanen 07master * r1e03026 10/ (builds/msvc/libzmq/libzmq.vcproj builds/msvc/msvc.sln): 
+| [Sunday 30 January 2011] [06:46:29] <CIA-21>	zeromq2: Added WithOpenPGM configuration into MSVC builds
+| [Sunday 30 January 2011] [06:46:29] <CIA-21>	zeromq2: Signed-off-by: Mikko Koppanen <mikko.koppanen@gmail.com> - http://bit.ly/i2lTwr
+| [Sunday 30 January 2011] [07:54:39] <mikko>	sustrik: i think there is somehting funny with windows builds
+| [Sunday 30 January 2011] [07:54:49] <sustrik>	yes?
+| [Sunday 30 January 2011] [07:54:57] <mikko>	i inherited the WithOpenPGM from release builds but it still tries to link with debug versions of some dlls
+| [Sunday 30 January 2011] [07:55:13] <mikko>	MSVCR90D.dll 
+| [Sunday 30 January 2011] [07:56:57] <mikko>	yes
+| [Sunday 30 January 2011] [07:57:05] <mikko>	the release build has "Generate Debug info" on
+| [Sunday 30 January 2011] [07:58:46] <mikko>	under linker settings
+| [Sunday 30 January 2011] [08:00:31] <mikko>	and Debug Information Format under preprocessor
+| [Sunday 30 January 2011] [08:02:54] <mikko>	or does that generate separate PDB file?
+| [Sunday 30 January 2011] [08:03:51] <mikko>	it might be WithOpenPGM that has issues as the libpgm is built without debug info and links with MSVCR90.dll (without D)
+| [Sunday 30 January 2011] [08:06:58] <mikko>	i'll ask steve-o about this
+| [Sunday 30 January 2011] [08:15:40] <sustrik>	mikko: i have no idea about inheritance in msvc projects
+| [Sunday 30 January 2011] [08:16:04] <sustrik>	however, if you want too change the runtime lib to release version
+| [Sunday 30 January 2011] [08:16:10] <sustrik>	go to project properties
+| [Sunday 30 January 2011] [08:16:17] <sustrik>	code generation
+| [Sunday 30 January 2011] [08:16:32] <sustrik>	link with release multi-threaded DLL
+| [Sunday 30 January 2011] [08:17:03] <sustrik>	(i hope i remember it correctly)
+| [Sunday 30 January 2011] [08:18:19] <mikko>	sustrik: it might be that the openpgm lib steve gave me is debug
+| [Sunday 30 January 2011] [08:18:30] <mikko>	and that pulls in the debug dlls as dependency
+| [Sunday 30 January 2011] [08:18:41] <mikko>	testing with dependency walker now
+| [Sunday 30 January 2011] [08:19:40] <sustrik>	you can check that
+| [Sunday 30 January 2011] [08:19:51] <sustrik>	you should have a prgram called depends.exe
+| [Sunday 30 January 2011] [08:19:57] <sustrik>	it's distributed with msvc iirc
+| [Sunday 30 January 2011] [08:20:10] <sustrik>	you can open a dll via depends.exe
+| [Sunday 30 January 2011] [08:20:20] <sustrik>	and examine the tree of dependencies
+| [Sunday 30 January 2011] [08:20:31] <mikko>	http://www.dependencywalker.com/
+| [Sunday 30 January 2011] [08:20:43] <mikko>	the problem is that the openpgm installs static lib
+| [Sunday 30 January 2011] [08:20:56] <sustrik>	oh
+| [Sunday 30 January 2011] [08:20:57] <sustrik>	i see
+| [Sunday 30 January 2011] [08:22:41] <mikko>	im building normal release build of libzmq now and see if that links against MSVCR90D.dll or MSVCR90.dll
+| [Sunday 30 January 2011] [08:23:03] <sustrik>	ack
+| [Sunday 30 January 2011] [08:27:40] <mikko>	ok
+| [Sunday 30 January 2011] [08:27:48] <mikko>	MSVCR90.dll without libpgm
+| [Sunday 30 January 2011] [08:28:05] <mikko>	so i guess i need to ask steve to make a release build
+| [Sunday 30 January 2011] [08:28:10] <mikko>	rather than a debug build
+| [Sunday 30 January 2011] [08:29:02] <sustrik>	how do you build it btw?
+| [Sunday 30 January 2011] [08:29:07] <sustrik>	mingw>
+| [Sunday 30 January 2011] [08:29:07] <sustrik>	?
+| [Sunday 30 January 2011] [08:30:15] <mikko>	msvc
+| [Sunday 30 January 2011] [08:32:04] <mikko>	so i guess the problem is that libpgm.lib is statically linked with debug libraries
+| [Sunday 30 January 2011] [08:32:22] <mikko>	and now when i include it inside a dll that tries to link with normal libraries they clash
+| [Sunday 30 January 2011] [08:34:37] <sustrik>	sounds possible
+| [Sunday 30 January 2011] [08:35:40] <mikko>	so, if steve can give me openpgm release build i can make snapshots for ZeroMQ with OpenPGM support on windows
+| [Sunday 30 January 2011] [08:40:20] <sustrik>	wow
+| [Sunday 30 January 2011] [08:40:25] <sustrik>	that would be great
+| [Sunday 30 January 2011] [08:40:36] <sustrik>	btw, the snapshots you are creating now
+| [Sunday 30 January 2011] [08:40:43] <sustrik>	are they linked from the website?
+| [Sunday 30 January 2011] [08:44:57] <mikko>	i dont know
+| [Sunday 30 January 2011] [08:45:04] <mikko>	they are not super-stable yet
+| [Sunday 30 January 2011] [08:45:11] <mikko>	+ i dont have access to edit the web site
+| [Sunday 30 January 2011] [08:51:55] <sustrik>	the website is a wiki
+| [Sunday 30 January 2011] [08:52:02] <sustrik>	just register there and you can edit pages
+| [Sunday 30 January 2011] [08:52:23] <mikko>	sustrik: i think you need to be added permission to edit pages
+| [Sunday 30 January 2011] [08:52:29] <mikko>	i can only edit php:bindings i think
+| [Sunday 30 January 2011] [08:52:48] <mikko>	no, i can edit
+| [Sunday 30 January 2011] [08:53:02] <sustrik>	:)
+| [Sunday 30 January 2011] [08:54:39] <mikko>	how do i add a new link to the left menu?
+| [Sunday 30 January 2011] [08:55:02] <sustrik>	nav:side page
+| [Sunday 30 January 2011] [08:56:12] <mikko>	should i add a src snapshots as well?
+| [Sunday 30 January 2011] [08:56:21] <mikko>	make dist on one of the unix builds
+| [Sunday 30 January 2011] [08:58:42] <sustrik>	why not
+| [Sunday 30 January 2011] [08:59:00] <sustrik>	however, i wouldn't overload the left pane by a lot of links
+| [Sunday 30 January 2011] [08:59:17] <sustrik>	if you need several maybe create a new page that would hold them
+| [Sunday 30 January 2011] [08:59:25] <sustrik>	and link that from the left pane
+| [Sunday 30 January 2011] [09:01:49] <mikko>	yeah, i can create a page later about snapshots and daily builds
+| [Sunday 30 January 2011] [09:02:12] <mikko>	first i'll pack some stuff, going to barcelona today 
+| [Sunday 30 January 2011] [09:03:38] <sustrik>	maybe a single link to daily builds
+| [Sunday 30 January 2011] [09:04:03] <sustrik>	which in turn would point you to the build logs and snapshots?
+| [Sunday 30 January 2011] [09:04:12] <sustrik>	anyway, have a nice time in Barcelona
+| [Sunday 30 January 2011] [09:15:42] <ianbarber>	anyone know what the font is in the logo image on the site? 
+| [Sunday 30 January 2011] [09:16:22] <sustrik>	ianbarber: it's custom made
+| [Sunday 30 January 2011] [09:16:57] <ianbarber>	ah right, that explains it
+| [Sunday 30 January 2011] [09:17:50] <sustrik>	you couldn't find it? :)
+| [Sunday 30 January 2011] [09:18:04] <ianbarber>	yeah, been hunting :)
+| [Sunday 30 January 2011] [09:18:21] <ianbarber>	lots of fonts with the 0, but not with the nice Q as well
+| [Sunday 30 January 2011] [09:18:44] <sustrik>	right
