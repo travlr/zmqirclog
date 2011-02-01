@@ -5958,3 +5958,138 @@
 | [Sunday 30 January 2011] [09:18:04] <ianbarber>	yeah, been hunting :)
 | [Sunday 30 January 2011] [09:18:21] <ianbarber>	lots of fonts with the 0, but not with the nice Q as well
 | [Sunday 30 January 2011] [09:18:44] <sustrik>	right
+| [Sunday 30 January 2011] [11:32:32] <andrewvc>	cremes: around?
+| [Sunday 30 January 2011] [11:32:41] <andrewvc>	I was wondering if there was an exception handler in zmqmachine
+| [Sunday 30 January 2011] [13:55:54] <andrewvc>	what does an IPv6 connection string look like in zeromq?
+| [Sunday 30 January 2011] [13:56:07] <andrewvc>	i got a segfault using a bracketed addr
+| [Sunday 30 January 2011] [13:56:24] <andrewvc>	err, an assertion failed i mean
+| [Sunday 30 January 2011] [13:58:12] <cremes>	andrewvc: nope, no exception handler in zmqmachine
+| [Sunday 30 January 2011] [13:58:27] <cremes>	i've been thinking about how to add that but so far i haven't really needed it
+| [Sunday 30 January 2011] [13:58:35] <andrewvc>	ah, yeah, no worries
+| [Sunday 30 January 2011] [13:59:01] <andrewvc>	I wound up just wrapping all my zmq code in EM.next_tick anyway, rather than have two reactors
+| [Sunday 30 January 2011] [13:59:06] <andrewvc>	btw, any idea on the ipv6 addr?
+| [Sunday 30 January 2011] [13:59:46] <cremes>	i haven't used any ipv6 stuff
+| [Sunday 30 January 2011] [14:00:08] <andrewvc>	yeah, I wrote some cod that calls Resolv.getaddresses
+| [Sunday 30 January 2011] [14:00:16] <andrewvc>	would be nice if it handled ::1 for localhost right.
+| [Sunday 30 January 2011] [14:00:23] <andrewvc>	guess i'll just search the arr for the first ipv5
+| [Sunday 30 January 2011] [14:00:25] <cremes>	don't ipv6 addresses just look like MAC addresses?
+| [Sunday 30 January 2011] [14:00:26] <andrewvc>	*ipv4
+| [Sunday 30 January 2011] [14:00:49] <andrewvc>	well, as far as I can tell, the syntax is tcp://[::1]:123
+| [Sunday 30 January 2011] [14:00:55] <andrewvc>	for ipv6 localhost 
+| [Sunday 30 January 2011] [14:00:57] <andrewvc>	but that doesn't work
+| [Sunday 30 January 2011] [14:01:00] <andrewvc>	so i'm missing something
+| [Sunday 30 January 2011] [14:03:23] <cremes>	andrewvc: i just checked the mailing list...on march5 mato wrote that he disabled the ipv6 support because it was broken
+| [Sunday 30 January 2011] [14:03:32] <andrewvc>	ah, well, there we go lol :)
+| [Sunday 30 January 2011] [14:03:34] <cremes>	i haven't seen any followups that say it was fixed
+| [Sunday 30 January 2011] [14:05:10] <andrewvc>	thanks for that, google was failing me
+| [Sunday 30 January 2011] [14:05:36] <cremes>	you're welcome
+| [Sunday 30 January 2011] [14:05:54] <cremes>	thanks for pushing out a 0.7.1 release
+| [Sunday 30 January 2011] [14:07:08] <andrewvc>	no problem
+| [Sunday 30 January 2011] [14:07:34] <andrewvc>	thanks for adding me to rubygems
+| [Sunday 30 January 2011] [14:07:43] <andrewvc>	btw, you ever play with the cext branch of jruby?
+| [Sunday 30 January 2011] [14:09:49] <cremes>	i haven't had a lot of time to play recently; i'll probably poke at it when 1.6 is finalized
+| [Sunday 30 January 2011] [20:56:49] <traviscline>	ANN: cythoneriffic version of gevent-zeromq pushed
+| [Sunday 30 January 2011] [21:18:58] <monokrome>	Has anyone ran in to issues where this assertial fails unpredictably in the middle of a request/reply loop using ZMQ_REQ and ZMQ_REP? https://github.com/zeromq/zeromq2/blob/master/src/tcp_socket.cpp#L92
+| [Sunday 30 January 2011] [21:20:39] <monokrome>	Seems to be occuring due to recv()
+| [Sunday 30 January 2011] [21:21:01] <monokrome>	s/assertial/assertion/
+| [Monday 31 January 2011] [02:34:45] <pavimus>	Hi everybody!
+| [Monday 31 January 2011] [03:04:31] <monokrome>	Is zeromq good for extremely low-latency networking?
+| [Monday 31 January 2011] [03:31:49] <sustrik>	andrewvc: why do you need ipv6?
+| [Monday 31 January 2011] [03:32:16] <sustrik>	its something that would be nice to get functioning
+| [Monday 31 January 2011] [03:32:28] <sustrik>	but nobody seemed really interested in it so far
+| [Monday 31 January 2011] [03:33:42] <sustrik>	monokrome: can you find out what the actual error is?
+| [Monday 31 January 2011] [03:34:01] <sustrik>	monokrome: yes, it should be good for low latency
+| [Monday 31 January 2011] [03:34:14] <sustrik>	of course, depending on what you mean by low latency :)
+| [Monday 31 January 2011] [04:07:45] <monokrome>	Multiplayer gaming
+| [Monday 31 January 2011] [04:10:06] <sustrik>	ah
+| [Monday 31 January 2011] [04:10:12] <sustrik>	that's not really low latency
+| [Monday 31 January 2011] [04:10:16] <sustrik>	it should be OK
+| [Monday 31 January 2011] [04:10:43] <monokrome>	It's preferably as low as possible :)
+| [Monday 31 January 2011] [04:12:12] <sustrik>	i mean, you don't care about nanoseconds, do you?
+| [Monday 31 January 2011] [04:12:17] <sustrik>	it's not like supercomputing
+| [Monday 31 January 2011] [04:17:55] <monokrome>	No
+| [Monday 31 January 2011] [04:18:08] <monokrome>	But you can't get a message across the world in nanoseconds anyway :)
+| [Monday 31 January 2011] [04:23:59] <sustrik>	exactly
+| [Monday 31 January 2011] [04:24:14] <sustrik>	so 0mq should be ok for you
+| [Monday 31 January 2011] [04:24:34] <sustrik>	what it adds to overall latency can be measured in order of microseconds
+| [Monday 31 January 2011] [04:24:57] <monokrome>	ok
+| [Monday 31 January 2011] [04:25:11] <monokrome>	and it probably takes care of things faster than I'd write it anyway :)
+| [Monday 31 January 2011] [04:25:13] <monokrome>	thanks
+| [Monday 31 January 2011] [04:25:41] <sustrik>	monokrome: can you have a look at the error you've reported?
+| [Monday 31 January 2011] [04:26:10] <sustrik>	if you let me know what the error is i can fix the problem promptly
+| [Monday 31 January 2011] [04:31:39] <monokrome>	sustrik: I'm not sure what it was, but it was on tcp_socket.cpp:92
+| [Monday 31 January 2011] [04:31:54] <sustrik>	can you check out the error code?
+| [Monday 31 January 2011] [04:32:00] <monokrome>	We relieved the error from switching from a Poller to ZMQ_NOBLOCK
+| [Monday 31 January 2011] [04:32:15] <sustrik>	can you reproduce it?
+| [Monday 31 January 2011] [04:33:11] <monokrome>	There was no error code. It is an assertion checking that the size of a result wasn't SOCKET_ERROR
+| [Monday 31 January 2011] [04:33:21] <monokrome>	I can not reproduce this easily
+| [Monday 31 January 2011] [04:33:53] <monokrome>	However, it happened with a simple client passing data as a protocol buffer with a string prefix to a server and the server passing it back. It occured during the client call to recv
+| [Monday 31 January 2011] [04:34:18] <monokrome>	I was using PyZMQ, so it could have occured due to their code also.
+| [Monday 31 January 2011] [04:34:48] <monokrome>	I'm not sure how Poller works, so I change my coworkers code to use ZMQ_NOBLOCK and it was fixed.
+| [Monday 31 January 2011] [04:34:59] <monokrome>	The poller was also causing a very large drop in frames per second
+| [Monday 31 January 2011] [04:35:22] <sustrik>	what you can do is add printf() to tcp_socket.cpp
+| [Monday 31 January 2011] [04:35:29] <sustrik>	to print out the error number
+| [Monday 31 January 2011] [04:35:47] <monokrome>	Well, this was a while ago and ZMQ_NOBLOCK fixed the issue
+| [Monday 31 January 2011] [04:36:02] <sustrik>	pitty
+| [Monday 31 January 2011] [04:36:07] <monokrome>	Albeit, I think poller might be more efficient
+| [Monday 31 January 2011] [04:36:08] <sustrik>	it would be good to fix the problem
+| [Monday 31 January 2011] [04:36:19] <monokrome>	Yeah.
+| [Monday 31 January 2011] [04:36:37] <monokrome>	Anyway, I will try and reproduce it tomororw.
+| [Monday 31 January 2011] [04:36:39] <monokrome>	I am going to bed
+| [Monday 31 January 2011] [04:36:43] <monokrome>	nite :)
+| [Monday 31 January 2011] [04:36:57] <dermoth|home>	hi sustrik 
+| [Monday 31 January 2011] [04:37:05] <sustrik>	hello
+| [Monday 31 January 2011] [04:37:23] <dermoth|home>	I just posted about the streamer bug I mentioned last week...
+| [Monday 31 January 2011] [04:37:41] <dermoth|home>	and if you missed my other message, the issue is when there's a massive ammount of reconnects
+| [Monday 31 January 2011] [04:37:55] <dermoth|home>	I included some php code tt reproduce it
+| [Monday 31 January 2011] [04:38:37] <dermoth|home>	let me know if there's snithing else you'd like to know, before I go to bed ;)
+| [Monday 31 January 2011] [04:38:38] <sustrik>	that's a deadlock, right?
+| [Monday 31 January 2011] [04:39:04] <dermoth|home>	hummm - then I strace the device I would still see some things going trough...
+| [Monday 31 January 2011] [04:39:48] <dermoth|home>	and when I left soem broken device up the trafic was being help up... (but it seems no messages were lost after restarting them)
+| [Monday 31 January 2011] [04:40:58] <sustrik>	we've seen an issue with massive reconnections
+| [Monday 31 January 2011] [04:41:25] <sustrik>	the problem is there's a lot of handshaking between application and OS threads then
+| [Monday 31 January 2011] [04:41:43] <dermoth|home>	I graph the data in, so when that happens the rate goes to 0, and after restarting half the devices it spiked a bit then settled under the normal traffic; then I restarted the two other and I could see a 2ndspike then full recovery 
+| [Monday 31 January 2011] [04:42:07] <sustrik>	the commands are passed via a socketpair, which fills up and causes a deadlock
+| [Monday 31 January 2011] [04:42:25] <sustrik>	so what you can do is to increase the socketpair buffer size
+| [Monday 31 January 2011] [04:42:35] <sustrik>	is that linux?
+| [Monday 31 January 2011] [04:42:37] <dermoth|home>	yes
+| [Monday 31 January 2011] [04:43:08] <sustrik>	check the email from dhammika pathirana on the mailing list today
+| [Monday 31 January 2011] [04:43:17] <sustrik>	he explains how to do that
+| [Monday 31 January 2011] [04:43:36] <sustrik>	the real solution is in 2.1 though
+| [Monday 31 January 2011] [04:43:56] <sustrik>	the buffers are increased gradually when they are filled up
+| [Monday 31 January 2011] [04:54:16] <dermoth|home>	sustrik, how stable is 2.1?
+| [Monday 31 January 2011] [04:54:33] <sustrik>	more or less stable
+| [Monday 31 January 2011] [05:12:24] <dermoth_>	Sustrik, i'm out now... but if there's a way to crash (i.e. assert) the device when that happens that will be a good fix for me. it turns out reliability was already quite good when our devices restarted every 5 seconds exceeding the max file limit :). You could maybe reply to my post if there's a way. Thanks!
+| [Monday 31 January 2011] [05:13:07] <sustrik>	dermoth_: sure, ping me when you are back
+| [Monday 31 January 2011] [05:13:10] <sustrik>	i'll explain
+| [Monday 31 January 2011] [06:00:15] <monokrome>	Hmm... Is there a way to get the C++ bindings to not throw exceptions?
+| [Monday 31 January 2011] [06:05:28] <jugg>	http://www.google.com/search?q=zeromq+c%2B%2B+nothrow
+| [Monday 31 January 2011] [06:05:50] <monokrome>	Thank you, jugg. I tried searching around before this, but didn't use the "
+| [Monday 31 January 2011] [06:05:55] <monokrome>	nothrow" keyword
+| [Monday 31 January 2011] [06:06:33] <monokrome>	ah, using the C API was my solution anyway
+| [Monday 31 January 2011] [06:06:38] <monokrome>	I guess it was the right one :)
+| [Monday 31 January 2011] [06:06:45] <jugg>	:)
+| [Monday 31 January 2011] [06:07:08] <monokrome>	Thanks for your confirmation
+| [Monday 31 January 2011] [07:18:27] <stimpie>	Does the pub-sub pattern imply that all data is send to all subscribers and the subscriber filters the messages? 
+| [Monday 31 January 2011] [07:58:39] <stockMQ>	Hi..anyone using protobuf with zmq C++
+| [Monday 31 January 2011] [07:59:02] <stockMQ>	I am facing some issues regarding serializing to and parsing from 
+| [Monday 31 January 2011] [08:01:22] <stockMQ>	I would like to know what is the right way to serialize a protobuf message to zmq_message
+| [Monday 31 January 2011] [08:01:53] <stockMQ>	when i do 
+| [Monday 31 January 2011] [08:01:56] <stockMQ>	pkt = new std::string();
+| [Monday 31 January 2011] [08:02:16] <stockMQ>	feedPacket->SerializeToString(pkt);
+| [Monday 31 January 2011] [08:02:24] <stockMQ>		s_send (*this->publisher,pkt->c_str());
+| [Monday 31 January 2011] [08:02:47] <stockMQ>	Protobuf throws fatal exception at SerializeToString
+| [Monday 31 January 2011] [08:05:45] <stockMQ>	just found this http://msgsys.googlecode.com/svn-history/r22/trunk/doxygen/group__serialization.html
+| [Monday 31 January 2011] [08:49:24] <stockMQ>	again same issue
+| [Monday 31 January 2011] [08:49:31] <stockMQ>	it happens in void LogMessage::Finish() of common.cc
+| [Monday 31 January 2011] [15:00:17] <mikko>	Steve-o: there?
+| [Monday 31 January 2011] [15:41:18] Notice	-NickServ- This nickname is registered. Please choose a different nickname, or identify via /msg NickServ identify <password>.
+| [Monday 31 January 2011] [15:41:18] Notice	-NickServ- You are now identified for travlr.
+| [Monday 31 January 2011] [16:35:50] <mikko>	Steve-o: i got it working a over weekend
+| [Monday 31 January 2011] [16:35:58] <mikko>	Steve-o: but there is a minor problem
+| [Monday 31 January 2011] [16:53:13] <fredfoo>	Does anyone know of real world examples using 0mq?
+| [Monday 31 January 2011] [16:57:08] <mikko>	fredfoo: yes
+| [Monday 31 January 2011] [16:57:16] <mikko>	fredfoo: mongrel2 webserver is a good example
+| [Monday 31 January 2011] [17:33:13] <Steve-o>	mikko: in the logs?  just back from shopping in CT.
+| [Monday 31 January 2011] [17:35:51] <Steve-o>	mikko: the last build looks a tad small, 144KB compared to 560KB before ?
+| [Monday 31 January 2011] [18:50:09] <Steve-o>	mikko: you need the pdb file?
