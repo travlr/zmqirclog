@@ -1,0 +1,254 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2011-February &mdash; ZeroMq IRC Log v0.1 documentation</title>
+    <link rel="stylesheet" href="static/default.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <link rel="top" title="ZeroMq IRC Log v0.1 documentation" href="index.html" />
+    <link rel="prev" title="2011-January" href="2011-January.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="2011-January.html" title="2011-January"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">ZeroMq IRC Log v0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="february">
+<h1>2011-February<a class="headerlink" href="#february" title="Permalink to this headline">¶</a></h1>
+<div class="line-block">
+<div class="line">[Tuesday 01 February 2011] [02:23:00] &lt;stockMQ&gt;       but the i need to copy the protobuf message to a struct and write the struct to a file..</div>
+<div class="line">[Tuesday 01 February 2011] [02:23:31] &lt;stockMQ&gt;       I need to do this because there are other applications consuming the file and they expect a struct</div>
+<div class="line">[Tuesday 01 February 2011] [02:24:02] &lt;stockMQ&gt;       right now i copy each field of the message to the corresponding field of the buffer</div>
+<div class="line">[Tuesday 01 February 2011] [02:24:22] &lt;stockMQ&gt;       Is this the right way or is there any other optimized way to go about with it</div>
+<div class="line">[Tuesday 01 February 2011] [03:20:33] &lt;mikko&gt; stockMQ: are the other applications expecting a binary struct?</div>
+<div class="line">[Tuesday 01 February 2011] [03:20:36] &lt;mikko&gt; stockMQ: sounds odd</div>
+<div class="line">[Tuesday 01 February 2011] [03:25:28] &lt;stockMQ&gt;       yes.. they too are custom applications built in house but to change them is to be avoided</div>
+<div class="line">[Tuesday 01 February 2011] [04:24:31] &lt;CIA-21&gt;        zeromq2: 03Martin Sustrik 07sub-forward * raddcc85 10/ devices/zmq_forwarder/zmq_forwarder.cpp :</div>
+<div class="line">[Tuesday 01 February 2011] [04:24:32] &lt;CIA-21&gt;        zeromq2: Forwarder device uses XPUB and XSUB sockets.</div>
+<div class="line">[Tuesday 01 February 2011] [04:24:32] &lt;CIA-21&gt;        zeromq2: Signed-off-by: Martin Sustrik &lt;<a class="reference external" href="mailto:sustrik&#37;&#52;&#48;250bpm&#46;com">sustrik<span>&#64;</span>250bpm<span>&#46;</span>com</a>&gt; - <a class="reference external" href="http://bit.ly/eoHfSJ">http://bit.ly/eoHfSJ</a></div>
+<div class="line">[Tuesday 01 February 2011] [04:28:50] &lt;jugg&gt;  having a publisher that connects to an endpoint, how would I prevent messages from being queued if the endpoint has not yet been bound?  Set the publisher HWM to zero, and call zmq_send(noblock)?</div>
+<div class="line">[Tuesday 01 February 2011] [04:32:04] &lt;sustrik&gt;       yes, use hwm</div>
+<div class="line">[Tuesday 01 February 2011] [04:33:39] &lt;jugg&gt;  hmm, I guess HWM = 1, as 0 is no limit...</div>
+<div class="line">[Tuesday 01 February 2011] [04:34:27] &lt;jugg&gt;  but that&#8217;ll queue a single message, no?</div>
+<div class="line">[Tuesday 01 February 2011] [04:34:50] &lt;jugg&gt;  So a stale message will be delivered when the listener binds the endpoint.</div>
+<div class="line">[Tuesday 01 February 2011] [04:57:40] &lt;sustrik&gt;       it that pub/sub?</div>
+<div class="line">[Tuesday 01 February 2011] [05:06:18] &lt;ianbarber&gt;     potentially silly bug: if I destroy then recreate a sub socket with an identity too quickly I get an assert &#8220;Assertion failed: new_sndbuf &gt; old_sndbuf (mailbox.cpp:182)&#8221; from the publisher</div>
+<div class="line">[Tuesday 01 February 2011] [05:06:51] &lt;ianbarber&gt;     this may not be something that is sensible to do, but i encountered it in a semi-real world usage (some prototype code)</div>
+<div class="line">[Tuesday 01 February 2011] [05:12:40] &lt;CIA-21&gt;        zeromq2: 03Martin Sustrik 07sub-forward * rca34d2a 10/ (5 files):</div>
+<div class="line">[Tuesday 01 February 2011] [05:12:40] &lt;CIA-21&gt;        zeromq2: Debug output for subscription forwarding.</div>
+<div class="line">[Tuesday 01 February 2011] [05:12:40] &lt;CIA-21&gt;        zeromq2: Signed-off-by: Martin Sustrik &lt;<a class="reference external" href="mailto:sustrik&#37;&#52;&#48;250bpm&#46;com">sustrik<span>&#64;</span>250bpm<span>&#46;</span>com</a>&gt; - <a class="reference external" href="http://bit.ly/fdwCNa">http://bit.ly/fdwCNa</a></div>
+<div class="line">[Tuesday 01 February 2011] [05:34:29] &lt;ianbarber&gt;     ah, it&#8217;s because the publisher thinks it has two sockets with the same identity connected at the same time. It would be nice to have that cause a problem on the client side, rather than the server side, but I don&#8217;t know if that&#8217;s doable</div>
+<div class="line">[Tuesday 01 February 2011] [05:37:20] &lt;mikko&gt; i dont think two identities should assert</div>
+<div class="line">[Tuesday 01 February 2011] [05:41:22] &lt;ianbarber&gt;     mikko: i haven&#8217;t made a testcase in C yet, but in PHP</div>
+<div class="line">[Tuesday 01 February 2011] [05:42:09] &lt;ianbarber&gt;     <a class="reference external" href="https://gist.github.com/805688">https://gist.github.com/805688</a></div>
+<div class="line">[Tuesday 01 February 2011] [05:43:43] &lt;ianbarber&gt;     if anything was going to assert, i&#8217;d much rather it be the client</div>
+<div class="line">[Tuesday 01 February 2011] [05:43:58] &lt;ianbarber&gt;     but i think the best behavior would be a failed connect()</div>
+<div class="line">[Tuesday 01 February 2011] [05:44:26] &lt;ianbarber&gt;     not sure how easy it is to compare a new identity against connected identities on connect though, from the pub side</div>
+<div class="line">[Tuesday 01 February 2011] [05:47:09] &lt;ianbarber&gt;     ooh, if this works in c, this is worth a point in the 0mq game :)</div>
+<div class="line">[Tuesday 01 February 2011] [05:53:38] &lt;ianbarber&gt;     same thing in C: <a class="reference external" href="https://gist.github.com/805701">https://gist.github.com/805701</a></div>
+<div class="line">[Tuesday 01 February 2011] [05:57:04] &lt;ianbarber&gt;     yep, and if I split that into client server, it still happens</div>
+<div class="line">[Tuesday 01 February 2011] [06:02:58] &lt;CIA-21&gt;        zeromq2: 03Martin Sustrik 07sub-forward * rcc7bed5 10/ (src/trie.cpp src/trie.hpp src/xsub.cpp):</div>
+<div class="line">[Tuesday 01 February 2011] [06:02:58] &lt;CIA-21&gt;        zeromq2: Duplicate subscriptions are not forwarded by XSUB socket.</div>
+<div class="line">[Tuesday 01 February 2011] [06:02:58] &lt;CIA-21&gt;        zeromq2: Signed-off-by: Martin Sustrik &lt;<a class="reference external" href="mailto:sustrik&#37;&#52;&#48;250bpm&#46;com">sustrik<span>&#64;</span>250bpm<span>&#46;</span>com</a>&gt; - <a class="reference external" href="http://bit.ly/hGPp1V">http://bit.ly/hGPp1V</a></div>
+<div class="line">[Tuesday 01 February 2011] [06:24:54] &lt;suzan_shakya&gt;  Is it possible to have mulitple publisher with PUB/SUB ?</div>
+<div class="line">[Tuesday 01 February 2011] [06:39:19] &lt;stockMQ&gt;        Hi..what would be the equivalent of  zmq_close (sender);     zmq_term (context);</div>
+<div class="line">[Tuesday 01 February 2011] [06:39:22] &lt;stockMQ&gt;       in C++</div>
+<div class="line">[Tuesday 01 February 2011] [06:40:26] &lt;mikko&gt; stockMQ: object going out of scope</div>
+<div class="line">[Tuesday 01 February 2011] [06:40:34] &lt;mikko&gt; its called during destruction</div>
+<div class="line">[Tuesday 01 February 2011] [06:41:15] &lt;stockMQ&gt;       ok..So in order to say premptively stop the socket for some time can i just pause the thread for the duration</div>
+<div class="line">[Tuesday 01 February 2011] [10:40:21] &lt;stockMQ&gt;       Is there a way we can exit out of the blocking zmq_recv</div>
+<div class="line">[Tuesday 01 February 2011] [10:42:11] &lt;sustrik&gt;       send it a message</div>
+<div class="line">[Tuesday 01 February 2011] [10:44:57] &lt;stockMQ&gt;       The issue is I have a thread with basic while(1){zmq_recv }..Now in the Main UI thread I have a Disconnect button,clicking on which an event message is sent to the socket thread asking it to quit gracefully.But due to the blocking message of the socket thread that message is never read</div>
+<div class="line">[Tuesday 01 February 2011] [10:45:43] &lt;sustrik&gt;       you have to poll on both sockets</div>
+<div class="line">[Tuesday 01 February 2011] [10:45:50] &lt;sustrik&gt;       instead of recv()ing on one of them</div>
+<div class="line">[Tuesday 01 February 2011] [10:46:56] &lt;stockMQ&gt;       Ohk.. you mean i can have one tcp main socket and apart from that inprc sockets for communication between Main UI thread and child UI thread</div>
+<div class="line">[Tuesday 01 February 2011] [10:48:56] &lt;stockMQ&gt;       is that right</div>
+<div class="line">[Tuesday 01 February 2011] [10:50:26] &lt;sustrik&gt;       yes</div>
+<div class="line">[Tuesday 01 February 2011] [10:51:59] &lt;stockMQ&gt;       ok thanx</div>
+<div class="line">[Tuesday 01 February 2011] [11:52:33] Notice  -NickServ- This nickname is registered. Please choose a different nickname, or identify via /msg NickServ identify &lt;password&gt;.</div>
+<div class="line">[Tuesday 01 February 2011] [11:52:33] Notice  -NickServ- You are now identified for travlr.</div>
+<div class="line">[Tuesday 01 February 2011] [12:31:15] Notice  -NickServ- travlr_ is not a registered nickname.</div>
+<div class="line">[Tuesday 01 February 2011] [12:46:36] &lt;andrewvc&gt;      any ideas what broken pipe, nbytes != 1 errors are caused by?</div>
+<div class="line">[Tuesday 01 February 2011] [12:50:32] &lt;sustrik&gt;       what&#8217;s the assertion?</div>
+<div class="line">[Tuesday 01 February 2011] [13:28:17] &lt;CIA-21&gt;        jzmq: 03robin.palotai 07master * r04c2900 10/ src/Poller.cpp : testing patch for jni crashes - <a class="reference external" href="http://bit.ly/hlc8vI">http://bit.ly/hlc8vI</a></div>
+<div class="line">[Tuesday 01 February 2011] [14:05:18] &lt;andrewvc&gt;      cremes: around?</div>
+<div class="line">[Tuesday 01 February 2011] [14:05:29] &lt;andrewvc&gt;      I was wondering if you noticed issues with pub/sub and ZMQ::NOBLOCK in the past</div>
+<div class="line">[Tuesday 01 February 2011] [14:05:35] &lt;cremes&gt;        andrewvc: yep</div>
+<div class="line">[Tuesday 01 February 2011] [14:06:06] &lt;cremes&gt;        nope, i have not noticed any specific issues with pub/sub</div>
+<div class="line">[Tuesday 01 February 2011] [14:06:06] &lt;andrewvc&gt;      hmmmm</div>
+<div class="line">[Tuesday 01 February 2011] [14:06:10] &lt;andrewvc&gt;      so in my work on em-zeromq, push/pull works well, pub/sub however</div>
+<div class="line">[Tuesday 01 February 2011] [14:06:23] &lt;cremes&gt;        what&#8217;s it doing?</div>
+<div class="line">[Tuesday 01 February 2011] [14:06:23] &lt;andrewvc&gt;      zmq_recv just doesn&#8217;t pick anything up</div>
+<div class="line">[Tuesday 01 February 2011] [14:06:23] &lt;cremes&gt;        or not doing?</div>
+<div class="line">[Tuesday 01 February 2011] [14:06:32] &lt;andrewvc&gt;      the FD gets triggered as readable</div>
+<div class="line">[Tuesday 01 February 2011] [14:06:38] &lt;andrewvc&gt;      on the sub</div>
+<div class="line">[Tuesday 01 February 2011] [14:06:38] &lt;cremes&gt;        so pub works but sub is busted?</div>
+<div class="line">[Tuesday 01 February 2011] [14:06:38] &lt;andrewvc&gt;      yeah</div>
+<div class="line">[Tuesday 01 February 2011] [14:06:38] &lt;andrewvc&gt;      i straced it</div>
+<div class="line">[Tuesday 01 February 2011] [14:06:44] &lt;andrewvc&gt;      i see the data getting written and read</div>
+<div class="line">[Tuesday 01 February 2011] [14:06:54] &lt;andrewvc&gt;      and ZMQ_EVENTS says POLLOUT is enabled</div>
+<div class="line">[Tuesday 01 February 2011] [14:06:58] &lt;andrewvc&gt;      errr triggered</div>
+<div class="line">[Tuesday 01 February 2011] [14:07:15] &lt;andrewvc&gt;      but recv doesn&#8217;t work</div>
+<div class="line">[Tuesday 01 February 2011] [14:07:21] &lt;cremes&gt;        which socket are you talking about here? sub sockets don&#8217;t care about POLLOUT</div>
+<div class="line">[Tuesday 01 February 2011] [14:07:31] &lt;andrewvc&gt;      errrm, I meant pollin</div>
+<div class="line">[Tuesday 01 February 2011] [14:07:31] &lt;cremes&gt;        they need POLLIN</div>
+<div class="line">[Tuesday 01 February 2011] [14:07:32] &lt;andrewvc&gt;      sorry</div>
+<div class="line">[Tuesday 01 February 2011] [14:07:34] &lt;cremes&gt;        ok</div>
+<div class="line">[Tuesday 01 February 2011] [14:07:41] &lt;andrewvc&gt;      wait, actually</div>
+<div class="line">[Tuesday 01 February 2011] [14:07:44] &lt;cremes&gt;        damn, thought we had the fix right there...</div>
+<div class="line">[Tuesday 01 February 2011] [14:08:04] &lt;andrewvc&gt;      i think they were triggering POLLOUT (according to ZMQ::EVENTS) on a ZMQSUB socket</div>
+<div class="line">[Tuesday 01 February 2011] [14:08:10] &lt;andrewvc&gt;      lemme double check that</div>
+<div class="line">[Tuesday 01 February 2011] [14:12:23] &lt;andrewvc&gt;      hmmm</div>
+<div class="line">[Tuesday 01 February 2011] [14:12:32] &lt;andrewvc&gt;      now I see no events on the socket, which is good and bad</div>
+<div class="line">[Tuesday 01 February 2011] [14:13:28] &lt;andrewvc&gt;      i mean, the same exact code works with pub/sub</div>
+<div class="line">[Tuesday 01 February 2011] [14:13:34] &lt;andrewvc&gt;      errr push/pull</div>
+<div class="line">[Tuesday 01 February 2011] [14:14:04] &lt;andrewvc&gt;      [pid 14619] sendto(22, &#8220;100TMsg777&#8221;, 9, 0, NULL, 0 &lt;unfinished ...&gt;</div>
+<div class="line">[Tuesday 01 February 2011] [14:14:04] &lt;andrewvc&gt;      [pid 14619] &lt;... recvfrom resumed&gt; &#8220;100TMsg777&#8221;, 8192, 0, NULL, NULL) = 9</div>
+<div class="line">[Tuesday 01 February 2011] [14:14:06] &lt;andrewvc&gt;      from the strace</div>
+<div class="line">[Tuesday 01 February 2011] [14:14:12] &lt;andrewvc&gt;      so, internally, the message gets sent/received</div>
+<div class="line">[Tuesday 01 February 2011] [14:14:17] &lt;andrewvc&gt;      by zeromq it looks</div>
+<div class="line">[Tuesday 01 February 2011] [14:15:03] &lt;andrewvc&gt;      cremes: any ideas on that? I can dig into ffi-rzmq tonight I guess</div>
+<div class="line">[Tuesday 01 February 2011] [14:15:43] &lt;cremes&gt;        andrewvc: can you gist your test code for me; i&#8217;d like to look at it</div>
+<div class="line">[Tuesday 01 February 2011] [14:17:12] &lt;andrewvc&gt;      sure, i mean, I&#8217;m a bit short on time now, about to head into a meeting. I can write a minimal test later</div>
+<div class="line">[Tuesday 01 February 2011] [14:17:12] &lt;andrewvc&gt;      however</div>
+<div class="line">[Tuesday 01 February 2011] [14:17:12] &lt;andrewvc&gt;      if you want you can look at</div>
+<div class="line">[Tuesday 01 February 2011] [14:17:12] &lt;andrewvc&gt;      however</div>
+<div class="line">[Tuesday 01 February 2011] [14:17:12] &lt;andrewvc&gt;      <a class="reference external" href="https://github.com/andrewvc/em-zeromq">https://github.com/andrewvc/em-zeromq</a></div>
+<div class="line">[Tuesday 01 February 2011] [14:17:27] &lt;andrewvc&gt;      if you run this spec <a class="reference external" href="https://github.com/andrewvc/em-zeromq/blob/master/spec/em-zeromq_spec.rb">https://github.com/andrewvc/em-zeromq/blob/master/spec/em-zeromq_spec.rb</a></div>
+<div class="line">[Tuesday 01 February 2011] [14:17:36] &lt;cremes&gt;        i just wonder if i&#8217;ll see something that you don&#8217;t... hopefully it&#8217;s an easy fix</div>
+<div class="line">[Tuesday 01 February 2011] [14:17:49] &lt;andrewvc&gt;      and s/ZMQ::PUSH/ZMQ::PUB</div>
+<div class="line">[Tuesday 01 February 2011] [14:17:56] &lt;andrewvc&gt;      and s/ZMQ::PULL/ZMQ::PUB</div>
+<div class="line">[Tuesday 01 February 2011] [14:17:58] &lt;andrewvc&gt;      you&#8217;ll see it</div>
+<div class="line">[Tuesday 01 February 2011] [14:18:09] &lt;cremes&gt;        ok</div>
+<div class="line">[Tuesday 01 February 2011] [14:18:19] &lt;andrewvc&gt;      or I can send something later, I&#8217;ll be expanding the test suite tonight</div>
+<div class="line">[Tuesday 01 February 2011] [14:52:43] &lt;CIA-21&gt;        zeromq2: 03Martin Sustrik 07sub-forward * ra40436b 10/ (5 files):</div>
+<div class="line">[Tuesday 01 February 2011] [14:52:44] &lt;CIA-21&gt;        zeromq2: Couple of bug fixes to subscription forwarding mechanism.</div>
+<div class="line">[Tuesday 01 February 2011] [14:52:44] &lt;CIA-21&gt;        zeromq2: Signed-off-by: Martin Sustrik &lt;<a class="reference external" href="mailto:sustrik&#37;&#52;&#48;250bpm&#46;com">sustrik<span>&#64;</span>250bpm<span>&#46;</span>com</a>&gt; - <a class="reference external" href="http://bit.ly/eOAJxP">http://bit.ly/eOAJxP</a></div>
+<div class="line">[Tuesday 01 February 2011] [15:14:31] &lt;mikko&gt; good evening</div>
+<div class="line">[Tuesday 01 February 2011] [15:19:27] &lt;sustrik&gt;       evening</div>
+<div class="line">[Wednesday 02 February 2011] [03:54:56] &lt;efhache&gt;     Hi everybody, just one question about zmq vs 2.0.7,   it&#8217;s possible there is a sort of memory leak?  I use a simple &#8220;broker&#8221;  that received message from a zmq socket and redispatch by an other zmq socket the message to the appropriate receiver</div>
+<div class="line">[Wednesday 02 February 2011] [03:56:14] &lt;efhache&gt;     there is nothing else in this piece of soft that the zmq library...   but memory consumption do not stop to increase...</div>
+<div class="line">[Wednesday 02 February 2011] [03:56:56] &lt;efhache&gt;     I work under a linux with 2.4 kernel</div>
+<div class="line">[Wednesday 02 February 2011] [03:59:38] &lt;sustrik&gt;     efhache: it&#8217;s an outdated version, so yes, it&#8217;s possible there&#8217;s a memory leak there that have been fixed in the meantime</div>
+<div class="line">[Wednesday 02 February 2011] [03:59:43] &lt;sustrik&gt;     check ChangeLog</div>
+<div class="line">[Wednesday 02 February 2011] [04:00:25] &lt;sustrik&gt;     the other possibility is that publisher(s) are simply publishing faster then consumer(s) consume</div>
+<div class="line">[Wednesday 02 February 2011] [04:01:17] &lt;efhache&gt;     sustrik :  I see in changelog that there was a memory leak problem with REQ socket, but I don&#8217;t use REQ</div>
+<div class="line">[Wednesday 02 February 2011] [04:01:50] &lt;efhache&gt;     sustrik : there is a possibility to &#8220;view&#8221; the total message in queue ?</div>
+<div class="line">[Wednesday 02 February 2011] [04:02:15] &lt;efhache&gt;     sustrik :  to be sure that the publisher don&#8217;t publish faster than consumer ?</div>
+<div class="line">[Wednesday 02 February 2011] [04:02:26] &lt;sustrik&gt;     nope</div>
+<div class="line">[Wednesday 02 February 2011] [04:02:33] &lt;sustrik&gt;     you can limit the queue size</div>
+<div class="line">[Wednesday 02 February 2011] [04:02:38] &lt;sustrik&gt;     use ZMQ_HWM option</div>
+<div class="line">[Wednesday 02 February 2011] [04:04:40] &lt;efhache&gt;     ok I will see the man page</div>
+<div class="line">[Wednesday 02 February 2011] [04:04:44] &lt;efhache&gt;     thanks sustrik</div>
+<div class="line">[Wednesday 02 February 2011] [04:08:35] &lt;efhache&gt;     sustrik : have you a example to use ZMQ_HWM with a REP/PUB  socket ?</div>
+<div class="line">[Wednesday 02 February 2011] [04:08:59] &lt;sustrik&gt;     man setsockopt</div>
+<div class="line">[Wednesday 02 February 2011] [04:28:57] &lt;suzan_shakya&gt;        socket(zmq.PUB) can bind to multiple ipc sockets. Is this a feature or a bug ?</div>
+<div class="line">[Wednesday 02 February 2011] [04:30:35] &lt;mikko&gt;       suzan_shakya: feature</div>
+<div class="line">[Wednesday 02 February 2011] [04:31:27] &lt;suzan_shakya&gt;        mikko: can multiple publisher and multiple subscriber can be implemented using this feature ?</div>
+<div class="line">[Wednesday 02 February 2011] [04:32:13] &lt;mikko&gt;       suzan_shakya: what do you mean? a single publisher that publishes using multiple endpoints?</div>
+<div class="line">[Wednesday 02 February 2011] [04:34:27] &lt;suzan_shakya&gt;        mikko: i need to implement multiple publisher and multiple subscriber. Multiple subscriber can simply be implemented. In addition to multi sub, i need multi pub, so that all subscriber gets the message of all the publishers</div>
+<div class="line">[Wednesday 02 February 2011] [04:35:30] &lt;sustrik&gt;     you can either connect each sub to each pub, or more sanely, use a forwarder device in the middle</div>
+<div class="line">[Wednesday 02 February 2011] [04:35:37] &lt;mikko&gt;       suzan_shakya: you can a) have subscriber connect to all publishers b) have a device that connects to ..</div>
+<div class="line">[Wednesday 02 February 2011] [04:35:44] &lt;mikko&gt;       martin answered it already</div>
+<div class="line">[Wednesday 02 February 2011] [04:35:58] &lt;sustrik&gt;     :)</div>
+<div class="line">[Wednesday 02 February 2011] [04:36:05] &lt;suzan_shakya&gt;        mikko: I want to implement that without any device</div>
+<div class="line">[Wednesday 02 February 2011] [04:36:47] &lt;mikko&gt;       suzan_shakya: a device in zeromq is just a lightweight process, not a hardware device</div>
+<div class="line">[Wednesday 02 February 2011] [04:36:58] &lt;suzan_shakya&gt;        mikko: ya i know</div>
+<div class="line">[Wednesday 02 February 2011] [04:37:24] &lt;mikko&gt;       in that case you can just connect all subscribers to all publishers</div>
+<div class="line">[Wednesday 02 February 2011] [04:37:29] &lt;suzan_shakya&gt;        mikko: that device is a separate process, right ?</div>
+<div class="line">[Wednesday 02 February 2011] [04:37:52] &lt;mikko&gt;       it can be</div>
+<div class="line">[Wednesday 02 February 2011] [04:40:46] &lt;suzan_shakya&gt;        mikko: i got it, thanks :)</div>
+<div class="line">[Wednesday 02 February 2011] [04:41:25] &lt;efhache&gt;     In the future, a pdf version or a book version of the 0MQ Guide   will be available  ??</div>
+<div class="line">[Wednesday 02 February 2011] [04:42:36] &lt;sustrik&gt;     efhache: try asking on the mailing list</div>
+<div class="line">[Wednesday 02 February 2011] [04:42:50] &lt;sustrik&gt;     pieter may know a way to convert it into a pdf</div>
+<div class="line">[Wednesday 02 February 2011] [04:45:00] &lt;efhache&gt;     sustrik : ok...  I recome with another question about setsockopt() function...   It&#8217;s possible to assing more than just one option?  may be with two, three or more line with setsockopt()   ???</div>
+<div class="line">[Wednesday 02 February 2011] [04:45:24] &lt;sustrik&gt;     sure</div>
+<div class="line">[Wednesday 02 February 2011] [04:45:37] &lt;sustrik&gt;     you can set all settable options</div>
+<div class="line">[Wednesday 02 February 2011] [04:45:38] &lt;sustrik&gt;     no problem</div>
+<div class="line">[Wednesday 02 February 2011] [04:46:22] &lt;efhache&gt;     ok thanks</div>
+<div class="line">[Wednesday 02 February 2011] [05:56:20] &lt;CIA-21&gt;      zeromq2: 03Martin Sustrik 07sub-forward * re156f09 10/ src/trie.cpp :</div>
+<div class="line">[Wednesday 02 February 2011] [05:56:20] &lt;CIA-21&gt;      zeromq2: trie_t::rm returns true only if it actually removes the subscription</div>
+<div class="line">[Wednesday 02 February 2011] [05:56:20] &lt;CIA-21&gt;      zeromq2: Signed-off-by: Martin Sustrik &lt;<a class="reference external" href="mailto:sustrik&#37;&#52;&#48;250bpm&#46;com">sustrik<span>&#64;</span>250bpm<span>&#46;</span>com</a>&gt; - <a class="reference external" href="http://bit.ly/fI1gLN">http://bit.ly/fI1gLN</a></div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="2011-January.html"
+                        title="previous chapter">2011-January</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="sources/2011-February.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="2011-January.html" title="2011-January"
+             >previous</a> |</li>
+        <li><a href="index.html">ZeroMq IRC Log v0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Peter Alexander.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.5.
+    </div>
+  </body>
+</html>
