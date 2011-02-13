@@ -3515,3 +3515,26 @@
 | [Saturday 12 February 2011] [14:47:57] <Guthur>	i'll not have the IOCP in ZMQ tonight, but I think i might be able to get it in soon enough
 | [Saturday 12 February 2011] [14:48:21] <Guthur>	I have it working in a small test client server app
 | [Saturday 12 February 2011] [15:03:03] <zedas>	cremes: ok thanks, i've gotta get 2.1.0 working with mongrel2 and this is the only thing that's broken right now.
+| [Saturday 12 February 2011] [19:08:22] <rbitcon>	Howdy, I am kooking to be pointed in the right direction for help
+| [Saturday 12 February 2011] [19:09:51] <rbitcon>	I am using zeromq with Python in a REQ/RESP model with one server and many "workers". I see that the zmq library take up hude amounts of RAM
+| [Saturday 12 February 2011] [19:11:08] <rbitcon>	I read the docs about socket.setsockopt(zmq.HWM, 125), but it is not that clear
+| [Saturday 12 February 2011] [19:11:24] <rbitcon>	any pointers?
+| [Saturday 12 February 2011] [19:52:17] <rbitcon>	Solved my problem with memory usage.
+| [Saturday 12 February 2011] [19:53:49] <rbitcon>	I downloaded pyzmq 2.0.10.1 and dis a plan python.exe setup.py install, previously i did a development build and install or 2.0.10. This is all under windows7 and using python2.6
+| [Saturday 12 February 2011] [20:10:11] <tjgillies>	if im behind NAT can i use zeromq to do udp hole punching?
+| [Saturday 12 February 2011] [22:35:24] <Seta00>	anyone from the pyzmq team here?
+| [Saturday 12 February 2011] [22:35:43] <Seta00>	in fact, anyone with python 2.7 pyzmq builds for windows here?
+| [Saturday 12 February 2011] [22:35:47] <Seta00>	it just won't install
+| [Sunday 13 February 2011] [03:50:48] <sustrik>	zedas: just set ZMQ_LINGER option to zero for all the sockets and everything should work as with 2.0.x
+| [Sunday 13 February 2011] [03:52:34] <sustrik>	Guthut: wow!
+| [Sunday 13 February 2011] [04:06:39] <CIA-21>	zeromq2: 03Martin Sustrik 07master * rba26cc9 10/ src/zmq.cpp : 
+| [Sunday 13 February 2011] [04:06:39] <CIA-21>	zeromq2: Build problem with OpenPGM and MSVC fixed
+| [Sunday 13 February 2011] [04:06:39] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/guRl75
+| [Sunday 13 February 2011] [06:30:27] <Guthur>	Sustrik: ping
+| [Sunday 13 February 2011] [06:33:11] <DeadZen>	whats zeromq?
+| [Sunday 13 February 2011] [06:38:52] <mikko>	DeadZen: http://www.zeromq.org/
+| [Sunday 13 February 2011] [06:44:23] <Guthur>	in like the '0MQ in 100 words' in the guide as a description
+| [Sunday 13 February 2011] [06:44:25] <Guthur>	http://zguide.zeromq.org/chapter:all#toc2
+| [Sunday 13 February 2011] [06:49:59] <Guthur>	mikko, would be possible to have tests run as part of a bindings build, on the build server?
+| [Sunday 13 February 2011] [06:51:57] <mikko>	sure
+| [Sunday 13 February 2011] [06:53:20] <Guthur>	cool, I don't have the tests at the moment, but it is something I would like to add in the future for clrzmq2

@@ -3560,6 +3560,29 @@
 <div class="line">[Saturday 12 February 2011] [14:47:57] &lt;Guthur&gt;       i&#8217;ll not have the IOCP in ZMQ tonight, but I think i might be able to get it in soon enough</div>
 <div class="line">[Saturday 12 February 2011] [14:48:21] &lt;Guthur&gt;       I have it working in a small test client server app</div>
 <div class="line">[Saturday 12 February 2011] [15:03:03] &lt;zedas&gt;        cremes: ok thanks, i&#8217;ve gotta get 2.1.0 working with mongrel2 and this is the only thing that&#8217;s broken right now.</div>
+<div class="line">[Saturday 12 February 2011] [19:08:22] &lt;rbitcon&gt;      Howdy, I am kooking to be pointed in the right direction for help</div>
+<div class="line">[Saturday 12 February 2011] [19:09:51] &lt;rbitcon&gt;      I am using zeromq with Python in a REQ/RESP model with one server and many &#8220;workers&#8221;. I see that the zmq library take up hude amounts of RAM</div>
+<div class="line">[Saturday 12 February 2011] [19:11:08] &lt;rbitcon&gt;      I read the docs about socket.setsockopt(zmq.HWM, 125), but it is not that clear</div>
+<div class="line">[Saturday 12 February 2011] [19:11:24] &lt;rbitcon&gt;      any pointers?</div>
+<div class="line">[Saturday 12 February 2011] [19:52:17] &lt;rbitcon&gt;      Solved my problem with memory usage.</div>
+<div class="line">[Saturday 12 February 2011] [19:53:49] &lt;rbitcon&gt;      I downloaded pyzmq 2.0.10.1 and dis a plan python.exe setup.py install, previously i did a development build and install or 2.0.10. This is all under windows7 and using python2.6</div>
+<div class="line">[Saturday 12 February 2011] [20:10:11] &lt;tjgillies&gt;    if im behind NAT can i use zeromq to do udp hole punching?</div>
+<div class="line">[Saturday 12 February 2011] [22:35:24] &lt;Seta00&gt;       anyone from the pyzmq team here?</div>
+<div class="line">[Saturday 12 February 2011] [22:35:43] &lt;Seta00&gt;       in fact, anyone with python 2.7 pyzmq builds for windows here?</div>
+<div class="line">[Saturday 12 February 2011] [22:35:47] &lt;Seta00&gt;       it just won&#8217;t install</div>
+<div class="line">[Sunday 13 February 2011] [03:50:48] &lt;sustrik&gt;        zedas: just set ZMQ_LINGER option to zero for all the sockets and everything should work as with 2.0.x</div>
+<div class="line">[Sunday 13 February 2011] [03:52:34] &lt;sustrik&gt;        Guthut: wow!</div>
+<div class="line">[Sunday 13 February 2011] [04:06:39] &lt;CIA-21&gt; zeromq2: 03Martin Sustrik 07master * rba26cc9 10/ src/zmq.cpp :</div>
+<div class="line">[Sunday 13 February 2011] [04:06:39] &lt;CIA-21&gt; zeromq2: Build problem with OpenPGM and MSVC fixed</div>
+<div class="line">[Sunday 13 February 2011] [04:06:39] &lt;CIA-21&gt; zeromq2: Signed-off-by: Martin Sustrik &lt;<a class="reference external" href="mailto:sustrik&#37;&#52;&#48;250bpm&#46;com">sustrik<span>&#64;</span>250bpm<span>&#46;</span>com</a>&gt; - <a class="reference external" href="http://bit.ly/guRl75">http://bit.ly/guRl75</a></div>
+<div class="line">[Sunday 13 February 2011] [06:30:27] &lt;Guthur&gt; Sustrik: ping</div>
+<div class="line">[Sunday 13 February 2011] [06:33:11] &lt;DeadZen&gt;        whats zeromq?</div>
+<div class="line">[Sunday 13 February 2011] [06:38:52] &lt;mikko&gt;  DeadZen: <a class="reference external" href="http://www.zeromq.org/">http://www.zeromq.org/</a></div>
+<div class="line">[Sunday 13 February 2011] [06:44:23] &lt;Guthur&gt; in like the &#8216;0MQ in 100 words&#8217; in the guide as a description</div>
+<div class="line">[Sunday 13 February 2011] [06:44:25] &lt;Guthur&gt; <a class="reference external" href="http://zguide.zeromq.org/chapter:all#toc2">http://zguide.zeromq.org/chapter:all#toc2</a></div>
+<div class="line">[Sunday 13 February 2011] [06:49:59] &lt;Guthur&gt; mikko, would be possible to have tests run as part of a bindings build, on the build server?</div>
+<div class="line">[Sunday 13 February 2011] [06:51:57] &lt;mikko&gt;  sure</div>
+<div class="line">[Sunday 13 February 2011] [06:53:20] &lt;Guthur&gt; cool, I don&#8217;t have the tests at the moment, but it is something I would like to add in the future for clrzmq2</div>
 </div>
 </div>
 
