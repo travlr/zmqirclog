@@ -3538,3 +3538,273 @@
 | [Sunday 13 February 2011] [06:49:59] <Guthur>	mikko, would be possible to have tests run as part of a bindings build, on the build server?
 | [Sunday 13 February 2011] [06:51:57] <mikko>	sure
 | [Sunday 13 February 2011] [06:53:20] <Guthur>	cool, I don't have the tests at the moment, but it is something I would like to add in the future for clrzmq2
+| [Sunday 13 February 2011] [07:04:55] <mikko>	it should be a fairly painless process to add them to builds
+| [Sunday 13 February 2011] [07:20:07] <mikko>	i to the b
+| [Sunday 13 February 2011] [07:45:33] <Guthur>	I've been looking into IOCP for named pipes connection under windows, the main issue I have found is differentiating between the read and write operations. It is possible to pass in a handle to an event object to writefile function (as part of the overlapped struct), which will allow differentiation.
+| [Sunday 13 February 2011] [07:46:04] <Guthur>	The only issue with that is that both the poller and and the writer need the handle to that event object.
+| [Sunday 13 February 2011] [07:47:12] <Guthur>	or at least for the poller to know it is a write event object, it will be matched to the right pipe as part of the return from IOCP
+| [Sunday 13 February 2011] [10:25:45] <sustrik>	Guthur: pong
+| [Sunday 13 February 2011] [10:30:03] <Guthur>	sustrik, did that stuff i posted earlier make much sense?
+| [Sunday 13 February 2011] [10:30:25] <sustrik>	i have no idea how IOCP works :|
+| [Sunday 13 February 2011] [10:30:37] <sustrik>	anyway, what you need for integration with 0mq
+| [Sunday 13 February 2011] [10:31:08] <sustrik>	is a polling mechanism that triggers an event when particular "socket" is readable and/or writeable
+| [Sunday 13 February 2011] [10:31:26] <sustrik>	it has to be able to handle multiple "sockets" in parallel
+| [Sunday 13 February 2011] [10:31:38] <Guthur>	oh yeah IOCP does multiple sockets very well
+| [Sunday 13 February 2011] [10:31:57] <sustrik>	and all the event handlers have to be invoked within a single thread
+| [Sunday 13 February 2011] [10:32:26] <Guthur>	that's no problem as well
+| [Sunday 13 February 2011] [10:32:47] <sustrik>	then it should be easy, no?
+| [Sunday 13 February 2011] [10:32:59] <Guthur>	the only complication as far as I can see is differentiating between what event is fired
+| [Sunday 13 February 2011] [10:33:36] <sustrik>	can't you use 2 different events?
+| [Sunday 13 February 2011] [10:33:47] <sustrik>	event objects i mean
+| [Sunday 13 February 2011] [10:34:28] <Guthur>	if we can pass a different event object when writing to the pipe then yes
+| [Sunday 13 February 2011] [10:35:01] <Guthur>	2 secs, just going to ask someone about it now
+| [Sunday 13 February 2011] [10:36:55] <Guthur>	when one creates the name pipe one passes in an overlapped struct with an event object, this is set active by all events as far as I can see
+| [Sunday 13 February 2011] [10:39:42] <sustrik>	aha
+| [Sunday 13 February 2011] [10:40:08] <sustrik>	so how you are supposed to know whether the socket is readable or writeable?
+| [Sunday 13 February 2011] [10:40:50] <Guthur>	you mean like a connected event?
+| [Sunday 13 February 2011] [10:41:02] <sustrik>	hm
+| [Sunday 13 February 2011] [10:41:17] <sustrik>	CreateNamedPipe doesn't seem to accept OVERLAPPED struct
+| [Sunday 13 February 2011] [10:42:04] <Guthur>	writefile does
+| [Sunday 13 February 2011] [10:43:47] <Guthur>	i'm talking to someone more knowledgeable now
+| [Sunday 13 February 2011] [10:43:48] <Guthur>	2 secs
+| [Sunday 13 February 2011] [10:44:30] 	 * sustrik is reading the docs
+| [Sunday 13 February 2011] [10:48:19] <mikko>	Guthur: steve-o might be able to help you with IOCP
+| [Sunday 13 February 2011] [10:48:25] <mikko>	he did some tests with it some time ago
+| [Sunday 13 February 2011] [10:48:58] <Guthur>	mikko, did he rule it out for any technical reason?
+| [Sunday 13 February 2011] [10:49:48] <mikko>	Guthur: i think it wasnt as fast as he expected
+| [Sunday 13 February 2011] [10:50:03] <sustrik>	the problem with 0mq is a bit different
+| [Sunday 13 February 2011] [10:50:12] <Guthur>	oh, interesting
+| [Sunday 13 February 2011] [10:50:20] <sustrik>	namely, select() function that's currently used for polling
+| [Sunday 13 February 2011] [10:50:44] <sustrik>	is limited to POSIX-like TCP sockets (winsock)
+| [Sunday 13 February 2011] [10:50:54] <sustrik>	it doesn't work with anything else afaik
+| [Sunday 13 February 2011] [10:51:04] <sustrik>	ie. named pipes etc.
+| [Sunday 13 February 2011] [10:51:20] <mikko>	and kelly brock has done some work
+| [Sunday 13 February 2011] [10:51:34] <mikko>	"For those interested, I highly
+| [Sunday 13 February 2011] [10:51:34] <mikko>	suggest reading the change lists from V1 to V2rc of libevent, most changes
+| [Sunday 13 February 2011] [10:51:34] <mikko>	were required because IOCP is nearly the opposite of all other async
+| [Sunday 13 February 2011] [10:51:35] <mikko>	solutions."
+| [Sunday 13 February 2011] [10:52:23] <sustrik>	the first question imo is whether IOCP is the only option to poll on TCP sockets and named pipes
+| [Sunday 13 February 2011] [10:52:39] <sustrik>	maybe there's a different (and maybe less complex) way
+| [Sunday 13 February 2011] [10:53:01] <mikko>	or whether named pipes could be emulated on windows using shared memory
+| [Sunday 13 February 2011] [10:53:17] <mikko>	not sure if that makes sense as you would busy wait
+| [Sunday 13 February 2011] [10:53:30] <sustrik>	you still to have poll in I/O thread
+| [Sunday 13 February 2011] [10:53:37] <sustrik>	if you emulate the named pipes
+| [Sunday 13 February 2011] [10:53:47] <sustrik>	you still have to event the I/O thread
+| [Sunday 13 February 2011] [10:53:55] <sustrik>	which can be done via TCP socket (slow)
+| [Sunday 13 February 2011] [10:54:12] <sustrik>	other option would be something like Event object
+| [Sunday 13 February 2011] [10:54:42] <sustrik>	but once again, you can't poll on Event object using select()
+| [Sunday 13 February 2011] [10:54:42] <mikko>	thinking out loud: optional dependency to libevent?
+| [Sunday 13 February 2011] [10:55:02] <mikko>	new poller type which uses libevent or libev
+| [Sunday 13 February 2011] [10:55:17] <mikko>	disabled by default but can be enabled during build
+| [Sunday 13 February 2011] [10:55:42] <sustrik>	that would be more work than supporting IOCP natively IMO
+| [Sunday 13 February 2011] [10:56:09] <mikko>	i really don't know whats involved in adding support for IOCP
+| [Sunday 13 February 2011] [10:56:46] <Guthur>	does steve-o come on irc
+| [Sunday 13 February 2011] [10:56:55] <mikko>	yes
+| [Sunday 13 February 2011] [10:57:02] <mikko>	he is here usually during the week
+| [Sunday 13 February 2011] [10:57:10] <mikko>	he's on NYC timezone
+| [Sunday 13 February 2011] [10:57:17] <mikko>	EST?
+| [Sunday 13 February 2011] [10:57:21] <sustrik>	still in NY?
+| [Sunday 13 February 2011] [10:57:28] <mikko>	i thought so
+| [Sunday 13 February 2011] [10:57:31] <sustrik>	he's from hong kong
+| [Sunday 13 February 2011] [10:57:52] <mikko>	yeah, i thought he was going to be in NYC for a longer period
+| [Sunday 13 February 2011] [10:57:57] <mikko>	maybe i misunderstood
+| [Sunday 13 February 2011] [10:57:59] <sustrik>	ah, no idea
+| [Sunday 13 February 2011] [10:58:20] <mikko>	he was in NYC and referred to "buying a house" during that time. i thought he might be there for a while
+| [Sunday 13 February 2011] [10:58:38] <mikko>	anyway, he does come here occasionally during the week
+| [Sunday 13 February 2011] [11:00:13] <Guthur>	there is a way to getting this IOCP working I'm sure
+| [Sunday 13 February 2011] [11:01:11] <Guthur>	I'm missing something regarding the identification of the various ops, I can know that an something is happening on a pipe, just not what that something is
+| [Sunday 13 February 2011] [11:01:19] <Guthur>	there has to be a way
+| [Sunday 13 February 2011] [11:02:54] <sustrik>	Guthur: my impression so far is that event object is associated with particular I/O operation (Read/Write)
+| [Sunday 13 February 2011] [11:03:03] <sustrik>	rather than Pipe as such
+| [Sunday 13 February 2011] [11:03:18] <Guthur>	yeah, that's correct enough
+| [Sunday 13 February 2011] [11:03:38] <Guthur>	sorry if I drew you to a different conclusion before
+| [Sunday 13 February 2011] [11:04:05] <sustrik>	ok, maybe i misunderstood what the problem is then
+| [Sunday 13 February 2011] [11:05:18] <Guthur>	`Orum on #winapi is posting some IOCP code, it might shed some light
+| [Sunday 13 February 2011] [11:21:01] <zchrish>	I am performing a test to perform repeated zmq_init and zmq_term w/o performing any bind; is that permissible? I am noticing a memory leak after a continued run of this test.
+| [Sunday 13 February 2011] [11:22:20] <sustrik>	zchrish: yes, it's permissible
+| [Sunday 13 February 2011] [11:22:24] <sustrik>	what's the leak?
+| [Sunday 13 February 2011] [11:23:58] <zchrish>	I am performing a "cout" of the context pointer and it is giving me a different value over time. I am watching "top" and the amount of memory required by my process is slowing growing. I am performing a zmq_init/zmq_term avery 1-2 seconds.
+| [Sunday 13 February 2011] [11:24:37] <mikko>	zchrish: have you checked in valgrind?
+| [Sunday 13 February 2011] [11:24:56] <zchrish>	Let me check; thanks.
+| [Sunday 13 February 2011] [11:35:15] <zchrish>	Not sure whether the output of valgrind is related to the way I am using my program. I am creating threads which zmq_init and then zmq_term using a pthread_cleanup_push concept. After 20 iterations, I close the master thread which closes the main program. But I don't know whether this closing affects the slave threads which perform the zmq_init/zmq_term.
+| [Sunday 13 February 2011] [11:36:02] <zchrish>	==22197== LEAK SUMMARY:
+| [Sunday 13 February 2011] [11:36:02] <zchrish>	==22197==    definitely lost: 0 bytes in 0 blocks
+| [Sunday 13 February 2011] [11:36:02] <zchrish>	==22197==    indirectly lost: 0 bytes in 0 blocks
+| [Sunday 13 February 2011] [11:36:02] <zchrish>	==22197==      possibly lost: 12,584 bytes in 43 blocks
+| [Sunday 13 February 2011] [11:36:02] <zchrish>	==22197==    still reachable: 4,552 bytes in 5 blocks
+| [Sunday 13 February 2011] [11:36:02] <zchrish>	==22197==         suppressed: 0 bytes in 0 blocks
+| [Sunday 13 February 2011] [11:37:31] <zchrish>	I have 3 threads: (A) master and (B),(C) slave threads. In (B), (C), I peform zmq_init and zmq_term based on a simulated incident which indicates a problem.
+| [Sunday 13 February 2011] [11:38:48] <sustrik>	run the valgrind with --leak-check=full
+| [Sunday 13 February 2011] [11:38:58] <sustrik>	to find out what's leaking
+| [Sunday 13 February 2011] [11:39:07] <zchrish>	Anyway, it seems like the amount lost isn't that much, if it is from 0mq, so I won't worry about it at this point. I don't expect to perform a zmq_term and zmq_init very often.
+| [Sunday 13 February 2011] [11:43:52] <zchrish>	Hmm. I did this but I am not proficient enough with valgrind to properly interpret the results. The program is simple enough but I am not sure whether someone is interested in re-creating the situation. If so, I will upload somewhere.
+| [Sunday 13 February 2011] [11:47:43] <sustrik>	yes. do so. i'll have a look
+| [Sunday 13 February 2011] [11:53:57] <zchrish>	I remember watching discussions about uploading to a website but I don't remember; would you please let me know. Thank you.
+| [Sunday 13 February 2011] [11:54:09] <zchrish>	I will upload it.
+| [Sunday 13 February 2011] [11:55:56] <sustrik>	gist.github.com
+| [Sunday 13 February 2011] [11:56:01] <sustrik>	place it there
+| [Sunday 13 February 2011] [11:56:07] <sustrik>	post the link here
+| [Sunday 13 February 2011] [11:57:44] <Guthur>	sustrik, re: IOCP, what we can do is pass a custom overlapped struct to Connect, Read, Write etc, and this struct will be returned by IOCP
+| [Sunday 13 February 2011] [11:58:15] <Guthur>	so the custom struct can have a member containing and enum of the op type, for example
+| [Sunday 13 February 2011] [11:58:54] <sustrik>	how would you physically perform the polling?
+| [Sunday 13 February 2011] [11:59:05] <sustrik>	WaitForMultiple objects or what?
+| [Sunday 13 February 2011] [11:59:19] <Guthur>	GetQueuedCompletionStatus
+| [Sunday 13 February 2011] [11:59:24] <Guthur>	GetQueuedCompletionStatusEx
+| [Sunday 13 February 2011] [11:59:25] <zchrish>	Not sure if this is the output result; this is my first gist upload....       gist: 824833 
+| [Sunday 13 February 2011] [11:59:50] <sustrik>	can you prpvide the link?
+| [Sunday 13 February 2011] [12:00:20] <zchrish>	https://gist.github.com/824833
+| [Sunday 13 February 2011] [12:00:29] <zchrish>	Is that right?
+| [Sunday 13 February 2011] [12:00:36] <zchrish>	I think so.
+| [Sunday 13 February 2011] [12:01:18] <sustrik>	ah
+| [Sunday 13 February 2011] [12:01:30] <sustrik>	i meant, can you provide the valgrind output?
+| [Sunday 13 February 2011] [12:01:44] <zchrish>	Oh, sorry. Let me do another.
+| [Sunday 13 February 2011] [12:03:00] <sustrik>	Guthur: I see
+| [Sunday 13 February 2011] [12:03:12] <sustrik>	so, a completion port
+| [Sunday 13 February 2011] [12:03:29] <sustrik>	is actually a queue of pointers to OVERLAPPED structures
+| [Sunday 13 February 2011] [12:05:38] <zchrish>	https://gist.github.com/824840
+| [Sunday 13 February 2011] [12:05:43] <zchrish>	is the valgrind output
+| [Sunday 13 February 2011] [12:07:13] <sustrik>	thanks
+| [Sunday 13 February 2011] [12:08:22] <Guthur>	sustrik, essentially yes
+| [Sunday 13 February 2011] [12:08:28] <Guthur>	there is also a completion key
+| [Sunday 13 February 2011] [12:08:43] <Guthur>	it's quite common to place the handle of the socket in that
+| [Sunday 13 February 2011] [12:08:58] <Guthur>	or some other context struct
+| [Sunday 13 February 2011] [12:09:19] <sustrik>	ack
+| [Sunday 13 February 2011] [12:09:27] <sustrik>	that seems reasonable
+| [Sunday 13 February 2011] [12:09:33] <Guthur>	sustrik, does it sound like it will fullfil 0MQs needs?
+| [Sunday 13 February 2011] [12:09:40] <sustrik>	definitely
+| [Sunday 13 February 2011] [12:09:48] <Guthur>	sweet
+| [Sunday 13 February 2011] [12:10:13] <sustrik>	you'll simply have a I/O thread loop with GetIOCompletionStatus
+| [Sunday 13 February 2011] [12:10:39] <sustrik>	should be relativelty easy
+| [Sunday 13 February 2011] [12:14:48] <Guthur>	so, do you want me put some code together for an implementation of epoll et al. using IOCP
+| [Sunday 13 February 2011] [12:15:14] <sustrik>	definitely
+| [Sunday 13 February 2011] [12:15:34] <sustrik>	try to hack something
+| [Sunday 13 February 2011] [12:15:45] <sustrik>	feel free to ask about 0mq details in the process
+| [Sunday 13 February 2011] [12:16:13] <Guthur>	will do, cheers to all for the help so far
+| [Sunday 13 February 2011] [12:16:39] <Guthur>	I need to do something else tonight, for MSc thesis, but I'll continue with the IOCP this week
+| [Sunday 13 February 2011] [12:18:22] <sustrik>	great
+| [Sunday 13 February 2011] [12:18:59] <Guthur>	just as an aside: according to wiki  IOCP is also available on Solaris 10+
+| [Sunday 13 February 2011] [12:19:11] <Guthur>	is ZMQ on solaris?
+| [Sunday 13 February 2011] [12:19:55] <sustrik>	sure
+| [Sunday 13 February 2011] [12:20:13] <sustrik>	but i think solaris I/O completion ports are a different beast
+| [Sunday 13 February 2011] [12:20:23] <Guthur>	yeah probably
+| [Sunday 13 February 2011] [12:20:41] <Guthur>	not like I have a solaris box hanging around anyway, hehe
+| [Sunday 13 February 2011] [12:21:17] <sustrik>	i recall we've investigated polling mechanisms in solris quite a long time ago
+| [Sunday 13 February 2011] [12:21:33] <sustrik>	and devided to go with /dev/poll rather than completion ports
+| [Sunday 13 February 2011] [12:23:14] <Guthur>	if I can help bring IOCP on windows to 0MQ i'll be happy enough
+| [Sunday 13 February 2011] [13:16:23] <sustrik>	zchrish: it looks like you are not terminating your threads cleanly
+| [Sunday 13 February 2011] [13:44:18] <ianbarber>	m to the k (delayed response goodness)
+| [Sunday 13 February 2011] [13:51:29] <zchrish>	I see; any pointer is appreciated. Thanks.
+| [Sunday 13 February 2011] [14:28:05] <sustrik>	zchrish: pthread_cancel basically means you kill the thread
+| [Sunday 13 February 2011] [14:28:30] <sustrik>	what you should do instead is to pthread_join it
+| [Sunday 13 February 2011] [16:54:57] <eut>	cremes, i think that the delay or whatever in nonblocking packet delivery is manageable. if things on my end are designed properly then it shouldn't be a problem.
+| [Sunday 13 February 2011] [16:55:11] <bitweiler>	hey using a publisher, socket should the publisher receive some request?
+| [Sunday 13 February 2011] [16:55:39] <eut>	bitweiler, no
+| [Sunday 13 February 2011] [16:55:58] <bitweiler>	eut: why is that?
+| [Sunday 13 February 2011] [16:56:08] <eut>	http://api.zeromq.org/zmq_socket.html see summary of ZMQ_PUB characteristics. it is unidirectional and send only
+| [Sunday 13 February 2011] [16:56:24] <bitweiler>	okay thanks
+| [Sunday 13 February 2011] [17:01:03] <bitweiler>	what is meant by: The zmq_send() function is not implemented for this socket type. where socket type is ZMQ_SUB
+| [Sunday 13 February 2011] [17:04:13] <eut>	did you bind or connect to this socket?
+| [Sunday 13 February 2011] [17:04:45] <bitweiler>	yes, I bind in the server side and connect on the client side
+| [Sunday 13 February 2011] [17:05:18] <eut>	whoops
+| [Sunday 13 February 2011] [17:05:21] <bitweiler>	but I'm getting nothing on the client side in response
+| [Sunday 13 February 2011] [17:05:31] <mikko>	bitweiler: are you subscribing
+| [Sunday 13 February 2011] [17:05:38] <eut>	see that page i linked to earlier for description of ZMQ_SUB
+| [Sunday 13 February 2011] [17:05:40] <mikko>	thats the most common thing causing messages not to be received
+| [Sunday 13 February 2011] [17:06:09] <eut>	ZMQ_SUB is unidirectional receive only... you cannot send...
+| [Sunday 13 February 2011] [17:07:57] <bitweiler>	mikko: yes I'm subscribing
+| [Sunday 13 February 2011] [17:08:29] <eut>	i have a question about the xrep/xreq sockets. on the xreq side i have set the socket identity to some 4 byte long string ("111\0"). when i send a message, on the xrep side, i'm getting a 17 byte long response in the first received part.
+| [Sunday 13 February 2011] [17:08:52] <mikko>	eut: you get three messages
+| [Sunday 13 February 2011] [17:09:11] <mikko>	one with identity, empty message and the actual message
+| [Sunday 13 February 2011] [17:09:40] <mikko>	you should send in xreq side in that fashion as well
+| [Sunday 13 February 2011] [17:10:06] <mikko>	identity (ZMQ_SNDMORE set), empty message (ZMQ_SNDMORE set), message 
+| [Sunday 13 February 2011] [17:10:54] <eut>	i thought that zmq takes care of prepending the socket identity and empty message when sending from a xreq socket
+| [Sunday 13 February 2011] [17:11:53] <mikko>	let me check the code, it's been a while since i used xreq/xreq
+| [Sunday 13 February 2011] [17:14:14] <eut>	i hope it doesnt matter... but the xrep side is in lua and the xreq side is c
+| [Sunday 13 February 2011] [17:18:25] <mikko>	yes, client side prepends
+| [Sunday 13 February 2011] [17:18:36] <mikko>	on xrep side you should receive multiple messages
+| [Sunday 13 February 2011] [17:18:43] <mikko>	check for ZMQ_RCVMORE
+| [Sunday 13 February 2011] [17:21:25] <eut>	yes
+| [Sunday 13 February 2011] [17:21:49] <mikko>	does the lua binding expose that?
+| [Sunday 13 February 2011] [17:21:58] <eut>	it exposes getsockopt
+| [Sunday 13 February 2011] [17:22:11] <eut>	i'm able to see that more messages parts are there
+| [Sunday 13 February 2011] [17:22:38] <mikko>	how are you replying with xreq?
+| [Sunday 13 February 2011] [17:22:57] <eut>	i'm not replying at all yet, i'm just trying to interpret the received messages correctly.
+| [Sunday 13 February 2011] [17:23:31] <mikko>	can i see the xrep code?
+| [Sunday 13 February 2011] [17:23:50] <mikko>	trying to focus on too many things at once
+| [Sunday 13 February 2011] [17:24:16] <eut>	sure
+| [Sunday 13 February 2011] [17:26:05] <eut>	http://codepad.org/TqP35vOT
+| [Sunday 13 February 2011] [17:27:20] <mikko>	what about xreq?
+| [Sunday 13 February 2011] [17:27:50] <eut>	whoops, this is more correct xrep code: http://codepad.org/YfZepWdv
+| [Sunday 13 February 2011] [17:27:57] <eut>	a moment for xreq
+| [Sunday 13 February 2011] [17:35:40] <eut>	xreq code: http://codepad.org/3SFTxCwh
+| [Sunday 13 February 2011] [17:37:36] <Guthur>	are you not suppose to set the identity before connecting
+| [Sunday 13 February 2011] [17:38:32] <eut>	this is the output i'm getting and what i expect should happen: http://codepad.org/PSnx9yqX
+| [Sunday 13 February 2011] [17:38:48] <eut>	the first part of the multipart message is 17 bytes for some reason...
+| [Sunday 13 February 2011] [17:39:18] <eut>	the identity was set to "222" so i dont understand what is going on
+| [Sunday 13 February 2011] [17:40:30] <Guthur>	from guide: If you want to set an identity you must do it before connecting or binding the socket.
+| [Sunday 13 February 2011] [17:40:42] <Guthur>	you connect then set the identity in that code
+| [Sunday 13 February 2011] [17:40:59] <Guthur>	the one for the xreq
+| [Sunday 13 February 2011] [17:41:15] <eut>	:D
+| [Sunday 13 February 2011] [17:41:24] <eut>	it works. thanks very much
+| [Sunday 13 February 2011] [17:41:38] <Guthur>	you're welcome
+| [Sunday 13 February 2011] [17:41:55] <Guthur>	it actually should mention that in the manual
+| [Sunday 13 February 2011] [17:42:06] <Guthur>	i'm surprised it doesn't actually
+| [Sunday 13 February 2011] [17:42:30] <eut>	it would make a nice addition to the zmq_socket api page
+| [Sunday 13 February 2011] [17:42:45] <eut>	err, setsockopt
+| [Sunday 13 February 2011] [17:42:51] <Guthur>	yeah I agree
+| [Sunday 13 February 2011] [17:43:25] <eut>	do all options need to be set prior to connecting? or are some more flexible?
+| [Sunday 13 February 2011] [17:43:42] <Guthur>	no identity is special
+| [Sunday 13 February 2011] [17:44:01] <Guthur>	it makes sense that it needs to be before connecting, in a way
+| [Sunday 13 February 2011] [17:44:13] <Guthur>	though it might be nice to be able to change an identity
+| [Sunday 13 February 2011] [17:45:03] <Guthur>	after connecting, but things could get confusing then, and packet delivery might go terribly wrong
+| [Sunday 13 February 2011] [17:45:12] <eut>	right
+| [Sunday 13 February 2011] [17:45:46] <eut>	i think its fine the way it is, but it would help to have the api docs updated
+| [Sunday 13 February 2011] [17:46:21] <Guthur>	yeah, I'll submit a patch
+| [Sunday 13 February 2011] [17:46:33] <Guthur>	there was another thing I wanted to submit for the docs anyway
+| [Sunday 13 February 2011] [17:46:49] <eut>	ok sure, thanks for the help
+| [Sunday 13 February 2011] [17:47:10] <Guthur>	sure, anytime
+| [Sunday 13 February 2011] [17:48:18] <eut>	is the development branch github.com/zeromq/zeromq2?
+| [Sunday 13 February 2011] [17:49:29] <mikko>	eut: yes
+| [Sunday 13 February 2011] [17:49:39] <mikko>	sorry, had to jet for a minute
+| [Sunday 13 February 2011] [17:50:02] <mikko>	17 part response is UUID most likely, should've catched that
+| [Sunday 13 February 2011] [17:50:12] <mikko>	17 char part*
+| [Sunday 13 February 2011] [17:50:48] <eut>	ah, and of course its binary data so it wont display as normal text
+| [Sunday 13 February 2011] [17:54:25] <Guthur>	mikko, do you think the api documentation for setsockopt identity should mention that it has to be set before bind/connect?
+| [Sunday 13 February 2011] [17:54:35] <Guthur>	and if so should it be a caution note?
+| [Sunday 13 February 2011] [17:54:40] <mikko>	Guthur: i think majority of them should mention it
+| [Sunday 13 February 2011] [17:54:55] <mikko>	like HWM affects only subsequent binds/connects
+| [Sunday 13 February 2011] [17:55:06] <sustrik>	all of them, actually
+| [Sunday 13 February 2011] [17:55:08] <Guthur>	oh, I thought some didn't matter
+| [Sunday 13 February 2011] [17:55:09] <eut>	is the delimiter message necessary if only going directly from xrep <-> xreq? it seems like it is only useful for chains longer than two nodes
+| [Sunday 13 February 2011] [17:55:31] <Guthur>	good to know
+| [Sunday 13 February 2011] [17:55:47] <sustrik>	it should be mentioned in the docs, you are right
+| [Sunday 13 February 2011] [17:56:05] <mikko>	i ended up doing a patch for jenkins after running an issue with build slaves
+| [Sunday 13 February 2011] [17:56:23] <mikko>	hopefully they'll accept it
+| [Sunday 13 February 2011] [17:56:33] <sustrik>	congrats!
+| [Sunday 13 February 2011] [17:56:37] <sustrik>	what was wrong there
+| [Sunday 13 February 2011] [17:56:39] <sustrik>	?
+| [Sunday 13 February 2011] [17:56:50] <mikko>	it adds ssl between slave and master
+| [Sunday 13 February 2011] [17:56:54] <Guthur>	is there any opts it doesn't matter for?
+| [Sunday 13 February 2011] [17:56:55] <mikko>	rather than having to use stunnel
+| [Sunday 13 February 2011] [17:57:06] <mikko>	good for WAN connected slaves
+| [Sunday 13 February 2011] [17:57:14] <sustrik>	ack
+| [Sunday 13 February 2011] [17:57:27] <sustrik>	Guthur: the system applies to all the options
+| [Sunday 13 February 2011] [17:57:33] <mikko>	what are the big todo items for 2.1.x stable ?
+| [Sunday 13 February 2011] [17:57:49] <Guthur>	sustrik, ack
+| [Sunday 13 February 2011] [17:58:28] <mikko>	i think it might be useful at some point to look into the todo items and sort them by value and effort
+| [Sunday 13 February 2011] [17:58:39] <Guthur>	except for subscription string though, correct?
+| [Sunday 13 February 2011] [17:58:50] <Guthur>	strings*
+| [Sunday 13 February 2011] [17:59:02] <mikko>	that way people needing those features would have a place to check "rough estimation" and possibly chip in
+| [Sunday 13 February 2011] [17:59:14] <mikko>	currently todo-list is github tickets mainly (?)
+| [Sunday 13 February 2011] [18:01:17] <mikko>	http://sourceforge.net/projects/udt/forums/forum/393036/topic/4061830
+| [Sunday 13 February 2011] [18:01:35] <mikko>	interesting, as this seems like the feature that would allow integrating udt with minimal pain
+| [Sunday 13 February 2011] [18:09:03] <Guthur>	I updated the docs on a my fork, should I just submit a pull request?
+| [Sunday 13 February 2011] [18:09:29] <mikko>	i think currently things go as signed patches over the mailing lists
+| [Sunday 13 February 2011] [18:10:39] <Guthur>	ah ok
+| [Sunday 13 February 2011] [18:36:36] <Guthur>	I have two minor doc updates, should they be separate patches?
+| [Monday 14 February 2011] [02:19:17] <sustrik>	mikko: yes, clear roadmap to 2.1 would be nice
+| [Monday 14 February 2011] [02:20:21] <sustrik>	however, i am not sure how to manage it within a distributed development model
+| [Monday 14 February 2011] [02:20:37] <sustrik>	would it mean that patches out of scope of the roadmap are not accepted?
+| [Monday 14 February 2011] [04:45:17] <mikko>	sustrik: sure they would
+| [Monday 14 February 2011] [04:45:23] <mikko>	sustrik: im talking about feature roadmap
+| [Monday 14 February 2011] [04:45:36] <mikko>	things that we know needs to be done
