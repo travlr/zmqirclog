@@ -4866,3 +4866,391 @@
 | [Tuesday 15 February 2011] [13:14:59] <pieterh>	The usual (sane) approach is to make strictly only what you need for your apps, release it, and allow others to expand it
 | [Tuesday 15 February 2011] [13:15:15] <pieterh>	Assuming it's possible to map the subset of boost asio you use to 0MQ
 | [Tuesday 15 February 2011] [13:15:52] <private_meta>	It would be difficult I assume
+| [Tuesday 15 February 2011] [13:42:37] <Guthur>	sustrik, returning to are discussion earlier re: IOCP, would it not be beneficial in the long run, if possible, to have both named pipes and sockets on IOCP, with aim to remove the need for Select
+| [Tuesday 15 February 2011] [13:53:06] <staylor>	I have a question about zmq sockets, are the underlying sockets maintained or opened/closed on demand?
+| [Tuesday 15 February 2011] [13:53:42] <staylor>	reason I ask is I'd like to know from my application if the client application is currently connected to the server or not, but I don't see any socket status calls in the zmq_socket api
+| [Tuesday 15 February 2011] [14:04:03] <cremes>	pieterh: does anyone with a wiki account have permission to modify the FAQ?
+| [Tuesday 15 February 2011] [14:04:41] <cremes>	pieterh: nm; just answered my own question
+| [Tuesday 15 February 2011] [14:13:40] <cremes>	just updated the FAQ to help people with the assertion in mailbox.cpp:182
+| [Tuesday 15 February 2011] [15:06:33] Notice	-Martinp23- [Global Notice] Hi everyone. You will have possibly noticed some instability on the network earlier this evening. The network is under a sustained DDoS and so lag and possible further splits are to be expected. We apologise for the inconvenience - our fantastic sponsorship and infra teams are working to minimise the further impact. Have a nice evening!
+| [Tuesday 15 February 2011] [15:40:03] <sejo>	hey all I'm looking at different solutions, and basicly just need an mq to be able to use from python,
+| [Tuesday 15 February 2011] [15:40:27] <sejo>	so what would be my advantage using 0mq over rabbitmq or others?
+| [Tuesday 15 February 2011] [15:47:14] <Guthur>	sejo, I really think it depends on use case scenario
+| [Tuesday 15 February 2011] [15:48:04] <Guthur>	they are different beasts, rabbitmq is a broker base MQ, whereas ZeroMQ is brokerless, for a start
+| [Tuesday 15 February 2011] [15:48:45] <Guthur>	I wont pretend to know much about rabbitmq though
+| [Tuesday 15 February 2011] [15:49:10] <Guthur>	hehe, even my 0MQ knowledge would be on the lighter side compared to some around here
+| [Tuesday 15 February 2011] [15:50:54] <sejo>	ok, well basicly in the beginning i probably have only like 10 clients popping items, and the same 10 pushing others onto it
+| [Tuesday 15 February 2011] [15:51:57] <sejo>	as far as I understand now I should write my own protocol(s) and can use them over the clients and the servers. However is it easy to have multiple servers handling the same data?
+| [Tuesday 15 February 2011] [15:52:27] <sejo>	it probably is
+| [Tuesday 15 February 2011] [15:52:39] <sejo>	sorry stupid question
+| [Tuesday 15 February 2011] [15:56:09] <sejo>	my biggest fear is that i'll spend too much time developing on it before I can use it...
+| [Tuesday 15 February 2011] [15:56:40] <sejo>	that's why I ask around and not test them out all.. don't have the time for it
+| [Tuesday 15 February 2011] [15:58:59] <Guthur>	sure, it's sensible to do research first
+| [Tuesday 15 February 2011] [15:59:56] <Guthur>	scaling to multiple servers would something that 0MQ can do well
+| [Tuesday 15 February 2011] [16:01:04] <Guthur>	but you don't really get much in the way of 'topic' or 'queue' management out of the box, though there are PUB/SUB sockets
+| [Tuesday 15 February 2011] [16:01:39] <Guthur>	I'm reluctant to give any hard advice though, due to be lack of hardcore experience and knowledge
+| [Tuesday 15 February 2011] [16:02:16] <sejo>	thanks anyway right now I have no knowledge on what to use so
+| [Tuesday 15 February 2011] [16:02:35] <Guthur>	you could glance through the 0MQ guide
+| [Tuesday 15 February 2011] [16:02:50] <sejo>	basicly i want multiple servers and n-clients pushing and popping independently
+| [Tuesday 15 February 2011] [16:03:00] <Guthur>	http://zguide.zeromq.org/chapter:all
+| [Tuesday 15 February 2011] [16:03:12] <sejo>	i'm reading through it while we talk :p
+| [Tuesday 15 February 2011] [16:03:14] <Guthur>	ok
+| [Tuesday 15 February 2011] [16:03:20] <Guthur>	hehe cool
+| [Tuesday 15 February 2011] [16:03:50] <Guthur>	there is a few example in there that could give some inspiration for your particular problem
+| [Tuesday 15 February 2011] [16:04:41] <sejo>	yeah, main thing is that I don't need a real pub/sub, client just chooses when to pop a message
+| [Tuesday 15 February 2011] [16:06:15] <Guthur>	check out the Queue device, which would show a possible multi server pattern
+| [Tuesday 15 February 2011] [16:06:24] <Guthur>	at a very simple level
+| [Tuesday 15 February 2011] [16:06:59] <Guthur>	pieter or sustrik would be better at giving advice than me
+| [Tuesday 15 February 2011] [16:07:25] <sejo>	thk i'll chekc it out
+| [Tuesday 15 February 2011] [16:07:58] <sejo>	the thing that got me here was the nice looking python api :p
+| [Tuesday 15 February 2011] [16:13:46] <Guthur>	I'm not familiar with the python binding, but yeah I'm sure its nice, hehe
+| [Tuesday 15 February 2011] [16:14:19] <Guthur>	python has that sort of philosophy, nice simple interfaces
+| [Tuesday 15 February 2011] [16:15:04] <sejo>	we'll i'll read up on it more, the ventilation example pretty much does what i want, only i have multiple ventilators and each of them multiple types of messages
+| [Tuesday 15 February 2011] [16:16:12] <sejo>	well no probably i only need one type that works with json
+| [Tuesday 15 February 2011] [16:16:49] <Guthur>	I like JSON, nice format
+| [Tuesday 15 February 2011] [16:17:00] <sejo>	Guthur: thanks for the information, i'll read up on it a bit more and then i'll probably need to choose
+| [Tuesday 15 February 2011] [16:17:07] <sejo>	ttyal
+| [Tuesday 15 February 2011] [16:17:11] <sejo>	gtg
+| [Tuesday 15 February 2011] [16:17:14] <Guthur>	later
+| [Tuesday 15 February 2011] [16:17:38] <Guthur>	ok, drop by later and someone more experience can give better advice
+| [Tuesday 15 February 2011] [16:43:59] <lt_schmidt_jr>	is gonzalo here perchance
+| [Tuesday 15 February 2011] [16:46:59] <whack>	So, is there no way to bind to a random port? (like binding to port 0)
+| [Tuesday 15 February 2011] [16:47:19] <whack>	I'm not seeing anything obvious in the docs, and attempts to bind to tcp://blah:0 result in an error
+| [Tuesday 15 February 2011] [17:46:57] <sustrik>	lt_schmidt_jr: gonzalo doesn't come here often, you have to use email instead
+| [Tuesday 15 February 2011] [17:47:23] <sustrik>	whack: no there's no way
+| [Tuesday 15 February 2011] [17:53:51] <lt_schmidt_jr>	sustrik; we are having an impedance mismatch on our responses, thanks 
+| [Tuesday 15 February 2011] [18:06:55] <kdj>	So what is the proper way to make sure that a message is sent to a polling server? Just a response?
+| [Tuesday 15 February 2011] [18:07:33] <cremes>	kdj: i don't understand the question; can you rephrase?
+| [Tuesday 15 February 2011] [18:09:48] <kdj>	Sorry. We have some clients that will occasionally send a short message to a server... but just sending won't error if the server isn't there. I understand why (I think)
+| [Tuesday 15 February 2011] [18:10:09] <kdj>	But I want to make sure the server is there
+| [Tuesday 15 February 2011] [18:10:40] <cremes>	kdj: that's correct; 0mq has no indicator that the server went away
+| [Tuesday 15 February 2011] [18:11:02] <cremes>	you should establish an "ack" that the server should send back; if it times out, the server is dead
+| [Tuesday 15 February 2011] [18:11:17] <cremes>	i recommend polling on req/rep sockets to accomplish this
+| [Tuesday 15 February 2011] [18:11:43] <cremes>	e.g. each client has its own REQ socket; the server has a XREP socket (so that it can respond to multiple clients)
+| [Tuesday 15 February 2011] [18:11:52] <kdj>	You can poll on REQ sockets?
+| [Tuesday 15 February 2011] [18:12:04] <kdj>	Yeah, that is how it is setup now
+| [Tuesday 15 February 2011] [18:12:06] <cremes>	absolutely; send/recv with ZM_NOBLOCK
+| [Tuesday 15 February 2011] [18:12:15] <cremes>	and register them with zmq_poll
+| [Tuesday 15 February 2011] [18:13:45] <kdj>	Sending with NOBLOCK isn't actually doing anything with just a normal REQ socket, but it does on receive... is that because I need polling?
+| [Tuesday 15 February 2011] [18:14:34] <cremes>	kdj: well, you don't *need* to send with noblock 
+| [Tuesday 15 February 2011] [18:14:50] <cremes>	the basic idea is when your client sends the data, start a timer
+| [Tuesday 15 February 2011] [18:15:02] <cremes>	if the server responds back, cancel the timer
+| [Tuesday 15 February 2011] [18:15:08] <cremes>	if the timer expires, close the req socket
+| [Tuesday 15 February 2011] [18:15:26] <cremes>	none of that needs noblock 
+| [Tuesday 15 February 2011] [18:15:42] <lt_schmidt_jr>	to jump in with kdj, when would you use in polling vs blocking
+| [Tuesday 15 February 2011] [18:15:46] <cremes>	you will need to poll if your timer and req socket are in the same thread
+| [Tuesday 15 February 2011] [18:16:04] <cremes>	lt_schmidt_jr: like so...
+| [Tuesday 15 February 2011] [18:16:23] <cremes>	if you start your timer and then call recv in blocking mode, how do you handle timer expiration?
+| [Tuesday 15 February 2011] [18:16:43] <cremes>	1. timer must live in a separate thread or process from the blocking recv
+| [Tuesday 15 February 2011] [18:17:10] <lt_schmidt_jr>	right
+| [Tuesday 15 February 2011] [18:17:12] <cremes>	2. recv is non-blocking and you use poll to handle the recv; timer is on the same thread
+| [Tuesday 15 February 2011] [18:17:21] <cremes>	those are the 2 ways i would approach
+| [Tuesday 15 February 2011] [18:17:25] <cremes>	i like #2 better
+| [Tuesday 15 February 2011] [18:17:31] <kdj>	Ok. I wasn't sending an acknowledgement from the server originally... just receiving the message and moving on
+| [Tuesday 15 February 2011] [18:17:33] <cremes>	threading gets so messy
+| [Tuesday 15 February 2011] [18:18:09] <cremes>	kdj: if you were using REQ sockets on the client, the next time you tried to send you would get a EFSM error
+| [Tuesday 15 February 2011] [18:18:37] <cremes>	REQ/REP sockets are strictly stateful; REQ *must* send/recv/send/recv while REP *must* recv/send/recv/send
+| [Tuesday 15 February 2011] [18:19:44] <kdj>	Yeah, that makes sense.
+| [Tuesday 15 February 2011] [18:21:39] <lt_schmidt_jr>	hmm, interesting, so I should be able to put multiple sockets with a poller
+| [Tuesday 15 February 2011] [18:21:50] <lt_schmidt_jr>	same poller
+| [Tuesday 15 February 2011] [18:23:04] <kdj>	Hmmm... does 0mq send an acknowledgement automatically?
+| [Tuesday 15 February 2011] [18:23:27] <cremes>	lt_schmidt_jr: yes
+| [Tuesday 15 February 2011] [18:23:30] <cremes>	kdj: no
+| [Tuesday 15 February 2011] [18:24:17] <cremes>	kdj: the heartbeat is an application-level responsibility; your code must process and send the ack
+| [Tuesday 15 February 2011] [18:24:46] <cremes>	you could actually abstract this out into your own private "heartbeat" socket and make it completely transparent
+| [Tuesday 15 February 2011] [18:25:01] <kdj>	Yeah, that totally makes sense... I just threw some code together to test it though and it (sort of) works
+| [Tuesday 15 February 2011] [18:26:03] <kdj>	having a poller on the server end, which just recieves messages (no sending), and a client which sends and then receives... somehow the receiving on the client end is still happening (and not blocking)
+| [Tuesday 15 February 2011] [18:26:10] <lt_schmidt_jr>	kdj: for me I am planning to use ZooKeeper, which I have used successfully in a similar way to figure out server presence
+| [Tuesday 15 February 2011] [18:27:01] <lt_schmidt_jr>	in my case to figure out other servers that will form a cluster
+| [Tuesday 15 February 2011] [18:27:13] <cremes>	kdj: print out the data that your client is receiving
+| [Tuesday 15 February 2011] [18:27:26] <cremes>	or run tcpdump and watch the packets fly
+| [Tuesday 15 February 2011] [18:27:45] <cremes>	unless you are issuing a zmq_send() from the server, the client shouldn't be getting a response
+| [Tuesday 15 February 2011] [18:27:59] <cremes>	there has to be code doing that somewhere in your example
+| [Tuesday 15 February 2011] [18:28:05] <cremes>	is it small enough to pastie?
+| [Tuesday 15 February 2011] [18:29:19] <lt_schmidt_jr>	kdj, cremes: you can use http://pastebin.com/
+| [Tuesday 15 February 2011] [18:31:34] <kdj>	Sorry, I think it was just my threading code for testing it. It works as it is supposed to. :X
+| [Tuesday 15 February 2011] [18:32:02] <cremes>	yeah, that's an easy mistake to make
+| [Tuesday 15 February 2011] [18:32:18] <cremes>	take a look at using the "inproc" transport for communicating between threads
+| [Tuesday 15 February 2011] [18:32:35] <cremes>	it obviates the need for mutexes and makes threading code simpler
+| [Tuesday 15 February 2011] [18:32:56] <cremes>	btw, that's one of the great wins of using 0mq; it's a threading library too!
+| [Tuesday 15 February 2011] [18:34:36] <lt_schmidt_jr>	cremes: not to ask a stupid question, but how does one use it for threading - is it in the guide?
+| [Tuesday 15 February 2011] [18:36:00] <cremes>	lt_schmidt_jr: i don't know if it's in the guide; haven't looked lately
+| [Tuesday 15 February 2011] [18:36:03] <cremes>	but here's the basic idea
+| [Tuesday 15 February 2011] [18:36:26] <cremes>	imagine you have 10 threads trying to access a shared resource
+| [Tuesday 15 February 2011] [18:36:35] <lt_schmidt_jr>	right
+| [Tuesday 15 February 2011] [18:36:41] <cremes>	right now you use a mutex, spinlock or some locking structure
+| [Tuesday 15 February 2011] [18:36:50] <lt_schmidt_jr>	ok
+| [Tuesday 15 February 2011] [18:37:00] <cremes>	with 0mq, put the resource that everyone wants into its own thread and give it a XREP socket
+| [Tuesday 15 February 2011] [18:37:22] <cremes>	now make every other thread a "client" of that "server" and give them REQ sockets
+| [Tuesday 15 February 2011] [18:37:50] <cremes>	connect them all together using inproc (all platforms) or ipc (unix only) to communicate so you don't pay the TCP penalty
+| [Tuesday 15 February 2011] [18:38:12] <cremes>	each client "asks" the resource for whatever via the 0mq socket
+| [Tuesday 15 February 2011] [18:38:26] <cremes>	the 0mq socket serializes all access to the resource and prevents all race conditions
+| [Tuesday 15 February 2011] [18:38:35] <cremes>	make sense?
+| [Tuesday 15 February 2011] [18:38:35] <lt_schmidt_jr>	I see
+| [Tuesday 15 February 2011] [18:38:42] <lt_schmidt_jr>	absolutely
+| [Tuesday 15 February 2011] [18:38:51] <lt_schmidt_jr>	thank you
+| [Tuesday 15 February 2011] [18:38:54] <cremes>	this is the basic idea behind Actors if you have played with those in any languages
+| [Tuesday 15 February 2011] [18:39:05] <lt_schmidt_jr>	I have played with erl
+| [Tuesday 15 February 2011] [18:39:28] <cremes>	lt_schmidt_jr: right; instead of using mutexes, you are using *messaging* for your concurrency
+| [Tuesday 15 February 2011] [18:39:45] <cremes>	and here's another cool part of using 0mq
+| [Tuesday 15 February 2011] [18:39:56] <lt_schmidt_jr>	cremes: very cool
+| [Tuesday 15 February 2011] [18:40:04] <cremes>	let's say at some point this "server" resource needs to be on its own box
+| [Tuesday 15 February 2011] [18:40:34] <cremes>	all you have to do to change communications is modify the transport string that you pass to zmq_connect/zmq_bind from inproc (or ipc) to tcp
+| [Tuesday 15 February 2011] [18:40:39] <cremes>	instant scaling
+| [Tuesday 15 February 2011] [18:40:52] <cremes>	i have used this technique many times already; works wonderfully
+| [Tuesday 15 February 2011] [18:40:53] <lt_schmidt_jr>	yeah, you would just change the ..
+| [Tuesday 15 February 2011] [18:41:36] <lt_schmidt_jr>	I have prototyped a pub/sub message bus and I have inproc/ipc/tcp going between different participants
+| [Tuesday 15 February 2011] [18:42:03] <kdj>	Hmmm... now I'm not really sure how our original client/server stuff was working...
+| [Tuesday 15 February 2011] [18:42:29] <lt_schmidt_jr>	but I think I am just not treating the threading correctly - too many threads
+| [Tuesday 15 February 2011] [18:43:29] <cremes>	lt_schmidt_jr: you'll have to figure that one out; i'm not a threading expert
+| [Tuesday 15 February 2011] [18:45:29] <lt_schmidt_jr>	cremes: the issue is I have a thread per connection and I still need to use polling to figure out if the thread needs to be shut down
+| [Tuesday 15 February 2011] [18:45:36] <lt_schmidt_jr>	so its a little ugly
+| [Tuesday 15 February 2011] [18:46:41] <cremes>	i don't understand, but ok
+| [Tuesday 15 February 2011] [18:46:46] <lt_schmidt_jr>	If I block on recv, I am not sure how a subscriber can be inerrrupted
+| [Tuesday 15 February 2011] [18:46:58] <cremes>	oh, i see
+| [Tuesday 15 February 2011] [18:47:04] <cremes>	are you using 2.0.10 or 2.1.0?
+| [Tuesday 15 February 2011] [18:47:13] <lt_schmidt_jr>	2.0.1 and Java
+| [Tuesday 15 February 2011] [18:47:20] <lt_schmidt_jr>	2.0.10
+| [Tuesday 15 February 2011] [18:47:23] <cremes>	um... ok
+| [Tuesday 15 February 2011] [18:47:47] <lt_schmidt_jr>	is there something in 2.1.0 that  I should be using?
+| [Tuesday 15 February 2011] [18:47:55] <cremes>	i think your only solution then is to close the entire context via zmq_term()
+| [Tuesday 15 February 2011] [18:48:08] <cremes>	that will cause each socket to awaken and return ETERM
+| [Tuesday 15 February 2011] [18:48:45] <cremes>	everybody should be on 2.1.0 now; the only 2.0.10 users should be legacy guys who *cannot* upgrade for whatever reason
+| [Tuesday 15 February 2011] [18:48:52] <cremes>	so yeah, upgrade
+| [Tuesday 15 February 2011] [18:48:52] <lt_schmidt_jr>	see, I have multiple subscibers within the same context, and only one would need to be terminated
+| [Tuesday 15 February 2011] [18:49:17] <cremes>	yep, terminating the context terminates *all* sockets so that's your only choice there
+| [Tuesday 15 February 2011] [18:49:33] <cremes>	in 2.1.0 i believe you can call zmq_close() on the socket from another thread and it will work as expected
+| [Tuesday 15 February 2011] [18:49:35] <lt_schmidt_jr>	ok, I skipped 2.1.0, because it caused the java binding unit tests to fail
+| [Tuesday 15 February 2011] [18:49:53] <cremes>	yeah, 2.1.0 is considered beta so not everyone has updated their bindings
+| [Tuesday 15 February 2011] [18:50:02] <lt_schmidt_jr>	maybe I should do that myself
+| [Tuesday 15 February 2011] [18:50:08] <cremes>	but it is *way* more stable than 2.0.10 so i would upgrade
+| [Tuesday 15 February 2011] [18:50:16] <cremes>	maybe you could submit a patch to fix the java tests
+| [Tuesday 15 February 2011] [18:50:41] <lt_schmidt_jr>	I submitted the maven fix, should do this as well
+| [Tuesday 15 February 2011] [18:51:16] <lt_schmidt_jr>	so I could close the socket from a different thread, great
+| [Tuesday 15 February 2011] [18:52:16] <lt_schmidt_jr>	I guess I could figure out how to use polling correctly and not have a bunch of threads in the first place
+| [Tuesday 15 February 2011] [18:52:36] <lt_schmidt_jr>	that is have many sockets and a single polling thread
+| [Tuesday 15 February 2011] [18:53:13] <lt_schmidt_jr>	and not have the computer turn into a space heater
+| [Tuesday 15 February 2011] [18:53:51] <lt_schmidt_jr>	will go through the guide 
+| [Tuesday 15 February 2011] [18:54:54] <kdj>	Thanks for your help cremes
+| [Tuesday 15 February 2011] [19:00:54] <cremes>	kdj: you are welcome; remember to pay it forward at some point ;)
+| [Tuesday 15 February 2011] [19:01:50] <kdj>	Hopefully that won't involve inadvertently leading someone astray. ;)
+| [Tuesday 15 February 2011] [23:50:44] <zedas>	sustrik: hey so i still see this poll 100%CPU bug even with the latest 2.1.0 and *cannot* figure out how to fix it. http://dpaste.de/oxeU/
+| [Tuesday 15 February 2011] [23:51:20] <zedas>	sustrik: it looks like i'll have to dig into the zeromq code and pull out the error handling that zmq_poll does.
+| [Wednesday 16 February 2011] [02:07:37] <sustrik>	zedas: any chance to reproduce the problem here?
+| [Wednesday 16 February 2011] [02:24:37] <zedas>	sustrik: it happens at random on my servers, so next time i can gdb to it and debug for you.
+| [Wednesday 16 February 2011] [02:24:59] <sustrik>	thanks
+| [Wednesday 16 February 2011] [02:25:12] <sustrik>	find out what's looping there
+| [Wednesday 16 February 2011] [02:31:21] <zedas>	well i'm pretty sure it's zmq_poll not handling an EAGAIN on zeromq socket objects.
+| [Wednesday 16 February 2011] [02:31:41] <zedas>	but i'll confirm it and work up a fix.  looking at the code the fix may be a flag that says to not stuff errors.
+| [Wednesday 16 February 2011] [02:42:26] <sustrik>	let me have a look...
+| [Wednesday 16 February 2011] [02:42:45] <sustrik>	zedas: is that linux?
+| [Wednesday 16 February 2011] [02:44:30] <sustrik>	hm, the only operations on zeromq socket objects witihn zmq_poll is zmq_getsockopt()
+| [Wednesday 16 February 2011] [02:45:02] <sustrik>	are you getting EAGAIN from zmq_getsockopt()? That should not happen as far as i am aware.
+| [Wednesday 16 February 2011] [03:41:54] <enleth>	Hello
+| [Wednesday 16 February 2011] [03:44:44] <sustrik>	hi
+| [Wednesday 16 February 2011] [03:44:52] <enleth>	I've got a problem building OMQ - it's about the luuid dependency. OMQ reuires the OSSP UUID library, which, due to conflicts with (unmaintained and dropped a long time ago) e2fsprogrs libuuid was renamed to libossp-uuid in my Linux distribution and, FWIW, this was generally a very popular solution.
+| [Wednesday 16 February 2011] [03:45:10] <enleth>	But OMQ looks for libuuid and the configure script does not accept an alternate name
+| [Wednesday 16 February 2011] [03:45:56] <sustrik>	enleth: easy, patch the build system and submit the patch to the mailing list
+| [Wednesday 16 February 2011] [03:47:49] <enleth>	Oh, and I just noticed that the proper libuuid provides an uuid-config program for the configure script to use
+| [Wednesday 16 February 2011] [03:48:08] <enleth>	uuid-config --libs outputs -lossp-uuid, which should be used
+| [Wednesday 16 February 2011] [03:48:41] <enleth>	I guess this is what the build system should do instead of using a hardcoded name
+| [Wednesday 16 February 2011] [03:49:12] <sustrik>	great, post your suggestion to the mailing list
+| [Wednesday 16 February 2011] [03:49:12] <enleth>	The problem is, my skills with autotools are crap
+| [Wednesday 16 February 2011] [03:49:23] <sustrik>	so that build system maintainers can have a look at it
+| [Wednesday 16 February 2011] [03:49:28] <enleth>	OK, will do
+| [Wednesday 16 February 2011] [03:49:31] <sustrik>	thanks
+| [Wednesday 16 February 2011] [04:16:56] <enleth>	No, wait. It does use the old e2fsprogrs-derived libuuid, my bad.
+| [Wednesday 16 February 2011] [04:25:44] <enleth>	OK, there is no problem, the distro repository managed screwed up and I got a bad upgrade installed
+| [Wednesday 16 February 2011] [04:34:18] <mikko>	pieterh: are you here sir?
+| [Wednesday 16 February 2011] [04:34:28] <pieterh>	mikko: just arrived
+| [Wednesday 16 February 2011] [04:36:22] <mikko>	is there a specific reason why test functions are compiled into zfl ?
+| [Wednesday 16 February 2011] [04:36:33] <mikko>	are those symbols needed outside selftest?
+| [Wednesday 16 February 2011] [04:38:49] <pieterh>	if you can find a way of compiling a single C source file into two objects, I'm hapopy
+| [Wednesday 16 February 2011] [04:38:51] <pieterh>	*happy
+| [Wednesday 16 February 2011] [04:39:02] <pieterh>	but the test code must, for me, be in the same source as the actual class
+| [Wednesday 16 February 2011] [04:40:00] <mikko>	pieterh: ok
+| [Wednesday 16 February 2011] [04:41:04] <pieterh>	mikko: if people are unhappy about extra code in their executables we could make these conditionally compiled
+| [Wednesday 16 February 2011] [04:42:36] <mikko>	pieterh: currently i was prototyping something like: https://gist.github.com/3f2a43c19ab439b22884
+| [Wednesday 16 February 2011] [04:42:41] <mikko>	separate tests/ directory
+| [Wednesday 16 February 2011] [04:42:59] <mikko>	but i think it should be possible to create separate objects from same code as well
+| [Wednesday 16 February 2011] [04:43:00] <pieterh>	aaaghhhh..... 
+| [Wednesday 16 February 2011] [04:43:13] <pieterh>	it's the reason the man pages are a real pain to maintain
+| [Wednesday 16 February 2011] [04:43:21] <pieterh>	separate directories look very clean organizationally
+| [Wednesday 16 February 2011] [04:43:29] <pieterh>	but they ensure pieces don't get updated
+| [Wednesday 16 February 2011] [04:44:02] <pieterh>	also the test cases are essential documentation, like the rest of the source file
+| [Wednesday 16 February 2011] [04:44:29] <pieterh>	running the selftest in its own directory is a good idea, some tests need to mess with files
+| [Wednesday 16 February 2011] [04:44:57] <pieterh>	but I really, really don't want to find ourselves in the zmq situation of having lots of code that lacks test cases
+| [Wednesday 16 February 2011] [04:46:09] <mikko>	hmmm, this gives me additional idea
+| [Wednesday 16 February 2011] [04:47:14] <mikko>	in zfls case code coverage reports would make sense
+| [Wednesday 16 February 2011] [04:47:46] <pieterh>	yes, as an additional insurance
+| [Wednesday 16 February 2011] [04:47:57] <pieterh>	that's meta testing, i.e. testing the test cases
+| [Wednesday 16 February 2011] [04:48:11] <pieterh>	it's a neat idea
+| [Wednesday 16 February 2011] [04:48:27] <mikko>	i'll put this on my todo
+| [Wednesday 16 February 2011] [04:49:04] <pieterh>	there's still space? I'm impressed...
+| [Wednesday 16 February 2011] [04:49:07] <pieterh>	:-)
+| [Wednesday 16 February 2011] [04:49:33] <ianbarber>	speaking off: mikko, did you move the pear server?
+| [Wednesday 16 February 2011] [04:49:44] <ianbarber>	s/off/of
+| [Wednesday 16 February 2011] [04:50:51] <mikko>	ianbarber: in the works
+| [Wednesday 16 February 2011] [04:51:12] <mikko>	hmm
+| [Wednesday 16 February 2011] [04:51:23] <mikko>	i guess the easiest would be to put it where rest of the stuff is
+| [Wednesday 16 February 2011] [04:51:30] <mikko>	you can point the dns to 193.211.31.222
+| [Wednesday 16 February 2011] [04:51:46] <ianbarber>	i'll point both php. and pear. at it
+| [Wednesday 16 February 2011] [04:56:05] <mikko>	looking at the apache rewrite rules this makes me want to use nginx
+| [Wednesday 16 February 2011] [04:56:55] <kristsk>	nginx is about the same, imho
+| [Wednesday 16 February 2011] [04:57:47] <mikko>	kristsk: dynamic virtualhosting seems a lot more fluent in nginx
+| [Wednesday 16 February 2011] [05:03:15] <kristsk>	might be because of nginx's config syntax, it does not feel so archaic
+| [Wednesday 16 February 2011] [05:05:06] <kristsk>	in regard of vhosts lighthttpd is sought to be more powerfull
+| [Wednesday 16 February 2011] [05:48:11] <Guthur>	sustrik: do you think having wsapoll on supported win platforms would be good to have?
+| [Wednesday 16 February 2011] [06:06:02] <ianbarber>	pieterh: about?
+| [Wednesday 16 February 2011] [06:06:22] <pieterh>	ianbarber: about 12ish
+| [Wednesday 16 February 2011] [06:06:46] <pieterh>	:-) how can I help you?
+| [Wednesday 16 February 2011] [06:06:50] <ianbarber>	:)
+| [Wednesday 16 February 2011] [06:08:09] <ianbarber>	i discovered the wonderful land of martinique has a fun domain extension, so the PHP extension is now available on php.zero.mq and pear.zero.mq (pear is the PHP package system). Was wondering - do you want to have zeromq.org listen on zero.mq and www.zero.mq as well, i can point in that direction (even if it's just doing a rewrite to zeromq.org)
+| [Wednesday 16 February 2011] [06:08:56] <ianbarber>	we can redirect from hosting as well, just seems like if someone does go to just zero.mq, they should end up at the site. It's on mikko's geo redundant hosting at the mo :)
+| [Wednesday 16 February 2011] [06:09:08] <pieterh>	oh... I like it
+| [Wednesday 16 February 2011] [06:10:25] <ianbarber>	i can point them at 74.86.234.146 if thats sensible - don't know if there are any weird wikidot issues or similar 
+| [Wednesday 16 February 2011] [06:10:27] <pieterh>	if you point www.zero.mq to www.wikidot.com, then I'll add it to the custom domains on the website
+| [Wednesday 16 February 2011] [06:10:32] <ianbarber>	cool
+| [Wednesday 16 February 2011] [06:10:33] <ianbarber>	will do
+| [Wednesday 16 February 2011] [06:10:57] <pieterh>	wow, we have a sneaky short domain name, so 2011...
+| [Wednesday 16 February 2011] [06:11:40] <pieterh>	afair you can't point zero.mq itself to a DNS name, you need to use the IP address there
+| [Wednesday 16 February 2011] [06:11:52] <mikko>	you can
+| [Wednesday 16 February 2011] [06:11:53] <mikko>	CNAME
+| [Wednesday 16 February 2011] [06:11:57] <ianbarber>	should be able to cname it
+| [Wednesday 16 February 2011] [06:11:58] <ianbarber>	yeah
+| [Wednesday 16 February 2011] [06:12:27] <pieterh>	maybe I'm confusing with wildcards, I usually point *.zeromq.org etc. to wikidot
+| [Wednesday 16 February 2011] [06:13:08] <pieterh>	cname the heck out of it, ianbarber, I'll add the custom domain entries in an hour or so
+| [Wednesday 16 February 2011] [06:14:12] <ianbarber>	cool :) I've pointed zero.mq and www.zero.mq, so we'll see then :)
+| [Wednesday 16 February 2011] [06:15:15] <pieterh>	would it be worth doing something sneaky like...
+| [Wednesday 16 February 2011] [06:15:31] <pieterh>	zero.mq -> redirects to www.zeromq.org/community... ?
+| [Wednesday 16 February 2011] [06:16:03] <pieterh>	I can make that work
+| [Wednesday 16 February 2011] [06:16:54] <pieterh>	ianbarber: DNS seems to have propagated already, that was fast
+| [Wednesday 16 February 2011] [06:17:07] <pieterh>	presumably not cached anywhere
+| [Wednesday 16 February 2011] [06:17:33] <ianbarber>	yeah, www wasn't set up before
+| [Wednesday 16 February 2011] [06:17:45] <ianbarber>	redirect to community sounds like an idea, if that's doable on wikidot
+| [Wednesday 16 February 2011] [06:18:12] <pieterh>	np, give me 5 minutes...
+| [Wednesday 16 February 2011] [06:20:03] <enleth>	mikko: hey, just wanted to say thanks for the PHP bindings for ZMQ, TC and TT - good job!
+| [Wednesday 16 February 2011] [06:21:40] <enleth>	It was pretty amusing when I opened the github page for ZMQ bindings a moment ago, saw your username and though "well, I know this guy - what else I might be using that he did?"
+| [Wednesday 16 February 2011] [06:21:55] <pieterh>	ianbarber: ok, done, give it a whirl... :-)
+| [Wednesday 16 February 2011] [06:22:06] <mikko>	enleth: my pleasure
+| [Wednesday 16 February 2011] [06:25:13] <ianbarber>	pieterh: i seem to be getting a password page. that's odd
+| [Wednesday 16 February 2011] [06:25:32] <pieterh>	ianbarber: ah, my bad, it's still a private site, will fix immediately
+| [Wednesday 16 February 2011] [06:25:47] <ianbarber>	ah, cool
+| [Wednesday 16 February 2011] [06:26:03] <pieterh>	ianbarber: try again now?
+| [Wednesday 16 February 2011] [06:26:12] <ianbarber>	yep, that's looking good
+| [Wednesday 16 February 2011] [06:26:17] <ianbarber>	very nice! 
+| [Wednesday 16 February 2011] [06:26:57] <pieterh>	it's very cool
+| [Wednesday 16 February 2011] [09:30:33] <ianbarber>	pieterh: was thinking, I've noticed that there are a lot of questions on the mailing lists that are solved in broadly the same way, even from people who have read the guide (myself included). I was wondering whether there is any value in some sort of 0MQ pattern library. 
+| [Wednesday 16 February 2011] [09:30:50] <ianbarber>	sort of like http://developer.yahoo.com/ypatterns/ but with messaging patterns at all kinds of scales
+| [Wednesday 16 February 2011] [09:31:56] <ianbarber>	i like how the generic pattern is described and an example given in each one of those (http://developer.yahoo.com/ypatterns/navigation/accordion.html) 
+| [Wednesday 16 February 2011] [09:32:37] <ianbarber>	but still pretty simple, 1 page
+| [Wednesday 16 February 2011] [09:51:55] <mikko>	cremes: you can run make check
+| [Wednesday 16 February 2011] [09:52:07] <mikko>	(dont wanna confuse the thread as it has moved on from there)
+| [Wednesday 16 February 2011] [09:54:40] <cremes>	mikko: here are the results:  https://gist.github.com/829493
+| [Wednesday 16 February 2011] [09:54:43] <cremes>	failure...
+| [Wednesday 16 February 2011] [09:57:00] <mikko>	No space left on device
+| [Wednesday 16 February 2011] [09:58:22] <cremes>	how did i not see that?.... bleary eyed after 30 hours of debugging...
+| [Wednesday 16 February 2011] [09:58:39] <mikko>	also, the tests wont output anything but they should assert on failure
+| [Wednesday 16 February 2011] [09:58:47] <mikko>	return code for success is 0
+| [Wednesday 16 February 2011] [09:59:24] <cremes>	oh wait, that out of space condition happened overnight as i was testing something
+| [Wednesday 16 February 2011] [09:59:29] <cremes>	hold on a sec
+| [Wednesday 16 February 2011] [10:00:51] <cremes>	mikko: reload the gist; it now shows all as passing
+| [Wednesday 16 February 2011] [10:01:10] <cremes>	my problem with running the tests was i didn't know the right make target
+| [Wednesday 16 February 2011] [10:01:25] <mikko>	make check is autotools default test target
+| [Wednesday 16 February 2011] [10:01:29] <cremes>	i tried 'make test' and 'make all' but the former didn't exist and the latter didn't seem to run them
+| [Wednesday 16 February 2011] [10:01:35] <cremes>	didn't know that
+| [Wednesday 16 February 2011] [10:02:03] <mikko>	make test seems to be widely used as well
+| [Wednesday 16 February 2011] [10:02:04] <cremes>	looks like all is well; chalk this up to user error
+| [Wednesday 16 February 2011] [10:02:25] <cremes>	yeah, maybe adding it as an additional target would be a nice convenience
+| [Wednesday 16 February 2011] [10:02:43] <mikko>	i'll add that on todo
+| [Wednesday 16 February 2011] [10:09:41] <pieterh_>	ianbarber, was eating lunch... back now
+| [Wednesday 16 February 2011] [10:10:17] <pieterh_>	imo there would be value in a pattern library but I'll use Sustrik's Law here
+| [Wednesday 16 February 2011] [10:10:57] <pieterh_>	find the person to collect and maintain the patterns, and the problem is solved :-)
+| [Wednesday 16 February 2011] [10:12:42] <mikko>	http://build.valokuva.org/job/test-gcov/5/cobertura/?
+| [Wednesday 16 February 2011] [10:12:48] <mikko>	zfl code coverage
+| [Wednesday 16 February 2011] [10:13:22] <ianbarber>	pieterh_: fair point, i do appreciate sustrik's law :)
+| [Wednesday 16 February 2011] [10:13:33] <mikko>	hmm source code missing
+| [Wednesday 16 February 2011] [10:14:48] <pieterh_>	ianbarber, you can also apply Pieter's Response to Calls to Action
+| [Wednesday 16 February 2011] [10:15:01] <pieterh_>	"Excellent idea, Ian, I'm curious to see how you do it"
+| [Wednesday 16 February 2011] [10:15:31] <pieterh_>	Known in ruder groups as nypa :-)
+| [Wednesday 16 February 2011] [10:16:46] <pieterh_>	Actually, I do have a more positive idea
+| [Wednesday 16 February 2011] [10:17:33] <pieterh_>	When you see a question solved in a way you think is reusable, point me to it, and I'll cover it in the Guide at some stage
+| [Wednesday 16 February 2011] [10:17:47] <pieterh_>	there are a lot of chapters waiting to be written
+| [Wednesday 16 February 2011] [10:19:02] <ianbarber>	yeah, i think that's good. the guide really is the basis for shared understanding about it
+| [Wednesday 16 February 2011] [10:19:13] <mikko>	ah
+| [Wednesday 16 February 2011] [10:19:16] <mikko>	finally it works
+| [Wednesday 16 February 2011] [10:19:17] <mikko>	https://build.valokuva.org/job/test-gcov/7/cobertura/_default_/zfl_rpcd_c/
+| [Wednesday 16 February 2011] [10:19:35] <ianbarber>	i'm happy to do some patterns (at some point!) just wanted to check whether it fitted in with the direction you're taking the guide
+| [Wednesday 16 February 2011] [10:25:38] <pieterh_>	mikko: sweet!
+| [Wednesday 16 February 2011] [10:25:59] <pieterh_>	ianbarber, I guess the Guide aims to be the bible, eventually
+| [Wednesday 16 February 2011] [10:26:02] <pieterh_>	modest aims
+| [Wednesday 16 February 2011] [10:27:04] <pieterh_>	we can (and by 'we' I really mean 'you') start by collecting text on a wiki page
+| [Wednesday 16 February 2011] [10:27:19] <pieterh_>	that is trivial, shareable, reusable
+| [Wednesday 16 February 2011] [10:27:42] <pieterh_>	join the zero.mq (great name) wiki if you're not already on it, start a docs:patterns page...
+| [Wednesday 16 February 2011] [10:27:47] <ianbarber>	yeah. i think the tricky thing with the guide is balancing it for new users, and for experienced ones
+| [Wednesday 16 February 2011] [10:28:06] <ianbarber>	yep, i'm on it, will do
+| [Wednesday 16 February 2011] [10:28:07] <pieterh_>	no problem, really... start with simple stuff, get more advanced as you go along
+| [Wednesday 16 February 2011] [10:28:30] <pieterh_>	patterns would be like a cookbook, stand alone section, with some good indexing
+| [Wednesday 16 February 2011] [10:28:33] <ianbarber>	yeah
+| [Wednesday 16 February 2011] [10:28:55] <ianbarber>	that's pretty much the idea, just to have a concise example of different interaction models really
+| [Wednesday 16 February 2011] [10:29:08] <pieterh_>	even copy/paste of solutions from the email list is a good start
+| [Wednesday 16 February 2011] [10:29:22] <pieterh_>	don't worry about producing prose, that's my speciality
+| [Wednesday 16 February 2011] [10:42:44] <mikko>	hi Steve-o 
+| [Wednesday 16 February 2011] [10:42:55] <Steve-o>	hi mikko
+| [Wednesday 16 February 2011] [10:43:59] <Steve-o>	working on new house this week, a foreclosure so many minor issues :/
+| [Wednesday 16 February 2011] [10:44:16] <Steve-o>	back in HK next week and back to work
+| [Wednesday 16 February 2011] [10:44:36] <mikko>	is your house in the states?
+| [Wednesday 16 February 2011] [10:44:47] <Steve-o>	upstate NY
+| [Wednesday 16 February 2011] [10:45:11] <mikko>	are you moving there?
+| [Wednesday 16 February 2011] [10:45:24] <Steve-o>	near Martha Stewart is about the only notable point
+| [Wednesday 16 February 2011] [10:46:18] <Steve-o>	eventually moving there, house prices very cheap so good time to buy
+| [Wednesday 16 February 2011] [10:46:47] <Steve-o>	I have another year for my greencard it looks
+| [Wednesday 16 February 2011] [10:48:40] <Steve-o>	so what is the status on autoconf in zeromq, anymore changes required?
+| [Wednesday 16 February 2011] [10:49:52] <mikko>	i think we should get 2.1.0 out before refactoring the openpgm part
+| [Wednesday 16 February 2011] [10:49:58] <mikko>	it seems to be working well with openpgm trunk
+| [Wednesday 16 February 2011] [10:50:09] <mikko>	some open issues to solve but in general good
+| [Wednesday 16 February 2011] [10:50:33] <mikko>	one of them is how to link openpgm if zeromq invokes openpgm built?
+| [Wednesday 16 February 2011] [10:50:35] <mikko>	build*
+| [Wednesday 16 February 2011] [10:50:51] <mikko>	install openpgm.so and use the shared lib?
+| [Wednesday 16 February 2011] [10:51:04] <mikko>	use the object files directly?
+| [Wednesday 16 February 2011] [10:51:05] <mikko>	etc
+| [Wednesday 16 February 2011] [10:51:33] <Steve-o>	good question, distros would like shared libs, 
+| [Wednesday 16 February 2011] [10:51:43] <mikko>	linking libpgm.a into libzmq.so works on linux (assuming libpgm.a is position independent code) but not portable
+| [Wednesday 16 February 2011] [10:52:16] <mikko>	yes, my only fear is the following scenario:
+| [Wednesday 16 February 2011] [10:52:17] <Steve-o>	which is why I don't have a dll on Windows
+| [Wednesday 16 February 2011] [10:52:53] <mikko>	user has libpgm installed, now installs zeromq with openpgm support, zeromq invokes openpgm build and overwrites the existing installation
+| [Wednesday 16 February 2011] [10:54:34] <Steve-o>	well a common solution I have seen to that is to install the dependent library in a sub-directory of the product build instead of the OS preferred location
+| [Wednesday 16 February 2011] [10:55:31] <mikko>	but distros dont like rpath 
+| [Wednesday 16 February 2011] [10:55:38] <Steve-o>	For convenience prefer static libraries but allow distributions to use shared libraries.
+| [Wednesday 16 February 2011] [10:55:58] <Steve-o>	so out of the tarball build libpgm.a but allow configure options for libpgm.so
+| [Wednesday 16 February 2011] [10:56:20] <mikko>	but how to use the libpgm.a ?
+| [Wednesday 16 February 2011] [10:56:35] <mikko>	.a inside .so is not really portable
+| [Wednesday 16 February 2011] [10:56:55] <Steve-o>	really?  where isn't it valid?
+| [Wednesday 16 February 2011] [10:57:11] <mikko>	i can check, i did a lot of googling on this
+| [Wednesday 16 February 2011] [11:01:24] <mikko>	hp-ux seems to be one
+| [Wednesday 16 February 2011] [11:01:31] <mikko>	is that even supported by openpgm?
+| [Wednesday 16 February 2011] [11:01:55] <Steve-o>	not yet
+| [Wednesday 16 February 2011] [11:02:03] <mikko>	Libtool convenience library
+| [Wednesday 16 February 2011] [11:02:07] <mikko>	sounds like a solution
+| [Wednesday 16 February 2011] [11:02:09] <mikko>	http://sourceware.org/autobook/autobook/autobook_92.html
+| [Wednesday 16 February 2011] [11:02:24] <mikko>	groups together a set of object files
+| [Wednesday 16 February 2011] [11:02:30] <Steve-o>	that's what zeromq is using now
+| [Wednesday 16 February 2011] [11:03:06] <mikko>	but on different side of the fence
+| [Wednesday 16 February 2011] [11:04:09] <Steve-o>	let me read up on HPUX, v10 was fine as I remember they broke various things with 11
+| [Wednesday 16 February 2011] [11:04:35] <mikko>	Steve-o: how does bundling convenience lib on openpgm side sound like?
+| [Wednesday 16 February 2011] [11:04:42] <mikko>	and then zeromq links that
+| [Wednesday 16 February 2011] [11:04:56] <mikko>	i could at least investigate this as it seems like a portable option
+| [Wednesday 16 February 2011] [11:05:46] <Steve-o>	ok, if you can provide the code, I'm not sure how this is supposed to work with two different projects
+| [Wednesday 16 February 2011] [11:06:10] <mikko>	the ultimate goal i guess is to have both as shared libraries provided by distros
+| [Wednesday 16 February 2011] [11:06:19] <mikko>	but in the meanwhile convenience lib sounds ok
+| [Wednesday 16 February 2011] [11:06:26] <mikko>	i'll put this on my ever growing todo list
+| [Wednesday 16 February 2011] [11:07:04] <mikko>	at least i got ZFL code coverage working today
+| [Wednesday 16 February 2011] [11:08:06] <Steve-o>	using gcov?
+| [Wednesday 16 February 2011] [11:08:55] <mikko>	yes
+| [Wednesday 16 February 2011] [11:09:25] <mikko>	http://build.valokuva.org/job/test-gcov/7/cobertura/_default_/
+| [Wednesday 16 February 2011] [11:12:40] <Steve-o>	nice, it's tedious getting those percentages higher though
+| [Wednesday 16 February 2011] [11:13:50] <mikko>	true. you would almost need to preload a malloc implementation that fails randomly
+| [Wednesday 16 February 2011] [11:13:54] <mikko>	to test all asserts
+| [Wednesday 16 February 2011] [11:14:04] <mikko>	and even then it would be very random
+| [Wednesday 16 February 2011] [11:15:00] <mikko>	might add same thing for zeromq later as well
+| [Wednesday 16 February 2011] [11:17:08] <cremes>	pieterh: ping... where is "zhelpers.h"? i can't compile your mailbugz.c test without it

@@ -925,14 +925,14 @@
 <div class="line">[Saturday 05 February 2011] [06:13:30] &lt;sustrik&gt;      Guthur: i assume there&#8217;s an assertion there</div>
 <div class="line">[Saturday 05 February 2011] [06:13:33] &lt;sustrik&gt;      not sure</div>
 <div class="line">[Saturday 05 February 2011] [06:22:24] &lt;Guthur&gt;       right, assert(_engine)</div>
-<div class="line">[Saturday 05 February 2011] [06:22:35] &lt;Guthur&gt;       or <a href="#id25"><span class="problematic" id="id26">engine_</span></a> rather, let me find the line</div>
+<div class="line">[Saturday 05 February 2011] [06:22:35] &lt;Guthur&gt;       or <a href="#id29"><span class="problematic" id="id30">engine_</span></a> rather, let me find the line</div>
 <div class="line">[Saturday 05 February 2011] [06:22:47] &lt;Guthur&gt;       it was on that stack trace I posted yesterday</div>
 <div class="line">[Saturday 05 February 2011] [06:25:15] &lt;Guthur&gt;       I personally feel it should be reasonably high priority bug, having clients being able to crash the server so easily is not good</div>
 <div class="line">[Saturday 05 February 2011] [06:26:05] &lt;Guthur&gt;       and from what I have experienced the server app will not even receive reasonable feedback on the error</div>
 <div class="line">[Saturday 05 February 2011] [06:26:39] &lt;sustrik&gt;      yup, feel free to fix it</div>
-<div class="line">[Saturday 05 February 2011] [06:29:56] &lt;Guthur&gt;       the assert in question is zmq_assert (<a href="#id27"><span class="problematic" id="id28">engine_</span></a>) in zmq::session_t::process_attach</div>
-<div class="line">[Saturday 05 February 2011] [06:34:19] &lt;Guthur&gt;       <a href="#id29"><span class="problematic" id="id30">peer_identity_</span></a> would be the identity, correct?</div>
-<div class="line">[Saturday 05 February 2011] [06:37:43] &lt;sustrik&gt;      <a href="#id31"><span class="problematic" id="id32">peer_identity_</span></a> is the identity of the peer socket</div>
+<div class="line">[Saturday 05 February 2011] [06:29:56] &lt;Guthur&gt;       the assert in question is zmq_assert (<a href="#id31"><span class="problematic" id="id32">engine_</span></a>) in zmq::session_t::process_attach</div>
+<div class="line">[Saturday 05 February 2011] [06:34:19] &lt;Guthur&gt;       <a href="#id33"><span class="problematic" id="id34">peer_identity_</span></a> would be the identity, correct?</div>
+<div class="line">[Saturday 05 February 2011] [06:37:43] &lt;sustrik&gt;      <a href="#id35"><span class="problematic" id="id36">peer_identity_</span></a> is the identity of the peer socket</div>
 <div class="line">[Saturday 05 February 2011] [06:51:35] &lt;Guthur&gt;       I&#8217;m going to slot this on to my todo list, but lack of inner zeromq knowledge will make it hard to find</div>
 <div class="line">[Saturday 05 February 2011] [06:52:00] &lt;Guthur&gt;       I want to add a couple of things to clrzmq2 today</div>
 <div class="line">[Saturday 05 February 2011] [06:54:17] &lt;Guthur&gt;       I was actually thinking of adding a clrzmq-extensions project, with a special form of queue device, and generic send/recv with .Net serialization</div>
@@ -1610,7 +1610,7 @@
 <div class="line">[Monday 07 February 2011] [11:52:11] &lt;ianbarber&gt;      hmm</div>
 <div class="line">[Monday 07 February 2011] [11:52:13] &lt;ianbarber&gt;      sessions_sync.lock ();</div>
 <div class="line">[Monday 07 February 2011] [11:52:13] &lt;ianbarber&gt;          bool registered = sessions.insert (</div>
-<div class="line">[Monday 07 February 2011] [11:52:13] &lt;ianbarber&gt;              sessions_t::value_type (<a href="#id33"><span class="problematic" id="id34">name_</span></a>, <a href="#id35"><span class="problematic" id="id36">session_</span></a>)).second;</div>
+<div class="line">[Monday 07 February 2011] [11:52:13] &lt;ianbarber&gt;              sessions_t::value_type (<a href="#id37"><span class="problematic" id="id38">name_</span></a>, <a href="#id39"><span class="problematic" id="id40">session_</span></a>)).second;</div>
 <div class="line">[Monday 07 February 2011] [11:52:13] &lt;ianbarber&gt;          sessions_sync.unlock ();</div>
 <div class="line">[Monday 07 February 2011] [11:52:14] &lt;ianbarber&gt;          return registered;</div>
 <div class="line">[Monday 07 February 2011] [11:52:42] &lt;ianbarber&gt;      just google, the first ref I found for stl map said insert would return the inserted thing, or an operator</div>
@@ -2369,10 +2369,10 @@
 <div class="line">[Wednesday 09 February 2011] [01:41:06] &lt;ianbarber&gt;   :)</div>
 <div class="line">[Wednesday 09 February 2011] [01:42:12] &lt;gambi&gt;       ianbarber: thx for your help. let me try and write that out. :)</div>
 <div class="line">[Wednesday 09 February 2011] [01:42:27] &lt;ianbarber&gt;   no worries</div>
-<div class="line">[Wednesday 09 February 2011] [03:11:26] &lt;<a href="#id37"><span class="problematic" id="id38">andrewvc_</span></a>&gt;   I&#8217;ve been getting some weird zmq errs</div>
-<div class="line">[Wednesday 09 February 2011] [03:11:29] &lt;<a href="#id39"><span class="problematic" id="id40">andrewvc_</span></a>&gt;   I see at some point</div>
-<div class="line">[Wednesday 09 February 2011] [03:11:36] &lt;<a href="#id41"><span class="problematic" id="id42">andrewvc_</span></a>&gt;   [pid 24407] pipe([14, 15])              = 0</div>
-<div class="line">[Wednesday 09 February 2011] [03:12:32] &lt;<a href="#id43"><span class="problematic" id="id44">andrewvc_</span></a>&gt;   actually nm</div>
+<div class="line">[Wednesday 09 February 2011] [03:11:26] &lt;<a href="#id41"><span class="problematic" id="id42">andrewvc_</span></a>&gt;   I&#8217;ve been getting some weird zmq errs</div>
+<div class="line">[Wednesday 09 February 2011] [03:11:29] &lt;<a href="#id43"><span class="problematic" id="id44">andrewvc_</span></a>&gt;   I see at some point</div>
+<div class="line">[Wednesday 09 February 2011] [03:11:36] &lt;<a href="#id45"><span class="problematic" id="id46">andrewvc_</span></a>&gt;   [pid 24407] pipe([14, 15])              = 0</div>
+<div class="line">[Wednesday 09 February 2011] [03:12:32] &lt;<a href="#id47"><span class="problematic" id="id48">andrewvc_</span></a>&gt;   actually nm</div>
 <div class="line">[Wednesday 09 February 2011] [03:35:43] &lt;skysbird2&gt;   hi, buddies, lovely buddies</div>
 <div class="line">[Wednesday 09 February 2011] [03:35:49] &lt;skysbird2&gt;   i want to know</div>
 <div class="line">[Wednesday 09 February 2011] [03:36:02] &lt;skysbird2&gt;   why i cannot find the zmq_server file after i make install</div>
@@ -2427,26 +2427,26 @@
 <div class="line">[Wednesday 09 February 2011] [10:21:35] &lt;cremes&gt;      sustrik: i&#8217;ll try it out in a few hours; i&#8217;m in the middle of a refactoring and don&#8217;t want to interrupt it just yet</div>
 <div class="line">[Wednesday 09 February 2011] [10:21:45] &lt;cremes&gt;      i&#8217;ll post my results here</div>
 <div class="line">[Wednesday 09 February 2011] [10:22:17] &lt;sustrik&gt;     great, thanks</div>
-<div class="line">[Wednesday 09 February 2011] [10:52:10] &lt;<a href="#id45"><span class="problematic" id="id46">andrewvc_</span></a>&gt;   cremes: around?</div>
-<div class="line">[Wednesday 09 February 2011] [10:53:03] &lt;cremes&gt;      <a href="#id47"><span class="problematic" id="id48">andrewvc_</span></a>: yep, but a tad busy... got something quick?</div>
-<div class="line">[Wednesday 09 February 2011] [10:53:21] &lt;<a href="#id49"><span class="problematic" id="id50">andrewvc_</span></a>&gt;   mmm, just wondering if you&#8217;ve seen nbytes = -1 errors in ffi-rzmq before</div>
-<div class="line">[Wednesday 09 February 2011] [10:53:26] &lt;<a href="#id51"><span class="problematic" id="id52">andrewvc_</span></a>&gt;   err != -1  I mean</div>
-<div class="line">[Wednesday 09 February 2011] [10:53:40] &lt;<a href="#id53"><span class="problematic" id="id54">andrewvc_</span></a>&gt;   followed by libzmq quitting</div>
+<div class="line">[Wednesday 09 February 2011] [10:52:10] &lt;<a href="#id49"><span class="problematic" id="id50">andrewvc_</span></a>&gt;   cremes: around?</div>
+<div class="line">[Wednesday 09 February 2011] [10:53:03] &lt;cremes&gt;      <a href="#id51"><span class="problematic" id="id52">andrewvc_</span></a>: yep, but a tad busy... got something quick?</div>
+<div class="line">[Wednesday 09 February 2011] [10:53:21] &lt;<a href="#id53"><span class="problematic" id="id54">andrewvc_</span></a>&gt;   mmm, just wondering if you&#8217;ve seen nbytes = -1 errors in ffi-rzmq before</div>
+<div class="line">[Wednesday 09 February 2011] [10:53:26] &lt;<a href="#id55"><span class="problematic" id="id56">andrewvc_</span></a>&gt;   err != -1  I mean</div>
+<div class="line">[Wednesday 09 February 2011] [10:53:40] &lt;<a href="#id57"><span class="problematic" id="id58">andrewvc_</span></a>&gt;   followed by libzmq quitting</div>
 <div class="line">[Wednesday 09 February 2011] [10:53:57] &lt;cremes&gt;      yes, i&#8217;ve seen that assertion before...</div>
 <div class="line">[Wednesday 09 February 2011] [10:54:10] &lt;cremes&gt;      um... are you on latest master or are you using 2.1 release?</div>
-<div class="line">[Wednesday 09 February 2011] [10:54:14] &lt;<a href="#id55"><span class="problematic" id="id56">andrewvc_</span></a>&gt;   master</div>
-<div class="line">[Wednesday 09 February 2011] [10:54:28] &lt;<a href="#id57"><span class="problematic" id="id58">andrewvc_</span></a>&gt;   2.1 release doesn&#8217;t seem to work with FDs for me</div>
+<div class="line">[Wednesday 09 February 2011] [10:54:14] &lt;<a href="#id59"><span class="problematic" id="id60">andrewvc_</span></a>&gt;   master</div>
+<div class="line">[Wednesday 09 February 2011] [10:54:28] &lt;<a href="#id61"><span class="problematic" id="id62">andrewvc_</span></a>&gt;   2.1 release doesn&#8217;t seem to work with FDs for me</div>
 <div class="line">[Wednesday 09 February 2011] [10:54:57] &lt;cremes&gt;      interesting... i used to see that assertion on 2.1 release but i upgraded to master about a month ago and forgot about it</div>
 <div class="line">[Wednesday 09 February 2011] [10:55:14] &lt;cremes&gt;      is it reproducible or is it a heisenbug?</div>
 <div class="line">[Wednesday 09 February 2011] [10:55:32] &lt;cremes&gt;      also, are you on osx or linux?</div>
-<div class="line">[Wednesday 09 February 2011] [10:55:36] &lt;<a href="#id59"><span class="problematic" id="id60">andrewvc_</span></a>&gt;   linux</div>
-<div class="line">[Wednesday 09 February 2011] [10:55:42] &lt;<a href="#id61"><span class="problematic" id="id62">andrewvc_</span></a>&gt;   totally reproduces</div>
-<div class="line">[Wednesday 09 February 2011] [10:55:48] &lt;<a href="#id63"><span class="problematic" id="id64">andrewvc_</span></a>&gt;   can get it in this one exchange of messages</div>
-<div class="line">[Wednesday 09 February 2011] [10:55:51] &lt;<a href="#id65"><span class="problematic" id="id66">andrewvc_</span></a>&gt;   always the same message</div>
-<div class="line">[Wednesday 09 February 2011] [10:56:01] &lt;<a href="#id67"><span class="problematic" id="id68">andrewvc_</span></a>&gt;   I tried changing the message content, no diff</div>
+<div class="line">[Wednesday 09 February 2011] [10:55:36] &lt;<a href="#id63"><span class="problematic" id="id64">andrewvc_</span></a>&gt;   linux</div>
+<div class="line">[Wednesday 09 February 2011] [10:55:42] &lt;<a href="#id65"><span class="problematic" id="id66">andrewvc_</span></a>&gt;   totally reproduces</div>
+<div class="line">[Wednesday 09 February 2011] [10:55:48] &lt;<a href="#id67"><span class="problematic" id="id68">andrewvc_</span></a>&gt;   can get it in this one exchange of messages</div>
+<div class="line">[Wednesday 09 February 2011] [10:55:51] &lt;<a href="#id69"><span class="problematic" id="id70">andrewvc_</span></a>&gt;   always the same message</div>
+<div class="line">[Wednesday 09 February 2011] [10:56:01] &lt;<a href="#id71"><span class="problematic" id="id72">andrewvc_</span></a>&gt;   I tried changing the message content, no diff</div>
 <div class="line">[Wednesday 09 February 2011] [10:56:57] &lt;cremes&gt;      put up a gist and i&#8217;ll try to look at it later; i need to get back to work</div>
-<div class="line">[Wednesday 09 February 2011] [10:57:27] &lt;<a href="#id69"><span class="problematic" id="id70">andrewvc_</span></a>&gt;   cool, can do</div>
-<div class="line">[Wednesday 09 February 2011] [11:09:38] &lt;<a href="#id71"><span class="problematic" id="id72">andrewvc_</span></a>&gt;   sustrik around?</div>
+<div class="line">[Wednesday 09 February 2011] [10:57:27] &lt;<a href="#id73"><span class="problematic" id="id74">andrewvc_</span></a>&gt;   cool, can do</div>
+<div class="line">[Wednesday 09 February 2011] [11:09:38] &lt;<a href="#id75"><span class="problematic" id="id76">andrewvc_</span></a>&gt;   sustrik around?</div>
 <div class="line">[Wednesday 09 February 2011] [11:20:50] &lt;Guthur&gt;      When the it says: Never initialize the same zmq_msg_t twice.</div>
 <div class="line">[Wednesday 09 February 2011] [11:20:58] &lt;Guthur&gt;      does that mean reuse the msg</div>
 <div class="line">[Wednesday 09 February 2011] [11:21:49] &lt;Guthur&gt;      or does it mean close and then init</div>
@@ -2493,7 +2493,7 @@
 <div class="line">[Wednesday 09 February 2011] [11:34:08] &lt;andrewvc&gt;    then it just stops</div>
 <div class="line">[Wednesday 09 February 2011] [11:34:15] &lt;andrewvc&gt;    but it&#8217;s reproducible</div>
 <div class="line">[Wednesday 09 February 2011] [11:34:25] &lt;andrewvc&gt;    consistently</div>
-<div class="line">[Wednesday 09 February 2011] [11:34:29] &lt;pieterh&gt;     are you using assertions on all <a href="#id73"><span class="problematic" id="id74">zmq_</span></a> calls?</div>
+<div class="line">[Wednesday 09 February 2011] [11:34:29] &lt;pieterh&gt;     are you using assertions on all <a href="#id77"><span class="problematic" id="id78">zmq_</span></a> calls?</div>
 <div class="line">[Wednesday 09 February 2011] [11:35:30] &lt;pieterh&gt;     clearly the socket that zmq is trying to read from is invalid</div>
 <div class="line">[Wednesday 09 February 2011] [11:35:45] &lt;andrewvc&gt;    hmmm, lemme see, I&#8217;m using the ruby zeromq library</div>
 <div class="line">[Wednesday 09 February 2011] [11:35:51] &lt;andrewvc&gt;    I&#8217;ve got the source open...</div>
@@ -2582,9 +2582,9 @@
 <div class="line">[Wednesday 09 February 2011] [16:48:05] &lt;sustrik&gt;     class X</div>
 <div class="line">[Wednesday 09 February 2011] [16:48:06] &lt;sustrik&gt;     {</div>
 <div class="line">[Wednesday 09 February 2011] [16:48:14] &lt;sustrik&gt;        message_t msg;</div>
-<div class="line">[Wednesday 09 February 2011] [16:48:28] &lt;sustrik&gt;         void get_message (message_t <a href="#id9"><span class="problematic" id="id10">*</span></a><a href="#id75"><span class="problematic" id="id76">msg_</span></a>)</div>
+<div class="line">[Wednesday 09 February 2011] [16:48:28] &lt;sustrik&gt;         void get_message (message_t <a href="#id9"><span class="problematic" id="id10">*</span></a><a href="#id79"><span class="problematic" id="id80">msg_</span></a>)</div>
 <div class="line">[Wednesday 09 February 2011] [16:48:30] &lt;sustrik&gt;         {</div>
-<div class="line">[Wednesday 09 February 2011] [16:48:43] &lt;sustrik&gt;             zmq_msg_move (<a href="#id77"><span class="problematic" id="id78">msg_</span></a>, &amp;msg);</div>
+<div class="line">[Wednesday 09 February 2011] [16:48:43] &lt;sustrik&gt;             zmq_msg_move (<a href="#id81"><span class="problematic" id="id82">msg_</span></a>, &amp;msg);</div>
 <div class="line">[Wednesday 09 February 2011] [16:48:45] &lt;sustrik&gt;         }</div>
 <div class="line">[Wednesday 09 February 2011] [16:48:46] &lt;sustrik&gt;     }</div>
 <div class="line">[Wednesday 09 February 2011] [16:48:54] &lt;Guthur&gt;      oh ok, cheers</div>
@@ -2619,16 +2619,16 @@
 <div class="line">[Wednesday 09 February 2011] [17:07:57] &lt;sustrik&gt;     not sure whether there&#8217;s a way to do it in regular intervals</div>
 <div class="line">[Wednesday 09 February 2011] [17:09:15] &lt;Rich_Morin&gt;  I would love to try using ZeroMQ under SketchUp&#8217;s Ruby.  However, I have no idea how to make it work.  Any Rubyists around?</div>
 <div class="line">[Wednesday 09 February 2011] [17:09:45] &lt;Rich_Morin&gt;  The Ruby version (1.8.6, with limited library support) doesn&#8217;t have sockets, but I&#8217;ve been able to construct a message-based protocol using EM, message files, and WebSockets.</div>
-<div class="line">[Wednesday 09 February 2011] [17:10:13] &lt;mikko&gt;       Rich_Morin: cremes and <a href="#id79"><span class="problematic" id="id80">andrewvc_</span></a> are ruby people</div>
+<div class="line">[Wednesday 09 February 2011] [17:10:13] &lt;mikko&gt;       Rich_Morin: cremes and <a href="#id83"><span class="problematic" id="id84">andrewvc_</span></a> are ruby people</div>
 <div class="line">[Wednesday 09 February 2011] [17:10:14] &lt;mikko&gt;       i think</div>
-<div class="line">[Wednesday 09 February 2011] [17:10:24] &lt;<a href="#id81"><span class="problematic" id="id82">andrewvc_</span></a>&gt;   yeah</div>
-<div class="line">[Wednesday 09 February 2011] [17:10:50] &lt;<a href="#id83"><span class="problematic" id="id84">andrewvc_</span></a>&gt;   1.8.7 doesn&#8217;t work right</div>
-<div class="line">[Wednesday 09 February 2011] [17:10:58] &lt;<a href="#id85"><span class="problematic" id="id86">andrewvc_</span></a>&gt;   the threading model is broken from what I&#8217;ve heard</div>
-<div class="line">[Wednesday 09 February 2011] [17:11:10] &lt;<a href="#id87"><span class="problematic" id="id88">andrewvc_</span></a>&gt;   I&#8217;ve tried it, it seems to work, then a couple seconds later acts all weird and crashy</div>
+<div class="line">[Wednesday 09 February 2011] [17:10:24] &lt;<a href="#id85"><span class="problematic" id="id86">andrewvc_</span></a>&gt;   yeah</div>
+<div class="line">[Wednesday 09 February 2011] [17:10:50] &lt;<a href="#id87"><span class="problematic" id="id88">andrewvc_</span></a>&gt;   1.8.7 doesn&#8217;t work right</div>
+<div class="line">[Wednesday 09 February 2011] [17:10:58] &lt;<a href="#id89"><span class="problematic" id="id90">andrewvc_</span></a>&gt;   the threading model is broken from what I&#8217;ve heard</div>
+<div class="line">[Wednesday 09 February 2011] [17:11:10] &lt;<a href="#id91"><span class="problematic" id="id92">andrewvc_</span></a>&gt;   I&#8217;ve tried it, it seems to work, then a couple seconds later acts all weird and crashy</div>
 <div class="line">[Wednesday 09 February 2011] [17:11:26] &lt;Rich_Morin&gt;  Threading isn&#8217;t really an option, in any case. However, you can set up a periodic timer.</div>
-<div class="line">[Wednesday 09 February 2011] [17:11:36] &lt;<a href="#id89"><span class="problematic" id="id90">andrewvc_</span></a>&gt;   well, even w/o threading 1.8.7 is weird</div>
+<div class="line">[Wednesday 09 February 2011] [17:11:36] &lt;<a href="#id93"><span class="problematic" id="id94">andrewvc_</span></a>&gt;   well, even w/o threading 1.8.7 is weird</div>
 <div class="line">[Wednesday 09 February 2011] [17:12:40] &lt;mikko&gt;       sustrik: The virtual systems offered span the HP portfolio. Available operating systems include HP-UX, OpenVMS, Microsoft Windows, Red Hat Enterprise Linux and Novell SuSE Linux.</div>
-<div class="line">[Wednesday 09 February 2011] [17:12:57] &lt;<a href="#id91"><span class="problematic" id="id92">andrewvc_</span></a>&gt;   there&#8217;s a branch of rbzmq by method_missing, that&#8217;s called 1.8.7 threads. I haven&#8217;t tried it, not even sure if it&#8217;s considered usable by anyone</div>
+<div class="line">[Wednesday 09 February 2011] [17:12:57] &lt;<a href="#id95"><span class="problematic" id="id96">andrewvc_</span></a>&gt;   there&#8217;s a branch of rbzmq by method_missing, that&#8217;s called 1.8.7 threads. I haven&#8217;t tried it, not even sure if it&#8217;s considered usable by anyone</div>
 <div class="line">[Wednesday 09 February 2011] [17:13:17] &lt;sustrik&gt;     mikko: yep, but i think you have to book the time upfront</div>
 <div class="line">[Wednesday 09 February 2011] [17:13:31] &lt;sustrik&gt;     not sure whether you can book periodic uptime</div>
 <div class="line">[Wednesday 09 February 2011] [17:14:21] &lt;mikko&gt;       i guess it wouldn&#8217;t hurt to ask if anyone has contacts there</div>
@@ -2638,7 +2638,7 @@
 <div class="line">[Wednesday 09 February 2011] [17:15:15] &lt;mikko&gt;       OpenVMS and HP-UX are both support iirc</div>
 <div class="line">[Wednesday 09 February 2011] [17:15:21] &lt;mikko&gt;       by zeromq i mean</div>
 <div class="line">[Wednesday 09 February 2011] [17:15:41] &lt;sustrik&gt;     yup, but getting hudson work on openvms may be tricky</div>
-<div class="line">[Wednesday 09 February 2011] [17:15:41] &lt;Rich_Morin&gt;  <a href="#id93"><span class="problematic" id="id94">andrewvc_</span></a>: Does  ZeroMQ support a documented socket protocol?  IE, Can I use EM to proxy the messages via a socket?</div>
+<div class="line">[Wednesday 09 February 2011] [17:15:41] &lt;Rich_Morin&gt;  <a href="#id97"><span class="problematic" id="id98">andrewvc_</span></a>: Does  ZeroMQ support a documented socket protocol?  IE, Can I use EM to proxy the messages via a socket?</div>
 <div class="line">[Wednesday 09 February 2011] [17:15:58] &lt;sustrik&gt;     anyway, i introduce you to the guys doing openvms port</div>
 <div class="line">[Wednesday 09 February 2011] [17:16:05] &lt;sustrik&gt;     they are both hp engineers</div>
 <div class="line">[Wednesday 09 February 2011] [17:16:12] &lt;sustrik&gt;     wait a sec</div>
@@ -2666,7 +2666,7 @@
 <div class="line">[Wednesday 09 February 2011] [18:03:33] &lt;cremes&gt;      oh, i see</div>
 <div class="line">[Wednesday 09 February 2011] [18:04:01] &lt;cremes&gt;      well, zmqmachine is just a thin wrapper around the ffi-rzmq gem which itself is a thin wrapper around libzmq</div>
 <div class="line">[Wednesday 09 February 2011] [18:04:23] &lt;cremes&gt;      i assume the sketchup runtime can load C extensions if you are playing with EM</div>
-<div class="line">[Wednesday 09 February 2011] [18:04:53] &lt;cremes&gt;      <a href="#id95"><span class="problematic" id="id96">andrewvc_</span></a> has been working on a companion gem to ffi-rzmq so that 0mq sockets can be used from EM</div>
+<div class="line">[Wednesday 09 February 2011] [18:04:53] &lt;cremes&gt;      <a href="#id99"><span class="problematic" id="id100">andrewvc_</span></a> has been working on a companion gem to ffi-rzmq so that 0mq sockets can be used from EM</div>
 <div class="line">[Wednesday 09 February 2011] [18:04:57] &lt;Rich_Morin&gt;  ouch.  Even if it&#8217;s possible, it would be nice to avoid.</div>
 <div class="line">[Wednesday 09 February 2011] [18:05:11] &lt;cremes&gt;      what ouch?</div>
 <div class="line">[Wednesday 09 February 2011] [18:06:17] &lt;Rich_Morin&gt;  SketchUp is used by modelers.  I&#8217;d like to keep things as lightweight as possible.</div>
@@ -4475,54 +4475,54 @@
 <div class="line">[Tuesday 15 February 2011] [08:51:38] &lt;sustrik&gt;       write a minimal test case then and report it as a bug</div>
 <div class="line">[Tuesday 15 February 2011] [08:51:56] &lt;sustrik&gt;       POLLIN should be signaled only if there&#8217;s a message available for reading</div>
 <div class="line">[Tuesday 15 February 2011] [08:52:05] &lt;zchrish&gt;       ok; let me test a minimal case.</div>
-<div class="line">[Tuesday 15 February 2011] [08:52:46] &lt;mikko&gt; <a href="#id97"><span class="problematic" id="id98">pieterh_</span></a>: i&#8217;ve been ripping the guts out from zfl builds</div>
-<div class="line">[Tuesday 15 February 2011] [08:53:03] &lt;<a href="#id99"><span class="problematic" id="id100">pieterh_</span></a>&gt;      mikko: nice, I think... :-)</div>
+<div class="line">[Tuesday 15 February 2011] [08:52:46] &lt;mikko&gt; <a href="#id101"><span class="problematic" id="id102">pieterh_</span></a>: i&#8217;ve been ripping the guts out from zfl builds</div>
+<div class="line">[Tuesday 15 February 2011] [08:53:03] &lt;<a href="#id103"><span class="problematic" id="id104">pieterh_</span></a>&gt;      mikko: nice, I think... :-)</div>
 <div class="line">[Tuesday 15 February 2011] [08:53:16] &lt;mikko&gt; there was quite a lot of things that weren&#8217;t seem to be needed</div>
 <div class="line">[Tuesday 15 February 2011] [08:53:39] &lt;mikko&gt; like checks for C++ compiler, atomic ops, linking against socket libs etc</div>
 <div class="line">[Tuesday 15 February 2011] [08:53:54] &lt;mikko&gt; tested linux, mingw32 and mac os x this far</div>
 <div class="line">[Tuesday 15 February 2011] [08:54:05] &lt;mikko&gt; solaris and freebsd to go from platforms i have access to</div>
-<div class="line">[Tuesday 15 February 2011] [08:54:10] &lt;<a href="#id101"><span class="problematic" id="id102">pieterh_</span></a>&gt;      sounds great</div>
+<div class="line">[Tuesday 15 February 2011] [08:54:10] &lt;<a href="#id105"><span class="problematic" id="id106">pieterh_</span></a>&gt;      sounds great</div>
 <div class="line">[Tuesday 15 February 2011] [08:54:25] &lt;mikko&gt; also, make check now runs zfl_selftest</div>
-<div class="line">[Tuesday 15 February 2011] [08:54:49] &lt;<a href="#id103"><span class="problematic" id="id104">pieterh_</span></a>&gt;      is that the normal action, there&#8217;s no &#8220;make test&#8221;?</div>
+<div class="line">[Tuesday 15 February 2011] [08:54:49] &lt;<a href="#id107"><span class="problematic" id="id108">pieterh_</span></a>&gt;      is that the normal action, there&#8217;s no &#8220;make test&#8221;?</div>
 <div class="line">[Tuesday 15 February 2011] [08:55:00] &lt;mikko&gt; make check seems to be default action</div>
-<div class="line">[Tuesday 15 February 2011] [08:55:29] &lt;<a href="#id105"><span class="problematic" id="id106">pieterh_</span></a>&gt;      how about I give you commit access to the git?</div>
-<div class="line">[Tuesday 15 February 2011] [08:55:37] &lt;<a href="#id107"><span class="problematic" id="id108">pieterh_</span></a>&gt;      that seems simpler than pull requests</div>
-<div class="line">[Tuesday 15 February 2011] [08:55:55] &lt;<a href="#id109"><span class="problematic" id="id110">pieterh_</span></a>&gt;      are you committer on zmq?</div>
+<div class="line">[Tuesday 15 February 2011] [08:55:29] &lt;<a href="#id109"><span class="problematic" id="id110">pieterh_</span></a>&gt;      how about I give you commit access to the git?</div>
+<div class="line">[Tuesday 15 February 2011] [08:55:37] &lt;<a href="#id111"><span class="problematic" id="id112">pieterh_</span></a>&gt;      that seems simpler than pull requests</div>
+<div class="line">[Tuesday 15 February 2011] [08:55:55] &lt;<a href="#id113"><span class="problematic" id="id114">pieterh_</span></a>&gt;      are you committer on zmq?</div>
 <div class="line">[Tuesday 15 February 2011] [08:56:02] &lt;mikko&gt; no, im not</div>
-<div class="line">[Tuesday 15 February 2011] [08:56:21] &lt;<a href="#id111"><span class="problematic" id="id112">pieterh_</span></a>&gt;      how would you like to work? I&#8217;m happy giving you commit access</div>
+<div class="line">[Tuesday 15 February 2011] [08:56:21] &lt;<a href="#id115"><span class="problematic" id="id116">pieterh_</span></a>&gt;      how would you like to work? I&#8217;m happy giving you commit access</div>
 <div class="line">[Tuesday 15 February 2011] [08:56:39] &lt;mikko&gt; well, let&#8217;s see whether you agree my thinking here:</div>
-<div class="line">[Tuesday 15 February 2011] [08:57:08]          * <a href="#id113"><span class="problematic" id="id114">pieterh_</span></a> listens</div>
+<div class="line">[Tuesday 15 February 2011] [08:57:08]          * <a href="#id117"><span class="problematic" id="id118">pieterh_</span></a> listens</div>
 <div class="line">[Tuesday 15 February 2011] [08:57:37] &lt;mikko&gt; my thinking was to rip out as much as possible to make things maintainable and then fix per platform if there are bugs on let&#8217;s say very old qnx</div>
 <div class="line">[Tuesday 15 February 2011] [08:57:47] &lt;mikko&gt; example:</div>
 <div class="line">[Tuesday 15 February 2011] [08:58:05] &lt;mikko&gt; mac os x was set to build without -pedantic even though ZFL builds fine with -pedantic on mac os x</div>
-<div class="line">[Tuesday 15 February 2011] [08:59:01] &lt;<a href="#id115"><span class="problematic" id="id116">pieterh_</span></a>&gt;      well, you are far more expert in this than me</div>
+<div class="line">[Tuesday 15 February 2011] [08:59:01] &lt;<a href="#id119"><span class="problematic" id="id120">pieterh_</span></a>&gt;      well, you are far more expert in this than me</div>
 <div class="line">[Tuesday 15 February 2011] [08:59:03] &lt;mikko&gt; sparc cpu optimization:</div>
 <div class="line">[Tuesday 15 February 2011] [08:59:04] &lt;mikko&gt; -mcpu=v9</div>
 <div class="line">[Tuesday 15 February 2011] [08:59:07] &lt;mikko&gt; is that really needed?</div>
-<div class="line">[Tuesday 15 February 2011] [08:59:30] &lt;<a href="#id117"><span class="problematic" id="id118">pieterh_</span></a>&gt;      :-)</div>
-<div class="line">[Tuesday 15 February 2011] [08:59:43] &lt;<a href="#id119"><span class="problematic" id="id120">pieterh_</span></a>&gt;      I hope you&#8217;re not asking me</div>
+<div class="line">[Tuesday 15 February 2011] [08:59:30] &lt;<a href="#id121"><span class="problematic" id="id122">pieterh_</span></a>&gt;      :-)</div>
+<div class="line">[Tuesday 15 February 2011] [08:59:43] &lt;<a href="#id123"><span class="problematic" id="id124">pieterh_</span></a>&gt;      I hope you&#8217;re not asking me</div>
 <div class="line">[Tuesday 15 February 2011] [08:59:47] &lt;mikko&gt; i am</div>
 <div class="line">[Tuesday 15 February 2011] [08:59:50] &lt;mikko&gt; it&#8217;s in the build :)</div>
-<div class="line">[Tuesday 15 February 2011] [09:00:03] &lt;<a href="#id121"><span class="problematic" id="id122">pieterh_</span></a>&gt;      well, mikko, my process is kind of different</div>
-<div class="line">[Tuesday 15 February 2011] [09:00:18] &lt;<a href="#id123"><span class="problematic" id="id124">pieterh_</span></a>&gt;      copy some code, hack it till it works, forget about it again asap, wait for patches</div>
+<div class="line">[Tuesday 15 February 2011] [09:00:03] &lt;<a href="#id125"><span class="problematic" id="id126">pieterh_</span></a>&gt;      well, mikko, my process is kind of different</div>
+<div class="line">[Tuesday 15 February 2011] [09:00:18] &lt;<a href="#id127"><span class="problematic" id="id128">pieterh_</span></a>&gt;      copy some code, hack it till it works, forget about it again asap, wait for patches</div>
 <div class="line">[Tuesday 15 February 2011] [09:00:27] &lt;mikko&gt; i can agree with that</div>
-<div class="line">[Tuesday 15 February 2011] [09:00:35] &lt;<a href="#id125"><span class="problematic" id="id126">pieterh_</span></a>&gt;      specifically, for the tooling, which I don&#8217;t want to be expert in</div>
-<div class="line">[Tuesday 15 February 2011] [09:01:29] &lt;<a href="#id127"><span class="problematic" id="id128">pieterh_</span></a>&gt;      so most of what is there I copied, and left unchanged because it didn&#8217;t break things</div>
-<div class="line">[Tuesday 15 February 2011] [09:02:04] &lt;<a href="#id129"><span class="problematic" id="id130">pieterh_</span></a>&gt;      clearly someone who knows their stuff, like you, would rip most of it out</div>
-<div class="line">[Tuesday 15 February 2011] [09:02:10] &lt;<a href="#id131"><span class="problematic" id="id132">pieterh_</span></a>&gt;      which is perfect</div>
-<div class="line">[Tuesday 15 February 2011] [09:03:07] &lt;<a href="#id133"><span class="problematic" id="id134">pieterh_</span></a>&gt;      what&#8217;s your github id?</div>
-<div class="line">[Tuesday 15 February 2011] [09:03:50] &lt;<a href="#id135"><span class="problematic" id="id136">pieterh_</span></a>&gt;      plain mikko?</div>
+<div class="line">[Tuesday 15 February 2011] [09:00:35] &lt;<a href="#id129"><span class="problematic" id="id130">pieterh_</span></a>&gt;      specifically, for the tooling, which I don&#8217;t want to be expert in</div>
+<div class="line">[Tuesday 15 February 2011] [09:01:29] &lt;<a href="#id131"><span class="problematic" id="id132">pieterh_</span></a>&gt;      so most of what is there I copied, and left unchanged because it didn&#8217;t break things</div>
+<div class="line">[Tuesday 15 February 2011] [09:02:04] &lt;<a href="#id133"><span class="problematic" id="id134">pieterh_</span></a>&gt;      clearly someone who knows their stuff, like you, would rip most of it out</div>
+<div class="line">[Tuesday 15 February 2011] [09:02:10] &lt;<a href="#id135"><span class="problematic" id="id136">pieterh_</span></a>&gt;      which is perfect</div>
+<div class="line">[Tuesday 15 February 2011] [09:03:07] &lt;<a href="#id137"><span class="problematic" id="id138">pieterh_</span></a>&gt;      what&#8217;s your github id?</div>
+<div class="line">[Tuesday 15 February 2011] [09:03:50] &lt;<a href="#id139"><span class="problematic" id="id140">pieterh_</span></a>&gt;      plain mikko?</div>
 <div class="line">[Tuesday 15 February 2011] [09:03:51] &lt;mikko&gt; mkoppanen</div>
 <div class="line">[Tuesday 15 February 2011] [09:04:03] &lt;Guthur&gt;        sustrik: the completion key will take care of that</div>
-<div class="line">[Tuesday 15 February 2011] [09:04:17] &lt;<a href="#id137"><span class="problematic" id="id138">pieterh_</span></a>&gt;      ok, mikko, you are now committer on zfl</div>
+<div class="line">[Tuesday 15 February 2011] [09:04:17] &lt;<a href="#id141"><span class="problematic" id="id142">pieterh_</span></a>&gt;      ok, mikko, you are now committer on zfl</div>
 <div class="line">[Tuesday 15 February 2011] [09:04:20] &lt;Guthur&gt;        it is returned as part of the OVERLAPPED_ENTRY struct</div>
 <div class="line">[Tuesday 15 February 2011] [09:04:33] &lt;mikko&gt; cool</div>
 <div class="line">[Tuesday 15 February 2011] [09:04:47] &lt;mikko&gt; i&#8217;ll hopefully finish this during this week</div>
 <div class="line">[Tuesday 15 February 2011] [09:04:52] &lt;Guthur&gt;        sustrik: oh wait I miss read</div>
-<div class="line">[Tuesday 15 February 2011] [09:04:57] &lt;<a href="#id139"><span class="problematic" id="id140">pieterh_</span></a>&gt;      :-) I&#8217;m enormously grateful...</div>
+<div class="line">[Tuesday 15 February 2011] [09:04:57] &lt;<a href="#id143"><span class="problematic" id="id144">pieterh_</span></a>&gt;      :-) I&#8217;m enormously grateful...</div>
 <div class="line">[Tuesday 15 February 2011] [09:05:01] &lt;mikko&gt; got company evening today so might be a bit out of game tomorrow</div>
 <div class="line">[Tuesday 15 February 2011] [09:05:05] &lt;Guthur&gt;        I think if you had multiple IOCP it would be returned to all</div>
-<div class="line">[Tuesday 15 February 2011] [09:05:20] &lt;<a href="#id141"><span class="problematic" id="id142">pieterh_</span></a>&gt;      suddenly zfl actually builds properly across more than Ubuntu :-)</div>
+<div class="line">[Tuesday 15 February 2011] [09:05:20] &lt;<a href="#id145"><span class="problematic" id="id146">pieterh_</span></a>&gt;      suddenly zfl actually builds properly across more than Ubuntu :-)</div>
 <div class="line">[Tuesday 15 February 2011] [09:05:29] &lt;Guthur&gt;        That&#8217;s a guess though</div>
 <div class="line">[Tuesday 15 February 2011] [09:05:50] &lt;sustrik&gt;       what would that be good for?</div>
 <div class="line">[Tuesday 15 February 2011] [09:05:52] &lt;sustrik&gt;       strange</div>
@@ -4539,7 +4539,7 @@
 <div class="line">[Tuesday 15 February 2011] [09:07:43] &lt;Guthur&gt;        CreateIoCompletionPort</div>
 <div class="line">[Tuesday 15 February 2011] [09:07:47] &lt;Guthur&gt;        sustrik: ^^</div>
 <div class="line">[Tuesday 15 February 2011] [09:08:07] &lt;Guthur&gt;        <a class="reference external" href="http://msdn.microsoft.com/en-us/library/aa363862(v=VS.85).aspx">http://msdn.microsoft.com/en-us/library/aa363862(v=VS.85).aspx</a></div>
-<div class="line">[Tuesday 15 February 2011] [09:08:28] &lt;<a href="#id143"><span class="problematic" id="id144">pieterh_</span></a>&gt;      zchrish: could you post the code in a pastebin somewhere?</div>
+<div class="line">[Tuesday 15 February 2011] [09:08:28] &lt;<a href="#id147"><span class="problematic" id="id148">pieterh_</span></a>&gt;      zchrish: could you post the code in a pastebin somewhere?</div>
 <div class="line">[Tuesday 15 February 2011] [09:08:45] &lt;zchrish&gt;       Sure, that&#8217;s next.</div>
 <div class="line">[Tuesday 15 February 2011] [09:08:52] &lt;sustrik&gt;       Guthur: ok, i see</div>
 <div class="line">[Tuesday 15 February 2011] [09:09:11] &lt;Guthur&gt;        sustrik: so, can we make it fit?</div>
@@ -4547,14 +4547,14 @@
 <div class="line">[Tuesday 15 February 2011] [09:09:25] &lt;mikko&gt; isnt ZMQ_SUBSCRIBE an exception to setsockopts before connect/bind?</div>
 <div class="line">[Tuesday 15 February 2011] [09:09:37] &lt;sustrik&gt;       Guthur: there are few things to keep in mind</div>
 <div class="line">[Tuesday 15 February 2011] [09:09:40] &lt;sustrik&gt;       mikko: no</div>
-<div class="line">[Tuesday 15 February 2011] [09:09:56] &lt;<a href="#id145"><span class="problematic" id="id146">pieterh_</span></a>&gt;      sustrik: really?</div>
+<div class="line">[Tuesday 15 February 2011] [09:09:56] &lt;<a href="#id149"><span class="problematic" id="id150">pieterh_</span></a>&gt;      sustrik: really?</div>
 <div class="line">[Tuesday 15 February 2011] [09:10:04] &lt;mikko&gt; then i found an error on zguide :)</div>
 <div class="line">[Tuesday 15 February 2011] [09:10:18] &lt;sustrik&gt;       yes, ZMQ_SUBSCRIBE applies to the socket as a whole</div>
-<div class="line">[Tuesday 15 February 2011] [09:10:22] &lt;<a href="#id147"><span class="problematic" id="id148">pieterh_</span></a>&gt;      you can&#8217;t add/remove a filter after binding?</div>
+<div class="line">[Tuesday 15 February 2011] [09:10:22] &lt;<a href="#id151"><span class="problematic" id="id152">pieterh_</span></a>&gt;      you can&#8217;t add/remove a filter after binding?</div>
 <div class="line">[Tuesday 15 February 2011] [09:10:36] &lt;Guthur&gt;        i think you can</div>
 <div class="line">[Tuesday 15 February 2011] [09:10:37] &lt;sustrik&gt;       as opposed to other sockopts that apply only to subsequent connects/binds</div>
-<div class="line">[Tuesday 15 February 2011] [09:10:46] &lt;sustrik&gt;       <a href="#id149"><span class="problematic" id="id150">pieterh_</span></a>: yes</div>
-<div class="line">[Tuesday 15 February 2011] [09:10:57] &lt;<a href="#id151"><span class="problematic" id="id152">pieterh_</span></a>&gt;      sorry, the &#8216;no&#8217; part confused us, I think</div>
+<div class="line">[Tuesday 15 February 2011] [09:10:46] &lt;sustrik&gt;       <a href="#id153"><span class="problematic" id="id154">pieterh_</span></a>: yes</div>
+<div class="line">[Tuesday 15 February 2011] [09:10:57] &lt;<a href="#id155"><span class="problematic" id="id156">pieterh_</span></a>&gt;      sorry, the &#8216;no&#8217; part confused us, I think</div>
 <div class="line">[Tuesday 15 February 2011] [09:11:28] &lt;sustrik&gt;       Guthur: namely, that the messages should be kept in 0mq as long as possible</div>
 <div class="line">[Tuesday 15 February 2011] [09:11:56] &lt;sustrik&gt;       thus instead of starting asynch writes immediately for any data to send</div>
 <div class="line">[Tuesday 15 February 2011] [09:12:10] &lt;sustrik&gt;       you should start async send</div>
@@ -4911,6 +4911,394 @@
 <div class="line">[Tuesday 15 February 2011] [13:14:59] &lt;pieterh&gt;       The usual (sane) approach is to make strictly only what you need for your apps, release it, and allow others to expand it</div>
 <div class="line">[Tuesday 15 February 2011] [13:15:15] &lt;pieterh&gt;       Assuming it&#8217;s possible to map the subset of boost asio you use to 0MQ</div>
 <div class="line">[Tuesday 15 February 2011] [13:15:52] &lt;private_meta&gt;  It would be difficult I assume</div>
+<div class="line">[Tuesday 15 February 2011] [13:42:37] &lt;Guthur&gt;        sustrik, returning to are discussion earlier re: IOCP, would it not be beneficial in the long run, if possible, to have both named pipes and sockets on IOCP, with aim to remove the need for Select</div>
+<div class="line">[Tuesday 15 February 2011] [13:53:06] &lt;staylor&gt;       I have a question about zmq sockets, are the underlying sockets maintained or opened/closed on demand?</div>
+<div class="line">[Tuesday 15 February 2011] [13:53:42] &lt;staylor&gt;       reason I ask is I&#8217;d like to know from my application if the client application is currently connected to the server or not, but I don&#8217;t see any socket status calls in the zmq_socket api</div>
+<div class="line">[Tuesday 15 February 2011] [14:04:03] &lt;cremes&gt;        pieterh: does anyone with a wiki account have permission to modify the FAQ?</div>
+<div class="line">[Tuesday 15 February 2011] [14:04:41] &lt;cremes&gt;        pieterh: nm; just answered my own question</div>
+<div class="line">[Tuesday 15 February 2011] [14:13:40] &lt;cremes&gt;        just updated the FAQ to help people with the assertion in mailbox.cpp:182</div>
+<div class="line">[Tuesday 15 February 2011] [15:06:33] Notice  -Martinp23- [Global Notice] Hi everyone. You will have possibly noticed some instability on the network earlier this evening. The network is under a sustained DDoS and so lag and possible further splits are to be expected. We apologise for the inconvenience - our fantastic sponsorship and infra teams are working to minimise the further impact. Have a nice evening!</div>
+<div class="line">[Tuesday 15 February 2011] [15:40:03] &lt;sejo&gt;  hey all I&#8217;m looking at different solutions, and basicly just need an mq to be able to use from python,</div>
+<div class="line">[Tuesday 15 February 2011] [15:40:27] &lt;sejo&gt;  so what would be my advantage using 0mq over rabbitmq or others?</div>
+<div class="line">[Tuesday 15 February 2011] [15:47:14] &lt;Guthur&gt;        sejo, I really think it depends on use case scenario</div>
+<div class="line">[Tuesday 15 February 2011] [15:48:04] &lt;Guthur&gt;        they are different beasts, rabbitmq is a broker base MQ, whereas ZeroMQ is brokerless, for a start</div>
+<div class="line">[Tuesday 15 February 2011] [15:48:45] &lt;Guthur&gt;        I wont pretend to know much about rabbitmq though</div>
+<div class="line">[Tuesday 15 February 2011] [15:49:10] &lt;Guthur&gt;        hehe, even my 0MQ knowledge would be on the lighter side compared to some around here</div>
+<div class="line">[Tuesday 15 February 2011] [15:50:54] &lt;sejo&gt;  ok, well basicly in the beginning i probably have only like 10 clients popping items, and the same 10 pushing others onto it</div>
+<div class="line">[Tuesday 15 February 2011] [15:51:57] &lt;sejo&gt;  as far as I understand now I should write my own protocol(s) and can use them over the clients and the servers. However is it easy to have multiple servers handling the same data?</div>
+<div class="line">[Tuesday 15 February 2011] [15:52:27] &lt;sejo&gt;  it probably is</div>
+<div class="line">[Tuesday 15 February 2011] [15:52:39] &lt;sejo&gt;  sorry stupid question</div>
+<div class="line">[Tuesday 15 February 2011] [15:56:09] &lt;sejo&gt;  my biggest fear is that i&#8217;ll spend too much time developing on it before I can use it...</div>
+<div class="line">[Tuesday 15 February 2011] [15:56:40] &lt;sejo&gt;  that&#8217;s why I ask around and not test them out all.. don&#8217;t have the time for it</div>
+<div class="line">[Tuesday 15 February 2011] [15:58:59] &lt;Guthur&gt;        sure, it&#8217;s sensible to do research first</div>
+<div class="line">[Tuesday 15 February 2011] [15:59:56] &lt;Guthur&gt;        scaling to multiple servers would something that 0MQ can do well</div>
+<div class="line">[Tuesday 15 February 2011] [16:01:04] &lt;Guthur&gt;        but you don&#8217;t really get much in the way of &#8216;topic&#8217; or &#8216;queue&#8217; management out of the box, though there are PUB/SUB sockets</div>
+<div class="line">[Tuesday 15 February 2011] [16:01:39] &lt;Guthur&gt;        I&#8217;m reluctant to give any hard advice though, due to be lack of hardcore experience and knowledge</div>
+<div class="line">[Tuesday 15 February 2011] [16:02:16] &lt;sejo&gt;  thanks anyway right now I have no knowledge on what to use so</div>
+<div class="line">[Tuesday 15 February 2011] [16:02:35] &lt;Guthur&gt;        you could glance through the 0MQ guide</div>
+<div class="line">[Tuesday 15 February 2011] [16:02:50] &lt;sejo&gt;  basicly i want multiple servers and n-clients pushing and popping independently</div>
+<div class="line">[Tuesday 15 February 2011] [16:03:00] &lt;Guthur&gt;        <a class="reference external" href="http://zguide.zeromq.org/chapter:all">http://zguide.zeromq.org/chapter:all</a></div>
+<div class="line">[Tuesday 15 February 2011] [16:03:12] &lt;sejo&gt;  i&#8217;m reading through it while we talk :p</div>
+<div class="line">[Tuesday 15 February 2011] [16:03:14] &lt;Guthur&gt;        ok</div>
+<div class="line">[Tuesday 15 February 2011] [16:03:20] &lt;Guthur&gt;        hehe cool</div>
+<div class="line">[Tuesday 15 February 2011] [16:03:50] &lt;Guthur&gt;        there is a few example in there that could give some inspiration for your particular problem</div>
+<div class="line">[Tuesday 15 February 2011] [16:04:41] &lt;sejo&gt;  yeah, main thing is that I don&#8217;t need a real pub/sub, client just chooses when to pop a message</div>
+<div class="line">[Tuesday 15 February 2011] [16:06:15] &lt;Guthur&gt;        check out the Queue device, which would show a possible multi server pattern</div>
+<div class="line">[Tuesday 15 February 2011] [16:06:24] &lt;Guthur&gt;        at a very simple level</div>
+<div class="line">[Tuesday 15 February 2011] [16:06:59] &lt;Guthur&gt;        pieter or sustrik would be better at giving advice than me</div>
+<div class="line">[Tuesday 15 February 2011] [16:07:25] &lt;sejo&gt;  thk i&#8217;ll chekc it out</div>
+<div class="line">[Tuesday 15 February 2011] [16:07:58] &lt;sejo&gt;  the thing that got me here was the nice looking python api :p</div>
+<div class="line">[Tuesday 15 February 2011] [16:13:46] &lt;Guthur&gt;        I&#8217;m not familiar with the python binding, but yeah I&#8217;m sure its nice, hehe</div>
+<div class="line">[Tuesday 15 February 2011] [16:14:19] &lt;Guthur&gt;        python has that sort of philosophy, nice simple interfaces</div>
+<div class="line">[Tuesday 15 February 2011] [16:15:04] &lt;sejo&gt;  we&#8217;ll i&#8217;ll read up on it more, the ventilation example pretty much does what i want, only i have multiple ventilators and each of them multiple types of messages</div>
+<div class="line">[Tuesday 15 February 2011] [16:16:12] &lt;sejo&gt;  well no probably i only need one type that works with json</div>
+<div class="line">[Tuesday 15 February 2011] [16:16:49] &lt;Guthur&gt;        I like JSON, nice format</div>
+<div class="line">[Tuesday 15 February 2011] [16:17:00] &lt;sejo&gt;  Guthur: thanks for the information, i&#8217;ll read up on it a bit more and then i&#8217;ll probably need to choose</div>
+<div class="line">[Tuesday 15 February 2011] [16:17:07] &lt;sejo&gt;  ttyal</div>
+<div class="line">[Tuesday 15 February 2011] [16:17:11] &lt;sejo&gt;  gtg</div>
+<div class="line">[Tuesday 15 February 2011] [16:17:14] &lt;Guthur&gt;        later</div>
+<div class="line">[Tuesday 15 February 2011] [16:17:38] &lt;Guthur&gt;        ok, drop by later and someone more experience can give better advice</div>
+<div class="line">[Tuesday 15 February 2011] [16:43:59] &lt;lt_schmidt_jr&gt; is gonzalo here perchance</div>
+<div class="line">[Tuesday 15 February 2011] [16:46:59] &lt;whack&gt; So, is there no way to bind to a random port? (like binding to port 0)</div>
+<div class="line">[Tuesday 15 February 2011] [16:47:19] &lt;whack&gt; I&#8217;m not seeing anything obvious in the docs, and attempts to bind to <a class="reference external" href="tcp://blah:0">tcp://blah:0</a> result in an error</div>
+<div class="line">[Tuesday 15 February 2011] [17:46:57] &lt;sustrik&gt;       lt_schmidt_jr: gonzalo doesn&#8217;t come here often, you have to use email instead</div>
+<div class="line">[Tuesday 15 February 2011] [17:47:23] &lt;sustrik&gt;       whack: no there&#8217;s no way</div>
+<div class="line">[Tuesday 15 February 2011] [17:53:51] &lt;lt_schmidt_jr&gt; sustrik; we are having an impedance mismatch on our responses, thanks</div>
+<div class="line">[Tuesday 15 February 2011] [18:06:55] &lt;kdj&gt;   So what is the proper way to make sure that a message is sent to a polling server? Just a response?</div>
+<div class="line">[Tuesday 15 February 2011] [18:07:33] &lt;cremes&gt;        kdj: i don&#8217;t understand the question; can you rephrase?</div>
+<div class="line">[Tuesday 15 February 2011] [18:09:48] &lt;kdj&gt;   Sorry. We have some clients that will occasionally send a short message to a server... but just sending won&#8217;t error if the server isn&#8217;t there. I understand why (I think)</div>
+<div class="line">[Tuesday 15 February 2011] [18:10:09] &lt;kdj&gt;   But I want to make sure the server is there</div>
+<div class="line">[Tuesday 15 February 2011] [18:10:40] &lt;cremes&gt;        kdj: that&#8217;s correct; 0mq has no indicator that the server went away</div>
+<div class="line">[Tuesday 15 February 2011] [18:11:02] &lt;cremes&gt;        you should establish an &#8220;ack&#8221; that the server should send back; if it times out, the server is dead</div>
+<div class="line">[Tuesday 15 February 2011] [18:11:17] &lt;cremes&gt;        i recommend polling on req/rep sockets to accomplish this</div>
+<div class="line">[Tuesday 15 February 2011] [18:11:43] &lt;cremes&gt;        e.g. each client has its own REQ socket; the server has a XREP socket (so that it can respond to multiple clients)</div>
+<div class="line">[Tuesday 15 February 2011] [18:11:52] &lt;kdj&gt;   You can poll on REQ sockets?</div>
+<div class="line">[Tuesday 15 February 2011] [18:12:04] &lt;kdj&gt;   Yeah, that is how it is setup now</div>
+<div class="line">[Tuesday 15 February 2011] [18:12:06] &lt;cremes&gt;        absolutely; send/recv with ZM_NOBLOCK</div>
+<div class="line">[Tuesday 15 February 2011] [18:12:15] &lt;cremes&gt;        and register them with zmq_poll</div>
+<div class="line">[Tuesday 15 February 2011] [18:13:45] &lt;kdj&gt;   Sending with NOBLOCK isn&#8217;t actually doing anything with just a normal REQ socket, but it does on receive... is that because I need polling?</div>
+<div class="line">[Tuesday 15 February 2011] [18:14:34] &lt;cremes&gt;        kdj: well, you don&#8217;t <em>need</em> to send with noblock</div>
+<div class="line">[Tuesday 15 February 2011] [18:14:50] &lt;cremes&gt;        the basic idea is when your client sends the data, start a timer</div>
+<div class="line">[Tuesday 15 February 2011] [18:15:02] &lt;cremes&gt;        if the server responds back, cancel the timer</div>
+<div class="line">[Tuesday 15 February 2011] [18:15:08] &lt;cremes&gt;        if the timer expires, close the req socket</div>
+<div class="line">[Tuesday 15 February 2011] [18:15:26] &lt;cremes&gt;        none of that needs noblock</div>
+<div class="line">[Tuesday 15 February 2011] [18:15:42] &lt;lt_schmidt_jr&gt; to jump in with kdj, when would you use in polling vs blocking</div>
+<div class="line">[Tuesday 15 February 2011] [18:15:46] &lt;cremes&gt;        you will need to poll if your timer and req socket are in the same thread</div>
+<div class="line">[Tuesday 15 February 2011] [18:16:04] &lt;cremes&gt;        lt_schmidt_jr: like so...</div>
+<div class="line">[Tuesday 15 February 2011] [18:16:23] &lt;cremes&gt;        if you start your timer and then call recv in blocking mode, how do you handle timer expiration?</div>
+<div class="line">[Tuesday 15 February 2011] [18:16:43] &lt;cremes&gt;        1. timer must live in a separate thread or process from the blocking recv</div>
+<div class="line">[Tuesday 15 February 2011] [18:17:10] &lt;lt_schmidt_jr&gt; right</div>
+<div class="line">[Tuesday 15 February 2011] [18:17:12] &lt;cremes&gt;        2. recv is non-blocking and you use poll to handle the recv; timer is on the same thread</div>
+<div class="line">[Tuesday 15 February 2011] [18:17:21] &lt;cremes&gt;        those are the 2 ways i would approach</div>
+<div class="line">[Tuesday 15 February 2011] [18:17:25] &lt;cremes&gt;        i like #2 better</div>
+<div class="line">[Tuesday 15 February 2011] [18:17:31] &lt;kdj&gt;   Ok. I wasn&#8217;t sending an acknowledgement from the server originally... just receiving the message and moving on</div>
+<div class="line">[Tuesday 15 February 2011] [18:17:33] &lt;cremes&gt;        threading gets so messy</div>
+<div class="line">[Tuesday 15 February 2011] [18:18:09] &lt;cremes&gt;        kdj: if you were using REQ sockets on the client, the next time you tried to send you would get a EFSM error</div>
+<div class="line">[Tuesday 15 February 2011] [18:18:37] &lt;cremes&gt;        REQ/REP sockets are strictly stateful; REQ <em>must</em> send/recv/send/recv while REP <em>must</em> recv/send/recv/send</div>
+<div class="line">[Tuesday 15 February 2011] [18:19:44] &lt;kdj&gt;   Yeah, that makes sense.</div>
+<div class="line">[Tuesday 15 February 2011] [18:21:39] &lt;lt_schmidt_jr&gt; hmm, interesting, so I should be able to put multiple sockets with a poller</div>
+<div class="line">[Tuesday 15 February 2011] [18:21:50] &lt;lt_schmidt_jr&gt; same poller</div>
+<div class="line">[Tuesday 15 February 2011] [18:23:04] &lt;kdj&gt;   Hmmm... does 0mq send an acknowledgement automatically?</div>
+<div class="line">[Tuesday 15 February 2011] [18:23:27] &lt;cremes&gt;        lt_schmidt_jr: yes</div>
+<div class="line">[Tuesday 15 February 2011] [18:23:30] &lt;cremes&gt;        kdj: no</div>
+<div class="line">[Tuesday 15 February 2011] [18:24:17] &lt;cremes&gt;        kdj: the heartbeat is an application-level responsibility; your code must process and send the ack</div>
+<div class="line">[Tuesday 15 February 2011] [18:24:46] &lt;cremes&gt;        you could actually abstract this out into your own private &#8220;heartbeat&#8221; socket and make it completely transparent</div>
+<div class="line">[Tuesday 15 February 2011] [18:25:01] &lt;kdj&gt;   Yeah, that totally makes sense... I just threw some code together to test it though and it (sort of) works</div>
+<div class="line">[Tuesday 15 February 2011] [18:26:03] &lt;kdj&gt;   having a poller on the server end, which just recieves messages (no sending), and a client which sends and then receives... somehow the receiving on the client end is still happening (and not blocking)</div>
+<div class="line">[Tuesday 15 February 2011] [18:26:10] &lt;lt_schmidt_jr&gt; kdj: for me I am planning to use ZooKeeper, which I have used successfully in a similar way to figure out server presence</div>
+<div class="line">[Tuesday 15 February 2011] [18:27:01] &lt;lt_schmidt_jr&gt; in my case to figure out other servers that will form a cluster</div>
+<div class="line">[Tuesday 15 February 2011] [18:27:13] &lt;cremes&gt;        kdj: print out the data that your client is receiving</div>
+<div class="line">[Tuesday 15 February 2011] [18:27:26] &lt;cremes&gt;        or run tcpdump and watch the packets fly</div>
+<div class="line">[Tuesday 15 February 2011] [18:27:45] &lt;cremes&gt;        unless you are issuing a zmq_send() from the server, the client shouldn&#8217;t be getting a response</div>
+<div class="line">[Tuesday 15 February 2011] [18:27:59] &lt;cremes&gt;        there has to be code doing that somewhere in your example</div>
+<div class="line">[Tuesday 15 February 2011] [18:28:05] &lt;cremes&gt;        is it small enough to pastie?</div>
+<div class="line">[Tuesday 15 February 2011] [18:29:19] &lt;lt_schmidt_jr&gt; kdj, cremes: you can use <a class="reference external" href="http://pastebin.com/">http://pastebin.com/</a></div>
+<div class="line">[Tuesday 15 February 2011] [18:31:34] &lt;kdj&gt;   Sorry, I think it was just my threading code for testing it. It works as it is supposed to. :X</div>
+<div class="line">[Tuesday 15 February 2011] [18:32:02] &lt;cremes&gt;        yeah, that&#8217;s an easy mistake to make</div>
+<div class="line">[Tuesday 15 February 2011] [18:32:18] &lt;cremes&gt;        take a look at using the &#8220;inproc&#8221; transport for communicating between threads</div>
+<div class="line">[Tuesday 15 February 2011] [18:32:35] &lt;cremes&gt;        it obviates the need for mutexes and makes threading code simpler</div>
+<div class="line">[Tuesday 15 February 2011] [18:32:56] &lt;cremes&gt;        btw, that&#8217;s one of the great wins of using 0mq; it&#8217;s a threading library too!</div>
+<div class="line">[Tuesday 15 February 2011] [18:34:36] &lt;lt_schmidt_jr&gt; cremes: not to ask a stupid question, but how does one use it for threading - is it in the guide?</div>
+<div class="line">[Tuesday 15 February 2011] [18:36:00] &lt;cremes&gt;        lt_schmidt_jr: i don&#8217;t know if it&#8217;s in the guide; haven&#8217;t looked lately</div>
+<div class="line">[Tuesday 15 February 2011] [18:36:03] &lt;cremes&gt;        but here&#8217;s the basic idea</div>
+<div class="line">[Tuesday 15 February 2011] [18:36:26] &lt;cremes&gt;        imagine you have 10 threads trying to access a shared resource</div>
+<div class="line">[Tuesday 15 February 2011] [18:36:35] &lt;lt_schmidt_jr&gt; right</div>
+<div class="line">[Tuesday 15 February 2011] [18:36:41] &lt;cremes&gt;        right now you use a mutex, spinlock or some locking structure</div>
+<div class="line">[Tuesday 15 February 2011] [18:36:50] &lt;lt_schmidt_jr&gt; ok</div>
+<div class="line">[Tuesday 15 February 2011] [18:37:00] &lt;cremes&gt;        with 0mq, put the resource that everyone wants into its own thread and give it a XREP socket</div>
+<div class="line">[Tuesday 15 February 2011] [18:37:22] &lt;cremes&gt;        now make every other thread a &#8220;client&#8221; of that &#8220;server&#8221; and give them REQ sockets</div>
+<div class="line">[Tuesday 15 February 2011] [18:37:50] &lt;cremes&gt;        connect them all together using inproc (all platforms) or ipc (unix only) to communicate so you don&#8217;t pay the TCP penalty</div>
+<div class="line">[Tuesday 15 February 2011] [18:38:12] &lt;cremes&gt;        each client &#8220;asks&#8221; the resource for whatever via the 0mq socket</div>
+<div class="line">[Tuesday 15 February 2011] [18:38:26] &lt;cremes&gt;        the 0mq socket serializes all access to the resource and prevents all race conditions</div>
+<div class="line">[Tuesday 15 February 2011] [18:38:35] &lt;cremes&gt;        make sense?</div>
+<div class="line">[Tuesday 15 February 2011] [18:38:35] &lt;lt_schmidt_jr&gt; I see</div>
+<div class="line">[Tuesday 15 February 2011] [18:38:42] &lt;lt_schmidt_jr&gt; absolutely</div>
+<div class="line">[Tuesday 15 February 2011] [18:38:51] &lt;lt_schmidt_jr&gt; thank you</div>
+<div class="line">[Tuesday 15 February 2011] [18:38:54] &lt;cremes&gt;        this is the basic idea behind Actors if you have played with those in any languages</div>
+<div class="line">[Tuesday 15 February 2011] [18:39:05] &lt;lt_schmidt_jr&gt; I have played with erl</div>
+<div class="line">[Tuesday 15 February 2011] [18:39:28] &lt;cremes&gt;        lt_schmidt_jr: right; instead of using mutexes, you are using <em>messaging</em> for your concurrency</div>
+<div class="line">[Tuesday 15 February 2011] [18:39:45] &lt;cremes&gt;        and here&#8217;s another cool part of using 0mq</div>
+<div class="line">[Tuesday 15 February 2011] [18:39:56] &lt;lt_schmidt_jr&gt; cremes: very cool</div>
+<div class="line">[Tuesday 15 February 2011] [18:40:04] &lt;cremes&gt;        let&#8217;s say at some point this &#8220;server&#8221; resource needs to be on its own box</div>
+<div class="line">[Tuesday 15 February 2011] [18:40:34] &lt;cremes&gt;        all you have to do to change communications is modify the transport string that you pass to zmq_connect/zmq_bind from inproc (or ipc) to tcp</div>
+<div class="line">[Tuesday 15 February 2011] [18:40:39] &lt;cremes&gt;        instant scaling</div>
+<div class="line">[Tuesday 15 February 2011] [18:40:52] &lt;cremes&gt;        i have used this technique many times already; works wonderfully</div>
+<div class="line">[Tuesday 15 February 2011] [18:40:53] &lt;lt_schmidt_jr&gt; yeah, you would just change the ..</div>
+<div class="line">[Tuesday 15 February 2011] [18:41:36] &lt;lt_schmidt_jr&gt; I have prototyped a pub/sub message bus and I have inproc/ipc/tcp going between different participants</div>
+<div class="line">[Tuesday 15 February 2011] [18:42:03] &lt;kdj&gt;   Hmmm... now I&#8217;m not really sure how our original client/server stuff was working...</div>
+<div class="line">[Tuesday 15 February 2011] [18:42:29] &lt;lt_schmidt_jr&gt; but I think I am just not treating the threading correctly - too many threads</div>
+<div class="line">[Tuesday 15 February 2011] [18:43:29] &lt;cremes&gt;        lt_schmidt_jr: you&#8217;ll have to figure that one out; i&#8217;m not a threading expert</div>
+<div class="line">[Tuesday 15 February 2011] [18:45:29] &lt;lt_schmidt_jr&gt; cremes: the issue is I have a thread per connection and I still need to use polling to figure out if the thread needs to be shut down</div>
+<div class="line">[Tuesday 15 February 2011] [18:45:36] &lt;lt_schmidt_jr&gt; so its a little ugly</div>
+<div class="line">[Tuesday 15 February 2011] [18:46:41] &lt;cremes&gt;        i don&#8217;t understand, but ok</div>
+<div class="line">[Tuesday 15 February 2011] [18:46:46] &lt;lt_schmidt_jr&gt; If I block on recv, I am not sure how a subscriber can be inerrrupted</div>
+<div class="line">[Tuesday 15 February 2011] [18:46:58] &lt;cremes&gt;        oh, i see</div>
+<div class="line">[Tuesday 15 February 2011] [18:47:04] &lt;cremes&gt;        are you using 2.0.10 or 2.1.0?</div>
+<div class="line">[Tuesday 15 February 2011] [18:47:13] &lt;lt_schmidt_jr&gt; 2.0.1 and Java</div>
+<div class="line">[Tuesday 15 February 2011] [18:47:20] &lt;lt_schmidt_jr&gt; 2.0.10</div>
+<div class="line">[Tuesday 15 February 2011] [18:47:23] &lt;cremes&gt;        um... ok</div>
+<div class="line">[Tuesday 15 February 2011] [18:47:47] &lt;lt_schmidt_jr&gt; is there something in 2.1.0 that  I should be using?</div>
+<div class="line">[Tuesday 15 February 2011] [18:47:55] &lt;cremes&gt;        i think your only solution then is to close the entire context via zmq_term()</div>
+<div class="line">[Tuesday 15 February 2011] [18:48:08] &lt;cremes&gt;        that will cause each socket to awaken and return ETERM</div>
+<div class="line">[Tuesday 15 February 2011] [18:48:45] &lt;cremes&gt;        everybody should be on 2.1.0 now; the only 2.0.10 users should be legacy guys who <em>cannot</em> upgrade for whatever reason</div>
+<div class="line">[Tuesday 15 February 2011] [18:48:52] &lt;cremes&gt;        so yeah, upgrade</div>
+<div class="line">[Tuesday 15 February 2011] [18:48:52] &lt;lt_schmidt_jr&gt; see, I have multiple subscibers within the same context, and only one would need to be terminated</div>
+<div class="line">[Tuesday 15 February 2011] [18:49:17] &lt;cremes&gt;        yep, terminating the context terminates <em>all</em> sockets so that&#8217;s your only choice there</div>
+<div class="line">[Tuesday 15 February 2011] [18:49:33] &lt;cremes&gt;        in 2.1.0 i believe you can call zmq_close() on the socket from another thread and it will work as expected</div>
+<div class="line">[Tuesday 15 February 2011] [18:49:35] &lt;lt_schmidt_jr&gt; ok, I skipped 2.1.0, because it caused the java binding unit tests to fail</div>
+<div class="line">[Tuesday 15 February 2011] [18:49:53] &lt;cremes&gt;        yeah, 2.1.0 is considered beta so not everyone has updated their bindings</div>
+<div class="line">[Tuesday 15 February 2011] [18:50:02] &lt;lt_schmidt_jr&gt; maybe I should do that myself</div>
+<div class="line">[Tuesday 15 February 2011] [18:50:08] &lt;cremes&gt;        but it is <em>way</em> more stable than 2.0.10 so i would upgrade</div>
+<div class="line">[Tuesday 15 February 2011] [18:50:16] &lt;cremes&gt;        maybe you could submit a patch to fix the java tests</div>
+<div class="line">[Tuesday 15 February 2011] [18:50:41] &lt;lt_schmidt_jr&gt; I submitted the maven fix, should do this as well</div>
+<div class="line">[Tuesday 15 February 2011] [18:51:16] &lt;lt_schmidt_jr&gt; so I could close the socket from a different thread, great</div>
+<div class="line">[Tuesday 15 February 2011] [18:52:16] &lt;lt_schmidt_jr&gt; I guess I could figure out how to use polling correctly and not have a bunch of threads in the first place</div>
+<div class="line">[Tuesday 15 February 2011] [18:52:36] &lt;lt_schmidt_jr&gt; that is have many sockets and a single polling thread</div>
+<div class="line">[Tuesday 15 February 2011] [18:53:13] &lt;lt_schmidt_jr&gt; and not have the computer turn into a space heater</div>
+<div class="line">[Tuesday 15 February 2011] [18:53:51] &lt;lt_schmidt_jr&gt; will go through the guide</div>
+<div class="line">[Tuesday 15 February 2011] [18:54:54] &lt;kdj&gt;   Thanks for your help cremes</div>
+<div class="line">[Tuesday 15 February 2011] [19:00:54] &lt;cremes&gt;        kdj: you are welcome; remember to pay it forward at some point ;)</div>
+<div class="line">[Tuesday 15 February 2011] [19:01:50] &lt;kdj&gt;   Hopefully that won&#8217;t involve inadvertently leading someone astray. ;)</div>
+<div class="line">[Tuesday 15 February 2011] [23:50:44] &lt;zedas&gt; sustrik: hey so i still see this poll 100%CPU bug even with the latest 2.1.0 and <em>cannot</em> figure out how to fix it. <a class="reference external" href="http://dpaste.de/oxeU/">http://dpaste.de/oxeU/</a></div>
+<div class="line">[Tuesday 15 February 2011] [23:51:20] &lt;zedas&gt; sustrik: it looks like i&#8217;ll have to dig into the zeromq code and pull out the error handling that zmq_poll does.</div>
+<div class="line">[Wednesday 16 February 2011] [02:07:37] &lt;sustrik&gt;     zedas: any chance to reproduce the problem here?</div>
+<div class="line">[Wednesday 16 February 2011] [02:24:37] &lt;zedas&gt;       sustrik: it happens at random on my servers, so next time i can gdb to it and debug for you.</div>
+<div class="line">[Wednesday 16 February 2011] [02:24:59] &lt;sustrik&gt;     thanks</div>
+<div class="line">[Wednesday 16 February 2011] [02:25:12] &lt;sustrik&gt;     find out what&#8217;s looping there</div>
+<div class="line">[Wednesday 16 February 2011] [02:31:21] &lt;zedas&gt;       well i&#8217;m pretty sure it&#8217;s zmq_poll not handling an EAGAIN on zeromq socket objects.</div>
+<div class="line">[Wednesday 16 February 2011] [02:31:41] &lt;zedas&gt;       but i&#8217;ll confirm it and work up a fix.  looking at the code the fix may be a flag that says to not stuff errors.</div>
+<div class="line">[Wednesday 16 February 2011] [02:42:26] &lt;sustrik&gt;     let me have a look...</div>
+<div class="line">[Wednesday 16 February 2011] [02:42:45] &lt;sustrik&gt;     zedas: is that linux?</div>
+<div class="line">[Wednesday 16 February 2011] [02:44:30] &lt;sustrik&gt;     hm, the only operations on zeromq socket objects witihn zmq_poll is zmq_getsockopt()</div>
+<div class="line">[Wednesday 16 February 2011] [02:45:02] &lt;sustrik&gt;     are you getting EAGAIN from zmq_getsockopt()? That should not happen as far as i am aware.</div>
+<div class="line">[Wednesday 16 February 2011] [03:41:54] &lt;enleth&gt;      Hello</div>
+<div class="line">[Wednesday 16 February 2011] [03:44:44] &lt;sustrik&gt;     hi</div>
+<div class="line">[Wednesday 16 February 2011] [03:44:52] &lt;enleth&gt;      I&#8217;ve got a problem building OMQ - it&#8217;s about the luuid dependency. OMQ reuires the OSSP UUID library, which, due to conflicts with (unmaintained and dropped a long time ago) e2fsprogrs libuuid was renamed to libossp-uuid in my Linux distribution and, FWIW, this was generally a very popular solution.</div>
+<div class="line">[Wednesday 16 February 2011] [03:45:10] &lt;enleth&gt;      But OMQ looks for libuuid and the configure script does not accept an alternate name</div>
+<div class="line">[Wednesday 16 February 2011] [03:45:56] &lt;sustrik&gt;     enleth: easy, patch the build system and submit the patch to the mailing list</div>
+<div class="line">[Wednesday 16 February 2011] [03:47:49] &lt;enleth&gt;      Oh, and I just noticed that the proper libuuid provides an uuid-config program for the configure script to use</div>
+<div class="line">[Wednesday 16 February 2011] [03:48:08] &lt;enleth&gt;      uuid-config &#8211;libs outputs -lossp-uuid, which should be used</div>
+<div class="line">[Wednesday 16 February 2011] [03:48:41] &lt;enleth&gt;      I guess this is what the build system should do instead of using a hardcoded name</div>
+<div class="line">[Wednesday 16 February 2011] [03:49:12] &lt;sustrik&gt;     great, post your suggestion to the mailing list</div>
+<div class="line">[Wednesday 16 February 2011] [03:49:12] &lt;enleth&gt;      The problem is, my skills with autotools are crap</div>
+<div class="line">[Wednesday 16 February 2011] [03:49:23] &lt;sustrik&gt;     so that build system maintainers can have a look at it</div>
+<div class="line">[Wednesday 16 February 2011] [03:49:28] &lt;enleth&gt;      OK, will do</div>
+<div class="line">[Wednesday 16 February 2011] [03:49:31] &lt;sustrik&gt;     thanks</div>
+<div class="line">[Wednesday 16 February 2011] [04:16:56] &lt;enleth&gt;      No, wait. It does use the old e2fsprogrs-derived libuuid, my bad.</div>
+<div class="line">[Wednesday 16 February 2011] [04:25:44] &lt;enleth&gt;      OK, there is no problem, the distro repository managed screwed up and I got a bad upgrade installed</div>
+<div class="line">[Wednesday 16 February 2011] [04:34:18] &lt;mikko&gt;       pieterh: are you here sir?</div>
+<div class="line">[Wednesday 16 February 2011] [04:34:28] &lt;pieterh&gt;     mikko: just arrived</div>
+<div class="line">[Wednesday 16 February 2011] [04:36:22] &lt;mikko&gt;       is there a specific reason why test functions are compiled into zfl ?</div>
+<div class="line">[Wednesday 16 February 2011] [04:36:33] &lt;mikko&gt;       are those symbols needed outside selftest?</div>
+<div class="line">[Wednesday 16 February 2011] [04:38:49] &lt;pieterh&gt;     if you can find a way of compiling a single C source file into two objects, I&#8217;m hapopy</div>
+<div class="line">[Wednesday 16 February 2011] [04:38:51] &lt;pieterh&gt;     <a href="#id25"><span class="problematic" id="id26">*</span></a>happy</div>
+<div class="line">[Wednesday 16 February 2011] [04:39:02] &lt;pieterh&gt;     but the test code must, for me, be in the same source as the actual class</div>
+<div class="line">[Wednesday 16 February 2011] [04:40:00] &lt;mikko&gt;       pieterh: ok</div>
+<div class="line">[Wednesday 16 February 2011] [04:41:04] &lt;pieterh&gt;     mikko: if people are unhappy about extra code in their executables we could make these conditionally compiled</div>
+<div class="line">[Wednesday 16 February 2011] [04:42:36] &lt;mikko&gt;       pieterh: currently i was prototyping something like: <a class="reference external" href="https://gist.github.com/3f2a43c19ab439b22884">https://gist.github.com/3f2a43c19ab439b22884</a></div>
+<div class="line">[Wednesday 16 February 2011] [04:42:41] &lt;mikko&gt;       separate tests/ directory</div>
+<div class="line">[Wednesday 16 February 2011] [04:42:59] &lt;mikko&gt;       but i think it should be possible to create separate objects from same code as well</div>
+<div class="line">[Wednesday 16 February 2011] [04:43:00] &lt;pieterh&gt;     aaaghhhh.....</div>
+<div class="line">[Wednesday 16 February 2011] [04:43:13] &lt;pieterh&gt;     it&#8217;s the reason the man pages are a real pain to maintain</div>
+<div class="line">[Wednesday 16 February 2011] [04:43:21] &lt;pieterh&gt;     separate directories look very clean organizationally</div>
+<div class="line">[Wednesday 16 February 2011] [04:43:29] &lt;pieterh&gt;     but they ensure pieces don&#8217;t get updated</div>
+<div class="line">[Wednesday 16 February 2011] [04:44:02] &lt;pieterh&gt;     also the test cases are essential documentation, like the rest of the source file</div>
+<div class="line">[Wednesday 16 February 2011] [04:44:29] &lt;pieterh&gt;     running the selftest in its own directory is a good idea, some tests need to mess with files</div>
+<div class="line">[Wednesday 16 February 2011] [04:44:57] &lt;pieterh&gt;     but I really, really don&#8217;t want to find ourselves in the zmq situation of having lots of code that lacks test cases</div>
+<div class="line">[Wednesday 16 February 2011] [04:46:09] &lt;mikko&gt;       hmmm, this gives me additional idea</div>
+<div class="line">[Wednesday 16 February 2011] [04:47:14] &lt;mikko&gt;       in zfls case code coverage reports would make sense</div>
+<div class="line">[Wednesday 16 February 2011] [04:47:46] &lt;pieterh&gt;     yes, as an additional insurance</div>
+<div class="line">[Wednesday 16 February 2011] [04:47:57] &lt;pieterh&gt;     that&#8217;s meta testing, i.e. testing the test cases</div>
+<div class="line">[Wednesday 16 February 2011] [04:48:11] &lt;pieterh&gt;     it&#8217;s a neat idea</div>
+<div class="line">[Wednesday 16 February 2011] [04:48:27] &lt;mikko&gt;       i&#8217;ll put this on my todo</div>
+<div class="line">[Wednesday 16 February 2011] [04:49:04] &lt;pieterh&gt;     there&#8217;s still space? I&#8217;m impressed...</div>
+<div class="line">[Wednesday 16 February 2011] [04:49:07] &lt;pieterh&gt;     :-)</div>
+<div class="line">[Wednesday 16 February 2011] [04:49:33] &lt;ianbarber&gt;   speaking off: mikko, did you move the pear server?</div>
+<div class="line">[Wednesday 16 February 2011] [04:49:44] &lt;ianbarber&gt;   s/off/of</div>
+<div class="line">[Wednesday 16 February 2011] [04:50:51] &lt;mikko&gt;       ianbarber: in the works</div>
+<div class="line">[Wednesday 16 February 2011] [04:51:12] &lt;mikko&gt;       hmm</div>
+<div class="line">[Wednesday 16 February 2011] [04:51:23] &lt;mikko&gt;       i guess the easiest would be to put it where rest of the stuff is</div>
+<div class="line">[Wednesday 16 February 2011] [04:51:30] &lt;mikko&gt;       you can point the dns to 193.211.31.222</div>
+<div class="line">[Wednesday 16 February 2011] [04:51:46] &lt;ianbarber&gt;   i&#8217;ll point both php. and pear. at it</div>
+<div class="line">[Wednesday 16 February 2011] [04:56:05] &lt;mikko&gt;       looking at the apache rewrite rules this makes me want to use nginx</div>
+<div class="line">[Wednesday 16 February 2011] [04:56:55] &lt;kristsk&gt;     nginx is about the same, imho</div>
+<div class="line">[Wednesday 16 February 2011] [04:57:47] &lt;mikko&gt;       kristsk: dynamic virtualhosting seems a lot more fluent in nginx</div>
+<div class="line">[Wednesday 16 February 2011] [05:03:15] &lt;kristsk&gt;     might be because of nginx&#8217;s config syntax, it does not feel so archaic</div>
+<div class="line">[Wednesday 16 February 2011] [05:05:06] &lt;kristsk&gt;     in regard of vhosts lighthttpd is sought to be more powerfull</div>
+<div class="line">[Wednesday 16 February 2011] [05:48:11] &lt;Guthur&gt;      sustrik: do you think having wsapoll on supported win platforms would be good to have?</div>
+<div class="line">[Wednesday 16 February 2011] [06:06:02] &lt;ianbarber&gt;   pieterh: about?</div>
+<div class="line">[Wednesday 16 February 2011] [06:06:22] &lt;pieterh&gt;     ianbarber: about 12ish</div>
+<div class="line">[Wednesday 16 February 2011] [06:06:46] &lt;pieterh&gt;     :-) how can I help you?</div>
+<div class="line">[Wednesday 16 February 2011] [06:06:50] &lt;ianbarber&gt;   :)</div>
+<div class="line">[Wednesday 16 February 2011] [06:08:09] &lt;ianbarber&gt;   i discovered the wonderful land of martinique has a fun domain extension, so the PHP extension is now available on php.zero.mq and pear.zero.mq (pear is the PHP package system). Was wondering - do you want to have zeromq.org listen on zero.mq and www.zero.mq as well, i can point in that direction (even if it&#8217;s just doing a rewrite to zeromq.org)</div>
+<div class="line">[Wednesday 16 February 2011] [06:08:56] &lt;ianbarber&gt;   we can redirect from hosting as well, just seems like if someone does go to just zero.mq, they should end up at the site. It&#8217;s on mikko&#8217;s geo redundant hosting at the mo :)</div>
+<div class="line">[Wednesday 16 February 2011] [06:09:08] &lt;pieterh&gt;     oh... I like it</div>
+<div class="line">[Wednesday 16 February 2011] [06:10:25] &lt;ianbarber&gt;   i can point them at 74.86.234.146 if thats sensible - don&#8217;t know if there are any weird wikidot issues or similar</div>
+<div class="line">[Wednesday 16 February 2011] [06:10:27] &lt;pieterh&gt;     if you point www.zero.mq to www.wikidot.com, then I&#8217;ll add it to the custom domains on the website</div>
+<div class="line">[Wednesday 16 February 2011] [06:10:32] &lt;ianbarber&gt;   cool</div>
+<div class="line">[Wednesday 16 February 2011] [06:10:33] &lt;ianbarber&gt;   will do</div>
+<div class="line">[Wednesday 16 February 2011] [06:10:57] &lt;pieterh&gt;     wow, we have a sneaky short domain name, so 2011...</div>
+<div class="line">[Wednesday 16 February 2011] [06:11:40] &lt;pieterh&gt;     afair you can&#8217;t point zero.mq itself to a DNS name, you need to use the IP address there</div>
+<div class="line">[Wednesday 16 February 2011] [06:11:52] &lt;mikko&gt;       you can</div>
+<div class="line">[Wednesday 16 February 2011] [06:11:53] &lt;mikko&gt;       CNAME</div>
+<div class="line">[Wednesday 16 February 2011] [06:11:57] &lt;ianbarber&gt;   should be able to cname it</div>
+<div class="line">[Wednesday 16 February 2011] [06:11:58] &lt;ianbarber&gt;   yeah</div>
+<div class="line">[Wednesday 16 February 2011] [06:12:27] &lt;pieterh&gt;     maybe I&#8217;m confusing with wildcards, I usually point <a href="#id27"><span class="problematic" id="id28">*</span></a>.zeromq.org etc. to wikidot</div>
+<div class="line">[Wednesday 16 February 2011] [06:13:08] &lt;pieterh&gt;     cname the heck out of it, ianbarber, I&#8217;ll add the custom domain entries in an hour or so</div>
+<div class="line">[Wednesday 16 February 2011] [06:14:12] &lt;ianbarber&gt;   cool :) I&#8217;ve pointed zero.mq and www.zero.mq, so we&#8217;ll see then :)</div>
+<div class="line">[Wednesday 16 February 2011] [06:15:15] &lt;pieterh&gt;     would it be worth doing something sneaky like...</div>
+<div class="line">[Wednesday 16 February 2011] [06:15:31] &lt;pieterh&gt;     zero.mq -&gt; redirects to www.zeromq.org/community... ?</div>
+<div class="line">[Wednesday 16 February 2011] [06:16:03] &lt;pieterh&gt;     I can make that work</div>
+<div class="line">[Wednesday 16 February 2011] [06:16:54] &lt;pieterh&gt;     ianbarber: DNS seems to have propagated already, that was fast</div>
+<div class="line">[Wednesday 16 February 2011] [06:17:07] &lt;pieterh&gt;     presumably not cached anywhere</div>
+<div class="line">[Wednesday 16 February 2011] [06:17:33] &lt;ianbarber&gt;   yeah, www wasn&#8217;t set up before</div>
+<div class="line">[Wednesday 16 February 2011] [06:17:45] &lt;ianbarber&gt;   redirect to community sounds like an idea, if that&#8217;s doable on wikidot</div>
+<div class="line">[Wednesday 16 February 2011] [06:18:12] &lt;pieterh&gt;     np, give me 5 minutes...</div>
+<div class="line">[Wednesday 16 February 2011] [06:20:03] &lt;enleth&gt;      mikko: hey, just wanted to say thanks for the PHP bindings for ZMQ, TC and TT - good job!</div>
+<div class="line">[Wednesday 16 February 2011] [06:21:40] &lt;enleth&gt;      It was pretty amusing when I opened the github page for ZMQ bindings a moment ago, saw your username and though &#8220;well, I know this guy - what else I might be using that he did?&#8221;</div>
+<div class="line">[Wednesday 16 February 2011] [06:21:55] &lt;pieterh&gt;     ianbarber: ok, done, give it a whirl... :-)</div>
+<div class="line">[Wednesday 16 February 2011] [06:22:06] &lt;mikko&gt;       enleth: my pleasure</div>
+<div class="line">[Wednesday 16 February 2011] [06:25:13] &lt;ianbarber&gt;   pieterh: i seem to be getting a password page. that&#8217;s odd</div>
+<div class="line">[Wednesday 16 February 2011] [06:25:32] &lt;pieterh&gt;     ianbarber: ah, my bad, it&#8217;s still a private site, will fix immediately</div>
+<div class="line">[Wednesday 16 February 2011] [06:25:47] &lt;ianbarber&gt;   ah, cool</div>
+<div class="line">[Wednesday 16 February 2011] [06:26:03] &lt;pieterh&gt;     ianbarber: try again now?</div>
+<div class="line">[Wednesday 16 February 2011] [06:26:12] &lt;ianbarber&gt;   yep, that&#8217;s looking good</div>
+<div class="line">[Wednesday 16 February 2011] [06:26:17] &lt;ianbarber&gt;   very nice!</div>
+<div class="line">[Wednesday 16 February 2011] [06:26:57] &lt;pieterh&gt;     it&#8217;s very cool</div>
+<div class="line">[Wednesday 16 February 2011] [09:30:33] &lt;ianbarber&gt;   pieterh: was thinking, I&#8217;ve noticed that there are a lot of questions on the mailing lists that are solved in broadly the same way, even from people who have read the guide (myself included). I was wondering whether there is any value in some sort of 0MQ pattern library.</div>
+<div class="line">[Wednesday 16 February 2011] [09:30:50] &lt;ianbarber&gt;   sort of like <a class="reference external" href="http://developer.yahoo.com/ypatterns/">http://developer.yahoo.com/ypatterns/</a> but with messaging patterns at all kinds of scales</div>
+<div class="line">[Wednesday 16 February 2011] [09:31:56] &lt;ianbarber&gt;   i like how the generic pattern is described and an example given in each one of those (<a class="reference external" href="http://developer.yahoo.com/ypatterns/navigation/accordion.html">http://developer.yahoo.com/ypatterns/navigation/accordion.html</a>)</div>
+<div class="line">[Wednesday 16 February 2011] [09:32:37] &lt;ianbarber&gt;   but still pretty simple, 1 page</div>
+<div class="line">[Wednesday 16 February 2011] [09:51:55] &lt;mikko&gt;       cremes: you can run make check</div>
+<div class="line">[Wednesday 16 February 2011] [09:52:07] &lt;mikko&gt;       (dont wanna confuse the thread as it has moved on from there)</div>
+<div class="line">[Wednesday 16 February 2011] [09:54:40] &lt;cremes&gt;      mikko: here are the results:  <a class="reference external" href="https://gist.github.com/829493">https://gist.github.com/829493</a></div>
+<div class="line">[Wednesday 16 February 2011] [09:54:43] &lt;cremes&gt;      failure...</div>
+<div class="line">[Wednesday 16 February 2011] [09:57:00] &lt;mikko&gt;       No space left on device</div>
+<div class="line">[Wednesday 16 February 2011] [09:58:22] &lt;cremes&gt;      how did i not see that?.... bleary eyed after 30 hours of debugging...</div>
+<div class="line">[Wednesday 16 February 2011] [09:58:39] &lt;mikko&gt;       also, the tests wont output anything but they should assert on failure</div>
+<div class="line">[Wednesday 16 February 2011] [09:58:47] &lt;mikko&gt;       return code for success is 0</div>
+<div class="line">[Wednesday 16 February 2011] [09:59:24] &lt;cremes&gt;      oh wait, that out of space condition happened overnight as i was testing something</div>
+<div class="line">[Wednesday 16 February 2011] [09:59:29] &lt;cremes&gt;      hold on a sec</div>
+<div class="line">[Wednesday 16 February 2011] [10:00:51] &lt;cremes&gt;      mikko: reload the gist; it now shows all as passing</div>
+<div class="line">[Wednesday 16 February 2011] [10:01:10] &lt;cremes&gt;      my problem with running the tests was i didn&#8217;t know the right make target</div>
+<div class="line">[Wednesday 16 February 2011] [10:01:25] &lt;mikko&gt;       make check is autotools default test target</div>
+<div class="line">[Wednesday 16 February 2011] [10:01:29] &lt;cremes&gt;      i tried &#8216;make test&#8217; and &#8216;make all&#8217; but the former didn&#8217;t exist and the latter didn&#8217;t seem to run them</div>
+<div class="line">[Wednesday 16 February 2011] [10:01:35] &lt;cremes&gt;      didn&#8217;t know that</div>
+<div class="line">[Wednesday 16 February 2011] [10:02:03] &lt;mikko&gt;       make test seems to be widely used as well</div>
+<div class="line">[Wednesday 16 February 2011] [10:02:04] &lt;cremes&gt;      looks like all is well; chalk this up to user error</div>
+<div class="line">[Wednesday 16 February 2011] [10:02:25] &lt;cremes&gt;      yeah, maybe adding it as an additional target would be a nice convenience</div>
+<div class="line">[Wednesday 16 February 2011] [10:02:43] &lt;mikko&gt;       i&#8217;ll add that on todo</div>
+<div class="line">[Wednesday 16 February 2011] [10:09:41] &lt;<a href="#id157"><span class="problematic" id="id158">pieterh_</span></a>&gt;    ianbarber, was eating lunch... back now</div>
+<div class="line">[Wednesday 16 February 2011] [10:10:17] &lt;<a href="#id159"><span class="problematic" id="id160">pieterh_</span></a>&gt;    imo there would be value in a pattern library but I&#8217;ll use Sustrik&#8217;s Law here</div>
+<div class="line">[Wednesday 16 February 2011] [10:10:57] &lt;<a href="#id161"><span class="problematic" id="id162">pieterh_</span></a>&gt;    find the person to collect and maintain the patterns, and the problem is solved :-)</div>
+<div class="line">[Wednesday 16 February 2011] [10:12:42] &lt;mikko&gt;       <a class="reference external" href="http://build.valokuva.org/job/test-gcov/5/cobertura/">http://build.valokuva.org/job/test-gcov/5/cobertura/</a>?</div>
+<div class="line">[Wednesday 16 February 2011] [10:12:48] &lt;mikko&gt;       zfl code coverage</div>
+<div class="line">[Wednesday 16 February 2011] [10:13:22] &lt;ianbarber&gt;   <a href="#id163"><span class="problematic" id="id164">pieterh_</span></a>: fair point, i do appreciate sustrik&#8217;s law :)</div>
+<div class="line">[Wednesday 16 February 2011] [10:13:33] &lt;mikko&gt;       hmm source code missing</div>
+<div class="line">[Wednesday 16 February 2011] [10:14:48] &lt;<a href="#id165"><span class="problematic" id="id166">pieterh_</span></a>&gt;    ianbarber, you can also apply Pieter&#8217;s Response to Calls to Action</div>
+<div class="line">[Wednesday 16 February 2011] [10:15:01] &lt;<a href="#id167"><span class="problematic" id="id168">pieterh_</span></a>&gt;    &#8220;Excellent idea, Ian, I&#8217;m curious to see how you do it&#8221;</div>
+<div class="line">[Wednesday 16 February 2011] [10:15:31] &lt;<a href="#id169"><span class="problematic" id="id170">pieterh_</span></a>&gt;    Known in ruder groups as nypa :-)</div>
+<div class="line">[Wednesday 16 February 2011] [10:16:46] &lt;<a href="#id171"><span class="problematic" id="id172">pieterh_</span></a>&gt;    Actually, I do have a more positive idea</div>
+<div class="line">[Wednesday 16 February 2011] [10:17:33] &lt;<a href="#id173"><span class="problematic" id="id174">pieterh_</span></a>&gt;    When you see a question solved in a way you think is reusable, point me to it, and I&#8217;ll cover it in the Guide at some stage</div>
+<div class="line">[Wednesday 16 February 2011] [10:17:47] &lt;<a href="#id175"><span class="problematic" id="id176">pieterh_</span></a>&gt;    there are a lot of chapters waiting to be written</div>
+<div class="line">[Wednesday 16 February 2011] [10:19:02] &lt;ianbarber&gt;   yeah, i think that&#8217;s good. the guide really is the basis for shared understanding about it</div>
+<div class="line">[Wednesday 16 February 2011] [10:19:13] &lt;mikko&gt;       ah</div>
+<div class="line">[Wednesday 16 February 2011] [10:19:16] &lt;mikko&gt;       finally it works</div>
+<div class="line">[Wednesday 16 February 2011] [10:19:17] &lt;mikko&gt;       <a class="reference external" href="https://build.valokuva.org/job/test-gcov/7/cobertura/_default_/zfl_rpcd_c/">https://build.valokuva.org/job/test-gcov/7/cobertura/_default_/zfl_rpcd_c/</a></div>
+<div class="line">[Wednesday 16 February 2011] [10:19:35] &lt;ianbarber&gt;   i&#8217;m happy to do some patterns (at some point!) just wanted to check whether it fitted in with the direction you&#8217;re taking the guide</div>
+<div class="line">[Wednesday 16 February 2011] [10:25:38] &lt;<a href="#id177"><span class="problematic" id="id178">pieterh_</span></a>&gt;    mikko: sweet!</div>
+<div class="line">[Wednesday 16 February 2011] [10:25:59] &lt;<a href="#id179"><span class="problematic" id="id180">pieterh_</span></a>&gt;    ianbarber, I guess the Guide aims to be the bible, eventually</div>
+<div class="line">[Wednesday 16 February 2011] [10:26:02] &lt;<a href="#id181"><span class="problematic" id="id182">pieterh_</span></a>&gt;    modest aims</div>
+<div class="line">[Wednesday 16 February 2011] [10:27:04] &lt;<a href="#id183"><span class="problematic" id="id184">pieterh_</span></a>&gt;    we can (and by &#8216;we&#8217; I really mean &#8216;you&#8217;) start by collecting text on a wiki page</div>
+<div class="line">[Wednesday 16 February 2011] [10:27:19] &lt;<a href="#id185"><span class="problematic" id="id186">pieterh_</span></a>&gt;    that is trivial, shareable, reusable</div>
+<div class="line">[Wednesday 16 February 2011] [10:27:42] &lt;<a href="#id187"><span class="problematic" id="id188">pieterh_</span></a>&gt;    join the zero.mq (great name) wiki if you&#8217;re not already on it, start a docs:patterns page...</div>
+<div class="line">[Wednesday 16 February 2011] [10:27:47] &lt;ianbarber&gt;   yeah. i think the tricky thing with the guide is balancing it for new users, and for experienced ones</div>
+<div class="line">[Wednesday 16 February 2011] [10:28:06] &lt;ianbarber&gt;   yep, i&#8217;m on it, will do</div>
+<div class="line">[Wednesday 16 February 2011] [10:28:07] &lt;<a href="#id189"><span class="problematic" id="id190">pieterh_</span></a>&gt;    no problem, really... start with simple stuff, get more advanced as you go along</div>
+<div class="line">[Wednesday 16 February 2011] [10:28:30] &lt;<a href="#id191"><span class="problematic" id="id192">pieterh_</span></a>&gt;    patterns would be like a cookbook, stand alone section, with some good indexing</div>
+<div class="line">[Wednesday 16 February 2011] [10:28:33] &lt;ianbarber&gt;   yeah</div>
+<div class="line">[Wednesday 16 February 2011] [10:28:55] &lt;ianbarber&gt;   that&#8217;s pretty much the idea, just to have a concise example of different interaction models really</div>
+<div class="line">[Wednesday 16 February 2011] [10:29:08] &lt;<a href="#id193"><span class="problematic" id="id194">pieterh_</span></a>&gt;    even copy/paste of solutions from the email list is a good start</div>
+<div class="line">[Wednesday 16 February 2011] [10:29:22] &lt;<a href="#id195"><span class="problematic" id="id196">pieterh_</span></a>&gt;    don&#8217;t worry about producing prose, that&#8217;s my speciality</div>
+<div class="line">[Wednesday 16 February 2011] [10:42:44] &lt;mikko&gt;       hi Steve-o</div>
+<div class="line">[Wednesday 16 February 2011] [10:42:55] &lt;Steve-o&gt;     hi mikko</div>
+<div class="line">[Wednesday 16 February 2011] [10:43:59] &lt;Steve-o&gt;     working on new house this week, a foreclosure so many minor issues :/</div>
+<div class="line">[Wednesday 16 February 2011] [10:44:16] &lt;Steve-o&gt;     back in HK next week and back to work</div>
+<div class="line">[Wednesday 16 February 2011] [10:44:36] &lt;mikko&gt;       is your house in the states?</div>
+<div class="line">[Wednesday 16 February 2011] [10:44:47] &lt;Steve-o&gt;     upstate NY</div>
+<div class="line">[Wednesday 16 February 2011] [10:45:11] &lt;mikko&gt;       are you moving there?</div>
+<div class="line">[Wednesday 16 February 2011] [10:45:24] &lt;Steve-o&gt;     near Martha Stewart is about the only notable point</div>
+<div class="line">[Wednesday 16 February 2011] [10:46:18] &lt;Steve-o&gt;     eventually moving there, house prices very cheap so good time to buy</div>
+<div class="line">[Wednesday 16 February 2011] [10:46:47] &lt;Steve-o&gt;     I have another year for my greencard it looks</div>
+<div class="line">[Wednesday 16 February 2011] [10:48:40] &lt;Steve-o&gt;     so what is the status on autoconf in zeromq, anymore changes required?</div>
+<div class="line">[Wednesday 16 February 2011] [10:49:52] &lt;mikko&gt;       i think we should get 2.1.0 out before refactoring the openpgm part</div>
+<div class="line">[Wednesday 16 February 2011] [10:49:58] &lt;mikko&gt;       it seems to be working well with openpgm trunk</div>
+<div class="line">[Wednesday 16 February 2011] [10:50:09] &lt;mikko&gt;       some open issues to solve but in general good</div>
+<div class="line">[Wednesday 16 February 2011] [10:50:33] &lt;mikko&gt;       one of them is how to link openpgm if zeromq invokes openpgm built?</div>
+<div class="line">[Wednesday 16 February 2011] [10:50:35] &lt;mikko&gt;       build*</div>
+<div class="line">[Wednesday 16 February 2011] [10:50:51] &lt;mikko&gt;       install openpgm.so and use the shared lib?</div>
+<div class="line">[Wednesday 16 February 2011] [10:51:04] &lt;mikko&gt;       use the object files directly?</div>
+<div class="line">[Wednesday 16 February 2011] [10:51:05] &lt;mikko&gt;       etc</div>
+<div class="line">[Wednesday 16 February 2011] [10:51:33] &lt;Steve-o&gt;     good question, distros would like shared libs,</div>
+<div class="line">[Wednesday 16 February 2011] [10:51:43] &lt;mikko&gt;       linking libpgm.a into libzmq.so works on linux (assuming libpgm.a is position independent code) but not portable</div>
+<div class="line">[Wednesday 16 February 2011] [10:52:16] &lt;mikko&gt;       yes, my only fear is the following scenario:</div>
+<div class="line">[Wednesday 16 February 2011] [10:52:17] &lt;Steve-o&gt;     which is why I don&#8217;t have a dll on Windows</div>
+<div class="line">[Wednesday 16 February 2011] [10:52:53] &lt;mikko&gt;       user has libpgm installed, now installs zeromq with openpgm support, zeromq invokes openpgm build and overwrites the existing installation</div>
+<div class="line">[Wednesday 16 February 2011] [10:54:34] &lt;Steve-o&gt;     well a common solution I have seen to that is to install the dependent library in a sub-directory of the product build instead of the OS preferred location</div>
+<div class="line">[Wednesday 16 February 2011] [10:55:31] &lt;mikko&gt;       but distros dont like rpath</div>
+<div class="line">[Wednesday 16 February 2011] [10:55:38] &lt;Steve-o&gt;     For convenience prefer static libraries but allow distributions to use shared libraries.</div>
+<div class="line">[Wednesday 16 February 2011] [10:55:58] &lt;Steve-o&gt;     so out of the tarball build libpgm.a but allow configure options for libpgm.so</div>
+<div class="line">[Wednesday 16 February 2011] [10:56:20] &lt;mikko&gt;       but how to use the libpgm.a ?</div>
+<div class="line">[Wednesday 16 February 2011] [10:56:35] &lt;mikko&gt;       .a inside .so is not really portable</div>
+<div class="line">[Wednesday 16 February 2011] [10:56:55] &lt;Steve-o&gt;     really?  where isn&#8217;t it valid?</div>
+<div class="line">[Wednesday 16 February 2011] [10:57:11] &lt;mikko&gt;       i can check, i did a lot of googling on this</div>
+<div class="line">[Wednesday 16 February 2011] [11:01:24] &lt;mikko&gt;       hp-ux seems to be one</div>
+<div class="line">[Wednesday 16 February 2011] [11:01:31] &lt;mikko&gt;       is that even supported by openpgm?</div>
+<div class="line">[Wednesday 16 February 2011] [11:01:55] &lt;Steve-o&gt;     not yet</div>
+<div class="line">[Wednesday 16 February 2011] [11:02:03] &lt;mikko&gt;       Libtool convenience library</div>
+<div class="line">[Wednesday 16 February 2011] [11:02:07] &lt;mikko&gt;       sounds like a solution</div>
+<div class="line">[Wednesday 16 February 2011] [11:02:09] &lt;mikko&gt;       <a class="reference external" href="http://sourceware.org/autobook/autobook/autobook_92.html">http://sourceware.org/autobook/autobook/autobook_92.html</a></div>
+<div class="line">[Wednesday 16 February 2011] [11:02:24] &lt;mikko&gt;       groups together a set of object files</div>
+<div class="line">[Wednesday 16 February 2011] [11:02:30] &lt;Steve-o&gt;     that&#8217;s what zeromq is using now</div>
+<div class="line">[Wednesday 16 February 2011] [11:03:06] &lt;mikko&gt;       but on different side of the fence</div>
+<div class="line">[Wednesday 16 February 2011] [11:04:09] &lt;Steve-o&gt;     let me read up on HPUX, v10 was fine as I remember they broke various things with 11</div>
+<div class="line">[Wednesday 16 February 2011] [11:04:35] &lt;mikko&gt;       Steve-o: how does bundling convenience lib on openpgm side sound like?</div>
+<div class="line">[Wednesday 16 February 2011] [11:04:42] &lt;mikko&gt;       and then zeromq links that</div>
+<div class="line">[Wednesday 16 February 2011] [11:04:56] &lt;mikko&gt;       i could at least investigate this as it seems like a portable option</div>
+<div class="line">[Wednesday 16 February 2011] [11:05:46] &lt;Steve-o&gt;     ok, if you can provide the code, I&#8217;m not sure how this is supposed to work with two different projects</div>
+<div class="line">[Wednesday 16 February 2011] [11:06:10] &lt;mikko&gt;       the ultimate goal i guess is to have both as shared libraries provided by distros</div>
+<div class="line">[Wednesday 16 February 2011] [11:06:19] &lt;mikko&gt;       but in the meanwhile convenience lib sounds ok</div>
+<div class="line">[Wednesday 16 February 2011] [11:06:26] &lt;mikko&gt;       i&#8217;ll put this on my ever growing todo list</div>
+<div class="line">[Wednesday 16 February 2011] [11:07:04] &lt;mikko&gt;       at least i got ZFL code coverage working today</div>
+<div class="line">[Wednesday 16 February 2011] [11:08:06] &lt;Steve-o&gt;     using gcov?</div>
+<div class="line">[Wednesday 16 February 2011] [11:08:55] &lt;mikko&gt;       yes</div>
+<div class="line">[Wednesday 16 February 2011] [11:09:25] &lt;mikko&gt;       <a class="reference external" href="http://build.valokuva.org/job/test-gcov/7/cobertura/_default_/">http://build.valokuva.org/job/test-gcov/7/cobertura/_default_/</a></div>
+<div class="line">[Wednesday 16 February 2011] [11:12:40] &lt;Steve-o&gt;     nice, it&#8217;s tedious getting those percentages higher though</div>
+<div class="line">[Wednesday 16 February 2011] [11:13:50] &lt;mikko&gt;       true. you would almost need to preload a malloc implementation that fails randomly</div>
+<div class="line">[Wednesday 16 February 2011] [11:13:54] &lt;mikko&gt;       to test all asserts</div>
+<div class="line">[Wednesday 16 February 2011] [11:14:04] &lt;mikko&gt;       and even then it would be very random</div>
+<div class="line">[Wednesday 16 February 2011] [11:15:00] &lt;mikko&gt;       might add same thing for zeromq later as well</div>
+<div class="line">[Wednesday 16 February 2011] [11:17:08] &lt;cremes&gt;      pieterh: ping... where is &#8220;zhelpers.h&#8221;? i can&#8217;t compile your mailbugz.c test without it</div>
 </div>
 </div>
 
