@@ -8189,3 +8189,526 @@
 | [Sunday 20 February 2011] [14:14:00] <pieterh_>	then I'll get them to give you API access and a key
 | [Sunday 20 February 2011] [14:14:15] <mikko>	mkoppanen
 | [Sunday 20 February 2011] [14:17:50] <pieterh_>	ok
+| [Sunday 20 February 2011] [14:49:38] <pieterh_>	mikko: ok, the tool is documented and packaged for reuse 
+| [Sunday 20 February 2011] [15:42:20] <jobytaffey>	Hi, I was wondering if anyone can help out. I'm new to 0MQ. I'm trying to write a TCP server which accepts many incoming connections, reads fixed sized packets from TCP and generates 0MQ messages for handling somewhere else. I'm using libev and the receive side seems fine. But, for sending (receive 0MQ message then put it onto a TCP socket), it looks like I need to zmq_poll() when libev gives me EV_WRITE, is there a better way of doing this? A zmq ca
+| [Sunday 20 February 2011] [15:43:31] <mikko>	jobytaffey: yes
+| [Sunday 20 February 2011] [15:43:47] <mikko>	jobytaffey: you should schedule libev EV_WRITE only if you got message coming from zeromq
+| [Sunday 20 February 2011] [15:44:00] <mikko>	so roughly the following (assuming zeromq 2.1.x)
+| [Sunday 20 February 2011] [15:44:24] <mikko>	you schedule constant read event for incoming tcp messages and incoming zeromq messages
+| [Sunday 20 February 2011] [15:44:48] <mikko>	if you get tcp message in you schedule a EV_WRITE for zeromq out socket
+| [Sunday 20 February 2011] [15:45:01] <mikko>	and if you get zeromq message in you schedule EV_WRITE for tcp socket
+| [Sunday 20 February 2011] [15:45:57] <jobytaffey>	Ok, that makes sense. I didn't see anything in the API for getting at zeromq's underlying sockets though?
+| [Sunday 20 February 2011] [15:46:07] <mikko>	jobytaffey: it's a feature in 2.1.x
+| [Sunday 20 February 2011] [15:46:10] <mikko>	give me a sec
+| [Sunday 20 February 2011] [15:46:38] <mikko>	jobytaffey: http://api.zero.mq/master:zmq-getsockopt see ZMQ_FD and ZMQ_EVENTS there
+| [Sunday 20 February 2011] [15:48:50] <jobytaffey>	That looks like what I need. Thanks.
+| [Sunday 20 February 2011] [15:49:12] <mikko>	it doesn't make sense to schedule EV_WRITE event unless you know that you have something to write
+| [Sunday 20 February 2011] [17:52:41] <lestrrat>	wassup?
+| [Sunday 20 February 2011] [17:54:03] <sam`>	not much
+| [Sunday 20 February 2011] [18:05:24] <lestrrat>	oh I get it, there's a build failure. http://build.zero.mq/job/ZeroMQPerl-master_ZeroMQ2-master_GCC/313/
+| [Sunday 20 February 2011] [18:05:39] <lestrrat>	mikko: I didn't change anything in the last few days
+| [Sunday 20 February 2011] [18:48:31] <mikko>	lestrrat: ok, will rerun to see
+| [Sunday 20 February 2011] [18:49:18] <mikko>	succeeds
+| [Sunday 20 February 2011] [18:49:27] <mikko>	probably an intermittent failure
+| [Sunday 20 February 2011] [21:54:48] <JStoker>	Hi. Is there any debian packages for zeromq? :)
+| [Sunday 20 February 2011] [21:55:04] <sam`>	JStoker: yes, i think there's a 2.0.10 package
+| [Sunday 20 February 2011] [21:55:07] <sam`>	(at least in sid)
+| [Sunday 20 February 2011] [21:56:03] <JStoker>	Aah. Thanks, I'll try to work out a way of coaxing that into my squeeze install. :)
+| [Sunday 20 February 2011] [21:56:31] <sam`>	JStoker: http://packages.debian.org/libzmq
+| [Sunday 20 February 2011] [21:56:57] <sam`>	keep in mind though that 2.1.x is probably a better choice, it fixes a lot of things
+| [Sunday 20 February 2011] [21:57:51] <JStoker>	Ah. Hm.
+| [Sunday 20 February 2011] [21:58:39] <JStoker>	The debian machine works fine with compiling, I guess. The ubuntu one on the other hand seems to have a bit of a dependency failure, so isn't able to actually compile it itself.
+| [Sunday 20 February 2011] [21:58:48] <sam`>	ah?
+| [Sunday 20 February 2011] [21:59:11] <sam`>	libzmq is rather easy on the dependencies AFAIR
+| [Sunday 20 February 2011] [21:59:17] <sam`>	what problem are you facing?
+| [Sunday 20 February 2011] [21:59:20] <JStoker>	Requires uuid-dev, but "libuuid1 (= 2.17.2-0ubuntu1) but 2.17.2-0ubuntu1.10.04.2 is to be installed"
+| [Sunday 20 February 2011] [21:59:53] <sam`>	install the uuid-dev version you can, and build zeromq yourself
+| [Sunday 20 February 2011] [21:59:58] <sam`>	you should be fine
+| [Sunday 20 February 2011] [22:00:15] <JStoker>	I just tried `apt-get install uuid-dev`, didn't specify a version :/
+| [Sunday 20 February 2011] [22:01:44] <sam`>	try with aptitude
+| [Sunday 20 February 2011] [22:01:53] <sam`>	it's usually smarter when resolving dependencies
+| [Sunday 20 February 2011] [22:02:15] <JStoker>	I've just forced it to a different version, which has seemed to help... (it's installing, at least)
+| [Sunday 20 February 2011] [22:13:29] <seb`>	JStoker: it should be fine
+| [Sunday 20 February 2011] [22:14:58] <seb`>	JStoker: for ubuntu you should use this ppa: https://launchpad.net/~chris-lea/+archive/zeromq
+| [Sunday 20 February 2011] [22:15:08] <seb`>	but it's only 2.0.10:-(
+| [Sunday 20 February 2011] [22:17:14] <JStoker>	That's the ub... oh. I just went and built my own package out of git://github.com/zeromq/zeromq2.git. Whoops.
+| [Sunday 20 February 2011] [22:17:40] <JStoker>	seb`, Question. Are 2.0.10 and 2.1.x compatable?
+| [Sunday 20 February 2011] [22:18:37] <JStoker>	That does report itself as 2.1.1 though, so no issues. :)
+| [Sunday 20 February 2011] [22:19:34] <seb`>	JStoker: It's compatible yes
+| [Sunday 20 February 2011] [22:19:42] <seb`>	at least my code works on both
+| [Sunday 20 February 2011] [22:20:03] <seb`>	but 2.1 is the way to go IMHO
+| [Sunday 20 February 2011] [22:20:20] <seb`>	I'm still using 2.0.10 in production right now
+| [Sunday 20 February 2011] [22:20:30] <JStoker>	oh well. Got the difficult system running with 2.1 anyway, so might as well continue with it on the debian one.
+| [Monday 21 February 2011] [05:23:28] <CIA-21>	zeromq2: 03Martin Sustrik 07master * r5c09311 10/ (src/pgm_socket.cpp src/pgm_socket.hpp): 
+| [Monday 21 February 2011] [05:23:28] <CIA-21>	zeromq2: Computation of buffer size for PGM fixed.
+| [Monday 21 February 2011] [05:23:28] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/i9Ptxs
+| [Monday 21 February 2011] [05:23:54] <pieter_hintjens>	sustrik, I'm seeing zmq_term just exit the process
+| [Monday 21 February 2011] [05:24:00] <pieter_hintjens>	does that sound normal?
+| [Monday 21 February 2011] [05:24:21] <sustrik>	no
+| [Monday 21 February 2011] [05:24:35] <sustrik>	do you have a test case
+| [Monday 21 February 2011] [05:24:36] <sustrik>	?
+| [Monday 21 February 2011] [05:24:38] <pieter_hintjens>	trying to make some of the Guide examples work with 2.1...
+| [Monday 21 February 2011] [05:24:46] <pieter_hintjens>	yes, I have a test case... I'll email it to you
+| [Monday 21 February 2011] [05:24:49] <sustrik>	thanks
+| [Monday 21 February 2011] [05:25:55] <pieter_hintjens>	https://gist.github.com/836902
+| [Monday 21 February 2011] [05:26:10] <pieter_hintjens>	also some problems transferring messages but I'll break that down
+| [Monday 21 February 2011] [05:27:28] <sustrik>	ok
+| [Monday 21 February 2011] [05:28:13] <mikko>	good morning
+| [Monday 21 February 2011] [05:28:30] <sustrik>	morning
+| [Monday 21 February 2011] [05:29:33] <pieter_hintjens>	hi mikko :-)
+| [Monday 21 February 2011] [05:34:58] <pieter_hintjens>	sustrik: you didn't add my log on unroutable messages...
+| [Monday 21 February 2011] [05:35:10] <sustrik>	nope
+| [Monday 21 February 2011] [05:35:23] <pieter_hintjens>	any particular reason?
+| [Monday 21 February 2011] [05:35:31] <sustrik>	it's a standard behaviour
+| [Monday 21 February 2011] [05:35:38] <sustrik>	nothing special to log
+| [Monday 21 February 2011] [05:35:47] <sustrik>	it's like dropping an IP packet
+| [Monday 21 February 2011] [05:35:58] <pieter_hintjens>	i violently disagree
+| [Monday 21 February 2011] [05:36:09] <pieter_hintjens>	debugging dropped messages is one of the major pains
+| [Monday 21 February 2011] [05:36:54] <pieter_hintjens>	xrep dropping a malformed envelope is not like dropping an IP packet
+| [Monday 21 February 2011] [05:37:14] <pieter_hintjens>	it's a sign of application error, and that information is particularly valuable to the developer
+| [Monday 21 February 2011] [05:37:15] <sustrik>	yes, we should log malformed envelope
+| [Monday 21 February 2011] [05:37:25] <pieter_hintjens>	that is what I had done...
+| [Monday 21 February 2011] [05:37:35] <sustrik>	not dropping a well-formed envelope though
+| [Monday 21 February 2011] [05:37:43] <pieter_hintjens>	malformed = no such address, sorry
+| [Monday 21 February 2011] [05:37:44] <sustrik>	well-formed message i mean
+| [Monday 21 February 2011] [05:37:52] <sustrik>	it's on critical path
+| [Monday 21 February 2011] [05:38:03] <pieter_hintjens>	errors are exceptional;
+| [Monday 21 February 2011] [05:38:04] <sustrik>	if you need it for debugging
+| [Monday 21 February 2011] [05:38:17] <sustrik>	we can add some special debug functionality
+| [Monday 21 February 2011] [05:38:17] <pieter_hintjens>	when you start to use xrep this is a major pain
+| [Monday 21 February 2011] [05:38:29] <pieter_hintjens>	errors -> silence
+| [Monday 21 February 2011] [05:38:38] <sustrik>	yes
+| [Monday 21 February 2011] [05:38:40] <pieter_hintjens>	the only way I know to debug is to hack 0MQ to print something
+| [Monday 21 February 2011] [05:38:46] <pieter_hintjens>	it's a *major* annoyance
+| [Monday 21 February 2011] [05:38:49] <sustrik>	it means that the original requester is no longer available
+| [Monday 21 February 2011] [05:38:52] <pieter_hintjens>	no
+| [Monday 21 February 2011] [05:38:53] <sustrik>	so the reply is dropped
+| [Monday 21 February 2011] [05:38:57] <pieter_hintjens>	it means there's a bug in my app code
+| [Monday 21 February 2011] [05:39:01] <sustrik>	?
+| [Monday 21 February 2011] [05:39:11] <pieter_hintjens>	i assume you've never written code that uses xrep then
+| [Monday 21 February 2011] [05:39:26] <sustrik>	i did
+| [Monday 21 February 2011] [05:39:29] <sustrik>	queue device :)
+| [Monday 21 February 2011] [05:39:40] <pieter_hintjens>	well, I've done a lot of work using xrep
+| [Monday 21 February 2011] [05:39:43] <pieter_hintjens>	and it's tricky
+| [Monday 21 February 2011] [05:40:01] <pieter_hintjens>	and the classic 80% error is a bad envelope (valid for 0MQ but where the routing information is wrongly placed)
+| [Monday 21 February 2011] [05:40:10] <pieter_hintjens>	0MQ absolutely must report this
+| [Monday 21 February 2011] [05:40:15] <pieter_hintjens>	ask on the list if you're not sure
+| [Monday 21 February 2011] [05:40:25] <pieter_hintjens>	it's not a critical path
+| [Monday 21 February 2011] [05:40:33] <pieter_hintjens>	there are not millions of malformed addresses per second
+| [Monday 21 February 2011] [05:40:36] <pieter_hintjens>	no way
+| [Monday 21 February 2011] [05:40:44] <sustrik>	how would you distinguish it from simply dropping the packet because the destination is simply dead atm
+| [Monday 21 February 2011] [05:40:47] <mikko>	pieter_hintjens: this is pretty classic as well http://bit.ly/g6RXaS?r=td
+| [Monday 21 February 2011] [05:40:51] <pieter_hintjens>	same thing, sustrik
+| [Monday 21 February 2011] [05:40:52] <mikko>	might want to feature in the guide
+| [Monday 21 February 2011] [05:40:57] <pieter_hintjens>	not critical path, that's the first thing
+| [Monday 21 February 2011] [05:41:06] <pieter_hintjens>	this is an exception and can be logged
+| [Monday 21 February 2011] [05:41:28] <pieter_hintjens>	mikko: yes, ipc has some gotchas
+| [Monday 21 February 2011] [05:41:41] <pieter_hintjens>	i'm trying to debug a case now and the 'silence when dropping messages' just cost me an hour
+| [Monday 21 February 2011] [05:41:45] <pieter_hintjens>	bleh
+| [Monday 21 February 2011] [05:42:08] <sustrik>	let's add some debugging code then
+| [Monday 21 February 2011] [05:42:16] <pieter_hintjens>	sustrik: why? you have a mechanism that's ideal
+| [Monday 21 February 2011] [05:42:29] <pieter_hintjens>	as a user I'm asking formally that syslog be used to report bad addresses
+| [Monday 21 February 2011] [05:42:37] <sustrik>	the problem is that a node being offline is a pretty common occurence
+| [Monday 21 February 2011] [05:42:40] <pieter_hintjens>	it will also help debug topology errors
+| [Monday 21 February 2011] [05:42:42] <sustrik>	at least on wan
+| [Monday 21 February 2011] [05:42:48] <pieter_hintjens>	'pretty common' is not a critical path
+| [Monday 21 February 2011] [05:42:53] <pieter_hintjens>	wan is not our environment today
+| [Monday 21 February 2011] [05:43:00] <pieter_hintjens>	these are bogus arguments afaics, sorry
+| [Monday 21 February 2011] [05:43:03] <sustrik>	i'm planning for the future
+| [Monday 21 February 2011] [05:43:15] <pieter_hintjens>	you're making it unnecessarily difficult for the present
+| [Monday 21 February 2011] [05:43:30] <pieter_hintjens>	at which point the future becomes less certain at all
+| [Monday 21 February 2011] [05:43:46] <pieter_hintjens>	if people cannot easily debug routing issues and topology issues they will lose confidence in 0MQ
+| [Monday 21 February 2011] [05:44:11] <pieter_hintjens>	if you actually hit this *theoretical* issue of millions of WAN disconnections
+| [Monday 21 February 2011] [05:44:22] <pieter_hintjens>	*then* you can solve that problem in the correct fashion
+| [Monday 21 February 2011] [05:44:36] <pieter_hintjens>	refusing to log this information today is not a solution
+| [Monday 21 February 2011] [05:44:48] <pieter_hintjens>	you would probably want to reduce the logging level on specific sockets
+| [Monday 21 February 2011] [05:44:55] <pieter_hintjens>	in 3 years' time
+| [Monday 21 February 2011] [05:44:56] <sustrik>	ok, the real problem is that once i add that kind of thing, people start using it to drive their business logic
+| [Monday 21 February 2011] [05:45:02] <pieter_hintjens>	it's syslog
+| [Monday 21 February 2011] [05:45:11] <pieter_hintjens>	syslog cannot be used for presence
+| [Monday 21 February 2011] [05:45:16] <pieter_hintjens>	we know this, it's not a risk
+| [Monday 21 February 2011] [05:45:22] <sustrik>	which means the applications would become not scalable outside of a lan
+| [Monday 21 February 2011] [05:45:30] <pieter_hintjens>	?
+| [Monday 21 February 2011] [05:45:39] <pieter_hintjens>	sorry, let's kill inproc then
+| [Monday 21 February 2011] [05:45:44] <pieter_hintjens>	and multicast
+| [Monday 21 February 2011] [05:45:44] <sustrik>	?
+| [Monday 21 February 2011] [05:45:50] <pieter_hintjens>	cause people might depend on that
+| [Monday 21 February 2011] [05:45:57] <pieter_hintjens>	and not be scalable outside the lan
+| [Monday 21 February 2011] [05:46:00] <pieter_hintjens>	seriously?
+| [Monday 21 February 2011] [05:46:08] <sustrik>	nope, you can scale inproc and multicast by replacing them with tcp
+| [Monday 21 February 2011] [05:46:16] <pieter_hintjens>	sigh
+| [Monday 21 February 2011] [05:46:26] <sustrik>	when you start using logs in your business logic
+| [Monday 21 February 2011] [05:46:29] <pieter_hintjens>	how?
+| [Monday 21 February 2011] [05:46:30] <sustrik>	you are screwed
+| [Monday 21 February 2011] [05:46:38] <pieter_hintjens>	how do you use logs in your business logic?
+| [Monday 21 February 2011] [05:46:38] <sustrik>	as the logs are local
+| [Monday 21 February 2011] [05:46:57] <pieter_hintjens>	syslog is async
+| [Monday 21 February 2011] [05:46:58] <sustrik>	1. send x to y
+| [Monday 21 February 2011] [05:47:08] <pieter_hintjens>	you cannot rely on it for business logic
+| [Monday 21 February 2011] [05:47:14] <pieter_hintjens>	we already discussed this on the list
+| [Monday 21 February 2011] [05:47:16] <sustrik>	2. if i get "non routable" error
+| [Monday 21 February 2011] [05:47:23] <sustrik>	3. send it somewhere else
+| [Monday 21 February 2011] [05:47:35] <sustrik>	yes, i've discussed it many times
+| [Monday 21 February 2011] [05:47:38] <pieter_hintjens>	so people can abuse a tool
+| [Monday 21 February 2011] [05:47:45] <pieter_hintjens>	that does not mean you throw away the tool
+| [Monday 21 February 2011] [05:47:47] <sustrik>	and each time people asked for this kind of thing
+| [Monday 21 February 2011] [05:47:49] <pieter_hintjens>	you educate them
+| [Monday 21 February 2011] [05:47:57] <sustrik>	i discussed it with them
+| [Monday 21 February 2011] [05:48:13] <pieter_hintjens>	education, not censorship martin
+| [Monday 21 February 2011] [05:48:17] <sustrik>	and after some conversation it become obvious thay want to drive their business logic
+| [Monday 21 February 2011] [05:48:21] <pieter_hintjens>	you do not actually know what people need
+| [Monday 21 February 2011] [05:48:26] <sustrik>	none a single person wanting just logging
+| [Monday 21 February 2011] [05:48:31] <pieter_hintjens>	i want just logging
+| [Monday 21 February 2011] [05:48:38] <sustrik>	it's 100% misuse rate
+| [Monday 21 February 2011] [05:48:44] <sustrik>	99% then
+| [Monday 21 February 2011] [05:49:24] <sustrik>	ok, an idea
+| [Monday 21 February 2011] [05:49:47] <sustrik>	what about having a "debug" build which would log this kind of errors
+| [Monday 21 February 2011] [05:49:51] <pieter_hintjens>	and if people want to use routing failures in their app, why not?
+| [Monday 21 February 2011] [05:49:54] <sustrik>	and release build that won't
+| [Monday 21 February 2011] [05:49:55] <sustrik>	?
+| [Monday 21 February 2011] [05:49:57] <pieter_hintjens>	hang on
+| [Monday 21 February 2011] [05:50:03] <sustrik>	it doesn't scale
+| [Monday 21 February 2011] [05:50:07] <pieter_hintjens>	I'm challenging your assertion that using this information won't scale
+| [Monday 21 February 2011] [05:50:19] <pieter_hintjens>	if I make a broker that uses this
+| [Monday 21 February 2011] [05:50:22] <pieter_hintjens>	the broker will scale fine
+| [Monday 21 February 2011] [05:50:58] <pieter_hintjens>	it's like getting disconnection alerts
+| [Monday 21 February 2011] [05:51:04] <sustrik>	wait a sec
+| [Monday 21 February 2011] [05:51:08] <sustrik>	let me explain
+| [Monday 21 February 2011] [05:51:22] <sustrik>	say you have a server (XREP)
+| [Monday 21 February 2011] [05:51:27] <sustrik>	and clients (XREQ)
+| [Monday 21 February 2011] [05:52:07] <sustrik>	the server uses sys://log to find out whether clients are disconnected
+| [Monday 21 February 2011] [05:52:20] <pieter_hintjens>	yes?
+| [Monday 21 February 2011] [05:52:37] <sustrik>	when it finds out, it will do something relevant, like allert the operator or somesuch
+| [Monday 21 February 2011] [05:52:51] <pieter_hintjens>	you mean ... log a message somewhere else?
+| [Monday 21 February 2011] [05:53:05] <pieter_hintjens>	on the operator console, for example...
+| [Monday 21 February 2011] [05:53:07] <sustrik>	i mean, initiate some other business process
+| [Monday 21 February 2011] [05:53:12] <sustrik>	like sending the message by DHL
+| [Monday 21 February 2011] [05:53:23] <pieter_hintjens>	? this is your example?
+| [Monday 21 February 2011] [05:53:38] <pieter_hintjens>	business logic would be
+| [Monday 21 February 2011] [05:53:43] <sustrik>	or placing a message on dlq
+| [Monday 21 February 2011] [05:53:47] <pieter_hintjens>	- discover principal connection is dead
+| [Monday 21 February 2011] [05:53:52] <pieter_hintjens>	- switch over to backup connection
+| [Monday 21 February 2011] [05:53:53] <sustrik>	or running a special repair script
+| [Monday 21 February 2011] [05:54:12] <sustrik>	any business logic will do
+| [Monday 21 February 2011] [05:54:12] <sustrik>	now
+| [Monday 21 February 2011] [05:54:20] <sustrik>	the company grows
+| [Monday 21 February 2011] [05:54:29] <sustrik>	and have several offices all over the world
+| [Monday 21 February 2011] [05:54:36] <sustrik>	it wants to federate
+| [Monday 21 February 2011] [05:54:46] <sustrik>	so they place a queue device at each location
+| [Monday 21 February 2011] [05:55:06] <pieter_hintjens>	sustrik, you have device obsession
+| [Monday 21 February 2011] [05:55:12] <sustrik>	now imagine an client at point A invoking a service at point B
+| [Monday 21 February 2011] [05:55:27] <pieter_hintjens>	people do not, ime, use the standard devices except as a stepping stone while they're learning 0MQ
+| [Monday 21 February 2011] [05:55:36] <sustrik>	the connection to A may be perfectly ok, but the client may be dead
+| [Monday 21 February 2011] [05:55:36] <pieter_hintjens>	they build their own devices, = brokers
+| [Monday 21 February 2011] [05:55:47] <sustrik>	the same thing
+| [Monday 21 February 2011] [05:56:10] <sustrik>	the problem is that the "cannot route" error works in hop-by-hop fashion
+| [Monday 21 February 2011] [05:56:13] <pieter_hintjens>	i really can't swallow your chain of logic
+| [Monday 21 February 2011] [05:56:28] <pieter_hintjens>	it is based on the assumption that all 0MQ applications today will one day scale to the WAN
+| [Monday 21 February 2011] [05:56:34] <sustrik>	so the error you get is 'cannot route to next hop'
+| [Monday 21 February 2011] [05:56:40] <sustrik>	instead of 'message is unroutable'
+| [Monday 21 February 2011] [05:56:42] <pieter_hintjens>	which is true for about 0.001% of cases, maybe
+| [Monday 21 February 2011] [05:57:04] <pieter_hintjens>	99.999% of today's apps (and those written for the next two years) will do what they do, and basta
+| [Monday 21 February 2011] [05:57:10] <pieter_hintjens>	that is our constituency
+| [Monday 21 February 2011] [05:57:32] <sustrik>	if IP folks would think that way Internet would interconnect the original 3 machines still :)
+| [Monday 21 February 2011] [05:57:36] <pieter_hintjens>	trying to stop people writing those apps any way they can is counter-productive
+| [Monday 21 February 2011] [05:57:43] <pieter_hintjens>	i'm not a luddite, please
+| [Monday 21 February 2011] [05:58:01] <pieter_hintjens>	and you are NOT reinventing the Internet, don't imagine that
+| [Monday 21 February 2011] [05:58:18] <pieter_hintjens>	I'm asking for basic tools to make today's problem slightly easier to solve
+| [Monday 21 February 2011] [05:58:21] <sustrik>	nope, i'm building a new layer for it
+| [Monday 21 February 2011] [05:58:29] <sustrik>	ack
+| [Monday 21 February 2011] [05:58:35] <pieter_hintjens>	you ignore the requests of your users at your direct peril
+| [Monday 21 February 2011] [05:58:54] <sustrik>	i know
+| [Monday 21 February 2011] [05:58:56] <pieter_hintjens>	people will not give much patience to a nerd who tells them "I know your problems better than you do"
+| [Monday 21 February 2011] [05:59:04] <sustrik>	there are several options how to solve the problem
+| [Monday 21 February 2011] [05:59:10] <pieter_hintjens>	you need people to bring their problems and expertise
+| [Monday 21 February 2011] [05:59:16] <pieter_hintjens>	to experiment, even if it means blowing things up
+| [Monday 21 February 2011] [05:59:28] <pieter_hintjens>	without that, what you make will be dead and unused
+| [Monday 21 February 2011] [05:59:38] <pieter_hintjens>	just a collection of weird names and bizarre theories
+| [Monday 21 February 2011] [05:59:48] <pieter_hintjens>	that's 90% of the software universe
+| [Monday 21 February 2011] [05:59:59] <sustrik>	i would suggest you fork the stable
+| [Monday 21 February 2011] [06:00:02] <pieter_hintjens>	not yet
+| [Monday 21 February 2011] [06:00:06] <sustrik>	and apply the patch there
+| [Monday 21 February 2011] [06:00:08] <pieter_hintjens>	i cannot run my basic examples on 2.1
+| [Monday 21 February 2011] [06:00:17] <pieter_hintjens>	and I'm not going to fork 0MQ... nope
+| [Monday 21 February 2011] [06:00:22] <sustrik>	a regrestion?
+| [Monday 21 February 2011] [06:00:27] <sustrik>	what happened?
+| [Monday 21 February 2011] [06:00:35] <pieter_hintjens>	stabilization = current version + patches from you
+| [Monday 21 February 2011] [06:00:37] <pieter_hintjens>	no more or less
+| [Monday 21 February 2011] [06:01:24] <pieter_hintjens>	I'd like to request some debugging framework (syslog is frankly quite heavy) that tells me when I make the stupid and repeated error of misconstructing a routing envelope
+| [Monday 21 February 2011] [06:01:25] <sustrik>	well, the problem is we have different goals
+| [Monday 21 February 2011] [06:01:40] <pieter_hintjens>	we have different timeframes, is all
+| [Monday 21 February 2011] [06:01:51] <pieter_hintjens>	i'm actually using 0MQ and finding difficulties with it
+| [Monday 21 February 2011] [06:01:53] <sustrik>	how can we possibly synchronise?
+| [Monday 21 February 2011] [06:02:09] <pieter_hintjens>	accept the problems your users present you as real
+| [Monday 21 February 2011] [06:02:19] <sustrik>	sure they are
+| [Monday 21 February 2011] [06:02:24] <pieter_hintjens>	if they take the effort to express them, that means there is real pain involved
+| [Monday 21 February 2011] [06:02:30] <sustrik>	i proposed a solution: let's make a debug version of 0mq
+| [Monday 21 February 2011] [06:02:37] <pieter_hintjens>	yes, that might work but
+| [Monday 21 February 2011] [06:02:44] <pieter_hintjens>	we know why it won't, in practice
+| [Monday 21 February 2011] [06:02:46] <sustrik>	#ifdef ZMQ_DEBUG
+| [Monday 21 February 2011] [06:02:50] <sustrik>	   log (...)'
+| [Monday 21 February 2011] [06:02:51] <sustrik>	#endif
+| [Monday 21 February 2011] [06:02:53] <sustrik>	easy
+| [Monday 21 February 2011] [06:03:13] <pieter_hintjens>	Except that many people provide 0MQ to their own customers
+| [Monday 21 February 2011] [06:03:32] <pieter_hintjens>	Now they face the lovely choice of (a) debug version or (b) silent on failure version
+| [Monday 21 February 2011] [06:03:41] 	 * pieter_hintjens needs coffee
+| [Monday 21 February 2011] [06:05:30] <pieter_hintjens>	ok, I have a proposal
+| [Monday 21 February 2011] [06:05:59] <pieter_hintjens>	i don't actually like the syslog solution at all, for developers
+| [Monday 21 February 2011] [06:06:14] <pieter_hintjens>	it's a pain to use and all it really does is collect output you can print to a log file
+| [Monday 21 February 2011] [06:06:36] <pieter_hintjens>	if you try to *use* that information in any way you hit Sustrik's Barrier of "it will not scale to the WAN"
+| [Monday 21 February 2011] [06:06:38] <pieter_hintjens>	ack?
+| [Monday 21 February 2011] [06:07:07] <pieter_hintjens>	it can work internally as a log collector
+| [Monday 21 February 2011] [06:07:43] <pieter_hintjens>	so leave it undocumented, and add a method zmq_verbose() that enables printing of syslog messages
+| [Monday 21 February 2011] [06:07:56] <pieter_hintjens>	or zmq_debug() or whatever
+| [Monday 21 February 2011] [06:08:08] <sustrik>	not bad
+| [Monday 21 February 2011] [06:08:24] <sustrik>	same as ZMQ_DEBUG but configurable at runtime
+| [Monday 21 February 2011] [06:08:26] <pieter_hintjens>	then when things go weird we can tell users, "run again with the --verbose switch and send me the screen dump"
+| [Monday 21 February 2011] [06:08:33] <pieter_hintjens>	yes, has to be runtime configurable
+| [Monday 21 February 2011] [06:08:34] <sustrik>	ack
+| [Monday 21 February 2011] [06:08:42] <sustrik>	that's a good solution
+| [Monday 21 February 2011] [06:08:44] <pieter_hintjens>	IMO there is no performance hit in doing this for all exceptional conditions
+| [Monday 21 February 2011] [06:08:54] <pieter_hintjens>	if we do see such a performance issue, we can solve it
+| [Monday 21 February 2011] [06:09:33] <pieter_hintjens>	if the syslog collector is embedded in zmq, it can't be abused and it requires no extra work except that one call
+| [Monday 21 February 2011] [06:14:06] <Guthur>	is there an optimum zmq_size size?
+| [Monday 21 February 2011] [06:14:42] <pieter_hintjens>	Guthur: to achieve what?
+| [Monday 21 February 2011] [06:14:55] <pieter_hintjens>	high throughput or low latency?
+| [Monday 21 February 2011] [06:15:18] <Guthur>	I was thinking of adding a stream interface to clrzmq2
+| [Monday 21 February 2011] [06:15:37] <pieter_hintjens>	what is a stream interface?
+| [Monday 21 February 2011] [06:15:37] <Guthur>	and so i was think it would send that as a series of msgs
+| [Monday 21 February 2011] [06:16:03] <Guthur>	just passing in a stream to send
+| [Monday 21 February 2011] [06:16:07] <pieter_hintjens>	no frames?
+| [Monday 21 February 2011] [06:16:09] <Guthur>	and then it would split it up into chunks and send
+| [Monday 21 February 2011] [06:16:51] <pieter_hintjens>	if it was video, for example
+| [Monday 21 February 2011] [06:17:12] <pieter_hintjens>	you'd want to send one frame per message to get best latency
+| [Monday 21 February 2011] [06:17:12] <Guthur>	I haven't thoroughly thought it through it yet, do you recommend framing 
+| [Monday 21 February 2011] [06:17:40] <pieter_hintjens>	if it was file transfer, for example, you'd use large messages to maximize throughput
+| [Monday 21 February 2011] [06:17:42] <Guthur>	early idea genesis stage at the moment, hehe
+| [Monday 21 February 2011] [06:18:02] <pieter_hintjens>	then just choose a random value and optimize later when you actually know what the target is :-)
+| [Monday 21 February 2011] [06:18:22] <pieter_hintjens>	4096 bytes per message, there, I've decided for you
+| [Monday 21 February 2011] [06:18:25] <Guthur>	oh, ok
+| [Monday 21 February 2011] [06:18:42] <Guthur>	hehe, thanks
+| [Monday 21 February 2011] [06:19:28] <mikko>	Guthur: do you have tests you want to have run at some point?
+| [Monday 21 February 2011] [06:19:46] <Guthur>	mikko: not yet, I hope to sometime
+| [Monday 21 February 2011] [06:19:54] <Guthur>	a lot on my plate at the moment
+| [Monday 21 February 2011] [06:20:08] <Guthur>	really behind on my MSc thesis, unfortunately
+| [Monday 21 February 2011] [06:20:18] <pieter_hintjens>	"life is a buffet of interesting problems"
+| [Monday 21 February 2011] [06:24:12] <mikko>	"nothing is more expensive than hiring an amateur"
+| [Monday 21 February 2011] [06:24:23] <mikko>	saw that on twitter today
+| [Monday 21 February 2011] [06:24:46] <pieter_hintjens>	"If you think a professional is expensive, wait till you see the cost of hiring an amateur" was the version I saw
+| [Monday 21 February 2011] [06:24:52] <pieter_hintjens>	I think this would make a good motto for iMatix
+| [Monday 21 February 2011] [06:25:08] <pieter_hintjens>	I prefer your short version...
+| [Monday 21 February 2011] [06:26:19] <mikko>	http://twitter.com/cgbystrom/statuses/39607943171284992
+| [Monday 21 February 2011] [06:26:24] <mikko>	there it is
+| [Monday 21 February 2011] [06:26:59] <pieter_hintjens>	I need a Latin version
+| [Monday 21 February 2011] [06:27:57] <Guthur>	'If you think training a Graduate is expensive, try an Old Dog'
+| [Monday 21 February 2011] [06:28:02] <Guthur>	there's mine, hehe
+| [Monday 21 February 2011] [06:29:15] <mikko>	"If you think training a graduate is expensive, you are probably right but it might pay off later. Maybe"
+| [Monday 21 February 2011] [06:31:25] <pieter_hintjens>	I'd like to change the text "Explore the Community" on the main welcome page
+| [Monday 21 February 2011] [06:31:28] <pieter_hintjens>	it is too bland
+| [Monday 21 February 2011] [06:31:59] <pieter_hintjens>	It should be verb article noun
+| [Monday 21 February 2011] [06:33:51] <pieter_hintjens>	Escape the Box
+| [Monday 21 February 2011] [06:34:34] <pieter_hintjens>	that'll do...
+| [Monday 21 February 2011] [06:34:44] <mikko>	reminds too much of thinking out of the box
+| [Monday 21 February 2011] [06:34:56] <pieter_hintjens>	that was the intention
+| [Monday 21 February 2011] [06:35:04] <mikko>	oh..
+| [Monday 21 February 2011] [07:17:42] <pieter_hintjens>	sustrik: how can I tell if a specific commit got into the 2.0.10 release?
+| [Monday 21 February 2011] [07:17:49] <pieter_hintjens>	e2167cecaefec6557c7a5712fb75e51487ff69a6 is the one I'm interested in
+| [Monday 21 February 2011] [07:18:01] 	 * pieter_hintjens needs to learn more git...
+| [Monday 21 February 2011] [07:19:34] <pieter_hintjens>	ok, it's not there... np
+| [Monday 21 February 2011] [07:46:38] <pieter_hintjens>	sustrik: I've found another bug in master
+| [Monday 21 February 2011] [07:46:54] <pieter_hintjens>	am porting all the Guide examples to 2.1, some of them do quite strange stuff
+| [Monday 21 February 2011] [07:47:14] <pieter_hintjens>	Have logged this https://github.com/zeromq/zeromq2/issues/167 (and #168 was the one I found earlier)
+| [Monday 21 February 2011] [07:50:15] <pieter_hintjens>	lunch, brb
+| [Monday 21 February 2011] [07:55:05] <sustrik>	pieter_hintjens: ok
+| [Monday 21 February 2011] [07:55:16] <sustrik>	btw "fathom the basics" is not good
+| [Monday 21 February 2011] [07:55:23] <sustrik>	it's a rarely used word
+| [Monday 21 February 2011] [07:55:34] <sustrik>	and most non-native speakers won't understand it
+| [Monday 21 February 2011] [07:56:35] <sustrik>	same with "grab"
+| [Monday 21 February 2011] [07:57:55] <sustrik>	also, nobody will understand "escape the box" leads to the community page
+| [Monday 21 February 2011] [09:32:32] <pieter_hintjens>	sustrik: sure, but what does "the community" mean either?
+| [Monday 21 February 2011] [09:32:44] <sustrik>	dunno :)
+| [Monday 21 February 2011] [09:32:59] <pieter_hintjens>	exactly, it only makes sense when you already know what it is...
+| [Monday 21 February 2011] [09:33:05] <sustrik>	development?
+| [Monday 21 February 2011] [09:33:17] <pieter_hintjens>	... something that says, "Get a lot more stuff here..."
+| [Monday 21 February 2011] [09:33:22] <sustrik>	yes
+| [Monday 21 February 2011] [09:33:24] <pieter_hintjens>	Get the Addons
+| [Monday 21 February 2011] [09:33:38] <pieter_hintjens>	ugh
+| [Monday 21 February 2011] [09:33:40] <mikko>	addon sounds proprietary
+| [Monday 21 February 2011] [09:33:42] <sustrik>	or simple "more"
+| [Monday 21 February 2011] [09:34:18] <pieter_hintjens>	from a design basis it's Verb article Noun
+| [Monday 21 February 2011] [09:34:54] <pieter_hintjens>	minimalism is quite difficult... :)
+| [Monday 21 February 2011] [09:34:59] <sustrik>	true
+| [Monday 21 February 2011] [09:35:14] <sustrik>	proceed to more
+| [Monday 21 February 2011] [09:35:23] <sustrik>	check more stuff
+| [Monday 21 February 2011] [09:35:39] <pieter_hintjens>	Enter the Deep End
+| [Monday 21 February 2011] [09:35:56] <pieter_hintjens>	Dive into the Boiling Tarpits of Git
+| [Monday 21 February 2011] [09:36:24] <sustrik>	something like that
+| [Monday 21 February 2011] [09:36:29] <pieter_hintjens>	anyhow it doesn't really matter if people understand what each option means...
+| [Monday 21 February 2011] [09:36:35] <pieter_hintjens>	there are 5 options, clickety-click...
+| [Monday 21 February 2011] [09:36:46] <pieter_hintjens>	all we want is their curiosity
+| [Monday 21 February 2011] [09:37:03] <sustrik>	we can try to leave it as it
+| [Monday 21 February 2011] [09:37:08] <pieter_hintjens>	no-one's going to hesitate thinking, "Oh, I don't fully understand that, therefore I can't click"
+| [Monday 21 February 2011] [09:37:14] <sustrik>	what i find really wrong is "fathom"
+| [Monday 21 February 2011] [09:37:17] <pieter_hintjens>	sure
+| [Monday 21 February 2011] [09:37:36] <pieter_hintjens>	I wanted a little more spice
+| [Monday 21 February 2011] [09:37:48] <pieter_hintjens>	Learn the Basics
+| [Monday 21 February 2011] [09:37:54] <pieter_hintjens>	but Learn sounds like school
+| [Monday 21 February 2011] [09:38:05] <pieter_hintjens>	and "Read the Manual" just sounds like work
+| [Monday 21 February 2011] [09:38:35] <sustrik>	read the manual is neutral imo
+| [Monday 21 February 2011] [09:38:52] <pieter_hintjens>	hmm, basics vs. advancedics
+| [Monday 21 February 2011] [09:38:57] <sustrik>	what about community -> "dive into details"
+| [Monday 21 February 2011] [09:39:03] <pieter_hintjens>	I like it
+| [Monday 21 February 2011] [09:39:09] <pieter_hintjens>	that contrasts with Basics nicely
+| [Monday 21 February 2011] [09:40:16] <pieter_hintjens>	aight, we have a winner, thanks Martin :-)
+| [Monday 21 February 2011] [09:44:46] <jobytaffey>	I'm working on a server which multiplexes many TCP sockets into 0MQ. I want a worker app to be able to talk bi-directionally to any TCP socket. What's an efficient way to approach this? One 0MQ socket per TCP socket? or perhaps a single 0MQ socket per direction, aggregating all TCP messages (filtered with ZMQ_SUBSCRIBE)?
+| [Monday 21 February 2011] [09:45:24] <pieter_hintjens>	jobytaffey: have you read the Guide?
+| [Monday 21 February 2011] [09:46:06] <jobytaffey>	Bits of. I guess I'll go and read some more then...
+| [Monday 21 February 2011] [09:46:42] <pieter_hintjens>	this is not actually covered but it will help you understand how to make the 0MQ part
+| [Monday 21 February 2011] [09:47:02] <pieter_hintjens>	the answer depends a lot on what kind of work you are doing with the TCP sockets
+| [Monday 21 February 2011] [09:47:32] <pieter_hintjens>	i.e. how you map the TCP side to one or more 0MQ patterns (pubsub, req-rep, pipeline)
+| [Monday 21 February 2011] [09:49:12] <jobytaffey>	I've got fixed sized packets going in both directions over TCP. I have an online wireless sensor network where I want to be able to register for telemetry feeds from the devices. But, given millions of devices, I don't think I can afford a 0MQ socket per device.
+| [Monday 21 February 2011] [09:50:25] <pieter_hintjens>	jobytaffey: please read the Guide, at least Ch1 in detail, and come back when you can map your problem to 0MQ patterns
+| [Monday 21 February 2011] [09:50:34] <pieter_hintjens>	otherwise you lack the tools to design this properly
+| [Monday 21 February 2011] [09:51:12] <pieter_hintjens>	it sounds like pubsub except you say it's bidirectional
+| [Monday 21 February 2011] [09:51:41] <jobytaffey>	I agree I'm trying to run before walking, thanks.
+| [Monday 21 February 2011] [10:00:12] <fbarriga>	I don't speak english very good but after a while I could decipher the expresion "Dive into the Boiling Tarpits of Git" but "fathom" is quite weird
+| [Monday 21 February 2011] [10:01:15] <fbarriga>	reading the guide is quite amusing but all the decoration make it a bit longer to finish.
+| [Monday 21 February 2011] [10:02:20] <neale1>	fathom == a unit of depth (6 feet ~ 2m). The expression is used to indicate that you getting "deeper" into the subject matter.
+| [Monday 21 February 2011] [10:03:01] <pieter_hintjens>	fbarriga: ah, but you did finish it ... :-)
+| [Monday 21 February 2011] [10:03:30] <pieter_hintjens>	we had some arguments at the start, about whether or not to decorate the text
+| [Monday 21 February 2011] [10:03:44] <pieter_hintjens>	some people complained about it, but most people enjoyed it, so that's the style I used
+| [Monday 21 February 2011] [10:04:04] <fbarriga>	pieter_hintjens, nop, I was working on other stuff :(
+| [Monday 21 February 2011] [10:04:32] <pieter_hintjens>	for those who prefer their text dry we have the man pages, I guess
+| [Monday 21 February 2011] [10:06:43] <fbarriga>	is more 'artistic' the way you write the guide. I think that it sound more intellectual rather than technical.
+| [Monday 21 February 2011] [10:13:19] <pieter_hintjens>	fbarriga: well, to be honest, this is how I write when no-one is telling me to conform
+| [Monday 21 February 2011] [10:13:30] <pieter_hintjens>	s/telling/paying/
+| [Monday 21 February 2011] [10:24:22] <fbarriga>	that's good
+| [Monday 21 February 2011] [10:49:20] <cremes>	is this callstack from 0mq sending or receiving a message?  https://gist.github.com/837241
+| [Monday 21 February 2011] [10:50:22] <neale1>	anyone had any experience using 0MQ with Spring?
+| [Monday 21 February 2011] [10:54:30] <pieter_hintjens>	cremes: it looks like it's in the zmq_msg_init_size method
+| [Monday 21 February 2011] [10:55:38] <pieter_hintjens>	neale1: not as far as I know of, there are some people talking about it but nothing concrete yet
+| [Monday 21 February 2011] [10:56:39] <neale1>	Tks. I have a client trying to use it and having problems. (That's as about as detailed as they have described it unfortunately)
+| [Monday 21 February 2011] [10:57:21] <cremes>	pieter_hintjens: right; but i'm wondering if this is 0mq in the act of sending or receiving a message because this isn't code i am calling directly
+| [Monday 21 February 2011] [10:57:37] <cremes>	and i'm showing that i have a small memory leak here on occasion
+| [Monday 21 February 2011] [10:58:30] <pieter_hintjens>	cremes: hmm, sustrik would know for sure but it looks like an input event, so receiving a message
+| [Monday 21 February 2011] [10:58:48] <pieter_hintjens>	neale1: you obviously need more detail on what the problems are...
+| [Monday 21 February 2011] [10:59:17] <cremes>	yeah, i'm thinking this is 0mq allocating its own msg_t for receiving the message envelope/header/routing information for an req/rep pair
+| [Monday 21 February 2011] [11:03:20] <sustrik>	cremes: receiving
+| [Monday 21 February 2011] [11:04:09] <cremes>	sustrik: any chance the lib is not calling close on the message envelope (which isn't passed to the user)?
+| [Monday 21 February 2011] [11:04:09] <sustrik>	cremes: how do you know there's a memory leak?
+| [Monday 21 February 2011] [11:04:31] <sustrik>	sure, there can be a bug
+| [Monday 21 February 2011] [11:04:40] <sustrik>	can you be more specific about the leak?
+| [Monday 21 February 2011] [11:04:44] <cremes>	on osx there is a program called 'leaks' that can read the heap and use a malloc flag to find leaks
+| [Monday 21 February 2011] [11:04:51] <cremes>	yes
+| [Monday 21 February 2011] [11:05:17] <sustrik>	ok, so it maps malloc to frees
+| [Monday 21 February 2011] [11:05:22] <sustrik>	and once the program exits
+| [Monday 21 February 2011] [11:05:26] <sustrik>	it'll print out the leaks
+| [Monday 21 February 2011] [11:05:27] <cremes>	'leaks' is outputting that i am leaking 112 bytes periodically
+| [Monday 21 February 2011] [11:05:28] <sustrik>	right?
+| [Monday 21 February 2011] [11:05:47] <cremes>	nope, it analyses a live heap
+| [Monday 21 February 2011] [11:06:08] <sustrik>	how can it possibly know the chunk is not referenced anymore?
+| [Monday 21 February 2011] [11:07:26] <pieter_hintjens>	it's osx... apple... magic... :)
+| [Monday 21 February 2011] [11:08:10] <cremes>	sustrik: login to my box with your account and run 'man leaks'; read the first paragraph
+| [Monday 21 February 2011] [11:08:21] <sustrik>	let me see...
+| [Monday 21 February 2011] [11:08:46] <cremes>	also, reload this gist to see the output from leaks for my program:  https://gist.github.com/837241
+| [Monday 21 February 2011] [11:10:46] <cremes>	the receiving socket in this case is an xreq
+| [Monday 21 February 2011] [11:11:37] <sustrik>	ok, it scans whole memory for the pointers
+| [Monday 21 February 2011] [11:12:19] <cremes>	yes; if you keep reading, you'll see the note about MallocStackLogging for getting the stack where the leaked memory was allocated
+| [Monday 21 February 2011] [11:12:33] <cremes>	s/stack/callstack/
+| [Monday 21 February 2011] [11:13:01] <sustrik>	the stack i see in the output it
+| [Monday 21 February 2011] [11:13:03] <sustrik>	is
+| [Monday 21 February 2011] [11:13:10] <sustrik>	thread_start | _pthread_start | thread_routine | zmq::kqueue_t::loop() | zmq::zmq_engine_t::in_event()
+| [Monday 21 February 2011] [11:13:26] <sustrik>	that's different from the one you've posted before
+| [Monday 21 February 2011] [11:13:33] <sustrik>	is it truncated or what?
+| [Monday 21 February 2011] [11:14:12] <cremes>	you need to scroll the gist to the right; for some reason it doesn't wrap this output
+| [Monday 21 February 2011] [11:14:33] <sustrik>	ah
+| [Monday 21 February 2011] [11:16:15] <sustrik>	well, there are 3 possibilities:
+| [Monday 21 February 2011] [11:16:23] <sustrik>	1. bug in 0mq
+| [Monday 21 February 2011] [11:16:31] <sustrik>	2. client program not closing the message
+| [Monday 21 February 2011] [11:16:51] <sustrik>	3. the pointer is actually stored outside of process memory
+| [Monday 21 February 2011] [11:17:46] <cremes>	i don't think it's 2 because i loop over all messages and call zmq_close() on each part when i'm done
+| [Monday 21 February 2011] [11:17:57] <cremes>	there's no way for my logic to skip that step
+| [Monday 21 February 2011] [11:18:12] <cremes>	though it's certainly possible my code is the cause
+| [Monday 21 February 2011] [11:18:22] <sustrik>	ok
+| [Monday 21 February 2011] [11:18:28] <sustrik>	then it's either 1 or 3
+| [Monday 21 February 2011] [11:18:49] <sustrik>	3 happens when pointer to memory is actually held inside of socketpair buffer
+| [Monday 21 February 2011] [11:18:57] <sustrik>	which resides in kernel space
+| [Monday 21 February 2011] [11:19:13] <sustrik>	at least i would assume it does, even on osx
+| [Monday 21 February 2011] [11:19:53] <cremes>	i am *only* seeing this on the one client program i have using an xreq socket
+| [Monday 21 February 2011] [11:20:14] <cremes>	everything else is using req,rep,pub,sub and i don't see the leak
+| [Monday 21 February 2011] [11:20:23] <cremes>	so i am wondering if this is specific to xreq
+| [Monday 21 February 2011] [11:20:57] <sustrik>	ack
+| [Monday 21 February 2011] [11:20:57] <cremes>	you can see from the 'context' hex that it contains my custom identity so i assume this is routing info
+| [Monday 21 February 2011] [11:21:09] <cremes>	which xreq is supposed to cut off before passing the messages to me
+| [Monday 21 February 2011] [11:21:39] <sustrik>	is it a head version?
+| [Monday 21 February 2011] [11:21:56] <sustrik>	or 2.1.0 or 2.0.x?
+| [Monday 21 February 2011] [11:22:07] <cremes>	hang on, let me get the git commit hash (oh, 2.1.0)
+| [Monday 21 February 2011] [11:22:14] <sustrik>	ok
+| [Monday 21 February 2011] [11:22:38] <cremes>	e94790006ea6f4c64c commit from feb 9
+| [Monday 21 February 2011] [11:22:52] <cremes>	i'll update to latest & greatest
+| [Monday 21 February 2011] [11:23:11] 	 * sustrik is checking the code
+| [Monday 21 February 2011] [11:25:14] <neale1>	pieter_hintjens: Yeah I was just going to see if anyone had done it so (a) I know it could be done and (b) they might have a "recipe" for doing it and I could pass that wisdom on
+| [Monday 21 February 2011] [11:25:48] <sustrik>	cremes: the application in questio; is it using req or xreq socket?
+| [Monday 21 February 2011] [11:25:55] <cremes>	xreq
+| [Monday 21 February 2011] [11:26:20] <sustrik>	ok, so you handle individual message parts by hand
+| [Monday 21 February 2011] [11:26:29] <sustrik>	are you closing all of them?
+| [Monday 21 February 2011] [11:26:47] <sustrik>	identity/delimiter/body?
+| [Monday 21 February 2011] [11:27:32] <cremes>	yes
+| [Monday 21 February 2011] [11:27:43] <cremes>	btw, i see this with the latest master too
+| [Monday 21 February 2011] [11:28:31] <cremes>	all message parts are passed to my read callback
+| [Monday 21 February 2011] [11:28:35] <cremes>	and i call:  messages.each { |message| message.close }
+| [Monday 21 February 2011] [11:29:14] <cremes>	it's iterating over the array of message parts calling close on each (zmq_close is called inside of the close() instance method)
+| [Monday 21 February 2011] [11:29:39] <sustrik>	what language is that?
+| [Monday 21 February 2011] [11:29:42] <cremes>	does xreq pass the identity and delimiter messages up the stack?
+| [Monday 21 February 2011] [11:29:44] <cremes>	ruby
+| [Monday 21 February 2011] [11:29:53] <sustrik>	cremes: yes
+| [Monday 21 February 2011] [11:29:59] <cremes>	i thought only xrep saw all that detail
+| [Monday 21 February 2011] [11:30:22] <sustrik>	same with xreq 
+| [Monday 21 February 2011] [11:31:37] <sustrik>	are there connections being created and torn down during the test?
+| [Monday 21 February 2011] [11:33:31] <cremes>	yes, these connections can and do go away (socket is closed via zmq_close())
+| [Monday 21 February 2011] [11:33:48] <cremes>	btw, i am printing everything this callback is receiving to my log
+| [Monday 21 February 2011] [11:34:05] <cremes>	it does get the nul delimiter message but it does not get the identity message before it
+| [Monday 21 February 2011] [11:34:41] <sustrik>	right the identity is used and stripped off by the xrep socket on the other side of the connection
+| [Monday 21 February 2011] [11:34:44] <cremes>	that confirms what i originally thought; xreq strips that off
+| [Monday 21 February 2011] [11:34:50] <sustrik>	xrep
+| [Monday 21 February 2011] [11:35:22] <sustrik>	so the identity is passed to the xreq only on a single occassion:
+| [Monday 21 February 2011] [11:35:27] <sustrik>	on connection initiation
+| [Monday 21 February 2011] [11:35:43] <sustrik>	let me check the corresponding code...
+| [Monday 21 February 2011] [11:36:07] <cremes>	i thought it worked opposite; xrep gets identity from xreq during connection
+| [Monday 21 February 2011] [11:36:22] <cremes>	xreq doesn't actually send its identity after that; xrep prepends it locally
+| [Monday 21 February 2011] [11:37:04] <cremes>	so when sending from xreq, it goes nul delimiter + message parts
+| [Monday 21 February 2011] [11:37:46] <cremes>	xrep recvs routing info (if any intervening hops) and pushes its peers identity on the top of that stack + delimiter + message parts
+| [Monday 21 February 2011] [11:38:03] <cremes>	then when it replies, it just sends that routing info stack + nul + parts
+| [Monday 21 February 2011] [11:38:43] <cremes>	and ultimately xreq (at original source) recvs just nul delimiter + parts because each intervening xreq stripped off one level of routing info
+| [Monday 21 February 2011] [11:38:52] <sustrik>	except of the first part of the route stack
+| [Monday 21 February 2011] [11:39:06] <sustrik>	which it have already used to route the message back
+| [Monday 21 February 2011] [11:39:09] <sustrik>	to the xreq
+| [Monday 21 February 2011] [11:40:07] <cremes>	why would the last hop need to send that routing info to the originator? that socket already "knows" their own identity!
+| [Monday 21 February 2011] [11:40:29] <sustrik>	that's why it stips it off
+| [Monday 21 February 2011] [11:40:33] <sustrik>	i short
+| [Monday 21 February 2011] [11:40:44] <sustrik>	xreq doesn't mess with routing info at all
+| [Monday 21 February 2011] [11:41:03] <sustrik>	xrep adds one peers identity to the stack on message receival
+| [Monday 21 February 2011] [11:41:17] <sustrik>	and strips one identity from the stack on send
+| [Monday 21 February 2011] [11:41:19] <pieter_hintjens>	s/xreq/dealer/g, s/xrep/router/g, it'll be much easier
+| [Monday 21 February 2011] [11:41:31] <sustrik>	i think i see the leak
+| [Monday 21 February 2011] [11:41:56] <pieter_hintjens>	dealers are just like push + pull
+| [Monday 21 February 2011] [11:42:04] <cremes>	right, then i think we agree; the *last* xrep to reply to the original xreq will *strip* off its identity, so it only sends the delimiter + parts
+| [Monday 21 February 2011] [11:44:50] <sustrik>	cremes: i've pasted the patch via irc to you directly
+| [Monday 21 February 2011] [11:45:05] <sustrik>	let me know whether it helps
+| [Monday 21 February 2011] [11:45:22] <pieter_hintjens>	sustrik: thanks for your help with those two issues btw
+| [Monday 21 February 2011] [11:45:34] <sustrik>	np
+| [Monday 21 February 2011] [11:45:54] <pieter_hintjens>	i have a third one which I *think* actually might be a 0MQ issue ... :-)
+| [Monday 21 February 2011] [11:45:57] <pieter_hintjens>	#169
+| [Monday 21 February 2011] [11:46:10] <sustrik>	:)
+| [Monday 21 February 2011] [11:46:44] <pieter_hintjens>	not sure what the semantics are for zmq_term and pubsub
+| [Monday 21 February 2011] [11:46:57] <pieter_hintjens>	if there are 10 connected subscribers, should they all get the last message?
+| [Monday 21 February 2011] [11:47:13] <pieter_hintjens>	assuming publisher sends and then terminates
+| [Monday 21 February 2011] [11:47:39] <sustrik>	aren't you just running into async connect issue?
+| [Monday 21 February 2011] [11:47:55] <cremes>	sustrik: success!
+| [Monday 21 February 2011] [11:47:56] <pieter_hintjens>	it's a synchronized pubsub example
+| [Monday 21 February 2011] [11:48:12] <sustrik>	cremes: great
+| [Monday 21 February 2011] [11:48:18] <sustrik>	let me apply the patch
+| [Monday 21 February 2011] [11:48:26] <pieter_hintjens>	subscribers explicitly tell publisher when they are present
+| [Monday 21 February 2011] [11:48:38] <cremes>	sustrik: if you want to do an occasional 'leaks' check on osx, feel free
+| [Monday 21 February 2011] [11:48:48] <sustrik>	ack
+| [Monday 21 February 2011] [11:49:00] <cremes>	it's really easy... # MallocStackLogging=1 ./my_program
