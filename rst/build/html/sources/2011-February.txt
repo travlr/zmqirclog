@@ -8712,3 +8712,1199 @@
 | [Monday 21 February 2011] [11:48:38] <cremes>	sustrik: if you want to do an occasional 'leaks' check on osx, feel free
 | [Monday 21 February 2011] [11:48:48] <sustrik>	ack
 | [Monday 21 February 2011] [11:49:00] <cremes>	it's really easy... # MallocStackLogging=1 ./my_program
+| [Monday 21 February 2011] [11:49:09] <cremes>	leaks <pid of my_program>
+| [Monday 21 February 2011] [11:49:17] <pieter_hintjens>	sustrik: I'll test if it's due to async connects... hang on...
+| [Monday 21 February 2011] [11:50:31] <CIA-21>	zeromq2: 03Martin Sustrik 07master * r0eea935 10/ src/zmq_init.cpp : 
+| [Monday 21 February 2011] [11:50:32] <CIA-21>	zeromq2: Fix for memory leak caused by long identities
+| [Monday 21 February 2011] [11:50:32] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/hrfcjQ
+| [Monday 21 February 2011] [11:50:40] <sustrik>	cremes: done
+| [Monday 21 February 2011] [11:50:45] <sustrik>	and thanks for the offer
+| [Monday 21 February 2011] [11:51:22] <sustrik>	cremes: btw, it was you who said that SO_SNDBUF/SO_RCVBUF on OSX is measured in kB rather than bytes, right?
+| [Monday 21 February 2011] [11:51:57] <cremes>	sustrik: yeah, that's the way it looks to me but i can't find that documented anywhere
+| [Monday 21 February 2011] [11:51:59] <cremes>	it's screwy
+| [Monday 21 February 2011] [11:52:47] <sustrik>	the interesting part is that you've mentioned that getsockopt(SNDBUF) returns 0
+| [Monday 21 February 2011] [11:52:58] <sustrik>	so it's not obvious how to even find out
+| [Monday 21 February 2011] [11:53:09] <cremes>	ack
+| [Monday 21 February 2011] [11:53:26] <cremes>	if you want to write a small c program that exercises that stuff, that's probably the best way to know "for sure"
+| [Monday 21 February 2011] [11:53:41] <sustrik>	what kind of kernel is that btw
+| [Monday 21 February 2011] [11:53:44] <sustrik>	proprietaty?
+| [Monday 21 February 2011] [11:53:44] <cremes>	i could also ask about it on apple's dev lists
+| [Monday 21 February 2011] [11:53:53] <cremes>	nope, it's open source
+| [Monday 21 February 2011] [11:54:05] <cremes>	it's called darwin... it's a mach + freebsd hybrid
+| [Monday 21 February 2011] [11:54:05] <sustrik>	then try asking on the list
+| [Monday 21 February 2011] [11:54:22] <cremes>	ok
+| [Monday 21 February 2011] [11:54:22] <sustrik>	the functionality is obviously misbehaving
+| [Monday 21 February 2011] [11:54:34] <sustrik>	so it would be nice to know what the devs have to say about it
+| [Monday 21 February 2011] [11:54:35] <cremes>	any chance you could provide a small c program that illustrates the issue?
+| [Monday 21 February 2011] [11:54:41] <cremes>	code always talks louder
+| [Monday 21 February 2011] [11:54:43] <sustrik>	i can try
+| [Monday 21 February 2011] [11:54:46] <sustrik>	wait a sec
+| [Monday 21 February 2011] [11:54:48] <cremes>	especially when they can repro it :)
+| [Monday 21 February 2011] [11:55:22] <cremes>	maybe get/setsockopt only screw up on socketpairs
+| [Monday 21 February 2011] [11:55:57] <sustrik>	yes, that's my thinking as well
+| [Monday 21 February 2011] [11:56:06] <sustrik>	btw, POSIX doesn't specify the unit :_
+| [Monday 21 February 2011] [11:56:07] <sustrik>	:)
+| [Monday 21 February 2011] [11:56:17] <sustrik>	it just says "buffer size"
+| [Monday 21 February 2011] [11:56:22] <cremes>	heh
+| [Monday 21 February 2011] [11:56:47] <cremes>	yeah, i can't imagine get/setsockopt are broken for all sockets... that would be *very* obvious
+| [Monday 21 February 2011] [11:56:56] <sustrik>	Same with Stevens' book
+| [Monday 21 February 2011] [11:57:09] <sustrik>	anyway, let me write an example
+| [Monday 21 February 2011] [11:57:58] <cremes>	k
+| [Monday 21 February 2011] [12:02:22] <pieter_hintjens>	sustrik: you were right...!
+| [Monday 21 February 2011] [12:02:55] <pieter_hintjens>	0MQ is just too fast, all the 1M messages get broadcast even before the clients connect...
+| [Monday 21 February 2011] [12:03:23] <sustrik>	heh
+| [Monday 21 February 2011] [12:03:52] <pieter_hintjens>	it makes it quite a challenge to synchronize subscribers and publishers then...
+| [Monday 21 February 2011] [12:03:58] <pieter_hintjens>	not sure the worked example is even valid
+| [Monday 21 February 2011] [12:06:27] <sustrik>	i am not sure that's it even possible
+| [Monday 21 February 2011] [12:06:35] <sustrik>	it's like synchronising a radio show
+| [Monday 21 February 2011] [12:06:38] <sustrik>	with all listeners
+| [Monday 21 February 2011] [12:07:29] <sustrik>	there still me a letter from a listener in amazonia asking for postponing the show
+| [Monday 21 February 2011] [12:07:39] <sustrik>	stuck somewhere in post office at manaos
+| [Monday 21 February 2011] [12:08:38] <sustrik>	if you know the number of listeners in advance, it can be solvable
+| [Monday 21 February 2011] [12:13:02] <sustrik>	cremes: i've created a socket pair on OSX
+| [Monday 21 February 2011] [12:13:14] <cremes>	ok
+| [Monday 21 February 2011] [12:13:22] <sustrik>	tried to getsockopt the SNDBUF and RCVBUF
+| [Monday 21 February 2011] [12:13:28] <sustrik>	both result in 3,000,000
+| [Monday 21 February 2011] [12:13:43] <sustrik>	where have you seen it returning a zero?
+| [Monday 21 February 2011] [12:14:26] <cremes>	in mailbox.cpp ::send, that buffer expansion code will return 0 or 32 depending
+| [Monday 21 February 2011] [12:14:59] <cremes>	zmq::mailbox_t::send around line 160
+| [Monday 21 February 2011] [12:15:26] <sustrik>	strange
+| [Monday 21 February 2011] [12:15:27] <cremes>	line 170 usually fails to return a sane number
+| [Monday 21 February 2011] [12:15:43] <sustrik>	meybe setsockopt uses different units than getsockopt?
+| [Monday 21 February 2011] [12:15:48] <sustrik>	let me try
+| [Monday 21 February 2011] [12:16:08] <cremes>	btw, that 3 million number is bytes and i set it in my /etc/sysctl.conf if you want to look at that
+| [Monday 21 February 2011] [12:16:26] <sustrik>	that seems to be ok
+| [Monday 21 February 2011] [12:16:27] <cremes>	that's the sysctl for local communications which is what i guess socketpair uses
+| [Monday 21 February 2011] [12:16:30] <sustrik>	no need checking
+| [Monday 21 February 2011] [12:16:39] <sustrik>	the problem is somewhere further down the way
+| [Monday 21 February 2011] [12:21:22] <sustrik>	resizing on osx works better on osx than on linux :)
+| [Monday 21 February 2011] [12:21:29] <sustrik>	i resize to 100,000
+| [Monday 21 February 2011] [12:21:32] <sustrik>	i check the size
+| [Monday 21 February 2011] [12:21:35] <sustrik>	i get 100000
+| [Monday 21 February 2011] [12:21:45] <sustrik>	when i do same with linux i get
+| [Monday 21 February 2011] [12:21:47] <sustrik>	200000
+| [Monday 21 February 2011] [12:22:00] <cremes>	heh
+| [Monday 21 February 2011] [12:22:23] <cremes>	try running that stress test... that usually blows it up
+| [Monday 21 February 2011] [12:27:21] <pieter_hintjens>	sustrik: something to think about for the future, if we can make synchronous connects
+| [Monday 21 February 2011] [12:27:34] <pieter_hintjens>	it'd add real value IMO
+| [Monday 21 February 2011] [12:27:46] <pieter_hintjens>	for certain use cases at least
+| [Monday 21 February 2011] [12:28:19] <cremes>	pieter_hintjens: that could be provided by an add-on/wrapper library
+| [Monday 21 February 2011] [12:28:26] <pieter_hintjens>	nope, not afaics
+| [Monday 21 February 2011] [12:28:35] <pieter_hintjens>	i'm hitting this problem in one of the examples
+| [Monday 21 February 2011] [12:28:47] <cremes>	why, because connection status isn't exposed?
+| [Monday 21 February 2011] [12:28:53] <pieter_hintjens>	i use a req/rep dialog to synchronize the two peers, then a pubsub dialog for the data
+| [Monday 21 February 2011] [12:29:04] <cremes>	sounds like ftp
+| [Monday 21 February 2011] [12:29:11] <pieter_hintjens>	but I can't get the two synchronized
+| [Monday 21 February 2011] [12:29:20] <pieter_hintjens>	because the pubsub connect can take any arbitrary time
+| [Monday 21 February 2011] [12:29:37] <cremes>	hmmm
+| [Monday 21 February 2011] [12:29:38] <pieter_hintjens>	so even if the req/rep dialog says 'ready', that doesn't mean the subscriber will get data
+| [Monday 21 February 2011] [12:29:43] <cremes>	right
+| [Monday 21 February 2011] [12:29:56] <pieter_hintjens>	the only sure way is that the pubsub dialog explicitly confirms the connection, if over a connected transport
+| [Monday 21 February 2011] [12:30:11] <cremes>	so, you bind the SUB socket, the req/rep says ready, you connect the PUB and it fails?
+| [Monday 21 February 2011] [12:30:15] <pieter_hintjens>	yup
+| [Monday 21 February 2011] [12:30:26] <cremes>	sounds like a bug
+| [Monday 21 February 2011] [12:30:27] <pieter_hintjens>	doesn't fail, just doesn't connect in time to get any data
+| [Monday 21 February 2011] [12:30:40] <cremes>	wait, which one doesn't connect in time to get data?
+| [Monday 21 February 2011] [12:30:57] <pieter_hintjens>	It's this one: https://github.com/zeromq/zeromq2/issues/169
+| [Monday 21 February 2011] [12:31:46] <pieter_hintjens>	i'd like a handshake between publisher & subscriber at connect time, which is exposed to the app
+| [Monday 21 February 2011] [12:32:04] <pieter_hintjens>	so subscriber sends identity, and publisher acknowledges, and app code can wait for that to complete
+| [Monday 21 February 2011] [12:32:10] <pieter_hintjens>	optionally
+| [Monday 21 February 2011] [12:32:14] <cremes>	pieter_hintjens: this is why i use devices so much
+| [Monday 21 February 2011] [12:32:33] <cremes>	put a forwarder in the middle and it will probably work
+| [Monday 21 February 2011] [12:32:45] <cremes>	the pub connects to the forwarder as do the subs
+| [Monday 21 February 2011] [12:32:56] <pieter_hintjens>	i'll have the same issue from forwarder to subscribers
+| [Monday 21 February 2011] [12:32:59] <cremes>	when your req/rep gives the all-clear, let 'er rip
+| [Monday 21 February 2011] [12:33:36] <cremes>	well, if zmq_connect() takes an arbitrary amount of time, that seems like a 'broken' contract to me
+| [Monday 21 February 2011] [12:33:36] <pieter_hintjens>	it's all asynchronous, adding more steps may introduce enough delay, but it's not certain
+| [Monday 21 February 2011] [12:33:43] <cremes>	right, i see
+| [Monday 21 February 2011] [12:34:22] <pieter_hintjens>	sustrik: would you consider a handshake for new connections?
+| [Monday 21 February 2011] [12:34:38] <pieter_hintjens>	i.e. C: identity frame, S: identity ack
+| [Monday 21 February 2011] [14:16:13] <sustrik>	cremes: still there?
+| [Monday 21 February 2011] [14:16:24] <cremes>	sustrik: yes
+| [Monday 21 February 2011] [14:16:27] <sustrik>	git doesn't seem to be installed on your box
+| [Monday 21 February 2011] [14:16:54] <sustrik>	how do you get the sources?
+| [Monday 21 February 2011] [14:16:57] <cremes>	add /opt/local/bin to your $PATH
+| [Monday 21 February 2011] [14:17:02] <sustrik>	ok
+| [Monday 21 February 2011] [14:17:27] <sustrik>	works!
+| [Monday 21 February 2011] [14:17:28] <sustrik>	thanks
+| [Monday 21 February 2011] [14:17:34] <cremes>	you're welcome
+| [Monday 21 February 2011] [14:19:58] <sustrik>	btw, have you seen the shutdown stress to fail with head?
+| [Monday 21 February 2011] [14:20:18] <sustrik>	doesn't fail for me
+| [Monday 21 February 2011] [14:20:35] 	 * sustrik guesses that the problem was alleviated by introduction of the reaper thread
+| [Monday 21 February 2011] [14:26:17] <cremes>	sustrik: i haven't seen it fail since i boosted my buffers to 3MB (that 3 million number you saw earlier)
+| [Monday 21 February 2011] [14:26:28] <cremes>	if i move back to the defaults, i'm fairly certain it will fail
+| [Monday 21 February 2011] [14:26:29] <sustrik>	aha
+| [Monday 21 February 2011] [14:26:36] <sustrik>	can you do that?
+| [Monday 21 February 2011] [14:26:54] <cremes>	not at the moment... i'm wrapping up some work
+| [Monday 21 February 2011] [14:26:59] <cremes>	i can do that tomorrow 
+| [Monday 21 February 2011] [14:27:00] <sustrik>	ok, np
+| [Monday 21 February 2011] [14:27:09] <sustrik>	just ping me then
+| [Monday 21 February 2011] [14:28:05] <ljackson>	did I read the documentation correctly that in a multithreaded app the zmq context is common to all sockets bind and connect ?
+| [Monday 21 February 2011] [14:28:40] <sustrik>	yes
+| [Monday 21 February 2011] [14:29:45] <ljackson>	k, if you have a embeded queue device with workers in threads connecting to inproc
+| [Monday 21 February 2011] [14:29:57] <pieter_hintjens>	ljackson: only necessarily if you're using inproc
+| [Monday 21 February 2011] [14:30:08] <ljackson>	can you with the same context in another thread add stuff to the queue via another inproc ?
+| [Monday 21 February 2011] [14:30:16] <ljackson>	pieter_hintjens, good to know. 
+| [Monday 21 February 2011] [14:30:33] <pieter_hintjens>	ljackson: the semantic for communicating between threads is 'send a message'
+| [Monday 21 February 2011] [14:30:44] <pieter_hintjens>	you can send a message to the queue device from any thread, obviously
+| [Monday 21 February 2011] [14:30:46] <ljackson>	what I am seeing is zmq hanging trying to connect/bind must be something i messed up then
+| [Monday 21 February 2011] [14:31:22] <ljackson>	basically as a test tring to take mtserver.cpp and put the client internal all on inproc using same context is this even valid ?
+| [Monday 21 February 2011] [14:31:31] <ljackson>	obviously
+| [Monday 21 February 2011] [14:31:37] <ljackson>	diffrent inproc:// addresses
+| [Monday 21 February 2011] [14:31:53] <ljackson>	workers for threads as example has and then using queue for clients
+| [Monday 21 February 2011] [14:31:58] <pieter_hintjens>	it should work
+| [Monday 21 February 2011] [14:32:02] <ljackson>	humm
+| [Monday 21 February 2011] [14:32:24] <ljackson>	ok will keep digging or write example test code if I can get it to work and ask again here
+| [Monday 21 February 2011] [14:32:27] <ljackson>	thx 
+| [Monday 21 February 2011] [14:32:30] <pieter_hintjens>	if your code's short, post it to a gist so we can look at it
+| [Monday 21 February 2011] [14:33:06] <ljackson>	yeah might have to write an example code for my own sanity anyway if I can reproduce my issue I will post and ask again here
+| [Monday 21 February 2011] [14:34:44] <ljackson>	i also believe I read that the order of connection bind vs connect doesn't matter? Or is that in only certain socket types ?
+| [Monday 21 February 2011] [14:35:00] <ljackson>	worried that the device thread is not binding before the workers connect
+| [Monday 21 February 2011] [14:35:06] <ljackson>	...etc.
+| [Monday 21 February 2011] [14:35:32] <pieter_hintjens>	for inproc it matters
+| [Monday 21 February 2011] [14:35:38] <pieter_hintjens>	you must absolutely bind, then connect
+| [Monday 21 February 2011] [14:35:50] <pieter_hintjens>	let me send you a new version of mtrelay that shows how I do this in 2.1
+| [Monday 21 February 2011] [14:35:54] <pieter_hintjens>	it's somewhat changed
+| [Monday 21 February 2011] [14:36:04] <ljackson>	nice thx, I am using 2.1.1 from git
+| [Monday 21 February 2011] [14:36:25] <pieter_hintjens>	https://gist.github.com/837575
+| [Monday 21 February 2011] [14:36:43] <pieter_hintjens>	the trick is to bind and connect a socket pair in the parent thread, then pass the context & socket to the child thread
+| [Monday 21 February 2011] [14:37:06] <pieter_hintjens>	i will try to make a simple abstraction for this, it's a very common pattern
+| [Monday 21 February 2011] [14:37:28] <pieter_hintjens>	specifically for inproc multithreading that is never intended to be scaled out
+| [Monday 21 February 2011] [14:39:23] <ljackson>	humm
+| [Monday 21 February 2011] [14:39:38] <ljackson>	i thought you were never to share/send the socket ?
+| [Monday 21 February 2011] [14:42:23] <pieter_hintjens>	in 2.1 this is legal, and extremely useful for inproc/multithreading
+| [Monday 21 February 2011] [14:42:31] <pieter_hintjens>	not shared, just sent
+| [Monday 21 February 2011] [14:49:52] <ljackson>	ahh i get it so you know for sure that it was done in the correct order
+| [Monday 21 February 2011] [14:50:04] <ljackson>	then you send on the pointer and forget you knew about it
+| [Monday 21 February 2011] [14:50:07] <ljackson>	k
+| [Monday 21 February 2011] [14:51:40] <ljackson>	pieter_hintjens, so you need to bind a new socket for each worker thread then 
+| [Monday 21 February 2011] [14:51:54] <ljackson>	in REQ/RES...etc.
+| [Monday 21 February 2011] [14:52:25] <pieter_hintjens>	yes
+| [Monday 21 February 2011] [14:55:06] <amacleod>	What 0MQ pattern is best for an asynchronous dialogue, where 2 participants can send messages but there doesn't need to be a 1:1 request/response correspondence?
+| [Monday 21 February 2011] [14:55:20] <amacleod>	Can XREQ/XREP do that?
+| [Monday 21 February 2011] [14:56:42] <ljackson>	pieter_hintjens, thread_args_t *child; child->socket = new zmq::socket_t(*context, ZMQ_ZXREP); ?
+| [Monday 21 February 2011] [14:57:08] <cremes>	amacleod: yes, those sockets are the perfect choice
+| [Monday 21 February 2011] [14:57:15] <pieter_hintjens>	ljackson: what's the question?
+| [Monday 21 February 2011] [14:57:34] <amacleod>	Okay, cool.  My next step is to understand how to use identity addressing, then.
+| [Monday 21 February 2011] [14:57:43] <pieter_hintjens>	amacleod: have you read the Guide yet?
+| [Monday 21 February 2011] [14:57:45] <ljackson>	c++ vs your example
+| [Monday 21 February 2011] [14:57:55] <amacleod>	pieter_hintjens, parts of it.
+| [Monday 21 February 2011] [14:58:04] <pieter_hintjens>	ljackson: you're asking whether the C++ is correct?
+| [Monday 21 February 2011] [14:58:46] <ljackson>	as in the new pointer .. yeah nevermind answered my own Q
+| [Monday 21 February 2011] [15:05:28] <amacleod>	So, I noticed when using the Java bindings, I cannot seem to interrupt a recv operation that's trying to read from a socket whose other endpoint doesn't exist.
+| [Monday 21 February 2011] [15:05:51] <amacleod>	If I want to preserve Java interruptability, should I be using NOBLOCK and a poller?
+| [Monday 21 February 2011] [15:16:28] <fbarriga>	I have a little problem with python
+| [Monday 21 February 2011] [15:16:41] <fbarriga>	I can't receive an structure from C++
+| [Monday 21 February 2011] [15:16:56] <amacleod>	fbarriga, what format are you using to serialize structures?
+| [Monday 21 February 2011] [15:17:00] <fbarriga>	I don't know why It tries to receive it like a string
+| [Monday 21 February 2011] [15:17:06] <fbarriga>	in C++ raw structure
+| [Monday 21 February 2011] [15:17:11] <fbarriga>	in python struct.unpack
+| [Monday 21 February 2011] [15:17:16] <fbarriga>	in the reverse way it works
+| [Monday 21 February 2011] [15:17:59] <fbarriga>	msg = self.socket.recv()
+| [Monday 21 February 2011] [15:18:13] <fbarriga>	len (msg) it prints 29
+| [Monday 21 February 2011] [15:18:59] <fbarriga>	and I'm sending only a double
+| [Monday 21 February 2011] [15:19:09] <fbarriga>	double nav = 1; memcpy(zmq_msg_data(&msg), &nav, sizeof(double));
+| [Monday 21 February 2011] [15:19:39] <amacleod>	Can you do a byte-by-byte comparison of what you're getting on the wire and the result of struct.pack with the value you expect?
+| [Monday 21 February 2011] [15:21:36] <amacleod>	On the C++ side you are telling zmq that your packet should be (sizeof double) bytes long?
+| [Monday 21 February 2011] [15:22:48] <ljackson>	pieterh, acording to what I read in the docs/guide am i correct in that the PUSH/PULL socket can have multiple pushers and a single puller in the same context e.g. workers and sinks ?
+| [Monday 21 February 2011] [15:23:06] <pieterh>	sure
+| [Monday 21 February 2011] [15:23:12] <fbarriga>	sorry guys I found it
+| [Monday 21 February 2011] [15:23:23] <ljackson>	pieterh, just wanted to make sure I read it right thx :)
+| [Monday 21 February 2011] [15:23:34] <pieterh>	ljackson: all socket types except PAIR can be connected 1-N or N-1
+| [Monday 21 February 2011] [15:23:42] <ljackson>	or N-N ?
+| [Monday 21 February 2011] [15:23:54] <fbarriga>	quite stupid my error, I've 2 streams and I was connecting to the wrong one :(
+| [Monday 21 February 2011] [15:24:00] <pieterh>	that's just 1-N and N-1 from two sides
+| [Monday 21 February 2011] [15:24:06] <ljackson>	ya
+| [Monday 21 February 2011] [15:25:36] <ljackson>	inproc, pull push need the same treatment as req/res ..etc ?
+| [Monday 21 February 2011] [15:28:08] <pieterh>	ljackson: rtfm here http://zguide.zeromq.org/chapter:all#toc21
+| [Monday 21 February 2011] [15:28:38] <pieterh>	i'm adding more detail on the 2.1 mtrelay example but the point is that inproc is not a disconnected transport
+| [Monday 21 February 2011] [15:34:07] <ljackson>	k thx
+| [Monday 21 February 2011] [15:52:53] <amacleod>	In Java bindings, how do I determine what error happened when recv returns null?
+| [Monday 21 February 2011] [15:58:58] <CIA-21>	jzmq: 03Gonzalo Diethelm 07master * r91da678 10/ (5 files in 2 dirs): 
+| [Monday 21 February 2011] [15:58:59] <CIA-21>	jzmq: Use zmq_errno() everywhere instead of errno.
+| [Monday 21 February 2011] [15:58:59] <CIA-21>	jzmq: Set all projects to compile with a Release configuration. - http://bit.ly/h8ZIKL
+| [Monday 21 February 2011] [16:05:49] <gdan>	trying to build in ubuntu 10.10:  installed: g++,g++ 4.5,gcc-opt, libstdc++6, libstdc++645-dev,   *** I am getting what appers to me stl errors, does anyone have a list of reuired libaries?
+| [Monday 21 February 2011] [16:06:04] <gdan>	building the libzmq
+| [Monday 21 February 2011] [16:09:08] <pieterh>	gdan: I'm searching for the answer...
+| [Monday 21 February 2011] [16:09:15] <gdan>	thanks
+| [Monday 21 February 2011] [16:10:56] <pieterh>	gdan: do you have build-essential?
+| [Monday 21 February 2011] [16:11:11] <gdan>	let me check
+| [Monday 21 February 2011] [16:12:51] <gdan>	do not see it, nor do i see it avail in software centr
+| [Monday 21 February 2011] [16:13:11] <pieterh>	apt-get install build-essential
+| [Monday 21 February 2011] [16:13:25] <pieterh>	sudo apt-get install build-essential, to be accurate
+| [Monday 21 February 2011] [16:13:56] <pieterh>	also uuid-dev
+| [Monday 21 February 2011] [16:14:05] <gdan>	installing...
+| [Monday 21 February 2011] [16:14:35] <soren>	Or: sudo apt-get build-dep libzmq0
+| [Monday 21 February 2011] [16:14:49] <soren>	That installs all the build-dependencies of the libzmq0 ubuntu package.
+| [Monday 21 February 2011] [16:14:54] <soren>	Handy shortcut.
+| [Monday 21 February 2011] [16:15:14] <gdan>	will do...
+| [Monday 21 February 2011] [16:19:33] <gdan>	i re-ran  configure, now make is running.   so far, looks good.  thank you
+| [Monday 21 February 2011] [16:24:39] <pieterh>	gdan: np
+| [Monday 21 February 2011] [16:28:29] <ljackson>	pieterh, odd appears i am close, getting context terminated exception...
+| [Monday 21 February 2011] [16:29:09] <pieterh>	main thread terminates the context before other threads are finished
+| [Monday 21 February 2011] [16:31:23] <ljackson>	humm
+| [Monday 21 February 2011] [16:32:40] <ljackson>	this happens starting up the ZMQ_QUEUE device. even before I get to starting worker threads
+| [Monday 21 February 2011] [16:32:59] <ljackson>	QUEUE bridging inproc not tested ?
+| [Monday 21 February 2011] [16:38:43] <pieterh>	ljackson: hard to say without code to look at
+| [Monday 21 February 2011] [16:39:07] <pieterh>	the queue device is just normal code
+| [Monday 21 February 2011] [16:39:47] <pieterh>	find where you're doing zmq_term, print "HELLO" and then check whether that shows before the error...
+| [Monday 21 February 2011] [16:40:02] <pieterh>	if you terminate the context, that kills all inproc sockets
+| [Monday 21 February 2011] [16:42:50] <ljackson>	yeah not doing any terminate, but a few other things with this existing code... prob need to make test code to try to reproduce
+| [Monday 21 February 2011] [16:49:12] <ljackson>	doh I think i see it
+| [Monday 21 February 2011] [16:51:18] <amacleod>	Where are the URIs for 0MQ documented?  I assumed I should be using tcp://host:port even for my XREQ/XREP dialogue, but the "mamas/papas" examples in the guide use things like "ipc://routing.ipc".
+| [Monday 21 February 2011] [16:53:46] <amacleod>	Found it.  zmq_ipc(7) man page.
+| [Monday 21 February 2011] [16:58:03] <pieterh>	amacleod: zmq_bind / zmq_connect man pages list the transports, each has its own man page
+| [Monday 21 February 2011] [16:59:05] <amacleod>	Ok, thanks.  So I still want tcp since I want all my sockets to be remote.
+| [Monday 21 February 2011] [17:00:44] <amacleod>	I'm still having trouble wrapping my head around the addressing requirements for XREQ/XREP.
+| [Monday 21 February 2011] [17:01:26] <amacleod>	So far I have an XREP "server" that listens for connections.  I'm able to create an XREQ "client" that establishes a connection and sends a request.
+| [Monday 21 February 2011] [17:01:56] <amacleod>	The server sees the request and where it came from (2 message parts: address, payload), and is able to reply.
+| [Monday 21 February 2011] [17:02:27] <amacleod>	When I send the reply as (address, null, payload), I can see in wireshark that some data gets sent in the opposite direction on the socket, but my recv call in the client never returns.
+| [Monday 21 February 2011] [17:02:35] <pieterh>	amacleod: ... some generalities about the request-reply pattern
+| [Monday 21 February 2011] [17:02:51] <pieterh>	in most cases, client is REQ and server is REP
+| [Monday 21 February 2011] [17:03:06] <pieterh>	and anything in the middle (e.g. queue device) is XREP--XREQ
+| [Monday 21 February 2011] [17:03:20] <pieterh>	that's the basic layout
+| [Monday 21 February 2011] [17:03:29] <pieterh>	after that there is the weird stuff
+| [Monday 21 February 2011] [17:03:42] <pieterh>	which chapter 3 explains
+| [Monday 21 February 2011] [17:03:47] <amacleod>	So to do this "asynchronous dialogue" thing, do I need to have more than 2 participants?
+| [Monday 21 February 2011] [17:04:06] <pieterh>	asynchronous means what exactly?
+| [Monday 21 February 2011] [17:04:16] <pieterh>	in your use case, I mean
+| [Monday 21 February 2011] [17:04:21] <amacleod>	Not lockstep on requests and replies.
+| [Monday 21 February 2011] [17:04:30] <pieterh>	so how do the messages flow?
+| [Monday 21 February 2011] [17:04:37] <pieterh>	do you have N clients, 1 server?
+| [Monday 21 February 2011] [17:04:43] <pieterh>	N clients, N servers?
+| [Monday 21 February 2011] [17:04:45] <amacleod>	Yes.. N clients, 1 server.
+| [Monday 21 February 2011] [17:04:51] <amacleod>	Bi-directional messages.
+| [Monday 21 February 2011] [17:05:08] <pieterh>	can servers send messages to clients who have not sent a message to the server?
+| [Monday 21 February 2011] [17:05:17] <pieterh>	or is it 1 request / 0-N responses?
+| [Monday 21 February 2011] [17:05:21] <amacleod>	No.  There has to be at least an initial handshake.
+| [Monday 21 February 2011] [17:05:29] <amacleod>	It's 1-N requests, 0-N responses.
+| [Monday 21 February 2011] [17:05:44] <amacleod>	So, the client can still send messages to the server even while the server is sending responses.
+| [Monday 21 February 2011] [17:05:47] <pieterh>	can clients pipeline requests?
+| [Monday 21 February 2011] [17:05:50] <pieterh>	ah, ok
+| [Monday 21 February 2011] [17:06:26] <pieterh>	so your server definitely has to be XREP (which we will rename to ROUTER at some stage)
+| [Monday 21 February 2011] [17:06:39] <amacleod>	Okay.  That's the way I have it.
+| [Monday 21 February 2011] [17:06:57] <pieterh>	your clients always initiate the dialog, and they talk to a single server only
+| [Monday 21 February 2011] [17:07:04] <amacleod>	When I get messages in on the server, I add the identity to a routing table in the server object.
+| [Monday 21 February 2011] [17:07:05] <gdan>	does anyone know in mono, how in mono (on ubuntu) i reference the libzmq runtime libraries i just built in the project?  ( do see that they are in usr/local/lib)
+| [Monday 21 February 2011] [17:07:10] <pieterh>	so they do indeed use XREQ
+| [Monday 21 February 2011] [17:07:13] <amacleod>	pieterh, that is correct.
+| [Monday 21 February 2011] [17:07:27] <pieterh>	if your clients talked to N servers, you'd want to use XREP for them as well
+| [Monday 21 February 2011] [17:07:28] <amacleod>	gdan, does mono respect LD_LIBRARY_PATH?
+| [Monday 21 February 2011] [17:08:11] <gdan>	don't know.   perhaps when i run i specify the path?
+| [Monday 21 February 2011] [17:08:24] <amacleod>	pieterh, indeed.  One thing I didn't realize at first was that, with XREQ, I did not need to explicitly send the client's identity.
+| [Monday 21 February 2011] [17:08:55] <amacleod>	gdan, I know in Java, I have to do something like -Djava.library.path=path/to/jzmq_native.  Probably mono has something similar.
+| [Monday 21 February 2011] [17:08:57] <pieterh>	amacleod: if you use either XREP or XREQ in your code, you absolutely have to study and learn how these sockets create and use envelopes
+| [Monday 21 February 2011] [17:09:13] <pieterh>	it's logical once you know it but it is really not obvious
+| [Monday 21 February 2011] [17:09:26] <amacleod>	pieterh, I have been trying to understand a bit by looking at wireshark.
+| [Monday 21 February 2011] [17:09:30] <gdan>	i'll look
+| [Monday 21 February 2011] [17:09:46] <pieterh>	it's explained in Ch3, look for Request-Reply envelopes
+| [Monday 21 February 2011] [17:10:26] <amacleod>	One thing I was confused about in chapter 3 was how XREP and XREQ expect their envelopes.  Is it true that XREQ expects envelopes the same way REQ does and that XREP expects envelopes the same way REP does?
+| [Monday 21 February 2011] [17:10:35] <pieterh>	no
+| [Monday 21 February 2011] [17:10:39] <pieterh>	the name XREQ is highly misleading
+| [Monday 21 February 2011] [17:10:46] <pieterh>	it should and will be called "DEALER"
+| [Monday 21 February 2011] [17:10:56] <pieterh>	it is exactly equivalent to a PUSH+PULL combination
+| [Monday 21 February 2011] [17:11:11] <pieterh>	it deals messages out, and in, without changing them
+| [Monday 21 February 2011] [17:11:37] <pieterh>	whereas REP is a terminator that rips open the envelope, hides it, gives you the contents, and sneakily recreates the envelope when you send a reply
+| [Monday 21 February 2011] [17:11:51] <pieterh>	they are fundamentally different tools
+| [Monday 21 February 2011] [17:12:35] <pieterh>	take a look at the rtdealer example
+| [Monday 21 February 2011] [17:12:38] <amacleod>	Ok.  What I was thinking a while ago is that I could achieve what I wanted with a pair of REQ/REP sockets, one for each direction.  The replies would always be dinky little "yep I got it" acknowledgements.
+| [Monday 21 February 2011] [17:13:01] <pieterh>	it will work really easily using XREQ/XREP, don't panic
+| [Monday 21 February 2011] [17:13:18] <amacleod>	But I couldn't think of a good way to create both at once.  (trying not to panic :-D)
+| [Monday 21 February 2011] [17:13:50] <pieterh>	- your clients using XREQ just connect, and send simple messages
+| [Monday 21 February 2011] [17:14:19] <pieterh>	- the server, when it receives a message, gives the app the client identity, followed by the simple message, in two parts
+| [Monday 21 February 2011] [17:14:21] <amacleod>	So they are similar to the "worker" in rtdealer?  (I say this because worker uses XREQ).
+| [Monday 21 February 2011] [17:14:42] <pieterh>	- the server, when it wants to talk to client A, sends two parts: identity A, and then simple message
+| [Monday 21 February 2011] [17:14:59] <pieterh>	in rtdealer, client is the worker (uses XREQ as you see), server is the main thread
+| [Monday 21 February 2011] [17:15:20] <pieterh>	would it help to have a real example of a server and clients working like this?
+| [Monday 21 February 2011] [17:15:34] <pieterh>	i'll make one tomorrow, it's late here now
+| [Monday 21 February 2011] [17:15:55] <amacleod>	Possibly.  I might try translating rtdealer into Java after I get home.
+| [Monday 21 February 2011] [17:16:10] <pieterh>	it's not literally what you want, but it shows how to use that socket pair
+| [Monday 21 February 2011] [17:17:15] <amacleod>	I thought that I had things pretty much okay as far as you have said.  When you say "the server sends two parts: identity A, and then simple message", do you mean that XREP(router) does that for me when I call send, or that my code should do that using sendmore followed by send?
+| [Monday 21 February 2011] [17:17:56] <pieterh>	sendmore followed by send
+| [Monday 21 February 2011] [17:18:09] <pieterh>	you need to explicitly tell the router socket who to send the message to
+| [Monday 21 February 2011] [17:18:17] <pieterh>	it does not actually send the identity
+| [Monday 21 February 2011] [17:18:32] <pieterh>	it uses that to decide what client to talk to, then sends the remaining message part(s)
+| [Monday 21 February 2011] [17:18:42] <amacleod>	Ok.  It's possible there is a bug in my client receiving code.  I did see the reply come back on the socket in wireshark.
+| [Monday 21 February 2011] [17:19:43] <pieterh>	I think your use case is much better than the one I used for XREP-XREQ 
+| [Monday 21 February 2011] [17:20:00] <pieterh>	so I'll change the Guide for that...
+| [Monday 21 February 2011] [17:20:20] <amacleod>	It's for instant-message style chat.  (wrapping XMPP).
+| [Monday 21 February 2011] [17:20:40] <pieterh>	indeed
+| [Monday 21 February 2011] [17:20:53] <pieterh>	tomorrow sometime I'll have a working example
+| [Monday 21 February 2011] [17:21:38] <amacleod>	Ok.  I'll stop pestering you so you can sleep :-)  If I am able to translate the current example into Java, I'll let you know here tomorrow.
+| [Monday 21 February 2011] [17:23:20] <pieterh>	np :-)
+| [Monday 21 February 2011] [17:41:39] <CIA-21>	zeromq2: 03Mikko Koppanen 07master * r98ccff1 10/ builds/redhat/zeromq.spec : 
+| [Monday 21 February 2011] [17:41:40] <CIA-21>	zeromq2: Fixes build on at least CentOS 5
+| [Monday 21 February 2011] [17:41:40] <CIA-21>	zeromq2: Signed-off-by: Mikko Koppanen <mikko.koppanen@gmail.com> - http://bit.ly/hHoTEo
+| [Monday 21 February 2011] [18:39:57] <rem7>	what is the best way to ensure the delivery of a msg in a PUSH/PULL (something very similar to the ventilator tutorial) ... I sent out about 16Million msgs and my sink recvd 10million.
+| [Monday 21 February 2011] [18:41:07] <rem7>	I was reading that multicast only works on PUB/SUB...?
+| [Monday 21 February 2011] [18:50:24] <mikko>	sustrik: thanks!
+| [Monday 21 February 2011] [19:20:28] <cremes>	on a multi-part send, if any part fails (rc != 0 and errno is set) then 0mq gives my user code owernship of the messages again, yes?
+| [Monday 21 February 2011] [19:20:50] <cremes>	in normal circumstances, once you pass a message to zmq_send() it's 0mq's responsibility to call zmq_msg_close()
+| [Monday 21 February 2011] [19:20:56] <cremes>	except in the case above, right?
+| [Monday 21 February 2011] [19:33:57] <mikko>	cremes: nope
+| [Monday 21 February 2011] [19:34:07] <mikko>	cremes: even if you zmq_send message you need to close it
+| [Monday 21 February 2011] [19:35:59] <cremes>	mikko: sheesh, i've been doing this wrong for *months* then
+| [Monday 21 February 2011] [19:36:34] <cremes>	so, does zmq_send() increment the "copy counter" on the zmq_msg_t and then decrement it (and release) when it's sent?
+| [Monday 21 February 2011] [19:37:00] <cremes>	it must otherwise when i call close it would release the message before 0mq has a chance to transmit it
+| [Monday 21 February 2011] [19:37:10] <cremes>	pls confirm if you can
+| [Monday 21 February 2011] [20:37:20] <mikko>	cremes: sorry, was a away building stuff
+| [Monday 21 February 2011] [20:37:55] <mikko>	cremes: you can close right after send
+| [Monday 21 February 2011] [20:38:03] <mikko>	take a look at zguide for samples
+| [Monday 21 February 2011] [20:38:47] <mikko>	https://github.com/zeromq/zeromq2/blob/master/src/zmq.cpp#L129
+| [Monday 21 February 2011] [20:38:52] <mikko>	also, that might clear it up a bit
+| [Monday 21 February 2011] [20:40:14] <mikko>	also, see the page: http://api.zero.mq/master:zmq-msg-close for zmq_msg_close
+| [Monday 21 February 2011] [21:09:39] <jugg>	whoa!  Since when did we get versioned api on the web?  Nice! :)
+| [Monday 21 February 2011] [21:10:24] <jugg>	oh, different domain.  interesting.
+| [Monday 21 February 2011] [21:11:43] <mikko>	jugg: been there a few days
+| [Monday 21 February 2011] [21:12:09] <mikko>	and finally!
+| [Monday 21 February 2011] [21:12:12] <mikko>	http://snapshot.zero.mq/rpm/2011-02-22_02-09-11/centos5/i386/
+| [Monday 21 February 2011] [21:12:16] <mikko>	centos rpms available
+| [Monday 21 February 2011] [21:12:20] <mikko>	time to sleep
+| [Tuesday 22 February 2011] [05:40:56] <pieterh>	good morning
+| [Tuesday 22 February 2011] [05:42:43] <ianbarber>	morning
+| [Tuesday 22 February 2011] [05:48:01] <pieterh>	ianbarber: what part of the world are you in?
+| [Tuesday 22 February 2011] [05:48:34] <pieterh>	London? you seem to get around a lot for your "0MQ is the answer" talks :-)
+| [Tuesday 22 February 2011] [05:56:34] <ianbarber>	yep, london
+| [Tuesday 22 February 2011] [05:56:54] <ianbarber>	i was hoping to get to give it at confoo as well, but they went with a different talk in the end :)
+| [Tuesday 22 February 2011] [05:59:45] <pieterh>	I was thinking of doing a small 0MQ event in Brussels later in spring
+| [Tuesday 22 February 2011] [06:00:01] <pieterh>	April or May, when it's nicer weather
+| [Tuesday 22 February 2011] [06:03:42] <ianbarber>	awesome, i think that would be fun
+| [Tuesday 22 February 2011] [06:05:05] <ianbarber>	are you based in brussels then, or near by?
+| [Tuesday 22 February 2011] [06:07:37] <pieterh>	I'm in Brussels, yes, so it's easy for us to organize something here
+| [Tuesday 22 February 2011] [06:08:03] <pieterh>	There's a nice place in the center of town I used to hold conferences in
+| [Tuesday 22 February 2011] [06:09:02] <pieterh>	Brussels is reasonably central IMO, and of course there's the beer...
+| [Tuesday 22 February 2011] [06:09:44] <ianbarber>	surely there are some unused government buildings available? :)
+| [Tuesday 22 February 2011] [06:10:28] <ianbarber>	yeah, brussels is a really nice place, and easy to get to on the train from everywhere as well for people that aren't keen on flying. 
+| [Tuesday 22 February 2011] [06:10:33] <pieterh>	you mean because one of our 7 governments is currently on extended holiday?
+| [Tuesday 22 February 2011] [06:10:38] <pieterh>	lol
+| [Tuesday 22 February 2011] [06:10:51] <pieterh>	ok, I'll set it up... excellent...
+| [Tuesday 22 February 2011] [06:11:45] <pieterh>	I'm thinking, mix of workshops and project presentations
+| [Tuesday 22 February 2011] [06:12:13] <pieterh>	people can go home in the evening, or stay overnight and socialise
+| [Tuesday 22 February 2011] [06:13:53] <ianbarber>	i think that's sensible, though I would probably aim for a panel or discussion slot or two, just to to give it a less structured feel - I would imagine that the crowd will all be pretty good with the library so the chat will be as good as the talks
+| [Tuesday 22 February 2011] [06:17:46] <pieterh>	So the idea is a lot of tables, chairs, refreshments, in a large room
+| [Tuesday 22 February 2011] [06:18:07] <pieterh>	wifi
+| [Tuesday 22 February 2011] [06:19:58] <ianbarber>	sounds good
+| [Tuesday 22 February 2011] [06:29:01] <ianbarber>	btw, the clone example in the new guide chapter is excellent. 
+| [Tuesday 22 February 2011] [06:31:35] <pieterh>	ah, glad you like it
+| [Tuesday 22 February 2011] [06:32:04] <pieterh>	do you think it makes sense to do all the design discussion first, and then the code later?
+| [Tuesday 22 February 2011] [06:32:26] <pieterh>	these examples are going to be a lot larger than the earlier ones
+| [Tuesday 22 February 2011] [06:34:46] <ianbarber>	yeah, i think that's tricky whenever you get to a more real world example - i mean if the reader had been paying attention then should pretty much get how to build it by that point as all of the blocks have been covered. I think it is going to be a big block of code to cover the whole client and server case, but I'm not sure there's that much that should split it up
+| [Tuesday 22 February 2011] [06:36:11] <pieterh>	I mean, after you read the Clone discussion, do you want to see it worked out in code, or do you want to continue to the Harmony discussion?
+| [Tuesday 22 February 2011] [06:36:26] <pieterh>	assuming that code is 20 pages long...
+| [Tuesday 22 February 2011] [06:36:54] <pieterh>	(not one code block, but developed piece by piece)
+| [Tuesday 22 February 2011] [06:37:17] <pieterh>	for me the only way to prove the design is running code
+| [Tuesday 22 February 2011] [06:37:50] <ianbarber>	yeah, i would definitely prefer to see some code
+| [Tuesday 22 February 2011] [06:38:16] <pieterh>	ok, then I'll switch back to the earlier structure... it'll be like the last Worked example in Ch3
+| [Tuesday 22 February 2011] [06:38:41] <ianbarber>	yeah, i think that was a reasonable model
+| [Tuesday 22 February 2011] [06:39:01] <ianbarber>	would it be worth maybe having these examples be in python or another scripting language, just to trim the size on-page some?
+| [Tuesday 22 February 2011] [06:41:17] <pieterh>	that could be good, yes
+| [Tuesday 22 February 2011] [06:41:33] <pieterh>	it solves one problem I have with C, the lack of containers
+| [Tuesday 22 February 2011] [06:41:44] <pieterh>	I was thinking of using ZFL for these advanced cases
+| [Tuesday 22 February 2011] [06:41:49] <pieterh>	but Python would be neater
+| [Tuesday 22 February 2011] [06:42:10] <pieterh>	However... I still need to write them in C :-)
+| [Tuesday 22 February 2011] [06:42:20] <pieterh>	For completeness' sake
+| [Tuesday 22 February 2011] [06:43:03] 	 * pieterh thinks a little...
+| [Tuesday 22 February 2011] [06:43:15] <pieterh>	let's continue in C, which is the language of the API
+| [Tuesday 22 February 2011] [06:43:35] <pieterh>	but we can produce versions of the Guide for every single language
+| [Tuesday 22 February 2011] [06:43:44] <pieterh>	you want the Guide in Python? Not a problem!
+| [Tuesday 22 February 2011] [06:44:03] <pieterh>	(any examples not translated will default to C then)
+| [Tuesday 22 February 2011] [06:45:00] <pieterh>	since the source for examples is merged into the text at build time anyhow
+| [Tuesday 22 February 2011] [06:46:46] <ianbarber>	that would be quite cool
+| [Tuesday 22 February 2011] [06:47:22] <pieterh>	ok, it's a deal
+| [Tuesday 22 February 2011] [06:47:57] <ianbarber>	on that note - is there a process for saying when new examples are ready for translation?
+| [Tuesday 22 February 2011] [06:48:09] <ianbarber>	maybe just a mailing list ping that the code is there before the guide goes live
+| [Tuesday 22 February 2011] [06:48:13] <pieterh>	hmm, I guess it involves tracking the git
+| [Tuesday 22 February 2011] [06:48:34] <pieterh>	I'd rather not get into a release process for the guide
+| [Tuesday 22 February 2011] [06:49:08] <pieterh>	there are only a couple of languages that people have translated systematically
+| [Tuesday 22 February 2011] [06:49:12] <pieterh>	like PHP :-)
+| [Tuesday 22 February 2011] [06:49:17] <stimpie>	I understood the goal of zeromq is becoming a kernel module, I have just read the interesting new part of the manual 'clone pattern' but I wander how this adds to a kernel level system? 
+| [Tuesday 22 February 2011] [06:49:29] <pieterh>	stimpie: it's a layer on top
+| [Tuesday 22 February 2011] [06:50:13] <ianbarber>	pieterh: fair point :) 
+| [Tuesday 22 February 2011] [06:50:49] <pieterh>	ianbarber: yesterday I updated the C examples and text for 2.1...
+| [Tuesday 22 February 2011] [06:51:06] <pieterh>	I'm not sure the PHP binding handles 2.1 even...
+| [Tuesday 22 February 2011] [06:51:07] <ianbarber>	yeah, i was just making a note I should check the PHP ones
+| [Tuesday 22 February 2011] [06:51:36] <ianbarber>	it's up to date as far as I know, I've been mostly using it against 2.1.0
+| [Tuesday 22 February 2011] [06:51:43] <stimpie>	pieterh, ok clear enough.
+| [Tuesday 22 February 2011] [06:51:45] <pieterh>	nice!
+| [Tuesday 22 February 2011] [06:51:47] <pieterh>	hopefully these shifts will become rarer and rarer
+| [Tuesday 22 February 2011] [06:52:15] <pieterh>	stimpie: there are lots of reusable patterns we can make on top of 0MQ, Ch4 is covering some of the reliability ones
+| [Tuesday 22 February 2011] [06:52:28] <pieterh>	I think giving them names makes them easier to understand and reuse
+| [Tuesday 22 February 2011] [06:54:27] <stimpie>	They are interesting patterns but it confuses me with what the scope of the zeromq project is
+| [Tuesday 22 February 2011] [06:55:22] <private_meta>	hmm... I've been told that the c++ version of zmq uses void pointers because you can send something OTHER than char pointers as well, yet for the python version you can pretty much send a standard string in the send function. Doesn't that mean that this gives c++ functionality you can't capture with a similar python implementation?
+| [Tuesday 22 February 2011] [06:57:30] <stimpie>	private_meta, the message content is up to the client. You could also serialize java objects which are pretty useless in a c++ client.
+| [Tuesday 22 February 2011] [06:58:32] <private_meta>	Yeah, but it looks to me that for the python interface, in case I don't misunderstand it, the message content is narrowed down to strings
+| [Tuesday 22 February 2011] [06:59:28] <ianbarber>	private_meta: underneath it's just a chunk of bytes - I would imagine that there is a pack function or similar that can pack anything into a string for python?
+| [Tuesday 22 February 2011] [07:00:42] <private_meta>	I don't know, it's just that the send interface for python looks so convenient while with c++ you have to bitch around with zmq::message_t where you have to use memcpy or message_t.rebuild to get a simple string into a message
+| [Tuesday 22 February 2011] [07:02:39] <ianbarber>	hmm, for C there's the little zhelpers script pieterh uses that provides some handy helper functions to hide some of that stuff, i don't know if there's a C++ equivalent
+| [Tuesday 22 February 2011] [07:03:05] <pieterh>	stimpie: I'll make this clear in the text, thanks for pointing that out
+| [Tuesday 22 February 2011] [07:04:00] <pieterh>	ianbarber: yes, some kind person made zhelpers.hpp
+| [Tuesday 22 February 2011] [07:05:02] <pieterh>	private_meta: feel free to translate the zmsg code from C to C++, it'll give you what you want
+| [Tuesday 22 February 2011] [07:06:01] <private_meta>	pieterh: uhm... it doesn't exist yte?
+| [Tuesday 22 February 2011] [07:06:02] <private_meta>	*yet?
+| [Tuesday 22 February 2011] [07:06:37] <pieterh>	private_meta: the feeling of pride and accomplishment you'll feel as you make it... will be better than steak salad and fries
+| [Tuesday 22 February 2011] [07:06:58] <private_meta>	Well, not that hard, I don't quite like steak
+| [Tuesday 22 February 2011] [07:07:10] <pieterh>	even better then... :-)
+| [Tuesday 22 February 2011] [07:07:30] <pieterh>	general rule with 0MQ is, if there's something you think could work better, make it happen
+| [Tuesday 22 February 2011] [07:07:53] <pieterh>	you can take the C code and wrap it as C++ very easily IMO
+| [Tuesday 22 February 2011] [07:07:55] <private_meta>	I wouldn't know how
+| [Tuesday 22 February 2011] [07:08:09] <pieterh>	you are working in what language?
+| [Tuesday 22 February 2011] [07:08:18] <private_meta>	C++
+| [Tuesday 22 February 2011] [07:08:58] <pieterh>	did you read the zmsg.c code yet?
+| [Tuesday 22 February 2011] [07:10:34] <private_meta>	nope
+| [Tuesday 22 February 2011] [07:10:58] <private_meta>	Well, isn't there a zmsg.cpp already?
+| [Tuesday 22 February 2011] [07:12:07] <pieterh>	private_meta: please read both those files, then come back...
+| [Tuesday 22 February 2011] [07:13:44] <pieterh>	you have three choices, when it comes to getting functionality in 0MQ (or any software)
+| [Tuesday 22 February 2011] [07:13:48] <pieterh>	1. pay for it and get it soon
+| [Tuesday 22 February 2011] [07:14:00] <private_meta>	2. don't pay and wait
+| [Tuesday 22 February 2011] [07:14:02] <pieterh>	2. wait until someone else makes it and shares it, then get it for free
+| [Tuesday 22 February 2011] [07:14:02] <private_meta>	3. do it yourself
+| [Tuesday 22 February 2011] [07:14:08] <pieterh>	exactly
+| [Tuesday 22 February 2011] [07:14:14] <pieterh>	:-)
+| [Tuesday 22 February 2011] [07:14:31] <pieterh>	in this case I've made it really, really easy for you...
+| [Tuesday 22 February 2011] [07:14:43] <private_meta>	seen an interesting venn diagram for that
+| [Tuesday 22 February 2011] [07:14:49] <pieterh>	since you can literally take the C code (already designed as a class), wrap it with (I'd guess 20 lines of C++ code)
+| [Tuesday 22 February 2011] [07:14:55] <pieterh>	and get what you need
+| [Tuesday 22 February 2011] [07:14:56] <stimpie>	the file: examples/Java/psenvsub.java contains some garbage at the end 
+| [Tuesday 22 February 2011] [07:15:22] <pieterh>	stimpie: indeed, it seems chopped off...
+| [Tuesday 22 February 2011] [07:16:53] <pieterh>	stimpie: ah, I see what you mean
+| [Tuesday 22 February 2011] [07:17:02] <pieterh>	ok, fixing that, I found the original contribution
+| [Tuesday 22 February 2011] [07:17:40] <pieterh>	stimpie: fixed, thanks!
+| [Tuesday 22 February 2011] [07:17:43] <stimpie>	np
+| [Tuesday 22 February 2011] [07:26:24] <private_meta>	just out of curiosity, don't have time at the moment, let's say i want to improve zmq by adding convenience methods for send/recv for c++, let's say for strings, would that be worth considering it?
+| [Tuesday 22 February 2011] [07:28:07] <stimpie>	private_meta, what is wrong with send(msg.toBytes())?
+| [Tuesday 22 February 2011] [07:28:08] <pieterh>	private_meta: it would not go into the core
+| [Tuesday 22 February 2011] [07:28:44] <pieterh>	private_meta: if all you want is send/recv string, it's already in zhelpers.hpp
+| [Tuesday 22 February 2011] [07:29:43] <pieterh>	//  Convert string to 0MQ string and send to socket
+| [Tuesday 22 February 2011] [07:29:43] <pieterh>	static bool
+| [Tuesday 22 February 2011] [07:29:43] <pieterh>	s_send (zmq::socket_t & socket, const std::string & string) {
+| [Tuesday 22 February 2011] [07:29:43] <pieterh>	    zmq::message_t message(string.size());
+| [Tuesday 22 February 2011] [07:29:43] <pieterh>	    memcpy(message.data(), string.data(), string.size());
+| [Tuesday 22 February 2011] [07:29:44] <pieterh>	    bool rc = socket.send(message);
+| [Tuesday 22 February 2011] [07:29:44] <pieterh>	    return (rc);
+| [Tuesday 22 February 2011] [07:29:45] <pieterh>	}
+| [Tuesday 22 February 2011] [07:30:18] <private_meta>	oh, I've already seen that. By the way, why do you use memcpy there and not rebuild?
+| [Tuesday 22 February 2011] [07:38:34] <private_meta>	argh... the disabled copy constructor is annoying, I can't even return a message_t object from a function
+| [Tuesday 22 February 2011] [08:08:45] <pieterh>	private_meta: that code was written by Olivier Chamoux afair
+| [Tuesday 22 February 2011] [08:09:46] <private_meta>	The example code carries that name as well
+| [Tuesday 22 February 2011] [08:10:35] <private_meta>	According to a comment in the source it's to avoid "shared messages", which seems to be a somewhat valid argument if you tried to use it for that, but it's annoying if you want to return a message by a function
+| [Tuesday 22 February 2011] [08:11:11] <pieterh>	sure
+| [Tuesday 22 February 2011] [10:24:33] <CIA-21>	zeromq2: 03Martin Sustrik 07master * r43e8868 10/ (24 files): 
+| [Tuesday 22 February 2011] [10:24:33] <CIA-21>	zeromq2: Added explicit error message in case of memory exhaustion
+| [Tuesday 22 February 2011] [10:24:33] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/eVM1AS
+| [Tuesday 22 February 2011] [11:00:38] <amacleod>	Are there any plans to have language-native ZMQ libraries, rather than wrapping C++ libs?
+| [Tuesday 22 February 2011] [11:01:25] <amacleod>	I guess maintaining parallel language-native libs would be a much bigger maintenance load.
+| [Tuesday 22 February 2011] [11:08:57] <pieterh>	amacleod: it's a lot of work unless there's a real payoff, e.g. languages that can't link to C++
+| [Tuesday 22 February 2011] [11:09:16] <pieterh>	you would not reach a similar level of performance and functionality
+| [Tuesday 22 February 2011] [11:09:36] <pieterh>	it's been discussed, we would need to document the wire level protocols properly first
+| [Tuesday 22 February 2011] [11:10:07] <amacleod>	pieterh, hm, yeah, good point.  And I guess the hassle of linking, for example, JNI libraries in Java, is pretty much a one-time configuration thing.
+| [Tuesday 22 February 2011] [11:10:23] <pieterh>	plus you always get the latest/greatest 0MQ, etc.
+| [Tuesday 22 February 2011] [11:10:24] <amacleod>	pieterh, well, documenting the wire level protocols sounds like a good idea anyway. :-D
+| [Tuesday 22 February 2011] [11:10:38] <pieterh>	yes, when someone actually wants it... :-)
+| [Tuesday 22 February 2011] [11:11:01] <amacleod>	pieterh, by the way, where can I look at the new router/dealer example you made?
+| [Tuesday 22 February 2011] [11:11:29] <pieterh>	amacleod: hang on, I'll rebuild the Guide...
+| [Tuesday 22 February 2011] [11:11:36] <amacleod>	Thanks.
+| [Tuesday 22 February 2011] [11:16:05] <pieterh>	hmm, Wikidot seems to cache the old text for a while...
+| [Tuesday 22 February 2011] [11:17:06] <pieterh>	oops, error in my upload robot, it's sending the content to the wrong place...
+| [Tuesday 22 February 2011] [11:17:32] <amacleod>	Silly robot.
+| [Tuesday 22 February 2011] [11:18:21] <pieterh>	ok, here: http://zguide.zeromq.org/chapter:all#toc51
+| [Tuesday 22 February 2011] [11:19:04] <ljackson>	pieterh, got that code working last night, thx for your help
+| [Tuesday 22 February 2011] [11:19:18] <pieterh>	ljackson: np
+| [Tuesday 22 February 2011] [11:19:30] <ljackson>	pieterh, silly mistake of not de-ref on the work/clients sockets before sending to the queue device
+| [Tuesday 22 February 2011] [11:19:39] <ljackson>	odd that the api took that tho
+| [Tuesday 22 February 2011] [11:20:02] <pieterh>	ljackson: what language binding?
+| [Tuesday 22 February 2011] [11:20:06] <ljackson>	who maintains the c++ api for zeromq ? Maybe I could extend to accept socket pointers and ask for a pull request ?
+| [Tuesday 22 February 2011] [11:20:21] <pieterh>	ah, yes, I'm sure the maintainers will welcome contributions
+| [Tuesday 22 February 2011] [11:20:30] <amacleod>	"Worked Example: Inter-Broker Routing", right?
+| [Tuesday 22 February 2011] [11:20:42] <pieterh>	amacleod: "Asynchronous Client-Server"...
+| [Tuesday 22 February 2011] [11:20:52] <pieterh>	reload that page
+| [Tuesday 22 February 2011] [11:21:19] <amacleod>	Ah, ok.
+| [Tuesday 22 February 2011] [11:21:41] <amacleod>	Looks like it renders as #toc50 for me.
+| [Tuesday 22 February 2011] [11:22:17] <pieterh>	caching issue perhaps
+| [Tuesday 22 February 2011] [11:22:25] <amacleod>	Yeah.. I think I'm still getting the old version.
+| [Tuesday 22 February 2011] [11:22:41] <pieterh>	do you see figure 46 "Asynchronous Client Server" ?
+| [Tuesday 22 February 2011] [11:22:48] <amacleod>	Yeah.. I see the diagram.
+| [Tuesday 22 February 2011] [11:22:54] <pieterh>	ok, then that's all good
+| [Tuesday 22 February 2011] [11:23:34] <amacleod>	The next code sample is router-to-router, though...
+| [Tuesday 22 February 2011] [11:24:08] <pieterh>	does it not show the asyncsrv example?
+| [Tuesday 22 February 2011] [11:24:29] <pieterh>	ah, diagrams are accurate but text is out of date...
+| [Tuesday 22 February 2011] [11:24:34] <pieterh>	reload, reload, reload!
+| [Tuesday 22 February 2011] [11:24:41] <amacleod>	Nope.  It's a little incongruous, actually... :)
+| [Tuesday 22 February 2011] [11:24:49] <amacleod>	aha.. there it is!
+| [Tuesday 22 February 2011] [11:25:28] <pieterh>	enjoy, amacleod, and let me know if it's helpful
+| [Tuesday 22 February 2011] [11:25:39] <pieterh>	it was quite fun making this pattern
+| [Tuesday 22 February 2011] [11:25:43] <amacleod>	Sure thing.  :)
+| [Tuesday 22 February 2011] [11:27:44] <amacleod>	Could the client_task use blocking recv rather than polling, or is the polling crucial?
+| [Tuesday 22 February 2011] [11:28:29] <pieterh>	amacleod: if you want to send a mix of requests and replies, it can't block on recv
+| [Tuesday 22 February 2011] [11:28:48] <pieterh>	you can't have a separate thread doing the receiving
+| [Tuesday 22 February 2011] [11:29:08] <pieterh>	it can use a simpler poll than the one I made, that's to ensure requests are sent on time
+| [Tuesday 22 February 2011] [11:30:14] <pieterh>	brb, lunch...
+| [Tuesday 22 February 2011] [11:34:55] <CIA-21>	zeromq2: 03Martin Sustrik 07sub-forward * r977f5b7 10/ (5 files): 
+| [Tuesday 22 February 2011] [11:34:55] <CIA-21>	zeromq2: Trie-based matcher (ptrie_t) implemented.
+| [Tuesday 22 February 2011] [11:34:55] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/gSZiWK
+| [Tuesday 22 February 2011] [12:31:46] <cremes>	is there any technique for detecting a slow subscriber? e.g. check queue sizes on netstat or something?
+| [Tuesday 22 February 2011] [12:32:12] <cremes>	i have a pub socket that has a dozen or so subscribers; my memory usage slowly climbs even though i don't have any leaks
+| [Tuesday 22 February 2011] [12:32:40] <cremes>	i now suspect a slow subscriber isn't pulling stuff off the queue quickly enough and it's backing up at the publisher (HWM is default)
+| [Tuesday 22 February 2011] [12:44:55] <pieterh>	cremes: there's zmq_getsockopt (..ZMQ_BACKLOG)
+| [Tuesday 22 February 2011] [12:46:15] <cremes>	is that really appropriate? that just controls the queue of initial connects/binds
+| [Tuesday 22 February 2011] [12:46:31] <cremes>	it doesn't have anything to do with message queue length, right?
+| [Tuesday 22 February 2011] [12:46:37] <pieterh>	oops
+| [Tuesday 22 February 2011] [12:46:50] <cremes>	:)
+| [Tuesday 22 February 2011] [12:47:22] <pieterh>	so there's no way to know what's happening at the level of individual subscribers...
+| [Tuesday 22 February 2011] [12:47:39] <pieterh>	do you number your messages?
+| [Tuesday 22 February 2011] [12:47:52] <cremes>	no but they do get a timestamp
+| [Tuesday 22 February 2011] [12:47:58] <nooob>	you might want to setup a connection from the subscriber back to the sender
+| [Tuesday 22 February 2011] [12:48:00] <cremes>	so they are sequential
+| [Tuesday 22 February 2011] [12:48:01] <pieterh>	ok, even better
+| [Tuesday 22 February 2011] [12:48:15] <pieterh>	in the subscriber, check how old incoming messages are
+| [Tuesday 22 February 2011] [12:48:28] <pieterh>	if you exceed X seconds, send an alert to your system console
+| [Tuesday 22 February 2011] [12:48:29] <nooob>	there was a pattern like that in the guide
+| [Tuesday 22 February 2011] [12:48:39] <cremes>	hmmm, that doesn't seem like it would help unless i misunderstand how the pub socket queueing works
+| [Tuesday 22 February 2011] [12:48:59] <cremes>	there is a separate outgoing queue for each subscriber on a pub socket, yes?
+| [Tuesday 22 February 2011] [12:49:12] <pieterh>	cremes: if your pubsub system is stable, subscribers will get messages with predictably low delays
+| [Tuesday 22 February 2011] [12:49:13] <cremes>	so fast subscribers would have a small or empty queue while my slow guy would have a large queue
+| [Tuesday 22 February 2011] [12:49:30] <pieterh>	it's running over TCP?
+| [Tuesday 22 February 2011] [12:49:33] <cremes>	yes
+| [Tuesday 22 February 2011] [12:49:43] <pieterh>	even over PGM...
+| [Tuesday 22 February 2011] [12:49:53] <pieterh>	slow subscribers will by definition :-) get messages 'too slowly'
+| [Tuesday 22 February 2011] [12:50:05] <pieterh>	timestamp checking should do it
+| [Tuesday 22 February 2011] [12:50:19] <cremes>	i will check that out
+| [Tuesday 22 February 2011] [12:50:35] <pieterh>	i like the pattern, will try a quick implementation
+| [Tuesday 22 February 2011] [13:12:09] <cremes>	pieterh: question...
+| [Tuesday 22 February 2011] [13:12:16] <pieterh>	cremes: shoot...
+| [Tuesday 22 February 2011] [13:12:28] <cremes>	i wrote an example where i have a single publisher that connects to a forwarder device
+| [Tuesday 22 February 2011] [13:12:32] <cremes>	it publishes as fast as it can
+| [Tuesday 22 February 2011] [13:12:41] <cremes>	there are no subscribers connected to the device
+| [Tuesday 22 February 2011] [13:12:51] <cremes>	i see memory growing rapidly; is that expected?
+| [Tuesday 22 February 2011] [13:12:58] <pieterh>	depends...
+| [Tuesday 22 February 2011] [13:13:04] <pieterh>	running on the same box?
+| [Tuesday 22 February 2011] [13:13:09] <cremes>	yeah
+| [Tuesday 22 February 2011] [13:13:13] <pieterh>	one core?
+| [Tuesday 22 February 2011] [13:13:25] <cremes>	dual quad, 16gb memory... beefy box
+| [Tuesday 22 February 2011] [13:13:34] <pieterh>	no, then it's not expected
+| [Tuesday 22 February 2011] [13:13:43] <cremes>	ok
+| [Tuesday 22 February 2011] [13:13:49] <pieterh>	is the memory growing in the publisher or in the forwarder?
+| [Tuesday 22 February 2011] [13:13:52] <cremes>	i'm going to try and replicate this with the C forwarder
+| [Tuesday 22 February 2011] [13:13:57] <cremes>	it grows in the forwarder
+| [Tuesday 22 February 2011] [13:14:10] <pieterh>	how about CPU usage?
+| [Tuesday 22 February 2011] [13:14:21] <cremes>	high
+| [Tuesday 22 February 2011] [13:14:25] <pieterh>	ok, try this
+| [Tuesday 22 February 2011] [13:14:34] <pieterh>	- publish 20M messages, then pause for 10 seconds
+| [Tuesday 22 February 2011] [13:14:36] <pieterh>	- repeat
+| [Tuesday 22 February 2011] [13:14:46] <cremes>	ok
+| [Tuesday 22 February 2011] [13:14:48] <pieterh>	see if memory usage remains high during that pause
+| [Tuesday 22 February 2011] [13:14:56] <pieterh>	if so, forwarder is broken somehow
+| [Tuesday 22 February 2011] [13:15:10] <pieterh>	if it comes down, it's just queuing bizarreness
+| [Tuesday 22 February 2011] [13:28:07] <sustrik>	with a single incoming streams and many outgoing streams you would expect the latter to be bandwidth-bound and thus slower than the former
+| [Tuesday 22 February 2011] [13:28:38] <sustrik>	consequently, in congestion situations you should expect messages queueing in the forwarder
+| [Tuesday 22 February 2011] [13:38:42] <pieterh>	sustrik: yes, but here there are no subscribers on the forwarder...
+| [Tuesday 22 February 2011] [13:39:14] <sustrik_>	ah
+| [Tuesday 22 February 2011] [13:40:28] <sustrik_>	i've missed that
+| [Tuesday 22 February 2011] [13:41:26] <sustrik_>	then the queue's main loop must be slower then message receiving in its SUB socket
+| [Tuesday 22 February 2011] [13:41:38] <sustrik_>	in any case, when doing congestion tests
+| [Tuesday 22 February 2011] [13:41:40] <sustrik_>	use hwm
+| [Tuesday 22 February 2011] [13:41:55] <sustrik_>	otherwise you are inevitable going to run out of memory
+| [Tuesday 22 February 2011] [13:52:00] <pieterh>	hmm, forwarder should run at least as fast as publisher in this case...
+| [Tuesday 22 February 2011] [13:52:34] <pieterh>	let's see if cremes comes back with more data
+| [Tuesday 22 February 2011] [13:52:45] <cremes>	when there are no subscribers attached to the forwarder, calls to zmq_send() should just close the msg and drop it, right?
+| [Tuesday 22 February 2011] [13:53:38] <pieterh>	cremes: ack
+| [Tuesday 22 February 2011] [13:53:56] <pieterh>	did you try that run/pause/run/pause ?
+| [Tuesday 22 February 2011] [13:55:39] <cremes>	yes, the memory did not shrink
+| [Tuesday 22 February 2011] [13:56:25] <pieterh>	did _not_ shrink?
+| [Tuesday 22 February 2011] [13:56:28] <pieterh>	then it's a real leak
+| [Tuesday 22 February 2011] [13:56:55] <cremes>	i need to try this with the C forwarder device that comes with the lib
+| [Tuesday 22 February 2011] [13:57:01] <cremes>	and see if it behaves the same
+| [Tuesday 22 February 2011] [13:57:05] <pieterh>	yes
+| [Tuesday 22 February 2011] [13:57:19] <cremes>	i'll open a ticket if i see it replicated
+| [Tuesday 22 February 2011] [13:57:22] <pieterh>	i just reviewed the code for that, there is zero chance it leaks memory
+| [Tuesday 22 February 2011] [13:57:32] <cremes>	right, it's so simple there is *no* way
+| [Tuesday 22 February 2011] [13:57:36] <cremes>	<sigh>
+| [Tuesday 22 February 2011] [13:57:57] <pieterh>	if there's a leak it's either in the pub socket (unlikely), or the binding (possible), or it's a heap artifact (plausible)
+| [Tuesday 22 February 2011] [13:58:10] <pieterh>	sometimes the heap does not shrink immediately when memory is freed
+| [Tuesday 22 February 2011] [13:58:45] <pieterh>	try setting a HWM of, say, 100K on the publisher and see what effect that has
+| [Tuesday 22 February 2011] [13:58:53] <pieterh>	s/publisher/forwarder/ sorry
+| [Tuesday 22 February 2011] [13:59:06] <pieterh>	on the frontend socket, initially
+| [Tuesday 22 February 2011] [13:59:11] <cremes>	yes, i'll keep at it
+| [Tuesday 22 February 2011] [14:05:59] <amacleod>	pieterh, my problem from yesterday does seem to be a threading issue.  When I changed my test harness (which simulates a client) to use a separate context from the server, the messages got through correctly in both directions.
+| [Tuesday 22 February 2011] [14:06:26] <amacleod>	However, now I'm seeing "Assertion failed: pending_term_acks" when closing the socket.
+| [Tuesday 22 February 2011] [14:06:27] <pieterh>	amacleod: ah, good... I've also been using separate contexts for each 'task' when it simulates a separate process
+| [Tuesday 22 February 2011] [14:06:48] <pieterh>	that's not a 0MQ assertion...
+| [Tuesday 22 February 2011] [14:07:04] <amacleod>	It lists it as socket_base.cpp:690
+| [Tuesday 22 February 2011] [14:07:18] <amacleod>	It's hard for me to debug, because it doesn't generate a Java exception, it just kills the process.
+| [Tuesday 22 February 2011] [14:07:54] <pieterh>	what version of 0MQ are you on?
+| [Tuesday 22 February 2011] [14:07:56] <amacleod>	Might be jzmq, hmm..
+| [Tuesday 22 February 2011] [14:07:58] <amacleod>	2.0.10
+| [Tuesday 22 February 2011] [14:08:08] <pieterh>	any problem upgrading to master?
+| [Tuesday 22 February 2011] [14:08:19] <pieterh>	there are a lot of fixes since 2.0.10
+| [Tuesday 22 February 2011] [14:09:28] <pieterh>	sustrik: do you keep any log of major changes made apart from the git commit history?
+| [Tuesday 22 February 2011] [14:09:37] <amacleod>	Depends--how stable is 2.1?  I think we chose 2.0.10 because we wanted not to use the "development" branch.
+| [Tuesday 22 February 2011] [14:10:21] <pieterh>	amacleod: for various reasons, the git master is significantly more stable than the 'stable'
+| [Tuesday 22 February 2011] [14:10:31] <pieterh>	... than the 'stable' 2.0.10 release
+| [Tuesday 22 February 2011] [14:10:58] <amacleod>	Hmm. :)  Might be worth the switch, then.
+| [Tuesday 22 February 2011] [14:11:00] <sustrik_>	btw, the assertion is in code that was complately rewritten in 2.1
+| [Tuesday 22 February 2011] [14:11:09] <amacleod>	sustrik, good to know.
+| [Tuesday 22 February 2011] [14:11:10] <pieterh>	we're in the slow process of making a formal release for 2.1.11
+| [Tuesday 22 February 2011] [14:11:28] <pieterh>	sustrik: the one thing that will be problematic is making release notes
+| [Tuesday 22 February 2011] [14:11:30] <sustrik_>	pieterh: what log?
+| [Tuesday 22 February 2011] [14:11:41] <sustrik_>	why so?
+| [Tuesday 22 February 2011] [14:11:41] <pieterh>	i was afraid of that...
+| [Tuesday 22 February 2011] [14:11:44] <sustrik_>	it's automatic
+| [Tuesday 22 February 2011] [14:12:02] <pieterh>	what's automatic is a dump of every commit message
+| [Tuesday 22 February 2011] [14:12:07] <sustrik_>	yup
+| [Tuesday 22 February 2011] [14:12:09] <amacleod>	https://github.com/zeromq/zeromq2/raw/master/NEWS
+| [Tuesday 22 February 2011] [14:12:11] <pieterh>	that is not release notes
+| [Tuesday 22 February 2011] [14:12:27] <pieterh>	nope, NEWS is painfully made by hand
+| [Tuesday 22 February 2011] [14:12:29] <sustrik_>	ah, i'll go through the commit messages and write the release notes
+| [Tuesday 22 February 2011] [14:12:31] <sustrik_>	not a problem
+| [Tuesday 22 February 2011] [14:12:36] <pieterh>	excellent...!
+| [Tuesday 22 February 2011] [14:12:50] <pieterh>	then IMO we're ready to break off the branch...
+| [Tuesday 22 February 2011] [14:13:02] <pieterh>	there were zero issues porting the Guide examples to 2.1.11
+| [Tuesday 22 February 2011] [14:13:07] <sustrik_>	there are some pgm problems being experienced with head currently
+| [Tuesday 22 February 2011] [14:13:32] <pieterh>	that's ok, we'll have at least a couple of weeks to stabilize
+| [Tuesday 22 February 2011] [14:13:48] <amacleod>	In the mean time, if we assume I cannot presently upgrade from 2.0.10, any suggestion on where I should look to prevent this assertion from failing?
+| [Tuesday 22 February 2011] [14:13:56] <pieterh>	the key now IMO is to get a formal package out so folks like amacleod use the current master, not old code
+| [Tuesday 22 February 2011] [14:14:57] <pieterh>	sustrik_, so I'm going to create a separate git but this is somewhat experimental
+| [Tuesday 22 February 2011] [14:14:58] <amacleod>	As far as I know, jzmq is set up to handle both 2.0.10 and 2.1.x, so upgrading shouldn't be too painful.
+| [Tuesday 22 February 2011] [14:15:10] <sustrik_>	the only thing preventing branching off right now is the pgm problem
+| [Tuesday 22 February 2011] [14:15:16] <pieterh>	amacleod: at least, try on the 2.1.x master so you know whether it works better or not
+| [Tuesday 22 February 2011] [14:15:32] <sustrik_>	i can't help with that :|
+| [Tuesday 22 February 2011] [14:15:49] <sustrik_>	so we'll have to wait while someone fixes it
+| [Tuesday 22 February 2011] [14:15:54] <pieterh>	sustrik_ steve's traveling right now
+| [Tuesday 22 February 2011] [14:16:01] <pieterh>	we'll pipeline it all
+| [Tuesday 22 February 2011] [14:16:10] <sustrik_>	or, alternatively, you can branch from a historic version
+| [Tuesday 22 February 2011] [14:16:11] <pieterh>	pgm fixes can come in after we branch
+| [Tuesday 22 February 2011] [14:16:24] <pieterh>	it's good to have known issues so we can prove that the process works
+| [Tuesday 22 February 2011] [14:16:29] <sustrik_>	right, you can branch a backport the ix
+| [Tuesday 22 February 2011] [14:16:31] <sustrik_>	fix
+| [Tuesday 22 February 2011] [14:16:31] <pieterh>	yes
+| [Tuesday 22 February 2011] [14:17:04] <pieterh>	do you want to push any code before I clone the repo?
+| [Tuesday 22 February 2011] [14:17:11] <sustrik_>	no
+| [Tuesday 22 February 2011] [14:17:14] <sustrik_>	do it now
+| [Tuesday 22 February 2011] [14:17:18] <pieterh>	okay... going for it :-)
+| [Tuesday 22 February 2011] [14:17:29] <sustrik_>	amacleod: upgrading should not be painful
+| [Tuesday 22 February 2011] [14:17:50] <sustrik_>	trying to fix the problem in 2.0.10 is going to be painful
+| [Tuesday 22 February 2011] [14:18:00] <amacleod>	Hm, I think you are right.
+| [Tuesday 22 February 2011] [14:18:09] <sustrik_>	it's a problem with shutdown subsystem
+| [Tuesday 22 February 2011] [14:18:18] <sustrik_>	which was pretty creaky in 2.0.x
+| [Tuesday 22 February 2011] [14:18:39] <sustrik_>	it was one of the major reasons for making 2.1
+| [Tuesday 22 February 2011] [14:18:50] <amacleod>	So, which version should I get?  The 2.1.0 package from the front page?
+| [Tuesday 22 February 2011] [14:19:03] <sustrik_>	yes
+| [Tuesday 22 February 2011] [14:24:11] <pieterh>	hmm, anyone know how to clone a github repository and _keep_ it in the same organization?
+| [Tuesday 22 February 2011] [14:24:28] <pieterh>	I'm sure I'm missing something obvious...
+| [Tuesday 22 February 2011] [14:33:21] <pieterh>	hmm, git push -u, obviously... duh
+| [Tuesday 22 February 2011] [14:40:19] <pieterh>	sustrik_: okaaay, I think that's done... we now have http://github.com/zeromq/zeromq2-1
+| [Tuesday 22 February 2011] [14:40:42] <pieterh>	just the master branch and no tracking between the two gits, I hope
+| [Tuesday 22 February 2011] [14:43:26] <pieterh>	sustrik_: next step is to make release notes (you) and then packages (me)
+| [Tuesday 22 February 2011] [14:49:05] <sustrik_>	ok
+| [Tuesday 22 February 2011] [14:49:14] <sustrik_>	let me see
+| [Tuesday 22 February 2011] [14:53:46] <pieterh>	I suggest we edit the NEWS together at http://piratepad.net/, then commit to (the real) master
+| [Tuesday 22 February 2011] [14:54:03] <sustrik>	yes
+| [Tuesday 22 February 2011] [14:54:07] <sustrik>	wait a sec
+| [Tuesday 22 February 2011] [14:56:16] <pieterh>	I'd like to make 2-3 release candidates over 2-3 weeks
+| [Tuesday 22 February 2011] [14:56:32] <pieterh>	http://piratepad.net/dkenb33ThF
+| [Tuesday 22 February 2011] [14:57:54] <pieterh>	I think we have enough momentum to get rapid feedback on releases
+| [Tuesday 22 February 2011] [14:58:43] <pieterh>	the one problem I see with this approach is we don't get a branch for the stable release, automatically, in the real git
+| [Tuesday 22 February 2011] [14:59:11] <pieterh>	s/branch/tag/
+| [Tuesday 22 February 2011] [14:59:30] <pieterh>	mato's going to cut my throat...
+| [Tuesday 22 February 2011] [15:05:07] <sustrik>	what's the problem?
+| [Tuesday 22 February 2011] [15:05:12] <sustrik>	it's DCVS
+| [Tuesday 22 February 2011] [15:05:29] <sustrik>	so it shouldn't matter whether it's a branch or a separate repo
+| [Tuesday 22 February 2011] [15:05:39] <sustrik>	DVCS*
+| [Tuesday 22 February 2011] [15:05:50] <sustrik>	pieterh: still there
+| [Tuesday 22 February 2011] [15:05:51] <pieterh>	ok, allow for the fact that any gross git manipulations leave me nervous
+| [Tuesday 22 February 2011] [15:05:52] <sustrik>	?
+| [Tuesday 22 February 2011] [15:06:03] <pieterh>	I find the tool 10x too complex and dangerous, so...
+| [Tuesday 22 February 2011] [15:06:25] <pieterh>	I'd much prefer to work with a copy of the repository (not a clone or a fork)
+| [Tuesday 22 February 2011] [15:06:40] <pieterh>	advantages: anyone can imitate this, make releases, safely
+| [Tuesday 22 February 2011] [15:06:56] <sustrik>	you mean you've created a new repo?
+| [Tuesday 22 February 2011] [15:06:59] <pieterh>	yes
+| [Tuesday 22 February 2011] [15:07:05] <sustrik>	i.e. deleted the entire history?
+| [Tuesday 22 February 2011] [15:07:14] <pieterh>	 http://github.com/zeromq/zeromq2-1
+| [Tuesday 22 February 2011] [15:07:22] <pieterh>	I was able to copy the master branch
+| [Tuesday 22 February 2011] [15:07:34] <pieterh>	which is fine for my purposes (stabilization)
+| [Tuesday 22 February 2011] [15:07:43] <sustrik>	github seems to be dead
+| [Tuesday 22 February 2011] [15:07:48] <pieterh>	it wasn't me!!!!!
+| [Tuesday 22 February 2011] [15:07:52] <sustrik>	:)))
+| [Tuesday 22 February 2011] [15:08:12] <pieterh>	i'd *much* prefer to work with readonly access to the real repository
+| [Tuesday 22 February 2011] [15:08:42] <sustrik>	let's move to piratepad now
+| [Tuesday 22 February 2011] [15:08:47] <pieterh>	but problem is, separate repository breaks the neat history of version tags in the real repo
+| [Tuesday 22 February 2011] [15:09:02] <pieterh>	piratepad seems unreliable right now...
+| [Tuesday 22 February 2011] [15:09:17] <sustrik>	yuck
+| [Tuesday 22 February 2011] [15:09:19] <cremes>	ok, i can reproduce the memory "leak"; it is somewhat complicated and it's not a real leak... it's more like a DDOS
+| [Tuesday 22 February 2011] [15:09:27] <sustrik>	anyway, there are just 2 items
+| [Tuesday 22 February 2011] [15:09:35] <sustrik>	ZMQ_RECONNECT_IVL_MAX
+| [Tuesday 22 February 2011] [15:09:41] <sustrik>	and
+| [Tuesday 22 February 2011] [15:09:42] <sustrik>	ZMQ_RECOVERY_IVL_MSEC
+| [Tuesday 22 February 2011] [15:09:50] <sustrik>	+ the bug fixes
+| [Tuesday 22 February 2011] [15:10:45] <sustrik>	you can get description for both from zmq_setsockopt(3)
+| [Tuesday 22 February 2011] [15:10:52] <pieterh>	indeed
+| [Tuesday 22 February 2011] [15:11:04] <pieterh>	I'll do that, np
+| [Tuesday 22 February 2011] [15:11:12] <sustrik>	it's easy this time
+| [Tuesday 22 February 2011] [15:11:19] <pieterh>	"An automatic restart of Piratepad will occur in-31945seconds."
+| [Tuesday 22 February 2011] [15:11:21] <pieterh>	good god
+| [Tuesday 22 February 2011] [15:11:34] <sustrik>	they are pirates, you know
+| [Tuesday 22 February 2011] [15:11:37] <pieterh>	We killed Piratepad...
+| [Tuesday 22 February 2011] [15:11:38] <sustrik>	not exactly precise
+| [Tuesday 22 February 2011] [15:11:45] <pieterh>	Well, Google bought etherpad and then shut it down...
+| [Tuesday 22 February 2011] [15:12:15] <sustrik>	anyway
+| [Tuesday 22 February 2011] [15:12:28] <sustrik>	anything else missing for making the stable branch?
+| [Tuesday 22 February 2011] [15:13:30] <pieterh>	not for me
+| [Tuesday 22 February 2011] [15:13:35] <sustrik>	good
+| [Tuesday 22 February 2011] [15:13:36] <pieterh>	but did you understand my concern?
+| [Tuesday 22 February 2011] [15:13:41] <sustrik>	which one?
+| [Tuesday 22 February 2011] [15:13:52] <pieterh>	we're breaking the master/maint process
+| [Tuesday 22 February 2011] [15:14:12] <pieterh>	smashing it into little pieces
+| [Tuesday 22 February 2011] [15:14:22] <sustrik>	yes
+| [Tuesday 22 February 2011] [15:14:37] <sustrik>	the problem is the maint was not really well maintained anyway
+| [Tuesday 22 February 2011] [15:14:43] <pieterh>	since I personally dislike that process and find it complex and bizarre, I'm happy with that
+| [Tuesday 22 February 2011] [15:15:02] <pieterh>	I'd like a process that takes 30 seconds to fully understand
+| [Tuesday 22 February 2011] [15:15:11] <pieterh>	on a cold monday morning before coffee
+| [Tuesday 22 February 2011] [15:15:18] <sustrik>	i think it's the same now
+| [Tuesday 22 February 2011] [15:16:02] <sustrik>	patches being passed between branches
+| [Tuesday 22 February 2011] [15:16:16] <sustrik>	ah, one point
+| [Tuesday 22 February 2011] [15:16:26] <sustrik>	have a look how version numbers are to be maintained
+| [Tuesday 22 February 2011] [15:16:55] <sustrik>	it's important not to mess that up
+| [Tuesday 22 February 2011] [15:17:32] <pieterh>	I still don't remember how changes flow from maint to master and vice-versa
+| [Tuesday 22 February 2011] [15:17:47] <pieterh>	so if this works, what we'll get are a series of stand-alone gits, zeromq2-1, zeromq2-2, zeromq3-0, each with their own maintainer(s)
+| [Tuesday 22 February 2011] [15:17:48] <pieterh>	and pull requests with patches between them
+| [Tuesday 22 February 2011] [15:17:48] <pieterh>	each being copied off the real repo as that heads towards stability
+| [Tuesday 22 February 2011] [15:18:30] <sustrik>	it works both ways
+| [Tuesday 22 February 2011] [15:18:31] <pieterh>	the version numbering works properly IMO
+| [Tuesday 22 February 2011] [15:18:35] <amacleod>	:-( Now jzmq tests are hung forever in Context.finalize
+| [Tuesday 22 February 2011] [15:18:37] <pieterh>	next releases will be 2.1.1, 2.1.2, 2.1.3...
+| [Tuesday 22 February 2011] [15:18:46] <sustrik>	1. backporting patches from master to maint(s)
+| [Tuesday 22 February 2011] [15:18:56] <sustrik>	2. upstreaming patches from maint(s) to master
+| [Tuesday 22 February 2011] [15:19:12] <pieterh>	I'd assume 2.1.3 will be the stable one if people find bugs
+| [Tuesday 22 February 2011] [15:19:42] <pieterh>	yes
+| [Tuesday 22 February 2011] [15:19:43] <pieterh>	I'd veto that
+| [Tuesday 22 February 2011] [15:19:43] <pieterh>	upstreaming patches from temporary clones of maint(s) to master
+| [Tuesday 22 February 2011] [15:19:43] <pieterh>	at least in my view... for now...
+| [Tuesday 22 February 2011] [15:19:47] <pieterh>	anyhow, yes, if it makes sense
+| [Tuesday 22 February 2011] [15:19:50] <pieterh>	DCVS as you said
+| [Tuesday 22 February 2011] [15:20:15] <pieterh>	each repo is largely independent and we work by protocol
+| [Tuesday 22 February 2011] [15:20:29] <sustrik>	well, if you bugfix a patch for maint, you want to upstream it
+| [Tuesday 22 February 2011] [15:20:42] <sustrik>	only thing it means is sending it to the ML
+| [Tuesday 22 February 2011] [15:20:45] <sustrik>	no big deal
+| [Tuesday 22 February 2011] [15:21:02] <pieterh>	if the bug is in the current master, I'd first want to get it fixed there
+| [Tuesday 22 February 2011] [15:21:15] <pieterh>	because until it's gone past that filter, there's no guarantee it's sane
+| [Tuesday 22 February 2011] [15:21:31] <pieterh>	if the bug is in old code, then there's no upstreaming anyhow
+| [Tuesday 22 February 2011] [15:21:47] <sustrik>	it's up to you
+| [Tuesday 22 February 2011] [15:22:02] <sustrik>	so you're going to reject patches to maint
+| [Tuesday 22 February 2011] [15:22:04] <sustrik>	right?
+| [Tuesday 22 February 2011] [15:22:15] <pieterh>	presumably, yes
+| [Tuesday 22 February 2011] [15:22:19] <sustrik>	ok
+| [Tuesday 22 February 2011] [15:22:22] <pieterh>	or at least treat them with scepticism
+| [Tuesday 22 February 2011] [15:22:32] <pieterh>	the only person I trust for my patches is you
+| [Tuesday 22 February 2011] [15:22:48] <sustrik>	ok, now for the versioning
+| [Tuesday 22 February 2011] [15:22:48] <pieterh>	especially, especially on a stable release people rely on for production
+| [Tuesday 22 February 2011] [15:22:55] <pieterh>	versioning... ok
+| [Tuesday 22 February 2011] [15:23:09] <sustrik>	the process looks like this:
+| [Tuesday 22 February 2011] [15:23:12] <pieterh>	s/you/the owner of the code in question/
+| [Tuesday 22 February 2011] [15:23:26] <sustrik>	when about to make a release:
+| [Tuesday 22 February 2011] [15:23:37] <sustrik>	1. update the version numbers in zmq.h
+| [Tuesday 22 February 2011] [15:23:45] <sustrik>	2. make a release
+| [Tuesday 22 February 2011] [15:23:52] <sustrik>	3. bump the version number
+| [Tuesday 22 February 2011] [15:24:02] <pieterh>	right, http://www.zeromq.org/docs:procedures
+| [Tuesday 22 February 2011] [15:24:08] <sustrik>	yes
+| [Tuesday 22 February 2011] [15:24:15] <sustrik>	exactly the same process
+| [Tuesday 22 February 2011] [15:24:17] <pieterh>	this would happen on the release git only
+| [Tuesday 22 February 2011] [15:24:59] <sustrik>	are you saying you are not going to version the maint  branch?
+| [Tuesday 22 February 2011] [15:25:09] <sustrik>	that's nonsense
+| [Tuesday 22 February 2011] [15:25:14] <pieterh>	as far as I'm concerned, there is no maint branch
+| [Tuesday 22 February 2011] [15:25:21] <sustrik>	maint repo
+| [Tuesday 22 February 2011] [15:25:27] <sustrik>	no versions?
+| [Tuesday 22 February 2011] [15:25:28] <pieterh>	ok, the terms are vital here
+| [Tuesday 22 February 2011] [15:25:36] <pieterh>	let's call it the release git
+| [Tuesday 22 February 2011] [15:25:42] <pieterh>	as compared to the master git 
+| [Tuesday 22 February 2011] [15:25:47] <sustrik>	whatever
+| [Tuesday 22 February 2011] [15:25:52] <sustrik>	what about versions?
+| [Tuesday 22 February 2011] [15:25:59] <pieterh>	I'm going to tag the release git properly
+| [Tuesday 22 February 2011] [15:26:22] <pieterh>	and version it properly, exactly as now
+| [Tuesday 22 February 2011] [15:26:24] <sustrik>	change zmq.h as well
+| [Tuesday 22 February 2011] [15:26:36] <pieterh>	exactly the same, but it all happens on my master branch
+| [Tuesday 22 February 2011] [15:26:40] <sustrik>	otherwise users won't be able to find out what the version is
+| [Tuesday 22 February 2011] [15:26:48] <sustrik>	(zmq_version(), version macros
+| [Tuesday 22 February 2011] [15:26:59] <pieterh>	yes, all that is unambiguous
+| [Tuesday 22 February 2011] [15:27:09] <pieterh>	the versioning is sane, obvious, necessary
+| [Tuesday 22 February 2011] [15:27:19] <sustrik>	right, 3 steps
+| [Tuesday 22 February 2011] [15:27:26] <sustrik>	tag
+| [Tuesday 22 February 2011] [15:27:43] <sustrik>	release
+| [Tuesday 22 February 2011] [15:27:45] <sustrik>	change version
+| [Tuesday 22 February 2011] [15:27:48] <pieterh>	yes
+| [Tuesday 22 February 2011] [15:27:49] <sustrik>	that's it
+| [Tuesday 22 February 2011] [15:27:52] <sustrik>	ok
+| [Tuesday 22 February 2011] [15:28:10] <pieterh>	and the final step is update the version in the development master
+| [Tuesday 22 February 2011] [15:28:17] <sustrik>	so, i'm going to bump master to 2.2
+| [Tuesday 22 February 2011] [15:28:18] <pieterh>	so it goes from 2.1.1 to 2.2.0
+| [Tuesday 22 February 2011] [15:28:26] <sustrik>	yes, i'll do that now
+| [Tuesday 22 February 2011] [15:28:36] <pieterh>	very excellent...!
+| [Tuesday 22 February 2011] [15:28:43] <pieterh>	ok, I'm going to make a release now
+| [Tuesday 22 February 2011] [15:28:47] <pieterh>	no time like the present
+| [Tuesday 22 February 2011] [15:29:16] <sustrik>	cremes: sorry for the delay
+| [Tuesday 22 February 2011] [15:29:26] <sustrik>	have you found out what's the problem?
+| [Tuesday 22 February 2011] [15:29:34] <pieterh>	amacleod: sounds like there's a socket left open
+| [Tuesday 22 February 2011] [15:29:51] <pieterh>	amacleod: sorry also for the delay
+| [Tuesday 22 February 2011] [15:30:15] <amacleod>	Terminating a context will not finish if a socket is left open?
+| [Tuesday 22 February 2011] [15:31:13] <pieterh>	amacleod: not in every case, but in some cases
+| [Tuesday 22 February 2011] [15:31:19] <pieterh>	this is new behavior in 2.1
+| [Tuesday 22 February 2011] [15:31:34] <pieterh>	a side-effect of zmq_term's determination to flush sockets safely
+| [Tuesday 22 February 2011] [15:32:02] <pieterh>	if the socket is held by the same thread as calls zmq_term, it deadlocks (or something)
+| [Tuesday 22 February 2011] [15:32:54] <amacleod>	Hmm, yeah.  It did look as though the Java finalizer was waiting on some things.
+| [Tuesday 22 February 2011] [15:36:04] <pieterh>	sustrik: s/until/untill/ in zmq_setsockopt.txt...
+| [Tuesday 22 February 2011] [15:37:06] <sustrik>	would you fix it in maint and upstram it to master or should i fix it in master and you'll backport it to the maint :)
+| [Tuesday 22 February 2011] [15:38:19] <pieterh>	For a one-word fix... let me clone the git and send you a pull request with regression test case
+| [Tuesday 22 February 2011] [15:38:27] <pieterh>	yeah :-) process!
+| [Tuesday 22 February 2011] [15:40:15] <sustrik>	i love it :)
+| [Tuesday 22 February 2011] [15:41:08] <pieterh>	what do you call sys://log? do we want to document that briefly?
+| [Tuesday 22 February 2011] [15:41:16] <pieterh>	is it an internal transport?
+| [Tuesday 22 February 2011] [15:41:17] <cremes>	sustrik: yes, i've discovered a problem; i am just finishing a second test of my hypothesis.... i'll share it in about 10m
+| [Tuesday 22 February 2011] [15:41:47] <sustrik>	good god, everything is shutting down
+| [Tuesday 22 February 2011] [15:41:58] <pieterh>	someone dropped the Internet!
+| [Tuesday 22 February 2011] [15:42:11] <sustrik>	i suspect i'm in lybia
+| [Tuesday 22 February 2011] [15:42:27] <pieterh>	I knew they should have left it safe with the Elders of the Internet at the top of Big Ben
+| [Tuesday 22 February 2011] [15:43:04] <pieterh>	sustrik: funny, a friend of mine was supposed to be doing a rally in Libya just about now...
+| [Tuesday 22 February 2011] [15:43:27] <sustrik>	let's hope he's not there really
+| [Tuesday 22 February 2011] [15:43:54] <pieterh>	indeed, I asked him like two weeks ago, "you going before or after the revolution?", he lol'd
+| [Tuesday 22 February 2011] [15:44:39] <fbarriga>	hi everyone
+| [Tuesday 22 February 2011] [15:44:44] <fbarriga>	I've a little doubt
+| [Tuesday 22 February 2011] [15:45:04] <sustrik>	yuck, github is totally braindead
+| [Tuesday 22 February 2011] [15:45:14] <sustrik>	repos as well as the site
+| [Tuesday 22 February 2011] [15:45:27] <pieterh>	fbarriga: hi, what's up?
+| [Tuesday 22 February 2011] [15:45:53] <fbarriga>	hi pieterh , playing with the socket
+| [Tuesday 22 February 2011] [15:46:15] <fbarriga>	probably this deserve a RTFM reply..
+| [Tuesday 22 February 2011] [15:46:23] <fbarriga>	if I do this: zmq_msg_init(&msg); zmq_recv(sock, &msg, 0); zmq_recv(sock, &msg, 0); zmq_msg_close(&msg);
+| [Tuesday 22 February 2011] [15:46:29] <fbarriga>	i'm leaking memory ?
+| [Tuesday 22 February 2011] [15:46:44] <cremes>	sustrik: apparently i can reproduce a memory ddos with 0mq sockets; here's how (there may be a simpler way but this is how i did it)
+| [Tuesday 22 February 2011] [15:46:55] <fbarriga>	every time zmq_recv allocate new memory ?
+| [Tuesday 22 February 2011] [15:47:02] <cremes>	setup a standard forwarder
+| [Tuesday 22 February 2011] [15:47:12] <pieterh>	fbarriga: yes, that works fine
+| [Tuesday 22 February 2011] [15:47:15] <fbarriga>	and is mandatory to init the msg before receive the data ?
+| [Tuesday 22 February 2011] [15:47:18] <pieterh>	yes
+| [Tuesday 22 February 2011] [15:47:26] <cremes>	connect a publisher to it and let it go crazy broadcasting (bigger messages are better, e.g. 20k+)
+| [Tuesday 22 February 2011] [15:47:32] <cremes>	so far, no leak
+| [Tuesday 22 February 2011] [15:47:44] <cremes>	now start adding subscribers
+| [Tuesday 22 February 2011] [15:47:49] <fbarriga>	umm, but if I have a while(true) I can't put the init outside to avoid overhead ?
+| [Tuesday 22 February 2011] [15:48:03] <cremes>	again, no real leak except for a little queueing if the subscribers are slower than the pub
+| [Tuesday 22 February 2011] [15:48:12] <pieterh>	fbarriga: close and init are a pair
+| [Tuesday 22 February 2011] [15:48:16] <cremes>	i adjusted my publisher so that it would not overrun the subscribers
+| [Tuesday 22 February 2011] [15:48:24] <cremes>	now here's where the leak comes in....
+| [Tuesday 22 February 2011] [15:48:49] 	 * sustrik_ is listening
+| [Tuesday 22 February 2011] [15:49:04] <cremes>	modify the subscribers so that they only stay connected for a few seconds; they close their sockets, and then immediately reconnect to the forwarder
+| [Tuesday 22 February 2011] [15:49:11] <fbarriga>	so I can do this:  zmq_msg_init(&msg); while (true) { zmq_recv(sock, &msg, 0); }  zmq_msg_close(&msg); ?
+| [Tuesday 22 February 2011] [15:49:14] <cremes>	they continue to do this for at least 15 minutes
+| [Tuesday 22 February 2011] [15:49:26] <cremes>	what i see happening is a lot of sockets go into TIME_WAIT
+| [Tuesday 22 February 2011] [15:49:57] <cremes>	i suspected that the socket ZMQ_LINGER option (defaults to indefinite) was holding onto the messages
+| [Tuesday 22 February 2011] [15:50:06] <cremes>	but i just ran a test where i set it to 0 and it still occurred
+| [Tuesday 22 February 2011] [15:50:37] <cremes>	so i'm thinking that as a socket sits in TIME_WAIT, its queue is still active; as new messages arrive from the publisher they are added to the queue
+| [Tuesday 22 February 2011] [15:50:38] <sustrik_>	do the subscribers have identities?
+| [Tuesday 22 February 2011] [15:50:53] <cremes>	when the TIME_WAIT expires, the queued data doesn't go away
+| [Tuesday 22 February 2011] [15:51:15] <cremes>	they are using the default random id's; i am not overriding with my own
+| [Tuesday 22 February 2011] [15:51:20] <pieterh>	fbarriga: nope, it'll leak memory
+| [Tuesday 22 February 2011] [15:51:37] <pieterh>	if you have positive proof that init/close are slow, send it along
+| [Tuesday 22 February 2011] [15:51:45] <cremes>	when i stop the publisher, the forwarder's memory stops growing
+| [Tuesday 22 February 2011] [15:51:49] <pieterh>	if you don't then please don't optimize unnecessarily, it's pointless
+| [Tuesday 22 February 2011] [15:52:05] <cremes>	when i disconnect the publisher and *all* subscribers, the forwarder's memory footprint remains the same (big)
+| [Tuesday 22 February 2011] [15:52:26] <cremes>	so if i left it running (like for an overnight test) it would exhaust all memory resources by morning
+| [Tuesday 22 February 2011] [15:52:37] <sustrik_>	cremes: afaik processes don't return allocated memory to the OS
+| [Tuesday 22 February 2011] [15:52:43] <cremes>	and this is exactly what has been plaguing me the last week or so (since i found that last bug!)
+| [Tuesday 22 February 2011] [15:53:12] <pieterh>	cremes: does the forwarder memory grow again from that high point ?
+| [Tuesday 22 February 2011] [15:53:24] <pieterh>	i.e. leak vs. cached heap in process...?
+| [Tuesday 22 February 2011] [15:53:27] <cremes>	pieterh: it only grows again if i turn the publisher back on
+| [Tuesday 22 February 2011] [15:53:38] <pieterh>	but does it start growing again immediately?
+| [Tuesday 22 February 2011] [15:54:23] <cremes>	let's see....
+| [Tuesday 22 February 2011] [15:54:25] <pieterh>	if it's cached heap memory then after a few cycles it will stop growing
+| [Tuesday 22 February 2011] [15:55:11] <fbarriga>	pieterh, but hypothetically calling those function will slow down the function
+| [Tuesday 22 February 2011] [15:55:44] <pieterh>	fbarriga: doing hypothetical optimization is a waste of time, please don't
+| [Tuesday 22 February 2011] [15:55:47] <cremes>	pieterh: no, it doesn't start growing again right away
+| [Tuesday 22 February 2011] [15:56:00] <pieterh>	cremes: then it's cached heap memory, not a leak
+| [Tuesday 22 February 2011] [15:56:31] <pieterh>	fbarriga: if you wish to actually know, try calling zmq_msg_init() and zmq_msg_close() in a loop, 1 billion times
+| [Tuesday 22 February 2011] [15:56:37] <pieterh>	measure how many seconds it takes
+| [Tuesday 22 February 2011] [15:56:59] <cremes>	so this is just due to the heap growing really large and it never gives the buffer space back to the OS even if the buffer is empty
+| [Tuesday 22 February 2011] [15:57:00] <cremes>	?
+| [Tuesday 22 February 2011] [15:57:04] <pieterh>	cremes: yup
+| [Tuesday 22 February 2011] [15:57:14] <CIA-21>	jzmq: 03Gonzalo Diethelm 07master * ra791958 10/ (.gitignore configure.in): Changes by jrideout to allow the build to succeed with autoconf 2.59. - http://bit.ly/fypsls
+| [Tuesday 22 February 2011] [15:57:27] <pieterh>	if you have a normally peaky stream, it'll hit some max and stop growing
+| [Tuesday 22 February 2011] [15:57:39] <pieterh>	there may be a system call to return memory to the OS
+| [Tuesday 22 February 2011] [15:57:57] <pieterh>	but it's always virtualized anyhow, not real RAM, afaik
+| [Tuesday 22 February 2011] [15:58:53] <pieterh>	sustrik: is the inproc hwm+swap change worth mentioning in the release notes?
+| [Tuesday 22 February 2011] [15:59:20] <sustrik_>	dunno
+| [Tuesday 22 February 2011] [15:59:30] <sustrik_>	it's more of a fix
+| [Tuesday 22 February 2011] [15:59:37] <sustrik_>	than a new feature
+| [Tuesday 22 February 2011] [16:01:34] <pieterh>	basically the hwm is shared between peers, right?
+| [Tuesday 22 February 2011] [16:03:13] <sustrik_>	it's sum of the two hwms
+| [Tuesday 22 February 2011] [16:05:15] <pieterh>	the peers share a single buffer...
+| [Tuesday 22 February 2011] [16:08:01] <pieterh>	sustrik: http://edupad.ch/2tZLebJbTg is the NEWS for 2.1.1... 
+| [Tuesday 22 February 2011] [16:08:13] <pieterh>	I've gone through the git log
+| [Tuesday 22 February 2011] [16:10:37] <sustrik_>	you've killed the edupad as well!
+| [Tuesday 22 February 2011] [16:11:20] <sustrik_>	isn't it a ipv6 day today?
+| [Tuesday 22 February 2011] [16:15:23] <pieterh>	sustrik: let's do that tomorrow... update your NEWS, send me a pull request
+| [Tuesday 22 February 2011] [16:15:48] <pieterh>	when we get that working, I'll make the release
+| [Tuesday 22 February 2011] [16:16:06] <sustrik_>	ok
+| [Tuesday 22 February 2011] [16:19:26] <cremes>	i'm pretty convinced there is still a leak here... new information
+| [Tuesday 22 February 2011] [16:19:49] <cremes>	slowing the publisher to every 10ms and setting HWM for all sockets to 1 and LINGER to 0
+| [Tuesday 22 February 2011] [16:19:58] <cremes>	it still slowly grows in size
+| [Tuesday 22 February 2011] [16:20:13] <cremes>	there shouldn't be *anything* getting queued or buffered here
+| [Tuesday 22 February 2011] [16:20:34] <sustrik_>	ack
+| [Tuesday 22 February 2011] [16:20:52] <sustrik_>	can you provide the test program?
+| [Tuesday 22 February 2011] [16:20:55] <cremes>	the "cause" appears to be the subscribers connecting/disconnecting 
+| [Tuesday 22 February 2011] [16:21:10] <sustrik_>	yes, looks like
+| [Tuesday 22 February 2011] [16:21:18] <cremes>	sustrik: i can but it will be in ruby; i'll describe the steps so it could be replicated in another lang
+| [Tuesday 22 February 2011] [16:21:44] <pieterh>	hmm, sustrik, maybe you really are in Libya...
+| [Tuesday 22 February 2011] [16:23:28] <pieterh>	sustrik: does the HWM on a PUB socket affect each subscriber queue (over TCP)? so potentially N x HWM?
+| [Tuesday 22 February 2011] [16:23:39] <sustrik_>	cremes: ok
+| [Tuesday 22 February 2011] [16:23:49] <sustrik_>	yes
+| [Tuesday 22 February 2011] [16:23:54] <sustrik_>	pieterh: yes
+| [Tuesday 22 February 2011] [16:24:04] <pieterh>	thx
+| [Tuesday 22 February 2011] [16:39:19] <sustrik_>	pieterh: still there
+| [Tuesday 22 February 2011] [16:39:22] <sustrik_>	?
+| [Tuesday 22 February 2011] [16:39:47] <sustrik_>	one more important thing...
+| [Tuesday 22 February 2011] [16:40:25] <pieterh>	yeah, still here
+| [Tuesday 22 February 2011] [16:41:06] <pieterh>	hmm?
+| [Tuesday 22 February 2011] [16:41:49] <sustrik_>	given that there are two separately maintained repos now
+| [Tuesday 22 February 2011] [16:42:02] <sustrik_>	we should keep the patches completely clean
+| [Tuesday 22 February 2011] [16:42:14] <sustrik_>	i.e. no whitespace patching
+| [Tuesday 22 February 2011] [16:42:20] <sustrik_>	no mixed patches
+| [Tuesday 22 February 2011] [16:42:43] <sustrik_>	like fixing a bug and correcting an unrelated typo in a single patch
+| [Tuesday 22 February 2011] [16:42:44] <sustrik_>	etc.
+| [Tuesday 22 February 2011] [16:42:55] <pieterh>	you mean so we can re-port the history anywhere?
+| [Tuesday 22 February 2011] [16:42:56] <sustrik_>	otherwise we'll end in dependency hell
+| [Tuesday 22 February 2011] [16:43:07] <sustrik_>	yes
+| [Tuesday 22 February 2011] [16:43:11] <pieterh>	right
+| [Tuesday 22 February 2011] [16:43:16] <sustrik_>	keeping patches mobile
+| [Tuesday 22 February 2011] [16:43:31] <pieterh>	so the way a pull request works is you specify a commit (or multiple commits)
+| [Tuesday 22 February 2011] [16:43:38] <pieterh>	this may not work all the time
+| [Tuesday 22 February 2011] [16:44:56] <sustrik_>	?
+| [Tuesday 22 February 2011] [16:50:40] <pieterh>	clearly if we can keep patches fully mobile on the development master, that's ideal
+| [Tuesday 22 February 2011] [16:50:40] <pieterh>	makes it fairly easy to send them anywhere
+| [Tuesday 22 February 2011] [16:50:40] <pieterh>	we may want to add more process support, e.g. something greppable in the log
+| [Tuesday 22 February 2011] [16:50:40] <pieterh>	in the worst case we can apply patches by hand
+| [Tuesday 22 February 2011] [16:51:42] <pieterh>	well, some situations I can see happening
+| [Tuesday 22 February 2011] [16:51:42] <pieterh>	- bug hits in 2.1 but that code has changed in 2.2
+| [Tuesday 22 February 2011] [16:51:42] <pieterh>	- patch in 2.2 doesn't apply cleanly in 2.1
+| [Tuesday 22 February 2011] [16:52:19] <pieterh>	- 2.1 needs only part of a patch made to 2.2
+| [Tuesday 22 February 2011] [16:52:22] <pieterh>	etc.
+| [Tuesday 22 February 2011] [16:55:11] <sustrik_>	git has support for that
+| [Tuesday 22 February 2011] [16:55:11] <amacleod>	I am getting a different assertion error from jzmq tests now: Unknown error 156384765, rc == 0 (src/socket_base.cpp:243)
+| [Tuesday 22 February 2011] [16:55:17] <sustrik_>	it's called merging
+| [Tuesday 22 February 2011] [16:55:32] <sustrik_>	so you apply the patch
+| [Tuesday 22 February 2011] [16:55:38] <sustrik_>	you get merge conflicts
+| [Tuesday 22 February 2011] [16:55:41] <sustrik_>	you solve them
+| [Tuesday 22 February 2011] [16:55:46] <sustrik_>	you commit the patch
+| [Tuesday 22 February 2011] [16:55:58] <sustrik_>	it's still the same patch, but it have been backported
+| [Tuesday 22 February 2011] [16:56:27] <sustrik_>	the backport iirc is visible as a separate commit
+| [Tuesday 22 February 2011] [16:57:08] <sustrik_>	amacleod: what version?
+| [Tuesday 22 February 2011] [16:57:59] <pieterh>	sustrik: ok, we'll play it through
+| [Tuesday 22 February 2011] [16:58:16] <amacleod>	sustrik, v2.1.0, from tarball on http://www.zeromq.org/intro:get-the-software
+| [Tuesday 22 February 2011] [17:00:27] <amacleod>	Looks like that line reference is in zmq::socket_base_t::getsockopt
+| [Tuesday 22 February 2011] [17:01:25] <sustrik_>	amacleod: yes, it's a bug
+| [Tuesday 22 February 2011] [17:01:32] <sustrik_>	it's solved in head
+| [Tuesday 22 February 2011] [17:01:46] <amacleod>	Ok.  Guess I should get head, then, eh?
+| [Tuesday 22 February 2011] [17:01:55] <sustrik_>	pieterh: when are you going to release 2.1.1?
+| [Tuesday 22 February 2011] [17:02:36] <sustrik_>	amacleod: either get the head or wait for 2.1.1
+| [Tuesday 22 February 2011] [17:02:45] <amacleod>	I will try with head.
+| [Tuesday 22 February 2011] [17:10:06] <pieterh>	sustrik: please review http://edupad.ch/2tZLebJbTg and add to your master if you're happy with it
+| [Tuesday 22 February 2011] [17:10:06] <pieterh>	date is set for tomorrow
+| [Tuesday 22 February 2011] [17:10:07] <pieterh>	send me a pull request for that change, and I'll process it, and then make the release
+| [Tuesday 22 February 2011] [17:10:08] <pieterh>	tomorrow morning after coffee
+| [Tuesday 22 February 2011] [17:10:08] <pieterh>	does that work?
+| [Tuesday 22 February 2011] [17:10:29] <pieterh>	I'd like to split off "Making a Release" from the "Source Code" page, it's two separate topics
+| [Tuesday 22 February 2011] [17:10:29] <pieterh>	and this lets me document how to make a release, as a naive and not very expert person
+| [Tuesday 22 February 2011] [17:10:29] <pieterh>	which is ideal
+| [Tuesday 22 February 2011] [17:11:55] <pieterh>	ok, away
+| [Tuesday 22 February 2011] [17:12:06] <pieterh>	g'nite everyone
+| [Tuesday 22 February 2011] [17:12:23] <amacleod>	Nite Pieter.
+| [Tuesday 22 February 2011] [17:15:35] <sustrik_>	what change?
+| [Tuesday 22 February 2011] [17:16:12] <sustrik_>	edpad times out here btw
+| [Tuesday 22 February 2011] [17:16:20] <sustrik_>	good night anyway
+| [Tuesday 22 February 2011] [17:21:28] <amacleod>	Do pollers need to be closed or finalized in some way before terminating the context?
+| [Tuesday 22 February 2011] [17:28:03] <rphillips>	is there a way to set a zeromq socket up to timeout on a zmq_send?
+| [Tuesday 22 February 2011] [17:28:41] <ianbarber>	you could poll for a socket being writeable, with a timeout
+| [Tuesday 22 February 2011] [17:32:10] <rphillips>	Do I need to check for writability after the connect or after the send?
+| [Tuesday 22 February 2011] [17:32:18] <rphillips>	the send is blocked already
+| [Tuesday 22 February 2011] [17:44:41] <sustrik_>	before the send
+| [Tuesday 22 February 2011] [19:06:41] <leiger>	Hey, is Pieter here?
+| [Tuesday 22 February 2011] [19:22:25] <cremes>	sustrik: got a repro for you here:  https://github.com/zeromq/zeromq2/issues/171
+| [Tuesday 22 February 2011] [19:22:37] <cremes>	it affects tcp and ipc transports
+| [Tuesday 22 February 2011] [19:23:06] <cremes>	sustrik: if you'd like, i can set this up under your account on my box so you can see it since i assume you don't plan
+| [Tuesday 22 February 2011] [19:23:18] <cremes>	to install ruby and the dependent libraries
+| [Tuesday 22 February 2011] [19:23:27] <cremes>	let me know
+| [Tuesday 22 February 2011] [19:34:32] <lt_schmidt_jr>	Hi guys, is anyone compiling zmq for multiple platforms?
+| [Tuesday 22 February 2011] [19:35:09] <lt_schmidt_jr>	anyone do jar packaging for binaries for java?
+| [Tuesday 22 February 2011] [19:56:30] <kdj>	I am having a problem uninstalling an older version of pyzmq...
+| [Tuesday 22 February 2011] [19:56:39] <kdj>	I mean a newer version, actually
+| [Tuesday 22 February 2011] [19:56:57] <kdj>	I have pyzmq 2.1.0 installed, I want to revert to pyzmq2.0.10
+| [Tuesday 22 February 2011] [19:57:16] <kdj>	I remove the directory and .egg from site-packages, and the module seems removed...
+| [Tuesday 22 February 2011] [19:57:45] <kdj>	But when I re-install it, the zmq_version() is still 2.1.0, *except* for in the shell I installed from O_o
+| [Tuesday 22 February 2011] [19:57:50] <kdj>	This is in Windows
+| [Tuesday 22 February 2011] [19:59:17] <kdj>	Oh, it is because I am in the directory in which zmq is located. I still don't get how they're not the same...
+| [Tuesday 22 February 2011] [20:37:21] <erickt>	hello #zeromq. I noticed that the HEAD of zeromq2 doesn't seem to be building and installing the documentation.
+| [Tuesday 22 February 2011] [20:42:52] <jugg>	erickt, check the output of ./configure, you're probably missing a dependency.
+| [Tuesday 22 February 2011] [20:44:27] <Steve-o>	which should be asciidoc
+| [Tuesday 22 February 2011] [20:45:23] <erickt>	I got both asciidoc and xmlto installed. "make dist" properly builds all the docs
+| [Tuesday 22 February 2011] [20:45:55] 	 * erickt checks 2.0.10
+| [Tuesday 22 February 2011] [20:47:08] <Steve-o>	didn't someone catch this on the list recently
+| [Tuesday 22 February 2011] [20:48:49] <erickt>	ah yeah the documentation does build correctly with v2.1.0
+| [Tuesday 22 February 2011] [20:49:04] <Steve-o>	or maybe a new side effect with the new api.zero.mq support
+| [Tuesday 22 February 2011] [20:55:22] 	 * erickt git bisects...
+| [Tuesday 22 February 2011] [21:00:56] <erickt>	oh, haha, it's all my fault
+| [Tuesday 22 February 2011] [21:01:35] <erickt>	I'm trying to get zeromq to build outside of the checkout directory and I messed up getting the doc builds to work :)
+| [Tuesday 22 February 2011] [23:54:39] <cremes>	andrewvc: ping
+| [Tuesday 22 February 2011] [23:54:52] <andrewvc>	yo
+| [Tuesday 22 February 2011] [23:54:58] <andrewvc>	sitting next to evanphx right now
+| [Tuesday 22 February 2011] [23:55:09] <cremes>	get it up on flickr
+| [Tuesday 22 February 2011] [23:55:12] <cremes>	:)
+| [Tuesday 22 February 2011] [23:55:16] <andrewvc>	lol
+| [Tuesday 22 February 2011] [23:55:32] <andrewvc>	we're looking at that zmq bug actually, going through mailbox.cpp
+| [Tuesday 22 February 2011] [23:55:35] <cremes>	so which bug are you and evan chatting about?
+| [Tuesday 22 February 2011] [23:55:49] <andrewvc>	I think yours was a separate one, something about kernel buffers?
+| [Tuesday 22 February 2011] [23:55:57] <andrewvc>	this is the one I hit a while ago that jruby doesn't have
+| [Tuesday 22 February 2011] [23:56:44] <cremes>	the new_sndbuf > old_sndbuf assertion?
+| [Tuesday 22 February 2011] [23:56:57] <andrewvc>	mmm this is nbytes != -1 EBADF
+| [Tuesday 22 February 2011] [23:57:01] <andrewvc>	mailbox.cpp 241
+| [Tuesday 22 February 2011] [23:57:03] <andrewvc>	that one
+| [Tuesday 22 February 2011] [23:57:09] <cremes>	ah, your file descriptor one
+| [Tuesday 22 February 2011] [23:57:11] <andrewvc>	yep
+| [Wednesday 23 February 2011] [00:00:12] <cremes>	btw, i think 0mq is a pretty good exercise of rbx's ffi impl
+| [Wednesday 23 February 2011] [00:44:03] <andrewvc>	cremes: still around?
+| [Wednesday 23 February 2011] [00:45:13] <cremes>	barely; what's up?
+| [Wednesday 23 February 2011] [00:46:55] <andrewvc>	yo, not much, but have a bit of a lead on the issue
+| [Wednesday 23 February 2011] [00:47:07] <andrewvc>	basically, zmq is shutting down, but a call to zmqgetsockopt gets through
+| [Wednesday 23 February 2011] [00:47:14] <andrewvc>	though the socket has been closed zmq doesn't see it
+| [Wednesday 23 February 2011] [00:47:29] <andrewvc>	btw, evan was saying we should probably not use finalizers, as they can be dangerous
+| [Wednesday 23 February 2011] [00:47:38] <cremes>	so it's shutting down when you do the getsockopt call?
+| [Wednesday 23 February 2011] [00:47:39] <andrewvc>	basically, it's easy to have to FFI pointers to the same data
+| [Wednesday 23 February 2011] [00:47:46] <andrewvc>	it shuts down  before
+| [Wednesday 23 February 2011] [00:47:53] <andrewvc>	but the getsockopt gets through later
+| [Wednesday 23 February 2011] [00:48:01] <cremes>	hrm...
+| [Wednesday 23 February 2011] [00:48:11] <andrewvc>	and zmq blows up, because an internal FD it uses for that socket, an FD for a socketpair, has been closed
+| [Wednesday 23 February 2011] [00:48:16] <cremes>	so what's this about finalizers? don't use 'em for auto-gc?
+| [Wednesday 23 February 2011] [00:48:43] <andrewvc>	the cpp mailbox object seems to have been deleted, but not overwritten, but the ffi socket still points to it
+| [Wednesday 23 February 2011] [00:48:50] <andrewvc>	that's from evan btw
+| [Wednesday 23 February 2011] [00:49:00] <cremes>	the ffi socket...?
+| [Wednesday 23 February 2011] [00:49:06] <andrewvc>	ZMQ::Socket
+| [Wednesday 23 February 2011] [00:49:16] <andrewvc>	the actual pointer to the socket
+| [Wednesday 23 February 2011] [00:49:19] <cremes>	the socketpairs are used for internal signaling, so they aren't exposed to us via ffi at all
+| [Wednesday 23 February 2011] [00:49:33] <cremes>	ok, zmq.socket
+| [Wednesday 23 February 2011] [00:49:37] <andrewvc>	yeah, but I think they're still tied to the socket
+| [Wednesday 23 February 2011] [00:50:07] <evan>	hi cremes
+| [Wednesday 23 February 2011] [00:50:07] <andrewvc>	evan's going to pop in
+| [Wednesday 23 February 2011] [00:50:08] <evan>	:D
+| [Wednesday 23 February 2011] [00:50:13] <cremes>	howdeee
+| [Wednesday 23 February 2011] [00:50:18] <evan>	so, real fast
+| [Wednesday 23 February 2011] [00:50:20] <evan>	here's how I see it.
+| [Wednesday 23 February 2011] [00:50:39] 	 * cremes had a dram or two... :)
+| [Wednesday 23 February 2011] [00:50:43] <andrewvc>	lol
+| [Wednesday 23 February 2011] [00:50:51] <evan>	FFI -> zmq::getsockopt -> zmq::process_commands -> zmq::mailbox::recv
+| [Wednesday 23 February 2011] [00:51:01] <evan>	those last 3 are in C++, in zmq's code base
+| [Wednesday 23 February 2011] [00:51:06] <cremes>	hey, when you work 22 hours a day, a dram is all the vacation you need :)
+| [Wednesday 23 February 2011] [00:51:08] <evan>	the FFI is called from the getsockopt method
+| [Wednesday 23 February 2011] [00:51:13] <cremes>	right
+| [Wednesday 23 February 2011] [00:51:29] <evan>	ZMQ_EVENTS is the option requested
+| [Wednesday 23 February 2011] [00:51:45] <cremes>	k
+| [Wednesday 23 February 2011] [00:51:51] <evan>	it appears that zmq has deleted the mailbox in question
+| [Wednesday 23 February 2011] [00:52:08] <evan>	we're still able to access it because the FFI side has a hanging pointer to where it used to be
+| [Wednesday 23 February 2011] [00:52:12] <evan>	and it hasn't been overriden
+| [Wednesday 23 February 2011] [00:52:32] <evan>	I believe it has been deleted because I can see that the destructor for the mailbox is what closes the socketpari
+| [Wednesday 23 February 2011] [00:52:43] <evan>	and I know that we're getting the EBADF on the socketpair in a mailbox
+| [Wednesday 23 February 2011] [00:52:59] <cremes>	ok, then that's a bug
+| [Wednesday 23 February 2011] [00:53:09] <evan>	all of that leads me to believe that zmq has decided to shutdown
+| [Wednesday 23 February 2011] [00:53:15] <evan>	either because of an internal condition
+| [Wednesday 23 February 2011] [00:53:18] <evan>	or because it was requested to
+| [Wednesday 23 February 2011] [00:53:28] <evan>	but FFI was not told zmq was shutting down
+| [Wednesday 23 February 2011] [00:53:40] <evan>	and thus still holds pointers to the C++ objects that have been deleted
+| [Wednesday 23 February 2011] [00:53:50] <cremes>	the socketpair is used for signaling between the virtual socket and the i/o thread that handles all send/recv on the back-end
+| [Wednesday 23 February 2011] [00:53:55] <cremes>	so if what you are saying is true
+| [Wednesday 23 February 2011] [00:54:07] <cremes>	then we need to show a repro and get them to fix that up
+| [Wednesday 23 February 2011] [00:54:17] <cremes>	the socket should only shut down under 2 conditions
+| [Wednesday 23 February 2011] [00:54:24] <andrewvc>	well, I think that's all in the strace and backtrace I showed previously
+| [Wednesday 23 February 2011] [00:54:26] <cremes>	1. zmq_close() is called on the socket
+| [Wednesday 23 February 2011] [00:54:29] <andrewvc>	but I didn't frame it right
+| [Wednesday 23 February 2011] [00:54:36] <andrewvc>	well, I never called zmq_close on the socket
+| [Wednesday 23 February 2011] [00:54:39] <cremes>	2. zmq_term() is called on the context to shut *everything* down
+| [Wednesday 23 February 2011] [00:54:48] <andrewvc>	we're not sure why it's being shut down
+| [Wednesday 23 February 2011] [00:54:55] <cremes>	ok, then 3. bug
+| [Wednesday 23 February 2011] [00:55:12] <andrewvc>	in my app I never call those things, it could be related to a ruby exception, or perhaps an exception in eventmachine's cext
+| [Wednesday 23 February 2011] [00:55:20] <andrewvc>	since moving to jruby fixed the issue
+| [Wednesday 23 February 2011] [00:55:22] <evan>	#1 and #2 need to be verified that they're not happening
+| [Wednesday 23 February 2011] [00:55:31] <evan>	because of the extra indirection of the FFI binding
+| [Wednesday 23 February 2011] [00:55:34] <andrewvc>	yep
+| [Wednesday 23 February 2011] [00:55:50] <cremes>	yeah, breakpoints on those c++ functions
+| [Wednesday 23 February 2011] [00:55:52] <evan>	it seems possible that zmq_term was called (perhaps by a finalizer?)
+| [Wednesday 23 February 2011] [00:56:05] <cremes>	only if a context is garbage collected
+| [Wednesday 23 February 2011] [00:56:20] <evan>	sure
+| [Wednesday 23 February 2011] [00:56:27] <cremes>	and *only* under 2.1.0... it activates that code based on the version of the 0mq lib that is loaded
+| [Wednesday 23 February 2011] [00:56:29] <evan>	basically, you need to verify if those are happening.
+| [Wednesday 23 February 2011] [00:56:38] <evan>	or not happening
+| [Wednesday 23 February 2011] [00:56:43] <evan>	when the bug occurs
+| [Wednesday 23 February 2011] [00:56:44] <andrewvc>	oh, well this was off zmq HEAD
+| [Wednesday 23 February 2011] [00:56:47] <evan>	only then can you proceed to #3
+| [Wednesday 23 February 2011] [00:56:58] <cremes>	agreed (evan)
+| [Wednesday 23 February 2011] [00:57:03] <evan>	additionally, you can certainly repro this all in C++
+| [Wednesday 23 February 2011] [00:57:23] <cremes>	maybe andrewvc  can ... ;)
+| [Wednesday 23 February 2011] [00:57:27] <evan>	you can see if calling zmq_term, then zmq_getsockopt causes an EBADF
+| [Wednesday 23 February 2011] [00:57:30] <evan>	it seems likely it would :)
+| [Wednesday 23 February 2011] [00:57:35] <andrewvc>	lol, I'd actually really like to, I'll put some more time into this this weekend
+| [Wednesday 23 February 2011] [00:57:39] <cremes>	that's easy enough to try
+| [Wednesday 23 February 2011] [00:58:14] <cremes>	there are certainly bugs in 0mq; i found another today that i've been chasing for the last 4 days
+| [Wednesday 23 February 2011] [00:58:26] <cremes>	i sent them a repro (in ruby)
+| [Wednesday 23 February 2011] [00:58:31] <evan>	cremes: yeah, I told andrewvc about that one.
+| [Wednesday 23 February 2011] [00:58:35] <evan>	the buffer bug.
+| [Wednesday 23 February 2011] [00:58:50] <cremes>	yeah, the same code also crashes rbx... right
+| [Wednesday 23 February 2011] [00:58:51] <andrewvc>	yeah
+| [Wednesday 23 February 2011] [00:59:15] <cremes>	well, this is all pretty exciting
+| [Wednesday 23 February 2011] [00:59:33] <cremes>	thanks for taking some time to dive into this... are you guys as a BoF or something?
+| [Wednesday 23 February 2011] [00:59:38] <cremes>	s/as/at/
+| [Wednesday 23 February 2011] [00:59:51] <andrewvc>	we're both usually at LA Ruby hack nights on tues
+| [Wednesday 23 February 2011] [00:59:57] <cremes>	ah...
+| [Wednesday 23 February 2011] [01:00:03] <andrewvc>	actually evan's a cofounder, him and shane becker run it
+| [Wednesday 23 February 2011] [01:00:28] <cremes>	cool.... well, you certainly brought in a knotty problem tonight
+| [Wednesday 23 February 2011] [01:00:29] <andrewvc>	what's a BoF
+| [Wednesday 23 February 2011] [01:00:40] <cremes>	birds of a feather
+| [Wednesday 23 February 2011] [01:00:52] <cremes>	it's a wwdc term 
+| [Wednesday 23 February 2011] [01:00:53] <andrewvc>	yeah, I'm glad evan took a look at it, really interesting stuff going through zeromq internals tracking it down
+| [Wednesday 23 February 2011] [01:01:13] <cremes>	heh, i bet evan had some comments on that codebase
+| [Wednesday 23 February 2011] [01:01:17] <andrewvc>	lol
+| [Wednesday 23 February 2011] [01:01:21] <andrewvc>	how did you know
+| [Wednesday 23 February 2011] [01:01:37] <cremes>	i've seen rbx c++ and it's nothing like 0mq c++
+| [Wednesday 23 February 2011] [01:01:40] <cremes>	:)
+| [Wednesday 23 February 2011] [01:01:53] <andrewvc>	hehe
+| [Wednesday 23 February 2011] [01:01:59] <cremes>	d'oh! this is all in-channel!  heh heh
+| [Wednesday 23 February 2011] [01:02:01] <evan>	cremes: yeah, I did
+| [Wednesday 23 February 2011] [01:02:05] <evan>	*eyeroll*
+| [Wednesday 23 February 2011] [01:02:08] <evan>	:D
+| [Wednesday 23 February 2011] [01:02:27] <cremes>	that's why i'm a ruby guy; i have a hard enough time making that look good let alone attempt c++ anymore
+| [Wednesday 23 February 2011] [01:02:35] <cremes>	!!
+| [Wednesday 23 February 2011] [01:02:44] <cremes>	well, thanks for digging into this
+| [Wednesday 23 February 2011] [01:02:44] <cremes>	i 
+| [Wednesday 23 February 2011] [01:03:02] <cremes>	think between andrewvc and i we can probably produce a repro for these guys
+| [Wednesday 23 February 2011] [01:03:10] <cremes>	that ZMQ_EVENTS code is still pretty new
+| [Wednesday 23 February 2011] [01:03:17] <cremes>	and likely needs more shake-down
+| [Wednesday 23 February 2011] [01:04:04] <cremes>	andrewvc: are you doing your dripdrop testing under rbx full-time yet?
+| [Wednesday 23 February 2011] [01:04:25] <andrewvc>	hah, switched to jruby because of this bug
+| [Wednesday 23 February 2011] [01:04:32] <andrewvc>	but if I get this back under control, I'm back on rbx
+| [Wednesday 23 February 2011] [01:04:33] <cremes>	pussy
+| [Wednesday 23 February 2011] [01:04:40] <cremes>	;)
+| [Wednesday 23 February 2011] [01:04:47] <evan>	cremes: cool.
+| [Wednesday 23 February 2011] [01:04:48] <andrewvc>	lol, well, I like my stack traces with my errors
+| [Wednesday 23 February 2011] [01:05:10] <cremes>	it doesn't make a lot of sense that this would work under jruby but break under rbx, yes?
+| [Wednesday 23 February 2011] [01:05:22] <andrewvc>	well, eventmachine has a different java core
+| [Wednesday 23 February 2011] [01:05:22] <cremes>	zmq should behave the same in both scenarios
+| [Wednesday 23 February 2011] [01:05:30] <andrewvc>	so maybe there's an interaction with the cext
+| [Wednesday 23 February 2011] [01:05:36] <evan>	also
+| [Wednesday 23 February 2011] [01:05:37] <andrewvc>	or maybe I'm crazy
+| [Wednesday 23 February 2011] [01:05:40] <cremes>	crazy
+| [Wednesday 23 February 2011] [01:05:41] <evan>	if it is something with finalizers
+| [Wednesday 23 February 2011] [01:05:53] <evan>	jruby could have very different finalizer run patterns than rbx
+| [Wednesday 23 February 2011] [01:05:56] <evan>	jsut throwing that out there.
+| [Wednesday 23 February 2011] [01:06:02] <andrewvc>	yep, I'll try removing finalizers as well
+| [Wednesday 23 February 2011] [01:06:05] <cremes>	finalizers are easy to disable; andrewvc : give that a try
+| [Wednesday 23 February 2011] [01:06:21] <andrewvc>	I definitely will
+| [Wednesday 23 February 2011] [01:06:30] <cremes>	yeah, the finalizers could be the culprit
+| [Wednesday 23 February 2011] [01:06:46] <cremes>	most of these commands run async on the i/o thread so timing can play a part
+| [Wednesday 23 February 2011] [01:07:01] <evan>	cremes: i'm packing up my laptop
+| [Wednesday 23 February 2011] [01:07:02] <andrewvc>	it was always reproducible in sequence though
+| [Wednesday 23 February 2011] [01:07:07] <andrewvc>	I as well, they're closing down
+| [Wednesday 23 February 2011] [01:07:09] <evan>	talk to ya tomorrow, back on the battlefield!
+| [Wednesday 23 February 2011] [01:07:09] <andrewvc>	I'll ttyl chuck
+| [Wednesday 23 February 2011] [01:07:11] <cremes>	evan: g'night
+| [Wednesday 23 February 2011] [01:07:17] <cremes>	goodnight to all!
+| [Wednesday 23 February 2011] [01:07:20] <cremes>	happy hacking
