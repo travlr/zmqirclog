@@ -11582,3 +11582,165 @@
 | [Thursday 24 February 2011] [13:09:19] <pieterh>	:-)
 | [Thursday 24 February 2011] [13:31:59] <cremes>	sustrik: how hairy is this bug?
 | [Thursday 24 February 2011] [13:34:01] <sustrik>	itnot that bad so far
+| [Thursday 24 February 2011] [15:22:56] <pieterh>	sustrik: what happened?
+| [Thursday 24 February 2011] [16:10:44] <Fast[BDC]>	hi, is there an example implemention of that http://zguide.zeromq.org/chapter:all#toc55 ?
+| [Thursday 24 February 2011] [16:12:41] <Fast[BDC]>	for me its hard to imagine howto implement a broker which does broadcasts, node to node and load balanced connections
+| [Thursday 24 February 2011] [16:28:38] <apexi200sx>	when would something like zeromq be used over say an AMQP server like RabbitMQ, and vice versa
+| [Thursday 24 February 2011] [16:30:03] <Fast[BDC]>	apexi200sx: i'm new so i'm not sure i'm right: i think ZeroMQ is better if you just need Message Distributing or when you need ultimate speed
+| [Thursday 24 February 2011] [16:31:56] <Fast[BDC]>	apexi200sx: read this for a nice comparison: http://www.rabbitmq.com/blog/tag/zeromq/
+| [Thursday 24 February 2011] [16:33:43] <apexi200sx>	cheers will have a look
+| [Thursday 24 February 2011] [16:34:03] <apexi200sx>	Fast[BDC]: well have you come from using a broker like rabbitmq ?
+| [Thursday 24 February 2011] [16:36:20] <Fast[BDC]>	no i'm very new to all this stuff, i have some servers running with a self implemented messaging subsystem and wanna replace it.
+| [Thursday 24 February 2011] [16:38:57] <apexi200sx>	Fast[BDC]: why what have you implemented and y, sorry for being nosey
+| [Thursday 24 February 2011] [16:41:19] <Fast[BDC]>	apexi200sx: its a data fetcher and processor, i get product data from different sources to reprice my customers stuff 
+| [Thursday 24 February 2011] [16:43:54] <Fast[BDC]>	apexi200sx: my servers are interconnected by Twisted and its "Perspective Broker" Protocol ( 1 to 1 connections ) work distributing is done by the very nice execnet library
+| [Thursday 24 February 2011] [16:44:52] <apexi200sx>	Fast[BDC]: I have heard of twisted, and perspective broker is its RPC mechanism is it not
+| [Thursday 24 February 2011] [16:45:12] <Fast[BDC]>	apexi200sx: but i need another approach to scale better, currently i process 3 Million products and its fast growing :(
+| [Thursday 24 February 2011] [16:45:15] <Fast[BDC]>	apexi200sx: yes it is
+| [Thursday 24 February 2011] [16:46:54] <apexi200sx>	Fast[BDC]: what sort of products, ? are you saying you gather price data from various sources over the internet of loads of different products that ur customer also sells, and u are providing the customer an automated way of price setting 
+| [Thursday 24 February 2011] [16:46:56] <apexi200sx>	?
+| [Thursday 24 February 2011] [16:47:15] <Fast[BDC]>	apexi200sx: yes, that is what i basicaly do.
+| [Thursday 24 February 2011] [16:47:43] <apexi200sx>	Fast[BDC]: 3 million products, flippin heck , so you have to scan them frequently for changes
+| [Thursday 24 February 2011] [16:47:44] <Fast[BDC]>	i catch about 36 Million datasets a day for 3 Million products
+| [Thursday 24 February 2011] [16:48:03] <cremes>	you guys might be interested in this 0mq whitepaper:  http://whaleshark.zeromq.org/
+| [Thursday 24 February 2011] [16:50:02] <apexi200sx>	Fast[BDC]: how do you retrieve the datasets, is it web crawling ?
+| [Thursday 24 February 2011] [16:50:17] <apexi200sx>	Fast[BDC]: HTML scraping ?
+| [Thursday 24 February 2011] [16:50:40] <Fast[BDC]>	apexi200sx: different ways, some by API's some by hackish scraping
+| [Thursday 24 February 2011] [16:57:07] <Fast[BDC]>	cremes: nice paper
+| [Thursday 24 February 2011] [16:57:17] <apexi200sx>	Fast[BDC]: just had a look at execnet, never heard of that before, sounds like it has a decent feature set
+| [Thursday 24 February 2011] [16:58:01] <apexi200sx>	Fast[BDC]: where/what do you think ur bottle neck is
+| [Thursday 24 February 2011] [17:00:17] <Fast[BDC]>	apexi200sx: currently i need to shut down all application servers to add another one
+| [Thursday 24 February 2011] [17:02:34] <Fast[BDC]>	apexi200sx: another issue i have is failover and/or resource sharing
+| [Thursday 24 February 2011] [17:05:08] <Fast[BDC]>	apexi200sx: i take a request from my customer (600k Products) split it into parts and process this parts with the help of execnet, then my workers fetch data which i don't have in the DB (mongodb) and after a while i send it processed back to the customer
+| [Thursday 24 February 2011] [17:07:00] <Fast[BDC]>	apexi200sx: for now each "spliter" has a bunch of workers assigned to it but i have multiple "spliters" and i need the workers to be shared to all spliters
+| [Thursday 24 February 2011] [17:11:04] <apexi200sx>	u running all this in the cloud (like amazon ?) and you need to be able to add new instances on the fly ?
+| [Thursday 24 February 2011] [17:11:32] <Fast[BDC]>	no i run it on dedicated servers and yes i need to add instances on to fly
+| [Thursday 24 February 2011] [17:12:50] <Fast[BDC]>	apexi200sx: to be true its a bit a overkill but i like to have this system on the edge i just learn from it :)
+| [Thursday 24 February 2011] [17:39:12] <Evet>	is there a publisher or subscriber limit for in-process?
+| [Thursday 24 February 2011] [21:10:09] <amacleod>	Are ipc:// URIs expected not to work under Windows?  We are getting a "Protocol not supported" error when trying to bind to "ipc://listener".
+| [Thursday 24 February 2011] [21:11:50] <amacleod>	Ah.. there it says right in the manpage.  It's currently only implemented on OSs that provide UNIX domain sockets.
+| [Thursday 24 February 2011] [22:01:28] <brazilnut000>	hello, i was wondering if I could get some assistance trying to figure out some difficulty I'm havnig with multithreaded code...
+| [Thursday 24 February 2011] [22:03:25] <brazilnut000>	basically, I'm spawning a thread to subscribe to incoming data and update some variables while my main thread does some other stuff (including talk on other ports)
+| [Thursday 24 February 2011] [22:03:57] <brazilnut000>	they're both using the same context, but my thread doesn't seem to get anything from the publisher
+| [Thursday 24 February 2011] [22:04:50] <brazilnut000>	however, if i make the same calls to create, bind, and subscribe in my main thread it works...
+| [Thursday 24 February 2011] [22:05:11] <brazilnut000>	anyone?
+| [Thursday 24 February 2011] [22:24:30] <brazilnut000>	hrmm...i guess not...
+| [Thursday 24 February 2011] [22:25:55] <Steve-o>	morning all, looks like o'reilly doesn't actually archive webcasts?
+| [Thursday 24 February 2011] [22:32:24] <amacleod>	brazilnut000, you are not sharing sockets between threads, are you?  Just contexts?
+| [Thursday 24 February 2011] [22:32:49] <amacleod>	brazilnut000, what transport are you using, and what ZMQ pattern?
+| [Thursday 24 February 2011] [22:39:00] <brazilnut000>	oh, sorry, stepped away.
+| [Thursday 24 February 2011] [22:40:00] <brazilnut000>	I'm sharing contexts only, tcp, ZMQ_PUB and ZMQ_SUB
+| [Thursday 24 February 2011] [22:44:39] <amacleod>	Ok.  So you shouldn't need to be messing with any addressing/routing.
+| [Thursday 24 February 2011] [22:44:47] <amacleod>	How many I/O threads?  1?
+| [Thursday 24 February 2011] [22:44:54] <brazilnut000>	1
+| [Thursday 24 February 2011] [22:47:58] <amacleod>	Dunno.  Is it possible that the subscriber is trying to connect before the publisher has had a chance to become established?
+| [Thursday 24 February 2011] [22:48:18] <amacleod>	(I'm not sure how timing issues are supposed to work with PUB/SUB.)
+| [Thursday 24 February 2011] [22:50:07] <brazilnut000>	it's possible, though unlikely....also, as I understand it, order shouldn't matter.  It's possible to lose the first 'x' messages, but I don't ever get any...
+| [Thursday 24 February 2011] [22:56:32] <brazilnut000>	well, thanks for giving it a shot.  Gonna go get some dinner...
+| [Thursday 24 February 2011] [22:57:11] <amacleod>	You're welcome.  Sorry I couldn't get any further.
+| [Friday 25 February 2011] [02:44:07] <pieterh_>	sustrik: g'morning 
+| [Friday 25 February 2011] [02:44:13] <sustrik>	morning
+| [Friday 25 February 2011] [02:44:25] <pieterh_>	just curious if you found that leak yesterday
+| [Friday 25 February 2011] [02:45:17] <sustrik>	well, i found one delayed deallocation
+| [Friday 25 February 2011] [02:45:29] <sustrik>	but afaics it applies only to sockets with no connects/binds
+| [Friday 25 February 2011] [02:45:36] <sustrik>	so it's probably a different issue
+| [Friday 25 February 2011] [02:46:30] <pieterh_>	a'ight
+| [Friday 25 February 2011] [02:46:50] <sustrik>	anyway, i'm patching it now
+| [Friday 25 February 2011] [02:50:18] <sustrik>	pieterh: the master documentation doesn't seem to be updated automatically
+| [Friday 25 February 2011] [02:50:20] <sustrik>	should it?
+| [Friday 25 February 2011] [03:00:40] <CIA-21>	zeromq2: 03Martin Sustrik 07master * rd4e418f 10/ (src/reaper.cpp src/socket_base.cpp src/socket_base.hpp): 
+| [Friday 25 February 2011] [03:00:40] <CIA-21>	zeromq2: Socket with no owner objects is deallocated immediately
+| [Friday 25 February 2011] [03:00:40] <CIA-21>	zeromq2: Till now the deallocation of such socket was delayed
+| [Friday 25 February 2011] [03:00:40] <CIA-21>	zeromq2: till zmq_term() thus creating a "leak".
+| [Friday 25 February 2011] [03:00:40] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/eXBeHV
+| [Friday 25 February 2011] [03:00:54] <sustrik>	pieterh: the patch is in master
+| [Friday 25 February 2011] [03:01:09] <sustrik>	can you check whether the leak persists?
+| [Friday 25 February 2011] [03:01:13] <sustrik>	just in case...
+| [Friday 25 February 2011] [03:18:58] <pieterh_>	sustrik, re
+| [Friday 25 February 2011] [03:19:30] <pieterh_>	master docs are not yet updating automatically, but I'll check with mikko, everything is ready for that
+| [Friday 25 February 2011] [03:19:57] <pieterh_>	i'll check the leak later, need to use a different box (multicore)
+| [Friday 25 February 2011] [03:21:01] <sustrik>	ok
+| [Friday 25 February 2011] [03:21:37] <pieterh_>	though in the test case, sockets were definitely being used (recv) and closed systematically
+| [Friday 25 February 2011] [03:52:28] <pieterh>	sustrik: good news
+| [Friday 25 February 2011] [03:52:46] <pieterh>	as far as I can tell from initial tests, you've fixed the leak
+| [Friday 25 February 2011] [03:52:57] <sustrik>	interesting
+| [Friday 25 February 2011] [03:53:07] <pieterh>	I'm doing more tests now
+| [Friday 25 February 2011] [03:54:26] <pieterh>	I retract that
+| [Friday 25 February 2011] [03:54:31] <pieterh>	it works over inproc but not over tcp
+| [Friday 25 February 2011] [03:55:03] <pieterh>	and I think inproc was getting weird test results if run after tcp 
+| [Friday 25 February 2011] [03:55:26] <pieterh>	cremes' original test case still leaks memory (and consumes a whopping amount of CPU)
+| [Friday 25 February 2011] [04:05:39] <sustrik>	ok
+| [Friday 25 February 2011] [04:23:34] <pieterh>	do we have an open issue for this?
+| [Friday 25 February 2011] [04:23:55] <pieterh>	i've stripped down chuck's test case and would like to post that somewhere
+| [Friday 25 February 2011] [04:27:45] <sustrik>	no idea
+| [Friday 25 February 2011] [04:27:55] <sustrik>	there's none unless chuck opened one
+| [Friday 25 February 2011] [04:28:17] <pieterh>	ok
+| [Friday 25 February 2011] [04:28:29] <pieterh>	I'll ask him to do so
+| [Friday 25 February 2011] [04:30:52] <pieterh>	hmm, back with 'too many open files'... strange
+| [Friday 25 February 2011] [04:31:46] <sustrik>	well, the test case is creating undetermined number of sockets
+| [Friday 25 February 2011] [04:32:08] <pieterh>	yes, it's a fault in my test case
+| [Friday 25 February 2011] [04:34:33] <pieterh>	ok, I need to leave for a while bbl
+| [Friday 25 February 2011] [07:03:05] <mikko>	ian did well
+| [Friday 25 February 2011] [07:14:26] <cremes>	pieterh, sustrik: i opened a ticket on this leak a few days back: https://github.com/zeromq/zeromq2/issues#issue/171
+| [Friday 25 February 2011] [07:14:37] <cremes>	example code is in a gist attached to the ticket
+| [Friday 25 February 2011] [07:14:47] <cremes>	brb...
+| [Friday 25 February 2011] [07:25:48] <sustrik>	mikko: you've been on the coference?
+| [Friday 25 February 2011] [07:26:00] <sustrik>	there's a lot of tweets about the lecture
+| [Friday 25 February 2011] [07:28:47] <sustrik>	hi ian
+| [Friday 25 February 2011] [07:28:55] <sustrik>	how did it go?
+| [Friday 25 February 2011] [07:30:12] <mikko>	sustrik: here at the moment
+| [Friday 25 February 2011] [07:30:28] <sustrik>	no haste
+| [Friday 25 February 2011] [07:30:28] <ianbarber>	hey! pretty good i think
+| [Friday 25 February 2011] [07:31:00] <sustrik>	people seem to be happy according to twitter
+| [Friday 25 February 2011] [07:31:09] <sustrik>	any feedback, questions?
+| [Friday 25 February 2011] [07:32:46] <mikko>	http://joind.in/talk/view/2523
+| [Friday 25 February 2011] [07:32:54] <mikko>	there is some feedback already
+| [Friday 25 February 2011] [07:34:01] <sustrik>	nice :)
+| [Friday 25 February 2011] [07:36:27] <ianbarber>	good comments, had some questions about persistance, telehash, whether it could run on an arduino, some zero vs activemq stuff, and a bit on whether you can do pgm on ec2
+| [Friday 25 February 2011] [07:38:56] <sustrik>	good question
+| [Friday 25 February 2011] [07:39:04] <sustrik>	especially the last one :)
+| [Friday 25 February 2011] [07:39:13] <sustrik>	i have to admit i have no idea
+| [Friday 25 February 2011] [07:41:13] <ianbarber>	me either :) the next talk was about ec2 though, so that's handy
+| [Friday 25 February 2011] [10:56:38] <mikko>	pieterh: here?
+| [Friday 25 February 2011] [10:56:44] <pieterh>	hi mikko, yes
+| [Friday 25 February 2011] [10:56:56] <mikko>	should i run apiall or apione in the docs builds?
+| [Friday 25 February 2011] [10:57:33] <pieterh>	apiall, that's the main script
+| [Friday 25 February 2011] [10:58:04] <pieterh>	sorry...
+| [Friday 25 February 2011] [10:58:17] <mikko>	hmm
+| [Friday 25 February 2011] [10:58:24] <mikko>	ZMQ_DIR seems to have changed as well
+| [Friday 25 February 2011] [10:58:44] <pieterh>	I've made apiall do the whole job
+| [Friday 25 February 2011] [10:58:50] <pieterh>	there is no ZMQ_DIR any more
+| [Friday 25 February 2011] [10:59:11] <pieterh>	apione is to update a single version from some repository 
+| [Friday 25 February 2011] [10:59:32] <pieterh>	does this make sense?
+| [Friday 25 February 2011] [11:00:30] <mikko>	yes, ill check the code to see what exactly is happening
+| [Friday 25 February 2011] [11:01:18] <mikko>	so it expects to find ../../zeromq2 ?
+| [Friday 25 February 2011] [11:01:20] <pieterh>	yes
+| [Friday 25 February 2011] [11:01:24] <pieterh>	and ../../zeromq2-1
+| [Friday 25 February 2011] [11:01:28] <mikko>	and ../../zeromq2-1
+| [Friday 25 February 2011] [11:01:43] <mikko>	ok
+| [Friday 25 February 2011] [11:01:43] <pieterh>	and eventually ../../zeromq2-0 when we make that
+| [Friday 25 February 2011] [11:01:44] <pieterh>	etc.
+| [Friday 25 February 2011] [11:02:02] <pieterh>	does that match how you use the repos on the build system?
+| [Friday 25 February 2011] [11:02:27] <mikko>	no, this far i've used branches
+| [Friday 25 February 2011] [11:02:40] <mikko>	i think i need to update all maint builds at some point
+| [Friday 25 February 2011] [11:02:43] <pieterh>	right, but the relative locations of ztools and zeromq2
+| [Friday 25 February 2011] [11:03:02] <mikko>	ah, thats different as well
+| [Friday 25 February 2011] [11:03:13] <mikko>	but i can make it to use the new structure
+| [Friday 25 February 2011] [11:03:45] <pieterh>	let me know if you need any changes to the apisite stuff, happy to do whatever's needed
+| [Friday 25 February 2011] [11:03:49] <mikko>	i wonder if git submodules would make sense here
+| [Friday 25 February 2011] [11:04:02] <mikko>	they are a bit like svn externals
+| [Friday 25 February 2011] [11:05:07] <pieterh>	oh, that gets really complex real fast, mikko...
+| [Friday 25 February 2011] [11:05:25] <ianbarber>	i've heard they are often a bit of a pain
+| [Friday 25 February 2011] [11:05:45] <mikko>	i meant using submodules in this way:
+| [Friday 25 February 2011] [11:06:04] <mikko>	ztools/apisite/source/master -> zeromq/zeromq2/master
+| [Friday 25 February 2011] [11:06:25] <mikko>	when you checkout ztools you can recursively take submodules if you want
+| [Friday 25 February 2011] [11:06:33] <mikko>	and if not then you can put the code into right place
+| [Friday 25 February 2011] [11:07:01] <mikko>	not sure how jenkins handles that
+| [Friday 25 February 2011] [11:07:21] <mikko>	because currently jenkins is configured to use zeromq/zeromq2 as source repo for docs build
+| [Friday 25 February 2011] [11:07:35] <mikko>	and it polls that repo for changes and builds if changes are detected
+| [Friday 25 February 2011] [11:08:29] <mikko>	i'll look into this as soon i can get onto a bit faster internet
+| [Friday 25 February 2011] [11:08:35] <mikko>	conference wireless is a bit painful
+| [Friday 25 February 2011] [11:14:27] <pieterh>	hmm
+| [Friday 25 February 2011] [11:18:13] <pieterh>	ok, I've made a PHP version of the Guide, http://zguide.zeromq.org/php:all
+| [Friday 25 February 2011] [11:23:40] <sustrik>	pieterh: some of the examples are in python and c++
+| [Friday 25 February 2011] [11:25:21] <sustrik>	and c

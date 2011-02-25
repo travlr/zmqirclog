@@ -11627,6 +11627,168 @@
 <div class="line">[Thursday 24 February 2011] [13:09:19] &lt;pieterh&gt;      :-)</div>
 <div class="line">[Thursday 24 February 2011] [13:31:59] &lt;cremes&gt;       sustrik: how hairy is this bug?</div>
 <div class="line">[Thursday 24 February 2011] [13:34:01] &lt;sustrik&gt;      itnot that bad so far</div>
+<div class="line">[Thursday 24 February 2011] [15:22:56] &lt;pieterh&gt;      sustrik: what happened?</div>
+<div class="line">[Thursday 24 February 2011] [16:10:44] &lt;Fast[BDC]&gt;    hi, is there an example implemention of that <a class="reference external" href="http://zguide.zeromq.org/chapter:all#toc55">http://zguide.zeromq.org/chapter:all#toc55</a> ?</div>
+<div class="line">[Thursday 24 February 2011] [16:12:41] &lt;Fast[BDC]&gt;    for me its hard to imagine howto implement a broker which does broadcasts, node to node and load balanced connections</div>
+<div class="line">[Thursday 24 February 2011] [16:28:38] &lt;apexi200sx&gt;   when would something like zeromq be used over say an AMQP server like RabbitMQ, and vice versa</div>
+<div class="line">[Thursday 24 February 2011] [16:30:03] &lt;Fast[BDC]&gt;    apexi200sx: i&#8217;m new so i&#8217;m not sure i&#8217;m right: i think ZeroMQ is better if you just need Message Distributing or when you need ultimate speed</div>
+<div class="line">[Thursday 24 February 2011] [16:31:56] &lt;Fast[BDC]&gt;    apexi200sx: read this for a nice comparison: <a class="reference external" href="http://www.rabbitmq.com/blog/tag/zeromq/">http://www.rabbitmq.com/blog/tag/zeromq/</a></div>
+<div class="line">[Thursday 24 February 2011] [16:33:43] &lt;apexi200sx&gt;   cheers will have a look</div>
+<div class="line">[Thursday 24 February 2011] [16:34:03] &lt;apexi200sx&gt;   Fast[BDC]: well have you come from using a broker like rabbitmq ?</div>
+<div class="line">[Thursday 24 February 2011] [16:36:20] &lt;Fast[BDC]&gt;    no i&#8217;m very new to all this stuff, i have some servers running with a self implemented messaging subsystem and wanna replace it.</div>
+<div class="line">[Thursday 24 February 2011] [16:38:57] &lt;apexi200sx&gt;   Fast[BDC]: why what have you implemented and y, sorry for being nosey</div>
+<div class="line">[Thursday 24 February 2011] [16:41:19] &lt;Fast[BDC]&gt;    apexi200sx: its a data fetcher and processor, i get product data from different sources to reprice my customers stuff</div>
+<div class="line">[Thursday 24 February 2011] [16:43:54] &lt;Fast[BDC]&gt;    apexi200sx: my servers are interconnected by Twisted and its &#8220;Perspective Broker&#8221; Protocol ( 1 to 1 connections ) work distributing is done by the very nice execnet library</div>
+<div class="line">[Thursday 24 February 2011] [16:44:52] &lt;apexi200sx&gt;   Fast[BDC]: I have heard of twisted, and perspective broker is its RPC mechanism is it not</div>
+<div class="line">[Thursday 24 February 2011] [16:45:12] &lt;Fast[BDC]&gt;    apexi200sx: but i need another approach to scale better, currently i process 3 Million products and its fast growing :(</div>
+<div class="line">[Thursday 24 February 2011] [16:45:15] &lt;Fast[BDC]&gt;    apexi200sx: yes it is</div>
+<div class="line">[Thursday 24 February 2011] [16:46:54] &lt;apexi200sx&gt;   Fast[BDC]: what sort of products, ? are you saying you gather price data from various sources over the internet of loads of different products that ur customer also sells, and u are providing the customer an automated way of price setting</div>
+<div class="line">[Thursday 24 February 2011] [16:46:56] &lt;apexi200sx&gt;   ?</div>
+<div class="line">[Thursday 24 February 2011] [16:47:15] &lt;Fast[BDC]&gt;    apexi200sx: yes, that is what i basicaly do.</div>
+<div class="line">[Thursday 24 February 2011] [16:47:43] &lt;apexi200sx&gt;   Fast[BDC]: 3 million products, flippin heck , so you have to scan them frequently for changes</div>
+<div class="line">[Thursday 24 February 2011] [16:47:44] &lt;Fast[BDC]&gt;    i catch about 36 Million datasets a day for 3 Million products</div>
+<div class="line">[Thursday 24 February 2011] [16:48:03] &lt;cremes&gt;       you guys might be interested in this 0mq whitepaper:  <a class="reference external" href="http://whaleshark.zeromq.org/">http://whaleshark.zeromq.org/</a></div>
+<div class="line">[Thursday 24 February 2011] [16:50:02] &lt;apexi200sx&gt;   Fast[BDC]: how do you retrieve the datasets, is it web crawling ?</div>
+<div class="line">[Thursday 24 February 2011] [16:50:17] &lt;apexi200sx&gt;   Fast[BDC]: HTML scraping ?</div>
+<div class="line">[Thursday 24 February 2011] [16:50:40] &lt;Fast[BDC]&gt;    apexi200sx: different ways, some by API&#8217;s some by hackish scraping</div>
+<div class="line">[Thursday 24 February 2011] [16:57:07] &lt;Fast[BDC]&gt;    cremes: nice paper</div>
+<div class="line">[Thursday 24 February 2011] [16:57:17] &lt;apexi200sx&gt;   Fast[BDC]: just had a look at execnet, never heard of that before, sounds like it has a decent feature set</div>
+<div class="line">[Thursday 24 February 2011] [16:58:01] &lt;apexi200sx&gt;   Fast[BDC]: where/what do you think ur bottle neck is</div>
+<div class="line">[Thursday 24 February 2011] [17:00:17] &lt;Fast[BDC]&gt;    apexi200sx: currently i need to shut down all application servers to add another one</div>
+<div class="line">[Thursday 24 February 2011] [17:02:34] &lt;Fast[BDC]&gt;    apexi200sx: another issue i have is failover and/or resource sharing</div>
+<div class="line">[Thursday 24 February 2011] [17:05:08] &lt;Fast[BDC]&gt;    apexi200sx: i take a request from my customer (600k Products) split it into parts and process this parts with the help of execnet, then my workers fetch data which i don&#8217;t have in the DB (mongodb) and after a while i send it processed back to the customer</div>
+<div class="line">[Thursday 24 February 2011] [17:07:00] &lt;Fast[BDC]&gt;    apexi200sx: for now each &#8220;spliter&#8221; has a bunch of workers assigned to it but i have multiple &#8220;spliters&#8221; and i need the workers to be shared to all spliters</div>
+<div class="line">[Thursday 24 February 2011] [17:11:04] &lt;apexi200sx&gt;   u running all this in the cloud (like amazon ?) and you need to be able to add new instances on the fly ?</div>
+<div class="line">[Thursday 24 February 2011] [17:11:32] &lt;Fast[BDC]&gt;    no i run it on dedicated servers and yes i need to add instances on to fly</div>
+<div class="line">[Thursday 24 February 2011] [17:12:50] &lt;Fast[BDC]&gt;    apexi200sx: to be true its a bit a overkill but i like to have this system on the edge i just learn from it :)</div>
+<div class="line">[Thursday 24 February 2011] [17:39:12] &lt;Evet&gt; is there a publisher or subscriber limit for in-process?</div>
+<div class="line">[Thursday 24 February 2011] [21:10:09] &lt;amacleod&gt;     Are ipc:// URIs expected not to work under Windows?  We are getting a &#8220;Protocol not supported&#8221; error when trying to bind to &#8220;ipc://listener&#8221;.</div>
+<div class="line">[Thursday 24 February 2011] [21:11:50] &lt;amacleod&gt;     Ah.. there it says right in the manpage.  It&#8217;s currently only implemented on OSs that provide UNIX domain sockets.</div>
+<div class="line">[Thursday 24 February 2011] [22:01:28] &lt;brazilnut000&gt; hello, i was wondering if I could get some assistance trying to figure out some difficulty I&#8217;m havnig with multithreaded code...</div>
+<div class="line">[Thursday 24 February 2011] [22:03:25] &lt;brazilnut000&gt; basically, I&#8217;m spawning a thread to subscribe to incoming data and update some variables while my main thread does some other stuff (including talk on other ports)</div>
+<div class="line">[Thursday 24 February 2011] [22:03:57] &lt;brazilnut000&gt; they&#8217;re both using the same context, but my thread doesn&#8217;t seem to get anything from the publisher</div>
+<div class="line">[Thursday 24 February 2011] [22:04:50] &lt;brazilnut000&gt; however, if i make the same calls to create, bind, and subscribe in my main thread it works...</div>
+<div class="line">[Thursday 24 February 2011] [22:05:11] &lt;brazilnut000&gt; anyone?</div>
+<div class="line">[Thursday 24 February 2011] [22:24:30] &lt;brazilnut000&gt; hrmm...i guess not...</div>
+<div class="line">[Thursday 24 February 2011] [22:25:55] &lt;Steve-o&gt;      morning all, looks like o&#8217;reilly doesn&#8217;t actually archive webcasts?</div>
+<div class="line">[Thursday 24 February 2011] [22:32:24] &lt;amacleod&gt;     brazilnut000, you are not sharing sockets between threads, are you?  Just contexts?</div>
+<div class="line">[Thursday 24 February 2011] [22:32:49] &lt;amacleod&gt;     brazilnut000, what transport are you using, and what ZMQ pattern?</div>
+<div class="line">[Thursday 24 February 2011] [22:39:00] &lt;brazilnut000&gt; oh, sorry, stepped away.</div>
+<div class="line">[Thursday 24 February 2011] [22:40:00] &lt;brazilnut000&gt; I&#8217;m sharing contexts only, tcp, ZMQ_PUB and ZMQ_SUB</div>
+<div class="line">[Thursday 24 February 2011] [22:44:39] &lt;amacleod&gt;     Ok.  So you shouldn&#8217;t need to be messing with any addressing/routing.</div>
+<div class="line">[Thursday 24 February 2011] [22:44:47] &lt;amacleod&gt;     How many I/O threads?  1?</div>
+<div class="line">[Thursday 24 February 2011] [22:44:54] &lt;brazilnut000&gt; 1</div>
+<div class="line">[Thursday 24 February 2011] [22:47:58] &lt;amacleod&gt;     Dunno.  Is it possible that the subscriber is trying to connect before the publisher has had a chance to become established?</div>
+<div class="line">[Thursday 24 February 2011] [22:48:18] &lt;amacleod&gt;     (I&#8217;m not sure how timing issues are supposed to work with PUB/SUB.)</div>
+<div class="line">[Thursday 24 February 2011] [22:50:07] &lt;brazilnut000&gt; it&#8217;s possible, though unlikely....also, as I understand it, order shouldn&#8217;t matter.  It&#8217;s possible to lose the first &#8216;x&#8217; messages, but I don&#8217;t ever get any...</div>
+<div class="line">[Thursday 24 February 2011] [22:56:32] &lt;brazilnut000&gt; well, thanks for giving it a shot.  Gonna go get some dinner...</div>
+<div class="line">[Thursday 24 February 2011] [22:57:11] &lt;amacleod&gt;     You&#8217;re welcome.  Sorry I couldn&#8217;t get any further.</div>
+<div class="line">[Friday 25 February 2011] [02:44:07] &lt;<a href="#id1737"><span class="problematic" id="id1738">pieterh_</span></a>&gt;       sustrik: g&#8217;morning</div>
+<div class="line">[Friday 25 February 2011] [02:44:13] &lt;sustrik&gt;        morning</div>
+<div class="line">[Friday 25 February 2011] [02:44:25] &lt;<a href="#id1739"><span class="problematic" id="id1740">pieterh_</span></a>&gt;       just curious if you found that leak yesterday</div>
+<div class="line">[Friday 25 February 2011] [02:45:17] &lt;sustrik&gt;        well, i found one delayed deallocation</div>
+<div class="line">[Friday 25 February 2011] [02:45:29] &lt;sustrik&gt;        but afaics it applies only to sockets with no connects/binds</div>
+<div class="line">[Friday 25 February 2011] [02:45:36] &lt;sustrik&gt;        so it&#8217;s probably a different issue</div>
+<div class="line">[Friday 25 February 2011] [02:46:30] &lt;<a href="#id1741"><span class="problematic" id="id1742">pieterh_</span></a>&gt;       a&#8217;ight</div>
+<div class="line">[Friday 25 February 2011] [02:46:50] &lt;sustrik&gt;        anyway, i&#8217;m patching it now</div>
+<div class="line">[Friday 25 February 2011] [02:50:18] &lt;sustrik&gt;        pieterh: the master documentation doesn&#8217;t seem to be updated automatically</div>
+<div class="line">[Friday 25 February 2011] [02:50:20] &lt;sustrik&gt;        should it?</div>
+<div class="line">[Friday 25 February 2011] [03:00:40] &lt;CIA-21&gt; zeromq2: 03Martin Sustrik 07master * rd4e418f 10/ (src/reaper.cpp src/socket_base.cpp src/socket_base.hpp):</div>
+<div class="line">[Friday 25 February 2011] [03:00:40] &lt;CIA-21&gt; zeromq2: Socket with no owner objects is deallocated immediately</div>
+<div class="line">[Friday 25 February 2011] [03:00:40] &lt;CIA-21&gt; zeromq2: Till now the deallocation of such socket was delayed</div>
+<div class="line">[Friday 25 February 2011] [03:00:40] &lt;CIA-21&gt; zeromq2: till zmq_term() thus creating a &#8220;leak&#8221;.</div>
+<div class="line">[Friday 25 February 2011] [03:00:40] &lt;CIA-21&gt; zeromq2: Signed-off-by: Martin Sustrik &lt;<a class="reference external" href="mailto:sustrik&#37;&#52;&#48;250bpm&#46;com">sustrik<span>&#64;</span>250bpm<span>&#46;</span>com</a>&gt; - <a class="reference external" href="http://bit.ly/eXBeHV">http://bit.ly/eXBeHV</a></div>
+<div class="line">[Friday 25 February 2011] [03:00:54] &lt;sustrik&gt;        pieterh: the patch is in master</div>
+<div class="line">[Friday 25 February 2011] [03:01:09] &lt;sustrik&gt;        can you check whether the leak persists?</div>
+<div class="line">[Friday 25 February 2011] [03:01:13] &lt;sustrik&gt;        just in case...</div>
+<div class="line">[Friday 25 February 2011] [03:18:58] &lt;<a href="#id1743"><span class="problematic" id="id1744">pieterh_</span></a>&gt;       sustrik, re</div>
+<div class="line">[Friday 25 February 2011] [03:19:30] &lt;<a href="#id1745"><span class="problematic" id="id1746">pieterh_</span></a>&gt;       master docs are not yet updating automatically, but I&#8217;ll check with mikko, everything is ready for that</div>
+<div class="line">[Friday 25 February 2011] [03:19:57] &lt;<a href="#id1747"><span class="problematic" id="id1748">pieterh_</span></a>&gt;       i&#8217;ll check the leak later, need to use a different box (multicore)</div>
+<div class="line">[Friday 25 February 2011] [03:21:01] &lt;sustrik&gt;        ok</div>
+<div class="line">[Friday 25 February 2011] [03:21:37] &lt;<a href="#id1749"><span class="problematic" id="id1750">pieterh_</span></a>&gt;       though in the test case, sockets were definitely being used (recv) and closed systematically</div>
+<div class="line">[Friday 25 February 2011] [03:52:28] &lt;pieterh&gt;        sustrik: good news</div>
+<div class="line">[Friday 25 February 2011] [03:52:46] &lt;pieterh&gt;        as far as I can tell from initial tests, you&#8217;ve fixed the leak</div>
+<div class="line">[Friday 25 February 2011] [03:52:57] &lt;sustrik&gt;        interesting</div>
+<div class="line">[Friday 25 February 2011] [03:53:07] &lt;pieterh&gt;        I&#8217;m doing more tests now</div>
+<div class="line">[Friday 25 February 2011] [03:54:26] &lt;pieterh&gt;        I retract that</div>
+<div class="line">[Friday 25 February 2011] [03:54:31] &lt;pieterh&gt;        it works over inproc but not over tcp</div>
+<div class="line">[Friday 25 February 2011] [03:55:03] &lt;pieterh&gt;        and I think inproc was getting weird test results if run after tcp</div>
+<div class="line">[Friday 25 February 2011] [03:55:26] &lt;pieterh&gt;        cremes&#8217; original test case still leaks memory (and consumes a whopping amount of CPU)</div>
+<div class="line">[Friday 25 February 2011] [04:05:39] &lt;sustrik&gt;        ok</div>
+<div class="line">[Friday 25 February 2011] [04:23:34] &lt;pieterh&gt;        do we have an open issue for this?</div>
+<div class="line">[Friday 25 February 2011] [04:23:55] &lt;pieterh&gt;        i&#8217;ve stripped down chuck&#8217;s test case and would like to post that somewhere</div>
+<div class="line">[Friday 25 February 2011] [04:27:45] &lt;sustrik&gt;        no idea</div>
+<div class="line">[Friday 25 February 2011] [04:27:55] &lt;sustrik&gt;        there&#8217;s none unless chuck opened one</div>
+<div class="line">[Friday 25 February 2011] [04:28:17] &lt;pieterh&gt;        ok</div>
+<div class="line">[Friday 25 February 2011] [04:28:29] &lt;pieterh&gt;        I&#8217;ll ask him to do so</div>
+<div class="line">[Friday 25 February 2011] [04:30:52] &lt;pieterh&gt;        hmm, back with &#8216;too many open files&#8217;... strange</div>
+<div class="line">[Friday 25 February 2011] [04:31:46] &lt;sustrik&gt;        well, the test case is creating undetermined number of sockets</div>
+<div class="line">[Friday 25 February 2011] [04:32:08] &lt;pieterh&gt;        yes, it&#8217;s a fault in my test case</div>
+<div class="line">[Friday 25 February 2011] [04:34:33] &lt;pieterh&gt;        ok, I need to leave for a while bbl</div>
+<div class="line">[Friday 25 February 2011] [07:03:05] &lt;mikko&gt;  ian did well</div>
+<div class="line">[Friday 25 February 2011] [07:14:26] &lt;cremes&gt; pieterh, sustrik: i opened a ticket on this leak a few days back: <a class="reference external" href="https://github.com/zeromq/zeromq2/issues#issue/171">https://github.com/zeromq/zeromq2/issues#issue/171</a></div>
+<div class="line">[Friday 25 February 2011] [07:14:37] &lt;cremes&gt; example code is in a gist attached to the ticket</div>
+<div class="line">[Friday 25 February 2011] [07:14:47] &lt;cremes&gt; brb...</div>
+<div class="line">[Friday 25 February 2011] [07:25:48] &lt;sustrik&gt;        mikko: you&#8217;ve been on the coference?</div>
+<div class="line">[Friday 25 February 2011] [07:26:00] &lt;sustrik&gt;        there&#8217;s a lot of tweets about the lecture</div>
+<div class="line">[Friday 25 February 2011] [07:28:47] &lt;sustrik&gt;        hi ian</div>
+<div class="line">[Friday 25 February 2011] [07:28:55] &lt;sustrik&gt;        how did it go?</div>
+<div class="line">[Friday 25 February 2011] [07:30:12] &lt;mikko&gt;  sustrik: here at the moment</div>
+<div class="line">[Friday 25 February 2011] [07:30:28] &lt;sustrik&gt;        no haste</div>
+<div class="line">[Friday 25 February 2011] [07:30:28] &lt;ianbarber&gt;      hey! pretty good i think</div>
+<div class="line">[Friday 25 February 2011] [07:31:00] &lt;sustrik&gt;        people seem to be happy according to twitter</div>
+<div class="line">[Friday 25 February 2011] [07:31:09] &lt;sustrik&gt;        any feedback, questions?</div>
+<div class="line">[Friday 25 February 2011] [07:32:46] &lt;mikko&gt;  <a class="reference external" href="http://joind.in/talk/view/2523">http://joind.in/talk/view/2523</a></div>
+<div class="line">[Friday 25 February 2011] [07:32:54] &lt;mikko&gt;  there is some feedback already</div>
+<div class="line">[Friday 25 February 2011] [07:34:01] &lt;sustrik&gt;        nice :)</div>
+<div class="line">[Friday 25 February 2011] [07:36:27] &lt;ianbarber&gt;      good comments, had some questions about persistance, telehash, whether it could run on an arduino, some zero vs activemq stuff, and a bit on whether you can do pgm on ec2</div>
+<div class="line">[Friday 25 February 2011] [07:38:56] &lt;sustrik&gt;        good question</div>
+<div class="line">[Friday 25 February 2011] [07:39:04] &lt;sustrik&gt;        especially the last one :)</div>
+<div class="line">[Friday 25 February 2011] [07:39:13] &lt;sustrik&gt;        i have to admit i have no idea</div>
+<div class="line">[Friday 25 February 2011] [07:41:13] &lt;ianbarber&gt;      me either :) the next talk was about ec2 though, so that&#8217;s handy</div>
+<div class="line">[Friday 25 February 2011] [10:56:38] &lt;mikko&gt;  pieterh: here?</div>
+<div class="line">[Friday 25 February 2011] [10:56:44] &lt;pieterh&gt;        hi mikko, yes</div>
+<div class="line">[Friday 25 February 2011] [10:56:56] &lt;mikko&gt;  should i run apiall or apione in the docs builds?</div>
+<div class="line">[Friday 25 February 2011] [10:57:33] &lt;pieterh&gt;        apiall, that&#8217;s the main script</div>
+<div class="line">[Friday 25 February 2011] [10:58:04] &lt;pieterh&gt;        sorry...</div>
+<div class="line">[Friday 25 February 2011] [10:58:17] &lt;mikko&gt;  hmm</div>
+<div class="line">[Friday 25 February 2011] [10:58:24] &lt;mikko&gt;  ZMQ_DIR seems to have changed as well</div>
+<div class="line">[Friday 25 February 2011] [10:58:44] &lt;pieterh&gt;        I&#8217;ve made apiall do the whole job</div>
+<div class="line">[Friday 25 February 2011] [10:58:50] &lt;pieterh&gt;        there is no ZMQ_DIR any more</div>
+<div class="line">[Friday 25 February 2011] [10:59:11] &lt;pieterh&gt;        apione is to update a single version from some repository</div>
+<div class="line">[Friday 25 February 2011] [10:59:32] &lt;pieterh&gt;        does this make sense?</div>
+<div class="line">[Friday 25 February 2011] [11:00:30] &lt;mikko&gt;  yes, ill check the code to see what exactly is happening</div>
+<div class="line">[Friday 25 February 2011] [11:01:18] &lt;mikko&gt;  so it expects to find ../../zeromq2 ?</div>
+<div class="line">[Friday 25 February 2011] [11:01:20] &lt;pieterh&gt;        yes</div>
+<div class="line">[Friday 25 February 2011] [11:01:24] &lt;pieterh&gt;        and ../../zeromq2-1</div>
+<div class="line">[Friday 25 February 2011] [11:01:28] &lt;mikko&gt;  and ../../zeromq2-1</div>
+<div class="line">[Friday 25 February 2011] [11:01:43] &lt;mikko&gt;  ok</div>
+<div class="line">[Friday 25 February 2011] [11:01:43] &lt;pieterh&gt;        and eventually ../../zeromq2-0 when we make that</div>
+<div class="line">[Friday 25 February 2011] [11:01:44] &lt;pieterh&gt;        etc.</div>
+<div class="line">[Friday 25 February 2011] [11:02:02] &lt;pieterh&gt;        does that match how you use the repos on the build system?</div>
+<div class="line">[Friday 25 February 2011] [11:02:27] &lt;mikko&gt;  no, this far i&#8217;ve used branches</div>
+<div class="line">[Friday 25 February 2011] [11:02:40] &lt;mikko&gt;  i think i need to update all maint builds at some point</div>
+<div class="line">[Friday 25 February 2011] [11:02:43] &lt;pieterh&gt;        right, but the relative locations of ztools and zeromq2</div>
+<div class="line">[Friday 25 February 2011] [11:03:02] &lt;mikko&gt;  ah, thats different as well</div>
+<div class="line">[Friday 25 February 2011] [11:03:13] &lt;mikko&gt;  but i can make it to use the new structure</div>
+<div class="line">[Friday 25 February 2011] [11:03:45] &lt;pieterh&gt;        let me know if you need any changes to the apisite stuff, happy to do whatever&#8217;s needed</div>
+<div class="line">[Friday 25 February 2011] [11:03:49] &lt;mikko&gt;  i wonder if git submodules would make sense here</div>
+<div class="line">[Friday 25 February 2011] [11:04:02] &lt;mikko&gt;  they are a bit like svn externals</div>
+<div class="line">[Friday 25 February 2011] [11:05:07] &lt;pieterh&gt;        oh, that gets really complex real fast, mikko...</div>
+<div class="line">[Friday 25 February 2011] [11:05:25] &lt;ianbarber&gt;      i&#8217;ve heard they are often a bit of a pain</div>
+<div class="line">[Friday 25 February 2011] [11:05:45] &lt;mikko&gt;  i meant using submodules in this way:</div>
+<div class="line">[Friday 25 February 2011] [11:06:04] &lt;mikko&gt;  ztools/apisite/source/master -&gt; zeromq/zeromq2/master</div>
+<div class="line">[Friday 25 February 2011] [11:06:25] &lt;mikko&gt;  when you checkout ztools you can recursively take submodules if you want</div>
+<div class="line">[Friday 25 February 2011] [11:06:33] &lt;mikko&gt;  and if not then you can put the code into right place</div>
+<div class="line">[Friday 25 February 2011] [11:07:01] &lt;mikko&gt;  not sure how jenkins handles that</div>
+<div class="line">[Friday 25 February 2011] [11:07:21] &lt;mikko&gt;  because currently jenkins is configured to use zeromq/zeromq2 as source repo for docs build</div>
+<div class="line">[Friday 25 February 2011] [11:07:35] &lt;mikko&gt;  and it polls that repo for changes and builds if changes are detected</div>
+<div class="line">[Friday 25 February 2011] [11:08:29] &lt;mikko&gt;  i&#8217;ll look into this as soon i can get onto a bit faster internet</div>
+<div class="line">[Friday 25 February 2011] [11:08:35] &lt;mikko&gt;  conference wireless is a bit painful</div>
+<div class="line">[Friday 25 February 2011] [11:14:27] &lt;pieterh&gt;        hmm</div>
+<div class="line">[Friday 25 February 2011] [11:18:13] &lt;pieterh&gt;        ok, I&#8217;ve made a PHP version of the Guide, <a class="reference external" href="http://zguide.zeromq.org/php:all">http://zguide.zeromq.org/php:all</a></div>
+<div class="line">[Friday 25 February 2011] [11:23:40] &lt;sustrik&gt;        pieterh: some of the examples are in python and c++</div>
+<div class="line">[Friday 25 February 2011] [11:25:21] &lt;sustrik&gt;        and c</div>
 </div>
 </div>
 
