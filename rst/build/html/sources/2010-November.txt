@@ -1,6 +1,3 @@
-===============
-2010-November
-===============
 
 | [Monday 01 November 2010] [00:23:54] <xraid>	gandhijee: http://api.zeromq.org/zmq_msg_size.html -- what binding are you using ?
 | [Monday 01 November 2010] [00:26:53] <gandhijee>	xraid: C, i am using protocol buffers from google

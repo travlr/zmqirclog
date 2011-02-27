@@ -1,6 +1,3 @@
-===============
-2010-September
-===============
 
 | [Wednesday 01 September 2010] [02:01:04] <CIA-20>   zeromq2: 03Martin Sustrik 07master * raaa0761 10/ src/pair.cpp : pipe being attached to the PAIR socket during its termination process is immediately asked to terminate itself - http://bit.ly/bwIpo1
 | [Wednesday 01 September 2010] [02:01:04] <CIA-20>   zeromq2: 03Martin Sustrik 07master * rdb73c76 10/ src/pub.cpp : assert when pipe attaches to PUB socket in process of termination -- fixed - http://bit.ly/bCxg7v

@@ -1,6 +1,3 @@
-===============
-2010-March
-===============
 
 | [Tuesday 30 March 2010] [05:34:39] <vtl>    sustrik: hi! which error code non-blocking zmq_msg_recv() will return on m$ windows if there's no bytes to read?
 | [Tuesday 30 March 2010] [20:14:02] <davelee>    hi. So i've installed zeromq. There doesn't seem to be any docs about how to actually start the service ... ? 

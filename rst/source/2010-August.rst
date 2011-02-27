@@ -1,6 +1,3 @@
-===============
-2010-August
-===============
 
 | [Sunday 01 August 2010] [23:23:32] <indygreg>   I have a client-server model where a stateless server receives a request from a client. But instead of a single response message, I'd like the server to send multiple response messages. I'm seeking advice for the best way to do this in 0MQ.
 | [Sunday 01 August 2010] [23:24:01] <indygreg>   I tried ZMQ_REP/ZMQ_REP sockets with sending a multipart response message, but it appears the message parts are being buffered
