@@ -1,6 +1,3 @@
-===============
-2010-October
-===============
 
 | [Friday 01 October 2010] [00:20:07] <twittard>	?
 | [Friday 01 October 2010] [00:23:02] <guido_g>	what does that mean?

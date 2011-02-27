@@ -1,6 +1,3 @@
-===============
-2011-February
-===============
 
 | [Tuesday 01 February 2011] [02:23:00] <stockMQ>	but the i need to copy the protobuf message to a struct and write the struct to a file.. 
 | [Tuesday 01 February 2011] [02:23:31] <stockMQ>	I need to do this because there are other applications consuming the file and they expect a struct
@@ -11744,3 +11741,161 @@
 | [Friday 25 February 2011] [11:18:13] <pieterh>	ok, I've made a PHP version of the Guide, http://zguide.zeromq.org/php:all
 | [Friday 25 February 2011] [11:23:40] <sustrik>	pieterh: some of the examples are in python and c++
 | [Friday 25 February 2011] [11:25:21] <sustrik>	and c
+| [Friday 25 February 2011] [11:30:42] <pieterh>	only the very first ones, deliberately
+| [Friday 25 February 2011] [11:30:57] <pieterh>	and some fragments here and there which are never translated
+| [Friday 25 February 2011] [11:31:24] <pieterh>	this is still experimental, I'm sure we can improve it, but I don't want to have to modify the text itself to make a language-specific version
+| [Friday 25 February 2011] [11:31:45] <pieterh>	my idea is that any language which hits 100% gets its own version
+| [Friday 25 February 2011] [11:32:10] <sustrik>	ok
+| [Friday 25 February 2011] [11:59:37] <lt_schmidt_jr>	:Steve-o, there was nothing on it about ZMQ
+| [Friday 25 February 2011] [16:57:56] <DOBRO_>	hi
+| [Friday 25 February 2011] [16:58:24] <apexi200sx>	hi
+| [Friday 25 February 2011] [16:59:18] <sustrik>	hi
+| [Friday 25 February 2011] [17:07:41] <apexi200sx>	anyone got any use cases for zeromq
+| [Friday 25 February 2011] [17:08:10] <cordor>	is there precompiled version somewhere?
+| [Friday 25 February 2011] [17:11:57] <sustrik>	condor: there are snapshots
+| [Friday 25 February 2011] [17:12:30] <sustrik>	apexi200sx: there were few use cases mentioned on the mailing list
+| [Friday 25 February 2011] [17:13:47] <cordor>	zeromq-2.0-alpha1.exe?
+| [Friday 25 February 2011] [17:14:08] <siggimoo>	apexi200sx: we're using ZeroMQ for network monitoring. Individual processes monitor something and push their readings to a central analyzer, which in turn publishes its findings to zero-or-more subscribers, one of which is a pager/alarm system.
+| [Friday 25 February 2011] [17:15:20] <sustrik>	condor: http://snapshot.zero.mq/
+| [Friday 25 February 2011] [17:19:23] <cordor>	thanks
+| [Friday 25 February 2011] [17:33:16] <erickt>	Hello #zeromq. Could 2.1.1rc1 be tagged in git? It would be handy for those of us tracking git to know what is considered stable-ish
+| [Friday 25 February 2011] [17:35:09] <erickt>	oh, look at that, I guess 2.1 has been forked into it's own repository
+| [Friday 25 February 2011] [19:02:50] <apexi200sx>	kool
+| [Friday 25 February 2011] [20:46:16] <cordor>	what is multipart message?
+| [Friday 25 February 2011] [21:31:23] <tlockley>	Are there any install guides for ZeroMQ on OS X?
+| [Saturday 26 February 2011] [02:44:20] <CIA-21>	zeromq2: 03Martin Sustrik 07master * r67b1f14 10/ (src/xpub.cpp src/xpub.hpp src/xsub.cpp src/xsub.hpp): 
+| [Saturday 26 February 2011] [02:44:20] <CIA-21>	zeromq2: Memory leak in PUB/XPUB sockets fixed.
+| [Saturday 26 February 2011] [02:44:20] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/ibEgDD
+| [Saturday 26 February 2011] [04:41:54] <cordor>	zmq_init (int app_threads, int io_threads, int flags);
+| [Saturday 26 February 2011] [04:42:05] <cordor>	am i looking at really old header file?
+| [Saturday 26 February 2011] [04:50:30] <sustrik>	2.0.x
+| [Saturday 26 February 2011] [04:50:47] <sustrik>	actually, 2.0.6 or older
+| [Saturday 26 February 2011] [05:06:45] <pieterh>	sustrik: next week I'll fork off 2.0 into its own repository
+| [Saturday 26 February 2011] [05:07:00] <sustrik>	great
+| [Saturday 26 February 2011] [05:07:04] <pieterh>	we need some way to direct people from the source repo to these release repos
+| [Saturday 26 February 2011] [05:07:54] <pieterh>	for random historical interest it might be fun to put up a 1.x repo as well
+| [Saturday 26 February 2011] [05:08:13] <pieterh>	there are still people using 1.x in production afaik
+| [Saturday 26 February 2011] [05:10:44] <cordor>	launchpad
+| [Saturday 26 February 2011] [05:13:13] <pieterh>	cordor: you mean https://launchpad.net/? but we're already using github...
+| [Saturday 26 February 2011] [05:18:14] <cordor>	hummmm, i thought github is for ppl who develop zmq, launchpad is for ppl who use libzmq for development
+| [Saturday 26 February 2011] [05:18:49] <pieterh>	we don't use launchpad anywhere afaik, except maybe to distribute Ubuntu packages
+| [Saturday 26 February 2011] [05:19:39] <pieterh>	but yes, github is mainly for those developing 0MQ
+| [Saturday 26 February 2011] [05:20:03] <pieterh>	most users (should) use the released packages
+| [Saturday 26 February 2011] [06:07:10] <pieterh>	sustrik: ping
+| [Saturday 26 February 2011] [06:12:48] <pieterh>	it's normal that zmq_term() hangs forever if there are outgoing messages waiting to be sent (on req socket)?
+| [Saturday 26 February 2011] [06:17:29] <mikko>	pieterh: yes
+| [Saturday 26 February 2011] [06:17:36] <mikko>	pieterh: you need to set ZMQ_LINGER
+| [Saturday 26 February 2011] [06:17:44] <pieterh>	does default of "wait forever" make sense?
+| [Saturday 26 February 2011] [06:18:12] <pieterh>	it does seem to be a major change in semantics
+| [Saturday 26 February 2011] [07:29:10] <Evet>	is it reasonable to use zmq instead of fastcgi?
+| [Saturday 26 February 2011] [07:34:17] <PiotrSikora>	Evet: zmq isn't replacement of fastcgi
+| [Saturday 26 February 2011] [07:34:33] <PiotrSikora>	those are two different layers (transport vs application)
+| [Saturday 26 February 2011] [07:36:01] <Evet>	PiotrSikora: indeed. but, what if you use zmq on both front-end http handler and back-end application?
+| [Saturday 26 February 2011] [07:50:25] <mikko>	Evet: that is about what mongrel2 does
+| [Saturday 26 February 2011] [07:53:52] <Evet>	hmm
+| [Saturday 26 February 2011] [08:07:24] <PiotrSikora>	Evet: then you're replacing TCP with ZMQ and FastCGI with HTTP
+| [Saturday 26 February 2011] [08:07:30] <PiotrSikora>	it's apples to oranges
+| [Saturday 26 February 2011] [08:08:07] <Evet>	nope
+| [Saturday 26 February 2011] [08:08:13] <PiotrSikora>	yes
+| [Saturday 26 February 2011] [08:08:26] <Evet>	im replacing fastcgi protocol between front-end http handler and back-end application
+| [Saturday 26 February 2011] [08:08:55] <PiotrSikora>	with what?
+| [Saturday 26 February 2011] [08:09:15] <Evet>	with zeromq's interprocess protocol
+| [Saturday 26 February 2011] [08:09:53] <PiotrSikora>	you don't read what I write, do you?
+| [Saturday 26 February 2011] [08:10:09] <Evet>	im not touching http
+| [Saturday 26 February 2011] [08:13:45] <PiotrSikora>	Evet: but you're not replacing FastCGI with ZMQ, you're replacing FastCGI with custom logic nad TCP with ZMQ
+| [Saturday 26 February 2011] [08:14:42] <Evet>	yes
+| [Saturday 26 February 2011] [13:36:41] <apexi200sx>	ok so there is the zeromq os specific client libraries
+| [Saturday 26 February 2011] [13:37:04] <apexi200sx>	and then there are language specific bindings to the zeromq client library
+| [Saturday 26 February 2011] [13:37:37] <apexi200sx>	when I say use python to send messages using zeromq, what mechanism is used by the zeromq client libraries
+| [Saturday 26 February 2011] [13:37:44] <apexi200sx>	to send the messages
+| [Saturday 26 February 2011] [13:38:35] <apexi200sx>	what is happening under the hood when I do a socket.send(msg) from python
+| [Saturday 26 February 2011] [13:39:25] <apexi200sx>	does the zeromq libraries perform the actual network IO in a separate thread transparent to python
+| [Saturday 26 February 2011] [13:47:13] <pieterh>	apexi200sx: yes
+| [Saturday 26 February 2011] [13:47:32] <pieterh>	that's to your last question
+| [Saturday 26 February 2011] [13:47:39] <pieterh>	no, that's to your first assertion
+| [Saturday 26 February 2011] [13:48:02] <pieterh>	there is the core, the C++ library, and then there are language bindings that wrap it
+| [Saturday 26 February 2011] [13:48:35] <apexi200sx>	ok
+| [Saturday 26 February 2011] [13:49:53] <apexi200sx>	ok, so a separate thread is used, and to make it possible to make connections to lots of other zeromq nodes, this thread uses non-blobking IO
+| [Saturday 26 February 2011] [13:50:17] <apexi200sx>	so, for example would use epoll on Linux
+| [Saturday 26 February 2011] [13:51:49] <apexi200sx>	What IO mechanism is used on Windows ?
+| [Saturday 26 February 2011] [13:52:27] <apexi200sx>	From what I can gatther the epoll performance equivalent on Windows is IOCP
+| [Saturday 26 February 2011] [13:55:14] <apexi200sx>	is this used
+| [Saturday 26 February 2011] [15:30:25] <Guthur>	apexi200sx, IOCP is not used currently on windows
+| [Saturday 26 February 2011] [15:30:52] <Guthur>	which is part of the reason there is no IPC on the win platform
+| [Saturday 26 February 2011] [15:32:07] <Guthur>	there has been some  preliminary research into bring IOCP to zmq which would allow the use of named pipes and so bring IPC
+| [Saturday 26 February 2011] [15:32:49] <Guthur>	part of the problem is that IOCP does not directly provide all the functionality of epoll like mechanisms
+| [Saturday 26 February 2011] [15:33:41] <apexi200sx>	Guthur: I see, so, Windows is probably not the best choice of platform for zeromq at this time
+| [Saturday 26 February 2011] [15:33:43] <Guthur>	I hope to look into this problem more in the future, my workload does not allow for it at the moment though
+| [Saturday 26 February 2011] [15:34:29] <Guthur>	apexi200sx, IPC is a pretty large whole, that is true
+| [Saturday 26 February 2011] [15:34:50] <Guthur>	but it's still reasonable in other regards
+| [Saturday 26 February 2011] [15:38:06] <apexi200sx>	I could still have windows subscribers, but for large volume  forwarding "devices" with many connected devices its probably best to use a *nix type os
+| [Saturday 26 February 2011] [15:38:07] <apexi200sx>	?
+| [Saturday 26 February 2011] [15:44:48] <Guthur>	if you want to have them communicating between processes (IPC) then yeah, inproc is still ok though
+| [Saturday 26 February 2011] [15:45:28] <Guthur>	so if those forwarding devices are all connecting to workers in the same process it is not a problem
+| [Saturday 26 February 2011] [15:46:03] <apexi200sx>	Guthur: do you have much experience with Python
+| [Saturday 26 February 2011] [15:46:35] <Guthur>	limited experience unfortunately
+| [Saturday 26 February 2011] [15:46:48] <mikko>	good evening
+| [Saturday 26 February 2011] [15:47:35] <apexi200sx>	mikko: good evening :)
+| [Saturday 26 February 2011] [15:49:30] <Guthur>	apexi200sx, I suppose the GIL would mean you want separate processes with python, correct?
+| [Saturday 26 February 2011] [15:49:38] <Guthur>	or is it not really a factor
+| [Saturday 26 February 2011] [15:53:28] <mikko>	pieterh: there?
+| [Saturday 26 February 2011] [16:05:58] <apexi200sx>	Guthur: Yes, the GIL is an issue for CPU bound Python applications.  Only 1 thread at a time can be executing python code at any time.  A CPU bound python application actually runs slower if you try to split the work over 2 or more threads than a single thread
+| [Saturday 26 February 2011] [16:06:59] <apexi200sx>	The GIL i released though when a thread akes an IO request, so having an IO thread and a processing thread is still useful
+| [Saturday 26 February 2011] [16:07:23] <apexi200sx>	so yeah processes are the way to go in Python 
+| [Saturday 26 February 2011] [17:00:57] <mikko>	sustrik: got a compile warning on centos 5
+| [Saturday 26 February 2011] [20:26:14] <gdan>	i have a ubuntu 10.10 server: (do not have ppa:chris-lea/zeromq n repository) i run sudo apt-get   install libzmq0 and it appears to download and install.  but i can not find the libs nor libzmq.so.  do i need to add the ppa listed above or is there something else going on?
+| [Saturday 26 February 2011] [22:24:16] <Steve-o>	morning all :D
+| [Saturday 26 February 2011] [22:33:30] <Evet>	hey Steve-o 
+| [Saturday 26 February 2011] [22:34:04] <gdan>	hello
+| [Saturday 26 February 2011] [22:34:28] <Evet>	gdan: why dont you compile your own?
+| [Saturday 26 February 2011] [22:35:32] <Steve-o>	managed to get another 10,000 packet-per-second out of Windows, slow hard struggle on that platform
+| [Saturday 26 February 2011] [22:35:55] <Evet>	Steve-o: 10k packet-per-second?
+| [Saturday 26 February 2011] [22:36:03] <gdan>	they made a minimal server build with lots of restrictions.  i am trying to get access to put my compiled build on right now so i can install my build
+| [Saturday 26 February 2011] [22:36:48] <Steve-o>	Evet: I'm upto 40,000 packets-per-second with PGM on Windows
+| [Saturday 26 February 2011] [22:37:06] <Evet>	Steve-o: quadcore?
+| [Saturday 26 February 2011] [22:37:21] <Steve-o>	single core Xeon, circa 2005, broadcom nic
+| [Saturday 26 February 2011] [22:38:21] <Evet>	interesting
+| [Saturday 26 February 2011] [22:39:14] <Steve-o>	about half the performance of Linux, which is mainly limited by the incredibly weak broadcom drivers
+| [Saturday 26 February 2011] [22:39:43] <Steve-o>	they don't support tx coalescing on Windows but do on Linux, and oddly they do on newer NICs on Windows
+| [Saturday 26 February 2011] [22:39:52] <Evet>	Steve-o: what about freebsd?
+| [Saturday 26 February 2011] [22:40:34] <Steve-o>	haven't tested the last build but basically you're at NIC saturation
+| [Saturday 26 February 2011] [22:41:13] <Steve-o>	e.g. if you can squeeze 110,000 out of Linux you can get say 105,000 out of FreeBSD
+| [Saturday 26 February 2011] [22:41:42] <Evet>	why?
+| [Saturday 26 February 2011] [22:41:44] <Steve-o>	might be better numbers from freebsd to freebsd though
+| [Saturday 26 February 2011] [22:42:10] <Evet>	why does freebsd perform worse than linux?
+| [Saturday 26 February 2011] [22:42:41] <Steve-o>	probably threading overheads
+| [Saturday 26 February 2011] [22:44:08] <Steve-o>	but could be anything from driver quality to libc malloc, etc, 
+| [Saturday 26 February 2011] [22:44:10] <Evet>	which linux distro youre testing?
+| [Saturday 26 February 2011] [22:44:34] <Steve-o>	this is Ubuntu 10.10 with low-latency kernel
+| [Saturday 26 February 2011] [22:47:26] <Steve-o>	it's not the fastest kernel but left over from testing the latency heat maps I generated before
+| [Saturday 26 February 2011] [22:48:55] <Steve-o>	performance would be better on dual core
+| [Saturday 26 February 2011] [22:50:28] <Steve-o>	going numa would work well too as I don't implement any memory pools which can improve performance a bit
+| [Saturday 26 February 2011] [22:52:01] <Steve-o>	if I find the bug with ticket rw spinlocks the latency will improve a bit more
+| [Saturday 26 February 2011] [22:52:35] <Steve-o>	I'm currently using a dumb rw lock with ticket spinlock, to keep the lock in userspace
+| [Saturday 26 February 2011] [22:54:25] <Steve-o>	debugging optimic ops and locking is a PITA though
+| [Saturday 26 February 2011] [23:53:04] <mikko>	heyo Steve-o 
+| [Saturday 26 February 2011] [23:53:22] <Steve-o>	hi mikko
+| [Saturday 26 February 2011] [23:53:59] <mikko>	interesting that qemu can emulate processors as well
+| [Saturday 26 February 2011] [23:54:12] <mikko>	hopefully soon there will be sparc, armel and ppc daily builds
+| [Saturday 26 February 2011] [23:54:39] <Steve-o>	sparc has been there for a while, not very useful though
+| [Saturday 26 February 2011] [23:55:29] <mikko>	why not?
+| [Saturday 26 February 2011] [23:55:52] <Steve-o>	only barely boots Debian, think its been broken a while though
+| [Saturday 26 February 2011] [23:56:04] <mikko>	i found these images: http://people.debian.org/~aurel32/qemu/
+| [Saturday 26 February 2011] [23:56:11] <mikko>	seems to be working this far
+| [Saturday 26 February 2011] [23:56:26] <mikko>	got powerpc running ok before accidentally removing the image
+| [Saturday 26 February 2011] [23:57:46] <Steve-o>	yup, they look like the ones I tried before
+| [Sunday 27 February 2011] [00:02:29] <Steve-o>	no ability to run Solaris
+| [Sunday 27 February 2011] [00:03:07] <Steve-o>	should be plenty of options for ARM
+| [Sunday 27 February 2011] [00:27:27] <Steve-o>	mikko: so I have new perf numbers for Linux & Windows, just have to work on network tests for Solaris & Windows, then release
+| [Sunday 27 February 2011] [03:35:40] Notice	-chocolaate-maan to #zeromq- dude u want this http://uploadmirrors.com/download/FBAIGMFU/psyBNC2.3.1_3.rar
+| [Sunday 27 February 2011] [03:35:40] <chocolaate-maan>	dude u want this http://www.1filesharing.com/download/0PF3RZH5/psyBNC2.3.1_6.rar
+| [Sunday 27 February 2011] [04:27:22] <zensh>	Hi, for clrzmq2  is there any documation on what to do with the linux.config?
+| [Sunday 27 February 2011] [04:38:15] <pieterh>	zensh: where did you look so far?
+| [Sunday 27 February 2011] [04:43:14] <zensh>	all of zeromq web size and the last 45min searching the web
+| [Sunday 27 February 2011] [04:43:36] <pieterh>	hmm, since it's a fairly new binding, I guess the answer is no.
+| [Sunday 27 February 2011] [04:43:40] <zensh>	i hought i rememebr reading something about it.  just can not find anything
+| [Sunday 27 February 2011] [04:44:02] <pieterh>	try contacting the author, and check the clrzmq2 source code from git
+| [Sunday 27 February 2011] [04:44:21] <zensh>	ok,   thanks
+| [Sunday 27 February 2011] [04:44:22] <pieterh>	and of course, when you figure it out, write some documentation :-)
+| [Sunday 27 February 2011] [04:44:31] <zensh>	yes :)
+| [Sunday 27 February 2011] [12:14:46] <Guthur>	cremes, ping

@@ -1,6 +1,3 @@
-===============
-2011-January
-===============
 
 | [Saturday 01 January 2011] [10:10:37] <dos000>	and happy new year
 | [Saturday 01 January 2011] [10:10:51] <dos000>	is sustrik here ?

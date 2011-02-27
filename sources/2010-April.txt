@@ -1,6 +1,3 @@
-===============
-2010-April
-===============
 
 | [Thursday 01 April 2010] [04:02:21] <sustrik>   mikko: hi
 | [Thursday 01 April 2010] [04:03:24] <mikko> hi
