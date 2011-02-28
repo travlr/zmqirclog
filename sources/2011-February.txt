@@ -11902,3 +11902,453 @@
 | [Sunday 27 February 2011] [04:44:22] <pieterh>	and of course, when you figure it out, write some documentation :-)
 | [Sunday 27 February 2011] [04:44:31] <zensh>	yes :)
 | [Sunday 27 February 2011] [12:14:46] <Guthur>	cremes, ping
+| [Sunday 27 February 2011] [12:50:49] <cremes>	Guthur: pong
+| [Sunday 27 February 2011] [13:19:41] <Guthur>	cremes: I was just wondering about the 0MQ reactor you mentioned on the mailing list 
+| [Sunday 27 February 2011] [13:20:17] <Guthur>	I hadn't heard of it before and was wondering what it was
+| [Sunday 27 February 2011] [13:20:49] <Guthur>	and what it's main use case is 
+| [Sunday 27 February 2011] [13:20:54] <cremes>	Guthur: are you familiar with the reactor pattern?
+| [Sunday 27 February 2011] [13:24:28] <cremes>	anyway, use-case is for handling hundreds or thousands of sockets
+| [Sunday 27 February 2011] [13:24:45] <cremes>	usually when someone designs a program to deal with lots of connections, they'll do a thread per socket
+| [Sunday 27 February 2011] [13:25:09] <cremes>	that doesn't scale very well; as you add more threads the computer spends all of its time doing context switching
+| [Sunday 27 February 2011] [13:25:13] <cremes>	from thread to thread
+| [Sunday 27 February 2011] [13:25:31] <cremes>	with a reactor, you register the sockets for read/write events using zmq_poll()
+| [Sunday 27 February 2011] [13:25:52] <cremes>	when an event arrives for the socket, it is delivered to the appropriate event callback method
+| [Sunday 27 February 2011] [13:26:06] <cremes>	e.g. on_read(socket, messages) or on_write(socket)
+| [Sunday 27 February 2011] [13:26:38] <cremes>	this let's you scale up the number of sockets in use to thousands or tens of thousands without worrying about threads, mutexes
+| [Sunday 27 February 2011] [13:26:44] <cremes>	race conditions, deadlocks, etc
+| [Sunday 27 February 2011] [13:27:08] <cremes>	the downside is that you end up doing a lot of callback-style programming which can look kind of messy
+| [Sunday 27 February 2011] [13:27:17] <cremes>	since everything has to be handled asynchronously
+| [Sunday 27 February 2011] [13:27:42] <cremes>	take a look at node.js, eventmachine, zmqmachine, etc for examples; google is your friend on this one
+| [Sunday 27 February 2011] [13:27:51] <cremes>	does that make sense? any other questions?
+| [Sunday 27 February 2011] [13:36:50] <Guthur>	ok cheers, 
+| [Sunday 27 February 2011] [13:37:12] <Guthur>	that makes sense
+| [Sunday 27 February 2011] [13:38:32] <Guthur>	on the back burner I have an idea to implement an FIX engine that will make use of 0MQ, and this reactor stuff sounded vaguely relevant
+| [Sunday 27 February 2011] [13:41:22] <mikko>	Guthur: have you tought about real-time excel?
+| [Sunday 27 February 2011] [13:41:33] <mikko>	i'm interested in knowing how well something like that works in reality
+| [Sunday 27 February 2011] [13:41:35] <cremes>	yeah, i've written my trading system using reactors for everything
+| [Sunday 27 February 2011] [13:42:00] <cremes>	they aren't always the best tool for the job, but they fit my use-case almost perfectly
+| [Sunday 27 February 2011] [13:42:53] <Guthur>	mikko, I hadn't consider that at all tbh
+| [Sunday 27 February 2011] [13:43:14] <mikko>	it was discussed here ages ago
+| [Sunday 27 February 2011] [13:43:22] <mikko>	excel and zeromq integration
+| [Sunday 27 February 2011] [13:43:37] <mikko>	seems like an interesting concept but i have no idea how well that works in reality
+| [Sunday 27 February 2011] [13:43:52] <mikko>	like if you update the data cells do the graphs made out of those cells update as well?
+| [Sunday 27 February 2011] [13:44:00] <Guthur>	excel is a favourite tool of traders
+| [Sunday 27 February 2011] [13:44:03] <mikko>	because that would be pretty neat for traders i guess
+| [Sunday 27 February 2011] [13:44:13] <Guthur>	and if you make it into a live blotter they will love it
+| [Sunday 27 February 2011] [13:44:20] <Guthur>	I think there is plugins that provide that
+| [Sunday 27 February 2011] [13:44:50] <Guthur>	mikko, definitely an interesting idea
+| [Sunday 27 February 2011] [13:44:51] <mikko>	you could probably write a small c# thingie that uses zeromq 
+| [Sunday 27 February 2011] [13:44:56] <mikko>	and subscribers to topics
+| [Sunday 27 February 2011] [13:45:19] <mikko>	http://msdn.microsoft.com/en-us/library/aa140061%28v=office.10%29.aspx
+| [Sunday 27 February 2011] [13:53:52] <Guthur>	nice link, cheers mikko 
+| [Sunday 27 February 2011] [13:54:42] <Guthur>	i've actually done some COM interop stuff before from C#, a while ago
+| [Sunday 27 February 2011] [13:54:57] <Guthur>	not the most pleasant experience I must admit
+| [Sunday 27 February 2011] [14:00:13] <zedas>	sustrik: hey so i caught my mongrel2 in the 100% CPU from zmq_poll situation.
+| [Sunday 27 February 2011] [14:00:53] <zedas>	sustrik: and i've attached to it with gdb.  it looks like zmq_poll returns a weird condition where it sets errno = EINTR, but also returns a number of active sockets
+| [Sunday 27 February 2011] [14:01:05] <zedas>	so not sure what's causing it inside zmq_poll yet
+| [Sunday 27 February 2011] [14:11:54] <zedas>	sustrik: so it looks like there's a constant EINTR condition that doesn't get cleared.
+| [Sunday 27 February 2011] [14:14:59] <zedas>	and it could be because of rtsignal use, so now to find out how to disable that
+| [Sunday 27 February 2011] [14:25:47] <sustrik>	re
+| [Sunday 27 February 2011] [14:27:27] <Ergo^>	hello, im looking for alternative to celery (in python) i was thinking zeromq would fit my needs nicely -> i basicly want my webapp to gather data and then i want to have the data processed asynchronously  later
+| [Sunday 27 February 2011] [14:28:57] <sustrik>	zedas: any idea what's the signal?
+| [Sunday 27 February 2011] [14:29:45] <sustrik>	presumably something used by tha application on top of 0mq?
+| [Sunday 27 February 2011] [14:29:46] <Ergo^>	what recipie in zeromq guide should fit my needs best ?
+| [Sunday 27 February 2011] [14:30:49] <sustrik>	Ergo: "hold data" for how long?
+| [Sunday 27 February 2011] [14:31:10] <sustrik>	it it's for extended period of time, maybe saving it to DB would make more sense
+| [Sunday 27 February 2011] [14:31:28] <Ergo^>	the data can be discarded as soon as processed
+| [Sunday 27 February 2011] [14:31:34] <Ergo^>	and the faster its processed the better
+| [Sunday 27 February 2011] [14:31:45] <sustrik>	then you need req/rep
+| [Sunday 27 February 2011] [14:32:11] <sustrik>	i assume you need a confirmation that particulat message was processed
+| [Sunday 27 February 2011] [14:33:11] <Ergo^>	sustrik, maybe i should explain what i need with no technical details for tech
+| [Sunday 27 February 2011] [14:33:33] <sustrik>	zedas: if that's the case i would say it's the application's responsibility to handle the signal after 0mq returns EINTR
+| [Sunday 27 February 2011] [14:33:46] <Ergo^>	i want my webapp to listen for POST requests - every post request needs to end up in database
+| [Sunday 27 February 2011] [14:34:11] <sustrik>	zedas: or mask the signals in such a way as not to be delivered to the thread doing zmq_poll
+| [Sunday 27 February 2011] [14:34:28] <Ergo^>	but its a lot more important for my case is to actually receive the data very fast - it can be queued for db insertion 
+| [Sunday 27 February 2011] [14:34:58] <sustrik>	Ergo: no need for ack, right?
+| [Sunday 27 February 2011] [14:35:11] <sustrik>	then, possibly push/pull would do
+| [Sunday 27 February 2011] [14:35:19] <Ergo^>	ideally i should have, ack but i can do without it for now
+| [Sunday 27 February 2011] [14:35:47] <Ergo^>	and db insertion takes time, i dont care if its insterted in 0.005s after i got it or after 5s - as long as im logging errors fast with webapp
+| [Sunday 27 February 2011] [14:39:38] <Ergo^>	sustrik, https://github.com/imatix/zguide/blob/master/examples/Python/taskwork.py
+| [Sunday 27 February 2011] [14:39:44] <Ergo^>	i want to implement this amirite?
+| [Sunday 27 February 2011] [14:44:02] <zedas>	sustrik: i think it's teh damn SIGPIPE
+| [Sunday 27 February 2011] [14:44:07] <zedas>	god i hate that signal.
+| [Sunday 27 February 2011] [14:46:59] <cremes>	Ergo^: probably
+| [Sunday 27 February 2011] [14:47:21] <Ergo^>	thanks guys :-)
+| [Sunday 27 February 2011] [14:47:23] <Ergo^>	working on it
+| [Sunday 27 February 2011] [14:47:46] <cremes>	Ergo^: make sure you read the guide if you haven't yet; it covers several common use-cases
+| [Sunday 27 February 2011] [14:48:41] <sustrik>	hm, SIGPIPE
+| [Sunday 27 February 2011] [14:48:50] <sustrik>	zedas: is that Linux?
+| [Sunday 27 February 2011] [14:51:11] 	 * sustrik wonders whether SIGPIPE can be caused be writing to a socket closed by the other party
+| [Sunday 27 February 2011] [14:51:43] <zedas>	sustrik: yes
+| [Sunday 27 February 2011] [14:52:14] <zedas>	to both questions...but i'm doing IGN on the SIGPIPE, so no idea.  is zeromq doing something different with SIGPIPE?
+| [Sunday 27 February 2011] [14:52:35] <sustrik>	no, it's doing nothing with signals
+| [Sunday 27 February 2011] [14:52:51] <sustrik>	however, if SIGPIPE is caused by 0mq itself
+| [Sunday 27 February 2011] [14:53:05] <sustrik>	we should treat that as 0mq bug and fix it
+| [Sunday 27 February 2011] [14:53:15] <zedas>	could it be happening in a zmq thread?
+| [Sunday 27 February 2011] [14:53:34] <zedas>	i actually suspect it's something in my code not dealing withthe signal right.
+| [Sunday 27 February 2011] [14:53:35] <sustrik>	i can imagine following scenario:
+| [Sunday 27 February 2011] [14:54:01] <sustrik>	there's POLLOUT condition on underlying TCP socket
+| [Sunday 27 February 2011] [14:54:16] <sustrik>	0mq decides to write to that socket
+| [Sunday 27 February 2011] [14:54:26] <sustrik>	however, in the mean time the peer disconnects
+| [Sunday 27 February 2011] [14:54:40] <sustrik>	so actual write produces SIGPIPE
+| [Sunday 27 February 2011] [14:55:18] <sustrik>	hm, it's not obvious how to solve that kind of thing
+| [Sunday 27 February 2011] [14:56:44] <Ergo^>	https://github.com/imatix/zguide/raw/master/examples/Python/taskwork.py - im trying to run this test example on my localhost, but nothing gets printed at all - using ubuntu with latest zeromq built - should i expect something to be wrong with the lib i built ?
+| [Sunday 27 February 2011] [14:58:29] <sustrik>	Ergo: it looks like just a part of the example
+| [Sunday 27 February 2011] [14:58:42] <sustrik>	zedas: checking Stevens' book
+| [Sunday 27 February 2011] [14:59:44] <Ergo^>	well     # Simple progress indicator for the viewer
+| [Sunday 27 February 2011] [14:59:44] <Ergo^>	    sys.stdout.write('.')
+| [Sunday 27 February 2011] [14:59:52] <Ergo^>	looks like it should output something
+| [Sunday 27 February 2011] [15:01:10] <sustrik>	ergo: you need a process that binds to the ports you are connecting to
+| [Sunday 27 February 2011] [15:02:24] <sustrik>	zedas: Stevens says SIGPIPE is raised by the *second* attempt to write to a disconnected socket
+| [Sunday 27 February 2011] [15:03:42] <sustrik>	it's not entirely clear how it works; i have to do some more reading
+| [Sunday 27 February 2011] [15:18:14] <skm>	i have a queue of work on 3 servers (900+ peices) that 5+ clients can handle (1 peice of work at a time) - im trying to think of the best way to split it up
+| [Sunday 27 February 2011] [15:18:29] <skm>	my thought, servers use push clients use pull
+| [Sunday 27 February 2011] [15:18:41] <mikko>	Ergo^: you connect both of the sockets
+| [Sunday 27 February 2011] [15:18:45] <skm>	but when a client connects it doesnt use pull right away it first asks is there any work pending
+| [Sunday 27 February 2011] [15:18:53] <mikko>	Ergo^: where are you connceting to?
+| [Sunday 27 February 2011] [15:18:56] <skm>	(incase a server has a whole heap of work backed up)
+| [Sunday 27 February 2011] [15:19:48] <cremes>	skm: makes sense so far; you'll probably want to use a few different socket patterns for each
+| [Sunday 27 February 2011] [15:19:53] <mikko>	skm: when you say one piece of work at a time do you mean one per worker or one globally?
+| [Sunday 27 February 2011] [15:19:57] <cremes>	piece of logic you need to solve
+| [Sunday 27 February 2011] [15:19:58] <mikko>	skm: i suspect the former
+| [Sunday 27 February 2011] [15:20:03] <Ergo^>	mikko, im just trying some examples so far -  i think ill start rebuilding example from youtube introductory video
+| [Sunday 27 February 2011] [15:20:30] <skm>	one per worker
+| [Sunday 27 February 2011] [15:20:42] <mikko>	Ergo^: have you got another process bound to 127.0.0.1:5557 ?
+| [Sunday 27 February 2011] [15:21:22] <cremes>	skm: in that case you don't need to build a pipeline which is what push/pull are for
+| [Sunday 27 February 2011] [15:21:47] <cremes>	skm: you could use xreq/xrep; it will auto-load balance across all workers
+| [Sunday 27 February 2011] [15:23:14] <skm>	ahhk - 3 servers > 1 broker (xreq/xrep) > N worker clients
+| [Sunday 27 February 2011] [15:23:16] <skm>	?
+| [Sunday 27 February 2011] [15:23:38] <Ergo^>	mikko, actually i may have something running on this port now that i think of it
+| [Sunday 27 February 2011] [15:23:40] <Ergo^>	p2p :P
+| [Sunday 27 February 2011] [15:26:47] <cremes>	skm: sure, the "broker" is the QUEUE device
+| [Sunday 27 February 2011] [15:27:05] <cremes>	i'm assuming these servers need to receive the results of the client workers computation?
+| [Sunday 27 February 2011] [15:28:21] <skm>	yeah they need to be aware the workers are done so they can do some finalise work
+| [Sunday 27 February 2011] [15:28:49] <mikko>	Ergo^: the program in the paste is expected to do nothing unless the server sends something
+| [Sunday 27 February 2011] [15:29:02] <mikko>	Ergo^: so you need to have server program bound to the port it connects to
+| [Sunday 27 February 2011] [15:29:48] <cremes>	skm: ok, then req/rep is the right pattern
+| [Sunday 27 February 2011] [15:29:56] <Ergo^>	mikko,  im a bit confused now, i thought that sender sends something and receiver just picks it up
+| [Sunday 27 February 2011] [15:30:41] <Ergo^>	but now that i read the source - it should act as forwarder from one port to another ?
+| [Sunday 27 February 2011] [15:31:00] <mikko>	Ergo^: you thought that the file was self-contained?
+| [Sunday 27 February 2011] [15:31:09] <mikko>	that is the worker part
+| [Sunday 27 February 2011] [15:31:33] <mikko>	it receives work from 'receiver' socket and returns results in 'sender' socket
+| [Sunday 27 February 2011] [15:43:55] <Ergo^>	hmm... im looking at ZMq movie and there is UPSTREAM and DOWNSTREAM there
+| [Sunday 27 February 2011] [15:44:12] <Ergo^>	i assume its not PULL and PUSH ? 
+| [Sunday 27 February 2011] [15:44:15] <Ergo^>	now*
+| [Sunday 27 February 2011] [15:49:31] <mikko>	renamed
+| [Sunday 27 February 2011] [15:49:39] <Ergo^>	right
+| [Sunday 27 February 2011] [15:49:42] <mikko>	PUSH and PULL are newer and clearer names
+| [Sunday 27 February 2011] [15:50:08] <Ergo^>	i recreated the setup from the introductory movie and nothing gets printed :/ (let me make a pste)
+| [Sunday 27 February 2011] [15:51:53] <Ergo^>	http://pastebin.com/rUjVW3U5 - this is my listener , http://pastebin.com/Hzj6rgjF - interactive shell
+| [Sunday 27 February 2011] [17:11:55] <ianbarber>	Ergo^:  your receiver needs to do bind() instead of connect()
+| [Sunday 27 February 2011] [17:12:11] <Ergo^>	ianbarber, indeed it needs to bind
+| [Sunday 27 February 2011] [17:12:26] <Ergo^>	examples in github are incorrect
+| [Sunday 27 February 2011] [17:12:43] <ianbarber>	pull requests 
+| [Sunday 27 February 2011] [17:12:46] <ianbarber>	:)
+| [Sunday 27 February 2011] [17:13:17] <ianbarber>	depends where you're copying it from though - there is nothing implicit in the socket that says what exactly needs to bind, just when using TCP *someone* has to bind the socket
+| [Sunday 27 February 2011] [17:13:35] <ianbarber>	in the pastebin example you could bind with your interactive shell and connect with your listener
+| [Sunday 27 February 2011] [17:13:37] <ianbarber>	would still work
+| [Monday 28 February 2011] [04:13:53] <pieterh>	sustrik: you there?
+| [Monday 28 February 2011] [04:21:52] <sustrik>	pieterh: hi
+| [Monday 28 February 2011] [04:22:30] <pieterh>	I have this feeling as we roll out 2.1.x people will complain about zmq_term
+| [Monday 28 February 2011] [04:23:11] <sustrik>	we can switch LINGER default to 0
+| [Monday 28 February 2011] [04:23:27] <pieterh>	that would make sense IMO
+| [Monday 28 February 2011] [04:23:42] <pieterh>	or if not 0, then 1 second or whatever
+| [Monday 28 February 2011] [04:23:42] <sustrik>	but that would mean that such a simple program as:
+| [Monday 28 February 2011] [04:23:56] <pieterh>	neither 0 nor infinity are sensible defaults IMO
+| [Monday 28 February 2011] [04:23:56] <sustrik>	send();close();term();exit()
+| [Monday 28 February 2011] [04:24:03] <sustrik>	would not send anything
+| [Monday 28 February 2011] [04:24:24] <pieterh>	sensible defaults work for simple programs
+| [Monday 28 February 2011] [04:24:38] <sustrik>	anything larger than 0 and less than infinity does not make sense imo
+| [Monday 28 February 2011] [04:24:52] <sustrik>	such a default is a trap
+| [Monday 28 February 2011] [04:25:02] <sustrik>	it works in low-load envs (test env)
+| [Monday 28 February 2011] [04:25:13] <sustrik>	and break when high load hits
+| [Monday 28 February 2011] [04:25:35] <sustrik>	you can try some experimenting with throughput perf test
+| [Monday 28 February 2011] [04:25:35] <pieterh>	possibly, but if you make it hard for people to write simple code, they won't
+| [Monday 28 February 2011] [04:25:43] <sustrik>	if you set linger to say 10
+| [Monday 28 February 2011] [04:25:56] <pieterh>	and it's easy to make 0MQ explain wtf is going on
+| [Monday 28 February 2011] [04:25:56] <sustrik>	it works initially
+| [Monday 28 February 2011] [04:26:06] <sustrik>	unless you send a lot of messages
+| [Monday 28 February 2011] [04:26:09] <pieterh>	e.g. if linker is 1 second, it works, and if there is still unsent data at 1 second, it can say something
+| [Monday 28 February 2011] [04:26:13] <sustrik>	then it breaks mysteriously
+| [Monday 28 February 2011] [04:26:25] <pieterh>	mystery is entirely a design choice here
+| [Monday 28 February 2011] [04:26:29] <pieterh>	point is,
+| [Monday 28 February 2011] [04:26:37] <pieterh>	you're going to get a lot of complaints IMO
+| [Monday 28 February 2011] [04:26:38] <sustrik>	i'd be rather explicit than mysterious
+| [Monday 28 February 2011] [04:26:44] <sustrik>	let's see
+| [Monday 28 February 2011] [04:26:48] <pieterh>	right now it's extremely mysterious
+| [Monday 28 February 2011] [04:27:01] <sustrik>	well, it blocks
+| [Monday 28 February 2011] [04:27:09] <sustrik>	what's mysterious about that?
+| [Monday 28 February 2011] [04:27:09] <pieterh>	i don't even understand the reply you sent to Christian
+| [Monday 28 February 2011] [04:27:14] <sustrik>	deterministic behaviour
+| [Monday 28 February 2011] [04:27:37] <sustrik>	zmq_term() -> ETERM -> zmq_close()
+| [Monday 28 February 2011] [04:27:38] <pieterh>	deterministically useless behaviour
+| [Monday 28 February 2011] [04:27:52] <sustrik>	better than heisenbugs
+| [Monday 28 February 2011] [04:27:57] <pieterh>	erlang binding works around it
+| [Monday 28 February 2011] [04:28:07] <pieterh>	this is not going to end nicely...
+| [Monday 28 February 2011] [04:28:48] <sustrik>	what's the thing with erlang?
+| [Monday 28 February 2011] [04:28:57] <pieterh>	you didn't follow?
+| [Monday 28 February 2011] [04:29:05] <sustrik>	haven't seen anything
+| [Monday 28 February 2011] [04:29:10] <pieterh>	it tracks open sockets and secretly closes them all _before_ calling zmq_term
+| [Monday 28 February 2011] [04:29:12] <sustrik>	where's the discussion?
+| [Monday 28 February 2011] [04:29:23] <pieterh>	because an infinitely blocking system call is so insane
+| [Monday 28 February 2011] [04:29:33] <pieterh>	utterly... pathological
+| [Monday 28 February 2011] [04:30:04] <sustrik>	where's the discussion?
+| [Monday 28 February 2011] [04:30:56] <pieterh>	can't find it immediately
+| [Monday 28 February 2011] [04:31:00] <pieterh>	email is not a database
+| [Monday 28 February 2011] [04:31:18] <pieterh>	as I've pointed out many times, it's useless for finding back stuff
+| [Monday 28 February 2011] [04:31:54] <pieterh>	search for a thread titled "zmq_term() blocks in 2.1"
+| [Monday 28 February 2011] [04:32:08] <pieterh>	"For simplicity, the port driver doesn't handle any threads itself. And it never
+| [Monday 28 February 2011] [04:32:08] <pieterh>	actually calls a zmq library function that could block indefinitely."
+| [Monday 28 February 2011] [04:32:12] <sustrik>	zeromq-dev?
+| [Monday 28 February 2011] [04:32:15] <pieterh>	from chris<csrl@gmx.com>
+| [Monday 28 February 2011] [04:32:21] <pieterh>	yes, of course it's on zeromq-dev
+| [Monday 28 February 2011] [04:32:27] <pieterh>	and you were on that thread
+| [Monday 28 February 2011] [04:34:11] <sustrik>	aha, found it
+| [Monday 28 February 2011] [04:34:17] <sustrik>	that's not about LINGER
+| [Monday 28 February 2011] [04:34:25] <sustrik>	that's about necessity to close the sockets
+| [Monday 28 February 2011] [04:34:37] <sustrik>	same problem you've reported a long time ago
+| [Monday 28 February 2011] [04:35:13] <pieterh>	you mentioned Linger, I just pointed out that zmq_term blocks
+| [Monday 28 February 2011] [04:35:27] <pieterh>	and that people will hit this more and more
+| [Monday 28 February 2011] [04:36:31] <sustrik>	ok, there are several issue involved:
+| [Monday 28 February 2011] [04:36:36] <sustrik>	1. necessity to close sockets
+| [Monday 28 February 2011] [04:36:53] <sustrik>	it would be nice to be able to avoid that
+| [Monday 28 February 2011] [04:37:00] <sustrik>	however, i have no idea of how to do that
+| [Monday 28 February 2011] [04:37:12] <sustrik>	2. linger
+| [Monday 28 February 2011] [04:37:15] <pieterh>	no other classic OS API requires that kind of thing
+| [Monday 28 February 2011] [04:37:15] <sustrik>	3. Ctrl+C
+| [Monday 28 February 2011] [04:37:31] <sustrik>	this one was solved in one go with reaper thread
+| [Monday 28 February 2011] [04:37:46] <sustrik>	you are free to send a patch
+| [Monday 28 February 2011] [04:37:50] <private_meta>	uhm... which example set should I refer to when having multiple clients connect to the same port (in case of tcp), when I need to know which client sends the message and which client to send the message to, because Handling Multiple Sockets only seems to work with dedicated ports, or am I mistaken?
+| [Monday 28 February 2011] [04:38:22] <pieterh>	sustrik: "send a patch" is telling me to jump in the lake, you know that
+| [Monday 28 February 2011] [04:38:37] <sustrik>	well, i have no idea how to avoid 1.
+| [Monday 28 February 2011] [04:38:42] <pieterh>	I'm raising a concern that the "stable 2.1" release will annoy many people and break a lot of code
+| [Monday 28 February 2011] [04:38:43] <sustrik>	so, someone else have to
+| [Monday 28 February 2011] [04:38:50] <pieterh>	this makes it very hard for me to release that with any kind of confidence
+| [Monday 28 February 2011] [04:39:33] <pieterh>	except with a large disclaimer, which may be sufficient
+| [Monday 28 February 2011] [04:39:36] <pieterh>	but...
+| [Monday 28 February 2011] [04:39:41] <pieterh>	not when the explanation is confused
+| [Monday 28 February 2011] [04:40:01] <sustrik>	what should i say? i have no idea how to fix it
+| [Monday 28 February 2011] [04:40:03] <sustrik>	that's it
+| [Monday 28 February 2011] [04:40:30] <pieterh>	sustrik: look, I can document the need to close sockets
+| [Monday 28 February 2011] [04:40:43] <pieterh>	I can document the need to set LINGER even in the most trivial apps
+| [Monday 28 February 2011] [04:41:01] <pieterh>	that's just "oh, it's not so shiny and elegant anymore"
+| [Monday 28 February 2011] [04:41:19] <pieterh>	but if you tell people to call zmq_term before closing sockets, I'm kind of confused
+| [Monday 28 February 2011] [04:41:37] <sustrik>	let's not mix the issues
+| [Monday 28 February 2011] [04:41:43] <sustrik>	are you  concerned about 1 or 2?
+| [Monday 28 February 2011] [04:41:56] <pieterh>	this is your breakdown, it's not mine
+| [Monday 28 February 2011] [04:42:08] <sustrik>	are you concerned about both?
+| [Monday 28 February 2011] [04:42:10] <pieterh>	my concern is just "zmq_term blocks in 2.1 and I don't know why"
+| [Monday 28 February 2011] [04:42:15] <sustrik>	ok
+| [Monday 28 February 2011] [04:42:20] <sustrik>	1. i can't solve it
+| [Monday 28 February 2011] [04:42:24] <pieterh>	it's relatively easy to solve in a simple threaded app
+| [Monday 28 February 2011] [04:42:25] <sustrik>	you are free to try
+| [Monday 28 February 2011] [04:42:32] <pieterh>	1. close sockets, 2. set linger = 0, terminate
+| [Monday 28 February 2011] [04:42:34] <sustrik>	2. linger is a problem
+| [Monday 28 February 2011] [04:42:48] <pieterh>	but if this starts to go wrong in multithreaded apps, people will _refuse_ to use 0MQ...
+| [Monday 28 February 2011] [04:43:02] <pieterh>	it's a class 1 fatal "no go" problem that will stop it going into production
+| [Monday 28 February 2011] [04:43:13] <sustrik>	setting linger to some default value
+| [Monday 28 February 2011] [04:43:13] <pieterh>	"sorry, we can't solve it" may be one answer
+| [Monday 28 February 2011] [04:43:18] <pieterh>	but it's a really crappy answer
+| [Monday 28 February 2011] [04:43:22] <sustrik>	means that even a single message won't pass
+| [Monday 28 February 2011] [04:43:43] <sustrik>	given it's sufficiently long and/or network is sufficiently slow
+| [Monday 28 February 2011] [04:43:53] <pieterh>	like I said, there are easy ways to make that work
+| [Monday 28 February 2011] [04:43:57] <sustrik>	?
+| [Monday 28 February 2011] [04:44:02] <sustrik>	sure, do so
+| [Monday 28 February 2011] [04:44:12] <pieterh>	a. use a sensible default linger value
+| [Monday 28 February 2011] [04:44:25] <pieterh>	b. if the app still has unsent messages after that, issue a loud warning
+| [Monday 28 February 2011] [04:44:53] <sustrik>	hm, returning an error from zmq_term()?
+| [Monday 28 February 2011] [04:44:56] <sustrik>	that may work
+| [Monday 28 February 2011] [04:45:05] <pieterh>	no, a loud warning
+| [Monday 28 February 2011] [04:45:12] <sustrik>	what's that?
+| [Monday 28 February 2011] [04:45:21] <pieterh>	printf ("123 messages not sent, please raise ZMQ_LINGER on socket")
+| [Monday 28 February 2011] [04:45:26] <pieterh>	etc.
+| [Monday 28 February 2011] [04:45:36] <pieterh>	something that gets literally printed and sent to logs
+| [Monday 28 February 2011] [04:45:43] <pieterh>	or sent on sys://log if that ever goes live
+| [Monday 28 February 2011] [04:45:45] <sustrik>	that works only with console is available
+| [Monday 28 February 2011] [04:45:50] <sustrik>	problem on windows
+| [Monday 28 February 2011] [04:45:56] <pieterh>	so, people _need_ consoles on production systems
+| [Monday 28 February 2011] [04:46:05] <sustrik>	but the error would kind of make sense
+| [Monday 28 February 2011] [04:46:11] <sustrik>	let me think about it
+| [Monday 28 February 2011] [04:46:12] <pieterh>	returning an error?
+| [Monday 28 February 2011] [04:46:20] <sustrik>	rc = zmq_term()
+| [Monday 28 February 2011] [04:46:22] <pieterh>	maybe but it just makes the caller responsible again
+| [Monday 28 February 2011] [04:46:31] <pieterh>	yes, it would at least be consistent
+| [Monday 28 February 2011] [04:46:32] <sustrik>	if (rc == EPENDINGMESSAGES)...
+| [Monday 28 February 2011] [04:46:35] <pieterh>	yes
+| [Monday 28 February 2011] [04:46:45] <pieterh>	and then set LINGER to 1 second by default please
+| [Monday 28 February 2011] [04:47:02] <sustrik>	ok, i'm going to think about it
+| [Monday 28 February 2011] [04:47:05] <pieterh>	this simplifies simple cases
+| [Monday 28 February 2011] [04:47:22] <sustrik>	the close() problem remains though
+| [Monday 28 February 2011] [04:47:23] <pieterh>	as for the deadlock issue, it just needs accurate documentation
+| [Monday 28 February 2011] [04:47:27] <sustrik>	ok
+| [Monday 28 February 2011] [04:47:39] <pieterh>	accurate, i.e. precisely what do people have to do to avoid it
+| [Monday 28 February 2011] [04:48:43] <pieterh>	this change to linger would be very good, at least it'll distinguish the deadlock from infinite linger
+| [Monday 28 February 2011] [04:48:58] <pieterh>	that's a headache today, not knowing what's actually going wrong
+| [Monday 28 February 2011] [04:49:33] <sustrik>	it won't distinguish the two cases :(
+| [Monday 28 February 2011] [04:49:51] <sustrik>	it will just timeout the term() after a while
+| [Monday 28 February 2011] [04:49:56] <sustrik>	and allow to restart it
+| [Monday 28 February 2011] [04:50:02] <pieterh>	you would also timeout the deadlock?
+| [Monday 28 February 2011] [04:50:08] <sustrik>	yes
+| [Monday 28 February 2011] [04:50:12] <pieterh>	...
+| [Monday 28 February 2011] [04:50:21] <pieterh>	but in the deadlock case there are zero messages to send
+| [Monday 28 February 2011] [04:50:32] <sustrik>	the deadlock is caused by the handshake
+| [Monday 28 February 2011] [04:51:05] <sustrik>	"tell me whether there are more you've queued"
+| [Monday 28 February 2011] [04:51:15] <sustrik>	"ok, there are no more messages"
+| [Monday 28 February 2011] [04:51:44] <sustrik>	the application thread's part of the handshake is executed in zmq_close() call
+| [Monday 28 February 2011] [04:51:46] <pieterh>	right
+| [Monday 28 February 2011] [04:52:32] <pieterh>	well, we know how many sockets are not responding, right?
+| [Monday 28 February 2011] [04:52:50] <sustrik>	yes
+| [Monday 28 February 2011] [04:52:59] <pieterh>	that's valuable information to report
+| [Monday 28 February 2011] [04:53:09] <sustrik>	yup
+| [Monday 28 February 2011] [04:53:46] <pieterh>	rc = number of unclosed sockets, maybe
+| [Monday 28 February 2011] [04:54:06] <sustrik>	possibly
+| [Monday 28 February 2011] [04:55:00] <pieterh>	you can't use EPENDINGMESSAGES unless you know there are actually messages waiting
+| [Monday 28 February 2011] [04:55:07] <pieterh>	something like ETIMEOUT
+| [Monday 28 February 2011] [04:55:41] <pieterh>	if we can make this work sensibly, IMO 2.1 is ready for the big stage
+| [Monday 28 February 2011] [04:56:58] <pieterh>	coffee, brb
+| [Monday 28 February 2011] [04:57:46] <sustrik>	to be ready for big stage we need ubscription forwarding :|
+| [Monday 28 February 2011] [05:03:11] <pieterh>	uhm, no, you just don't need to break every app already running...
+| [Monday 28 February 2011] [05:04:10] <sustrik>	well, it's actually a bugfix
+| [Monday 28 February 2011] [05:04:21] <sustrik>	people complained that messages are dropped on exit
+| [Monday 28 February 2011] [05:04:26] <sustrik>	namely, mato
+| [Monday 28 February 2011] [05:05:57] <pieterh>	well, there's always someone complaining... :-)
+| [Monday 28 February 2011] [05:06:24] <pieterh>	my radar mainly focuses on the dev list
+| [Monday 28 February 2011] [05:06:57] <sustrik>	it have been a common complaint back then
+| [Monday 28 February 2011] [05:06:58] <pieterh>	LINGER per socket is also kind of a strange choice
+| [Monday 28 February 2011] [05:07:10] <sustrik>	it's POSIX
+| [Monday 28 February 2011] [05:07:13] <pieterh>	yes, this was a necessary change, no argument with that
+| [Monday 28 February 2011] [05:07:20] <pieterh>	zmq_term is not POSIX :-)
+| [Monday 28 February 2011] [05:07:36] <sustrik>	zmq_term = OS shutdown
+| [Monday 28 February 2011] [05:07:41] <pieterh>	nope
+| [Monday 28 February 2011] [05:07:43] <sustrik>	yes
+| [Monday 28 February 2011] [05:08:01] <pieterh>	sigh
+| [Monday 28 February 2011] [05:08:10] <pieterh>	then why am I calling "Shutdown OS" in my apps?
+| [Monday 28 February 2011] [05:08:27] <pieterh>	0MQ is _not_ a kernel module
+| [Monday 28 February 2011] [05:08:36] <pieterh>	sorry, this is 2011 and we're on version 2.x.x
+| [Monday 28 February 2011] [05:08:39] <pieterh>	please remain in the present
+| [Monday 28 February 2011] [05:08:49] <Steve-o>	lol
+| [Monday 28 February 2011] [05:08:57] <pieterh>	you may have a vision of where 0MQ will go
+| [Monday 28 February 2011] [05:08:57] <sustrik>	zmq_term is *equivalent* to OS shutdown
+| [Monday 28 February 2011] [05:09:05] <sustrik>	not OS shutdown itself
+| [Monday 28 February 2011] [05:09:06] <pieterh>	but we are discussing today's code and today's design
+| [Monday 28 February 2011] [05:09:18] <pieterh>	again, I do not call OS shutdown in my apps
+| [Monday 28 February 2011] [05:09:27] <sustrik>	it does the same thing the TCP does with tx buffers on OS shutdown
+| [Monday 28 February 2011] [05:09:45] <pieterh>	please, this analogy is not helpful
+| [Monday 28 February 2011] [05:09:50] <pieterh>	it really is not helpful
+| [Monday 28 February 2011] [05:10:05] <sustrik>	it's what it does
+| [Monday 28 February 2011] [05:10:06] <pieterh>	"Sorry, sir, your app is deadlocking because zmq_term is like OS shutdown"
+| [Monday 28 February 2011] [05:10:07] <sustrik>	shrug
+| [Monday 28 February 2011] [05:10:20] <sustrik>	no point in this discussion
+| [Monday 28 February 2011] [05:10:29] <pieterh>	well, it'll keep coming back
+| [Monday 28 February 2011] [05:10:33] <sustrik>	i'll have a look at the timout for zmq_term()
+| [Monday 28 February 2011] [05:10:44] <pieterh>	you won't be able to make it work IMO
+| [Monday 28 February 2011] [05:10:52] <pieterh>	because you have LINGER per socket not per context
+| [Monday 28 February 2011] [05:11:11] <sustrik>	they are two different timouts
+| [Monday 28 February 2011] [05:11:32] <pieterh>	how would you modify the term timeout?
+| [Monday 28 February 2011] [05:11:35] <pieterh>	as a user, I mean
+| [Monday 28 February 2011] [05:11:47] <sustrik>	zmq_term_wiat (void *ctx, int timeout);
+| [Monday 28 February 2011] [05:12:22] <pieterh>	so revert the old method to not blocking, and introduce a new one?
+| [Monday 28 February 2011] [05:12:43] <sustrik>	introduce a new one
+| [Monday 28 February 2011] [05:12:50] <pieterh>	+1, gets my vote
+| [Monday 28 February 2011] [05:13:00] <pieterh>	it is totally explicit and leaves 2.0 semantics unchanged
+| [Monday 28 February 2011] [05:13:06] <sustrik>	reverting zmq_term() to immediate would be consistent with 2.0
+| [Monday 28 February 2011] [05:13:10] <pieterh>	ack
+| [Monday 28 February 2011] [05:13:16] <sustrik>	however, 2.1 users may complain
+| [Monday 28 February 2011] [05:13:22] <sustrik>	so it's up to concensus
+| [Monday 28 February 2011] [05:13:43] <pieterh>	HEY EVERYONE!!!
+| [Monday 28 February 2011] [05:14:07] <pieterh>	please ack/nack sustrik's suggestion here...
+| [Monday 28 February 2011] [05:14:40] <sustrik>	something like that
+| [Monday 28 February 2011] [05:14:44] <sustrik>	on mailing list
+| [Monday 28 February 2011] [05:15:01] <pieterh>	yes
+| [Monday 28 February 2011] [05:15:20] <pieterh>	it's a major topic, would you raise it then?
+| [Monday 28 February 2011] [05:16:06] <sustrik>	i have to think about the whole thing first
+| [Monday 28 February 2011] [05:17:07] <pieterh>	ok
+| [Monday 28 February 2011] [06:14:41] <private_meta>	hmm
+| [Monday 28 February 2011] [06:14:44] <private_meta>	uhm... which example set should I refer to when having multiple clients connect to the same port (in case of tcp), when I need to know which client sends the message and which client to send the message to, because Handling Multiple Sockets only seems to work with dedicated ports, or am I mistaken?
+| [Monday 28 February 2011] [06:15:55] <pieterh>	private_meta: Chapter 3 of the Guide
+| [Monday 28 February 2011] [06:16:10] <pieterh>	various routing based on using XREP / ROUTER socket and identities of peers
+| [Monday 28 February 2011] [07:14:47] <stimpie>	Does anyone have measurements or explanations on performance on a connection per thread/cpu versus a singele connection per system with a dispatcher to each thread?
+| [Monday 28 February 2011] [07:18:40] <ianbarber>	threads vs events? that's a big argument :) the http://www.kegel.com/c10k.html c10k page is a good overview, not 0MQ specific
+| [Monday 28 February 2011] [07:25:25] <stimpie>	thats an interesting read but not exactly what I'am thinking about, I have a system with x cores and x threads, messages from other systems need to arrive at those threads. I can create a socket for each thread or create 1 socket from where messages are dispatched to each thread. 
+| [Monday 28 February 2011] [07:26:21] <stimpie>	With one socket each physical devices has only one address and other systems do not have to take the number of threads per system into account
+| [Monday 28 February 2011] [07:27:38] <stimpie>	Each thread a socket appears faster to me but requires more 'global' knowledge, (messages should be duplicated across physical machines) 
+| [Monday 28 February 2011] [07:29:54] <ianbarber>	yeah, i see
+| [Monday 28 February 2011] [07:30:09] <pieterh>	stimpie: it's not really an either/or choice IMO
+| [Monday 28 February 2011] [07:30:25] <pieterh>	on the one hand you need a frontend able to poll your 10K sockets
+| [Monday 28 February 2011] [07:30:34] <pieterh>	but you usually also need a bunch of threads to do the real work
+| [Monday 28 February 2011] [07:30:50] <pieterh>	however it is pathological to create one thread per socket
+| [Monday 28 February 2011] [07:31:03] <pieterh>	see asyncsrv example in Chapter 3 of the guide
+| [Monday 28 February 2011] [07:32:39] <ianbarber>	pieterh: i think he's asking about one thread per core basically, with one tcp socket per thread, or a device on tcp with inproc/ipc to the other threads
+| [Monday 28 February 2011] [07:32:55] <stimpie>	ianbarber, those should have been my words ;-)
+| [Monday 28 February 2011] [07:33:10] <pieterh>	well, you want one thread per core for threads that do real work
+| [Monday 28 February 2011] [07:33:16] <ianbarber>	definitely
+| [Monday 28 February 2011] [07:33:26] <pieterh>	however, that does not map to TCP connections
+| [Monday 28 February 2011] [07:34:02] <pieterh>	not "one tcp socket per thread", nope
+| [Monday 28 February 2011] [07:34:18] <pieterh>	that would be an anti-pattern in 0MQ 
+| [Monday 28 February 2011] [07:34:51] 	 * pieterh assumes by that you meant 'one TCP connection to a client'
+| [Monday 28 February 2011] [07:35:24] <ianbarber>	i think, tbh, that a forwarder type device would be fine, they're pretty quick. If you did want to have a TCP listener per core, then you could have them check in to a name service, and have your clients query the name service 
+| [Monday 28 February 2011] [07:36:17] <ianbarber>	though I would have each of those TCP listeners be a separate process
+| [Monday 28 February 2011] [07:37:36] <stimpie>	So you think the overhead of the forwarde (dispatcher) would not be a negative impact?
+| [Monday 28 February 2011] [07:38:28] <stimpie>	Best way to find out is to benchmark I guess 
+| [Monday 28 February 2011] [07:39:09] <pieterh>	stimpie: best way is to benchmark, try any device and see how it performs
+| [Monday 28 February 2011] [07:39:25] <ianbarber>	yeah
+| [Monday 28 February 2011] [07:40:37] <stimpie>	I will do, thanks for your thoughts 
+| [Monday 28 February 2011] [07:40:43] <pieterh>	stimpie: the pattern I'd recommend is:
+| [Monday 28 February 2011] [07:40:52] <pieterh>	n clients, connecting as usual to a queue
+| [Monday 28 February 2011] [07:41:02] <pieterh>	m workers, where m is much smaller than n
+| [Monday 28 February 2011] [07:41:10] <pieterh>	queue talking over inproc to workers
+| [Monday 28 February 2011] [07:41:30] <pieterh>	total number of threads on the server is m + 1
+| [Monday 28 February 2011] [07:41:59] <pieterh>	if m is too large, you will lose time in context switching
+| [Monday 28 February 2011] [07:42:26] <pieterh>	sorry, total number of app threads on server is m + 1, there is also at least 1 I/O thread
+| [Monday 28 February 2011] [07:42:51] <pieterh>	so optimal value for m is (total cores on server box) - 2
+| [Monday 28 February 2011] [07:43:13] <pieterh>	assuming you can dedicate a whole multicore box to your server app
+| [Monday 28 February 2011] [07:43:28] <pieterh>	this would be for CPU-limited workers, it's different if they are I/O bound
+| [Monday 28 February 2011] [07:45:12] <ianbarber>	make sure to benchmark with as relastic conditions etc. as you can - it can be easy to benchmark with (say) much smaller messages than you'd normally use, and see a different performance character
+| [Monday 28 February 2011] [07:59:05] <Guthur>	pieterh: The new projects page seems a little similar to the labs page, imo
+| [Monday 28 February 2011] [07:59:22] <pieterh>	Guthur: yes, it's meant to overlap
+| [Monday 28 February 2011] [07:59:45] <pieterh>	this projects page is a temporary place to collect community projects
+| [Monday 28 February 2011] [08:00:08] <pieterh>	that is, projects we consider part of the 0MQ community and want to expose to potential contributors
+| [Monday 28 February 2011] [08:00:23] <Guthur>	ok, and then what is labs?
+| [Monday 28 February 2011] [08:00:25] <pieterh>	the Labs page goes a bit further and also doesn't really expose the core projects
+| [Monday 28 February 2011] [08:00:50] <pieterh>	so my idea with the projects business is to show these on the main community page
+| [Monday 28 February 2011] [08:00:58] <pieterh>	similarly as we do for the bindings
+| [Monday 28 February 2011] [08:01:15] <Guthur>	ok, so I suppose they should have a reasonable level of maturity
+| [Monday 28 February 2011] [08:01:44] <pieterh>	not necessarily but they should be tight extensions of 0MQ
+| [Monday 28 February 2011] [08:01:48] <pieterh>	rather than apps which use it
+| [Monday 28 February 2011] [08:01:59] <pieterh>	e.g. I'd consider zguide a project but not mongrel2
+| [Monday 28 February 2011] [08:02:25] <Guthur>	oh ok, that clears it up
+| [Monday 28 February 2011] [08:02:39] <pieterh>	ideally all these projects would gravitate towards the same workflow, core community of contributors, infrastructure, etc.
+| [Monday 28 February 2011] [08:02:44] <pieterh>	like the bindings
+| [Monday 28 February 2011] [08:03:31] <pieterh>	I had this vision of making it into a dashboard like this: http://extensions.wdeditor.com/
+| [Monday 28 February 2011] [08:03:39] <pieterh>	that's based on my design
+| [Monday 28 February 2011] [08:03:57] <pieterh>	but it'd have to be red/black/white of course :-)
+| [Monday 28 February 2011] [08:04:45] <Guthur>	of course, hehe
+| [Monday 28 February 2011] [08:05:36] <pieterh>	so you come to the community site and see a whole bunch of projects, each with a name/person/graphic
+| [Monday 28 February 2011] [08:05:51] <pieterh>	I guess we're moving towards that very slowly
+| [Monday 28 February 2011] [08:06:10] <Guthur>	so for an example, where would a implementation of the FIXT 1.1 (Transport Independent) protocol using ZeroMQ as the transport lie
+| [Monday 28 February 2011] [08:06:30] <pieterh>	it's really up to the owner
+| [Monday 28 February 2011] [08:06:50] <pieterh>	it's a choice: move it into the 0MQ community or keep it separate
+| [Monday 28 February 2011] [08:07:21] <Guthur>	ok
+| [Monday 28 February 2011] [08:07:39] <pieterh>	if, for example, there were several such bridges, it would be great to see them as 0MQ projects
+| [Monday 28 February 2011] [08:08:48] <pieterh>	let me give another example
+| [Monday 28 February 2011] [08:09:02] <pieterh>	I'm working on Whaleshark (http://zero.mq/ws)
+| [Monday 28 February 2011] [08:09:13] <pieterh>	which depends on a bunch of other 0MQ layers
+| [Monday 28 February 2011] [08:09:19] <pieterh>	like a name service, security service, etc.
+| [Monday 28 February 2011] [08:09:36] <pieterh>	it could be fun to also include FIXT support
+| [Monday 28 February 2011] [08:09:59] <pieterh>	so if the FIXT layer was aimed at 0MQ apps like Whaleshark, it's a natural 0MQ project
+| [Monday 28 February 2011] [08:10:11] <pieterh>	but if it's aimed at FIXT apps, it's not
+| [Monday 28 February 2011] [08:10:12] <Guthur>	FIXT seemed like a nice place to start with FIX and 0MQ, due to its transport independent spec
+| [Monday 28 February 2011] [08:10:56] <Guthur>	ok i understand
+| [Monday 28 February 2011] [08:11:16] <pieterh>	acid test would be, do you discuss project X here and on zeromq-dev, or on some other forum
+| [Monday 28 February 2011] [08:14:49] <Guthur>	would it be possible to offer commercial support for such projects via a corporate entity, similar to how imatix is mentioned for whaleshark?
+| [Monday 28 February 2011] [08:14:55] <pieterh>	of course
+| [Monday 28 February 2011] [08:15:06] <pieterh>	that's why there's a 'website' column
+| [Monday 28 February 2011] [08:15:29] <pieterh>	you'd probably not be able to use the zeromq.org domain without iMatix agreeing
+| [Monday 28 February 2011] [08:16:26] <Guthur>	that's reasonable
+| [Monday 28 February 2011] [08:46:25] <sustrik>	pieterh: it seems there a problem with the mailing list
+| [Monday 28 February 2011] [08:46:29] <sustrik>	i've sent an email
+| [Monday 28 February 2011] [08:46:35] <sustrik>	it haven't apperared
+| [Monday 28 February 2011] [08:46:44] <pieterh>	hmm, ok, let me restart the server...
+| [Monday 28 February 2011] [08:48:09] <pieterh>	rebooting, it'll take a minute or so
+| [Monday 28 February 2011] [08:48:30] <pieterh>	there's a service (spam filter afair) which gets confused now and then
+| [Monday 28 February 2011] [08:59:24] <pieterh>	sustrik: didn't help, I'm contacting Ewen
