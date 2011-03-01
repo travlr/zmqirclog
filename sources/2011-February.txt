@@ -12352,3 +12352,589 @@
 | [Monday 28 February 2011] [08:48:09] <pieterh>	rebooting, it'll take a minute or so
 | [Monday 28 February 2011] [08:48:30] <pieterh>	there's a service (spam filter afair) which gets confused now and then
 | [Monday 28 February 2011] [08:59:24] <pieterh>	sustrik: didn't help, I'm contacting Ewen
+| [Monday 28 February 2011] [09:33:45] <sustrik>	thx
+| [Monday 28 February 2011] [09:41:35] <Seta00>	I need an example that uses polling on a sub socket :/
+| [Monday 28 February 2011] [09:42:17] <pieterh>	Seta00: poll works the same on all socket types
+| [Monday 28 February 2011] [09:42:38] <Seta00>	well then I need an example that uses polling
+| [Monday 28 February 2011] [09:42:49] <pieterh>	there are lots in the Guide
+| [Monday 28 February 2011] [09:43:09] <Seta00>	kk I'll check
+| [Monday 28 February 2011] [09:53:01] <pieterh>	sustrik: I've put a note on the community page, this sucks, sorry
+| [Monday 28 February 2011] [10:55:56] <travlr>	pieterh: just had to mention how much i appreciate the work you did with the online reference... much much nicer to work with... very thorough too! thanks.
+| [Monday 28 February 2011] [10:56:12] <pieterh>	travlr: you mean the new API site?
+| [Monday 28 February 2011] [10:56:19] <travlr>	yes
+| [Monday 28 February 2011] [10:56:27] <pieterh>	np :-) it was fun to make
+| [Monday 28 February 2011] [10:56:45] <travlr>	cool. thanks again for all
+| [Monday 28 February 2011] [10:56:48] <pieterh>	we needed to cover older/newer versions anyhow
+| [Monday 28 February 2011] [10:57:14] <travlr>	yes, very smooth and easy to work with
+| [Monday 28 February 2011] [11:51:33] <private_meta>	Does the router in a router-to-dealer-relationship know when a dealer connects, even if it didn't send a message yet? Meaning, can I as a user of the router know that?
+| [Monday 28 February 2011] [11:53:45] <pieterh>	private_meta: not when it connects, but if it sends a message, yes
+| [Monday 28 February 2011] [11:54:21] <pieterh>	any router-to-anything depends on the anything sending something to the router first
+| [Monday 28 February 2011] [11:54:32] <private_meta>	kk...
+| [Monday 28 February 2011] [11:55:50] <private_meta>	pieterh: so that no messages are lost in a router-dealer-relationship the router must wait for the first message to arrive
+| [Monday 28 February 2011] [11:56:00] <private_meta>	well, sounds logical now that i write it
+| [Monday 28 February 2011] [11:56:01] <pieterh>	yes
+| [Monday 28 February 2011] [11:56:10] <pieterh>	the router needs to know an address to send to
+| [Monday 28 February 2011] [11:56:18] <pieterh>	that only comes with an input message
+| [Monday 28 February 2011] [11:56:30] <pieterh>	unless (a) you pass the identities some other way
+| [Monday 28 February 2011] [11:56:37] <pieterh>	or (b) you use durable sockets
+| [Monday 28 February 2011] [11:56:50] <private_meta>	I'm in need of logon messages anyway
+| [Monday 28 February 2011] [11:57:19] <pieterh>	and router is like pub: if there's no recipient, the message is not queued, it's dropped immediately
+| [Monday 28 February 2011] [11:58:33] <private_meta>	pieterh: I seem to have overseen that in the docs, but what happens to a dealer trying to connect to a non-existant router, and how does the dealer know?
+| [Monday 28 February 2011] [11:59:05] <pieterh>	it doesn't know unless it expects a reply and doesn't get one
+| [Monday 28 February 2011] [11:59:24] <pieterh>	actually I'm writing this up now for Ch4
+| [Monday 28 February 2011] [12:00:24] <private_meta>	so there is no such thing as "unknown host" or other error messages that I could get?
+| [Monday 28 February 2011] [12:00:33] <pieterh>	nope
+| [Monday 28 February 2011] [12:01:09] <pieterh>	note that tcp:// is a disconnected protocol... the host might be away at lunch and back in 2 hours, 0MQ will wait
+| [Monday 28 February 2011] [12:01:25] <pieterh>	inproc:// will tell you if it can't connect
+| [Monday 28 February 2011] [12:01:28] <private_meta>	Did you do that so you have an abstraction of any protocols?
+| [Monday 28 February 2011] [12:01:34] <private_meta>	oh
+| [Monday 28 February 2011] [12:01:45] <pieterh>	it's just more useful like that, for most apps
+| [Monday 28 February 2011] [12:02:22] <private_meta>	I'm not quite sure how to implement a timeout to wait for that :/
+| [Monday 28 February 2011] [12:02:34] <pieterh>	it's documented... hang on...
+| [Monday 28 February 2011] [12:02:58] <pieterh>	ah, sorry, not yet pushed :-)
+| [Monday 28 February 2011] [12:03:06] <private_meta>	huh=
+| [Monday 28 February 2011] [12:03:08] <private_meta>	*huh?
+| [Monday 28 February 2011] [12:03:12] <pieterh>	if you can wait a little while...
+| [Monday 28 February 2011] [12:03:24] <private_meta>	define little while
+| [Monday 28 February 2011] [12:03:33] 	 * pieterh goes back to writing
+| [Monday 28 February 2011] [12:04:04] <private_meta>	for some people, a week might be a little while, for others a little while is an hour :D
+| [Monday 28 February 2011] [12:05:49] <private_meta>	As far as I figured, you use durable sockets where you have a fixed name whenever you reconnect (more or less), but also the router discards messages that are sent to a target it doesn't know. So if a router sends a message to a durable socket that is not yet connected, are these messages also discarded?
+| [Monday 28 February 2011] [12:06:25] <pieterh>	durable sockets cannot be "not yet connected"
+| [Monday 28 February 2011] [12:06:40] <pieterh>	a durable socket may be "temporarily away for lunch"
+| [Monday 28 February 2011] [12:07:02] <pieterh>	i've no idea what a router socket does with durable sockets but I imagine it queues messages for them
+| [Monday 28 February 2011] [12:07:39] <pieterh>	that would be consistent with PUB, but it's not documented afaik
+| [Monday 28 February 2011] [12:07:43] <private_meta>	kk, so a computer where the durable socket is located on which, let's say, reboots, is "away for lunch" for the router?
+| [Monday 28 February 2011] [12:07:54] <private_meta>	-which
+| [Monday 28 February 2011] [12:07:58] <pieterh>	the whole business of "XREP discards and does not queue messages it can't route" is not documented
+| [Monday 28 February 2011] [12:08:07] <private_meta>	kk
+| [Monday 28 February 2011] [12:24:52] <pieterh>	private_meta: ok, http://zguide.zeromq.org/page:all#toc67
+| [Monday 28 February 2011] [12:28:29] <private_meta>	sweet
+| [Monday 28 February 2011] [12:29:45] <private_meta>	pieterh: So the initial timeout is oc pretty much the first heartbeat not coming through I assume?
+| [Monday 28 February 2011] [12:30:05] <pieterh>	it's not quite that simple
+| [Monday 28 February 2011] [12:30:27] <private_meta>	how so?
+| [Monday 28 February 2011] [12:30:28] <pieterh>	you need a clock for the poll, should be the lowest heartbeat interval 
+| [Monday 28 February 2011] [12:30:39] <pieterh>	if you use the same heartbeat for all peers, that value
+| [Monday 28 February 2011] [12:30:54] <pieterh>	then you need to allow for 2-3 lost heartbeats before declaring a 'disconnected peer'
+| [Monday 28 February 2011] [12:31:44] <private_meta>	Yes, seems like a good thing to allow for single lost messages.
+| [Monday 28 February 2011] [12:32:47] <private_meta>	Uhm... a "lost heartbeat" would be, in your case, a certain heartbeat not receiving a reply, wouldn't it? Isn't 0mq build so, if the client decides to connect one day, all those "lost" heartbeats would be sent?
+| [Monday 28 February 2011] [12:32:56] <private_meta>	*built
+| [Monday 28 February 2011] [12:33:01] <pieterh>	heartbeats don't get replies
+| [Monday 28 February 2011] [12:33:14] <pieterh>	they are asynchronous in both directions
+| [Monday 28 February 2011] [12:33:16] <private_meta>	ah yeah
+| [Monday 28 February 2011] [12:33:19] <private_meta>	sorry, true
+| [Monday 28 February 2011] [12:33:19] <pieterh>	please read the code and the docs...
+| [Monday 28 February 2011] [12:33:29] <private_meta>	I will
+| [Monday 28 February 2011] [12:33:38] <private_meta>	sorry for asking prematurely :)
+| [Monday 28 February 2011] [12:36:34] <pieterh>	np, if there's anything unclear or missing in the text, let me know
+| [Monday 28 February 2011] [12:36:40] <pieterh>	it's a first draft and raw
+| [Monday 28 February 2011] [12:40:23] <private_meta>	pieterh: to get it straight, you would use one zmq_poll call with infinite timeout for message transfer and one with heartbeat timeout to send heartbeat messages?
+| [Monday 28 February 2011] [12:40:40] <pieterh>	i don't think that's what the examples do
+| [Monday 28 February 2011] [12:40:59] <private_meta>	You mean the pirate example?
+| [Monday 28 February 2011] [12:41:04] <pieterh>	any of them
+| [Monday 28 February 2011] [12:41:26] <private_meta>	Okay, I'll look at that one
+| [Monday 28 February 2011] [12:41:45] <pieterh>	it's tempting to do heartbeating via a second socket
+| [Monday 28 February 2011] [12:41:51] <pieterh>	this is a bad idea for two or three reasons
+| [Monday 28 February 2011] [12:41:53] <pieterh>	which I'll document
+| [Monday 28 February 2011] [12:44:19] <pieterh>	"First, if you're sending data you don't need to send heartbeats. Second, sockets may, due to network vagaries, become jammed. You need to know when your main data socket is silent because it's dead, rather than just not busy, so you need heartbeats on that socket. Lastly, two sockets is more complex than one."
+| [Monday 28 February 2011] [12:54:57] <cremes>	is there a C FORWARDER device in the zguide anywhere? i can't seem to find one and I'd like one for testing
+| [Monday 28 February 2011] [13:02:10] <pieterh>	cremes, afaik the msgqueue example will work if you use PUB and SUB
+| [Monday 28 February 2011] [13:02:35] <pieterh>	a forwarder just reads and writes two sockets
+| [Monday 28 February 2011] [13:02:59] <cremes>	pieterh: ok, i'll try it
+| [Monday 28 February 2011] [13:03:14] <pieterh>	sorry, msgqueue just calls the built-in device, that's not what you want, is it
+| [Monday 28 February 2011] [13:03:28] <pieterh>	you want the actual core, poll / recv / send?
+| [Monday 28 February 2011] [13:03:54] <cremes>	no, i just want something that will subscribe to everything and publish out the other side
+| [Monday 28 February 2011] [13:04:01] <cremes>	the built in device is probably okay then, yes?
+| [Monday 28 February 2011] [13:04:05] <pieterh>	yes
+| [Monday 28 February 2011] [13:04:17] <pieterh>	it's the same code for all three devices
+| [Monday 28 February 2011] [13:04:30] <pieterh>	the only differences are the bind/connect directions and socket types
+| [Monday 28 February 2011] [13:09:52] <zedas>	pieterh: what?! not even http://mulltedb.org :-)
+| [Monday 28 February 2011] [13:10:11] <zedas>	pieterh: or i mean http://mulletdb.org/ :-)
+| [Monday 28 February 2011] [13:10:17] <cremes>	pieterh: looks like i don't need it; i have isolated another slow leaker with PUB sockets
+| [Monday 28 February 2011] [13:10:40] <pieterh>	zedas: uhm, what's the question?
+| [Monday 28 February 2011] [13:10:54] <pieterh>	cremes: really, and it's not even Friday yet?
+| [Monday 28 February 2011] [13:11:03] <cremes>	:)
+| [Monday 28 February 2011] [13:11:14] <cremes>	well, i need to verify one or two more things.... but yeah
+| [Monday 28 February 2011] [13:12:12] <pieterh>	zedas: you mean for the 0MQ projects list?
+| [Monday 28 February 2011] [13:12:25] <pieterh>	and it's mulletdb.com, :-)
+| [Monday 28 February 2011] [13:13:10] <zedas>	damn, see i don't even care about that project.
+| [Monday 28 February 2011] [13:13:30] <zedas>	pieterh: yeah i was joking about "projects"
+| [Monday 28 February 2011] [13:14:01] <pieterh>	yeah, the love shows 
+| [Monday 28 February 2011] [13:14:21] <pieterh>	tokyo cabinet seems useful
+| [Monday 28 February 2011] [13:14:47] <pieterh>	not so sure about that zeromq stuff you are so keen about
+| [Monday 28 February 2011] [13:23:25] <cremes>	false alarm on that leak... i was calling setsockopt(LINGER) after zmq_connect()
+| [Monday 28 February 2011] [13:23:35] <cremes>	i guess it doesn't honor it after the socket has been bound/connected
+| [Monday 28 February 2011] [13:23:42] <cremes>	or is that a bug?
+| [Monday 28 February 2011] [13:24:18] <cremes>	nope, not a bug according to the man page
+| [Monday 28 February 2011] [13:41:17] <sp4ke>	Hi 
+| [Monday 28 February 2011] [13:42:09] <sp4ke>	can anyone help me setting up zeromq with my project on Visual Studio 2010
+| [Monday 28 February 2011] [13:42:25] <sp4ke>	i get unresolved external symbols when i build projects
+| [Monday 28 February 2011] [13:42:58] <sp4ke>	i built the libzmq project and added the path to the directory on my project dpendencies
+| [Monday 28 February 2011] [13:52:13] <sustrik>	the libs are in libs subdir
+| [Monday 28 February 2011] [13:52:28] <sustrik>	iirc
+| [Monday 28 February 2011] [13:53:20] <sp4ke>	in the libs subdir i've got only a libzmq.dll and libzmq.ilk 
+| [Monday 28 February 2011] [13:53:44] <sp4ke>	how can i add these files as dependencies in VS ?
+| [Monday 28 February 2011] [13:54:24] <sp4ke>	i mean other than specify the path in the Librarry Directories which i did
+| [Monday 28 February 2011] [13:55:03] <sustrik>	there should be libzmq.lib iirc
+| [Monday 28 February 2011] [13:55:12] <sustrik>	you should link that with your project
+| [Monday 28 February 2011] [13:58:02] <sp4ke>	ok thanx i found a discussion on irc archive it's common problem to not get the .lib the answer should be there
+| [Monday 28 February 2011] [14:29:31] <pieterh>	cremes: you can set LINGER at any time before close, afaics
+| [Monday 28 February 2011] [14:30:16] <cremes>	the docs say otherwise:  "Caution: All options, with the exception of subscription strings, only take effect for subsequent socket bind/connects."
+| [Monday 28 February 2011] [14:30:28] <cremes>	that's from the zmq_setsockopt man page
+| [Monday 28 February 2011] [14:30:45] <cremes>	i don't think it's lying... my testing appears to bear this out
+| [Monday 28 February 2011] [14:32:08] <pieterh>	i've been using LINGER in examples to stop zmq_term blocking, and I use it just before close
+| [Monday 28 February 2011] [14:32:21] <pieterh>	something to clarify...
+| [Monday 28 February 2011] [14:32:47] <cremes>	indeed
+| [Monday 28 February 2011] [14:33:09] <pieterh>	example like https://github.com/imatix/zguide/blob/master/examples/C/lpclient.c
+| [Monday 28 February 2011] [14:59:25] <mikko>	sigh
+| [Monday 28 February 2011] [15:05:50] <Guthur>	cremes pieterh: that was my update
+| [Monday 28 February 2011] [15:06:15] <pieterh>	Guthur: yeah, but is it accurate?
+| [Monday 28 February 2011] [15:06:16] <Guthur>	sustrik mentioned that all options should be set before connect
+| [Monday 28 February 2011] [15:06:50] <mikko>	Guthur: not all
+| [Monday 28 February 2011] [15:06:58] <mikko>	zmq_subscribe can be set afterwards
+| [Monday 28 February 2011] [15:07:11] <Guthur>	mikko, yeah besides that
+| [Monday 28 February 2011] [15:07:16] <pieterh>	mikko: that's what the text says :-)
+| [Monday 28 February 2011] [15:07:37] <pieterh>	Guthur: it should IMO say "ZMQ_SUBSCRIBE" rather than "subscription strings" but that's minor
+| [Monday 28 February 2011] [15:08:59] <pieterh>	ZMQ_SUBSCRIBE, ZMQ_UNSUBSCRIBE, ZMQ_LINGER can afaik be set at any time
+| [Monday 28 February 2011] [15:09:12] <pieterh>	not sure about ZMQ_RECONNECT_IVL
+| [Monday 28 February 2011] [15:09:25] <Guthur>	ok, I can post another update patch
+| [Monday 28 February 2011] [15:09:37] <Guthur>	if that's ok 
+| [Monday 28 February 2011] [15:09:46] <pieterh>	we need El Sustrik's formal confirmation with an "are you sure", IMO
+| [Monday 28 February 2011] [15:10:03] <pieterh>	I made an issue: https://github.com/zeromq/zeromq2/issues/173
+| [Monday 28 February 2011] [15:10:12] <Guthur>	hehe, yep that's are very sensible idea
+| [Monday 28 February 2011] [15:10:14] <pieterh>	there are a couple of fuzzy areas that cropped up
+| [Monday 28 February 2011] [15:20:52] <pieterh>	omg, I'm reinventing AMQP for Ch4... :-/
+| [Monday 28 February 2011] [15:21:17] <pieterh>	please shoot me now before this goes too far
+| [Monday 28 February 2011] [15:24:32] <Guthur>	at some point someone is bound to say 'It would be nice if core had this'
+| [Monday 28 February 2011] [15:24:38] <Guthur>	and then that will be the end
+| [Monday 28 February 2011] [15:24:47] <pieterh>	nah, it's all just user-space patterns
+| [Monday 28 February 2011] [15:25:11] <pieterh>	the key IMO is not even software, but documented protocols
+| [Monday 28 February 2011] [15:25:41] <Guthur>	is AMQP poorly documented?
+| [Monday 28 February 2011] [15:25:57] <Guthur>	I am not very familiar with it to be honest
+| [Monday 28 February 2011] [15:26:12] <pieterh>	hmm, depends on the version of AMQP, there are quite a few
+| [Monday 28 February 2011] [15:26:15] <pieterh>	on this page http://www.amqp.org/confluence/display/AMQP/AMQP+Specification
+| [Monday 28 February 2011] [15:26:28] <pieterh>	only AMQP/0-8 and AMQP/0-9-1 are properly documented
+| [Monday 28 February 2011] [15:27:06] <pieterh>	0-9 and 0-10 don't even have dates in the document... very shoddy work
+| [Monday 28 February 2011] [15:27:30] <pieterh>	every version is incompatible with every other version
+| [Monday 28 February 2011] [15:27:36] <pieterh>	oh, don't get me started :-)
+| [Monday 28 February 2011] [15:28:22] <Guthur>	I don't think i'll delve into it too deeply
+| [Monday 28 February 2011] [15:28:35] <Guthur>	I've enough on my plate without getting lost in AMQP
+| [Monday 28 February 2011] [15:28:37] <pieterh>	:-)
+| [Monday 28 February 2011] [15:51:27] <cremes>	pieterh: can you confirm this leaks memory on your system?  https://gist.github.com/848007
+| [Monday 28 February 2011] [15:51:36] <cremes>	if so, i'll open a ticket and attach it
+| [Monday 28 February 2011] [15:51:58] <sustrik>	it's only SUBSCRIBE and UNSUBSCRIBE that affect the connection after it is established
+| [Monday 28 February 2011] [15:52:21] <cremes>	sustrik: i think i *might* have found another leak with PUB
+| [Monday 28 February 2011] [15:52:29] <sustrik>	yes?
+| [Monday 28 February 2011] [15:52:37] <cremes>	see this gist:  https://gist.github.com/848007
+| [Monday 28 February 2011] [15:52:44] <pieterh>	cremes: nope
+| [Monday 28 February 2011] [15:52:46] <cremes>	if someone can confirm it leaks on their system, i'll open a ticket
+| [Monday 28 February 2011] [15:52:47] <pieterh>	it does not leak
+| [Monday 28 February 2011] [15:52:54] <pieterh>	it does consume 300% CPU
+| [Monday 28 February 2011] [15:53:11] <pieterh>	but memory usage is stable: "7867 ph        20   0  198m 1904 1148 S  312  0.0   1:09.50 leaker6   "
+| [Monday 28 February 2011] [15:53:41] <cremes>	hrmm...
+| [Monday 28 February 2011] [15:53:52] <pieterh>	sustrik: I've tested LINGER and it definitely works after the connection is established
+| [Monday 28 February 2011] [15:54:18] <sustrik>	aaaah
+| [Monday 28 February 2011] [15:54:24] <sustrik>	i recall something like that dimly
+| [Monday 28 February 2011] [15:54:34] <Ergo^>	stupid question, how shuold i stop my python scripts that use pyzmq ? ctl+c doesnt seem to kill them nicely
+| [Monday 28 February 2011] [15:54:34] <sustrik>	let me check the code
+| [Monday 28 February 2011] [15:54:56] <pieterh>	Ergo^: are you on the latest 0MQ?
+| [Monday 28 February 2011] [15:55:36] <Ergo^>	2.0.10
+| [Monday 28 February 2011] [15:56:11] <pieterh>	Ergo^: check the release notes, Ctrl-C was fixed but I don't recall exactly what version
+| [Monday 28 February 2011] [15:57:36] <Ergo^>	ok, can you clarify one thing for me? when i send() something its expected to be a string? so i should use json or other encapsulation that makes sense ?
+| [Monday 28 February 2011] [15:59:08] <cremes>	pieterh: ah! make a small change to that code and it will leak like a sieve
+| [Monday 28 February 2011] [15:59:19] <cremes>	change the number of client threads it spawn to something greater than 1
+| [Monday 28 February 2011] [15:59:20] <pieterh>	cremes... put the 'free' into comments?
+| [Monday 28 February 2011] [15:59:24] <pieterh>	ah, will try
+| [Monday 28 February 2011] [15:59:30] <pieterh>	Ergo^: did you read the Guide yet?
+| [Monday 28 February 2011] [15:59:31] <cremes>	i think it's a race condition bug
+| [Monday 28 February 2011] [15:59:46] <Ergo^>	pieterh, im just starting to dig into it
+| [Monday 28 February 2011] [15:59:52] <pieterh>	cremes: I'll spend 10 minutes on that, would you spend 10 minutes reviewing http://rfc.zeromq.org/spec:7?
+| [Monday 28 February 2011] [16:00:01] <cremes>	my pleasure
+| [Monday 28 February 2011] [16:00:20] <pieterh>	Ergo^: until you've read at least Ch1 and Ch2, you're kind of in RTFM mode here
+| [Monday 28 February 2011] [16:01:47] <sustrik>	ack: LINGER is socket-wide
+| [Monday 28 February 2011] [16:01:53] <sustrik>	not connection-wide
+| [Monday 28 February 2011] [16:02:10] <pieterh>	cremes: I hereby name this ship the "Leaky and Nasty"
+| [Monday 28 February 2011] [16:02:11] <pieterh>	7993 ph        20   0 1853m 1.4g 1148 S  382 17.6   2:42.12 leaker6      
+| [Monday 28 February 2011] [16:02:18] <cremes>	huzzah!
+| [Monday 28 February 2011] [16:02:24] <pieterh>	That's 1.4g of memory in about 30 seconds
+| [Monday 28 February 2011] [16:02:29] <pieterh>	with 10 client threads
+| [Monday 28 February 2011] [16:02:29] <cremes>	i can email you guys a call-tree backtrace if that is helpful to you
+| [Monday 28 February 2011] [16:02:38] <cremes>	yeah, same thing happens on my box
+| [Monday 28 February 2011] [16:03:10] <pieterh>	i love it when people send beautiful C code that reproduces problems...
+| [Monday 28 February 2011] [16:03:27] <cremes>	btw, it doesn't leak as fast when the LINGER line is uncommented but it still leaks *rapidly*
+| [Monday 28 February 2011] [16:10:23] <sustrik>	what unit is s_clock() in?
+| [Monday 28 February 2011] [16:10:56] <cremes>	milliseconds
+| [Monday 28 February 2011] [16:11:59] <mikko>	success!
+| [Monday 28 February 2011] [16:12:17] <sustrik>	cremes: ok, what about the cpu usage?
+| [Monday 28 February 2011] [16:12:22] <mikko>	i managed to create pure shell-script that executes zeromq build and sends results over http to jenkins
+| [Monday 28 February 2011] [16:12:31] <sustrik>	a peak followed by flat line?
+| [Monday 28 February 2011] [16:12:34] <pieterh>	mikko: nice!
+| [Monday 28 February 2011] [16:12:40] <cremes>	sustrik: let me take a look
+| [Monday 28 February 2011] [16:13:17] <mikko>	also, on the other news. i am bringing up powerpc (debian 6.0) build slave soon(ish)
+| [Monday 28 February 2011] [16:13:32] <cremes>	sustrik: did you update the code to use 2+ client threads? i see cpu spike and *stay* there
+| [Monday 28 February 2011] [16:13:56] <sustrik>	mikko: btw, i've had a discussion with a guy who has problems building 0mq under mingw-win64
+| [Monday 28 February 2011] [16:14:12] <cremes>	sustrik: reload that gist if you like; i updated it to create 5 client threads which more readily show the leak
+| [Monday 28 February 2011] [16:14:21] <mikko>	sustrik: what is the problem?
+| [Monday 28 February 2011] [16:14:31] <mikko>	using mingw64?
+| [Monday 28 February 2011] [16:14:42] <sustrik>	order of includes, presumably
+| [Monday 28 February 2011] [16:14:43] <sustrik>	https://github.com/zeromq/zeromq2/issues/#issue/60
+| [Monday 28 February 2011] [16:15:09] <sustrik>	i just though it can possibly make sense to add that to builds
+| [Monday 28 February 2011] [16:15:37] <sustrik>	cremes: ok, so it's processing something
+| [Monday 28 February 2011] [16:15:50] <mikko>	sustrik: the current cluster is 32bit hardware
+| [Monday 28 February 2011] [16:15:52] <sustrik>	that definitely looks like a bug
+| [Monday 28 February 2011] [16:15:55] <mikko>	that's slightly problematic
+| [Monday 28 February 2011] [16:16:09] <mikko>	would need a win64 box (i presume)
+| [Monday 28 February 2011] [16:16:13] <sustrik>	ah, i though it's a cross-compile
+| [Monday 28 February 2011] [16:16:20] <mikko>	or does the cross-compile work on 32bit?
+| [Monday 28 February 2011] [16:16:21] <sustrik>	never mind
+| [Monday 28 February 2011] [16:16:29] <sustrik>	no idea
+| [Monday 28 February 2011] [16:16:33] <sustrik>	check the issue
+| [Monday 28 February 2011] [16:16:34] <mikko>	can't do 'make check' without win64
+| [Monday 28 February 2011] [16:16:37] <mikko>	i can add build
+| [Monday 28 February 2011] [16:16:46] <sustrik>	mikko: spot on
+| [Monday 28 February 2011] [16:16:56] <sustrik>	i forgot about the tests
+| [Monday 28 February 2011] [16:17:10] <cremes>	sustrik: yes, i agree; i changed the publish interval to 500ms and cpu remains high
+| [Monday 28 February 2011] [16:17:18] <cremes>	sustrik: whatever it is processing, it's stuck
+| [Monday 28 February 2011] [16:17:23] <sustrik>	right
+| [Monday 28 February 2011] [16:17:39] <cremes>	sustrik: i can send you the call-tree for the code that is allocating (and holding onto) all of this memory if that's helpful
+| [Monday 28 February 2011] [16:17:52] <pieterh>	cremes: I think I see the problem
+| [Monday 28 February 2011] [16:17:54] <sustrik>	yes, please
+| [Monday 28 February 2011] [16:18:05] <pieterh>	the client is never pausing for breath
+| [Monday 28 February 2011] [16:18:18] <sustrik>	it's not, but it's time-limited
+| [Monday 28 February 2011] [16:18:18] <pieterh>	server can't keep up
+| [Monday 28 February 2011] [16:18:30] <sustrik>	so it should send for 200ms
+| [Monday 28 February 2011] [16:18:32] <pieterh>	let me set a HWM and do small sleep in the client after closing a socket...
+| [Monday 28 February 2011] [16:18:32] <sustrik>	then stop
+| [Monday 28 February 2011] [16:18:50] <pieterh>	the clock in the client has no purpose at all afaics
+| [Monday 28 February 2011] [16:20:14] <cremes>	ok, so a small sleep inside the publish loop fixes it
+| [Monday 28 February 2011] [16:20:28] <cremes>	but shouldn't it just drop those messages if they are in queue and undelivered?
+| [Monday 28 February 2011] [16:20:37] <cremes>	LINGER = 0 in this case
+| [Monday 28 February 2011] [16:21:04] <pieterh>	cremes: if I sleep 1 second after each publish burst, client memory usage is flat
+| [Monday 28 February 2011] [16:21:27] <pieterh>	they are sent to publisher before you close the socket
+| [Monday 28 February 2011] [16:21:45] <pieterh>	the memory consumption is in the server queue
+| [Monday 28 February 2011] [16:22:05] <cremes>	hmmm, i can believe that
+| [Monday 28 February 2011] [16:22:35] <sustrik>	2 producers are definitely going to overload one consumer
+| [Monday 28 February 2011] [16:22:42] <pieterh>	hmm, indeed, I set 10k HWM ons server socket, still runs out of memory
+| [Monday 28 February 2011] [16:22:51] <sustrik>	you have to set HWM to make excess messages be dropped
+| [Monday 28 February 2011] [16:22:56] <pieterh>	setting 10K HWM on client socket AND sleeping in between bursts, it's ok
+| [Monday 28 February 2011] [16:23:15] <sustrik>	what about HWM on both sender and receiver?
+| [Monday 28 February 2011] [16:23:17] <pieterh>	cremes: ah...
+| [Monday 28 February 2011] [16:23:24] <pieterh>	LINGER is only executed at zmq_term time!
+| [Monday 28 February 2011] [16:24:06] <sustrik>	zmq_close() time, to be precise
+| [Monday 28 February 2011] [16:24:41] <pieterh>	bleh, you're right, and doing init/term in teh loop makes no difference
+| [Monday 28 February 2011] [16:25:10] <pieterh>	cremes: you always find the weird cases... :-)
+| [Monday 28 February 2011] [16:25:14] <sustrik>	have you tried with HWM on both sides?
+| [Monday 28 February 2011] [16:25:33] <pieterh>	have tried on either side, no difference
+| [Monday 28 February 2011] [16:25:35] <cremes>	i didn't think HWM had any effect on a SUB socket...?
+| [Monday 28 February 2011] [16:25:45] <sustrik>	i meant *both*
+| [Monday 28 February 2011] [16:25:51] <sustrik>	not either
+| [Monday 28 February 2011] [16:25:53] 	 * pieterh will now try *both*
+| [Monday 28 February 2011] [16:26:04] <sustrik>	cremes: it does
+| [Monday 28 February 2011] [16:26:25] <sustrik>	it specifies how many messages can be buffered before 0mq starts dropping them
+| [Monday 28 February 2011] [16:26:43] <pieterh>	sustrik: either, both, makes no visible difference
+| [Monday 28 February 2011] [16:26:59] <sustrik>	ok, that looks like a buf
+| [Monday 28 February 2011] [16:27:01] <sustrik>	bug
+| [Monday 28 February 2011] [16:27:15] <cremes>	on the zmq_socket() man page, it says N/A for HWM on a SUB socket
+| [Monday 28 February 2011] [16:27:23] <sustrik>	oh
+| [Monday 28 February 2011] [16:27:27] <sustrik>	i see
+| [Monday 28 February 2011] [16:27:36] <pieterh>	the only thing that seems to work is a long (1 second) sleep in the client loop
+| [Monday 28 February 2011] [16:27:46] <sustrik>	the clients are creating new connections all the time
+| [Monday 28 February 2011] [16:27:51] <cremes>	sustrik: right
+| [Monday 28 February 2011] [16:27:59] <pieterh>	cremes: yeah, I remember that, it's a bug, no?
+| [Monday 28 February 2011] [16:28:04] <sustrik>	meaning that the server creates a new buffer each time
+| [Monday 28 February 2011] [16:28:11] <sustrik>	each buffer is limited by HWM
+| [Monday 28 February 2011] [16:28:22] <sustrik>	but the number of buffers is unlimited
+| [Monday 28 February 2011] [16:28:26] <Ergo^>	there is something taht is unclear to me with pyzmq and send_json - when i use that function i understand i lose the ability to set "topic" i want to subscribe to ?
+| [Monday 28 February 2011] [16:29:22] <sustrik>	there should be MAX_CONNECTIONS socket options...
+| [Monday 28 February 2011] [16:29:27] <sustrik>	option*
+| [Monday 28 February 2011] [16:29:31] <cremes>	that buffer should be dropped when zmq_close() is called so it should catch up, right?
+| [Monday 28 February 2011] [16:29:37] <Guthur>	what is expected to happen if you poll before TCP sockets are fully connected?
+| [Monday 28 February 2011] [16:29:51] <sustrik>	cremes: the buffer is dropped on the client side
+| [Monday 28 February 2011] [16:30:07] <sustrik>	the server side buffer remains untill all the messages are read from it
+| [Monday 28 February 2011] [16:30:09] <cremes>	sustrik: i thought zmq_connect() is what created the buffer
+| [Monday 28 February 2011] [16:30:14] <pieterh>	Guthur: nothing in particular?
+| [Monday 28 February 2011] [16:30:18] <cremes>	ok, right
+| [Monday 28 February 2011] [16:30:23] <sustrik>	cremes: yes
+| [Monday 28 February 2011] [16:30:32] <pieterh>	sustrik: yes, but are there multiple buffers at the server side?
+| [Monday 28 February 2011] [16:30:48] <sustrik>	but the server side buffer remains in place while there are messages in it
+| [Monday 28 February 2011] [16:31:03] <sustrik>	yes, one buffer per connection
+| [Monday 28 February 2011] [16:31:16] <pieterh>	it's N client-side buffers (that should be destroyed by close + LINGER=0) + 1 server-side buffer
+| [Monday 28 February 2011] [16:31:32] <Guthur>	pieterh, I'm getting strange behaviour on POSIX OSs (linux and OSX) with polling with CLRZMQ2
+| [Monday 28 February 2011] [16:31:33] <pieterh>	setting HWM on sub socket (server) makes no difference
+| [Monday 28 February 2011] [16:31:45] <pieterh>	Guthur: 'strange' = ?
+| [Monday 28 February 2011] [16:31:58] <sustrik>	the socket on the server side is never closed
+| [Monday 28 February 2011] [16:32:04] <sustrik>	so the buffers remain
+| [Monday 28 February 2011] [16:32:06] <Guthur>	pieterh, well if I don't delay the polling ever so slightly it throws an exception
+| [Monday 28 February 2011] [16:32:18] <pieterh>	sustrik... where is that 1.4Gb of memory sitting then?
+| [Monday 28 February 2011] [16:32:23] <Guthur>	and a users seems to be getting similar problems on OSX
+| [Monday 28 February 2011] [16:32:28] <Guthur>	user*
+| [Monday 28 February 2011] [16:32:32] <sustrik>	lot of buffers in the server socket
+| [Monday 28 February 2011] [16:32:50] <sustrik>	they are gradually being emptied and deallocated
+| [Monday 28 February 2011] [16:32:59] <Guthur>	same code works on windows fine though
+| [Monday 28 February 2011] [16:33:00] <sustrik>	but client create new buffers even faster
+| [Monday 28 February 2011] [16:33:04] <Guthur>	without the delay
+| [Monday 28 February 2011] [16:33:06] <mikko>	http://johanharjono.com/archives/633
+| [Monday 28 February 2011] [16:33:16] <mikko>	installation instructions missing something?
+| [Monday 28 February 2011] [16:33:16] <pieterh>	and HWM is for each buffer independently... not the socket as such
+| [Monday 28 February 2011] [16:33:18] <Ergo^>	am i correct about zeromq "extensions" ?
+| [Monday 28 February 2011] [16:33:24] <Ergo^>	for python that is ?
+| [Monday 28 February 2011] [16:33:32] <pieterh>	Guthur: no idea, we'd need some test code that reproduces it
+| [Monday 28 February 2011] [16:33:45] <sustrik>	yes, HWM is same as SO_SNDBUF and SO_RCVBUF
+| [Monday 28 February 2011] [16:33:47] <sustrik>	local
+| [Monday 28 February 2011] [16:34:09] <sustrik>	doesn't affect the peer
+| [Monday 28 February 2011] [16:34:27] <Guthur>	it's all related to this issue: https://github.com/zeromq/clrzmq2/issues/13
+| [Monday 28 February 2011] [16:34:32] <pieterh>	cremes: so what did you not know that led you to think this could work?
+| [Monday 28 February 2011] [16:35:47] <cremes>	pieterh: i saw another resource leak and followed it back to the PUB socket
+| [Monday 28 February 2011] [16:36:08] <Guthur>	i do notice that if I place it in a try block it also works, I put this down to the fact a try block will possibly delay the polling ever so slightly
+| [Monday 28 February 2011] [16:36:09] <cremes>	i'll have to look and see if i am overrunning the SUB socket on the other side like in this example
+| [Monday 28 February 2011] [16:36:21] <pieterh>	seems like that opening/closing the client sockets each time is the cause
+| [Monday 28 February 2011] [16:36:28] <sustrik>	this is a problem i wanted to address for a long time but never quite get to do it
+| [Monday 28 February 2011] [16:36:39] <pieterh>	Guthur: I can't really help, have no idea what the exception could be or why
+| [Monday 28 February 2011] [16:36:52] <sustrik>	there should be a socket option limiting the max number of concurrent connecitons
+| [Monday 28 February 2011] [16:37:13] <peter_NOrth>	is nial dalton on this IRC ever?
+| [Monday 28 February 2011] [16:37:16] <pieterh>	sustrik: anti-DoS protection
+| [Monday 28 February 2011] [16:37:25] <sustrik>	exactly
+| [Monday 28 February 2011] [16:37:41] <pieterh>	useful, but here we have a problem of documentation IMO
+| [Monday 28 February 2011] [16:37:50] <pieterh>	or something
+| [Monday 28 February 2011] [16:38:34] <sustrik>	possibly
+| [Monday 28 February 2011] [16:38:43] <pieterh>	it's unclear how HWM and LINGER help here
+| [Monday 28 February 2011] [16:38:48] <pieterh>	(in fact they don't)
+| [Monday 28 February 2011] [16:38:52] <sustrik>	LINGER is irrelevant
+| [Monday 28 February 2011] [16:39:04] <sustrik>	because it affects the send side
+| [Monday 28 February 2011] [16:39:10] <sustrik>	and the problem is on recv side
+| [Monday 28 February 2011] [16:39:18] <pieterh>	yes, but that's not obvious
+| [Monday 28 February 2011] [16:39:33] <sustrik>	HWM would help in combination with MAX_CONNECTIONS
+| [Monday 28 February 2011] [16:39:50] <sustrik>	MAX_CONNECTION * HWM = max number of messages queued
+| [Monday 28 February 2011] [16:39:52] <pieterh>	possibly HWM affecting socket rather than each buffer
+| [Monday 28 February 2011] [16:39:56] <pieterh>	ah, yes
+| [Monday 28 February 2011] [16:40:02] <sustrik>	* MAX_MSG_SIZE = max memory used
+| [Monday 28 February 2011] [16:40:13] <pieterh>	...calculating...
+| [Monday 28 February 2011] [16:40:18] <pieterh>	102523.2231GB
+| [Monday 28 February 2011] [16:40:23] <pieterh>	yeah, that'll do
+| [Monday 28 February 2011] [16:41:31] <pieterh>	sustrik: why not add MAX_CONNECTIONS and MAX_MSG_SIZE to the 3.0 roadmap?
+| [Monday 28 February 2011] [16:41:37] <pieterh>	they are excellent ideas 
+| [Monday 28 February 2011] [16:41:56] <Guthur>	pieterh, errno 4 mean anything?
+| [Monday 28 February 2011] [16:42:06] <pieterh>	documenting them will perhaps give someone the incentive to go make the patch
+| [Monday 28 February 2011] [16:42:11] <sustrik>	it can be added to 2.x
+| [Monday 28 February 2011] [16:42:16] <NoToes>	Hi Guther, I'm "johndeko". So you've managed to reproduce the poll timing issue? If so I wont bother to reproduce it outside of Unity.
+| [Monday 28 February 2011] [16:42:20] <sustrik>	no backward compatibility problem
+| [Monday 28 February 2011] [16:42:26] <pieterh>	sustrik: sure
+| [Monday 28 February 2011] [16:42:31] <pieterh>	we have a 2.2 roadmap page?
+| [Monday 28 February 2011] [16:42:37] <sustrik>	nope
+| [Monday 28 February 2011] [16:42:51] <Guthur>	NoToes, I think so
+| [Monday 28 February 2011] [16:42:59] <Guthur>	very strange one though
+| [Monday 28 February 2011] [16:43:10] <pieterh>	sustrik: ok, I'm going to make it, I assume?
+| [Monday 28 February 2011] [16:43:29] <sustrik>	why not
+| [Monday 28 February 2011] [16:43:32] <Ergo^>	sustrik, you are maintainer or pyzmq?
+| [Monday 28 February 2011] [16:43:42] <NoToes>	Sure is!
+| [Monday 28 February 2011] [16:43:49] <sustrik>	no, i'm not
+| [Monday 28 February 2011] [16:44:09] <sustrik>	it's either brian granger or minrk
+| [Monday 28 February 2011] [16:44:15] <Ergo^>	if i use this method http://zeromq.github.com/pyzmq/api/generated/zmq.core.socket.html#zmq.core.socket.Socket.send_json
+| [Monday 28 February 2011] [16:44:29] <Ergo^>	i cant use topic filtering at same time ?
+| [Monday 28 February 2011] [16:44:40] 	 * sustrik has no pyzmq experience, sorry
+| [Monday 28 February 2011] [16:44:55] <Guthur>	NoToes, a sleep of at least 100 milliseconds before starting to poll and there is no problem
+| [Monday 28 February 2011] [16:45:08] <Guthur>	but I don't think that's really what you want to hear
+| [Monday 28 February 2011] [16:45:14] <Ergo^>	it seems purely string based, but i dont see anything in the docs about setting possible topic when using send_json
+| [Monday 28 February 2011] [16:45:29] <pieterh>	sustrik: ok, done, and I added the socket type renames since there was consensus on that
+| [Monday 28 February 2011] [16:45:37] <pieterh>	oh, I can provide a patch for that already :-)
+| [Monday 28 February 2011] [16:45:56] <sustrik>	what renames?
+| [Monday 28 February 2011] [16:46:06] <pieterh>	:-) 
+| [Monday 28 February 2011] [16:46:09] <Ergo^>	can someone here confirm if im right or wrong? ;-)
+| [Monday 28 February 2011] [16:46:14] <pieterh>	XREP -> ROUTER, XREQ -> DEALER
+| [Monday 28 February 2011] [16:46:19] <sustrik>	yuck
+| [Monday 28 February 2011] [16:46:23] <NoToes>	Guther, not really. It doesn't fill me with certainty and makes fast updates impossible.
+| [Monday 28 February 2011] [16:46:27] <Guthur>	here it's an interrupted syscall
+| [Monday 28 February 2011] [16:46:31] <pieterh>	yeah, you should have said that when it was discussed on zeromq-dev
+| [Monday 28 February 2011] [16:46:44] <pieterh>	les absents on toujours tort
+| [Monday 28 February 2011] [16:46:44] <Guthur>	that's the exception
+| [Monday 28 February 2011] [16:46:51] <Guthur>	NoToes, ^
+| [Monday 28 February 2011] [16:46:52] <sustrik>	ok, good
+| [Monday 28 February 2011] [16:47:01] <sustrik>	i'll add it as an alias
+| [Monday 28 February 2011] [16:47:40] <pieterh>	sustrik: thread has title "[0MQ/3.0] discuss: renameXREPtoROUTER"
+| [Monday 28 February 2011] [16:47:55] <pieterh>	but we can introduce the name change in 2.2 as we did for PUSH/PULL
+| [Monday 28 February 2011] [16:48:03] <cremes>	Ergo^: if the python 0mq interface allows you to send multipart messages, make sure the topic is the first
+| [Monday 28 February 2011] [16:48:09] <Guthur>	NoToes, it maybe that you only have to do this after first connecting, and then things will be fine unless you have to reconnect again, that's a guess though
+| [Monday 28 February 2011] [16:48:12] <cremes>	Ergo^: part and your json-encoded string is the second part
+| [Monday 28 February 2011] [16:48:28] <cremes>	Ergo^: don't be overly concerned that the api doesn't have a single call that does everything you want
+| [Monday 28 February 2011] [16:48:44] <Guthur>	NoToes, I have not got the sleep in the polling loop, rather just before it, does this work for you?
+| [Monday 28 February 2011] [16:48:48] <cremes>	Ergo^: you can build your own convenience method from the methods already present, right?
+| [Monday 28 February 2011] [16:48:51] <NoToes>	Guthur, well easy enough for me to test.
+| [Monday 28 February 2011] [16:49:05] <NoToes>	Guthur, I'll try it out.
+| [Monday 28 February 2011] [16:49:16] <Guthur>	cool
+| [Monday 28 February 2011] [16:49:37] <Ergo^>	cremes,  i can build the messages on my own by doing something like '%s %s' % (topic,json,), its just that api of pyzmq seems missing some functionalities
+| [Monday 28 February 2011] [16:50:00] <Guthur>	sustrik, any idea why we would get an "Interrupted system call" error when polling to quickly after a TCP socket connection
+| [Monday 28 February 2011] [16:50:09] <cremes>	Ergo^: i disagree; i don't think the api should have any explicit method dealing with json
+| [Monday 28 February 2011] [16:50:24] <cremes>	Ergo^: why not a different serialization format? what is json's connection to 0mq?
+| [Monday 28 February 2011] [16:50:26] <Ergo^>	cremes, well thats my point - it does
+| [Monday 28 February 2011] [16:50:43] <Ergo^>	but it doesnt do it to full extent
+| [Monday 28 February 2011] [16:51:24] <cremes>	Ergo^: i guess i fail to see the problem here; you can easily accomplish what you want with a 3-line method
+| [Monday 28 February 2011] [16:51:27] <Ergo^>	cremes, its just a format as good as any - its interoperable for sure, thats why i was thinking about using it - and i can get normal data structures "on other side"
+| [Monday 28 February 2011] [16:51:39] <cremes>	Ergo^: why does it matter that the api doesn't already have it? write it and send in a patch...?
+| [Monday 28 February 2011] [16:51:48] <sustrik>	Guthur: presumably, there's a signal generated somewhere
+| [Monday 28 February 2011] [16:52:08] <mikko>	sustrik: http://build.zero.mq/job/ZeroMQ2-core-master_mingw64/5/console
+| [Monday 28 February 2011] [16:52:13] <Ergo^>	cremes, just wanted to make sure i havent missed anything obvious, thus asking here ;-) nothing more
+| [Monday 28 February 2011] [16:52:13] <mikko>	mingw64 cross compile running
+| [Monday 28 February 2011] [16:52:20] <mikko>	well, was running
+| [Monday 28 February 2011] [16:52:23] <sustrik>	wow, that was quick
+| [Monday 28 February 2011] [16:52:37] <cremes>	Ergo^: ok!
+| [Monday 28 February 2011] [16:53:05] <mikko>	sustrik: not sure if that is my environment or something else
+| [Monday 28 February 2011] [16:53:34] <sustrik>	no windows.h
+| [Monday 28 February 2011] [16:53:36] <sustrik>	strange
+| [Monday 28 February 2011] [16:53:47] <mikko>	might be something odd with the build i guess
+| [Monday 28 February 2011] [16:54:06] <mikko>	./configure --host=amd64-mingw32msvc --target=mingw64
+| [Monday 28 February 2011] [16:54:14] <mikko>	do i need anything else?
+| [Monday 28 February 2011] [16:55:30] <sustrik>	no idea
+| [Monday 28 February 2011] [16:55:36] <NoToes>	Guthur, no luck with a sleep before the poll loop.
+| [Monday 28 February 2011] [16:55:42] <sustrik>	try asking the guy who filled the issue
+| [Monday 28 February 2011] [16:55:45] <mikko>	ok, will investigate
+| [Monday 28 February 2011] [16:55:47] <sustrik>	he's pretty responsive
+| [Monday 28 February 2011] [16:56:10] <cremes>	sustrik: what would you say is holding onto the memory if you saw this callstack?  https://gist.github.com/848123
+| [Monday 28 February 2011] [16:56:38] <sustrik>	that are messages
+| [Monday 28 February 2011] [16:56:48] <cremes>	are they unsent and in a queue?
+| [Monday 28 February 2011] [16:57:28] <sustrik>	they are received by I/O thread and waiting to be read by the application
+| [Monday 28 February 2011] [16:58:12] <cremes>	sustrik: i don't understand that... it's from a PUB socket, so what is waiting to read it?
+| [Monday 28 February 2011] [16:58:30] <sustrik>	sorry?
+| [Monday 28 February 2011] [16:58:51] <sustrik>	I/O thread reads messages from TCP connections and buffers them
+| [Monday 28 February 2011] [16:58:56] <sustrik>	application reads them
+| [Monday 28 February 2011] [16:59:06] <cremes>	that call-tree is for a pub socket that is sending messages
+| [Monday 28 February 2011] [16:59:26] <cremes>	i don't understand why you say the i/o thread has received them and is waiting for the application to read them
+| [Monday 28 February 2011] [16:59:32] <sustrik>	oops
+| [Monday 28 February 2011] [16:59:36] <cremes>	i though pub was broadcast, fire-and-forget
+| [Monday 28 February 2011] [16:59:37] <sustrik>	missed the first line
+| [Monday 28 February 2011] [16:59:54] <sustrik>	it is
+| [Monday 28 February 2011] [17:00:08] <sustrik>	but there's some reliability built in
+| [Monday 28 February 2011] [17:00:14] <cremes>	pieterh: sent you some feedback on that rfc
+| [Monday 28 February 2011] [17:00:28] <sustrik>	namely, up to HWM messages are buffered before 0mq starts dropping them
+| [Monday 28 February 2011] [17:00:28] <pieterh>	cremes: our email server is dead atm
+| [Monday 28 February 2011] [17:00:38] <cremes>	ok, so what are the conditions that will cause pub to hang onto those messages?
+| [Monday 28 February 2011] [17:00:46] <sustrik>	by default, HWM=infinite
+| [Monday 28 February 2011] [17:00:49] <pieterh>	cremes: could you resend to pieterh@gmail.com, thanks
+| [Monday 28 February 2011] [17:00:51] <cremes>	pieterh: that explains why the email bounced!
+| [Monday 28 February 2011] [17:01:02] <pieterh>	bounced? that's not nice... rats...
+| [Monday 28 February 2011] [17:01:18] 	 * pieterh hopes our sysadmin wakes up soon
+| [Monday 28 February 2011] [17:01:40] <NoToes>	Guthur, adding a System.GC.Collect() instead of a sleep also works.
+| [Monday 28 February 2011] [17:01:51] <cremes>	sustrik: ok, so they are in queue because there is a slow subscriber somewhere; is that right?
+| [Monday 28 February 2011] [17:02:11] <Guthur>	NoToes, that's even weirder
+| [Monday 28 February 2011] [17:02:24] <sustrik>	yes
+| [Monday 28 February 2011] [17:02:28] <cremes>	ok
+| [Monday 28 February 2011] [17:02:32] <sustrik>	to guard against slow consumers
+| [Monday 28 February 2011] [17:02:43] <Guthur>	NoToes, but the sleep did not work for you?
+| [Monday 28 February 2011] [17:02:45] <NoToes>	Guthur, doesn't say much if just takes up some time.
+| [Monday 28 February 2011] [17:02:45] <sustrik>	all buffering has to have upper limit
+| [Monday 28 February 2011] [17:02:51] <cremes>	and if there are *no* subscribers, it should just drop those messages, yes?
+| [Monday 28 February 2011] [17:03:05] <sustrik>	so we need at least 3 options: HWM, MAX_CONNECTIONS, and MAX_SIZE
+| [Monday 28 February 2011] [17:03:14] <sustrik>	cremes: yes
+| [Monday 28 February 2011] [17:03:18] <cremes>	cool
+| [Monday 28 February 2011] [17:03:29] <cremes>	i must have a slow subscriber somewhere.... damn it
+| [Monday 28 February 2011] [17:03:54] <sustrik>	well, if you are doing something like the example posted
+| [Monday 28 February 2011] [17:04:16] <sustrik>	i.e. publishing at full speed from serveral apps to a single app
+| [Monday 28 February 2011] [17:04:30] <sustrik>	it's just going to blow up
+| [Monday 28 February 2011] [17:04:51] <peter_NOrth>	dalton
+| [Monday 28 February 2011] [17:04:57] <cremes>	i don't think i have that configuration though... i'll have to dig into this; thanks for your help
+| [Monday 28 February 2011] [17:05:10] <sustrik>	you are welcome
+| [Monday 28 February 2011] [17:08:57] <Guthur>	NoToes, crumbs, I can not replicate anymore
+| [Monday 28 February 2011] [17:09:04] <Guthur>	it's just working now, grrr
+| [Monday 28 February 2011] [17:11:21] <NoToes>	Guthur, That's timing bugs for you!
+| [Monday 28 February 2011] [17:14:05] <pieterh>	cremes: thanks for the review, made changes
+| [Monday 28 February 2011] [17:14:15] <pieterh>	could you send me that email bounce message so I can see the error?
+| [Monday 28 February 2011] [17:15:03] <cremes>	pieterh: it wasn't a real bounce; the mail app refused to take a message to sustrik probably because it was too large
+| [Monday 28 February 2011] [17:15:10] <cremes>	pieterh: so... never mind!
+| [Monday 28 February 2011] [17:15:13] <pieterh>	ok
+| [Monday 28 February 2011] [17:19:58] <pieterh>	cremes: could you send me random something to ph@imatix.com?
+| [Monday 28 February 2011] [17:20:11] <pieterh>	I've fixed our email server but need to test
+| [Monday 28 February 2011] [17:20:17] <NoToes>	Guthur, I missed your message. No putting a sleep before the loop, instead of in the poll loop didn't work.
+| [Monday 28 February 2011] [17:20:22] <cremes>	pieterh: on its way
+| [Monday 28 February 2011] [17:20:23] <pieterh>	zeromq-dev should be working again now
+| [Monday 28 February 2011] [17:20:25] <pieterh>	thx!
+| [Monday 28 February 2011] [17:20:51] <Guthur>	NoToes, There is no error with you either?
+| [Monday 28 February 2011] [17:21:10] <NoToes>	Guthur, no error.
+| [Monday 28 February 2011] [17:21:51] <NoToes>	Guthur, zmq_poll just always returns 0.
+| [Monday 28 February 2011] [17:21:52] <pieterh>	sustrik: email list is fixed
+| [Monday 28 February 2011] [17:22:10] <pieterh>	messages will be coming in slowly as servers retry
+| [Monday 28 February 2011] [17:22:17] <Guthur>	NoToes, it seems as if I am getting a slightly different issue then
+| [Monday 28 February 2011] [17:22:51] <Guthur>	Mine returns errno 4, if there the slight delay before starting the polling loop
+| [Monday 28 February 2011] [17:23:18] <Guthur>	this translates to an "Interrupted system call"
+| [Monday 28 February 2011] [17:25:52] <NoToes>	Guthur, OK, different issue then.
+| [Monday 28 February 2011] [17:26:16] <Guthur>	which is doubly annoying, hehe
+| [Monday 28 February 2011] [17:26:26] <NoToes>	Guthur, I suppose I should try to reproduce this outside of Unity then.
+| [Monday 28 February 2011] [17:26:56] <Guthur>	NoToes, that would be helpful, and much appreciated if you could
+| [Monday 28 February 2011] [17:35:26] <Guthur>	is there any advisable action an app should take when getting EINTR while polling?
+| [Monday 28 February 2011] [17:37:16] <Guthur>	NoToes, I have found that if I catch that EINTR and then continue all is fine
+| [Monday 28 February 2011] [17:37:46] <Guthur>	OSX does signal things properly I assume, and unity isn't suppressing them even, or something
+| [Monday 28 February 2011] [17:38:04] <Guthur>	I admit we are on the borders of my knowledge here
+| [Monday 28 February 2011] [17:38:16] <Guthur>	probably left the country to be honest
+| [Monday 28 February 2011] [17:40:02] <NoToes>	Guthur Unfortunately I'm new to OSX as well.Is EINTER a signal or a return code from zmq_recv?
+| [Monday 28 February 2011] [17:41:17] <Guthur>	http://api.zeromq.org/master:zmq-poll
+| [Monday 28 February 2011] [17:41:39] <Guthur>	EINTR is returned if there is a signal
+| [Monday 28 February 2011] [17:42:05] <Guthur>	well not return actually, the errno is set
+| [Monday 28 February 2011] [17:42:14] <Guthur>	poll returns -1
+| [Monday 28 February 2011] [17:42:18] <NoToes>	Guthur, Ah OK.
+| [Monday 28 February 2011] [17:43:22] <Guthur>	I think the issue I have here in linux MONO is something I can't really rectify, but is easily worked around
+| [Monday 28 February 2011] [17:44:20] <Guthur>	The OSX one is a little less clear
+| [Monday 28 February 2011] [17:44:29] <Guthur>	have you tried it outside Unity?
+| [Monday 28 February 2011] [17:45:47] <Ergo^>	Assertion failed: !pgm_supported () (zmq.cpp:240) - im doing something naughty :-) any ideas ?
+| [Monday 28 February 2011] [17:49:10] <NoToes>	Guthur, I'm trying now...
+| [Monday 28 February 2011] [17:53:53] <NoToes>	Guthur, it's working inside Unity now :(
+| [Monday 28 February 2011] [17:55:39] <Guthur>	I wonder if it's a MONO issue
+| [Monday 28 February 2011] [17:56:46] <Guthur>	but that doesn't really make much sense either, it's only a relatively simple interop call
+| [Monday 28 February 2011] [18:03:03] <NoToes>	Guthur I don't know enough about zmq to make sense of it. Is it possible that there is a shared native buffer referenced by multiple managed objects (or something like that)? Would explain why the running the GC helps and the timing issues.
+| [Monday 28 February 2011] [18:05:54] <Guthur>	NoToes, I'm looking through now
+| [Monday 28 February 2011] [18:22:39] <Guthur>	NoToes, Not seeing anything at the moment
+| [Monday 28 February 2011] [18:22:56] <pieterh>	Ergo^_: build using --with-openpgm afir
+| [Monday 28 February 2011] [18:23:18] <Guthur>	it's getting late here so i'll probably get my head down soon, sorry we've been unable to get this sorted for you
+| [Monday 28 February 2011] [18:23:30] <Guthur>	hopefully we'll get to the bottom of it eventually
+| [Monday 28 February 2011] [18:23:32] <Ergo^_>	pieterh, i just built 2.1.1 - and suddenly world is better ;-)
+| [Monday 28 February 2011] [18:23:39] <pieterh>	:-)
+| [Monday 28 February 2011] [18:24:22] <NoToes>	Guthur, Thanks for all your help.
+| [Monday 28 February 2011] [18:24:35] <Guthur>	no probs
+| [Monday 28 February 2011] [18:24:54] <Guthur>	I might drop by the MONO channel tomorrow and see if I can get an clues
+| [Monday 28 February 2011] [18:24:56] <Guthur>	an/any
+| [Monday 28 February 2011] [18:25:45] <Guthur>	ok, it's late, night all
+| [Monday 28 February 2011] [19:45:54] <cremes>	pieterh: https://github.com/zeromq/zeromq2/issues/174
+| [Monday 28 February 2011] [19:46:06] <cremes>	ha! i finally reproduced the condition i am seeing in my system
+| [Monday 28 February 2011] [19:46:17] <cremes>	there's a bug with ZMQ_LINGER and zmq_connect()
+| [Monday 28 February 2011] [19:46:37] <cremes>	when ZMQ_LINGER = 0, memory allocated for zmq_connect() will *eventually* get released (it's slow)
+| [Monday 28 February 2011] [19:46:51] <pieterh>	cremes: ok, I'll look at it tomorrow
+| [Monday 28 February 2011] [19:46:52] <cremes>	when ZMQ_LINGER > 0, the memory alloc'ed by zmq_connect() is *never* released
+| [Monday 28 February 2011] [19:47:11] <cremes>	oh, you're awake... i was just leaving a note for when you got up tomorrow
+| [Monday 28 February 2011] [19:47:19] <pieterh>	hah, IRC is now or never
+| [Monday 28 February 2011] [19:47:21] <cremes>	it's all documented in the issue
+| [Monday 28 February 2011] [19:47:23] <pieterh>	otherwise, email
+| [Monday 28 February 2011] [19:47:27] <cremes>	heh
+| [Monday 28 February 2011] [19:47:32] <pieterh>	i don't usually read back the IRC logs
+| [Monday 28 February 2011] [19:47:34] <cremes>	get some reset already!
+| [Monday 28 February 2011] [19:47:42] <cremes>	oh, i think sustrik does
+| [Monday 28 February 2011] [19:47:49] <pieterh>	yeah, there's an Orval waiting for me
+| [Monday 28 February 2011] [19:48:15] <cremes>	ok, take it easy... no worries about this issue... it has an easy work around
+| [Monday 28 February 2011] [19:48:28] <pieterh>	I almost have the client and worker ready for MDP
+| [Monday 28 February 2011] [19:48:31] <pieterh>	heh :-)
+| [Monday 28 February 2011] [19:48:44] <pieterh>	the broker will take a full day
+| [Monday 28 February 2011] [19:48:49] <cremes>	oh, very cool!
+| [Monday 28 February 2011] [19:48:57] <pieterh>	after that, the Titanic pattern
+| [Monday 28 February 2011] [19:49:00] <cremes>	using xreq/xrep for the server or just the client?
+| [Monday 28 February 2011] [19:49:12] <cremes>	i assume it is...
+| [Monday 28 February 2011] [19:49:14] <pieterh>	broker is xrep<==>xrep
+| [Monday 28 February 2011] [19:49:17] <pieterh>	client is req
+| [Monday 28 February 2011] [19:49:22] <pieterh>	worker is xreq
+| [Monday 28 February 2011] [19:49:28] <cremes>	oh, that's right, one job at a time for the worker
+| [Monday 28 February 2011] [19:49:37] <cremes>	er, client
+| [Monday 28 February 2011] [19:49:46] <pieterh>	I fixed the protocol so the broker can handle clients and workers on a single socket
+| [Monday 28 February 2011] [19:50:11] <pieterh>	not quite sure how I make this though, it'll need some of the containers from ZFL
+| [Monday 28 February 2011] [19:50:50] <pieterh>	i'll probably do as for zmsg, create a zlist and zhash clone of the ZFL classes
+| [Monday 28 February 2011] [19:51:01] <cremes>	yes, that makes sense
+| [Monday 28 February 2011] [19:51:07] <pieterh>	yeah
+| [Monday 28 February 2011] [19:51:14] <cremes>	i'm sure you'll have plenty of stuff to keep track of, e.g. routing envelopes
+| [Monday 28 February 2011] [19:51:23] <pieterh>	nah, that's all handled by zmsg
+| [Monday 28 February 2011] [19:51:28] <pieterh>	pretty much
+| [Monday 28 February 2011] [19:51:42] <pieterh>	the difficulty in C is no data structures to reuse
+| [Monday 28 February 2011] [19:51:51] <cremes>	really? i'll have to look at that C a little closer... all of this bug repro work has blown some of the rust off my C skills
+| [Monday 28 February 2011] [19:51:55] <pieterh>	it turns a 100-line example into a 500 line one
+| [Monday 28 February 2011] [19:52:01] <cremes>	yuck
+| [Monday 28 February 2011] [19:52:17] <pieterh>	one really needs to create abstractions
+| [Monday 28 February 2011] [19:53:09] <cremes>	i agree; my ruby code has many layers of abstractions
+| [Monday 28 February 2011] [19:53:20] <cremes>	i wouldn't be able to create some of the complex apps that i do without them
+| [Monday 28 February 2011] [19:53:24] <cremes>	my brain is too tiny
+| [Monday 28 February 2011] [19:53:37] <pieterh>	mine is so small it regularly falls out of my ears
+| [Monday 28 February 2011] [19:54:53] <cremes>	heh
+| [Monday 28 February 2011] [19:55:07] <cremes>	ok, time for me to get back to work...
+| [Monday 28 February 2011] [20:37:01] <ctarmor>	have anyone seen this error:  Exception in MSVCR100D - c0000005
+| [Monday 28 February 2011] [20:37:38] <ctarmor>	It occurs during heave volume
