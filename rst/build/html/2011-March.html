@@ -1,0 +1,474 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2011-March &mdash; ZeroMq IRC Log v0.1 documentation</title>
+    <link rel="stylesheet" href="static/default.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <link rel="top" title="ZeroMq IRC Log v0.1 documentation" href="index.html" />
+    <link rel="prev" title="2011-February" href="2011-February.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="2011-February.html" title="2011-February"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">ZeroMq IRC Log v0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="march">
+<h1>2011-March<a class="headerlink" href="#march" title="Permalink to this headline">¶</a></h1>
+<div class="line-block">
+<div class="line">[Tuesday 01 March 2011] [00:29:05] &lt;cremes&gt;   andrewvc: for a little bit; what&#8217;s up?</div>
+<div class="line">[Tuesday 01 March 2011] [00:29:22] &lt;andrewvc&gt; hey, some good news, wanted your thoughts on something</div>
+<div class="line">[Tuesday 01 March 2011] [00:29:35] &lt;andrewvc&gt; so, one issue with ffi-rzmq is depending on ffi</div>
+<div class="line">[Tuesday 01 March 2011] [00:29:48] &lt;andrewvc&gt; which is good in MRI, but bad in RBX and jRuby</div>
+<div class="line">[Tuesday 01 March 2011] [00:30:02] &lt;cremes&gt;   right</div>
+<div class="line">[Tuesday 01 March 2011] [00:30:16] &lt;andrewvc&gt; <a class="reference external" href="https://github.com/andrewvc/em-zeromq/blob/master/em-zeromq.gemspec">https://github.com/andrewvc/em-zeromq/blob/master/em-zeromq.gemspec</a></div>
+<div class="line">[Tuesday 01 March 2011] [00:30:21] &lt;andrewvc&gt; did you know you can do that in a gemspec?</div>
+<div class="line">[Tuesday 01 March 2011] [00:30:26] &lt;cremes&gt;   the jruby &amp; rbx guys are working on a solution so the dependencies are tracked properly</div>
+<div class="line">[Tuesday 01 March 2011] [00:30:26] &lt;andrewvc&gt; I <a class="reference external" href="https://github.com/andrewvc/em-zeromq/blob/master/em-zeromq.gemspec#L20">https://github.com/andrewvc/em-zeromq/blob/master/em-zeromq.gemspec#L20</a></div>
+<div class="line">[Tuesday 01 March 2011] [00:30:29] &lt;andrewvc&gt; err that line</div>
+<div class="line">[Tuesday 01 March 2011] [00:30:33] &lt;andrewvc&gt; I think that should work</div>
+<div class="line">[Tuesday 01 March 2011] [00:30:51] &lt;cremes&gt;   true!</div>
+<div class="line">[Tuesday 01 March 2011] [00:30:57] &lt;cremes&gt;   it&#8217;s just ruby after all</div>
+<div class="line">[Tuesday 01 March 2011] [00:31:01] &lt;andrewvc&gt; yep</div>
+<div class="line">[Tuesday 01 March 2011] [00:31:19] &lt;andrewvc&gt; yeah, oruen contributed that bit</div>
+<div class="line">[Tuesday 01 March 2011] [00:31:27] &lt;cremes&gt;   i&#8217;ll commit something similar; thanks for the idea</div>
+<div class="line">[Tuesday 01 March 2011] [00:31:31] &lt;andrewvc&gt; but it should really be in ffi-rzmq not em-zeromq</div>
+<div class="line">[Tuesday 01 March 2011] [00:31:36] &lt;andrewvc&gt; cool, actually, one other thing</div>
+<div class="line">[Tuesday 01 March 2011] [00:31:46] &lt;andrewvc&gt; he switched me off bones and onto bundler for gem releases</div>
+<div class="line">[Tuesday 01 March 2011] [00:32:01] &lt;cremes&gt;   yeah, i saw that; honeslty, bones has been pissing me off</div>
+<div class="line">[Tuesday 01 March 2011] [00:32:09] &lt;andrewvc&gt; yeah, it doesn&#8217;t work well under rbx either</div>
+<div class="line">[Tuesday 01 March 2011] [00:32:12] &lt;cremes&gt;   there is no compatibility between the 2.x and 3.x versions</div>
+<div class="line">[Tuesday 01 March 2011] [00:32:29] &lt;andrewvc&gt; oh? yeah it&#8217;s a bit of overkill, the skeleton is nice, the rake tasks, not so much</div>
+<div class="line">[Tuesday 01 March 2011] [00:32:51] &lt;cremes&gt;   it&#8217;s kind of a big change for so little benefit... i&#8217;m open to suggestions and/or patches</div>
+<div class="line">[Tuesday 01 March 2011] [00:33:07] &lt;andrewvc&gt; yeah, I&#8217;ll throw one together this week if you like the idea</div>
+<div class="line">[Tuesday 01 March 2011] [00:33:19] &lt;cremes&gt;   sure</div>
+<div class="line">[Tuesday 01 March 2011] [00:33:30] &lt;andrewvc&gt; I&#8217;m excited with these changes it should finally be possible to just gem install and get everything you need</div>
+<div class="line">[Tuesday 01 March 2011] [00:34:05] &lt;cremes&gt;   that is a nice little benefit; the &#8216;ffi&#8217; gem situation has been poor for a while now</div>
+<div class="line">[Tuesday 01 March 2011] [00:34:09] &lt;andrewvc&gt; right now dripdrop needs a custom eventmachine and libzeromq2 and maybe ffi.</div>
+<div class="line">[Tuesday 01 March 2011] [00:34:15] &lt;andrewvc&gt; such a pain</div>
+<div class="line">[Tuesday 01 March 2011] [00:34:18] &lt;cremes&gt;   true</div>
+<div class="line">[Tuesday 01 March 2011] [00:34:28] &lt;cremes&gt;   every little bit to make it easier is worthwhile</div>
+<div class="line">[Tuesday 01 March 2011] [00:35:22] &lt;andrewvc&gt; yep, the only missing piece is probably an apt package for a current zeromq</div>
+<div class="line">[Tuesday 01 March 2011] [00:35:47] &lt;andrewvc&gt; but that&#8217;s prolly about 2 years off :)</div>
+<div class="line">[Tuesday 01 March 2011] [00:35:59] &lt;cremes&gt;   well, 0mq seems to be moving a little faster again... packages are always out of date</div>
+<div class="line">[Tuesday 01 March 2011] [00:36:04] &lt;cremes&gt;   we live in a git world now</div>
+<div class="line">[Tuesday 01 March 2011] [00:36:20] &lt;andrewvc&gt; yeah, someone should right an apt adapter to github</div>
+<div class="line">[Tuesday 01 March 2011] [00:36:38] &lt;andrewvc&gt; or git in general I guess</div>
+<div class="line">[Tuesday 01 March 2011] [00:37:30] &lt;andrewvc&gt; hmmm, that&#8217;s definitely going on my spare time ideas list</div>
+<div class="line">[Tuesday 01 March 2011] [00:41:01] &lt;cremes&gt;   i think something like that exists already... but i can&#8217;t remember where i saw it :(</div>
+<div class="line">[Tuesday 01 March 2011] [00:41:02] &lt;cremes&gt;   time for bed... i&#8217;ve been burning the candle at both ends lately</div>
+<div class="line">[Tuesday 01 March 2011] [02:50:32] &lt;jstrom`&gt;  Hi ppl! I&#8217;m playing a bit with async zmq (2.1.1rc) and perl on FreeBSD.. Building a POE socket wrapper (yes i know about the anyevent/moose thingy), works great! However, when I close sockets (pub/sub tcp in same app) it crashes :/ Seems to sometimes crash in mailbox_t::send right after close(), and sometimes it can close both but then crash in kqueue::kevent_add.. Is there any known bugs regarding kqueue/freebsd/perl? I&#8217;ve tried to reproduce in C but canno</div>
+<div class="line">[Tuesday 01 March 2011] [02:52:05] &lt;jstrom`&gt;  if it doesnt crash in close, the kevent_add crash comes right after the close() calls (waiting a bit before calling ctx-&gt;terminate()).</div>
+<div class="line">[Tuesday 01 March 2011] [02:58:42] &lt;jstrom`&gt;  the perl unittests seems to work at least.. hrm.. gotta dig deeper i guess :)</div>
+<div class="line">[Tuesday 01 March 2011] [03:00:35] &lt;jstrom`&gt;  the crash in send is hitting errno_assert (nbytes != -1); in mailbox_t::send</div>
+<div class="line">[Tuesday 01 March 2011] [03:15:49] &lt;private_meta&gt;     jstrom`: Your first message was cut off after &#8220;reproduce in C but canno&#8221;</div>
+<div class="line">[Tuesday 01 March 2011] [03:21:54] &lt;jstrom`&gt;  doh, ah well nothing vital there: I&#8217;ve tried to reproduce in C but cannot</div>
+<div class="line">[Tuesday 01 March 2011] [03:21:55] &lt;jstrom`&gt;                      really get it to fail there..</div>
+<div class="line">[Tuesday 01 March 2011] [03:21:59] &lt;jstrom`&gt;  (evil newlines!)</div>
+<div class="line">[Tuesday 01 March 2011] [03:22:31] &lt;jstrom`&gt;  errno=35 (EAGAIN) when i hit the assert btw</div>
+<div class="line">[Tuesday 01 March 2011] [03:37:42] &lt;sustrik&gt;  jstrom`: afaics what&#8217;s happening there is 0mq filling up the socketpair buffer, so it doubles it&#8217;s size, checks whether size was doubled and tries to write to the socketpair once again &#8211; it fails but it should not</div>
+<div class="line">[Tuesday 01 March 2011] [03:37:57] &lt;sustrik&gt;  some strange freebsd quirk i assume</div>
+<div class="line">[Tuesday 01 March 2011] [03:39:47] &lt;jstrom`&gt;  maybee, will try harder to reproduce in C (havent gotten around to do select stuff there, only open pub/sub, then send/recv and then close)</div>
+<div class="line">[Tuesday 01 March 2011] [03:40:10] &lt;sustrik&gt;  you don&#8217;t have to reproduce it</div>
+<div class="line">[Tuesday 01 March 2011] [03:40:23] &lt;sustrik&gt;  the question is why freebsd behaves in such a way</div>
+<div class="line">[Tuesday 01 March 2011] [03:40:31] &lt;sustrik&gt;  and whether it can be worked around</div>
+<div class="line">[Tuesday 01 March 2011] [03:41:09] &lt;jstrom`&gt;  mkey</div>
+<div class="line">[Tuesday 01 March 2011] [03:41:59] &lt;jstrom`&gt;  I&#8217;ll try to strip it down to a simple test case at least :)</div>
+<div class="line">[Tuesday 01 March 2011] [03:48:59] &lt;private_meta&gt;     The term &#8220;workaround&#8221; makes me shudder every time I read or hear it...</div>
+<div class="line">[Tuesday 01 March 2011] [03:52:31] &lt;sustrik&gt;  that&#8217;s often exaclty what you have to do in the case with OS bug :)</div>
+<div class="line">[Tuesday 01 March 2011] [04:01:56] &lt;jstrom`&gt;  hm simple non-FD-based socket(),socket(),send(),recv(),close(),close(),term() works fine.. seems to be in more advanced cases the problem occurs (i can reproduce it fully there). Will continue until i get a working testcase, but will have to do it later today.</div>
+<div class="line">[Tuesday 01 March 2011] [04:07:56] &lt;private_meta&gt;     Hmm... if heartbeats are asynchroneous in both directions and heartbeat sending and receiving are made via zmq_poll on the server side, how can you make independent sending on the client side if you don&#8217;t have zmq_poll&#8217;s timeouts?</div>
+<div class="line">[Tuesday 01 March 2011] [04:38:02] &lt;private_meta&gt;     When using socket_t::getsockopt, the equivalent of C&#8217;s zmq_getsockopt in C++, it works if I call getsockopt in the same function as I create the socket, but fails if I give the socket pointer to a different function and request it there. It gives me an invalid argument error in the function.</div>
+<div class="line">[Tuesday 01 March 2011] [04:38:20] &lt;private_meta&gt;     According to the man pages, that&#8217;s &#8220;The requested option option_name is unknown, or the requested option_len or option_value is invalid, or the size of the buffer pointed to by option_value, as specified by option_len, is insufficient for storing the option value.&#8221;</div>
+<div class="line">[Tuesday 01 March 2011] [04:38:43] &lt;private_meta&gt;     But I call it exactly the same, I even call the same pointer, but in two different places, yet the same thread. Any idea what might be the problem there?</div>
+<div class="line">[Tuesday 01 March 2011] [04:45:55] &lt;private_meta&gt;     hmm now it suddenly works... I hate demonstrative effects to the core</div>
+<div class="line">[Tuesday 01 March 2011] [04:46:28] &lt;private_meta&gt;     Somewhat unreliable behavior</div>
+<div class="line">[Tuesday 01 March 2011] [05:48:22] &lt;Guthur&gt;   sustrik: will there be minutes are a webcast of the meetup at san fran</div>
+<div class="line">[Tuesday 01 March 2011] [06:35:32] &lt;jstrom`&gt;  sustrik: i think i found the problem.. I was using IO::Handle to wrap the ZMQ_FD to make it select&#8217;able in POE, and i accidentally called close() on the IO::handle, which means close() on the actual FD..</div>
+<div class="line">[Tuesday 01 March 2011] [06:37:44] &lt;jstrom`&gt;  so, not a ZMQ/freebsd problem, just buggy code on my end :)</div>
+<div class="line">[Tuesday 01 March 2011] [06:41:53] &lt;Guest19497&gt;       can any one help me about 0mq</div>
+<div class="line">[Tuesday 01 March 2011] [06:41:56] &lt;skm&gt;      0mq for sending files: stupid idea, yes?</div>
+<div class="line">[Tuesday 01 March 2011] [06:42:15] &lt;Guest19497&gt;       what the 0mq architecture?</div>
+<div class="line">[Tuesday 01 March 2011] [06:42:19] &lt;drbobbeaty&gt;       skim: It&#8217;s not what I&#8217;d use, no.</div>
+<div class="line">[Tuesday 01 March 2011] [06:42:41] &lt;Guest19497&gt;       hi</div>
+<div class="line">[Tuesday 01 March 2011] [06:42:55] &lt;skm&gt;      sweet - ill stick to 0mq for messaging and regular sockets for file sending</div>
+<div class="line">[Tuesday 01 March 2011] [06:43:17] &lt;drbobbeaty&gt;       Guest19497: There&#8217;s a very nice into to ZeroMQ at <a class="reference external" href="http://zguide.zeromq.org/page:all">http://zguide.zeromq.org/page:all</a></div>
+<div class="line">[Tuesday 01 March 2011] [06:43:59] &lt;Guest19497&gt;       thanks</div>
+<div class="line">[Tuesday 01 March 2011] [06:44:10] &lt;drbobbeaty&gt;       Guest19497: it contains lots of examples, explanations, even different language bindings.</div>
+<div class="line">[Tuesday 01 March 2011] [06:44:35] &lt;pieterh&gt;  I&#8217;ve made a URL shortener at zero.mq</div>
+<div class="line">[Tuesday 01 March 2011] [06:45:00] &lt;pieterh&gt;  e.g. <a class="reference external" href="http://zero.mq/ib-">http://zero.mq/ib-</a>&gt;https://github.com/ianbarber/ZeroMQ-Talk</div>
+<div class="line">[Tuesday 01 March 2011] [06:45:08] &lt;pieterh&gt;  if anyone wants access to this, let me know</div>
+<div class="line">[Tuesday 01 March 2011] [06:53:40] &lt;private_meta&gt;     pieterh: hmm... when trying to translate the lazy pirate pattern to C++ I get assertions</div>
+<div class="line">[Tuesday 01 March 2011] [06:54:05] &lt;pieterh&gt;  private_meta: such as...?</div>
+<div class="line">[Tuesday 01 March 2011] [06:54:53] &lt;private_meta&gt;     I have the lazy pirate client, I try to start it, and I would have the setsockopt call for ZMQ_LINGER. When calling it, I get the error &#8220;Assertion failed: rc == 0 (zmq_connecter.cpp:47)&#8221;</div>
+<div class="line">[Tuesday 01 March 2011] [06:55:00] &lt;pieterh&gt;  please post your code to a gist</div>
+<div class="line">[Tuesday 01 March 2011] [06:55:05] &lt;private_meta&gt;     gist?</div>
+<div class="line">[Tuesday 01 March 2011] [06:55:18] &lt;pieterh&gt;  gist.github.com or another pastebin</div>
+<div class="line">[Tuesday 01 March 2011] [06:55:40] &lt;pieterh&gt;  presumably the connection failed because you have no server running?</div>
+<div class="line">[Tuesday 01 March 2011] [06:55:56] &lt;pieterh&gt;  I don&#8217;t know, can&#8217;t tell without code to look at...</div>
+<div class="line">[Tuesday 01 March 2011] [06:56:13] &lt;pieterh&gt;  you&#8217;ve run the C code, and it works?</div>
+<div class="line">[Tuesday 01 March 2011] [06:56:32] &lt;private_meta&gt;     The server is running</div>
+<div class="line">[Tuesday 01 March 2011] [06:56:39] &lt;private_meta&gt;     hmm... No, I didn&#8217;t try the C version</div>
+<div class="line">[Tuesday 01 March 2011] [06:56:55] &lt;private_meta&gt;     I don&#8217;t really code in C, I try to avoid it</div>
+<div class="line">[Tuesday 01 March 2011] [06:56:58] &lt;private_meta&gt;     (don&#8217;t like it)</div>
+<div class="line">[Tuesday 01 March 2011] [06:57:38] &lt;pieterh&gt;  at least run it, as a sanity check</div>
+<div class="line">[Tuesday 01 March 2011] [06:57:55] &lt;private_meta&gt;     meh... I&#8217;ll try</div>
+<div class="line">[Tuesday 01 March 2011] [06:58:34] &lt;pieterh&gt;  it&#8217;s a basic tool for problem solving, replace pieces and see when it starts/stops breaking</div>
+<div class="line">[Tuesday 01 March 2011] [07:00:18] &lt;private_meta&gt;     pieterh: btw, you wrote in the docs that you use the lazy pirate client for the paranoid pirate server. You made heartbeats in the server, but apparently not on the client. am I misunderstanding something there?</div>
+<div class="line">[Tuesday 01 March 2011] [07:00:28] &lt;pieterh&gt;  nope, that&#8217;s how it works</div>
+<div class="line">[Tuesday 01 March 2011] [07:01:02] &lt;pieterh&gt;  there are good reasons to do heartbeating from queue to worker, but not from client to queue, afaics</div>
+<div class="line">[Tuesday 01 March 2011] [07:01:27] &lt;pieterh&gt;  queues don&#8217;t hold any resources per client</div>
+<div class="line">[Tuesday 01 March 2011] [07:01:39] &lt;pieterh&gt;  clients don&#8217;t care if the queue is present/absent except when they are doing a request</div>
+<div class="line">[Tuesday 01 March 2011] [07:01:51] &lt;private_meta&gt;     You send a heartbeat out, but the client doesn&#8217;t even seem to receive one, I don&#8217;t quite get how that works to assure that there actually IS a working connection</div>
+<div class="line">[Tuesday 01 March 2011] [07:02:08] &lt;pieterh&gt;  the client-to-queue dialog has no heartbeating</div>
+<div class="line">[Tuesday 01 March 2011] [07:02:48] &lt;private_meta&gt;     ok, you say, queue, do you mean the server?</div>
+<div class="line">[Tuesday 01 March 2011] [07:03:10] &lt;pieterh&gt;  I&#8217;m avoiding the word &#8216;server&#8217; because it&#8217;s ambiguous</div>
+<div class="line">[Tuesday 01 March 2011] [07:03:19] &lt;pieterh&gt;  we have client, queue, and worker</div>
+<div class="line">[Tuesday 01 March 2011] [07:03:30] &lt;pieterh&gt;  when I say &#8216;queue&#8217;, I mean &#8216;queue&#8217;... :-)</div>
+<div class="line">[Tuesday 01 March 2011] [07:05:14] &lt;private_meta&gt;     ok, then can you define those three, what they do exactly, because I didn&#8217;t seem to find any good definition in the docs</div>
+<div class="line">[Tuesday 01 March 2011] [07:05:49] &lt;pieterh&gt;  it is always local to the pattern</div>
+<div class="line">[Tuesday 01 March 2011] [07:06:02] &lt;pieterh&gt;  that&#8217;s why I provide a schema for each pattern with the boxes clearly labelled</div>
+<div class="line">[Tuesday 01 March 2011] [07:06:18] &lt;pieterh&gt;  client is easy</div>
+<div class="line">[Tuesday 01 March 2011] [07:06:21] &lt;pieterh&gt;  queue is easy</div>
+<div class="line">[Tuesday 01 March 2011] [07:06:28] &lt;pieterh&gt;  worker is also unambiguous</div>
+<div class="line">[Tuesday 01 March 2011] [07:06:41] &lt;pieterh&gt;  but &#8220;server&#8221; is anything that accepts a connection, or does work, or ...</div>
+<div class="line">[Tuesday 01 March 2011] [07:07:42] &lt;private_meta&gt;     So going after figure 21 in the docs, &#8220;Client&#8221; is what I and everyone I work with always understood as &#8220;Server&#8221;, and &#8220;worker&#8221; is what I understand as &#8220;Client&#8221;, and the &#8220;Server in the figure is something I didn&#8217;t even name yet in that regard</div>
+<div class="line">[Tuesday 01 March 2011] [07:08:19] &lt;private_meta&gt;     I have never met anyone who defined it the way it&#8217;s defined here</div>
+<div class="line">[Tuesday 01 March 2011] [07:10:48] &lt;pieterh&gt;  private_meta: figure 21 is really clear</div>
+<div class="line">[Tuesday 01 March 2011] [07:11:01] &lt;pieterh&gt;  the client is the application that makes a request</div>
+<div class="line">[Tuesday 01 March 2011] [07:11:10] &lt;pieterh&gt;  the server is the host that does the work</div>
+<div class="line">[Tuesday 01 March 2011] [07:11:21] &lt;private_meta&gt;     pieterh: Yeah, according to that, as I said, I never met ANYONE who defined it like that, not even remotely</div>
+<div class="line">[Tuesday 01 March 2011] [07:11:21] &lt;pieterh&gt;  hmm, e.g. web browser and web server</div>
+<div class="line">[Tuesday 01 March 2011] [07:11:30] &lt;pieterh&gt;  so your browser is a &#8220;server&#8221;?</div>
+<div class="line">[Tuesday 01 March 2011] [07:11:44] &lt;pieterh&gt;  and google.com is the &#8220;client&#8221; of your browser?</div>
+<div class="line">[Tuesday 01 March 2011] [07:11:59] &lt;private_meta&gt;     No, my browser is a client, google is a server</div>
+<div class="line">[Tuesday 01 March 2011] [07:12:06] &lt;pieterh&gt;  and that&#8217;s figure 21</div>
+<div class="line">[Tuesday 01 March 2011] [07:12:22] &lt;pieterh&gt;  what&#8217;s confusing about it?</div>
+<div class="line">[Tuesday 01 March 2011] [07:12:33] &lt;pieterh&gt;  maybe you want the server at the top of the page, and the client below?</div>
+<div class="line">[Tuesday 01 March 2011] [07:12:46] &lt;pieterh&gt;  all the diagrams show the logical flow of requests / tasks from top to bottom</div>
+<div class="line">[Tuesday 01 March 2011] [07:13:23] &lt;private_meta&gt;     Wait, in Figure 21 Google would be the worker?</div>
+<div class="line">[Tuesday 01 March 2011] [07:13:28] &lt;pieterh&gt;  figure 21 shows an application server, in fact</div>
+<div class="line">[Tuesday 01 March 2011] [07:13:41] &lt;pieterh&gt;  workers are applications, if you like</div>
+<div class="line">[Tuesday 01 March 2011] [07:13:55] &lt;pieterh&gt;  server plugins</div>
+<div class="line">[Tuesday 01 March 2011] [07:14:16] &lt;pieterh&gt;  this is all classic stuff, can I please go back to my Majordomo coding now ? :-)</div>
+<div class="line">[Tuesday 01 March 2011] [07:14:37] &lt;private_meta&gt;     Well, you didn&#8217;t really help me understand it</div>
+<div class="line">[Tuesday 01 March 2011] [07:14:41] &lt;private_meta&gt;     :/</div>
+<div class="line">[Tuesday 01 March 2011] [07:14:51] &lt;pieterh&gt;  since you don&#8217;t tell me what your confusion is...</div>
+<div class="line">[Tuesday 01 March 2011] [07:15:00] &lt;pieterh&gt;  I&#8217;d suggest reading the text like 10 times until it clicks</div>
+<div class="line">[Tuesday 01 March 2011] [07:15:17] &lt;pieterh&gt;  these concepts are slippery, I know</div>
+<div class="line">[Tuesday 01 March 2011] [07:15:32] &lt;pieterh&gt;  but I can&#8217;t explain them over IRC better than the text and pictures already do</div>
+<div class="line">[Tuesday 01 March 2011] [07:15:54] &lt;private_meta&gt;     Well, just give me a real world example what CLIENT, SERVER and WORKER would be in an example I can understand</div>
+<div class="line">[Tuesday 01 March 2011] [07:15:58] &lt;private_meta&gt;     you&#8217;re giving me confusing information</div>
+<div class="line">[Tuesday 01 March 2011] [07:16:09] &lt;pieterh&gt;  I&#8217;ve just done that, you&#8217;re making me repeat myself</div>
+<div class="line">[Tuesday 01 March 2011] [07:16:14] &lt;pieterh&gt;  web browser = client</div>
+<div class="line">[Tuesday 01 March 2011] [07:16:18] &lt;pieterh&gt;  web server = server</div>
+<div class="line">[Tuesday 01 March 2011] [07:16:31] &lt;pieterh&gt;  PHP application producing web content = worker</div>
+<div class="line">[Tuesday 01 March 2011] [07:16:37] &lt;private_meta&gt;     ok, that was clear</div>
+<div class="line">[Tuesday 01 March 2011] [07:16:41] &lt;pieterh&gt;  there are hundreds of such examples</div>
+<div class="line">[Tuesday 01 March 2011] [07:16:42] &lt;guido_g&gt;  rofl</div>
+<div class="line">[Tuesday 01 March 2011] [07:16:42] &lt;private_meta&gt;     it wasn&#8217;t clear before</div>
+<div class="line">[Tuesday 01 March 2011] [07:17:15] &lt;private_meta&gt;     hmm... sanity check for lazy pirate pattern worked in C</div>
+<div class="line">[Tuesday 01 March 2011] [07:17:16] &lt;guido_g&gt;  &lt;private_meta&gt; I have never met anyone who defined it the way it&#8217;s defined here  &lt;- hard to believe</div>
+<div class="line">[Tuesday 01 March 2011] [07:17:23] &lt;pieterh&gt;  private_meta: like I said, re-read the text until it clicks</div>
+<div class="line">[Tuesday 01 March 2011] [07:18:30] &lt;private_meta&gt;     int linger = 0; client-&gt;setsockopt(ZMQ_LINGER, &amp;linger, sizeof(linger)); &lt;&#8211; that line fails in c++</div>
+<div class="line">[Tuesday 01 March 2011] [07:19:03] &lt;skm&gt;      i have 3 servers that dish out work (in the form of mp3 files) and 5 clients that need to receive the files - i want to add servers and clients with little effort so im going to have a manager inbetween them all..</div>
+<div class="line">[Tuesday 01 March 2011] [07:19:30] &lt;jugg&gt;     eh, api.zeromq.org is broken...</div>
+<div class="line">[Tuesday 01 March 2011] [07:19:35] &lt;skm&gt;      im using push/pull for the servers - my problem is what if the manager fails then comes back up - what&#8217;s the best way to resend the files</div>
+<div class="line">[Tuesday 01 March 2011] [07:19:36] &lt;pieterh&gt;  jugg: where?</div>
+<div class="line">[Tuesday 01 March 2011] [07:19:47] &lt;jugg&gt;     <a class="reference external" href="http://api.zeromq.org/zmq-setsockopt-html">http://api.zeromq.org/zmq-setsockopt-html</a></div>
+<div class="line">[Tuesday 01 March 2011] [07:19:54] &lt;jugg&gt;     but any of the links</div>
+<div class="line">[Tuesday 01 March 2011] [07:20:04] &lt;skm&gt;      (the files exist on the server until a client downloads it from the server - the manager just has a list in a queue)</div>
+<div class="line">[Tuesday 01 March 2011] [07:20:14] &lt;pieterh&gt;  skm: there&#8217;s no documented patterns for reliable push/pull, I&#8217;m working on those</div>
+<div class="line">[Tuesday 01 March 2011] [07:20:18] &lt;pieterh&gt;  jugg: bleh</div>
+<div class="line">[Tuesday 01 March 2011] [07:20:25] &lt;private_meta&gt;     pieterh: yeah, all links from the guide to the api are broken</div>
+<div class="line">[Tuesday 01 March 2011] [07:20:36] &lt;private_meta&gt;     or seem to be</div>
+<div class="line">[Tuesday 01 March 2011] [07:20:37] &lt;jugg&gt;     hmm, looks like api.zeromq.org was cached, forced refresh pulls the new page.</div>
+<div class="line">[Tuesday 01 March 2011] [07:20:44] &lt;pieterh&gt;  private_meta: nope, fixed those about 10 minutes ago, reload</div>
+<div class="line">[Tuesday 01 March 2011] [07:20:44] &lt;jugg&gt;     which has different links</div>
+<div class="line">[Tuesday 01 March 2011] [07:20:57] &lt;pieterh&gt;  jugg: I&#8217;ll need to make forwards from all the old API pages... bleh</div>
+<div class="line">[Tuesday 01 March 2011] [07:21:07] &lt;jugg&gt;     yah</div>
+<div class="line">[Tuesday 01 March 2011] [07:21:15] &lt;private_meta&gt;     ah ok</div>
+<div class="line">[Tuesday 01 March 2011] [07:21:25] &lt;private_meta&gt;     just reloaded 30 minutes ago XD</div>
+<div class="line">[Tuesday 01 March 2011] [07:22:11] &lt;private_meta&gt;     pieterh: maybe I made a mistake, but I thought it should be a working translation <a class="reference external" href="https://gist.github.com/45ae7e2a36ad5c1ca50f">https://gist.github.com/45ae7e2a36ad5c1ca50f</a> <a class="reference external" href="https://gist.github.com/a4df2891f9c8edc1ac0c">https://gist.github.com/a4df2891f9c8edc1ac0c</a></div>
+<div class="line">[Tuesday 01 March 2011] [07:23:30] &lt;jugg&gt;     v2.1.1 is not tagged in Git</div>
+<div class="line">[Tuesday 01 March 2011] [07:23:51] &lt;pieterh&gt;  private_meta: yeah, it looks OK, I&#8217;ve no idea why the C++ setsockopt would be failing</div>
+<div class="line">[Tuesday 01 March 2011] [07:24:06] &lt;pieterh&gt;  jugg: it&#8217;s in <a class="reference external" href="http://github.com/zeromq/zeromq2-1">http://github.com/zeromq/zeromq2-1</a></div>
+<div class="line">[Tuesday 01 March 2011] [07:24:16] &lt;pieterh&gt;  we forked the repository to make life easier for everyone</div>
+<div class="line">[Tuesday 01 March 2011] [07:24:38] &lt;jugg&gt;     ugh</div>
+<div class="line">[Tuesday 01 March 2011] [07:25:19] &lt;pieterh&gt;  jugg: there are pros and cons but it&#8217;s simplified our work a lot</div>
+<div class="line">[Tuesday 01 March 2011] [07:25:29] &lt;private_meta&gt;     The setsockopt fails with the error stated 30 minutes ago, and if continued I get the error &#8220;Bad file descriptor, nbytes != -1 (mailbox.cpp:241)&#8221;</div>
+<div class="line">[Tuesday 01 March 2011] [07:25:38] &lt;jugg&gt;     well, thankfully Git supports multiple remotes...</div>
+<div class="line">[Tuesday 01 March 2011] [07:30:05] &lt;private_meta&gt;     pieterh: Now that I got the terminology described, my worker needs to know if the client is there, and my client needs to know if my worker is there, so i need heartbeats from client to server and vice versa, that&#8217;s why I was asking before about the heartbeats</div>
+<div class="line">[Tuesday 01 March 2011] [07:31:31] &lt;Guthur&gt;   umm this talk of linger has just made be notice a minor type bug in clrzmq2</div>
+<div class="line">[Tuesday 01 March 2011] [07:31:39] &lt;Guthur&gt;   at least it was good for something, hehe</div>
+<div class="line">[Tuesday 01 March 2011] [07:32:54] &lt;Guthur&gt;   be/me</div>
+<div class="line">[Tuesday 01 March 2011] [07:34:46] &lt;pieterh&gt;  private_meta: what pattern are you talking about?</div>
+<div class="line">[Tuesday 01 March 2011] [07:34:56] &lt;pieterh&gt;  figure 21 is asynchronous server</div>
+<div class="line">[Tuesday 01 March 2011] [07:35:11] &lt;pieterh&gt;  clients don&#8217;t see workers, workers don&#8217;t see clients</div>
+<div class="line">[Tuesday 01 March 2011] [07:35:20] &lt;private_meta&gt;     pieterh: I was talking about figure 21 because it made it understandable somewhat more easily</div>
+<div class="line">[Tuesday 01 March 2011] [07:36:01] &lt;pieterh&gt;  jugg: all the old API links should properly redirect now</div>
+<div class="line">[Tuesday 01 March 2011] [07:36:08] &lt;pieterh&gt;  I sent them to 2.1.1</div>
+<div class="line">[Tuesday 01 March 2011] [07:39:21] &lt;private_meta&gt;     pieterh: I need custom routing, something like router-to-dealer, but with heartbeating, but in both directions, as workers and clients should be aware of each other</div>
+<div class="line">[Tuesday 01 March 2011] [07:39:57] &lt;private_meta&gt;     I don&#8217;t know if there is a pattern more fitting to that</div>
+<div class="line">[Tuesday 01 March 2011] [07:40:06] &lt;pieterh&gt;  take a look at <a class="reference external" href="http://zero.mq/md">http://zero.mq/md</a>, specifically the server protocol, it may what you need</div>
+<div class="line">[Tuesday 01 March 2011] [07:40:29] &lt;pieterh&gt;  your client could implement the broker part of the protocol</div>
+<div class="line">[Tuesday 01 March 2011] [07:40:56] &lt;jugg&gt;     pieterh, looks like it.</div>
+<div class="line">[Tuesday 01 March 2011] [07:41:05] &lt;pieterh&gt;  if you implement precisely the protocol as specified it&#8217;ll interoperate with other code using the same spec</div>
+<div class="line">[Tuesday 01 March 2011] [07:41:09] &lt;pieterh&gt;  jugg: great!</div>
+<div class="line">[Tuesday 01 March 2011] [07:46:20] &lt;private_meta&gt;     pieterh: ok, so I would have n Clients and 1 Worker I assume</div>
+<div class="line">[Tuesday 01 March 2011] [08:03:24] &lt;private_meta&gt;     So if I adhere to the protocol specifications best as possible, a guide chapter is in the works to help me with the problem specificied</div>
+<div class="line">[Tuesday 01 March 2011] [08:03:29] &lt;private_meta&gt;     ?</div>
+<div class="line">[Tuesday 01 March 2011] [08:15:17] &lt;skm&gt;      if i have 1 client pushing and 3 clients pulling - if the client pushes 100msgs will they be sent to the first client that connects</div>
+<div class="line">[Tuesday 01 March 2011] [08:15:24] &lt;skm&gt;      or in order of each client recving</div>
+<div class="line">[Tuesday 01 March 2011] [08:19:31] &lt;private_meta&gt;     pieterh: should I create an issue for the ZMQ_LINGER problem in the c++ translation?</div>
+<div class="line">[Tuesday 01 March 2011] [08:21:01] &lt;cremes&gt;   private_meta: put up a pastie with the compilation error; that c++ you posted earlier looked correct</div>
+<div class="line">[Tuesday 01 March 2011] [08:21:17] &lt;private_meta&gt;     cremes: there&#8217;s a runtime error, not a compilation error</div>
+<div class="line">[Tuesday 01 March 2011] [08:21:47] &lt;cremes&gt;   ok, then post that error (all of it)</div>
+<div class="line">[Tuesday 01 March 2011] [08:22:04] &lt;private_meta&gt;     Yeah, just wanted to say that it doesn&#8217;t change that I should post the error :)</div>
+<div class="line">[Tuesday 01 March 2011] [08:22:12] &lt;cremes&gt;   heh</div>
+<div class="line">[Tuesday 01 March 2011] [08:26:34] &lt;private_meta&gt;     cremes: theoretically, if it&#8217;s translated correctly, the C server should work with the C++ client, shouldn&#8217;t it?</div>
+<div class="line">[Tuesday 01 March 2011] [08:27:17] &lt;cremes&gt;   yes; i have 0mq from ruby interacting with 0mq from C on a regular basis</div>
+<div class="line">[Tuesday 01 March 2011] [08:27:39] &lt;cremes&gt;   and it&#8217;s not even theoretical!</div>
+<div class="line">[Tuesday 01 March 2011] [08:27:43] &lt;cremes&gt;   :)</div>
+<div class="line">[Tuesday 01 March 2011] [08:27:55] &lt;stimpie&gt;  Iam having some problems using an xrep socket on en inproc transport, any way of sniffing or logging the inproc transport?</div>
+<div class="line">[Tuesday 01 March 2011] [08:28:47] &lt;cremes&gt;   stimpie: i am not sure.... there is a new &#8220;sys&#8221; logging facility that may be of use</div>
+<div class="line">[Tuesday 01 March 2011] [08:29:01] &lt;cremes&gt;   check the mail archives for discussion or the git log for patches</div>
+<div class="line">[Tuesday 01 March 2011] [08:29:09] &lt;private_meta&gt;     ok, c server works with c client, c++ server works with c client, but both servers won&#8217;t work with c++ client</div>
+<div class="line">[Tuesday 01 March 2011] [08:29:41] &lt;cremes&gt;   private_meta: ok; please post the error <em>and</em> the code for all of the components</div>
+<div class="line">[Tuesday 01 March 2011] [08:29:56] &lt;cremes&gt;   you might have something wired wrong</div>
+<div class="line">[Tuesday 01 March 2011] [08:30:46] &lt;cremes&gt;   (i&#8217;m expecting a gist with five files: error, c client, c server, c++ client, c++ server)</div>
+<div class="line">[Tuesday 01 March 2011] [08:31:49] &lt;private_meta&gt;     Well, I write 4 gists with the 4 c/c++ files and I write the error in the issue</div>
+<div class="line">[Tuesday 01 March 2011] [08:32:41] &lt;private_meta&gt;     cremes: then again the c client and server are exactly those from the docs</div>
+<div class="line">[Tuesday 01 March 2011] [08:32:50] &lt;private_meta&gt;     so i won&#8217;t need to &#8220;gist&#8221; them</div>
+<div class="line">[Tuesday 01 March 2011] [08:34:08] &lt;cremes&gt;   private_meta: i&#8217;m reading &#8220;cremes, i don&#8217;t really want your help&#8221;</div>
+<div class="line">[Tuesday 01 March 2011] [08:34:20] &lt;private_meta&gt;     lol</div>
+<div class="line">[Tuesday 01 March 2011] [08:34:21] &lt;cremes&gt;   at least send me a link to the components that are from the docs</div>
+<div class="line">[Tuesday 01 March 2011] [08:34:32] &lt;private_meta&gt;     cremes: I intended to put them into the issue</div>
+<div class="line">[Tuesday 01 March 2011] [08:34:36] &lt;cremes&gt;   don&#8217;t make me do a lot of extra work to help you out; it isn&#8217;t fair</div>
+<div class="line">[Tuesday 01 March 2011] [08:34:55] &lt;cremes&gt;   i don&#8217;t think we have established yet that this warrants an issue</div>
+<div class="line">[Tuesday 01 March 2011] [08:35:05] &lt;cremes&gt;   these things interoperate all of the time</div>
+<div class="line">[Tuesday 01 March 2011] [08:35:18] &lt;cremes&gt;   let&#8217;s dig just a little before opening a ticket</div>
+<div class="line">[Tuesday 01 March 2011] [08:35:33] &lt;private_meta&gt;     If you want to</div>
+<div class="line">[Tuesday 01 March 2011] [08:37:41] &lt;private_meta&gt;     cremes: <a class="reference external" href="https://gist.github.com/dadca0c3b776aa5713da">https://gist.github.com/dadca0c3b776aa5713da</a> sufficient?</div>
+<div class="line">[Tuesday 01 March 2011] [08:38:38] &lt;cremes&gt;   good enough; give me a few to look through it</div>
+<div class="line">[Tuesday 01 March 2011] [08:39:20] &lt;private_meta&gt;     Maybe it&#8217;s just a problem with me using setsockopt, but I hope not</div>
+<div class="line">[Tuesday 01 March 2011] [08:40:59] &lt;guido_g&gt;  client-&gt;connect(&#8220;<a class="reference external" href="tcp://localhost.5555">tcp://localhost.5555</a>&#8221;); &lt;- wrong</div>
+<div class="line">[Tuesday 01 March 2011] [08:41:39] &lt;skm&gt;      uf a pusher has pushed 100msgd, the first client to call recv then gets all 100 msgs (and has to recv 99 more times to see them) - correct?</div>
+<div class="line">[Tuesday 01 March 2011] [08:42:45] &lt;private_meta&gt;     guido_g: I translated it with that url from the C version</div>
+<div class="line">[Tuesday 01 March 2011] [08:42:50] &lt;private_meta&gt;     guido_g: why is it wrong?</div>
+<div class="line">[Tuesday 01 March 2011] [08:42:56] &lt;guido_g&gt;  read it</div>
+<div class="line">[Tuesday 01 March 2011] [08:43:18] &lt;H-nes&gt;    hint: &#8221;:&#8221;</div>
+<div class="line">[Tuesday 01 March 2011] [08:43:31] &lt;private_meta&gt;     oh</div>
+<div class="line">[Tuesday 01 March 2011] [08:43:31] &lt;guido_g&gt;  right</div>
+<div class="line">[Tuesday 01 March 2011] [08:43:47] &lt;private_meta&gt;     damn me</div>
+<div class="line">[Tuesday 01 March 2011] [08:43:47] &lt;guido_g&gt;  all thar trouble for basically nothing</div>
+<div class="line">[Tuesday 01 March 2011] [08:43:51] &lt;guido_g&gt;  <a href="#id1"><span class="problematic" id="id2">*</span></a>taht</div>
+<div class="line">[Tuesday 01 March 2011] [08:43:57] &lt;guido_g&gt;  <a href="#id3"><span class="problematic" id="id4">*</span></a>that</div>
+<div class="line">[Tuesday 01 March 2011] [08:44:06] &lt;guido_g&gt;  how effective</div>
+<div class="line">[Tuesday 01 March 2011] [08:44:48] &lt;cremes&gt;   guido_g: good eye</div>
+<div class="line">[Tuesday 01 March 2011] [08:45:29] &lt;guido_g&gt;  cremes: we in germany are now known for our keen eyes on copied work   ,)</div>
+<div class="line">[Tuesday 01 March 2011] [08:45:36] &lt;Guthur&gt;   guido_g: I did realise that I need to implement these options in the clrzmq2 binding due to this discussion, if that is any consolation, hehe</div>
+<div class="line">[Tuesday 01 March 2011] [08:45:50] &lt;cremes&gt;   guido_g: ;)</div>
+<div class="line">[Tuesday 01 March 2011] [08:46:07] &lt;cremes&gt;   private_meta: after you make that change, let us know if all is well</div>
+<div class="line">[Tuesday 01 March 2011] [08:46:39] &lt;private_meta&gt;     hmm apparently not</div>
+<div class="line">[Tuesday 01 March 2011] [08:47:06] &lt;guido_g&gt;  more typos?</div>
+<div class="line">[Tuesday 01 March 2011] [08:47:48] &lt;private_meta&gt;     I hope not</div>
+<div class="line">[Tuesday 01 March 2011] [08:47:53] &lt;private_meta&gt;     But it&#8217;s a different error now</div>
+<div class="line">[Tuesday 01 March 2011] [08:53:12] &lt;private_meta&gt;     cremes: update</div>
+<div class="line">[Tuesday 01 March 2011] [08:53:21] &lt;private_meta&gt;     cremes: <a class="reference external" href="https://gist.github.com/dadca0c3b776aa5713da">https://gist.github.com/dadca0c3b776aa5713da</a></div>
+<div class="line">[Tuesday 01 March 2011] [08:54:40] &lt;cremes&gt;   private_meta: that is oftentimes a buffer sizing problem; what OS are you on?</div>
+<div class="line">[Tuesday 01 March 2011] [08:55:08] &lt;private_meta&gt;     Ubuntu 10.4 x64</div>
+<div class="line">[Tuesday 01 March 2011] [08:56:33] &lt;cremes&gt;   private_meta: give me a gist with:  net.core.rmem_default, net.core.rmem_max, net.core.wmem_default, net.core.wmem_max</div>
+<div class="line">[Tuesday 01 March 2011] [08:57:05] &lt;cremes&gt;   these control the size of the buffers for &#8220;socketpairs&#8221; which are used for all internal signaling in 0mq</div>
+<div class="line">[Tuesday 01 March 2011] [08:57:28] &lt;private_meta&gt;     How do I get those?</div>
+<div class="line">[Tuesday 01 March 2011] [08:58:15] &lt;cremes&gt;   sysctl -a | egrep &#8216;wmem|rmem&#8217;</div>
+<div class="line">[Tuesday 01 March 2011] [08:58:25] &lt;private_meta&gt;     kk</div>
+<div class="line">[Tuesday 01 March 2011] [08:58:49] &lt;cremes&gt;   how long before you saw that error? 10s, 1m, longer?</div>
+<div class="line">[Tuesday 01 March 2011] [08:58:58] &lt;private_meta&gt;     Let me test</div>
+<div class="line">[Tuesday 01 March 2011] [08:59:01] &lt;cremes&gt;   and does it happen on <em>every</em> run</div>
+<div class="line">[Tuesday 01 March 2011] [08:59:14] &lt;stimpie&gt;  took me 4 hours to find out I encountered an known issue #issue/82 grrrr</div>
+<div class="line">[Tuesday 01 March 2011] [08:59:45] &lt;cremes&gt;   private_meta: the reason i ask is because the c client should produce the same error in roughly the same timeframe</div>
+<div class="line">[Tuesday 01 March 2011] [08:59:58] &lt;private_meta&gt;     cremes: Immediately, at every run</div>
+<div class="line">[Tuesday 01 March 2011] [09:00:04] &lt;private_meta&gt;     But the C Client works</div>
+<div class="line">[Tuesday 01 March 2011] [09:00:12] &lt;cremes&gt;   now that is odd</div>
+<div class="line">[Tuesday 01 March 2011] [09:01:54] &lt;private_meta&gt;     cremes: <a class="reference external" href="https://gist.github.com/6c43ecadae82d425773b">https://gist.github.com/6c43ecadae82d425773b</a></div>
+<div class="line">[Tuesday 01 March 2011] [09:01:58] &lt;cremes&gt;   you should run it run gdb and pastie the backtrace too</div>
+<div class="line">[Tuesday 01 March 2011] [09:02:30] &lt;cremes&gt;   those sizes should be ok</div>
+<div class="line">[Tuesday 01 March 2011] [09:02:39] &lt;private_meta&gt;     cremes: the entire gdb trace?</div>
+<div class="line">[Tuesday 01 March 2011] [09:02:56] &lt;cremes&gt;   i use 5242880 for all of those settings, fyi</div>
+<div class="line">[Tuesday 01 March 2011] [09:03:05] &lt;cremes&gt;   private_meta: yes, all of it</div>
+<div class="line">[Tuesday 01 March 2011] [09:03:13] &lt;cremes&gt;   do: thread apply all bt</div>
+<div class="line">[Tuesday 01 March 2011] [09:03:36] &lt;private_meta&gt;     cremes: <a class="reference external" href="https://gist.github.com/8c059893dbec50829e84">https://gist.github.com/8c059893dbec50829e84</a></div>
+<div class="line">[Tuesday 01 March 2011] [09:06:33] &lt;cremes&gt;   private_meta: i can&#8217;t make heads or tails of that output</div>
+<div class="line">[Tuesday 01 March 2011] [09:06:51] &lt;cremes&gt;   it looks like nonsense</div>
+<div class="line">[Tuesday 01 March 2011] [09:07:11] &lt;private_meta&gt;     cremes: I never worked closly with gdb or traces, so I gave you what eclipse tagged as &#8220;traces&#8221;</div>
+<div class="line">[Tuesday 01 March 2011] [09:07:24] &lt;cremes&gt;   oh...</div>
+<div class="line">[Tuesday 01 March 2011] [09:07:33] &lt;private_meta&gt;     gdb traces to be exact</div>
+<div class="line">[Tuesday 01 March 2011] [09:07:48] &lt;cremes&gt;   from a command line, run this:  gdb &#8211;args &lt;name of lpclient&gt;</div>
+<div class="line">[Tuesday 01 March 2011] [09:07:52] &lt;private_meta&gt;     sec</div>
+<div class="line">[Tuesday 01 March 2011] [09:07:52] &lt;cremes&gt;   (gdb) run</div>
+<div class="line">[Tuesday 01 March 2011] [09:08:01] &lt;cremes&gt;   (gdb) thread apply all bt</div>
+<div class="line">[Tuesday 01 March 2011] [09:08:04] &lt;cremes&gt;   pastie the output</div>
+<div class="line">[Tuesday 01 March 2011] [09:11:23] &lt;private_meta&gt;     cremes: better? <a class="reference external" href="https://gist.github.com/0eba301579e05243a715">https://gist.github.com/0eba301579e05243a715</a></div>
+<div class="line">[Tuesday 01 March 2011] [09:12:17] &lt;cremes&gt;   better</div>
+<div class="line">[Tuesday 01 March 2011] [09:14:35] &lt;cremes&gt;   private_meta: change: zmq::poll (items, 1, REQUEST_TIMEOUT * 1000);</div>
+<div class="line">[Tuesday 01 March 2011] [09:14:42] &lt;cremes&gt;   to:  zmq::poll (&amp;items, 1, REQUEST_TIMEOUT * 1000);</div>
+<div class="line">[Tuesday 01 March 2011] [09:14:55] &lt;cremes&gt;   (just added &amp; in front of items)</div>
+<div class="line">[Tuesday 01 March 2011] [09:17:00] &lt;private_meta&gt;     cremes: cannot convert &#8216;zmq::pollitem_t (*)[1]&#8217; to &#8216;zmq_pollitem_t*&#8217; for argument &#8216;1&#8217; to &#8216;int zmq::poll(zmq_pollitem_t*, int, long int)&#8217;</div>
+<div class="line">[Tuesday 01 March 2011] [09:21:10] &lt;cremes&gt;   private_meta: oops, my mistake; try this:</div>
+<div class="line">[Tuesday 01 March 2011] [09:21:22] &lt;cremes&gt;   zmq::poll (&amp;items[0], 1, REQUEST_TIMEOUT * 1000);</div>
+<div class="line">[Tuesday 01 March 2011] [09:21:36] &lt;guido_g&gt;  yeah, that&#8217;s c++ :)</div>
+<div class="line">[Tuesday 01 March 2011] [09:21:41] &lt;cremes&gt;   btw, i&#8217;m getting all of this from looking at the c++ examples in the zguide</div>
+<div class="line">[Tuesday 01 March 2011] [09:21:54] &lt;guido_g&gt;  hrhrhr</div>
+<div class="line">[Tuesday 01 March 2011] [09:21:57] &lt;cremes&gt;   your translation needs work</div>
+<div class="line">[Tuesday 01 March 2011] [09:22:16] &lt;private_meta&gt;     same</div>
+<div class="line">[Tuesday 01 March 2011] [09:22:46] &lt;cremes&gt;   won&#8217;t compile?</div>
+<div class="line">[Tuesday 01 March 2011] [09:22:52] &lt;private_meta&gt;     no, same as items</div>
+<div class="line">[Tuesday 01 March 2011] [09:23:01] &lt;private_meta&gt;     so, same runtime error</div>
+<div class="line">[Tuesday 01 March 2011] [09:23:07] &lt;cremes&gt;   can you get any of the c++ examples in the zguide to run?</div>
+<div class="line">[Tuesday 01 March 2011] [09:24:05] &lt;private_meta&gt;     sure</div>
+<div class="line">[Tuesday 01 March 2011] [09:24:07] &lt;guido_g&gt;  just to make sure, try a delay (sleep) after the send and before the poll, might be that the connection is not yet established</div>
+<div class="line">[Tuesday 01 March 2011] [09:24:31] &lt;private_meta&gt;     guido_g: nope</div>
+<div class="line">[Tuesday 01 March 2011] [09:25:02] &lt;guido_g&gt;  why?</div>
+<div class="line">[Tuesday 01 March 2011] [09:25:13] &lt;private_meta&gt;     &#8220;nope&#8221; as in &#8220;doesn&#8217;t help&#8221;</div>
+<div class="line">[Tuesday 01 March 2011] [09:25:53] &lt;Guthur&gt;   guido_g: would polling before the connection establishes cause issues?</div>
+<div class="line">[Tuesday 01 March 2011] [09:26:09] &lt;guido_g&gt;  i&#8217;m not sure</div>
+<div class="line">[Tuesday 01 March 2011] [09:26:18] &lt;private_meta&gt;     cremes: I haven&#8217;t tried ALL of them, but they normally DO work</div>
+<div class="line">[Tuesday 01 March 2011] [09:26:24] &lt;guido_g&gt;  that&#8217;s why i asked to test it</div>
+<div class="line">[Tuesday 01 March 2011] [09:26:46] &lt;Guthur&gt;   guido_g: ok, the reason I asked was I had an issue like that last night on linux</div>
+<div class="line">[Tuesday 01 March 2011] [09:26:55] &lt;private_meta&gt;     guido_g: A sleep of 1 second didn&#8217;t help</div>
+<div class="line">[Tuesday 01 March 2011] [09:26:55] &lt;Guthur&gt;   using the clrzmq2 binding</div>
+<div class="line">[Tuesday 01 March 2011] [09:27:08] &lt;guido_g&gt;  private_meta: where was the sleep?</div>
+<div class="line">[Tuesday 01 March 2011] [09:27:35] &lt;private_meta&gt;     after s_send before zmq::pollitem_t, but not after every poll.</div>
+<div class="line">[Tuesday 01 March 2011] [09:28:06] &lt;guido_g&gt;  ok</div>
+<div class="line">[Tuesday 01 March 2011] [09:28:47] &lt;cremes&gt;   when i run it under gdb, it shows that it is spawning 2 client threads and connecting to the server twice</div>
+<div class="line">[Tuesday 01 March 2011] [09:29:34] &lt;cremes&gt;   wtf?</div>
+<div class="line">[Tuesday 01 March 2011] [09:30:39] &lt;cremes&gt;   no, something else is up...</div>
+<div class="line">[Tuesday 01 March 2011] [09:34:36] &lt;private_meta&gt;     pieterh: Just out of premature curiosity, how would I then be able to use the Majordomo Protocol?</div>
+<div class="line">[Tuesday 01 March 2011] [09:37:51] &lt;cremes&gt;   private_meta: fixed it</div>
+<div class="line">[Tuesday 01 March 2011] [09:37:56] &lt;cremes&gt;   change: zmq::pollitem_t items [] = { { client, 0, ZMQ_POLLIN, 0 } };</div>
+<div class="line">[Tuesday 01 March 2011] [09:37:59] &lt;cremes&gt;   to: zmq::pollitem_t items [] = { { <a href="#id5"><span class="problematic" id="id6">*</span></a>client, 0, ZMQ_POLLIN, 0 } };</div>
+<div class="line">[Tuesday 01 March 2011] [09:38:28] &lt;cremes&gt;   (and keep the other changes)</div>
+<div class="line">[Tuesday 01 March 2011] [09:39:06] &lt;cremes&gt;   wow, i haven&#8217;t done any c++ in about 10 years and this experience hasn&#8217;t made me miss it :)</div>
+<div class="line">[Tuesday 01 March 2011] [09:39:22] &lt;guido_g&gt;  hehe</div>
+<div class="line">[Tuesday 01 March 2011] [09:39:56] &lt;private_meta&gt;     cremes: wtf?</div>
+<div class="line">[Tuesday 01 March 2011] [09:39:58] &lt;cremes&gt;   private_meta: do i get a coauthor credit on this translation? :P</div>
+<div class="line">[Tuesday 01 March 2011] [09:40:27] &lt;cremes&gt;   private_meta: look at the other c++ examples; yours is the only one that uses &#8216;new&#8217;</div>
+<div class="line">[Tuesday 01 March 2011] [09:41:04] &lt;cremes&gt;   i think you had a pointer to a socket pointer</div>
+<div class="line">[Tuesday 01 March 2011] [09:41:24] &lt;cremes&gt;   or something... i&#8217;m out of my depth :)</div>
+<div class="line">[Tuesday 01 March 2011] [09:41:52] &lt;guido_g&gt;  cremes: oh nice, didn&#8217;t spot that one</div>
+<div class="line">[Tuesday 01 March 2011] [09:42:06] &lt;private_meta&gt;     cremes: It&#8217;s not that I wanted to use new</div>
+<div class="line">[Tuesday 01 March 2011] [09:42:11] &lt;cremes&gt;   guido_g: better lucky that good   &lt;&#8212; my motto</div>
+<div class="line">[Tuesday 01 March 2011] [09:42:20] &lt;cremes&gt;   s/that/than/</div>
+<div class="line">[Tuesday 01 March 2011] [09:43:09] &lt;private_meta&gt;     cremes: As far as I can see it&#8217;s the only example where the socket is created in a different method, and for one the first example returned a pointer, so I wanted as well, and I thought it made the same problems as message_t</div>
+<div class="line">[Tuesday 01 March 2011] [09:43:53] &lt;cremes&gt;   private_meta: what i remember about c++ could fit in a thimble; i just started matching up working code against non-working</div>
+<div class="line">[Tuesday 01 March 2011] [09:43:55] &lt;cremes&gt;   and went from there</div>
+<div class="line">[Tuesday 01 March 2011] [09:44:33] &lt;cremes&gt;   seems like the library should do some more sanity checking on passed arguments though</div>
+<div class="line">[Tuesday 01 March 2011] [09:44:41] &lt;private_meta&gt;     cremes: the copy constructor of socket_t is private, so I can&#8217;t return it as a non-pointer, and I didn&#8217;t want to push socket_t into the parameters</div>
+<div class="line">[Tuesday 01 March 2011] [09:44:58] &lt;cremes&gt;   it doesn&#8217;t seem like we should be able to compile and run something with so many errors</div>
+<div class="line">[Tuesday 01 March 2011] [09:45:21] &lt;cremes&gt;   (easy to make errors... i&#8217;m not poitning any fingers)</div>
+<div class="line">[Tuesday 01 March 2011] [09:45:29] &lt;Guthur&gt;   sanity and c++?</div>
+<div class="line">[Tuesday 01 March 2011] [09:45:39] &lt;cremes&gt;   Guthur: i know!</div>
+<div class="line">[Tuesday 01 March 2011] [09:45:41] &lt;private_meta&gt;     Well, C takes a pointer, C++ doesn&#8217;t, it&#8217;s nasty</div>
+<div class="line">[Tuesday 01 March 2011] [09:46:13] &lt;private_meta&gt;     ok</div>
+<div class="line">[Tuesday 01 March 2011] [09:47:21] &lt;private_meta&gt;     cremes: the problem is that zmq_pollitem_t is in the zmq.h, there is no zmq.hpp version where (void <a href="#id7"><span class="problematic" id="id8">*</span></a>) is correctly translated to socket_t apparently</div>
+<div class="line">[Tuesday 01 March 2011] [09:47:56] &lt;cremes&gt;   i don&#8217;t know what that means ;)</div>
+<div class="line">[Tuesday 01 March 2011] [09:48:02] &lt;cremes&gt;   heh</div>
+<div class="line">[Tuesday 01 March 2011] [09:48:38] &lt;cremes&gt;   if that&#8217;s a genuine hole in the lib, open a ticket with a patch</div>
+<div class="line">[Tuesday 01 March 2011] [09:48:48] &lt;cremes&gt;   sounds like it would be pretty easy to make</div>
+<div class="line">[Tuesday 01 March 2011] [09:49:54] &lt;private_meta&gt;     hmm</div>
+<div class="line">[Tuesday 01 March 2011] [09:50:21] &lt;private_meta&gt;     either a genuine type for c++ or a sanity check in zmq::poll</div>
+<div class="line">[Tuesday 01 March 2011] [09:50:35] &lt;private_meta&gt;     but the latter won&#8217;t fix the problem at compile time</div>
+<div class="line">[Tuesday 01 March 2011] [09:51:29] &lt;private_meta&gt;     typedef struct { void <em>socket; int fd; short events; short revents; } zmq_pollitem_t; &lt;&#8211; the void</em> there is the unfriendly thing</div>
+<div class="line">[Tuesday 01 March 2011] [09:56:10] &lt;private_meta&gt;     hmm</div>
+<div class="line">[Tuesday 01 March 2011] [10:02:38] &lt;private_meta&gt;     cremes: doesn&#8217;t seem THAT easy</div>
+<div class="line">[Tuesday 01 March 2011] [10:13:07] &lt;CIA-21&gt;   zeromq2: 03Martin Sustrik 07master * r4c74462 10/ src/socket_base.cpp :</div>
+<div class="line">[Tuesday 01 March 2011] [10:13:07] &lt;CIA-21&gt;   zeromq2: Explicit identities bug in inproc transport fixed.</div>
+<div class="line">[Tuesday 01 March 2011] [10:13:07] &lt;CIA-21&gt;   zeromq2: The identity of bound socket was not used. Instead, transient</div>
+<div class="line">[Tuesday 01 March 2011] [10:13:07] &lt;CIA-21&gt;   zeromq2: identity was generated.</div>
+<div class="line">[Tuesday 01 March 2011] [10:13:07] &lt;CIA-21&gt;   zeromq2: Signed-off-by: Martin Sustrik &lt;<a class="reference external" href="mailto:sustrik&#37;&#52;&#48;250bpm&#46;com">sustrik<span>&#64;</span>250bpm<span>&#46;</span>com</a>&gt; - <a class="reference external" href="http://bit.ly/heLOOL">http://bit.ly/heLOOL</a></div>
+<div class="line">[Tuesday 01 March 2011] [10:14:51] &lt;private_meta&gt;     Been led to the following problem, <a class="reference external" href="http://stackoverflow.com/questions/231760/what-does-a-type-followed-by-t-underscore-t-represent/231807#231807">http://stackoverflow.com/questions/231760/what-does-a-type-followed-by-t-underscore-t-represent/231807#231807</a>, don&#8217;t you concern yourself with the problem because you prefix every type in C with &#8220;<a href="#id9"><span class="problematic" id="id10">zmq_</span></a>&#8221;?</div>
+<div class="line">[Tuesday 01 March 2011] [10:40:54] &lt;stimpie&gt;  sustrik, great I was just running in to it.</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="2011-February.html"
+                        title="previous chapter">2011-February</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="sources/2011-March.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="2011-February.html" title="2011-February"
+             >previous</a> |</li>
+        <li><a href="index.html">ZeroMq IRC Log v0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Peter Alexander.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>
