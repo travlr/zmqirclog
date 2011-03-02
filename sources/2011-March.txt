@@ -375,3 +375,408 @@
 | [Tuesday 01 March 2011] [10:13:07] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/heLOOL
 | [Tuesday 01 March 2011] [10:14:51] <private_meta>	Been led to the following problem, http://stackoverflow.com/questions/231760/what-does-a-type-followed-by-t-underscore-t-represent/231807#231807, don't you concern yourself with the problem because you prefix every type in C with "zmq_"?
 | [Tuesday 01 March 2011] [10:40:54] <stimpie>	sustrik, great I was just running in to it.
+| [Tuesday 01 March 2011] [11:02:27] <sustrik>	stimpie :)
+| [Tuesday 01 March 2011] [11:52:39] <private_meta>	https://gist.github.com/5beb18da2cdb0ed04e02 https://gist.github.com/427a77b7837b5010483a <-- I thought that would be an easy class based example for communicated through zmq_poll, shouldn't I get the "START" message at the worker? What am I doing wrong?
+| [Tuesday 01 March 2011] [11:53:26] <ianbarber>	pieterh: are the lazy pirate examples translatable now then?
+| [Tuesday 01 March 2011] [12:12:27] <private_meta>	k, got it to work >_>
+| [Tuesday 01 March 2011] [12:12:58] <cremes>	private_meta: you're going through some of the same growing pains most of us did when we first
+| [Tuesday 01 March 2011] [12:13:02] <cremes>	started playing with 0mq
+| [Tuesday 01 March 2011] [12:13:15] <cremes>	though i'll say maybe the c++ aspect is throwing an additional monkey-wrench into the process
+| [Tuesday 01 March 2011] [12:13:17] <cremes>	:)
+| [Tuesday 01 March 2011] [12:15:58] <private_meta>	cremes: my problem is that we had to switch from a different comm library because it threw it's own monkey wrench into the project, and now everybody tells me "quick, we need it, immediately, if you don't, we have problems"
+| [Tuesday 01 March 2011] [12:16:07] <private_meta>	cremes: and I'm completely new with zmq
+| [Tuesday 01 March 2011] [12:16:15] <cremes>	uh oh
+| [Tuesday 01 March 2011] [12:16:42] <cremes>	not to say you won't have success with 0mq, but it comes with time & experience
+| [Tuesday 01 March 2011] [12:17:36] <private_meta>	uhm... do durable sockets send multipart messages with the id as the first part?
+| [Tuesday 01 March 2011] [12:19:00] <ianbarber>	xrep does
+| [Tuesday 01 March 2011] [12:19:11] <private_meta>	hmm
+| [Tuesday 01 March 2011] [12:19:32] <cremes>	the ID is only sent upon connect/bind for each socket type
+| [Tuesday 01 March 2011] [12:19:36] <cremes>	this is invisible to the application
+| [Tuesday 01 March 2011] [12:19:43] <private_meta>	cremes: quote from my project manager: "If you take too long with zmq I assume it won't help us, and you have to implement communication from scratch"
+| [Tuesday 01 March 2011] [12:19:55] <ianbarber>	ouch!
+| [Tuesday 01 March 2011] [12:20:11] <ianbarber>	xrep wraps the message with the ID, so it knows who to route back to
+| [Tuesday 01 March 2011] [12:20:17] <cremes>	xrep sends the identity as a visible message part as part of a routing envelope on a reply
+| [Tuesday 01 March 2011] [12:20:19] <ianbarber>	it'll unwrap when you send back
+| [Tuesday 01 March 2011] [12:20:38] <cremes>	private_meta: your manager must have pointy hair
+| [Tuesday 01 March 2011] [12:21:13] <private_meta>	cremes: actually, he's a programmer, he even programmed in projects
+| [Tuesday 01 March 2011] [12:21:22] <private_meta>	cremes: and apparently the projects didn't fail
+| [Tuesday 01 March 2011] [12:21:38] <private_meta>	hmm
+| [Tuesday 01 March 2011] [12:21:47] <cremes>	well, making that statement undermines past performance
+| [Tuesday 01 March 2011] [12:22:01] <cremes>	he may be a good programmer but he doesn't seem to be too hot of a manager (IMHO)
+| [Tuesday 01 March 2011] [12:22:03] <private_meta>	That's the paradox
+| [Tuesday 01 March 2011] [12:22:32] <cremes>	we'll help where we can; have you read the guide from start to finish twice yet? ;)
+| [Tuesday 01 March 2011] [12:22:53] <ianbarber>	and tried the examples!
+| [Tuesday 01 March 2011] [12:23:07] <cremes>	ianbarber: indeed!
+| [Tuesday 01 March 2011] [12:23:20] <private_meta>	I read much of it and tried some examples, tried modifying them and stuff
+| [Tuesday 01 March 2011] [12:23:45] <ianbarber>	it does help to thing of XREP and XREQ as router and dealer
+| [Tuesday 01 March 2011] [12:23:53] <ianbarber>	makes it clearer what they do 
+| [Tuesday 01 March 2011] [12:23:56] <ianbarber>	s/thing/think
+| [Tuesday 01 March 2011] [12:24:34] <private_meta>	Well, I did try to build a router/dealer
+| [Tuesday 01 March 2011] [12:24:35] <private_meta>	sec
+| [Tuesday 01 March 2011] [12:24:46] <private_meta>	https://gist.github.com/5beb18da2cdb0ed04e02 https://gist.github.com/427a77b7837b5010483a
+| [Tuesday 01 March 2011] [12:25:27] <private_meta>	I was just confused that I got something like <id>\n<message>\n<id>\n<message2>\n<id>\n<message3>
+| [Tuesday 01 March 2011] [12:26:07] <sarikan>	greetings
+| [Tuesday 01 March 2011] [12:26:10] <ianbarber>	yeah, that's just xrep doing its thing, you can use req and rep for straightforward client server
+| [Tuesday 01 March 2011] [12:26:30] <private_meta>	Well, I already established I need something in the range of router/dealer
+| [Tuesday 01 March 2011] [12:26:42] <ianbarber>	if you went req -> xrep -> xreq -> rep the 'req' and 'rep' would never see the extra field
+| [Tuesday 01 March 2011] [12:26:51] <private_meta>	pieterh said something that would fit my requirements would be the majordomo protocol he is currently working on
+| [Tuesday 01 March 2011] [12:28:05] <private_meta>	ianbarber: I don't think the extra layer is all that neccessary
+| [Tuesday 01 March 2011] [12:28:26] <private_meta>	damn.... still wanted to buy food :/
+| [Tuesday 01 March 2011] [12:28:42] <private_meta>	damn this town and it's stores closing at 18.30
+| [Tuesday 01 March 2011] [12:29:30] <ianbarber>	takeaway! friend to the hungry coder :)
+| [Tuesday 01 March 2011] [12:30:04] <private_meta>	hmm
+| [Tuesday 01 March 2011] [12:30:13] <private_meta>	I don't have a car :D
+| [Tuesday 01 March 2011] [12:31:08] <private_meta>	And the only pizza delivery service here requires you to order 2-3 pizzas for them to deliver *sigh*
+| [Tuesday 01 March 2011] [12:31:13] <ianbarber>	maybe pieterh has a fast food distribution system planned for chapter 5 of the guide
+| [Tuesday 01 March 2011] [12:31:17] <private_meta>	hahaha
+| [Tuesday 01 March 2011] [12:31:35] <cremes>	private_meta: it might be best if you described your use-case in detail
+| [Tuesday 01 March 2011] [12:31:39] <cremes>	then we can make suggestions
+| [Tuesday 01 March 2011] [12:31:45] <private_meta>	hmm
+| [Tuesday 01 March 2011] [12:31:46] <cremes>	this might also be a good thing to take to the mailing list
+| [Tuesday 01 March 2011] [12:32:04] <cremes>	i'm going to have to go "async" on irc in a few... lots of work to do
+| [Tuesday 01 March 2011] [12:32:07] <ianbarber>	yeah, probably better if it's more than a one-line job to describe it
+| [Tuesday 01 March 2011] [12:32:14] <cremes>	so following a conversation will be hard for me
+| [Tuesday 01 March 2011] [12:32:18] <ianbarber>	also helpful for future people searching
+| [Tuesday 01 March 2011] [12:32:43] <cremes>	private_meta: feel free to leave out the super-secret-squirrel-intellectual-property parts
+| [Tuesday 01 March 2011] [12:32:47] <private_meta>	I'll start drawing a pic
+| [Tuesday 01 March 2011] [12:32:52] <cremes>	that would make your boss mad if they were public :)
+| [Tuesday 01 March 2011] [12:40:18] <cremes>	sustrik: ping
+| [Tuesday 01 March 2011] [12:40:25] <sustrik>	pong
+| [Tuesday 01 March 2011] [12:40:31] <cremes>	anything i can do to make https://github.com/zeromq/zeromq2/issues/174 clearer for you and pieterh?
+| [Tuesday 01 March 2011] [12:40:54] <cremes>	he can't seem to repro the problem as stated
+| [Tuesday 01 March 2011] [12:41:30] <cremes>	maybe file descriptors need to be bumped for the process to some larger value?
+| [Tuesday 01 March 2011] [12:41:53] <cremes>	or src/config.hpp needs to be modified so max_sockets is > 512 (default)
+| [Tuesday 01 March 2011] [12:42:07] <cremes>	i usually build the lib with 51200 as my max_sockets :)
+| [Tuesday 01 March 2011] [12:42:41] <private_meta>	I have 1 "manager", the worker. I have n clients, nodes. The manager needs to send routed messages to single specified nodes which logon beforehand. Communication needs to be asynchroneous, bidirectional, so both have to initiate communication if neccessary. I also need awareness of connection termination, so a heartbeat on both sides.
+| [Tuesday 01 March 2011] [12:43:11] <private_meta>	cremes, ianbarber, that would be an overall description
+| [Tuesday 01 March 2011] [12:43:30] <cremes>	private_meta: yep, sounds like pieterh's new mdp project
+| [Tuesday 01 March 2011] [12:43:43] <cremes>	he's hard at work on it right now; perhaps there could be collaboration?
+| [Tuesday 01 March 2011] [12:43:52] <private_meta>	As soon as these asynchroneous messages arrive at their respective endpoints, a logic is already in place to handle these messages, if needed even to create synchronity out of async messages
+| [Tuesday 01 March 2011] [12:44:54] <private_meta>	Well, I would like to help, it would make it faster for me in some respect, I just don't know how I can helpo
+| [Tuesday 01 March 2011] [12:44:57] <private_meta>	-o
+| [Tuesday 01 March 2011] [12:50:54] <private_meta>	cremes: Well... I can ask pieterh if I could do anything to help, but if not I guess that the best thing to do right now would be to get to understand zmq better until he's done
+| [Tuesday 01 March 2011] [12:51:25] <cremes>	good plan... you are kind of diving into the deep end
+| [Tuesday 01 March 2011] [12:51:52] <private_meta>	cremes: well, I guess it wouldn't be good for me if he finished it and I still don't know that much about it >_>
+| [Tuesday 01 March 2011] [12:52:10] <private_meta>	pieterh: so anything I can do to help, just tell :D
+| [Tuesday 01 March 2011] [12:52:55] <private_meta>	k, bbl
+| [Tuesday 01 March 2011] [12:57:33] <sarikan>	if I use the java bindings for zeromq in a web application, would I run into threading issues?
+| [Tuesday 01 March 2011] [12:58:23] <sarikan>	multiple java threads will be using jni to access zeromq 
+| [Tuesday 01 March 2011] [12:59:32] <cremes>	sarikan: only if you try to access the same socket from multiple threads; allocate a 0mq socket per thread and you'll be fine
+| [Tuesday 01 March 2011] [13:02:15] <sarikan>	cremes:  so If I create, use and close a socket for each request, I should be fine
+| [Tuesday 01 March 2011] [13:03:08] <cremes>	sarikan: sure, but that's an anti-pattern
+| [Tuesday 01 March 2011] [13:03:13] <cremes>	what's your use-case?
+| [Tuesday 01 March 2011] [13:03:42] <sarikan>	java web services, talking to some native code using 0mq as the middleware
+| [Tuesday 01 March 2011] [13:03:53] <sarikan>	each request to java web service ends up being a thread
+| [Tuesday 01 March 2011] [13:04:15] <cremes>	sarikan: a new thread or a thread from a pool?
+| [Tuesday 01 March 2011] [13:04:17] <sarikan>	so I can't think of anything other than what I've written above
+| [Tuesday 01 March 2011] [13:04:34] <sarikan>	more likely to be a thread from a pool
+| [Tuesday 01 March 2011] [13:05:00] <cremes>	ok, so allocate a socket for each thread in the pool and reuse the socket just like you're reusing the thread
+| [Tuesday 01 March 2011] [13:05:43] <sarikan>	cremes: that is an interesting approach, if I can monitor and control thread creation in the java web server, it should work fine
+| [Tuesday 01 March 2011] [13:07:12] <sarikan>	cremes: do you think I need to watch for this if I'm using c++ instead of java? I guess it would be the same
+| [Tuesday 01 March 2011] [13:08:45] <sarikan>	cremes: thanks anyway, helpful starting point
+| [Tuesday 01 March 2011] [14:03:00] <Guthur>	I just noticed ZMQ_FD, is that not going to be a little problematic if we manage to get named pipes on Windows?
+| [Tuesday 01 March 2011] [15:20:14] <Guthur>	is there some overriding technical reason why it is not possible to query for assigned subscription patterns
+| [Tuesday 01 March 2011] [16:51:49] <mikko>	man, i love london
+| [Tuesday 01 March 2011] [16:51:56] <mikko>	it's full of random things and events
+| [Tuesday 01 March 2011] [17:02:38] <Guthur>	mikko, you a londoner then?
+| [Tuesday 01 March 2011] [17:02:53] <mikko>	yep
+| [Tuesday 01 March 2011] [17:03:01] <Guthur>	I was there last week actually, it's ok.
+| [Tuesday 01 March 2011] [17:03:20] <Guthur>	I was only there for 2 days though, and it was mostly business
+| [Tuesday 01 March 2011] [17:03:27] <mikko>	you should've told!
+| [Tuesday 01 March 2011] [17:03:33] <mikko>	we could've had a mini-meetup
+| [Tuesday 01 March 2011] [17:03:43] <Guthur>	never thought actually
+| [Tuesday 01 March 2011] [17:04:01] <mikko>	we went out for beers last time sustrik was here
+| [Tuesday 01 March 2011] [17:04:12] <mikko>	one other guy from london came out as well
+| [Tuesday 01 March 2011] [17:04:55] <Guthur>	i'm sure i'll be there again sometime, i'm only across the irish sea, hehe
+| [Tuesday 01 March 2011] [17:05:16] <ianbarber>	definitely up for london mini-meetups if everyone is about
+| [Tuesday 01 March 2011] [17:05:22] <Guthur>	actually does anyone leave near Hamburg
+| [Tuesday 01 March 2011] [17:05:24] <Guthur>	leave/live
+| [Tuesday 01 March 2011] [17:05:25] <mikko>	we could organise one
+| [Tuesday 01 March 2011] [17:05:58] <Guthur>	i'm in hamburg for the European Lisp Symposium
+| [Tuesday 01 March 2011] [17:06:46] <Guthur>	it's a shame I never thought of setting up some demo with ZeroMQ and Common Lisp,  the theme for this year is concurrency
+| [Tuesday 01 March 2011] [17:07:00] <mikko>	ianbarber: why don't we organise one at some point?
+| [Tuesday 01 March 2011] [17:07:39] <ianbarber>	mikko: that's a good idea! 
+| [Tuesday 01 March 2011] [17:07:51] <ianbarber>	we can setup a meetup event or something, and email the list
+| [Tuesday 01 March 2011] [17:07:59] <ianbarber>	mid-late march?
+| [Tuesday 01 March 2011] [17:09:00] <ianbarber>	i'm at confoo next week, but maybe the 17th or something like that
+| [Tuesday 01 March 2011] [17:09:47] <mikko>	groupspaces
+| [Tuesday 01 March 2011] [17:09:52] <mikko>	support local industries
+| [Tuesday 01 March 2011] [17:10:56] <ianbarber>	good point :)
+| [Tuesday 01 March 2011] [17:18:51] <ianbarber>	done: http://groupspaces.com/zeromq-london/ :)
+| [Tuesday 01 March 2011] [19:30:07] <skm>	if a pusher has pushed 100msgd, the first client to call recv then gets all 100 msgs (and has to recv 99 more times to see them) - correct?
+| [Tuesday 01 March 2011] [20:22:02] <Guthur>	skm, according to the docs push will go into an exceptional state if there is nothing downstream to recv
+| [Tuesday 01 March 2011] [20:22:12] <Guthur>	http://api.zeromq.org/master:zmq-socket#toc12
+| [Tuesday 01 March 2011] [20:23:19] <Guthur>	and it's load balanced across any connected downstream peers 
+| [Tuesday 01 March 2011] [20:28:16] <skm>	i want to know what happens though when multiple clients connect with 100pending messages
+| [Tuesday 01 March 2011] [20:28:23] <skm>	and the first connected client calls recv
+| [Tuesday 01 March 2011] [20:28:51] <skm>	does it get one message or are all messages then sent to that
+| [Tuesday 01 March 2011] [20:29:37] <skm>	im using the nodejs javascript binding which that is the case - the first recv gets all messages (and needs to call recv another 99 times to read the other messages)
+| [Tuesday 01 March 2011] [20:29:59] <skm>	im just wondering if that is because of the binding or if that's the way 0mq works
+| [Tuesday 01 March 2011] [20:30:03] <Guthur>	umm does sound right to me
+| [Tuesday 01 March 2011] [20:30:06] <Guthur>	doesn't
+| [Tuesday 01 March 2011] [20:30:43] <Guthur>	well that doesn't sound like it full fills the load-balancing aspect
+| [Tuesday 01 March 2011] [20:32:17] <Guthur>	I can't say for sure to be honest
+| [Tuesday 01 March 2011] [20:32:32] <Guthur>	someone else will have to clarify
+| [Tuesday 01 March 2011] [21:43:50] <jugg>	pieterh, api.zeromq.org defaults to 'master/2.2.0'.  Perhaps it should default to the current stable release?
+| [Tuesday 01 March 2011] [21:44:20] <jugg>	eg, the same as the redirects from the old api pages.
+| [Wednesday 02 March 2011] [02:19:25] <Steve-o>	almost complete for next release of OpenPGM, just need platform tests on Autoconf & Cmake
+| [Wednesday 02 March 2011] [02:19:58] <Steve-o>	performance docs uploaded for Windows, Linux, Sparc, general latency improvement all around
+| [Wednesday 02 March 2011] [03:01:48] <CIA-21>	zeromq2: 03Martin Sustrik 07master * r5fcef1c 10/ (9 files in 3 dirs): 
+| [Wednesday 02 March 2011] [03:01:48] <CIA-21>	zeromq2: ZMQ_MAXMSGSIZE option added
+| [Wednesday 02 March 2011] [03:01:48] <CIA-21>	zeromq2: The new option allows user to guard against peers sending
+| [Wednesday 02 March 2011] [03:01:48] <CIA-21>	zeromq2: oversized messages. Connection to peer sending oversized message
+| [Wednesday 02 March 2011] [03:01:48] <CIA-21>	zeromq2: is dropped.
+| [Wednesday 02 March 2011] [03:01:48] <CIA-21>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/eXNW24
+| [Wednesday 02 March 2011] [03:48:00] <eyecue>	*waves* o/~
+| [Wednesday 02 March 2011] [03:48:22] <eyecue>	watching pieters preso, very cool
+| [Wednesday 02 March 2011] [04:30:04] <yrashk>	ok so apparently erlang binding (say, ezmq) isn't that slow
+| [Wednesday 02 March 2011] [04:30:29] <yrashk>	the perf tests were erroneously scripted as interpreted code
+| [Wednesday 02 March 2011] [04:30:33] <yrashk>	which slowed things down
+| [Wednesday 02 March 2011] [04:30:52] <sustrik>	heh
+| [Wednesday 02 March 2011] [04:30:59] <sustrik>	what are the figures now?
+| [Wednesday 02 March 2011] [04:31:25] <yrashk>	11-13mb/s
+| [Wednesday 02 March 2011] [04:31:41] <sustrik>	and in msgs/sec?
+| [Wednesday 02 March 2011] [04:31:53] <yrashk>	I don't have that data yet, let me ask the guy who discovered this
+| [Wednesday 02 March 2011] [04:32:10] <sustrik>	sure
+| [Wednesday 02 March 2011] [04:35:39] <yrashk>	750694msg/s
+| [Wednesday 02 March 2011] [04:36:34] <yrashk>	minor correction, with erlang-to-erlang local-remote it's rather 6mb/s
+| [Wednesday 02 March 2011] [04:36:42] <yrashk>	but still that 750694msg/s
+| [Wednesday 02 March 2011] [04:36:54] <yrashk>	still way better
+| [Wednesday 02 March 2011] [04:43:35] <yrashk>	this is exciting
+| [Wednesday 02 March 2011] [04:43:38] <yrashk>	sustrik: ^^
+| [Wednesday 02 March 2011] [04:51:06] <Steve-o>	that's on 100mb or 1gb?
+| [Wednesday 02 March 2011] [04:51:45] <yrashk>	that's on localhost I believe
+| [Wednesday 02 March 2011] [04:53:00] <Steve-o>	eek
+| [Wednesday 02 March 2011] [04:55:50] <Steve-o>	that's a bit of a hit
+| [Wednesday 02 March 2011] [05:02:08] <jugg>	yrashk, have you confirmed this, as I tried compiling the code previously and it made no difference.
+| [Wednesday 02 March 2011] [05:02:52] <yrashk>	jugg: I can't confirm this myself yet, but the guy clais this is what he gets on compiled modules (not on compiled escripts), and he's promising to send a pull req soon
+| [Wednesday 02 March 2011] [05:03:10] <yrashk>	jugg: have you been trying to compile for erlzmq? using -mode(compile) or by converting them into modules?
+| [Wednesday 02 March 2011] [05:03:21] <jugg>	both, neither changes performance.
+| [Wednesday 02 March 2011] [05:03:24] <pieterh>	re
+| [Wednesday 02 March 2011] [05:03:35] <yrashk>	well maybe ezmq is superior? ;)
+| [Wednesday 02 March 2011] [05:03:44] <jugg>	:)
+| [Wednesday 02 March 2011] [05:03:59] <yrashk>	after all it doesn't have that decoding/encoding overhead
+| [Wednesday 02 March 2011] [05:04:23] <jugg>	I'll be interested if you can confirm the results.
+| [Wednesday 02 March 2011] [05:06:09] <yrashk>	I am waiting for that pull req
+| [Wednesday 02 March 2011] [05:06:14] 	 * eyecue blinks
+| [Wednesday 02 March 2011] [05:06:28] <yrashk>	I hope I will be able to confirm this soon
+| [Wednesday 02 March 2011] [05:06:35] <eyecue>	reading the guide :]
+| [Wednesday 02 March 2011] [05:09:44] <eyecue>	the install guide mentions uuid-dev and uuid/e2fsprogs libs, but the FreeBSD port for ezmq doesnt seem to depend on them. are these conditional/optional dependencies?
+| [Wednesday 02 March 2011] [05:11:45] <yrashk>	you mean the fbsd port of 0mq?
+| [Wednesday 02 March 2011] [05:11:52] <yrashk>	because ezmq is an erlang library
+| [Wednesday 02 March 2011] [05:12:00] <yrashk>	because ezmq is the erlang library for 0mq*
+| [Wednesday 02 March 2011] [05:12:18] <eyecue>	apologies :)
+| [Wednesday 02 March 2011] [05:12:20] <eyecue>	0mq.
+| [Wednesday 02 March 2011] [05:12:35] <eyecue>	under http://www.freshports.org/net/zmq for reference
+| [Wednesday 02 March 2011] [05:13:36] <eyecue>	yay, python bindings are in ports too
+| [Wednesday 02 March 2011] [05:19:22] <pieterh>	yrashk: are those figures published anywhere?
+| [Wednesday 02 March 2011] [05:23:03] <yrashk>	pieterh: not yet, it's the other guy who's fixing perf tests
+| [Wednesday 02 March 2011] [05:23:33] <pieterh>	750K, up from, what was it, 20K or so?
+| [Wednesday 02 March 2011] [05:23:37] <pieterh>	pretty nice
+| [Wednesday 02 March 2011] [05:28:46] <yrashk>	pieterh: ya
+| [Wednesday 02 March 2011] [05:28:54] <yrashk>	from 30Kish
+| [Wednesday 02 March 2011] [05:33:48] <yrashk>	pieterh: it's basically without changing ezmq, just fixing perf tests
+| [Wednesday 02 March 2011] [05:34:04] <yrashk>	although according to jugg the same approach didn't help speeding up erlzmq perf tests
+| [Wednesday 02 March 2011] [05:34:37] 	 * pieterh is somewhat confused with all the e{rl}zmq versions
+| [Wednesday 02 March 2011] [05:35:06] <pieterh>	ezmq is the latest rewrite, right?
+| [Wednesday 02 March 2011] [05:35:20] <yrashk>	pieterh: ezmq is my NIF-based complete rewrite
+| [Wednesday 02 March 2011] [05:35:33] <yrashk>	both erlzmqs (yeah, there are two of them) are port driver-based
+| [Wednesday 02 March 2011] [05:35:56] <pieterh>	right, so eventually you want to merge all these together and call the result erlzmq again, I guess
+| [Wednesday 02 March 2011] [05:36:05] <yrashk>	not necessarily
+| [Wednesday 02 March 2011] [05:36:21] <yrashk>	and this is unlikely to happen I think
+| [Wednesday 02 March 2011] [05:36:26] <pieterh>	hmm
+| [Wednesday 02 March 2011] [05:36:27] <yrashk>	they are both quite different
+| [Wednesday 02 March 2011] [05:36:36] <pieterh>	different APIs for apps?
+| [Wednesday 02 March 2011] [05:36:40] <yrashk>	different approaches to interfacing with C
+| [Wednesday 02 March 2011] [05:37:06] <pieterh>	is that relevant to users, except for performance?
+| [Wednesday 02 March 2011] [05:37:25] <yrashk>	it is not
+| [Wednesday 02 March 2011] [05:37:32] <yrashk>	for the most part
+| [Wednesday 02 March 2011] [05:37:41] <pieterh>	so when I say 'merge' I mean, replace
+| [Wednesday 02 March 2011] [05:38:09] <yrashk>	it's really up to saleyn and jugg, really
+| [Wednesday 02 March 2011] [05:38:38] <pieterh>	of course
+| [Wednesday 02 March 2011] [05:38:43] <yrashk>	I am just trying to maintain my own binding as I personally prefer NIF bindings
+| [Wednesday 02 March 2011] [05:39:00] <yrashk>	I don't really care if it will be an official binding or not
+| [Wednesday 02 March 2011] [05:39:03] <eyecue>	yrashk; sorry, newbie here, NIF? :)
+| [Wednesday 02 March 2011] [05:39:18] <yrashk>	eyecue: Native Implemented Function, erlang term
+| [Wednesday 02 March 2011] [05:39:23] <eyecue>	ta :]
+| [Wednesday 02 March 2011] [05:39:56] <yrashk>	pieterh: I am fine if ezmq will remain as secondary binding
+| [Wednesday 02 March 2011] [05:40:02] <yrashk>	as a*
+| [Wednesday 02 March 2011] [05:40:07] <eyecue>	pieterh; btw, loving what i see/read about 0mq so far. trying to figure out how i can apply it to our email architecture
+| [Wednesday 02 March 2011] [05:40:50] <pieterh>	yrashk: I'd personally use names that are more explanatory
+| [Wednesday 02 March 2011] [05:41:01] <pieterh>	e.g. erlzmq-nif
+| [Wednesday 02 March 2011] [05:41:10] <pieterh>	but it's not my call
+| [Wednesday 02 March 2011] [05:41:44] <pieterh>	eyecue: glad you like it
+| [Wednesday 02 March 2011] [05:41:56] <eyecue>	yrashk; just came across the UUID reference in the guide btw: All ?MQ sockets have identities but by default they are generated 'unique universal identifiers' (UUIDs)
+| [Wednesday 02 March 2011] [05:42:31] <eyecue>	perhaps only relevent when using identies with durable sockets?
+| [Wednesday 02 March 2011] [05:42:57] <yrashk>	pieterh: well... I don't have an opinion on that right now
+| [Wednesday 02 March 2011] [05:43:24] <yrashk>	I think erlzmq and erlzmq-nif implies that the latter is a fork of a sort or soemthing
+| [Wednesday 02 March 2011] [05:44:16] <yrashk>	but ezmq is in fact a full rewrite
+| [Wednesday 02 March 2011] [05:44:21] <yrashk>	except for the constants
+| [Wednesday 02 March 2011] [05:44:29] <yrashk>	I admit I stole the header file
+| [Wednesday 02 March 2011] [05:44:52] <yrashk>	either way
+| [Wednesday 02 March 2011] [05:45:01] <yrashk>	this is a minor issue (naming and whatnot)
+| [Wednesday 02 March 2011] [05:46:12] <pieterh>	there are similarly several versions of clrzmq
+| [Wednesday 02 March 2011] [05:46:27] <pieterh>	the latest one simply called itself clrzmq2 
+| [Wednesday 02 March 2011] [05:46:34] <yrashk>	.net?
+| [Wednesday 02 March 2011] [05:46:47] <pieterh>	yes
+| [Wednesday 02 March 2011] [05:47:18] <yrashk>	well
+| [Wednesday 02 March 2011] [05:47:24] <pieterh>	naming is always delicate
+| [Wednesday 02 March 2011] [05:47:29] <yrashk>	yes and no
+| [Wednesday 02 March 2011] [05:47:35] <pieterh>	imagine ezmq really takes off (it's lovely and fast)
+| [Wednesday 02 March 2011] [05:47:49] <pieterh>	you'll have confused users asking, for years, why it's 'ezmq' and not 'erlzmq'...
+| [Wednesday 02 March 2011] [05:47:54] <pieterh>	just my 5c
+| [Wednesday 02 March 2011] [05:48:00] <eyecue>	i can vouch for that already :D
+| [Wednesday 02 March 2011] [05:48:03] <yrashk>	I'll take care of this later
+| [Wednesday 02 March 2011] [05:48:17] <yrashk>	I am just too lazy to think about this now
+| [Wednesday 02 March 2011] [05:48:20] <pieterh>	lol
+| [Wednesday 02 March 2011] [05:48:29] <yrashk>	sipping beer feels better
+| [Wednesday 02 March 2011] [05:48:47] <yrashk>	I just hate renaming all files and module names
+| [Wednesday 02 March 2011] [05:49:07] <eyecue>	pieterh; are you guys talking about various iterations/forks of the same  essential codebase implementing various new structures/patterns/paradigms, or something entirely different?
+| [Wednesday 02 March 2011] [05:49:27] <pieterh>	yrashk: it doesn't get easier over time, indeed the name will stick
+| [Wednesday 02 March 2011] [05:49:34] <eyecue>	and subsequently what to name the resulting output codebase?
+| [Wednesday 02 March 2011] [05:49:36] <pieterh>	eyecue: it's a rewrite, as yrashk said
+| [Wednesday 02 March 2011] [05:49:56] <yrashk>	ya from scratch
+| [Wednesday 02 March 2011] [05:50:01] <pieterh>	but it exposes the same API to applications, so from users' point of view it's a Version 2
+| [Wednesday 02 March 2011] [05:50:07] <eyecue>	whats the purpose /goal / driving motivator behind it ?
+| [Wednesday 02 March 2011] [05:50:08] <yrashk>	pieterh: not the same
+| [Wednesday 02 March 2011] [05:50:20] <yrashk>	pieterh: it's slightly different
+| [Wednesday 02 March 2011] [05:50:26] <eyecue>	internal extensibility, or abstracting away upgrades behind the scenes?
+| [Wednesday 02 March 2011] [05:50:27] <pieterh>	yrashk: sure
+| [Wednesday 02 March 2011] [05:55:49] <yrashk>	this is ezmq results with fixed perf tests on my mac pro
+| [Wednesday 02 March 2011] [05:55:49] <yrashk>	message size: 1 [B]
+| [Wednesday 02 March 2011] [05:55:49] <yrashk>	message count: 1000000
+| [Wednesday 02 March 2011] [05:55:50] <yrashk>	mean throughput: 1330266.625339717 [msg/s]
+| [Wednesday 02 March 2011] [05:55:50] <yrashk>	mean throughput: 10.642133002717735 [Mb/s]
+| [Wednesday 02 March 2011] [05:56:17] <pieterh>	yrashk: you should do 10M messages, perhaps
+| [Wednesday 02 March 2011] [05:56:54] <pieterh>	I love the 17-digit precision
+| [Wednesday 02 March 2011] [05:57:10] <pieterh>	1.3M msg/sec is pretty impressive
+| [Wednesday 02 March 2011] [05:57:59] <eyecue>	certainly for sync tasks, id be keen to see the relative changes at incremental message sizes
+| [Wednesday 02 March 2011] [05:58:04] <yrashk>	sure
+| [Wednesday 02 March 2011] [05:58:05] <yrashk>	message size: 1 [B]
+| [Wednesday 02 March 2011] [05:58:05] <yrashk>	message count: 10000000
+| [Wednesday 02 March 2011] [05:58:05] <yrashk>	mean throughput: 1312724.6071802885 [msg/s]
+| [Wednesday 02 March 2011] [05:58:05] <yrashk>	mean throughput: 10.501796857442308 [Mb/s]
+| [Wednesday 02 March 2011] [05:58:30] <eyecue>	yrashk; ipc or?
+| [Wednesday 02 March 2011] [05:58:35] <yrashk>	tcp
+| [Wednesday 02 March 2011] [05:58:45] <eyecue>	local i take it ?
+| [Wednesday 02 March 2011] [05:58:47] <yrashk>	ya
+| [Wednesday 02 March 2011] [05:58:52] <eyecue>	sweet
+| [Wednesday 02 March 2011] [05:58:56] <yrashk>	not bad
+| [Wednesday 02 March 2011] [05:59:01] <yrashk>	jugg: ^^^
+| [Wednesday 02 March 2011] [05:59:01] <eyecue>	whats the tcp overhead above ipc ?
+| [Wednesday 02 March 2011] [05:59:09] <eyecue>	on the same 'box'
+| [Wednesday 02 March 2011] [05:59:10] <yrashk>	I have no #s
+| [Wednesday 02 March 2011] [05:59:12] <yrashk>	ah
+| [Wednesday 02 March 2011] [05:59:13] <yrashk>	that
+| [Wednesday 02 March 2011] [05:59:23] <eyecue>	quite interesting
+| [Wednesday 02 March 2011] [05:59:51] <eyecue>	i can so tell im going to be spending alot more time on 0mq.
+| [Wednesday 02 March 2011] [06:00:47] <yrashk>	never used ipc
+| [Wednesday 02 March 2011] [06:00:54] <yrashk>	what would be an example ipc:// url?
+| [Wednesday 02 March 2011] [06:01:21] <eyecue>	correct me if im wrong, but ipc:///tmp/somesocketname?
+| [Wednesday 02 March 2011] [06:02:04] <eyecue>	first video on http://www.zeromq.org/intro:read-the-manual shows an example (i may be wrong)
+| [Wednesday 02 March 2011] [06:02:42] <yrashk>	pieterh: on my hw c-to-c perf test is about twice as fast
+| [Wednesday 02 March 2011] [06:02:50] <yrashk>	it makes me sad :-(
+| [Wednesday 02 March 2011] [06:03:09] <pieterh>	yrashk: it's tragic
+| [Wednesday 02 March 2011] [06:03:25] <yrashk>	this is on ipc: 
+| [Wednesday 02 March 2011] [06:03:25] <yrashk>	mean throughput: 1343429.6550005474 [msg/s]
+| [Wednesday 02 March 2011] [06:03:25] <yrashk>	mean throughput: 10.747437240004379 [Mb/s]
+| [Wednesday 02 March 2011] [06:03:31] <eyecue>	again, excuse what might be a silly question, c-to-c ?
+| [Wednesday 02 March 2011] [06:03:31] <yrashk>	pretty much the same
+| [Wednesday 02 March 2011] [06:03:32] <pieterh>	eyecue: yes, that would be a good place to put ipc files
+| [Wednesday 02 March 2011] [06:03:42] <eyecue>	yrashk; thats pretty cool
+| [Wednesday 02 March 2011] [06:04:06] <yrashk>	eyecue: perf tests from zeromq itself as opposed those implemented in erlang (which is what I am testing right now)
+| [Wednesday 02 March 2011] [06:04:13] <pieterh>	ipc:// uses a filename, e.g. ipc://somefile.ipc
+| [Wednesday 02 March 2011] [06:04:20] <yrashk>	pieterh: sarcasm? ;)
+| [Wednesday 02 March 2011] [06:04:23] <pieterh>	must be writeable by all processes that use it
+| [Wednesday 02 March 2011] [06:04:27] <eyecue>	yrashk; thats what i thought :)
+| [Wednesday 02 March 2011] [06:04:28] <pieterh>	yrashk: gentle irony
+| [Wednesday 02 March 2011] [06:04:33] <eyecue>	pieterh; i saw the uid note for it :]
+| [Wednesday 02 March 2011] [06:04:38] <yrashk>	pieterh: do you think this is a good result?
+| [Wednesday 02 March 2011] [06:04:43] <pieterh>	yrashk: rather good, yes
+| [Wednesday 02 March 2011] [06:05:00] <eyecue>	i find it interesting that an ipc socket and tcp perf is roughly the same
+| [Wednesday 02 March 2011] [06:05:17] <pieterh>	eyecue: they are identical, on Linux localhost
+| [Wednesday 02 March 2011] [06:05:23] <pieterh>	local domain sockets
+| [Wednesday 02 March 2011] [06:05:38] <yrashk>	it's osx
+| [Wednesday 02 March 2011] [06:06:01] <pieterh>	osx is linux, it just hasn't quite realized it yet
+| [Wednesday 02 March 2011] [06:06:04] <pieterh>	:-)
+| [Wednesday 02 March 2011] [06:06:11] <eyecue>	still the file socket stack and tcp stacks often have quite not-the-same performance characteristics, and tuning parameters
+| [Wednesday 02 March 2011] [06:06:14] <pieterh>	yrashk: you could try inproc to see what the raw API costs are
+| [Wednesday 02 March 2011] [06:06:44] <yrashk>	pieterh: for that I have to tweak tests... not in this beer mode :)
+| [Wednesday 02 March 2011] [06:07:26] <pieterh>	ah, beer mode... :-)
+| [Wednesday 02 March 2011] [06:07:30] <pieterh>	i'm in coffee mode here
+| [Wednesday 02 March 2011] [06:08:04] <eyecue>	i wish i was in coffee mode, food search mode here :)
+| [Wednesday 02 March 2011] [06:08:07] <eyecue>	<-- .au
+| [Wednesday 02 March 2011] [06:09:03] <sejo>	quick question, if I create a FIFO que with 2 servers and multiple clients, is it possible to save the items in the que somewhere to make sure when the servers crash the items are retrievable?
+| [Wednesday 02 March 2011] [06:09:13] <sejo>	or should I write such code myself?
+| [Wednesday 02 March 2011] [06:10:27] <pieterh>	sejo: it's being explained in Chapter 4 of the guide
+| [Wednesday 02 March 2011] [06:10:34] <eyecue>	workers can die too, so resilience there can often be more important than queue resilience
+| [Wednesday 02 March 2011] [06:10:35] <pieterh>	see http://zero.mq/md
+| [Wednesday 02 March 2011] [06:10:46] <pieterh>	I'm working on an implementation of that right now
+| [Wednesday 02 March 2011] [06:10:50] <eyecue>	ooo, a new page to look at
+| [Wednesday 02 March 2011] [06:11:03] <eyecue>	pieterh; why the name majordomo?
+| [Wednesday 02 March 2011] [06:11:12] <Guthur>	pieterh: what stage of completeness is Ch4? out of interest
+| [Wednesday 02 March 2011] [06:11:13] <pieterh>	eyecue: all the patterns in Ch4 get cute names
+| [Wednesday 02 March 2011] [06:11:22] <pieterh>	and Ch4 is about 50% done afaics
+| [Wednesday 02 March 2011] [06:11:28] <eyecue>	not worried about the open source app by the same name ? :]
+| [Wednesday 02 March 2011] [06:11:32] <pieterh>	Majordomo because it provides a reliable service
+| [Wednesday 02 March 2011] [06:11:34] <eyecue>	or are you leveraging it ;)
+| [Wednesday 02 March 2011] [06:11:39] <pieterh>	what other app?
+| [Wednesday 02 March 2011] [06:11:44] 	 * pieterh is happily ignorant
+| [Wednesday 02 March 2011] [06:11:48] <eyecue>	majordomo the mailing list manager :]
+| [Wednesday 02 March 2011] [06:11:54] <pieterh>	no idea what you're talking about
+| [Wednesday 02 March 2011] [06:12:27] <eyecue>	one of the most widely used open source mailing list management softwares :]
+| [Wednesday 02 March 2011] [06:12:40] <pieterh>	does it use 0MQ?
+| [Wednesday 02 March 2011] [06:12:48] <eyecue>	nono, its name is just majordomo
+| [Wednesday 02 March 2011] [06:13:00] <pieterh>	do they have a trademark on their name?
+| [Wednesday 02 March 2011] [06:13:07] 	 * pieterh checks that rapidly...
+| [Wednesday 02 March 2011] [06:13:15] <Guthur>	I'd guess no
+| [Wednesday 02 March 2011] [06:13:24] <eyecue>	greatcircle software is the company who makes it, but ive never thought of that :)
+| [Wednesday 02 March 2011] [06:13:25] <pieterh>	they don't even own majordomo.org
+| [Wednesday 02 March 2011] [06:13:34] <ianbarber>	you're probably all right on this one, it's more of a protocol thing than a particular bit of software
+| [Wednesday 02 March 2011] [06:13:51] <Guthur>	wiki has this on the majordomo page: Development status	End of life
+| [Wednesday 02 March 2011] [06:13:53] <pieterh>	legally, if there is a trademark and risk of confusion, I'd have to choose another name
+| [Wednesday 02 March 2011] [06:14:07] <ianbarber>	wordpress inspired the ire of many recently by naming their most recent release django, which was clever
+| [Wednesday 02 March 2011] [06:14:18] <eyecue>	yah it was more out of interest than to point out any/possible risks :]
+| [Wednesday 02 March 2011] [06:14:23] <Guthur>	last stable release 11 years ago
+| [Wednesday 02 March 2011] [06:14:30] <pieterh>	morally, this is a 0MQ pattern name, there is no confusion
+| [Wednesday 02 March 2011] [06:14:34] <Guthur>	it's possible it is perfect though
+| [Wednesday 02 March 2011] [06:14:39] <pieterh>	like Libero
+| [Wednesday 02 March 2011] [06:14:40] <eyecue>	there is of course the issue of user confusion, but i digress
+| [Wednesday 02 March 2011] [06:15:04] <pieterh>	Libero is a FSM tool I wrote in the early 90's, which actually had no bugs and no more features to add
+| [Wednesday 02 March 2011] [06:15:22] <pieterh>	so perhaps Majordomo-the-software was perfect, but ... probably it's just dead
+| [Wednesday 02 March 2011] [06:15:31] 	 * pieterh can digress with the best of them
+| [Wednesday 02 March 2011] [06:15:40] <Guthur>	it can even run on newer versions of Unix, apparently
+| [Wednesday 02 March 2011] [06:15:41] <eyecue>	its still one of the most widely deployed mailing list managers for open source projects full stop :]
+| [Wednesday 02 March 2011] [06:15:47] <Guthur>	all this from the wiki page mind you
+| [Wednesday 02 March 2011] [06:15:52] <Guthur>	can/can't
+| [Wednesday 02 March 2011] [06:15:55] <eyecue>	im actually quite suprised youd never heard of it
+| [Wednesday 02 March 2011] [06:16:29] <pieterh>	aiksaurus suggests 'chamberlain' as an alternative but somehow I prefer 'Majordomo'
+| [Wednesday 02 March 2011] [06:16:40] <eyecue>	it sounds authoritive :)
+| [Wednesday 02 March 2011] [06:16:59] 	 * pieterh gets back to coding
+| [Wednesday 02 March 2011] [06:37:37] <pieterh>	ianbarber: so we're on for the 16th?
+| [Wednesday 02 March 2011] [06:38:54] <ianbarber>	yep
+| [Wednesday 02 March 2011] [06:40:38] <ianbarber>	just tweeted about it, i haven't actually been to this place before, but mikko knows it
+| [Wednesday 02 March 2011] [06:41:46] <ianbarber>	it's near oxford circus so it's just straight down the victoria line for kings cross, if you can come, and come in by train
+| [Wednesday 02 March 2011] [06:45:57] <ianbarber>	will be awesome! do you have any clients in London to see or similar, feel bad for your travel if you're just coming to chat to us :) 
+| [Wednesday 02 March 2011] [06:58:52] <pieterh>	ianbarber: yes, there are always people to meet in London
+| [Wednesday 02 March 2011] [06:59:05] <yrashk>	night everybody :)
+| [Wednesday 02 March 2011] [06:59:10] <ianbarber>	:)
+| [Wednesday 02 March 2011] [06:59:11] <pieterh>	yrashk: night :-)
+| [Wednesday 02 March 2011] [07:12:24] <eyecue>	night
+| [Wednesday 02 March 2011] [07:21:14] <private_meta>	haven't been in London for 3 years
+| [Wednesday 02 March 2011] [07:45:44] <pieterh>	ianbarber: do you want a link shortener at zero.mq? I've set this up at zero.mq/go
+| [Wednesday 02 March 2011] [07:46:00] <ianbarber>	oh, that's an idea
+| [Wednesday 02 March 2011] [07:46:21] <ianbarber>	have to chuck canonical links in heads of pages
+| [Wednesday 02 March 2011] [07:47:27] <ianbarber>	that looks very handy
+| [Wednesday 02 March 2011] [07:47:49] <pieterh>	register at Wikidot if not done, click Join and I'll give you access
+| [Wednesday 02 March 2011] [07:49:25] <ianbarber>	done
+| [Wednesday 02 March 2011] [07:52:04] <pieterh>	done: to create a shortcut you just enter the short URL you want, then click Create, and enter the target URL in the page title and save
+| [Wednesday 02 March 2011] [07:52:53] <pieterh>	ianbarber: I've made you site admin too, so you can give others ccess
+| [Wednesday 02 March 2011] [07:52:58] <pieterh>	*access
+| [Wednesday 02 March 2011] [07:53:01] <sejo>	ping
+| [Wednesday 02 March 2011] [07:53:07] <sejo>	sorry
+| [Wednesday 02 March 2011] [07:53:38] <pieterh>	ianbarber: yay :-) it works
+| [Wednesday 02 March 2011] [07:53:53] <ianbarber>	cool :)
+| [Wednesday 02 March 2011] [07:53:58] <ianbarber>	thanks!
+| [Wednesday 02 March 2011] [07:55:48] <pieterh>	hey, thanks to you for zero.mq, it's quite a fun toy
+| [Wednesday 02 March 2011] [07:57:09] <pieterh>	have to leave, cyal
