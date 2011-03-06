@@ -2809,3 +2809,165 @@
 | [Saturday 05 March 2011] [09:51:54] <mikko>	larhat: there has been discussion about creating persistence devices
 | [Saturday 05 March 2011] [09:52:12] <mikko>	where you could 'plug in' persistence on sockets you need
 | [Saturday 05 March 2011] [09:54:31] <larhat>	ok, thanks, guys
+| [Saturday 05 March 2011] [16:45:59] <surikator>	hi! anyone out there who tried ZeroMQ for OCaml?
+| [Saturday 05 March 2011] [17:15:30] <Guthur>	is there any reason why rtrouter from the guide should not worker with inproc transport
+| [Saturday 05 March 2011] [17:32:10] <Guthur>	surikator, there does not yet seem to be a binding for OCaml
+| [Saturday 05 March 2011] [17:32:29] <surikator>	yes, there is...
+| [Saturday 05 March 2011] [17:32:41] <Guthur>	oh ok, it's not mentioned on the site
+| [Saturday 05 March 2011] [17:32:44] <surikator>	https://github.com/pdhborges/ocaml-zmq
+| [Saturday 05 March 2011] [17:33:08] <surikator>	=)
+| [Saturday 05 March 2011] [17:35:01] <surikator>	but regarding zeromq in general, can we pass whole data structures and objects through the sockets?
+| [Saturday 05 March 2011] [17:38:40] <Guthur>	surikator, you'd need to serialize them
+| [Saturday 05 March 2011] [17:39:06] <Guthur>	I'm not familiar with that binding, it may or may not have that built in
+| [Saturday 05 March 2011] [17:39:30] <Guthur>	ZeroMQ does not provide it though
+| [Saturday 05 March 2011] [17:39:53] <Guthur>	there is some pretty decent serialization solutions out there though
+| [Saturday 05 March 2011] [17:43:28] <surikator>	it doesn't have that built in. it mimics ZeroMQ only.
+| [Saturday 05 March 2011] [17:51:12] <surikator>	ok, so I'd probably have to use Ocaml Marshal library. which solutions do you mean?
+| [Saturday 05 March 2011] [18:08:03] <Guthur>	surikator, protocol buffers, thrift, or maybe even JSON
+| [Saturday 05 March 2011] [18:08:24] <Guthur>	i'm not familiar with OCaml though
+| [Sunday 06 March 2011] [01:55:25] <guido_g>	hello world!
+| [Sunday 06 March 2011] [04:39:39] <pieter_hintjens>	hi all, I just made the 2.1.2 rc2 release
+| [Sunday 06 March 2011] [04:40:37] <guido_g>	and lots of old tags on zeromq2-1
+| [Sunday 06 March 2011] [04:44:21] <pieter_hintjens>	yeah, I was wondering about those... OK, will delete them...
+| [Sunday 06 March 2011] [04:44:32] <guido_g>	pieter_hintjens: can we change the woker side framing of the mdp? would like to have an empty frame before the version, so it's the same as for the client
+| [Sunday 06 March 2011] [04:45:16] <guido_g>	makes the code much easier and would be more consistent
+| [Sunday 06 March 2011] [04:45:17] <pieter_hintjens>	guido_g: an extra frame for nothing...
+| [Sunday 06 March 2011] [04:45:29] <pieter_hintjens>	I'd thought of it but figured it was pointless
+| [Sunday 06 March 2011] [04:45:39] <guido_g>	it's not
+| [Sunday 06 March 2011] [04:45:49] <pieter_hintjens>	ok, let me think about it a sec
+| [Sunday 06 March 2011] [04:46:00] <guido_g>	if all goes over one zmq socket, you need to figure out where the message came from
+| [Sunday 06 March 2011] [04:46:53] <guido_g>	if we could strip the return path with a generic function, the first part of the remaining message would be the sender
+| [Sunday 06 March 2011] [04:47:14] <pieter_hintjens>	consistency? hmm, a novel idea...
+| [Sunday 06 March 2011] [04:47:27] <guido_g>	*sigh*
+| [Sunday 06 March 2011] [04:47:30] <guido_g>	,)
+| [Sunday 06 March 2011] [04:48:28] <pieter_hintjens>	so the reason there's an empty frame before the version is purely to emulate a REQ socket
+| [Sunday 06 March 2011] [04:49:56] <pieter_hintjens>	there's no consistent return path afaics
+| [Sunday 06 March 2011] [04:50:12] <pieter_hintjens>	tell me precisely what commands you'd want to change, guido_g
+| [Sunday 06 March 2011] [04:50:23] <pieter_hintjens>	ready, heartbeat, request, reply, disconnect?
+| [Sunday 06 March 2011] [04:51:12] <guido_g>	it would change all of them
+| [Sunday 06 March 2011] [04:51:41] <pieter_hintjens>	it would not make these consistent with client commands
+| [Sunday 06 March 2011] [04:51:51] <pieter_hintjens>	because the worker commands all have that frame with the command number
+| [Sunday 06 March 2011] [04:52:01] <pieter_hintjens>	i'm unsure what you mean by 'return path'
+| [Sunday 06 March 2011] [04:52:22] <pieter_hintjens>	are you talking about the broker or the APIs?
+| [Sunday 06 March 2011] [04:52:37] 	 * pieter_hintjens needs more context...
+| [Sunday 06 March 2011] [04:52:44] <guido_g>	it make the overall structure more consistent
+| [Sunday 06 March 2011] [04:52:53] <pieter_hintjens>	overall structure of *what*?
+| [Sunday 06 March 2011] [04:53:06] <guido_g>	i do talk about the sequence of message frames send to the broker
+| [Sunday 06 March 2011] [04:53:29] <pieter_hintjens>	ok, so there is a reason the client and worker protocols are quite different
+| [Sunday 06 March 2011] [04:53:37] <guido_g>	*sigh*
+| [Sunday 06 March 2011] [04:54:10] <guido_g>	it makes the more complex, when using a shared socket in the broker
+| [Sunday 06 March 2011] [04:54:16] <pieter_hintjens>	so use two sockets, that's fine
+| [Sunday 06 March 2011] [04:54:39] <pieter_hintjens>	you've not actually explained what you mean, except "more consistent" and "*sigh*"
+| [Sunday 06 March 2011] [04:54:41] <pieter_hintjens>	:-)
+| [Sunday 06 March 2011] [04:54:48] <pieter_hintjens>	please be precise
+| [Sunday 06 March 2011] [04:54:53] <guido_g>	to me it's obvious
+| [Sunday 06 March 2011] [04:54:58] <pieter_hintjens>	obviously
+| [Sunday 06 March 2011] [04:55:30] <guido_g>	the client sends id followed by delimiter (the empty frame)
+| [Sunday 06 March 2011] [04:55:47] <pieter_hintjens>	wait, please
+| [Sunday 06 March 2011] [04:55:51] <pieter_hintjens>	the client does not send ID
+| [Sunday 06 March 2011] [04:55:56] <guido_g>	the worker send id and then immediately the 6 byte proto version
+| [Sunday 06 March 2011] [04:56:10] <guido_g>	the req does
+| [Sunday 06 March 2011] [04:56:18] <pieter_hintjens>	nope, the client does not send its id
+| [Sunday 06 March 2011] [04:56:27] <pieter_hintjens>	if you believe it does, we have a communications issue
+| [Sunday 06 March 2011] [04:56:36] <pieter_hintjens>	the xrep socket prepends the ID of the originator
+| [Sunday 06 March 2011] [04:56:58] <guido_g>	ok so that is what the app sees
+| [Sunday 06 March 2011] [04:57:08] <pieter_hintjens>	the client sends (if it's a REQ) the protocol version followed by the service name followed by the message
+| [Sunday 06 March 2011] [04:57:24] <guido_g>	ok, again
+| [Sunday 06 March 2011] [04:57:27] <pieter_hintjens>	the client sends (if it's an XREQ) this, prepended by an empty frame
+| [Sunday 06 March 2011] [04:57:37] <pieter_hintjens>	the 'app' is *what*?
+| [Sunday 06 March 2011] [04:57:47] <pieter_hintjens>	you need to be precise, we have three nodes here, each seeing different things
+| [Sunday 06 March 2011] [04:57:48] <guido_g>	the program getting the messages from the xreq sees a leading id
+| [Sunday 06 March 2011] [04:58:01] <guido_g>	followed by an empty frame
+| [Sunday 06 March 2011] [04:58:16] <guido_g>	this was a recv gives
+| [Sunday 06 March 2011] [04:58:20] <pieter_hintjens>	ok
+| [Sunday 06 March 2011] [04:58:31] <guido_g>	this should be the same for both sides
+| [Sunday 06 March 2011] [04:58:56] <guido_g>	so one could use the same function for splitting this information and the following part reliably
+| [Sunday 06 March 2011] [04:58:58] <pieter_hintjens>	well, it's 2 lines of code more or less in the broker
+| [Sunday 06 March 2011] [04:59:08] <pieter_hintjens>	and it's an extra frame for the worker protocol for absolutely no advantage
+| [Sunday 06 March 2011] [04:59:49] <pieter_hintjens>	i will not make the protocol more complex to create minimal advantage to implementations
+| [Sunday 06 March 2011] [04:59:53] <pieter_hintjens>	sorry
+| [Sunday 06 March 2011] [05:00:00] <pieter_hintjens>	the frames need to have a *functional* purpose
+| [Sunday 06 March 2011] [05:00:02] <guido_g>	says the guy who needs six byte to distinguish 2 protocols and their versions
+| [Sunday 06 March 2011] [05:00:08] <pieter_hintjens>	"I can reuse the same code" is not a functional purpose
+| [Sunday 06 March 2011] [05:00:11] <guido_g>	it does
+| [Sunday 06 March 2011] [05:00:35] <guido_g>	it delimits the routing part from the mdp protocol information
+| [Sunday 06 March 2011] [05:00:54] <pieter_hintjens>	here is how my code does it:
+| [Sunday 06 March 2011] [05:00:55] <pieter_hintjens>	            char *sender = zmsg_unwrap (msg);
+| [Sunday 06 March 2011] [05:00:55] <pieter_hintjens>	            char *header = zmsg_pop (msg);
+| [Sunday 06 March 2011] [05:01:13] <pieter_hintjens>	totally generic, works for both client and worker messages
+| [Sunday 06 March 2011] [05:01:31] <pieter_hintjens>	            if (strcmp (header, MDPC_CLIENT) == 0)
+| [Sunday 06 March 2011] [05:01:31] <pieter_hintjens>	                s_client_process (self, sender, msg);
+| [Sunday 06 March 2011] [05:01:31] <pieter_hintjens>	            else
+| [Sunday 06 March 2011] [05:01:31] <pieter_hintjens>	            if (strcmp (header, MDPW_WORKER) == 0)
+| [Sunday 06 March 2011] [05:01:31] <pieter_hintjens>	                s_worker_process (self, sender, msg);
+| [Sunday 06 March 2011] [05:01:45] <pieter_hintjens>	I'm surprised it's easier in C than in Python
+| [Sunday 06 March 2011] [05:02:16] <guido_g>	i don't know what these function do
+| [Sunday 06 March 2011] [05:02:50] <pieter_hintjens>	unwrap removes an address plus optional empty part
+| [Sunday 06 March 2011] [05:02:51] <guido_g>	but the client header start w/ an emty frame per spec, can't see that handled here
+| [Sunday 06 March 2011] [05:02:55] <guido_g>	ahhh
+| [Sunday 06 March 2011] [05:02:58] <pieter_hintjens>	since this question of empty parts occurs in many places
+| [Sunday 06 March 2011] [05:03:02] <guido_g>	only one address
+| [Sunday 06 March 2011] [05:03:15] <pieter_hintjens>	you want to manage an address stack?
+| [Sunday 06 March 2011] [05:03:23] <guido_g>	there is nothing to manage
+| [Sunday 06 March 2011] [05:03:29] <pieter_hintjens>	there is no stack
+| [Sunday 06 March 2011] [05:03:46] <guido_g>	it's just a list of ids followed by an empty frame
+| [Sunday 06 March 2011] [05:03:52] <pieter_hintjens>	there is no list
+| [Sunday 06 March 2011] [05:03:55] <pieter_hintjens>	it's exactly one
+| [Sunday 06 March 2011] [05:04:06] <pieter_hintjens>	the only way you can get a list is to chain multiple brokers
+| [Sunday 06 March 2011] [05:04:18] <pieter_hintjens>	and that won't work without other changes
+| [Sunday 06 March 2011] [05:04:54] <pieter_hintjens>	this, at least, is the broker's view of the world
+| [Sunday 06 March 2011] [05:05:04] <pieter_hintjens>	workers, as terminators, can manage a stack without trouble
+| [Sunday 06 March 2011] [05:05:52] <pieter_hintjens>	so the request command emulates a REP socket (stack of addresses + empty part + body)
+| [Sunday 06 March 2011] [05:06:17] <pieter_hintjens>	guido_g: ok, here's a compromise
+| [Sunday 06 March 2011] [05:06:36] <pieter_hintjens>	your point is noted, I had the same idea but it didn't stick
+| [Sunday 06 March 2011] [05:07:07] <pieter_hintjens>	we'll probably want to make more radical changes to MDP anyhow, later
+| [Sunday 06 March 2011] [05:08:49] <guido_g>	and where's the compromise?
+| [Sunday 06 March 2011] [05:09:04] <guido_g>	i mean we *might* do it later doesn't sound like one
+| [Sunday 06 March 2011] [05:09:18] <guido_g>	but, ok i'll implement the way it is
+| [Sunday 06 March 2011] [05:11:07] <pieter_hintjens>	Meaning, the issue remains open, it's not rejected, but needs more thought
+| [Sunday 06 March 2011] [05:11:32] <pieter_hintjens>	I'm not sure the 'many frames' approach is ideal at all
+| [Sunday 06 March 2011] [05:12:36] <guido_g>	no, it's significantly slower, but ra performance isn't important here i was told
+| [Sunday 06 March 2011] [05:12:56] <guido_g>	s/ra/raw/
+| [Sunday 06 March 2011] [05:13:35] <Guthur>	pieter_hintjens, was that second archive i sent yesterday ok?
+| [Sunday 06 March 2011] [05:13:58] <pieter_hintjens>	Guthur: yup, I already pushed those translations, thanks
+| [Sunday 06 March 2011] [05:14:14] <pieter_hintjens>	guido_g: indeed, I want the semantics of routing to be clear, this is educational
+| [Sunday 06 March 2011] [05:14:23] <Guthur>	pieter_hintjens, cool, cheers
+| [Sunday 06 March 2011] [05:14:54] <pieter_hintjens>	Guthur: only a dozen or so more, and you can get the Guide in C# :-)
+| [Sunday 06 March 2011] [05:15:29] <Guthur>	I hope to have ch3 finished soon enough
+| [Sunday 06 March 2011] [05:15:38] <Guthur>	1/2 half through peering2
+| [Sunday 06 March 2011] [05:16:21] <Guthur>	I'm going with some friends to airsoft today, so there's likely to little progress today
+| [Sunday 06 March 2011] [05:16:50] <pieter_hintjens>	that blasted hintjens guy keeps moving the goal posts...
+| [Sunday 06 March 2011] [05:17:15] <Guthur>	is ch4 still in quite a bit of flux
+| [Sunday 06 March 2011] [05:17:55] <pieter_hintjens>	What's there now is stable, it's coming to a close
+| [Sunday 06 March 2011] [05:18:03] <pieter_hintjens>	two more large patterns and it's done
+| [Sunday 06 March 2011] [05:18:17] <Guthur>	nice
+| [Sunday 06 March 2011] [05:18:25] <Guthur>	is this the final chapter
+| [Sunday 06 March 2011] [05:18:31] <pieter_hintjens>	lol, no :-)
+| [Sunday 06 March 2011] [05:18:53] <pieter_hintjens>	there'll be a few more chapters
+| [Sunday 06 March 2011] [05:23:53] <Guthur>	ok, got to go, later all
+| [Sunday 06 March 2011] [06:09:18] <mikko>	good morning
+| [Sunday 06 March 2011] [06:16:03] <pieter_hintjens>	hi mikko!
+| [Sunday 06 March 2011] [06:22:56] <mikko>	solaris isn't playing ball :/
+| [Sunday 06 March 2011] [06:23:26] <mikko>	i tried to catch up with you on friday i think
+| [Sunday 06 March 2011] [06:23:41] <mikko>	i did some build refactoring and would've warned that there might be some emails coming to your way
+| [Sunday 06 March 2011] [06:23:52] <mikko>	i think you get failure emails at least for some builds
+| [Sunday 06 March 2011] [06:23:54] <pieter_hintjens>	I saw them, np
+| [Sunday 06 March 2011] [06:24:05] <pieter_hintjens>	I assumed you were changing something
+| [Sunday 06 March 2011] [06:25:03] <mikko>	i am exploring using amazon ec2 to add some capacity
+| [Sunday 06 March 2011] [06:25:08] <mikko>	win64 / linux64
+| [Sunday 06 March 2011] [06:25:50] <pieter_hintjens>	interesting...
+| [Sunday 06 March 2011] [06:26:44] <mikko>	start build slaves on demand and shutdown after they are done
+| [Sunday 06 March 2011] [06:26:55] <mikko>	jenkins has a plugin for this so it should be fairly easy
+| [Sunday 06 March 2011] [06:27:15] <pieter_hintjens>	and amazon charges only for what is actually used?
+| [Sunday 06 March 2011] [06:27:24] <pieter_hintjens>	I've never tried ec2
+| [Sunday 06 March 2011] [06:29:55] <mikko>	yeah
+| [Sunday 06 March 2011] [06:30:35] <mikko>	linux is $0.025 per hour
+| [Sunday 06 March 2011] [06:30:42] <mikko>	and windows is $0.035 per hour
+| [Sunday 06 March 2011] [06:30:58] <mikko>	for the smallest instances
+| [Sunday 06 March 2011] [06:56:03] <guido_g>	ha! python mdp broker just routed its first requests
+| [Sunday 06 March 2011] [06:58:40] <mikko>	nice!
+| [Sunday 06 March 2011] [07:01:01] <guido_g>	jepp, write it in ca. 4 hours :)
+| [Sunday 06 March 2011] [07:01:11] <guido_g>	s/write/wrote/
+| [Sunday 06 March 2011] [07:31:29] <guido_g>	pieter_hintjens: error while compling https://gist.github.com/857252
+| [Sunday 06 March 2011] [07:55:28] <guido_g>	tiem for a break
+| [Sunday 06 March 2011] [07:55:31] <guido_g>	*time
