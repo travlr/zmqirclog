@@ -3905,3 +3905,138 @@
 | [Monday 07 March 2011] [20:48:23] <cremes>	yeah, unfortunately i don't think anyone has yet
 | [Monday 07 March 2011] [20:48:44] <cremes>	if you figure it out, put up a page on the wiki!
 | [Monday 07 March 2011] [20:49:06] <lt_schmidt_jr>	:) I'll try
+| [Tuesday 08 March 2011] [01:14:52] <andrewvc>	cremes: around?
+| [Tuesday 08 March 2011] [01:22:58] <engwan>	hi andrewvc, got another problem with my rails app.. it might not be related to zeromq / mongrel2 but related to the threading problem
+| [Tuesday 08 March 2011] [01:23:09] <andrewvc>	engwan: yo
+| [Tuesday 08 March 2011] [01:23:14] <engwan>	now im getting this
+| [Tuesday 08 March 2011] [01:23:16] <engwan>	Unhandled exception when trying to join handler #<ThreadError: deadlock; recursive locking>.
+| [Tuesday 08 March 2011] [01:23:16] <engwan>	/opt/palmade/development/rvm/gems/ruby-1.9.2-p136/gems/actionpack-2.3.11/lib/action_controller/reloader.rb:31:in `lock'
+| [Tuesday 08 March 2011] [01:23:16] <engwan>	/opt/palmade/development/rvm/gems/ruby-1.9.2-p136/gems/actionpack-2.3.11/lib/action_controller/reloader.rb:31:in `run'
+| [Tuesday 08 March 2011] [01:23:16] <engwan>	/opt/palmade/development/rvm/gems/ruby-1.9.2-p136/gems/actionpack-2.3.11/lib/action_controller/dispatcher.rb:108:in `call'
+| [Tuesday 08 March 2011] [01:23:18] <engwan>	/opt/palmade/development/rvm/gems/ruby-1.9.2-p136/gems/thin-1.2.7/lib/rack/adapter/rails.rb:74:in `call'
+| [Tuesday 08 March 2011] [01:23:20] <engwan>	on every other request
+| [Tuesday 08 March 2011] [01:23:28] <engwan>	so when i open up the page, it works fine
+| [Tuesday 08 March 2011] [01:23:29] <andrewvc>	hmmm, i'm not familiar with that one
+| [Tuesday 08 March 2011] [01:23:33] <engwan>	when i refresh it
+| [Tuesday 08 March 2011] [01:23:37] <engwan>	that error
+| [Tuesday 08 March 2011] [01:23:48] <engwan>	then my master process respawns the dead process
+| [Tuesday 08 March 2011] [01:23:51] <engwan>	then repeat..
+| [Tuesday 08 March 2011] [01:23:51] <engwan>	hehe
+| [Tuesday 08 March 2011] [01:24:33] <andrewvc>	hmmm
+| [Tuesday 08 March 2011] [01:24:42] <andrewvc>	btw, have you set Thread.abort_on_exception = true
+| [Tuesday 08 March 2011] [01:25:17] <andrewvc>	looks like the magic class reloading in rails is having issues
+| [Tuesday 08 March 2011] [01:25:46] <engwan>	yeah, that reloading class has wrapper locking / unlocking mechanism
+| [Tuesday 08 March 2011] [01:27:01] <andrewvc>	well, it looks like there's an exception somewhere
+| [Tuesday 08 March 2011] [01:27:15] <andrewvc>	that gets rescued, question is, what's the exception
+| [Tuesday 08 March 2011] [01:27:54] <engwan>	hmm.. isnt the exception #<ThreadError: deadlock; recursive locking>?
+| [Tuesday 08 March 2011] [01:28:03] <engwan>	related to mutex?
+| [Tuesday 08 March 2011] [01:29:38] <engwan>	:w
+| [Tuesday 08 March 2011] [01:29:59] <andrewvc>	hmmm
+| [Tuesday 08 March 2011] [01:30:47] <engwan>	i solved the problem
+| [Tuesday 08 March 2011] [01:30:59] <engwan>	the lock was actually not unlocked
+| [Tuesday 08 March 2011] [01:31:28] <andrewvc>	well, yeah
+| [Tuesday 08 March 2011] [01:31:31] <engwan>	its a bug in rack-mongrel2.. it should call close on the response body of the rack app
+| [Tuesday 08 March 2011] [01:31:38] <andrewvc>	cool
+| [Tuesday 08 March 2011] [01:31:41] <engwan>	as rails hooks the unlock into that method
+| [Tuesday 08 March 2011] [01:31:42] <andrewvc>	so, the other question is
+| [Tuesday 08 March 2011] [01:32:09] <andrewvc>	it looks like exceptions that don't get handled cause mutex to complain that it now won't get unlocked.
+| [Tuesday 08 March 2011] [01:32:18] <andrewvc>	does that sound right, or am I misunderstanding this?
+| [Tuesday 08 March 2011] [01:32:44] <engwan>	no, its just that the mutex was locked twice
+| [Tuesday 08 March 2011] [01:32:47] <engwan>	without getting unlocked
+| [Tuesday 08 March 2011] [01:32:53] <engwan>	so it gave out that exception
+| [Tuesday 08 March 2011] [01:33:01] <andrewvc>	ohhhhhhh, gotcha
+| [Tuesday 08 March 2011] [01:33:52] <andrewvc>	I was thinking what I said didn't quite made sense
+| [Tuesday 08 March 2011] [01:33:55] <andrewvc>	btw
+| [Tuesday 08 March 2011] [01:34:07] <andrewvc>	we're making a rather significant change to ffi-rzmq
+| [Tuesday 08 March 2011] [01:34:26] <engwan>	what would that change be?
+| [Tuesday 08 March 2011] [01:35:03] <andrewvc>	well, it won't affect you if you use Socket#send_string
+| [Tuesday 08 March 2011] [01:35:14] <andrewvc>	but if you use Socket#send directly, instantiating zmq objects
+| [Tuesday 08 March 2011] [01:35:18] <andrewvc>	it will
+| [Tuesday 08 March 2011] [01:35:41] <andrewvc>	we're going to require that you manually close any sent messages after the send
+| [Tuesday 08 March 2011] [01:35:58] <andrewvc>	#send won't manually close the message for you any more
+| [Tuesday 08 March 2011] [01:36:16] <andrewvc>	and #send will likely be renamed as well, just be on the look out for it, we'll likely bump it this week
+| [Tuesday 08 March 2011] [01:36:17] <engwan>	any reason for the change?
+| [Tuesday 08 March 2011] [01:36:21] <andrewvc>	yeah
+| [Tuesday 08 March 2011] [01:36:29] <andrewvc>	basically, here's the deal
+| [Tuesday 08 March 2011] [01:37:27] <andrewvc>	lets say you're sending a multi-part message
+| [Tuesday 08 March 2011] [01:37:33] <andrewvc>	and its got 4 parts
+| [Tuesday 08 March 2011] [01:38:12] <andrewvc>	and it fails on part 2
+| [Tuesday 08 March 2011] [01:38:32] <andrewvc>	then lets say you try and resend the message, starting from part 1
+| [Tuesday 08 March 2011] [01:39:00] <andrewvc>	well, #send has modified those Message objects, they've been closed, so you can't resend part 1 and 2
+| [Tuesday 08 March 2011] [01:39:06] <andrewvc>	you have to recreate the Message objects
+| [Tuesday 08 March 2011] [01:39:23] <andrewvc>	what you really want to do is send all 4, then close all 4, not send each, closing them one at a time as you go
+| [Tuesday 08 March 2011] [01:39:29] <engwan>	ohh.. yeah, that makes sense..
+| [Tuesday 08 March 2011] [01:39:55] <andrewvc>	though, something still seems odd about it to me, maybe there's a better way
+| [Tuesday 08 March 2011] [01:40:10] <andrewvc>	though, the other thing we discussed was renaming send, as it conflicts with Object#send
+| [Tuesday 08 March 2011] [01:40:24] <andrewvc>	though the proper zmq api uses #send
+| [Tuesday 08 March 2011] [01:40:37] <andrewvc>	anyway, it's late and I'm rambling
+| [Tuesday 08 March 2011] [01:40:45] <andrewvc>	looking forward to your M2 handler btw
+| [Tuesday 08 March 2011] [01:41:23] <engwan>	sure, i'll post it up on github when ready
+| [Tuesday 08 March 2011] [03:08:20] <guido_g>	good morning
+| [Tuesday 08 March 2011] [03:20:02] <guido_g>	pieter_hintjens: http://www.inspirel.com/yami4/  <- competitors ahead -- and thy have a book already!!!  ,)
+| [Tuesday 08 March 2011] [03:22:48] <siggimoo>	zmq has a better name and license, imo
+| [Tuesday 08 March 2011] [03:27:35] <Steve-o>	it's a lulu book
+| [Tuesday 08 March 2011] [03:27:49] <Steve-o>	plus they don't have a good multicast protocol :)
+| [Tuesday 08 March 2011] [03:30:27] <guido_g>	*shhh*
+| [Tuesday 08 March 2011] [03:31:20] <guido_g>	i wanted to persuade pieter to publish the guide as book
+| [Tuesday 08 March 2011] [03:37:06] <Steve-o>	mmm, odd, 
+| [Tuesday 08 March 2011] [03:37:17] <guido_g>	what?
+| [Tuesday 08 March 2011] [03:37:22] <Steve-o>	Windows and Linux PGM is working perfectly fine now
+| [Tuesday 08 March 2011] [03:37:29] <Steve-o>	but I get double the performance number on Windows
+| [Tuesday 08 March 2011] [03:38:16] <Steve-o>	out of the box, ~100mb/s Linux and ~200mb/s Windows
+| [Tuesday 08 March 2011] [03:39:21] <guido_g>	odd indeed
+| [Tuesday 08 March 2011] [03:40:13] <Steve-o>	i think it's supposed to default to 100kb/s too :D
+| [Tuesday 08 March 2011] [03:40:56] <guido_g>	at least this is the default rate set by mq
+| [Tuesday 08 March 2011] [03:41:04] <guido_g>	afair
+| [Tuesday 08 March 2011] [03:45:35] <pieter_hintjens>	re
+| [Tuesday 08 March 2011] [03:46:49] <guido_g>	wb
+| [Tuesday 08 March 2011] [03:46:51] <pieter_hintjens>	0MQ doesn't really have competitors
+| [Tuesday 08 March 2011] [03:47:20] <guido_g>	the former nokia ceo said the same once...
+| [Tuesday 08 March 2011] [03:47:44] <pieter_hintjens>	It's still true, Nokia tyres are the best in the world
+| [Tuesday 08 March 2011] [03:48:09] <pieter_hintjens>	as for the Guide as a book, I thought that was the obvious goal from the start
+| [Tuesday 08 March 2011] [03:48:16] <guido_g>	yeah, unfortunately i've no use for them
+| [Tuesday 08 March 2011] [03:48:27] <pieter_hintjens>	yeah, they insist on Windows 7...
+| [Tuesday 08 March 2011] [03:49:47] <pieter_hintjens>	"yet another messaging interface, version 4"?
+| [Tuesday 08 March 2011] [03:50:33] <pieter_hintjens>	anyhow, 0MQ is above all a community of experts
+| [Tuesday 08 March 2011] [03:51:07] <pieter_hintjens>	guido_g: thanks for the feedback on Ch4, I'm making those fixes now
+| [Tuesday 08 March 2011] [03:51:26] <guido_g>	no problem
+| [Tuesday 08 March 2011] [03:51:57] <guido_g>	the titanic idea is nice
+| [Tuesday 08 March 2011] [03:56:15] <pieter_hintjens>	guido_g: do you know http://lmgtfy.com/?q=spinning+rust ?
+| [Tuesday 08 March 2011] [03:56:44] <pieter_hintjens>	too sarcastic for a serious book on messaging?
+| [Tuesday 08 March 2011] [03:56:55] <guido_g>	pieter_hintjens: not when reading a book or article
+| [Tuesday 08 March 2011] [03:57:39] <guido_g>	you've to admit that the term is not that widely known
+| [Tuesday 08 March 2011] [03:58:06] <mikko>	good morning
+| [Tuesday 08 March 2011] [03:58:10] <pieter_hintjens>	it isn't? I thought it was pretty standard
+| [Tuesday 08 March 2011] [03:58:17] <pieter_hintjens>	hi mikko
+| [Tuesday 08 March 2011] [03:58:32] <guido_g>	howdy mikko 
+| [Tuesday 08 March 2011] [04:06:56] <Steve-o>	erk, local_thr.exe is crashing
+| [Tuesday 08 March 2011] [04:07:38] <mikko>	Steve-o: win64?
+| [Tuesday 08 March 2011] [04:08:05] <Steve-o>	win32 on 2008 r2 sp1
+| [Tuesday 08 March 2011] [04:09:15] <Steve-o>	remote_thr.exe runs fine
+| [Tuesday 08 March 2011] [04:09:40] <Steve-o>	and of course linux doesn't crash
+| [Tuesday 08 March 2011] [04:20:22] <Steve-o>	one guess is that zeromq is sending as two threads, which matches the double bandwidth
+| [Tuesday 08 March 2011] [04:27:31] <stimpie>	does any one has a clue what could cause /cm/shared/apps/gcc/4.3.4/lib/../lib/libstdc++.so: could not read symbols: File in wrong format?
+| [Tuesday 08 March 2011] [04:28:41] <stimpie>	aha I do, It should use lib64 
+| [Tuesday 08 March 2011] [04:41:27] <stimpie>	anyone knows howto specify from which location libstdc++.so is linked (for jzmq)?
+| [Tuesday 08 March 2011] [04:45:55] <pieter_hintjens>	stimpie: sorry,... nope
+| [Tuesday 08 March 2011] [04:46:41] <stimpie>	I will try to link 'manualy' 
+| [Tuesday 08 March 2011] [04:46:44] <mikko>	stimpie: i would assume that's based on runtime linkers config
+| [Tuesday 08 March 2011] [04:46:53] <mikko>	stimpie: or compilers
+| [Tuesday 08 March 2011] [04:47:58] <mikko>	stimpie: echo | g++ -v -x c -E -
+| [Tuesday 08 March 2011] [04:49:07] <stimpie>	mikko, strange that gives X86_64 as the first option 
+| [Tuesday 08 March 2011] [04:50:07] <mikko>	i wonder if adding -m64 to compiler flags would help
+| [Tuesday 08 March 2011] [04:56:21] <stimpie>	-m64 appears to have no effect, output of g++ -v -x c -E  posted at http://pastebin.com/aumWMsxT 
+| [Tuesday 08 March 2011] [05:05:21] <sejo>	can you have multiple PULL receivers ? (PUSH sender)
+| [Tuesday 08 March 2011] [05:06:07] <sejo>	the guide states yes :p
+| [Tuesday 08 March 2011] [05:06:09] <sejo>	nvm
+| [Tuesday 08 March 2011] [05:09:14] <Steve-o>	doh, 2.1.2 drops txw_max_rte so there is no rate limiting
+| [Tuesday 08 March 2011] [05:30:35] <Steve-o>	oh yay, doesn't crash now, fruity compiling
+| [Tuesday 08 March 2011] [05:34:56] <stimpie>	my libstdc++ issue appears to be a very old bug in libtool http://lists.gnu.org/archive/html/libtool/2005-08/msg00041.html
+| [Tuesday 08 March 2011] [08:09:47] <Steve-o>	living on the bleeding edge gives bleeding wounds
+| [Tuesday 08 March 2011] [08:10:12] <Steve-o>	nice /feature/ of MSVC release mode and local scope __restrict
+| [Tuesday 08 March 2011] [08:10:30] <Steve-o>	randomly makes pointers appear as NULL unless they are used a lot
+| [Tuesday 08 March 2011] [08:41:51] <mikko>	https://build.zero.mq/job/code-coverage-test/2/cobertura/_default_/
+| [Tuesday 08 March 2011] [08:41:54] <CIA-103>	zeromq2: 03Brett Cameron 07master * rb00be26 10/ (5 files in 2 dirs): 
+| [Tuesday 08 March 2011] [08:41:54] <CIA-103>	zeromq2: Different fixed to make OpenVMS port work.
+| [Tuesday 08 March 2011] [08:41:54] <CIA-103>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/g79MvJ
+| [Tuesday 08 March 2011] [08:41:56] <mikko>	zeromq2 code coverage
