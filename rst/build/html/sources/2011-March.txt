@@ -4040,3 +4040,844 @@
 | [Tuesday 08 March 2011] [08:41:54] <CIA-103>	zeromq2: Different fixed to make OpenVMS port work.
 | [Tuesday 08 March 2011] [08:41:54] <CIA-103>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/g79MvJ
 | [Tuesday 08 March 2011] [08:41:56] <mikko>	zeromq2 code coverage
+| [Tuesday 08 March 2011] [08:44:05] <Steve-o>	mikko: so the win64 updates and solaris x86 fixes can be found in the new 5.1.113 tarball
+| [Tuesday 08 March 2011] [08:44:18] <Steve-o>	I hope nothing else appears too soon
+| [Tuesday 08 March 2011] [08:45:17] <mikko>	Steve-o: will carry on testing those
+| [Tuesday 08 March 2011] [08:46:11] <Steve-o>	cmake on win64 is odd, it doesn't produce makefiles by default
+| [Tuesday 08 March 2011] [08:46:55] <Steve-o>	at least the packager works reasonably well
+| [Tuesday 08 March 2011] [08:50:34] <cremes>	hmmm, yami4 has a wireshark plugin for inspecting frames on the wire
+| [Tuesday 08 March 2011] [08:50:52] <cremes>	that's a pretty good idea (pretty good ideas are usually worth stealing)
+| [Tuesday 08 March 2011] [08:52:11] <Steve-o>	PGM has been in Wireshark a lot longer :P
+| [Tuesday 08 March 2011] [08:52:35] <Steve-o>	not forgetting tcpdump
+| [Tuesday 08 March 2011] [08:53:15] <Steve-o>	you could chain the decoders all the way through to your data format
+| [Tuesday 08 March 2011] [09:08:10] <Clement>	Hello
+| [Tuesday 08 March 2011] [09:08:28] <Guest85177>	I've a problem inside ZMQ DLL
+| [Tuesday 08 March 2011] [09:08:43] <Guest85177>	Somebody can help me?
+| [Tuesday 08 March 2011] [09:09:07] <Steve-o>	which socket type and binding?
+| [Tuesday 08 March 2011] [09:09:29] <Guest85177>	I use CLRZMQ as input
+| [Tuesday 08 March 2011] [09:09:38] <Guest85177>	for publishing
+| [Tuesday 08 March 2011] [09:09:52] <Guest85177>	I've a memcopy problem
+| [Tuesday 08 March 2011] [09:10:15] <Guest85177>	I've used the ZMQ source code
+| [Tuesday 08 March 2011] [09:10:20] <Guest85177>	in VS 2010
+| [Tuesday 08 March 2011] [09:10:35] <Guest85177>	and I've found this problem
+| [Tuesday 08 March 2011] [09:10:48] <Guest85177>	I use TCP binding
+| [Tuesday 08 March 2011] [09:11:25] <Steve-o>	k, is it reproducible with a small example?
+| [Tuesday 08 March 2011] [09:11:47] <Guest85177>	Badly I don't think so
+| [Tuesday 08 March 2011] [09:11:57] <Guest85177>	I reproduce this problem
+| [Tuesday 08 March 2011] [09:12:00] <Steve-o>	and have you tried 2.1. or is this 2.0?
+| [Tuesday 08 March 2011] [09:14:10] <Steve-o>	have you followed the c# examples in the guide?
+| [Tuesday 08 March 2011] [09:14:54] <Guest85177>	I use the 2.1
+| [Tuesday 08 March 2011] [09:15:23] <Guest85177>	The problem is that run with few data
+| [Tuesday 08 March 2011] [09:15:47] <Guest85177>	and when data rate is bigger
+| [Tuesday 08 March 2011] [09:16:04] <Guest85177>	It failed with a C++ exception
+| [Tuesday 08 March 2011] [09:16:27] <Steve-o>	out of memory?
+| [Tuesday 08 March 2011] [09:16:39] <Guest85177>	No
+| [Tuesday 08 March 2011] [09:17:07] <Guest85177>	memcopy
+| [Tuesday 08 March 2011] [09:17:45] <Steve-o>	k, sounds like you need one of the C# binding guys to help
+| [Tuesday 08 March 2011] [09:18:00] <Steve-o>	stick around for a bit or post more detail on the mailling list
+| [Tuesday 08 March 2011] [09:18:31] <Guest85177>	I dont think that it comes from C# bindings
+| [Tuesday 08 March 2011] [09:18:50] <Guest85177>	because I've used two wrappers and twice failed
+| [Tuesday 08 March 2011] [09:20:19] <mikko>	Guest85177: have you got any debug info?
+| [Tuesday 08 March 2011] [09:20:24] <mikko>	backtrace or similar
+| [Tuesday 08 March 2011] [09:21:26] <Guest85177>	encoder.hpp line 115
+| [Tuesday 08 March 2011] [09:21:35] <Guest85177>	It failed at this line
+| [Tuesday 08 March 2011] [09:22:07] <Guest85177>	I use VS with the source code
+| [Tuesday 08 March 2011] [09:22:19] <Guest85177>	and pdb
+| [Tuesday 08 March 2011] [09:24:14] <Guest85177>	write_pos is designated as a bad pointer
+| [Tuesday 08 March 2011] [11:34:17] <andrewvc>	cremes: ping
+| [Tuesday 08 March 2011] [12:27:16] <pieter_hintjens>	guido_g: have a new RFC, if you want to review it: http://rfc.zeromq.org/spec:9
+| [Tuesday 08 March 2011] [12:30:10] <guido_g>	will do
+| [Tuesday 08 March 2011] [12:30:48] <pieter_hintjens>	guido_g: :-)
+| [Tuesday 08 March 2011] [12:41:05] <guido_g>	and changes on spec:7
+| [Tuesday 08 March 2011] [12:42:12] <private_meta>	Is there any good reason to use a pointer to std::string in the zhelpers for c++? I'm just curious if anyone of you knows
+| [Tuesday 08 March 2011] [12:42:18] <private_meta>	in s_recv that is
+| [Tuesday 08 March 2011] [12:42:36] <guido_g>	link?
+| [Tuesday 08 March 2011] [12:43:45] <private_meta>	sec
+| [Tuesday 08 March 2011] [12:43:59] <private_meta>	https://github.com/imatix/zguide/blob/master/examples/C%2B%2B/zhelpers.hpp Line 59
+| [Tuesday 08 March 2011] [12:46:28] <guido_g>	it's just because the string is allocated on the heap
+| [Tuesday 08 March 2011] [12:48:09] <private_meta>	I'd rather have it on the Stack and not having to handle pointers
+| [Tuesday 08 March 2011] [12:50:42] <guido_g>	then you need to pass it to the function
+| [Tuesday 08 March 2011] [12:51:06] <private_meta>	I'd use a return value
+| [Tuesday 08 March 2011] [12:51:47] <guido_g>	the stack is gone after the return
+| [Tuesday 08 March 2011] [12:53:16] <guido_g>	one could return a std::string and rely on the c++ copy semantics, but this might be a problem when optimization is on
+| [Tuesday 08 March 2011] [12:53:36] <private_meta>	Why would that be a problen?
+| [Tuesday 08 March 2011] [12:53:39] <private_meta>	*problem
+| [Tuesday 08 March 2011] [12:53:42] <private_meta>	I do that all the time
+| [Tuesday 08 March 2011] [12:53:58] <guido_g>	then it might work ,)
+| [Tuesday 08 March 2011] [12:55:02] <private_meta>	doing "std::string func();" just copies the string from the stack of the function to the stack of the function caller
+| [Tuesday 08 March 2011] [12:55:29] <guido_g>	right
+| [Tuesday 08 March 2011] [12:55:30] <private_meta>	It makes it easier and you don't have to think about dealing with pointers and deletes
+| [Tuesday 08 March 2011] [12:55:47] <guido_g>	true
+| [Tuesday 08 March 2011] [12:55:50] <private_meta>	It's an advantage in convenience and clean code, but it has a small advantage that you, in fact, do copy code
+| [Tuesday 08 March 2011] [12:55:57] <private_meta>	*small disadvantage
+| [Tuesday 08 March 2011] [12:56:05] <private_meta>	erm
+| [Tuesday 08 March 2011] [12:56:07] <private_meta>	copy data
+| [Tuesday 08 March 2011] [12:56:19] <guido_g>	it should be noted that references are not allowed
+| [Tuesday 08 March 2011] [12:56:46] <private_meta>	Well, references in return values are problematic anyway
+| [Tuesday 08 March 2011] [12:57:04] <private_meta>	References are to be used in parameters
+| [Tuesday 08 March 2011] [12:59:23] <guido_g>	const std::string& res = fnc(); <- that would be a problem, right?
+| [Tuesday 08 March 2011] [13:00:58] <private_meta>	Well, you are referencing a temporary variable
+| [Tuesday 08 March 2011] [13:01:00] <private_meta>	so, yes
+| [Tuesday 08 March 2011] [13:01:16] <private_meta>	You could make the value you return static, but that wouldn't work well for multiple threads
+| [Tuesday 08 March 2011] [13:01:50] <pieter_hintjens>	private_meta: you can't return references to (a) static values or (b) stack values
+| [Tuesday 08 March 2011] [13:03:48] <private_meta>	private_meta: why wouldn't you be able to return static values?
+| [Tuesday 08 March 2011] [13:04:25] <private_meta>	int & test() { static int test1 = 5; return test1; }
+| [Tuesday 08 March 2011] [13:04:25] <private_meta>	int main() { int blubb = test(); return 0; }
+| [Tuesday 08 March 2011] [13:04:33] <private_meta>	theoretically, this works in C++
+| [Tuesday 08 March 2011] [13:05:43] <pieter_hintjens>	private_meta: ... reference to A is not the same as value of A
+| [Tuesday 08 March 2011] [13:06:08] <private_meta>	I return test1 by reference
+| [Tuesday 08 March 2011] [13:06:40] <pieter_hintjens>	int & test()... ok
+| [Tuesday 08 March 2011] [13:08:13] <pieter_hintjens>	so you return reference to value on the stack, stack is now unwound, value no longer exists...
+| [Tuesday 08 March 2011] [13:09:07] <pieter_hintjens>	sorry, my C++ fu is too limited, /me sits down and shuts up
+| [Tuesday 08 March 2011] [13:09:29] <private_meta>	Well, that's what static would be for
+| [Tuesday 08 March 2011] [13:09:44] <private_meta>	static means the value remains and isn't killed once the function is done.
+| [Tuesday 08 March 2011] [13:10:06] <private_meta>	The problem with that is that you get troubles with threads, so concurrent access of the function
+| [Tuesday 08 March 2011] [13:10:12] <pieter_hintjens>	yes, but then it's not thread safe
+| [Tuesday 08 March 2011] [13:10:16] <private_meta>	Yes
+| [Tuesday 08 March 2011] [13:10:19] <private_meta>	As I said
+| [Tuesday 08 March 2011] [13:11:01] <private_meta>	So, basically you have some ways to return values. As a reference to a static value, but that is not thread safe. as a pointer, but you always have to delete the pointer afterwards.
+| [Tuesday 08 March 2011] [13:11:05] <pieter_hintjens>	ok, so you *shouldn't* return references (or pointers, in C) to static items or items on the stack
+| [Tuesday 08 March 2011] [13:11:41] <private_meta>	It's pretty much the same with everything in C++
+| [Tuesday 08 March 2011] [13:11:51] <private_meta>	You can use it if you really know what you are doing and you REALLY need it that way
+| [Tuesday 08 March 2011] [13:12:03] <pieter_hintjens>	you can *safely* return a value (1, 'c') or a newly allocated buffer
+| [Tuesday 08 March 2011] [13:12:32] <private_meta>	continuing: Why I don't like returning a pointer to std::string: You use the return mechanism. Returning it, immediately being able to use it further, let's say in a different function
+| [Tuesday 08 March 2011] [13:12:44] <private_meta>	but as you have to DELETE the value to avoid memory leaks, you have to store it somewhere
+| [Tuesday 08 March 2011] [13:13:01] <private_meta>	which makes the entire mechanic of returning by "return;" kindof useless
+| [Tuesday 08 March 2011] [13:13:33] <private_meta>	If you do it like that, you can also return it as an in/out parameter
+| [Tuesday 08 March 2011] [13:14:02] <pieter_hintjens>	afaik 0MQ does this for new messages, allocates them on the stack if small, heap if large
+| [Tuesday 08 March 2011] [13:14:19] <private_meta>	Example: you want to transform clock time into a string. The clean C++ Way is to push it into a stringstream.
+| [Tuesday 08 March 2011] [13:14:37] <private_meta>	Now You receive the message, push it into the stringstream and extract an integer
+| [Tuesday 08 March 2011] [13:16:15] <private_meta>	For me "sstream.str(s_recv(endpoint)); ss >> number;" looks way better than "std::string * string = s_recv(endpoint); ss.str(*string); ss>>number; delete string;"
+| [Tuesday 08 March 2011] [13:16:33] <private_meta>	Don't know if I bring across my point properly
+| [Tuesday 08 March 2011] [13:17:54] <private_meta>	So, it's for neatness of code, and for the fact that I would like any and all possibilities to safeguard against memory leaks
+| [Tuesday 08 March 2011] [13:31:46] <pieter_hintjens>	the neater the better
+| [Tuesday 08 March 2011] [13:32:07] <pieter_hintjens>	it was unclear what you were asking, tbh
+| [Tuesday 08 March 2011] [13:37:58] <andrewvc>	cremes: ping
+| [Tuesday 08 March 2011] [13:38:09] <private_meta>	pieter_hintjens: is it clearer now, or is it still unclear?
+| [Tuesday 08 March 2011] [13:38:12] <cremes>	andrewvc: pong
+| [Tuesday 08 March 2011] [13:38:36] <pieter_hintjens>	private_meta: it's clear and my opinion, fwiw, is that neatness is always worth it
+| [Tuesday 08 March 2011] [13:38:55] <pieter_hintjens>	IMO the original code was a straight conversion of the C code
+| [Tuesday 08 March 2011] [13:39:11] <pieter_hintjens>	cremes: wireshark is a great idea, want to add it to the wiki (GSoC page?)
+| [Tuesday 08 March 2011] [13:39:23] <private_meta>	pieter_hintjens: Then I'll change the receive method for zhelpers.hpp and update all the already translated files
+| [Tuesday 08 March 2011] [13:39:35] <private_meta>	pieter_hintjens: is that ok?
+| [Tuesday 08 March 2011] [13:39:39] <pieter_hintjens>	for sure...
+| [Tuesday 08 March 2011] [13:39:43] <pieter_hintjens>	you're not using git, right?
+| [Tuesday 08 March 2011] [13:39:50] <private_meta>	No
+| [Tuesday 08 March 2011] [13:40:09] <private_meta>	I could try to start using it, but I'm absolutely not knowledgeable about it
+| [Tuesday 08 March 2011] [13:40:16] <pieter_hintjens>	it's unsafe to send full modified versions of files
+| [Tuesday 08 March 2011] [13:40:20] <pieter_hintjens>	patches are better
+| [Tuesday 08 March 2011] [13:40:48] <pieter_hintjens>	if you want, I'll walk you through an instant git course
+| [Tuesday 08 March 2011] [13:40:55] <pieter_hintjens>	it'll take a few minutes
+| [Tuesday 08 March 2011] [13:41:07] <private_meta>	Which OS are you using?
+| [Tuesday 08 March 2011] [13:41:11] <pieter_hintjens>	Linux
+| [Tuesday 08 March 2011] [13:41:21] <private_meta>	kk
+| [Tuesday 08 March 2011] [13:41:25] <pieter_hintjens>	you are on?
+| [Tuesday 08 March 2011] [13:41:44] <private_meta>	Well, my coding environment is Ubuntu in a virtual machine, my host system is Windows, so I pretty much have both
+| [Tuesday 08 March 2011] [13:41:45] <cremes>	pieter_hintjens: i'll add it!
+| [Tuesday 08 March 2011] [13:42:11] <private_meta>	Wireshark is a fine tool
+| [Tuesday 08 March 2011] [13:42:12] <pieter_hintjens>	private_meta: ok, either Windows or Ubuntu is fine, first install git and make sure it works from the command line
+| [Tuesday 08 March 2011] [13:42:33] <pieter_hintjens>	apt-get install git-all
+| [Tuesday 08 March 2011] [13:43:06] <pieter_hintjens>	hmm, or just the 'git' package, git-all may be large
+| [Tuesday 08 March 2011] [13:43:13] <private_meta>	"Couldn't find package git-all" :D
+| [Tuesday 08 March 2011] [13:44:06] <private_meta>	Neither git or git-all are in my repos
+| [Tuesday 08 March 2011] [13:44:21] <pieter_hintjens>	'sudo apt-get dist-upgrade' :-)
+| [Tuesday 08 March 2011] [13:44:32] <pieter_hintjens>	'sudo apt-get git<TAB>'
+| [Tuesday 08 March 2011] [13:44:34] <private_meta>	I do that regularily
+| [Tuesday 08 March 2011] [13:45:08] <pieter_hintjens>	sorry... 'sudo apt-get install git<TAB>'
+| [Tuesday 08 March 2011] [13:45:09] <private_meta>	I got git-core
+| [Tuesday 08 March 2011] [13:45:12] <pieter_hintjens>	install it
+| [Tuesday 08 March 2011] [13:45:22] <private_meta>	apt-get doesn't have autocomplete
+| [Tuesday 08 March 2011] [13:47:36] <pieter_hintjens>	installed?
+| [Tuesday 08 March 2011] [13:48:09] <pieter_hintjens>	configure git so we know who you are:
+| [Tuesday 08 March 2011] [13:48:10] <pieter_hintjens>	git config --global user.name "Your Name"
+| [Tuesday 08 March 2011] [13:48:11] <pieter_hintjens>	git config --global user.email you@example.com
+| [Tuesday 08 March 2011] [13:48:16] <private_meta>	There is no git-all
+| [Tuesday 08 March 2011] [13:48:31] <pieter_hintjens>	'sudo apt-get install git-core' was what I meant...
+| [Tuesday 08 March 2011] [13:48:36] <pieter_hintjens>	by 'install it'
+| [Tuesday 08 March 2011] [13:48:37] <pieter_hintjens>	sorry
+| [Tuesday 08 March 2011] [13:49:00] 	 * pieter_hintjens is noting these steps, will make a quick guide for new git users
+| [Tuesday 08 March 2011] [13:49:47] <private_meta>	I'm using my nickname for username
+| [Tuesday 08 March 2011] [13:50:31] <pieter_hintjens>	you need to use your real name and email for contributions
+| [Tuesday 08 March 2011] [13:50:38] <private_meta>	meh
+| [Tuesday 08 March 2011] [13:51:09] <pieter_hintjens>	it's about being able to reuse what you make
+| [Tuesday 08 March 2011] [13:51:21] <private_meta>	sure,doen
+| [Tuesday 08 March 2011] [13:51:23] <private_meta>	*done
+| [Tuesday 08 March 2011] [13:51:29] <pieter_hintjens>	if you are (e.g.) prohibited by your company from making FOSS contributions, etc. etc.
+| [Tuesday 08 March 2011] [13:51:40] <pieter_hintjens>	ok, next, http://www.zeromq.org/docs:contributing
+| [Tuesday 08 March 2011] [13:51:53] <private_meta>	We're in academic research, it should be ok :p
+| [Tuesday 08 March 2011] [13:52:04] <pieter_hintjens>	Read the 'Contributing to 0MQ Core' part
+| [Tuesday 08 March 2011] [13:52:15] <private_meta>	Ah yeah... github blocked me
+| [Tuesday 08 March 2011] [13:52:33] <pieter_hintjens>	we'll clone the Guide: 
+| [Tuesday 08 March 2011] [13:52:35] <pieter_hintjens>	git clone git://github.com/imatix/zguide.git
+| [Tuesday 08 March 2011] [13:53:04] <pieter_hintjens>	this gives you a full fork of the main repository, history and everything
+| [Tuesday 08 March 2011] [13:53:46] <pieter_hintjens>	that is the main difference between SVN and git, lots of copies of the whole repository, all over the place
+| [Tuesday 08 March 2011] [13:54:12] <private_meta>	ok, so my username on github is still taken
+| [Tuesday 08 March 2011] [13:54:22] <private_meta>	but none of my email addresses are still connected to that account
+| [Tuesday 08 March 2011] [13:54:55] <private_meta>	As far as I've heard is that the main point of it is using forks all over
+| [Tuesday 08 March 2011] [13:55:25] <private_meta>	pieter_hintjens: it's odne
+| [Tuesday 08 March 2011] [13:55:26] <pieter_hintjens>	we can forget github at this point except as a URI to clone off
+| [Tuesday 08 March 2011] [13:55:29] <private_meta>	*done
+| [Tuesday 08 March 2011] [13:55:39] <pieter_hintjens>	ok, now you can 'cd zguide' and look around
+| [Tuesday 08 March 2011] [13:56:04] <pieter_hintjens>	cd examples/C++
+| [Tuesday 08 March 2011] [13:57:02] <pieter_hintjens>	git log --name-only .
+| [Tuesday 08 March 2011] [13:57:03] <private_meta>	yeah, got the files there
+| [Tuesday 08 March 2011] [13:57:26] <pieter_hintjens>	now you make any changes you want, build, test (:-)) and then...
+| [Tuesday 08 March 2011] [13:57:47] <pieter_hintjens>	git add .
+| [Tuesday 08 March 2011] [13:58:09] <pieter_hintjens>	git commit -s -m "Explain what you fixed"
+| [Tuesday 08 March 2011] [13:58:23] <pieter_hintjens>	git format-patch origin/master
+| [Tuesday 08 March 2011] [13:58:44] <private_meta>	Doing it like that is somewhat annoying... I'm using eclipse cdt, and as every file has a main (almost), compiling is a hassle in eclipse
+| [Tuesday 08 March 2011] [13:59:21] <pieter_hintjens>	open a console, use './build all'
+| [Tuesday 08 March 2011] [13:59:32] <private_meta>	I don't want console build logs
+| [Tuesday 08 March 2011] [13:59:41] <private_meta>	I'm not using an IDE to build like that
+| [Tuesday 08 March 2011] [13:59:46] <private_meta>	at least I don't want to
+| [Tuesday 08 March 2011] [13:59:52] <pieter_hintjens>	console build logs?
+| [Tuesday 08 March 2011] [14:00:29] <pieter_hintjens>	perhaps try what I suggest before explaining why you don't want to use it... ?
+| [Tuesday 08 March 2011] [14:02:01] <private_meta>	Yeah, I did, but it's exactly what i don't like
+| [Tuesday 08 March 2011] [14:02:17] 	 * pieter_hintjens doesn't follow...
+| [Tuesday 08 March 2011] [14:02:29] <pieter_hintjens>	how do you intend to start/stop these examples?
+| [Tuesday 08 March 2011] [14:02:43] <private_meta>	Eclipse has integration (duh, [I]DE), i can jump to error lines by click, error lines are neatly formatted, I don't want to compile by command line
+| [Tuesday 08 March 2011] [14:03:19] <private_meta>	I build/debug within eclipse, but I either use different projects for different files, or I use build targets
+| [Tuesday 08 March 2011] [14:03:28] <pieter_hintjens>	sorry, I can't help you, your 'Easier to use environment' is making your life harder
+| [Tuesday 08 March 2011] [14:03:44] <private_meta>	and, I know you can do /build <examplename>, but imho that's not my point
+| [Tuesday 08 March 2011] [14:04:01] <pieter_hintjens>	there's a reason I can produce 300-500 *tested* and documented lines of C code in a day
+| [Tuesday 08 March 2011] [14:04:08] <private_meta>	Well, wasn't before ;)
+| [Tuesday 08 March 2011] [14:04:20] 	 * cremes ooh, ide smack down!
+| [Tuesday 08 March 2011] [14:04:26] <private_meta>	What editor do you use?
+| [Tuesday 08 March 2011] [14:04:29] <pieter_hintjens>	Kate
+| [Tuesday 08 March 2011] [14:05:11] <private_meta>	I don't want to use that, I got used to autocomplete and other stoff
+| [Tuesday 08 March 2011] [14:05:14] <private_meta>	*stuff
+| [Tuesday 08 March 2011] [14:05:18] <pieter_hintjens>	exactly
+| [Tuesday 08 March 2011] [14:05:37] <pieter_hintjens>	ok, make the changes, test, any way you feel happy, not my world
+| [Tuesday 08 March 2011] [14:06:13] <pieter_hintjens>	'git diff' at any point to show the differences
+| [Tuesday 08 March 2011] [14:06:27] <pieter_hintjens>	and once you have the formatted patch, email it to the zeromq-dev list
+| [Tuesday 08 March 2011] [14:06:39] <private_meta>	hmm... how do you debug?
+| [Tuesday 08 March 2011] [14:06:40] <pieter_hintjens>	that's the official contribution process
+| [Tuesday 08 March 2011] [14:06:43] <pieter_hintjens>	debug? 
+| [Tuesday 08 March 2011] [14:06:46] <pieter_hintjens>	don't make errors
+| [Tuesday 08 March 2011] [14:06:47] <pieter_hintjens>	:-)
+| [Tuesday 08 March 2011] [14:06:54] <pieter_hintjens>	just kidding...
+| [Tuesday 08 March 2011] [14:07:08] <private_meta>	Don't worry, didn't take it seriously
+| [Tuesday 08 March 2011] [14:07:21] <pieter_hintjens>	first, if you write methods, test them explicitly
+| [Tuesday 08 March 2011] [14:07:40] <pieter_hintjens>	so anything abstracted has its own selftests
+| [Tuesday 08 March 2011] [14:07:54] <private_meta>	You don't answer my question with that
+| [Tuesday 08 March 2011] [14:08:01] <private_meta>	(how) do you debug?
+| [Tuesday 08 March 2011] [14:08:04] <pieter_hintjens>	second, I use printfs
+| [Tuesday 08 March 2011] [14:08:11] <pieter_hintjens>	optional verbose tracing
+| [Tuesday 08 March 2011] [14:08:16] <pieter_hintjens>	message dumps
+| [Tuesday 08 March 2011] [14:08:27] <pieter_hintjens>	never debuggers
+| [Tuesday 08 March 2011] [14:08:35] <private_meta>	I didn't get into perl to avoid exactly THAT
+| [Tuesday 08 March 2011] [14:08:35] <pieter_hintjens>	never stepping through code, fgs
+| [Tuesday 08 March 2011] [14:09:06] <private_meta>	fgs?
+| [Tuesday 08 March 2011] [14:09:08] 	 * guido_g just got this above mentioned silly productivty tool to work w/ git
+| [Tuesday 08 March 2011] [14:09:22] <pieter_hintjens>	expression of hope
+| [Tuesday 08 March 2011] [14:10:02] <private_meta>	"for gods sake"?
+| [Tuesday 08 March 2011] [14:10:05] <pieter_hintjens>	indeed
+| [Tuesday 08 March 2011] [14:10:23] <private_meta>	kk
+| [Tuesday 08 March 2011] [14:11:23] <pieter_hintjens>	how to debug? it depends on the kind of problem you're facing
+| [Tuesday 08 March 2011] [14:11:56] <private_meta>	no, don't worry, your kind of "debugging" isn't what I would want to do
+| [Tuesday 08 March 2011] [14:12:00] <private_meta>	it's ok
+| [Tuesday 08 March 2011] [14:12:39] <pieter_hintjens>	if you know a faster way to produce perfect code, please tell me
+| [Tuesday 08 March 2011] [14:12:59] <pieter_hintjens>	always keen to learn
+| [Tuesday 08 March 2011] [14:13:25] <pieter_hintjens>	anyhowl y
+| [Tuesday 08 March 2011] [14:13:32] <pieter_hintjens>	anyhow, you have git working
+| [Tuesday 08 March 2011] [14:13:45] <pieter_hintjens>	stay away from branches, merges, etc. for a few weeks
+| [Tuesday 08 March 2011] [14:13:51] <private_meta>	If it works for you, just do it that way, it's ok, as I said
+| [Tuesday 08 March 2011] [14:14:01] <private_meta>	I couldn't do it that way, it would drive me insane
+| [Tuesday 08 March 2011] [14:14:26] <private_meta>	Don't worry, I won't use it for anything other than this for quite some time I guess
+| [Tuesday 08 March 2011] [14:15:11] <pieter_hintjens>	cremes: random question
+| [Tuesday 08 March 2011] [14:15:33] <cremes>	pieter_hintjens: then you won't mind a random answer?
+| [Tuesday 08 March 2011] [14:15:42] <pieter_hintjens>	that'll do fine
+| [Tuesday 08 March 2011] [14:16:21] <pieter_hintjens>	hang on, you answered with a  question, doesn't count
+| [Tuesday 08 March 2011] [14:16:31] <cremes>	heh
+| [Tuesday 08 March 2011] [14:16:38] <pieter_hintjens>	so I'm wondering, do I make a massive Ch4 with all reliability, all patterns
+| [Tuesday 08 March 2011] [14:17:00] <pieter_hintjens>	or split it up, so reliable request-reply in Ch4, reliable pubsub Ch5
+| [Tuesday 08 March 2011] [14:17:07] <cremes>	split 'em
+| [Tuesday 08 March 2011] [14:17:19] <pieter_hintjens>	excellent, thanks
+| [Tuesday 08 March 2011] [14:18:03] <pieter_hintjens>	BTW I have full disconnected acknowledged persistent disk-based reliability working
+| [Tuesday 08 March 2011] [14:18:19] <pieter_hintjens>	I'm kind of afraid to measure its performance
+| [Tuesday 08 March 2011] [14:18:22] <cremes>	very nice
+| [Tuesday 08 March 2011] [14:18:43] <cremes>	don't worry, you can always improve perf by throwing a memory cache in between
+| [Tuesday 08 March 2011] [14:18:45] <cremes>	;)
+| [Tuesday 08 March 2011] [14:18:49] <pieter_hintjens>	lol
+| [Tuesday 08 March 2011] [14:37:14] <moore>	hey any one else have issues with the easy install?
+| [Tuesday 08 March 2011] [14:37:24] <moore>	I get a trace back with debian
+| [Tuesday 08 March 2011] [14:37:29] <moore>	err
+| [Tuesday 08 March 2011] [14:37:30] <moore>	ubuntu
+| [Tuesday 08 March 2011] [14:37:43] <moore>	IndexError: list index out of range
+| [Tuesday 08 March 2011] [14:42:37] <private_meta>	pieter_hintjens: how do i update for new changes?
+| [Tuesday 08 March 2011] [14:42:37] <guido_g>	easy install of what?
+| [Tuesday 08 March 2011] [14:42:57] <guido_g>	moore: you need to tell at least what you did
+| [Tuesday 08 March 2011] [14:43:03] <pieter_hintjens>	private_meta: you mean if the repository you cloned is updated?
+| [Tuesday 08 March 2011] [14:43:21] <pieter_hintjens>	i.e. with your patches...?
+| [Tuesday 08 March 2011] [14:43:42] <private_meta>	no. let's say I have 5 files I work on, 15 files I don't, and I want those 15 files updated with the master repo
+| [Tuesday 08 March 2011] [14:43:42] <guido_g>	private_meta: you might want to try egit w/ eclipse, seems to work fine
+| [Tuesday 08 March 2011] [14:44:07] <pieter_hintjens>	guido_g: hang on, let'
+| [Tuesday 08 March 2011] [14:44:16] <pieter_hintjens>	let's see what private meta wants to achieve...
+| [Tuesday 08 March 2011] [14:44:27] <guido_g>	ok
+| [Tuesday 08 March 2011] [14:44:28] <pieter_hintjens>	the 15 files you don't touch, you just don't touch...
+| [Tuesday 08 March 2011] [14:44:34] <private_meta>	Well, ok 
+| [Tuesday 08 March 2011] [14:44:42] <private_meta>	I have my offline cloned repository
+| [Tuesday 08 March 2011] [14:44:46] <pieter_hintjens>	yes
+| [Tuesday 08 March 2011] [14:44:51] <private_meta>	I take your files and translate them to C
+| [Tuesday 08 March 2011] [14:44:59] <private_meta>	let's say you add a new file
+| [Tuesday 08 March 2011] [14:45:03] <pieter_hintjens>	to C?
+| [Tuesday 08 March 2011] [14:45:05] <private_meta>	Yes
+| [Tuesday 08 March 2011] [14:45:13] <pieter_hintjens>	you take my C code and translate to C?
+| [Tuesday 08 March 2011] [14:45:14] <private_meta>	and you add the stubs to C++
+| [Tuesday 08 March 2011] [14:45:20] 	 * pieter_hintjens is confused
+| [Tuesday 08 March 2011] [14:45:27] <private_meta>	how do I get your C versions and the C++ stub to my repostiory
+| [Tuesday 08 March 2011] [14:45:30] <private_meta>	repository
+| [Tuesday 08 March 2011] [14:45:55] <pieter_hintjens>	so you spoke about making a change to zhelpers.hpp and matching changes to programs that used it
+| [Tuesday 08 March 2011] [14:46:22] <private_meta>	Well, that's ok, i do my diff, and blah...
+| [Tuesday 08 March 2011] [14:46:32] <private_meta>	but suppose you add a file and I wanna get that into my repo
+| [Tuesday 08 March 2011] [14:46:36] <pieter_hintjens>	ah, ok
+| [Tuesday 08 March 2011] [14:46:43] <pieter_hintjens>	so I have added two new files for the Titanic pattern
+| [Tuesday 08 March 2011] [14:47:26] <pieter_hintjens>	so you will update your repo by pulling the latest version from mine
+| [Tuesday 08 March 2011] [14:47:32] <pieter_hintjens>	that is, 'git pull origin master'
+| [Tuesday 08 March 2011] [14:47:55] <pieter_hintjens>	this fetches the master branch from 'origin', which is where you cloned your repo from
+| [Tuesday 08 March 2011] [14:48:02] <pieter_hintjens>	and it then merges that into your repo
+| [Tuesday 08 March 2011] [14:48:10] <private_meta>	Does it merge with files I modified?
+| [Tuesday 08 March 2011] [14:48:14] <pieter_hintjens>	if the merge fails, you have conflicts etc.
+| [Tuesday 08 March 2011] [14:48:41] <pieter_hintjens>	the main problem with the files you modified is that if I apply your formatted patch, you'll get a bunch of conflicts
+| [Tuesday 08 March 2011] [14:49:27] <pieter_hintjens>	basically, this is why github pull requests are safer & easier (if you can get your github account working)
+| [Tuesday 08 March 2011] [14:49:29] <private_meta>	So if I want to get new files, I have to pull all changes from the master
+| [Tuesday 08 March 2011] [14:49:54] <pieter_hintjens>	you can take individual changes if you want, but it's more hassle
+| [Tuesday 08 March 2011] [14:50:38] <pieter_hintjens>	in order for me to *safely* merge your changes into my repo, I have to set-up your repo as a remote, and do 'pull' from it
+| [Tuesday 08 March 2011] [14:50:49] <pieter_hintjens>	which isn't possible in this case
+| [Tuesday 08 March 2011] [14:50:54] <private_meta>	Why so?
+| [Tuesday 08 March 2011] [14:51:01] <pieter_hintjens>	you have a git server running?
+| [Tuesday 08 March 2011] [14:51:32] <private_meta>	No. That seems to be the kind of stuff to set up that made me think normal git is complicated to setup
+| [Tuesday 08 March 2011] [14:51:36] <pieter_hintjens>	I mean, it's not very difficult, but unless you have that, your repository is not going to respond to my git pull requests
+| [Tuesday 08 March 2011] [14:51:43] <pieter_hintjens>	even I can set-up a git server
+| [Tuesday 08 March 2011] [14:51:51] <pieter_hintjens>	however I *far* prefer to use github
+| [Tuesday 08 March 2011] [14:52:10] <pieter_hintjens>	so, after sending me the formatted patch, you reset your repository to where it was before
+| [Tuesday 08 March 2011] [14:52:23] <pieter_hintjens>	'git reset --hard <whatever>'
+| [Tuesday 08 March 2011] [14:52:33] <pieter_hintjens>	or, reclone the whole thing
+| [Tuesday 08 March 2011] [14:52:51] <pieter_hintjens>	or, resolve a bunch of conflicts afterwards
+| [Tuesday 08 March 2011] [14:53:03] <pieter_hintjens>	or, just get github working, and send me a pull request
+| [Tuesday 08 March 2011] [14:53:04] <mikko>	good evening
+| [Tuesday 08 March 2011] [14:53:13] <pieter_hintjens>	hi mikko!
+| [Tuesday 08 March 2011] [14:53:16] <private_meta>	I think I prefer the reset
+| [Tuesday 08 March 2011] [14:53:29] <pieter_hintjens>	yeah, it's what I do when I send sustrik a zeromq patch
+| [Tuesday 08 March 2011] [15:31:36] <private_meta>	pieter_hintjens: do i need to execute those git add and git commit lines even if I don't actually write anything to the server, just to generate a patch?
+| [Tuesday 08 March 2011] [15:31:53] <pieter_hintjens>	if you want a signed-off and formatted patch, yes
+| [Tuesday 08 March 2011] [15:32:05] <pieter_hintjens>	however you can also run 'git diff' and capture the output
+| [Tuesday 08 March 2011] [15:32:33] <private_meta>	and git format-patch origin/master <-- origin is the url with .git at the end?
+| [Tuesday 08 March 2011] [15:32:41] <pieter_hintjens>	origin is a 'remote'
+| [Tuesday 08 March 2011] [15:32:47] <pieter_hintjens>	try 'git remote -v'
+| [Tuesday 08 March 2011] [15:33:15] <pieter_hintjens>	you'd type that command as-is
+| [Tuesday 08 March 2011] [15:33:20] <private_meta>	ah ok
+| [Tuesday 08 March 2011] [15:33:49] <Guthur>	on linux I seem to be getting a lot interrupt system call errors
+| [Tuesday 08 March 2011] [15:33:52] <pieter_hintjens>	all I can say for git is it gets easier and more obvious over time
+| [Tuesday 08 March 2011] [15:33:53] <private_meta>	so origin is somewhat of a variable in git, and master is the repo in there
+| [Tuesday 08 March 2011] [15:33:57] <Guthur>	anyone noticed this behaviour before
+| [Tuesday 08 March 2011] [15:33:59] <pieter_hintjens>	yes
+| [Tuesday 08 March 2011] [15:34:22] <pieter_hintjens>	Guthur: you upgraded to a more recent version of 0MQ?
+| [Tuesday 08 March 2011] [15:34:47] <Guthur>	I should be on a pretty recent version
+| [Tuesday 08 March 2011] [15:34:49] <Guthur>	let me check
+| [Tuesday 08 March 2011] [15:35:45] <Guthur>	2.2
+| [Tuesday 08 March 2011] [15:36:04] <pieter_hintjens>	source repository, thus
+| [Tuesday 08 March 2011] [15:36:17] <pieter_hintjens>	did you recently upgrade from an older version?
+| [Tuesday 08 March 2011] [15:36:21] <pieter_hintjens>	e.g. 2.0.10?
+| [Tuesday 08 March 2011] [15:36:30] <Guthur>	pieter_hintjens, yep
+| [Tuesday 08 March 2011] [15:36:45] <pieter_hintjens>	then presumably interrupt handling changed
+| [Tuesday 08 March 2011] [15:36:58] <pieter_hintjens>	have you checked the release notes?
+| [Tuesday 08 March 2011] [15:37:35] <pieter_hintjens>	finally, an example of what you are doing would be helpful
+| [Tuesday 08 March 2011] [15:37:58] <nadime>	in 2.1.2, we can migrate all sockets between threads (including inproc), right (with full memory barriers)
+| [Tuesday 08 March 2011] [15:38:02] <nadime>	?
+| [Tuesday 08 March 2011] [15:38:05] <pieter_hintjens>	a minimal example that reproduces an interrupted system call
+| [Tuesday 08 March 2011] [15:38:24] <pieter_hintjens>	nadime: don't do it unless you are happy writing full fence memory barriers
+| [Tuesday 08 March 2011] [15:39:07] <pieter_hintjens>	slightly imperfect socket migration causes 0MQ to fail with random errors under stress
+| [Tuesday 08 March 2011] [15:39:11] <nadime>	don't really have a good choice unless i want to rewrite our threadng libraries
+| [Tuesday 08 March 2011] [15:39:50] <pieter_hintjens>	be warned, then, when you get weird assertion failures in 0MQ, and you're moving sockets between threads, this is a major cause
+| [Tuesday 08 March 2011] [15:39:56] <pieter_hintjens>	having said that, yes, it works
+| [Tuesday 08 March 2011] [15:39:58] <nadime>	yeah i know
+| [Tuesday 08 March 2011] [15:40:09] <nadime>	i'm in such a case right now ;)
+| [Tuesday 08 March 2011] [15:40:23] <Guthur>	pieter_hintjens, I'll try to get a minimal example
+| [Tuesday 08 March 2011] [15:40:32] <pieter_hintjens>	Guthur: ok, pl;ease
+| [Tuesday 08 March 2011] [15:40:41] <Guthur>	the same code works fine enough on Win32, just as an FYI
+| [Tuesday 08 March 2011] [15:40:41] <pieter_hintjens>	*please post to list, I'm not here all the time
+| [Tuesday 08 March 2011] [15:40:48] <pieter_hintjens>	yeah, "it works" is often random
+| [Tuesday 08 March 2011] [15:42:16] <Guthur>	I've never seen anything similar on Win32, but it's very frequent on linux (Ubuntu 10.04)
+| [Tuesday 08 March 2011] [15:42:47] <Guthur>	but I know what you're going to ask me to do...
+| [Tuesday 08 March 2011] [15:42:56] <Guthur>	show a C example, hehe
+| [Tuesday 08 March 2011] [15:43:02] <pieter_hintjens>	Guthur: if you want help on an issue, telling me where it works is useless
+| [Tuesday 08 March 2011] [15:43:04] <Guthur>	this is C# code
+| [Tuesday 08 March 2011] [15:43:15] <pieter_hintjens>	what we need is a *minimal* example in any language
+| [Tuesday 08 March 2011] [15:43:28] <pieter_hintjens>	we then translate that to C or C++ to ensure we're not hitting a language binding issue
+| [Tuesday 08 March 2011] [15:43:50] <pieter_hintjens>	that lets us triangulate the problem
+| [Tuesday 08 March 2011] [15:46:26] <private_meta>	pieter_hintjens: does git also store file permissions, like "executable"? It seems so
+| [Tuesday 08 March 2011] [15:46:45] <pieter_hintjens>	private_meta: yes, and it also realizes that text files are... text... automatically
+| [Tuesday 08 March 2011] [15:47:08] <private_meta>	pieter_hintjens: in your examples folder, C, "asyncsrv.c" is executable, I doubt that's intended
+| [Tuesday 08 March 2011] [15:47:19] <pieter_hintjens>	let me check.. 
+| [Tuesday 08 March 2011] [15:47:33] <pieter_hintjens>	hah! nice catch
+| [Tuesday 08 March 2011] [15:50:55] <private_meta>	oy... lruqueue.cpp throws an exception
+| [Tuesday 08 March 2011] [15:51:02] <private_meta>	the unmodified one in the repo
+| [Tuesday 08 March 2011] [15:51:28] <Guthur>	pieter_hintjens: https://gist.github.com/861018
+| [Tuesday 08 March 2011] [15:51:50] <Guthur>	if i remove that sleep I get the error pretty consistently
+| [Tuesday 08 March 2011] [15:52:31] <pieter_hintjens>	you get the error *where*?
+| [Tuesday 08 March 2011] [15:52:39] <pieter_hintjens>	on the poll?
+| [Tuesday 08 March 2011] [15:53:43] <Guthur>	yep
+| [Tuesday 08 March 2011] [15:54:09] <pieter_hintjens>	perhaps it's not an error at all
+| [Tuesday 08 March 2011] [15:54:21] <pieter_hintjens>	'interrupted system call' means something interrupted the system call
+| [Tuesday 08 March 2011] [15:54:24] <Guthur>	errno is set to 4#
+| [Tuesday 08 March 2011] [15:54:30] <pieter_hintjens>	shrug
+| [Tuesday 08 March 2011] [15:54:34] <Guthur>	and the poll is returning -1
+| [Tuesday 08 March 2011] [15:55:01] <pieter_hintjens>	ok, now make a C version, should be easy
+| [Tuesday 08 March 2011] [15:55:26] <pieter_hintjens>	the example looks straight-forward so I'd primarily suspect the C# binding
+| [Tuesday 08 March 2011] [15:55:27] <Guthur>	I knew you were going to say that, hehe
+| [Tuesday 08 March 2011] [15:55:56] <pieter_hintjens>	are you checking what the zmq_poll() call itself returns?
+| [Tuesday 08 March 2011] [15:56:02] <Guthur>	yeah
+| [Tuesday 08 March 2011] [15:56:13] <Guthur>	that's what I use to throw the exception
+| [Tuesday 08 March 2011] [15:56:18] <pieter_hintjens>	hmm
+| [Tuesday 08 March 2011] [15:56:40] <Guthur>	if it's less than 0 I throw the exception which checks the errno
+| [Tuesday 08 March 2011] [15:56:54] <pieter_hintjens>	the code really looks fine...
+| [Tuesday 08 March 2011] [15:57:07] <Guthur>	I know and with the sleep it works
+| [Tuesday 08 March 2011] [15:57:17] 	 * pieter_hintjens doesn't care when it works... 
+| [Tuesday 08 March 2011] [15:57:22] 	 * pieter_hintjens really doesn't
+| [Tuesday 08 March 2011] [15:57:39] <Guthur>	well without the sleep it doesn't work then
+| [Tuesday 08 March 2011] [15:58:22] <pieterh>	without the "exit" it doesn't work either
+| [Tuesday 08 March 2011] [15:58:35] <pieterh>	can you get me a C version then?
+| [Tuesday 08 March 2011] [15:59:02] <Guthur>	it'll take a bit of time
+| [Tuesday 08 March 2011] [15:59:09] <Guthur>	I've no C dev env setup
+| [Tuesday 08 March 2011] [15:59:55] <pieterh>	ok, can you then instead
+| [Tuesday 08 March 2011] [16:00:08] <pieterh>	expand your example to actually show the error happening (I don't see any exception handling)
+| [Tuesday 08 March 2011] [16:00:13] <pieterh>	and post to the zeromq-dev list?
+| [Tuesday 08 March 2011] [16:00:43] <Guthur>	oh yeah I can catch the exception
+| [Tuesday 08 March 2011] [16:01:19] <Guthur>	but i'm not sure why I should be getting it in the first place
+| [Tuesday 08 March 2011] [16:09:53] <pieterh>	g'night all
+| [Tuesday 08 March 2011] [16:31:11] <yrashk>	https://github.com/rigtorp/nanomq heh
+| [Tuesday 08 March 2011] [16:54:59] <noah>	does anyone know if it is possible to determine if a bidirectional socket has been closed?
+| [Tuesday 08 March 2011] [16:55:18] <noah>	through ZMQ, without pinging and such
+| [Tuesday 08 March 2011] [16:55:23] <mikko>	noah: you mean the other end has been closed?
+| [Tuesday 08 March 2011] [16:55:28] <noah>	right
+| [Tuesday 08 March 2011] [16:55:45] <mikko>	bidirectional being PAIR? 
+| [Tuesday 08 March 2011] [16:55:58] <mikko>	and to answer your question, not directly
+| [Tuesday 08 March 2011] [17:02:48] <Guthur>	can anyone see why the SUB doesn't receive anything?
+| [Tuesday 08 March 2011] [17:02:49] <Guthur>	https://gist.github.com/861182
+| [Tuesday 08 March 2011] [17:03:26] <mikko>	Guthur: zmq_bind(skt, "tcp://*5555");
+| [Tuesday 08 March 2011] [17:03:28] <guido_g>	"tcp://*5555"  <- wrong
+| [Tuesday 08 March 2011] [17:03:29] <mikko>	missing color
+| [Tuesday 08 March 2011] [17:03:31] <mikko>	colon*
+| [Tuesday 08 March 2011] [17:03:38] <Guthur>	oh doh
+| [Tuesday 08 March 2011] [17:03:45] <Guthur>	never seen that at all
+| [Tuesday 08 March 2011] [17:03:56] <Guthur>	cheers mikko 
+| [Tuesday 08 March 2011] [17:03:59] <guido_g>	use larger font ,)
+| [Tuesday 08 March 2011] [17:04:16] 	 * Guthur  feels a little silly
+| [Tuesday 08 March 2011] [17:05:29] <guido_g>	time get some sleep
+| [Tuesday 08 March 2011] [17:05:33] <guido_g>	night all!
+| [Tuesday 08 March 2011] [17:06:00] <mikko>	night 
+| [Tuesday 08 March 2011] [17:18:10] <Guthur>	ah this is so frightfully annoying, the errno 4 doesn't happen in the C code
+| [Tuesday 08 March 2011] [17:18:25] <Guthur>	but it does using the C# code in Mono
+| [Tuesday 08 March 2011] [17:18:36] <Guthur>	but I'm pretty confident the issue isn't with binding
+| [Tuesday 08 March 2011] [17:41:05] <lt_schmidt_jr>	Hmm, looks like the latest 2.1.2 tar is failing to compile on centos
+| [Tuesday 08 March 2011] [17:41:14] <mikko>	lt_schmidt_jr: which centos?
+| [Tuesday 08 March 2011] [17:41:18] <mikko>	and what error message
+| [Tuesday 08 March 2011] [17:41:47] <lt_schmidt_jr>	5.5
+| [Tuesday 08 March 2011] [17:42:04] <mikko>	hmm, i got i385 centos 5.5
+| [Tuesday 08 March 2011] [17:42:10] <mikko>	and it seems to succeed
+| [Tuesday 08 March 2011] [17:42:14] <mikko>	what error are you getting?
+| [Tuesday 08 March 2011] [17:42:37] <lt_schmidt_jr>	I am getting libtool errors
+| [Tuesday 08 March 2011] [17:42:48] <lt_schmidt_jr>	trying to cut and paste here
+| [Tuesday 08 March 2011] [17:42:49] <mikko>	can you put them to gist.github.com?
+| [Tuesday 08 March 2011] [17:44:13] <lt_schmidt_jr>	https://gist.github.com/861270
+| [Tuesday 08 March 2011] [17:44:44] <mikko>	looks very odd
+| [Tuesday 08 March 2011] [17:45:01] <mikko>	i just built successfully under centos 5.5
+| [Tuesday 08 March 2011] [17:45:13] <mikko>	CentOS release 5.5 (Final)
+| [Tuesday 08 March 2011] [17:45:22] <mikko>	Linux localhost.localdomain 2.6.18-194.el5 #1 SMP Fri Apr 2 14:58:14 EDT 2010 x86_64 x86_64 x86_64 GNU/Linux
+| [Tuesday 08 March 2011] [17:48:06] <lt_schmidt_jr>	that is what I have as well
+| [Tuesday 08 March 2011] [17:48:23] <lt_schmidt_jr>	mikko are you running a VM also?
+| [Tuesday 08 March 2011] [17:56:34] <mikko>	lt_schmidt_jr: yes
+| [Tuesday 08 March 2011] [17:56:49] <mikko>	lt_schmidt_jr: i got centos 5.5 in the daily build cluster (i386)
+| [Tuesday 08 March 2011] [17:56:55] <mikko>	and x86_64 vm locally
+| [Tuesday 08 March 2011] [17:59:22] <lt_schmidt_jr>	hmm, I got the ISO files, which were not daily builds
+| [Tuesday 08 March 2011] [17:59:41] <lt_schmidt_jr>	not using cluster
+| [Tuesday 08 March 2011] [18:07:09] <lt_schmidt_jr>	I am runing 5.5 x86_64 in the vm
+| [Tuesday 08 March 2011] [18:07:22] <lt_schmidt_jr>	got the same error on non-vm machine as well
+| [Tuesday 08 March 2011] [18:07:47] <lt_schmidt_jr>	builds fine on OSX
+| [Tuesday 08 March 2011] [18:07:59] <lt_schmidt_jr>	I was just building the new image for jzmq
+| [Tuesday 08 March 2011] [18:08:14] <lt_schmidt_jr>	prev version 2.1.1 was building
+| [Tuesday 08 March 2011] [18:21:59] <lt_schmidt_jr>	apparently centos is like windows- a kernel update and a reboot and compiling again
+| [Tuesday 08 March 2011] [18:22:04] <lt_schmidt_jr>	strange
+| [Tuesday 08 March 2011] [22:49:41] <yrashk>	what's the purpose for zeromq2-1 repo?
+| [Wednesday 09 March 2011] [02:00:59] <suzan_shakya>	hi all, can anyone explain me what is zmq Context ?
+| [Wednesday 09 March 2011] [02:01:58] <suzan_shakya>	and why 1 zmq Context should be used in 1 process
+| [Wednesday 09 March 2011] [02:02:19] <guido_g>	it's the data structure holding the memory and other stuff needed to make the sockets work
+| [Wednesday 09 March 2011] [02:05:59] <suzan_shakya>	and can multiple threads use multiple contexts ?
+| [Wednesday 09 March 2011] [02:06:15] <guido_g>	why should they?
+| [Wednesday 09 March 2011] [02:40:02] <suzan_shakya>	because i dont want to pass the context to all the threads
+| [Wednesday 09 March 2011] [02:42:14] <guido_g>	it's hard to talk to someone who has half an hour delays in his answers
+| [Wednesday 09 March 2011] [02:43:01] <guido_g>	use one context per process, as described in the guide
+| [Wednesday 09 March 2011] [02:43:20] <guido_g>	otherwise you're not able to use inproc sockets
+| [Wednesday 09 March 2011] [02:44:17] <guido_g>	i'm off, getting some breakfast
+| [Wednesday 09 March 2011] [03:02:35] <suzan_shakya>	ok. thanks guido_g. I was also away for some breakfast :)
+| [Wednesday 09 March 2011] [03:14:42] <mikko>	suzan_shakya: threads can use inproc:// transport within the same context
+| [Wednesday 09 March 2011] [03:15:00] <mikko>	suzan_shakya: that is probably the most important thing you lose if you setup context per thread
+| [Wednesday 09 March 2011] [03:18:26] <suzan_shakya>	mikey_w: oh. thanks mikko
+| [Wednesday 09 March 2011] [03:18:50] <suzan_shakya>	mikko: i got it now. thanks for the answer
+| [Wednesday 09 March 2011] [03:27:01] <sejo>	hey all I'm trying to use multiple workers (with zmq.PULL) but when i send a document to the socket, I never neem to receive it?
+| [Wednesday 09 March 2011] [03:32:20] <guido_g>	re
+| [Wednesday 09 March 2011] [03:40:20] <seb`>	sejo: what zeromq version do you use
+| [Wednesday 09 March 2011] [03:42:56] <seb`>	+?
+| [Wednesday 09 March 2011] [03:48:54] <guido_g>	sejo: first and before all, show the code you run, otherwise everything else would be guessing
+| [Wednesday 09 March 2011] [03:49:27] <guido_g>	sejo: use a pste-bin like https://gist.github.com/
+| [Wednesday 09 March 2011] [03:52:11] <Guthur>	pieterh: I tried a C version of that code last night
+| [Wednesday 09 March 2011] [03:52:20] <Guthur>	no errno 4, unfortunately
+| [Wednesday 09 March 2011] [04:16:34] <mikko>	what is errno 4 on your platform?
+| [Wednesday 09 March 2011] [04:19:30] <Guthur>	mikko: Interrupted System Call
+| [Wednesday 09 March 2011] [04:19:44] <Guthur>	Ubuntu 10.04
+| [Wednesday 09 March 2011] [04:20:16] <mikko>	EINTR, hmm
+| [Wednesday 09 March 2011] [04:20:27] <Guthur>	I'm a little stumped as to what to do about it
+| [Wednesday 09 March 2011] [04:20:37] <mikko>	there are a couple of situations where you see EINTR
+| [Wednesday 09 March 2011] [04:20:43] <mikko>	one is that the context is being terminated
+| [Wednesday 09 March 2011] [04:21:00] <Guthur>	I think it's something to do with Mono
+| [Wednesday 09 March 2011] [04:21:14] <mikko>	can it be mono gcing the context?
+| [Wednesday 09 March 2011] [04:22:09] <Guthur>	I don't think so, I can actually catch the exception and try again and it works
+| [Wednesday 09 March 2011] [04:22:20] <Guthur>	its on Recv that I get it
+| [Wednesday 09 March 2011] [04:22:36] <Guthur>	no sorry Poll
+| [Wednesday 09 March 2011] [04:23:08] <Guthur>	Actually it would be interesting to see if I can get it on Recv as well
+| [Wednesday 09 March 2011] [04:23:18] <mikko>	if context is being terminated each blocking socket call should exit with EINTR
+| [Wednesday 09 March 2011] [04:27:12] <Guthur>	mikko: But if that was the case surely subsequent Polls on the same socket wouldn't work
+| [Wednesday 09 March 2011] [04:29:51] <Guthur>	is there a way of checking the source of the signal
+| [Wednesday 09 March 2011] [05:10:11] <private_meta>	pieterh: I thought I read that for every thread used in a program you should use your own zmq context, or was I mistaken?
+| [Wednesday 09 March 2011] [05:11:23] <guido_g>	no, that's not the case
+| [Wednesday 09 March 2011] [05:11:34] <guido_g>	as said, one process should use one context
+| [Wednesday 09 March 2011] [05:11:47] <private_meta>	hmm
+| [Wednesday 09 March 2011] [05:12:33] <private_meta>	Well, the problem is, if a context is used by more than one thread, apparently, the read throws an exception in the thread if one of the threads terminates the context
+| [Wednesday 09 March 2011] [05:13:12] <private_meta>	I'm just curious as in none of the C++ examples this behavior is treated
+| [Wednesday 09 March 2011] [05:13:22] <guido_g>	there is no problem at all
+| [Wednesday 09 March 2011] [05:13:26] <guido_g>	just don't do it
+| [Wednesday 09 March 2011] [05:13:32] <private_meta>	don't do what?
+| [Wednesday 09 March 2011] [05:13:52] <guido_g>	what did you say?
+| [Wednesday 09 March 2011] [05:14:12] <private_meta>	Well, did you mean "Don't use the same context"?
+| [Wednesday 09 March 2011] [05:14:27] <guido_g>	<private_meta> Well, the problem is, if a context is used by more than one thread, apparently, the read throws an exception in the thread if one of the threads terminates the context
+| [Wednesday 09 March 2011] [05:14:30] <mikko>	dont terminate the context
+| [Wednesday 09 March 2011] [05:14:57] <private_meta>	Well, someone HAS to terminate the context in the end
+| [Wednesday 09 March 2011] [05:15:02] <mikko>	private_meta: yes
+| [Wednesday 09 March 2011] [05:15:10] <private_meta>	yeah
+| [Wednesday 09 March 2011] [05:15:16] <mikko>	but dont terminate it before the threads are done with it
+| [Wednesday 09 March 2011] [05:15:18] <private_meta>	and if the main thread does, exceptions fly wild in the threads
+| [Wednesday 09 March 2011] [05:15:43] <private_meta>	At least in the guide examples
+| [Wednesday 09 March 2011] [05:19:25] <private_meta>	Parts of the C examples use a separte context in each thread, the others use the same context as the main thread. Yet, in none of the examples the threads EVER terminate
+| [Wednesday 09 March 2011] [05:19:37] <private_meta>	so, in case of C++ the worker threads naturally will have exceptions
+| [Wednesday 09 March 2011] [06:18:00] <Guthur>	private_meta: In the examples pieter is often illustrating multiple processes in a single process
+| [Wednesday 09 March 2011] [06:18:10] <Guthur>	eg. the clienttasks and servertasks
+| [Wednesday 09 March 2011] [06:18:18] <private_meta>	multiple threads, yes
+| [Wednesday 09 March 2011] [06:18:25] <private_meta>	but he is not consistent with his use of context
+| [Wednesday 09 March 2011] [06:18:30] <Guthur>	no multiple process
+| [Wednesday 09 March 2011] [06:18:52] <Guthur>	that's why he uses multiple contexts
+| [Wednesday 09 March 2011] [06:19:02] <Guthur>	they are of course only on threads
+| [Wednesday 09 March 2011] [06:19:24] <private_meta>	He is using pthread, and for some he uses a new context, for others he doesn't
+| [Wednesday 09 March 2011] [06:19:38] <private_meta>	Sometimes he uses the same context for all threads, in others he doesn't
+| [Wednesday 09 March 2011] [06:20:20] <guido_g>	read -> Guthur> private_meta: In the examples pieter is often illustrating multiple processes in a single process
+| [Wednesday 09 March 2011] [06:20:20] <Guthur>	yeah, though he does often comment saying which ones would likely be a separate process
+| [Wednesday 09 March 2011] [06:20:39] <private_meta>	still doesn't change what I said
+| [Wednesday 09 March 2011] [06:21:19] <Guthur>	check rtdealer it has a comment like so...
+| [Wednesday 09 March 2011] [06:21:39] <Guthur>	We have two workers, here we copy the code, normally these would
+| [Wednesday 09 March 2011] [06:21:44] <private_meta>	Yes
+| [Wednesday 09 March 2011] [06:21:47] <Guthur>	run on different boxes...
+| [Wednesday 09 March 2011] [06:21:57] <private_meta>	And he uses a copied context there
+| [Wednesday 09 March 2011] [06:22:10] <private_meta>	Of course it's just for illustration
+| [Wednesday 09 March 2011] [06:22:33] <private_meta>	but, for example, the lruqueue, the c++ version, uses the same context for each thread as well, and it leads to errors
+| [Wednesday 09 March 2011] [06:22:55] <private_meta>	Because termination of the context leads to an exception that is not treated
+| [Wednesday 09 March 2011] [06:23:39] <private_meta>	It's not that big of a deal, but in my opinion, it's a bit of a problem
+| [Wednesday 09 March 2011] [06:24:23] <Guthur>	but in the original lruqueue it is not sharing contexts
+| [Wednesday 09 March 2011] [06:24:30] <private_meta>	No it isn't
+| [Wednesday 09 March 2011] [06:24:41] <Guthur>	so it's a problem with the c++ translation not the guide
+| [Wednesday 09 March 2011] [06:24:58] <private_meta>	It's a general issue with copying contexts in the guide, imho
+| [Wednesday 09 March 2011] [06:49:40] <sejo>	is there a workin twisted reactor for zmq?
+| [Wednesday 09 March 2011] [06:50:16] <mikko>	sejo: does twisted allow you to poll normal filehandle?
+| [Wednesday 09 March 2011] [06:50:54] <sejo>	mikko: I don't know
+| [Wednesday 09 March 2011] [06:50:55] <guido_g>	mikko: sure
+| [Wednesday 09 March 2011] [06:51:12] <guido_g>	sejo: why not try the provided tornado event loop?
+| [Wednesday 09 March 2011] [06:51:24] <sejo>	guido?
+| [Wednesday 09 March 2011] [06:51:30] <mikko>	i don't really know much about python
+| [Wednesday 09 March 2011] [06:51:31] <sejo>	the what?
+| [Wednesday 09 March 2011] [06:52:24] <guido_g>	sejo: http://zeromq.github.com/pyzmq/index.html   http://zeromq.github.com/pyzmq/api/generated/zmq.eventloop.ioloop.html
+| [Wednesday 09 March 2011] [06:52:55] <sejo>	aha!
+| [Wednesday 09 March 2011] [06:53:15] <mikko>	hmm
+| [Wednesday 09 March 2011] [06:53:16] <Guthur>	I was about to do lmgtfy
+| [Wednesday 09 March 2011] [06:53:19] <sejo>	but I'm calling smq from a twisted app, so need to test whether that will work
+| [Wednesday 09 March 2011] [06:53:20] <mikko>	maybe python would be worth learning
+| [Wednesday 09 March 2011] [06:53:27] <Guthur>	but it's blocked at work, boohoo
+| [Wednesday 09 March 2011] [07:32:20] <sejo>	ok writing a reactor is a bit too highlevel for me
+| [Wednesday 09 March 2011] [07:32:49] <sejo>	perhaps i should just write a small socket receiver and send from there my smq messages
+| [Wednesday 09 March 2011] [07:32:53] <sejo>	zmq
+| [Wednesday 09 March 2011] [07:34:06] <Guthur>	sejo: what's your aim?
+| [Wednesday 09 March 2011] [07:36:46] <sejo>	Guthur: I use scrapy to craml websites (twisted based) and want to process the pages distributed, so send the results to a workergroup
+| [Wednesday 09 March 2011] [07:49:27] <Guthur>	well I've found that Mono  on windows doesn't throw that exception, from earlier
+| [Wednesday 09 March 2011] [07:49:46] <Guthur>	it seems to be specific to linux
+| [Wednesday 09 March 2011] [08:31:00] <mikko>	Steve-o: new issue!
+| [Wednesday 09 March 2011] [08:31:15] <mikko>	exclamation mark added for emphasis
+| [Wednesday 09 March 2011] [08:37:26] <private_meta>	How do I add multiline commit comments in git?
+| [Wednesday 09 March 2011] [08:38:47] <mikko>	private_meta: probably the easiest way is to type the message on multiple lines using $EDITOR
+| [Wednesday 09 March 2011] [08:39:22] <private_meta>	mikko: how?
+| [Wednesday 09 March 2011] [08:39:33] <mikko>	git commit 
+| [Wednesday 09 March 2011] [08:39:37] <mikko>	then type your message
+| [Wednesday 09 March 2011] [08:40:38] <private_meta>	ah thanks
+| [Wednesday 09 March 2011] [08:47:22] <private_meta>	pieterh: I hope the patch works like that
+| [Wednesday 09 March 2011] [08:51:25] <pieterh>	private_meta: I'm back online... just reading my emails, seen your patch, looks perfect
+| [Wednesday 09 March 2011] [08:51:35] <private_meta>	ok
+| [Wednesday 09 March 2011] [08:52:40] <yrashk>	pieterh: can you please create zeromq/erlzmq2 repo with me 'yrashk' and 'evax' added as collaborators?
+| [Wednesday 09 March 2011] [08:52:55] <pieterh>	yrashk: will do asap
+| [Wednesday 09 March 2011] [08:53:03] <yrashk>	thx
+| [Wednesday 09 March 2011] [08:53:17] <yrashk>	once it'll be there I'll do the renamings and push it
+| [Wednesday 09 March 2011] [09:03:15] <pieterh>	yrashk: since dhammika and saleyn are already admins of erlzmq, I'll make all four of you admins of erlzmq2, that ok?
+| [Wednesday 09 March 2011] [09:04:43] <yrashk>	pieterh: sure
+| [Wednesday 09 March 2011] [09:07:04] <pieterh>	yrashk: just to confirm, you're happy with a new empty repository?
+| [Wednesday 09 March 2011] [09:07:11] <pieterh>	rather than a fork of some existing one...
+| [Wednesday 09 March 2011] [09:07:21] <yrashk>	pieterh: yes, I will do renames and push it to the new repo
+| [Wednesday 09 March 2011] [09:07:31] <pieterh>	ok, you're good to go: git@github.com:zeromq/erlzmq2.git
+| [Wednesday 09 March 2011] [09:07:33] <pieterh>	:-)
+| [Wednesday 09 March 2011] [09:08:19] <yrashk>	thanks!
+| [Wednesday 09 March 2011] [09:09:59] <private_meta>	pieterh: about git, now that I made the patch. should I wait until it's commited to make a reset and work from there?
+| [Wednesday 09 March 2011] [09:10:30] <pieterh>	probably best, I'll do that now
+| [Wednesday 09 March 2011] [09:13:25] 	 * yrashk is done renaming, testing
+| [Wednesday 09 March 2011] [09:14:23] <yrashk>	pieterh: how should we address v2 introduction at the 0mq website?
+| [Wednesday 09 March 2011] [09:14:33] <yrashk>	right now the erlang binding page is solely dedicated to v1
+| [Wednesday 09 March 2011] [09:16:01] <pieterh>	yrashk: we had this issue with Lua
+| [Wednesday 09 March 2011] [09:16:12] <pieterh>	there are in fact several bindings with two or more versions
+| [Wednesday 09 March 2011] [09:16:27] <pieterh>	I solved it for Lua by just documenting both bindings on the same page, see http://www.zeromq.org/bindings:lua
+| [Wednesday 09 March 2011] [09:17:04] <pieterh>	In the case of erlzmq, document v2 at the top, and v1 below
+| [Wednesday 09 March 2011] [09:17:53] <yrashk>	ok
+| [Wednesday 09 March 2011] [09:17:59] <Steve-o>	mikko: oh!
+| [Wednesday 09 March 2011] [09:24:38] <pieterh>	private_meta: ok, patch applied... for some reason it complained on lpclient/lpserver but I fixed that up
+| [Wednesday 09 March 2011] [09:25:04] <pieterh>	if you reset and 'git pull origin master' you should get a clean state with your changes
+| [Wednesday 09 March 2011] [09:25:10] <private_meta>	pieterh: so the patch there was broken?
+| [Wednesday 09 March 2011] [09:25:21] <pieterh>	I don't think it was broken, no
+| [Wednesday 09 March 2011] [09:25:52] <yrashk>	pieterh: pushed
+| [Wednesday 09 March 2011] [09:25:59] <pieterh>	yrashk: nice!
+| [Wednesday 09 March 2011] [09:26:08] <private_meta>	mhm
+| [Wednesday 09 March 2011] [09:26:09] <private_meta>	CONFLICT (content): Merge conflict in examples/C++/lpclient.cpp
+| [Wednesday 09 March 2011] [09:26:22] <pieterh>	private_meta: yeah, something like that
+| [Wednesday 09 March 2011] [09:26:34] <private_meta>	pieterh: wouldn't a reset be beter there?
+| [Wednesday 09 March 2011] [09:26:49] <pieterh>	private_meta: did you not do a reset?
+| [Wednesday 09 March 2011] [09:27:01] <private_meta>	uhm not after the commit
+| [Wednesday 09 March 2011] [09:28:00] <pieterh>	so, do 'git log' to see the last commit before yours, then do 'git reset --hard committag'
+| [Wednesday 09 March 2011] [09:28:14] <pieterh>	committag is the UUID (or first 6 chars thereof)
+| [Wednesday 09 March 2011] [09:28:29] <pieterh>	then pull the master branch again, it'll fetch &merge everything that changed since
+| [Wednesday 09 March 2011] [09:29:13] <pieterh>	these are the joys of distributed vcs, it remains a lot easier than handling merges in svn
+| [Wednesday 09 March 2011] [09:30:42] <private_meta>	why reset to the one before mine?
+| [Wednesday 09 March 2011] [09:31:16] <pieterh>	you changed file X, I changed file X
+| [Wednesday 09 March 2011] [09:31:25] <pieterh>	we changed the same lines
+| [Wednesday 09 March 2011] [09:31:30] <pieterh>	(obviously, I used your patch)
+| [Wednesday 09 March 2011] [09:31:59] <pieterh>	well, you can resolve the conflicts by hand if you prefer
+| [Wednesday 09 March 2011] [09:32:27] <pieterh>	actually, simplest is just delete your repository entirely and re-clone from github...
+| [Wednesday 09 March 2011] [09:32:50] <pieterh>	you don't want to have commits on your history that don't exist anywhere else
+| [Wednesday 09 March 2011] [09:33:11] <private_meta>	k, I went with the latter choice
+| [Wednesday 09 March 2011] [09:33:28] <private_meta>	Is there a way to only clone the examples folder?
+| [Wednesday 09 March 2011] [09:33:35] <pieterh>	nope
+| [Wednesday 09 March 2011] [09:33:52] <pieterh>	we could eventually make the examples into a separate project
+| [Wednesday 09 March 2011] [09:34:05] <pieterh>	or even lots of projects, 1 per language
+| [Wednesday 09 March 2011] [09:34:34] <pieterh>	then you can become committer on the C++ project and it's much much simpler
+| [Wednesday 09 March 2011] [09:34:35] <private_meta>	Well, I don't think it's necessary
+| [Wednesday 09 March 2011] [09:34:43] <pieterh>	kind of overkill at the moment
+| [Wednesday 09 March 2011] [09:34:50] <private_meta>	ah, so you can't allow someone commits to only one subtree?
+| [Wednesday 09 March 2011] [09:34:54] <pieterh>	nope
+| [Wednesday 09 March 2011] [09:35:00] <private_meta>	too bad
+| [Wednesday 09 March 2011] [09:35:07] <private_meta>	works quite well that way in svn :/
+| [Wednesday 09 March 2011] [09:35:19] <pieterh>	yeah, but creating a single SVN repository is a serious task
+| [Wednesday 09 March 2011] [09:35:24] <pieterh>	creating *lots* of git repositories is trivial
+| [Wednesday 09 March 2011] [09:35:42] <private_meta>	a serious task?
+| [Wednesday 09 March 2011] [09:36:19] <pieterh>	especially if you want it to be secure and maintained and backed up
+| [Wednesday 09 March 2011] [09:36:33] <pieterh>	one does not create 1,000 svn repositories for fun
+| [Wednesday 09 March 2011] [09:37:10] <pieterh>	whereas you can literally use git repositories as an organizational tool
+| [Wednesday 09 March 2011] [09:38:51] <pieterh>	now I'm actually considering breaking the Guide into multiple repos... :-)
+| [Wednesday 09 March 2011] [09:40:03] <yrashk>	http://zeromq.github.com/erlzmq2/ :)
+| [Wednesday 09 March 2011] [09:40:42] <pieterh>	yrashk: I already tweeted that :-)
+| [Wednesday 09 March 2011] [09:41:02] <pieterh>	hang on... hey!
+| [Wednesday 09 March 2011] [09:41:03] <pieterh>	nice
+| [Wednesday 09 March 2011] [09:42:49] <yrashk>	pieterh: you used yrashk as a hashtag :D
+| [Wednesday 09 March 2011] [09:43:04] 	 * pieterh checks the spelling...
+| [Wednesday 09 March 2011] [09:43:18] <pieterh>	ah, yes, sorry
+| [Wednesday 09 March 2011] [09:43:37] <pieterh>	fixed
+| [Wednesday 09 March 2011] [09:44:17] <yrashk>	thx!
+| [Wednesday 09 March 2011] [09:51:30] <yrashk>	pieterh: we'll most likely update the binding page today, I asked evax if he can do it (I am tired :)
+| [Wednesday 09 March 2011] [09:52:37] <pieterh>	yrashk: no stress... note that the current page is mostly HTML copied/pasted from another site.
+| [Wednesday 09 March 2011] [09:53:39] <yrashk>	yeah I can see that
+| [Wednesday 09 March 2011] [09:54:09] <faha>	hello, provide zeromq some kind of message encryption or it's necessary secure transport between client and server using *vpn* solution ?
+| [Wednesday 09 March 2011] [09:55:29] <Steve-o>	faha: or you can use tls above zeromq
+| [Wednesday 09 March 2011] [09:57:51] <faha>	Steve-o: it sounds great thx
+| [Wednesday 09 March 2011] [09:58:31] <pieterh>	faha: http://www.zeromq.org/topics:encryption
+| [Wednesday 09 March 2011] [09:58:37] <pieterh>	there is no great solution today
+| [Wednesday 09 March 2011] [09:58:46] <mikko>	Steve-o: im getting unresolved symbols with zeromq/openpgm 5.1.113
+| [Wednesday 09 March 2011] [09:59:00] <Steve-o>	which platform?
+| [Wednesday 09 March 2011] [09:59:09] <mikko>	solaris / oracle solaris studio 12.2
+| [Wednesday 09 March 2011] [09:59:15] <mikko>	sec
+| [Wednesday 09 March 2011] [09:59:38] <mikko>	http://build.zero.mq/job/openpgm-autoconf-sunstudio-solaris10/5/console
+| [Wednesday 09 March 2011] [09:59:48] <mikko>	pgm_build_revision etc are undefined
+| [Wednesday 09 March 2011] [10:00:00] <mikko>	im wondering whether those are accepted by visibility flags on the compiler?
+| [Wednesday 09 March 2011] [10:00:14] <mikko>	and oddly enough I wasn't seeing these with 5.1.110
+| [Wednesday 09 March 2011] [10:01:41] <Steve-o>	missing the two dynamic generated files
+| [Wednesday 09 March 2011] [10:02:40] <Steve-o>	but I see the GEN lines
+| [Wednesday 09 March 2011] [10:03:15] <Steve-o>	but, line 1: warning: empty translation unit ?
+| [Wednesday 09 March 2011] [10:03:28] <Steve-o>	the GEN failed?
+| [Wednesday 09 March 2011] [10:03:35] <Steve-o>	no perl, python?
+| [Wednesday 09 March 2011] [10:03:49] <mikko>	possible
+| [Wednesday 09 March 2011] [10:04:06] <mikko>	i seem to have both
+| [Wednesday 09 March 2011] [10:04:10] <Steve-o>	checking for perl... /usr/bin/perl 
+| [Wednesday 09 March 2011] [10:04:15] <Steve-o>	checking for python... /opt/csw/bin/python 
+| [Wednesday 09 March 2011] [10:04:51] <Steve-o>	check the content of the files?
+| [Wednesday 09 March 2011] [10:05:03] <mikko>	This is perl, v5.10.1 (csw-5.10.1*) built for i86pc-solaris-thread-multi
+| [Wednesday 09 March 2011] [10:05:19] <mikko>	Python 2.6.6 (r266:84292, Oct 12 2010, 15:43:32) [C] on sunos5
+| [Wednesday 09 March 2011] [10:07:04] <faha>	Steve-o: TLS/SSL seems to be a clean solutions ( not support multicast is not problem for me), what doest it  mean "notion of hops over devices", it's something like retranslate message or "ICMP redirect"?
+| [Wednesday 09 March 2011] [10:08:14] <mikko>	faha: if you for example have a forwarder or similar device running
+| [Wednesday 09 March 2011] [10:08:25] <mikko>	your tls/ssl would be between the client and the forwarder
+| [Wednesday 09 March 2011] [10:08:33] <Steve-o>	actually I think that refers to zeromq over TLS, not TLS over zeromq
+| [Wednesday 09 March 2011] [10:09:07] <Steve-o>	faha: read this http://en.wikipedia.org/wiki/Datagram_Transport_Layer_Security
+| [Wednesday 09 March 2011] [10:09:58] <Steve-o>	mikko: GEN is building fine on Linux, check out version.c and galois_tables.c to see what the scripts produced
+| [Wednesday 09 March 2011] [10:11:21] <mikko>	Steve-o: ok, sec
+| [Wednesday 09 March 2011] [10:11:53] <mikko>	Steve-o: version.c is empty
+| [Wednesday 09 March 2011] [10:12:11] <mikko>	galois_tables.c is empty as well
+| [Wednesday 09 March 2011] [10:13:54] <Steve-o>	try a configure --disable-silent-rules --with-pgm to see the command line used for the GEN steps
+| [Wednesday 09 March 2011] [10:16:05] <Steve-o>	or just trying running perl galois_generator.pl and python version_generator.py for valid output
+| [Wednesday 09 March 2011] [10:17:48] <pieterh>	mikko, Steve-o, you're doing these tests against the 2.2 git master?
+| [Wednesday 09 March 2011] [10:19:02] <Steve-o>	I tested Windows with the rc2 and Linux with mikko's autoconf branch
+| [Wednesday 09 March 2011] [10:19:32] <mikko>	pieterh: roughly
+| [Wednesday 09 March 2011] [10:20:48] <Steve-o>	mikko: is Solaris x86 make going to break on $< or something stupid?
+| [Wednesday 09 March 2011] [10:21:22] <mikko>	Steve-o: i wonder if that is an issue with dmake vs gmake or ksh vs bash
+| [Wednesday 09 March 2011] [10:22:33] <Steve-o>	I've seen warnings that it shouldn't be used, but I've never encountered a platform that doesn't like it
+| [Wednesday 09 March 2011] [10:22:42] <Steve-o>	but then I'm using scons on Solaris
+| [Wednesday 09 March 2011] [10:23:13] <mikko>	https://build.zero.mq/job/openpgm-autoconf-sunstudio-solaris10/7/console
+| [Wednesday 09 March 2011] [10:23:15] <mikko>	builds now
+| [Wednesday 09 March 2011] [10:23:21] <mikko>	it's fairly slow, solaris in vm
+| [Wednesday 09 March 2011] [10:24:44] <Steve-o>	lol at the long command lines
+| [Wednesday 09 March 2011] [10:25:57] <Steve-o>	yup, /opt/csw/bin/python  > version.c 
+| [Wednesday 09 March 2011] [10:26:06] <evaxsoftware>	hi. thanks for the erlzmq2 inclusion
+| [Wednesday 09 March 2011] [10:26:08] <Steve-o>	lmao
+| [Wednesday 09 March 2011] [10:26:25] <mikko>	/usr/bin/perl  > galois_tables.c
+| [Wednesday 09 March 2011] [10:26:27] <mikko>	same with perl
+| [Wednesday 09 March 2011] [10:26:49] <Steve-o>	use gmake or replace $< with the source file name
+| [Wednesday 09 March 2011] [10:26:56] <mikko>	trying the same thing with gmake now
+| [Wednesday 09 March 2011] [10:26:57] <mikko>	sec
+| [Wednesday 09 March 2011] [10:31:05] <mikko>	https://build.zero.mq/job/openpgm-autoconf-sunstudio-solaris10/9/console
+| [Wednesday 09 March 2011] [10:31:08] <mikko>	gmake building now
+| [Wednesday 09 March 2011] [10:34:06] <pieterh>	evaxsoftware: np
+| [Wednesday 09 March 2011] [10:34:29] <pieterh>	mikko: Steve-o: when you guys have this working I want to fold it into 2.1.x and make a new stable release for that
+| [Wednesday 09 March 2011] [10:34:39] <pieterh>	everyone is impatient to play with the new OpenPGM! :-)
+| [Wednesday 09 March 2011] [10:35:10] <pieterh>	you will get multiple opportunities to improve things afterwards, not an issue
+| [Wednesday 09 March 2011] [10:35:11] <Steve-o>	don't forget the other patch on the ML
+| [Wednesday 09 March 2011] [10:35:18] <Steve-o>	someone removed rate limiting by mistake
+| [Wednesday 09 March 2011] [10:35:38] <evaxsoftware>	pieterh: i'm about to edit the bindings:erlang page, is it ok if I remove the old autogenerated doc copy and paste, and rely on links to the gh-pages instead ?
+| [Wednesday 09 March 2011] [10:35:46] <pieterh>	Steve-o: ah, by default all patches on the ML go to sustrik, 2.2, not to me
+| [Wednesday 09 March 2011] [10:36:00] <Steve-o>	mikko: looks good:  /opt/csw/bin/python version_generator.py > version.c 
+| [Wednesday 09 March 2011] [10:36:15] <pieterh>	evaxsoftware: make any changes you like but remember there are people using erlzmq1 in production, they need docs or links to docs
+| [Wednesday 09 March 2011] [10:36:40] <pieterh>	Steve-o: shall I apply that patch to 2.1.x?
+| [Wednesday 09 March 2011] [10:36:55] <evaxsoftware>	pieterh: thanks, np
+| [Wednesday 09 March 2011] [10:37:14] <CIA-103>	zeromq2: 03Martin Sustrik 07master * r7b95c59 10/ src/ip.cpp : 
+| [Wednesday 09 March 2011] [10:37:14] <CIA-103>	zeromq2: Windows build fixed
+| [Wednesday 09 March 2011] [10:37:14] <CIA-103>	zeromq2: Compilation of ip.cpp have failed because EPROTONOSUPPORT
+| [Wednesday 09 March 2011] [10:37:36] <Steve-o>	pieterh: I think sustrik must have removed it between rc1 and rc2?  I have looked back at the commit log to find out
+| [Wednesday 09 March 2011] [10:37:49] <yrashk>	pieterh: well there will be a link to github pages published docs for erlzmqv1
+| [Wednesday 09 March 2011] [10:37:57] <yrashk>	so I think we're fine then
+| [Wednesday 09 March 2011] [10:38:00] <pieterh>	Sustrik isn't touching 2.1.x
+| [Wednesday 09 March 2011] [10:38:03] <Steve-o>	well at least it helped to find a bug on windows
+| [Wednesday 09 March 2011] [10:38:40] <pieterh>	but there was a patch to OpenPGM for rc2, let me check what that changed...
+| [Wednesday 09 March 2011] [10:40:56] <pieterh>	commit f4c1040ddcb579ca53fb34ef0ef83b130424070d
+| [Wednesday 09 March 2011] [10:41:08] <pieterh>	'Incorrect PGM sender/receiver creation fixed'
+| [Wednesday 09 March 2011] [10:41:42] <Steve-o>	mistake in commit fcfad5682ed7a7f51088
+| [Wednesday 09 March 2011] [10:42:03] <Steve-o>	oops, that was december
+| [Wednesday 09 March 2011] [10:43:46] <Steve-o>	fixing the windows size
+| [Wednesday 09 March 2011] [10:44:02] <Steve-o>	transmit window size, https://github.com/zeromq/zeromq2-1/commit/fcfad5682ed7a7f5108853d2a7039aedfd9a9ac2#src/pgm_socket.cpp
+| [Wednesday 09 March 2011] [10:46:03] <Steve-o>	Windows performs really badly on RX without rate limit, TX is a lot better today
+| [Wednesday 09 March 2011] [10:46:23] <Steve-o>	anyway this is the new patch for 2.1:  http://lists.zeromq.org/pipermail/zeromq-dev/2011-March/009723.html
+| [Wednesday 09 March 2011] [10:46:52] <Steve-o>	alongside merging 5.1.113 and mikko's autoconf changes
+| [Wednesday 09 March 2011] [10:47:16] <mikko>	Steve-o: gmake works
+| [Wednesday 09 March 2011] [10:47:29] <Steve-o>	todo for mikko: add silent rules to zeromq autoconf
+| [Wednesday 09 March 2011] [10:47:44] <Steve-o>	mikko: yup, good, I think I can live with gmake only
+| [Wednesday 09 March 2011] [10:51:49] <mikko>	Steve-o: cool
+| [Wednesday 09 March 2011] [10:55:54] <pieterh>	Steve-o: congrats, your patch made it into 2.1 stable :-)
+| [Wednesday 09 March 2011] [10:58:06] <Steve-o>	pieterh: then someone needs to push 5.1.113 and then mikko can push the autoconf changes
+| [Wednesday 09 March 2011] [10:58:30] <mikko>	the autoconf stuff feels pretty solid to me
+| [Wednesday 09 March 2011] [10:58:30] <pieterh>	what's involved in pushing 5.1.113 and who can do that?
+| [Wednesday 09 March 2011] [10:58:40] <mikko>	pieterh: el sustrik
+| [Wednesday 09 March 2011] [10:58:41] <pieterh>	you mean into 2.1?
+| [Wednesday 09 March 2011] [10:58:45] <pieterh>	or into 2.2?
+| [Wednesday 09 March 2011] [10:58:51] <mikko>	first to master
+| [Wednesday 09 March 2011] [10:58:54] <pieterh>	that is the large patch you sent a few days ago?
+| [Wednesday 09 March 2011] [10:59:02] <mikko>	did i send a large patch?
+| [Wednesday 09 March 2011] [10:59:13] <pieterh>	I meant Steve-o
+| [Wednesday 09 March 2011] [10:59:17] <mikko>	oh
+| [Wednesday 09 March 2011] [10:59:28] <Steve-o>	i posted 5.1.110 first
+| [Wednesday 09 March 2011] [11:00:04] <Steve-o>	then mikko found a Solaris x86 bug, I found a few win64 bugs, and then a significant win32 compiler 'feature'
+| [Wednesday 09 March 2011] [11:00:11] <pieterh>	oookay
+| [Wednesday 09 March 2011] [11:00:34] <mikko>	and i've been sending incomprehensible midnight mails to steven
+| [Wednesday 09 March 2011] [11:00:36] <Steve-o>	all small one liner changes, but bumped upto 113
+| [Wednesday 09 March 2011] [11:00:39] <mikko>	and he incorporated the solaris changes
+| [Wednesday 09 March 2011] [11:00:46] <pieterh>	so let's think how to get this into 2.1 rather than bottlenecking el sustrik on it
+| [Wednesday 09 March 2011] [11:01:01] <mikko>	it needs to go to master first i think
+| [Wednesday 09 March 2011] [11:01:06] <pieterh>	there is no master
+| [Wednesday 09 March 2011] [11:01:14] <pieterh>	there is a 2.2 source git, a 2.1 release git
+| [Wednesday 09 March 2011] [11:01:20] <pieterh>	they all have master branches
+| [Wednesday 09 March 2011] [11:01:25] <pieterh>	sorry 
+| [Wednesday 09 March 2011] [11:01:29] <mikko>	2.2 source git in that case
+| [Wednesday 09 March 2011] [11:01:34] <pieterh>	2.1 and 2.2 are very very close internally
+| [Wednesday 09 March 2011] [11:01:54] <pieterh>	so it's possible, still to upstream or downstream patches with minimum effort
+| [Wednesday 09 March 2011] [11:01:54] <Steve-o>	is "zeromq2" 2.2?
+| [Wednesday 09 March 2011] [11:02:10] <pieterh>	zeromq2 is "latest development version of 0MQ/2.x.x"
+| [Wednesday 09 March 2011] [11:02:13] <pieterh>	currently at 2.2
+| [Wednesday 09 March 2011] [11:02:25] <Steve-o>	so effectively trunk
+| [Wednesday 09 March 2011] [11:02:40] <pieterh>	svn terminology? hey, it's 2011, c'mon...!
+| [Wednesday 09 March 2011] [11:03:08] <Steve-o>	I'm on SVN and not moving in a hurry
+| [Wednesday 09 March 2011] [11:03:45] 	 * pieterh is not going to thump any bibles today
+| [Wednesday 09 March 2011] [11:04:16] <pieterh>	can we prepare a patch that feeds *all* these changes into 2.1?
+| [Wednesday 09 March 2011] [11:04:22] <Steve-o>	I don't know if googlecode even supports GIT, they have some other distributed repo
+| [Wednesday 09 March 2011] [11:04:25] <pieterh>	I will test the patch, we can then upstream it to sustrik
+| [Wednesday 09 March 2011] [11:04:50] <pieterh>	I'll provide you with test packages for sanity checking
+| [Wednesday 09 March 2011] [11:05:23] <pieterh>	sustrik: if you're around, does this sound sane?
+| [Wednesday 09 March 2011] [11:05:29] <Steve-o>	googlecode has Mercurial, I'll pass on that
+| [Wednesday 09 March 2011] [11:06:47] <pieterh>	mikko: how are you and Steve-o exchanging versions now?
+| [Wednesday 09 March 2011] [11:07:08] <pieterh>	you have an autoconf branch on what repository?
+| [Wednesday 09 March 2011] [11:07:38] <Steve-o>	here:  https://github.com/mkoppanen/zeromq2/tree/openpgm-autoconf
+| [Wednesday 09 March 2011] [11:08:34] <pieterh>	ok, and does that contain OpenPGM 5.1.113 as well?
+| [Wednesday 09 March 2011] [11:08:50] <Steve-o>	looks like it
+| [Wednesday 09 March 2011] [11:08:55] <pieterh>	mikko: confirm?
+| [Wednesday 09 March 2011] [11:09:27] <Steve-o>	I can see it here: https://github.com/mkoppanen/zeromq2/tree/openpgm-autoconf/foreign/openpgm
+| [Wednesday 09 March 2011] [11:15:21] <mikko>	pieterh: sorry, slightly tied up
+| [Wednesday 09 March 2011] [11:15:24] <mikko>	will be back in 10 mins
+| [Wednesday 09 March 2011] [11:15:45] <pieterh>	mikko: np, I'm checking the changes you guys made so far
+| [Wednesday 09 March 2011] [11:16:51] <mikko>	pieterh: majority of the changes are in configure.in
+| [Wednesday 09 March 2011] [11:17:03] <mikko>	pieterh: there might be some unrelated changes in that branch as well
+| [Wednesday 09 March 2011] [11:17:07] <pieterh>	so it's Makefile.am, configure.in, and a new OpenPGM package in foreign
+| [Wednesday 09 March 2011] [11:17:16] <mikko>	yes, roughly that
+| [Wednesday 09 March 2011] [11:17:22] 	 * pieterh needs precise, precise
+| [Wednesday 09 March 2011] [11:17:29] <pieterh>	this is going into the stable 2.1 release :-)
+| [Wednesday 09 March 2011] [11:17:31] <pieterh>	no hurry...
+| [Wednesday 09 March 2011] [11:17:42] <mikko>	pieterh: i can create a pull request?
+| [Wednesday 09 March 2011] [11:17:46] <mikko>	with the exact changes
+| [Wednesday 09 March 2011] [11:17:55] <pieterh>	hmm, yes, that would be perfect
+| [Wednesday 09 March 2011] [11:18:30] <pieterh>	i've cloned your repo, refreshed both master and openpgm-autoconf branches from the source master
+| [Wednesday 09 March 2011] [11:18:34] <pieterh>	no conflicts, all clean
+| [Wednesday 09 March 2011] [11:19:02] <pieterh>	mikko: to here, please: https://github.com/zeromq/zeromq2-1
+| [Wednesday 09 March 2011] [11:19:04] <mikko>	does it build --with-pgm for you?
+| [Wednesday 09 March 2011] [11:19:07] <mikko>	pieterh: sure
+| [Wednesday 09 March 2011] [11:19:17] <pieterh>	mikko: let me assert that, 30 seconds...
+| [Wednesday 09 March 2011] [11:21:01] <pieterh>	mikko: that seems to work, one or two warnings/errors
+| [Wednesday 09 March 2011] [11:21:02] <pieterh>	configure.ac:7: installing `./missing'
+| [Wednesday 09 March 2011] [11:21:03] <pieterh>	Makefile.am: installing `./depcomp'
+| [Wednesday 09 March 2011] [11:21:03] <pieterh>	mkdir: cannot create directory `foreign/openpgm/build-staging/config': No such file or directory
+| [Wednesday 09 March 2011] [11:21:15] <pieterh>	however it completes
+| [Wednesday 09 March 2011] [11:21:34] <pieterh>	and it builds... :-)
+| [Wednesday 09 March 2011] [11:22:13] <pieterh>	I'm on Ubuntu 10.10 fwiw
+| [Wednesday 09 March 2011] [11:22:21] <mikko>	pieterh: might be some of the changes i was trying out
+| [Wednesday 09 March 2011] [11:22:36] <mikko>	pieterh: will clean up and send pull request against zeromq2-1
+| [Wednesday 09 March 2011] [11:22:40] <pieterh>	ack
+| [Wednesday 09 March 2011] [11:22:59] <pieterh>	afaics this is the last piece for 2.1 stable
+| [Wednesday 09 March 2011] [11:23:16] <mikko>	this is a major improvement
+| [Wednesday 09 March 2011] [11:23:19] <mikko>	i think
+| [Wednesday 09 March 2011] [11:23:28] <Steve-o>	the autoconf in 2.1rc2 is terrible
+| [Wednesday 09 March 2011] [11:23:41] <mikko>	also --with-pgm=libpgm-5.1.113~dfsg works
+| [Wednesday 09 March 2011] [11:23:46] <mikko>	Steve-o: zeromq?
+| [Wednesday 09 March 2011] [11:24:08] <Steve-o>	mikko: before your autoconf changes
+| [Wednesday 09 March 2011] [11:24:20] <mikko>	oh, i thought that after them :D
+| [Wednesday 09 March 2011] [11:25:10] <pieterh>	I'm going to rapidly double-check that 2.2 source builds on win32
+| [Wednesday 09 March 2011] [11:25:26] <Steve-o>	and win64
+| [Wednesday 09 March 2011] [11:25:41] <pieterh>	don't have win64... :-/
+| [Wednesday 09 March 2011] [11:25:46] <pieterh>	actually, :-)
+| [Wednesday 09 March 2011] [11:26:41] <Steve-o>	ok, was wondering if you can get away with just installing sdk 7.1 for the 64-bit compiler
+| [Wednesday 09 March 2011] [11:27:05] <mikko>	pieterh: amazon!
+| [Wednesday 09 March 2011] [11:27:10] <mikko>	ec2 has windows
+| [Wednesday 09 March 2011] [11:27:45] <pieterh>	oh, I just want to see if 7b95c5920c3318935b8cd8f3591cd5c65509f819 worked
+| [Wednesday 09 March 2011] [11:30:40] <Steve-o>	ok, catch you all tomorrow
+| [Wednesday 09 March 2011] [11:32:03] <mikko>	see you tomorrow 
+| [Wednesday 09 March 2011] [11:34:09] <pieterh>	bye Steve-o
