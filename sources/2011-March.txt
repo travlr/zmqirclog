@@ -5040,3 +5040,770 @@
 | [Wednesday 09 March 2011] [23:05:59] <Steve-o>	could do with a filtering
 | [Wednesday 09 March 2011] [23:08:16] <qw_>	the top video was excellent
 | [Wednesday 09 March 2011] [23:10:09] <Steve-o>	prod pieter when he's online later
+| [Thursday 10 March 2011] [00:58:51] <notostraca>	agh...  I am trying to get lua to work with 0MQ, to no avail.
+| [Thursday 10 March 2011] [00:59:12] <notostraca>	I am on Windows 7 64-bit
+| [Thursday 10 March 2011] [00:59:50] <notostraca>	and I am not quite sure how to install the compiled libzmq dlls so that luarocks and/or cmake can find them
+| [Thursday 10 March 2011] [01:00:09] <notostraca>	Has anyone gotten lua to work with 0MQ on windows?
+| [Thursday 10 March 2011] [02:26:14] <datuanmac>	hello
+| [Thursday 10 March 2011] [02:26:38] <rem7>	I was going over the guide, and on the topic of multithreading it says that you should  create a context and pass that to the threads... but down in chapter 3 some of the examples are creating a context in their own threads... whats up with that?
+| [Thursday 10 March 2011] [02:29:01] <guido_g>	here the threads stand for processes
+| [Thursday 10 March 2011] [02:29:51] <datuanmac>	can you send to me link chapter 3 to refer ?
+| [Thursday 10 March 2011] [02:30:26] <guido_g>	rem7: the rule for real applications is: one context per process
+| [Thursday 10 March 2011] [02:31:16] <rem7>	so if I'm not going to use inproc in the same application, its safe to create a context in every thread...?
+| [Thursday 10 March 2011] [02:31:52] <guido_g>	rem7: the rule for real applications is: one context per process
+| [Thursday 10 March 2011] [02:34:02] <rem7>	... confused... define process?
+| [Thursday 10 March 2011] [02:34:55] <guido_g>	not thread, a process
+| [Thursday 10 March 2011] [02:35:01] <uhu>	process == task
+| [Thursday 10 March 2011] [02:36:27] <guido_g>	http://en.wikipedia.org/wiki/Process_(computing)   <- learn the basics
+| [Thursday 10 March 2011] [02:38:29] <rem7>	re-wording from the first paragraph then... one context per application instance.
+| [Thursday 10 March 2011] [02:39:34] <uhu>	hi didn't know : a thread is part of a process/task
+| [Thursday 10 March 2011] [02:39:48] <guido_g>	omg
+| [Thursday 10 March 2011] [02:41:20] <rem7>	lol
+| [Thursday 10 March 2011] [02:42:21] <datuan>	Are you integrate with system ?
+| [Thursday 10 March 2011] [02:50:40] <uhu>	system() or system
+| [Thursday 10 March 2011] [03:01:02] <datuan>	system 
+| [Thursday 10 March 2011] [03:49:06] <larhat>	Hi, folks! Is it possible to implement zeromq as native library in some language and not as language bindings? i.e. implement zero-mq protocol on top of wrapped sockets. I thinks, it's possible, but i don't see any attempts to do it. am i missing smth? 
+| [Thursday 10 March 2011] [03:50:03] <guido_g>	zeromq is mostly the high-speed implementation of the existing library
+| [Thursday 10 March 2011] [03:51:47] <guido_g>	the network-framing is described somewhere on zeromq.org
+| [Thursday 10 March 2011] [03:52:57] <guido_g>	i doubt that new implementations will comme close to the performance of this implementation in the foreseeable future
+| [Thursday 10 March 2011] [03:55:21] <larhat>	so, there isn't native library because it's not needed?
+| [Thursday 10 March 2011] [03:56:13] <guido_g>	native to what?
+| [Thursday 10 March 2011] [03:56:41] <larhat>	"native", yes. native to some language (ocaml, python, etc. )
+| [Thursday 10 March 2011] [03:56:57] <guido_g>	ah, no wouldn't make sense
+| [Thursday 10 March 2011] [03:57:06] <guido_g>	consider how slow this would be
+| [Thursday 10 March 2011] [03:57:18] <guido_g>	and how much trouble to maintain
+| [Thursday 10 March 2011] [03:58:59] <Guthur>	larhat: atm imo, zeromq is quite a good to produce a binding for
+| [Thursday 10 March 2011] [03:59:09] <Guthur>	quite a/quite
+| [Thursday 10 March 2011] [03:59:27] <guido_g>	thanks to the simple c api
+| [Thursday 10 March 2011] [03:59:33] <Guthur>	indeed
+| [Thursday 10 March 2011] [03:59:53] <guido_g>	i'm even tempted to use the c api in c++, much easier
+| [Thursday 10 March 2011] [04:00:12] <Guthur>	which means there would very little to be gained from implementing in another language
+| [Thursday 10 March 2011] [04:06:22] <Guthur>	At the weekend I had a strange notion of implementing a zeromq system in C++
+| [Thursday 10 March 2011] [04:06:40] <Guthur>	I soon realised live is too short for such pain
+| [Thursday 10 March 2011] [04:06:45] <Guthur>	life*
+| [Thursday 10 March 2011] [04:14:35] <uhu>	anyone here, who has exp. with smartsockets (talarian/Tibco)
+| [Thursday 10 March 2011] [04:15:10] <Steve-o>	I've heard of them
+| [Thursday 10 March 2011] [04:15:16] <uhu>	need pro/cons for discussion next week
+| [Thursday 10 March 2011] [04:15:37] <Steve-o>	aren't smartsockets eol?
+| [Thursday 10 March 2011] [04:15:55] <Steve-o>	smartpgm eol'ed a year or two ago
+| [Thursday 10 March 2011] [04:16:42] <uhu>	talarian invented long times ago, later tibco bought talarian
+| [Thursday 10 March 2011] [04:16:55] <Steve-o>	I'm a former TIBCO guy :D
+| [Thursday 10 March 2011] [04:17:31] <uhu>	u hv worked with them ?
+| [Thursday 10 March 2011] [04:18:18] <Steve-o>	I was the maintenance dev for TIB2MQ/TIB Adapter for MQ Series and Rendezvous 5
+| [Thursday 10 March 2011] [04:19:01] <uhu>	i see
+| [Thursday 10 March 2011] [04:19:17] <Steve-o>	nobody in Finance used smartsockets though, so I never touched it
+| [Thursday 10 March 2011] [04:20:12] <uhu>	are smartsockets not the base of the TIB ESB
+| [Thursday 10 March 2011] [04:20:14] <Steve-o>	shouldn't your comparison be with EMS?
+| [Thursday 10 March 2011] [04:20:46] <uhu>	just working for a big german logistics ...
+| [Thursday 10 March 2011] [04:21:05] <uhu>	now the plan a redesign of the whole stuff
+| [Thursday 10 March 2011] [04:21:22] <uhu>	the -> they
+| [Thursday 10 March 2011] [04:21:41] <guido_g>	if you need mq know-how, i'm available :)
+| [Thursday 10 March 2011] [04:21:55] <Steve-o>	tibco ems is tibco's jaunt to TCP comms away from multicast - http://www.tibco.com/products/soa/messaging/enterprise-mesage-service/default.jsp
+| [Thursday 10 March 2011] [04:22:19] <Steve-o>	it came before the talarian purchase I think
+| [Thursday 10 March 2011] [04:23:01] <uhu>	our management prefer the oracle esb stuff
+| [Thursday 10 March 2011] [04:23:21] <uhu>	but i think, they don't know what they talking about
+| [Thursday 10 March 2011] [04:23:42] <Guthur>	does 0MQ run on any mainframe hardware/OS
+| [Thursday 10 March 2011] [04:23:53] <Steve-o>	s390
+| [Thursday 10 March 2011] [04:24:01] <Steve-o>	and vms
+| [Thursday 10 March 2011] [04:24:03] <guido_g>	uhu: you said it already "management"
+| [Thursday 10 March 2011] [04:24:24] <uhu>	is there a port on HP Nonstop ???
+| [Thursday 10 March 2011] [04:24:50] <Steve-o>	openvms
+| [Thursday 10 March 2011] [04:25:08] <Steve-o>	the dev is from HP, on the ML 
+| [Thursday 10 March 2011] [04:25:24] <Steve-o>	http://zeromqonopenvms.blogspot.com/
+| [Thursday 10 March 2011] [04:26:49] <Guthur>	guido_g: do you maintain one of the language bindings?
+| [Thursday 10 March 2011] [04:27:02] <guido_g>	nope
+| [Thursday 10 March 2011] [04:27:05] <guido_g>	why?
+| [Thursday 10 March 2011] [04:27:40] <Guthur>	looking for advice on some course of action for EINTR on things like poll and recv
+| [Thursday 10 March 2011] [04:28:03] <Guthur>	I'm wondering whether clrzmq2 should try to deal with it, or leave it for the user
+| [Thursday 10 March 2011] [04:28:08] <guido_g>	uhhh... there was something going on for the python bindings
+| [Thursday 10 March 2011] [04:28:31] <Guthur>	oh ok, I'mm have a wee look at that
+| [Thursday 10 March 2011] [04:28:38] <Guthur>	I'mm/I'll
+| [Thursday 10 March 2011] [04:29:05] <guido_g>	http://lists.zeromq.org/pipermail/zeromq-dev/2010-September/005822.html
+| [Thursday 10 March 2011] [04:29:41] <uhu>	sorry, i know ... the stoneage is over ... but our company is still using this machines 
+| [Thursday 10 March 2011] [04:30:25] <guido_g>	hey, the ise in ny is still using vms too i think :)
+| [Thursday 10 March 2011] [04:32:06] <Steve-o>	well at least they have a tcp/ip stack
+| [Thursday 10 March 2011] [04:32:39] <pieterh>	hi guys
+| [Thursday 10 March 2011] [04:32:41] <Guthur>	guido_g: I think that is fixed now though, because I am getting -1 errno=EINTR
+| [Thursday 10 March 2011] [04:33:19] <guido_g>	Guthur: the discussion was lengthy, i don't remember it
+| [Thursday 10 March 2011] [04:33:26] <guido_g>	pieterh: howdy
+| [Thursday 10 March 2011] [04:33:43] <Guthur>	I'm in two minds what to do now
+| [Thursday 10 March 2011] [04:33:47] <guido_g>	Guthur: but i think in certain cases the binding should handle eintr
+| [Thursday 10 March 2011] [04:34:43] <pieterh>	hi guido_g
+| [Thursday 10 March 2011] [04:35:08] <Guthur>	guido_g: I was considering trying to handle it in the binding
+| [Thursday 10 March 2011] [04:35:24] <Guthur>	would make life simpler for the user
+| [Thursday 10 March 2011] [04:36:07] <guido_g>	Guthur: i can have a look at the python binding, might be that there is some help
+| [Thursday 10 March 2011] [04:36:31] <Guthur>	guido_g: cool
+| [Thursday 10 March 2011] [04:40:58] <guido_g>	so far no eintr found...
+| [Thursday 10 March 2011] [04:43:59] <Guthur>	from the way I am understanding the code, it would not matter to pyzmq
+| [Thursday 10 March 2011] [04:44:15] <Guthur>	it just returns a list of r/w able sockets
+| [Thursday 10 March 2011] [04:44:23] <guido_g>	no, pyzmq.core will deliver upwards
+| [Thursday 10 March 2011] [04:44:37] <guido_g>	*deliver it
+| [Thursday 10 March 2011] [04:45:10] <Guthur>	ok
+| [Thursday 10 March 2011] [04:46:17] <guido_g>	Guthur: you're on the low-level bindings atm?
+| [Thursday 10 March 2011] [04:50:18] <Guthur>	i'm maintainer for clrzmq2, and I'm hoping to improve the handling of this issue there
+| [Thursday 10 March 2011] [04:50:30] <Guthur>	It just binds the low level C lib
+| [Thursday 10 March 2011] [04:50:38] <Guthur>	was that your question?
+| [Thursday 10 March 2011] [04:50:44] <Guthur>	or do you mean the pyzmq
+| [Thursday 10 March 2011] [04:51:15] <Guthur>	I was looking at https://github.com/ellisonbg/pyzmq
+| [Thursday 10 March 2011] [04:51:29] <guido_g>	i meant if your're currently working on the lower levels of the binding or some language dependant abstractions on top
+| [Thursday 10 March 2011] [04:52:05] <guido_g>	nahh... the official one is https://github.com/zeromq/pyzmq
+| [Thursday 10 March 2011] [04:52:42] <Guthur>	oh, ok
+| [Thursday 10 March 2011] [04:53:13] <guido_g>	Guthur: if you provide the low-level api in clrzmq2, it should simply signal that an EINTR happend, same as the C version
+| [Thursday 10 March 2011] [04:53:37] <Guthur>	yeah that's what happens at the moment
+| [Thursday 10 March 2011] [04:53:43] <Guthur>	it throws an exception
+| [Thursday 10 March 2011] [04:53:57] <Guthur>	so the user can catch it if they wish
+| [Thursday 10 March 2011] [04:54:04] <guido_g>	if you have some more .net like abstractions on top of that, it's a matter of the overall architecture of the environment, i'd say
+| [Thursday 10 March 2011] [04:54:24] <guido_g>	should be fine
+| [Thursday 10 March 2011] [05:23:45] <Guthur>	this experience with EINTR has made me think I don't like linux's signalling mechanism much
+| [Thursday 10 March 2011] [05:24:03] <Guthur>	it can be a bit of PITA
+| [Thursday 10 March 2011] [05:24:28] <guido_g>	it's not only linux
+| [Thursday 10 March 2011] [05:27:46] <Guthur>	implementing the later guide examples in C# has definitely proved more challenging than it should have been.
+| [Thursday 10 March 2011] [05:28:05] <Guthur>	no IPC on windows, and signalling headaches on POSIX OSs
+| [Thursday 10 March 2011] [05:40:42] <Guthur>	...really need to get working on that IPC for windows stuff
+| [Thursday 10 March 2011] [05:44:09] <Guthur>	is there 2.2 roadmap?
+| [Thursday 10 March 2011] [05:44:29] <Guthur>	pieterh: you mentioned it on the mailing list, but I don't see it
+| [Thursday 10 March 2011] [05:44:57] <Guthur>	oh nvm
+| [Thursday 10 March 2011] [05:44:59] <Guthur>	found it
+| [Thursday 10 March 2011] [05:45:30] <pieterh_>	Guthur: sorry about that
+| [Thursday 10 March 2011] [05:45:57] <pieterh_>	we need to get IPC working better IMO
+| [Thursday 10 March 2011] [05:46:07] <pieterh_>	even the Linux / POSIX implementation is sucky
+| [Thursday 10 March 2011] [05:46:40] <pieterh_>	I'd like to make a portable IPC based on shared memory
+| [Thursday 10 March 2011] [05:47:04] <pieterh_>	Guthur: did you get any further with those signaling issues? 
+| [Thursday 10 March 2011] [05:47:32] <Guthur>	pieterh_: yeah, it's just something that will happen on POSIX
+| [Thursday 10 March 2011] [05:47:52] <pieterh_>	... I'm using Linux all the time, have never hit it
+| [Thursday 10 March 2011] [05:48:01] <pieterh_>	or am just somehow ignoring it?
+| [Thursday 10 March 2011] [05:48:39] <Guthur>	it's more likely to happen on Mono due to the GC using signals
+| [Thursday 10 March 2011] [05:48:59] <pieterh_>	more likely vs. never happens, I'd say it's a Mono issue
+| [Thursday 10 March 2011] [05:49:12] <pieterh_>	thus perhaps solvable
+| [Thursday 10 March 2011] [05:49:57] <Guthur>	yeah, it's a catchable exception, I was in two minds whether to try and solve it in the clrzmq binding or leave it for the user to deal with
+| [Thursday 10 March 2011] [05:50:23] <pieterh_>	would you summarize what you know about it, send that to the list?
+| [Thursday 10 March 2011] [05:50:46] <Guthur>	sure, I'll do that when I get home from work
+| [Thursday 10 March 2011] [05:50:53] <pieterh_>	IMO it's not something the user should see, it's has no sense within 0MQ
+| [Thursday 10 March 2011] [05:51:10] <pieterh_>	making the examples is in any case like doing 0MQ University :-)
+| [Thursday 10 March 2011] [05:51:16] <Guthur>	pieterh_: it actually appears that it never used to be in 0MQ
+| [Thursday 10 March 2011] [05:51:19] <Guthur>	it was added
+| [Thursday 10 March 2011] [05:51:28] <Guthur>	http://lists.zeromq.org/pipermail/zeromq-dev/2010-September/005822.html
+| [Thursday 10 March 2011] [05:51:43] 	 * pieterh_ is reading that...
+| [Thursday 10 March 2011] [05:52:27] <pieterh_>	ah, this is the famous Ctrl-C handling
+| [Thursday 10 March 2011] [05:52:50] <pieterh_>	yes, signals should be passed up to the binding, however...
+| [Thursday 10 March 2011] [05:53:00] <pieterh_>	it seems abnormal that you are getting EINTR *all the time*
+| [Thursday 10 March 2011] [05:54:56] <pieterh_>	brb, need to switch message apps, this one is terrible...
+| [Thursday 10 March 2011] [05:55:08] <guido_g>	hehe
+| [Thursday 10 March 2011] [05:57:27] <pieterh_1>	re
+| [Thursday 10 March 2011] [05:59:26] <guido_g>	wb
+| [Thursday 10 March 2011] [05:59:44] <guido_g>	w/ different color, how nice  :)
+| [Thursday 10 March 2011] [06:02:38] <pieterh_1>	I think the colors are entirely in the imagination of your IRC client :-)
+| [Thursday 10 March 2011] [06:03:54] <guido_g>	hmmm
+| [Thursday 10 March 2011] [06:06:36] <Guthur>	pieterh_1: it seems to be at startup that the Mono runtime is generating some signals that were bubbling up when I was trying to Poll or Recv
+| [Thursday 10 March 2011] [06:06:58] <Guthur>	after a talk with a Mono Dev I am of the understanding that it may be related to the GC
+| [Thursday 10 March 2011] [06:07:56] <pieterh_1>	Guthur: that sounds plausible
+| [Thursday 10 March 2011] [06:09:54] <pieterh_1>	those signals shouldn't appear to 0MQ users, obvously
+| [Thursday 10 March 2011] [06:11:14] <Guthur>	pieterh_1: would you be of the opinion that I should try to deal with EINTR in the clrzmq binding
+| [Thursday 10 March 2011] [06:11:22] <sejo>	can you send a smq message without using smq? is there a way to recontruct a message?
+| [Thursday 10 March 2011] [06:12:26] <pieterh_1>	Guthur: if it's Mono generating random EINTRs, I'd probably take a large stick to that developer until he fixes it
+| [Thursday 10 March 2011] [06:12:42] <pieterh_1>	if it's other signals you can filter them
+| [Thursday 10 March 2011] [06:13:17] <pieterh_1>	sejo: what exactly do you mean by "smq message"?
+| [Thursday 10 March 2011] [06:13:43] <sejo>	zmq sorry
+| [Thursday 10 March 2011] [06:13:56] <pieterh_1>	how would you send a zmq message without zmq?
+| [Thursday 10 March 2011] [06:14:01] <pieterh_1>	and why?
+| [Thursday 10 March 2011] [06:14:02] <sejo>	well i'm still stuck with the twisted loop and trying to figure out how to fix it
+| [Thursday 10 March 2011] [06:14:39] <Guthur>	pieterh_1: i think it's due to 0MQ being in a blocking syscall, and so the signal will cause that to return with EINTR
+| [Thursday 10 March 2011] [06:14:56] <Guthur>	my understanding may be flawed though
+| [Thursday 10 March 2011] [06:15:17] <pieterh_1>	Guthur: yeah... but if you know what signals the GC is generating you can set up your own handler for them, so 0MQ never sees them
+| [Thursday 10 March 2011] [06:15:32] <Guthur>	ah ok
+| [Thursday 10 March 2011] [06:15:59] <pieterh_1>	bleh, I'm confusing two things
+| [Thursday 10 March 2011] [06:16:12] <pieterh_1>	EINTR is the errno after an interrupted system call, it's not the signal
+| [Thursday 10 March 2011] [06:16:23] <pieterh_1>	Ctrl-C would be SIGINT for example
+| [Thursday 10 March 2011] [06:16:54] <pieterh_1>	so IMO you want to discover what actual signals the Mono GC is generating, and then set up handlers to ignore them
+| [Thursday 10 March 2011] [06:17:11] <pieterh_1>	then 0MQ's system calls won't be interrupted by *those* signals
+| [Thursday 10 March 2011] [06:20:15] <sejo>	pieterh: so I'm trying to get messages into a queue. but when pushing from twisted it slows down my reactor
+| [Thursday 10 March 2011] [06:22:05] <pieterh_1>	sejo: is there anyone else using twisted with 0MQ?
+| [Thursday 10 March 2011] [06:23:20] <sejo>	no, there was a poc on github, but not working
+| [Thursday 10 March 2011] [06:23:46] <pieterh_1>	ok, so I know nothing at all about twisted, however...
+| [Thursday 10 March 2011] [06:24:08] <guido_g>	sejo: where does the slowdonw happen? care to show the code?
+| [Thursday 10 March 2011] [06:24:21] <pieterh_1>	this is Python, there is a large community of pyzmq users
+| [Thursday 10 March 2011] [06:24:35] <pieterh_1>	make a minimal test case, publish that, discuss on zeromq-dev and here
+| [Thursday 10 March 2011] [06:24:55] <sejo>	guido_g: each time you do a blocking io, the twisted main_reactor waits on it
+| [Thursday 10 March 2011] [06:25:10] <pieterh_1>	you do need to come up with code if you want help on specific problems
+| [Thursday 10 March 2011] [06:25:11] <guido_g>	this is why it's call blocking
+| [Thursday 10 March 2011] [06:25:13] <guido_g>	*called
+| [Thursday 10 March 2011] [06:25:18] <sejo>	that's why twisted is used to circumvent the blocking io as much as possible
+| [Thursday 10 March 2011] [06:25:43] <guido_g>	simply don't use blocking call then...
+| [Thursday 10 March 2011] [06:25:43] <sejo>	yeah but there is no way to do a nen-blocking connection to zmq, or I should use a basic socket protocol that already exists
+| [Thursday 10 March 2011] [06:26:01] <guido_g>	w/o code, it's all guessing
+| [Thursday 10 March 2011] [06:26:31] <sejo>	guido if I use the smq.send_json it blocks the reactor in such way i only can send one a sec (I crawl now 5-10 urls/s)
+| [Thursday 10 March 2011] [06:26:43] <sejo>	if I add the seromq.send_json it goes to 1/s
+| [Thursday 10 March 2011] [06:26:53] <sejo>	zmq 
+| [Thursday 10 March 2011] [06:27:08] <pieterh_1>	sejo: it's not 'slow'
+| [Thursday 10 March 2011] [06:27:26] <sejo>	pieterh_1: i know zmq isn't slow
+| [Thursday 10 March 2011] [06:27:58] <sejo>	and the twisted neither, it's combining them that creates 2 diffrent eventloops and they don't work together imho
+| [Thursday 10 March 2011] [06:28:02] <sejo>	which is logic
+| [Thursday 10 March 2011] [06:28:17] <pieterh_1>	no, I mean it's not 'slowing down', you're using it wrong
+| [Thursday 10 March 2011] [06:28:18] <pieterh_1>	and without seeing an example of your code, this discussion is fruitless
+| [Thursday 10 March 2011] [06:28:44] <sejo>	let me paste an example
+| [Thursday 10 March 2011] [06:28:55] <pieterh_1>	sejo: yes, please, a working minimal example
+| [Thursday 10 March 2011] [06:29:25] <guido_g>	sejo: use non-blocking calls then
+| [Thursday 10 March 2011] [06:46:03] <sejo>	http://dpaste.com/485798/
+| [Thursday 10 March 2011] [06:46:06] <sejo>	sending
+| [Thursday 10 March 2011] [06:46:31] <sejo>	http://dpaste.com/485800/
+| [Thursday 10 March 2011] [06:46:38] <sejo>	receiver and sender to the workers
+| [Thursday 10 March 2011] [06:47:51] <sejo>	brb food
+| [Thursday 10 March 2011] [06:48:50] <guido_g>	sejo: read the guid and ahve a look at the pyzmq examples
+| [Thursday 10 March 2011] [06:48:59] <guido_g>	sejo: this all weird
+| [Thursday 10 March 2011] [07:01:17] <sejo>	I did I used the taskvent/tasksink/taskworker examples from the python guide
+| [Thursday 10 March 2011] [07:03:26] <guido_g>	sejo: your code is broken, please try to get the mq basics first
+| [Thursday 10 March 2011] [07:15:43] <sejo>	meh
+| [Thursday 10 March 2011] [07:18:07] <sejo>	not wanting to be rude but i don't see what I'm doing wrong if I look at these examples: https://github.com/imatix/zguide/blob/master/examples/Python/taskvent.py https://github.com/imatix/zguide/blob/master/examples/Python/taskwork.py
+| [Thursday 10 March 2011] [07:18:09] <pieterh_1>	sejo: in sender, what's the lifespan of the context object?
+| [Thursday 10 March 2011] [07:18:30] <sejo>	pieterh_1: the time of a full crawl +- 5000 messages
+| [Thursday 10 March 2011] [07:19:05] <pieterh_1>	where is recv_json defined? is that a standard pyzmq method?
+| [Thursday 10 March 2011] [07:19:16] <pieterh_1>	hmm, presumably so...
+| [Thursday 10 March 2011] [07:19:18] <sejo>	yes
+| [Thursday 10 March 2011] [07:19:49] <sejo>	the couchdbkit people showed me that :p
+| [Thursday 10 March 2011] [07:20:17] <pieterh_1>	where is the reactor in all of this? and twisted? 
+| [Thursday 10 March 2011] [07:20:26] <pieterh_1>	this is not complete code, there's a lot missing
+| [Thursday 10 March 2011] [07:20:39] <sejo>	pietthe reactor is basicly hidder from my spider
+| [Thursday 10 March 2011] [07:20:45] <sejo>	so that's in the back
+| [Thursday 10 March 2011] [07:21:02] <sejo>	the process_response is a callback 
+| [Thursday 10 March 2011] [07:21:18] <pieterh_1>	look, could you please make a *working minimal example*
+| [Thursday 10 March 2011] [07:21:24] <pieterh_1>	do you understand what I mean when I say that?
+| [Thursday 10 March 2011] [07:21:33] <pieterh_1>	fragments of code are not useful
+| [Thursday 10 March 2011] [07:22:17] <sejo>	actually then I need to provide the full scrapy code... nvm
+| [Thursday 10 March 2011] [07:22:27] <pieterh_1>	you are not understanding IMO
+| [Thursday 10 March 2011] [07:22:45] <pieterh_1>	this is not us being difficult, it is an essential step in your own understanding of the problem
+| [Thursday 10 March 2011] [07:22:50] <pieterh_1>	look...
+| [Thursday 10 March 2011] [07:22:59] <sejo>	i understand also
+| [Thursday 10 March 2011] [07:23:02] <pieterh_1>	you use 0MQ + twisted + whatever within a complex environment
+| [Thursday 10 March 2011] [07:23:05] <pieterh_1>	things do not work
+| [Thursday 10 March 2011] [07:23:10] <pieterh_1>	so far, all normal
+| [Thursday 10 March 2011] [07:23:22] <pieterh_1>	your first step is to isolate your 0MQ code from the rest
+| [Thursday 10 March 2011] [07:23:28] <pieterh_1>	minimal working test case
+| [Thursday 10 March 2011] [07:23:42] <pieterh_1>	if the problem goes away, you know immediately that it was in whatever you removde
+| [Thursday 10 March 2011] [07:23:45] <pieterh_1>	*removed
+| [Thursday 10 March 2011] [07:23:54] <pieterh_1>	if the problem is still there, you can ask for help
+| [Thursday 10 March 2011] [07:24:08] <pieterh_1>	no-one here is going to help you if you don't take this first step
+| [Thursday 10 March 2011] [07:24:32] <sejo>	pieterh: i understand
+| [Thursday 10 March 2011] [07:40:28] <Guthur>	pieterh_1: revisiting the EINTR issue, I think the blocking syscalls will always return EINTR if there is a signal, no matter if a handler is set or not
+| [Thursday 10 March 2011] [07:40:51] <pieterh_1>	have you tried it, or are you speculating?
+| [Thursday 10 March 2011] [07:41:02] <Guthur>	pieterh_1: going by how the spec reads
+| [Thursday 10 March 2011] [07:41:06] <pieterh_1>	what spec?
+| [Thursday 10 March 2011] [07:41:16] <Guthur>	man page for poll
+| [Thursday 10 March 2011] [07:41:21] <pieterh_1>	zmq_poll?
+| [Thursday 10 March 2011] [07:41:26] <Guthur>	no linux poll
+| [Thursday 10 March 2011] [07:41:29] <Guthur>	the syscall
+| [Thursday 10 March 2011] [07:41:30] <pieterh_1>	ok
+| [Thursday 10 March 2011] [07:41:52] <Guthur>	the GC does use two signals
+| [Thursday 10 March 2011] [07:41:59] <Guthur>	but it should catch them itself
+| [Thursday 10 March 2011] [07:42:07] <pieterh_1>	should, doesn't, I assume
+| [Thursday 10 March 2011] [07:42:17] <pieterh_1>	what signals are they?
+| [Thursday 10 March 2011] [07:42:40] <pieterh_1>	all signals can be trapped except SIGKILL and SIGSTOP
+| [Thursday 10 March 2011] [07:42:52] <Guthur>	it does, but if my understanding is correct during some blocking syscalls such as Poll and Recv it can't catch them
+| [Thursday 10 March 2011] [07:43:07] <pieterh_1>	sigh
+| [Thursday 10 March 2011] [07:43:23] <pieterh_1>	system calls are not special magic
+| [Thursday 10 March 2011] [07:44:06] <pieterh_1>	thus the Mono GC is broken and not properly handling those signals
+| [Thursday 10 March 2011] [07:44:19] <Guthur>	Poll: A signal occurred before any requested event. Recv: The receive was interrupted by delivery of a signal before any data were available.
+| [Thursday 10 March 2011] [07:44:25] <Guthur>	from the man page ^
+| [Thursday 10 March 2011] [07:44:35] <Guthur>	that's for EINTR
+| [Thursday 10 March 2011] [07:44:47] <Guthur>	Poll is the most telling
+| [Thursday 10 March 2011] [07:44:55] <pieterh_1>	Guthur: I can read man pages too, these sentences do not say "you cannot catch signals during a poll"
+| [Thursday 10 March 2011] [07:45:13] <Guthur>	Poll says if it occurs
+| [Thursday 10 March 2011] [07:45:15] <pieterh_1>	they say, "a signal (THAT YOU DID NOT HANDLE) arrived"
+| [Thursday 10 March 2011] [07:45:34] <pieterh_1>	"delivery of a signal"
+| [Thursday 10 March 2011] [07:47:27] <Guthur>	I can run the code later with the GC turned off
+| [Thursday 10 March 2011] [07:47:36] <pieterh_1>	try "signal (whatever-signal-mono-uses, SIG_IGN)" if you can
+| [Thursday 10 March 2011] [07:48:13] <pieterh_1>	file a bug report with the Mono people, this is not a 0MQ issue afaics...
+| [Thursday 10 March 2011] [07:48:40] <pieterh_1>	perhaps note in the C# binding page, "Mono is broken, see issue #xyz here"
+| [Thursday 10 March 2011] [07:49:48] <Guthur>	Certainly not a 0MQ issue
+| [Thursday 10 March 2011] [07:50:10] <Guthur>	I'd just like to deal with it nicely in the clrzmq binding
+| [Thursday 10 March 2011] [07:50:15] <Guthur>	if possible
+| [Thursday 10 March 2011] [07:50:23] <pieterh_1>	if (running on Mono) 
+| [Thursday 10 March 2011] [07:50:43] <pieterh_1>	exit "friends don't let friends use this rubbish"
+| [Thursday 10 March 2011] [07:50:45] <pieterh_1>	endif
+| [Thursday 10 March 2011] [07:51:29] <pieterh_1>	I'd seriously choose another language if you want portability
+| [Thursday 10 March 2011] [07:51:32] <Guthur>	http://www.ustash.com/mono/Embedding_Mono.html#Signal_handling
+| [Thursday 10 March 2011] [07:51:44] <Guthur>	that's the signals Mono
+| [Thursday 10 March 2011] [07:51:46] <Guthur>	uses
+| [Thursday 10 March 2011] [07:52:11] <Guthur>	pieterh_1: I'm the clrzmq2 maintainer, choosing another language is not really an option in that capacity
+| [Thursday 10 March 2011] [07:52:16] <pieterh_1>	:-)
+| [Thursday 10 March 2011] [07:52:29] <pieterh_1>	So harass the Mono developers until they fix this
+| [Thursday 10 March 2011] [07:53:02] <pieterh_1>	You can't work around it because you have no way of knowing what signal actually interrupted poll
+| [Thursday 10 March 2011] [07:54:00] <pieterh_1>	If you ignore EINTR systematically your applications won't exit on real signals like SIGINT
+| [Thursday 10 March 2011] [08:30:59] <Guthur>	pieterh_1: It would appear that Poll and Recv will return EINTR if there is a signal
+| [Thursday 10 March 2011] [08:31:42] <Guthur>	I was talking to someone on ##kernel
+| [Thursday 10 March 2011] [08:31:55] <Guthur>	and he mentioned that SA_RESTART can be used to restart the syscall
+| [Thursday 10 March 2011] [08:32:18] <pieterh_1>	did you specifically ask whether this applied to handled signals or unhandled signals?
+| [Thursday 10 March 2011] [08:32:22] <Guthur>	or rather it wont return -1
+| [Thursday 10 March 2011] [08:32:28] <Guthur>	yeap
+| [Thursday 10 March 2011] [08:32:48] <Guthur>	oh wait, bugger
+| [Thursday 10 March 2011] [08:32:51] <Guthur>	I meant to 
+| [Thursday 10 March 2011] [08:32:56] <Guthur>	two secs
+| [Thursday 10 March 2011] [08:32:58] <pieterh_1>	we do know what the man page says
+| [Thursday 10 March 2011] [08:33:08] <pieterh_1>	please ask this, specifically:
+| [Thursday 10 March 2011] [08:33:26] <pieterh_1>	"if I raise a user-defined signal which I've set SIG_IGN for, will that interrupt poll?"
+| [Thursday 10 March 2011] [08:34:20] <Guthur>	it should be able to mask them out if that is what you mean by SIG_IGN
+| [Thursday 10 March 2011] [08:35:34] <Guthur>	When a system call is slow and a signal arrives while it was blocked, waiting for something, the call is aborted and returns -EINTR, so that the library function will return -1 and set errno to EINTR. Just before the system call returns, the user program's signal handler is called.
+| [Thursday 10 March 2011] [08:35:34] <pieterh_1>	SIG_IGN has a specific meaning, read the signal() man page
+| [Thursday 10 March 2011] [08:35:48] <Guthur>	that is taken from here http://www.win.tue.nl/~aeb/linux/lk/lk-4.html
+| [Thursday 10 March 2011] [08:37:07] <pieterh_1>	yes
+| [Thursday 10 March 2011] [08:37:16] <pieterh_1>	ok, makes sense
+| [Thursday 10 March 2011] [08:37:38] <pieterh_1>	the handling of the signal can be set to SA_RESTART
+| [Thursday 10 March 2011] [08:37:48] <pieterh_1>	meaning the system call will continue
+| [Thursday 10 March 2011] [08:38:11] <Guthur>	yeah, I should check with the Mono Devs to see if they do that
+| [Thursday 10 March 2011] [08:39:59] <hoschi>	Hi, how can I do RPC with zeromq when I have different services (aka REP)? Should I use another socket combination, or must I write a address-based router like in the manual?
+| [Thursday 10 March 2011] [08:40:01] <Guthur>	hehe, I was never expecting to have dive into Syscalls and Signals when developing this binding
+| [Thursday 10 March 2011] [08:46:41] <pieterh_1>	it's surprising... but we learn something new every day
+| [Thursday 10 March 2011] [08:47:10] <pieterh_1>	hoschi: how much of the Guide have you read and digested?
+| [Thursday 10 March 2011] [08:48:01] <hoschi>	pieterh_1: I read chapter one and had a look at chapter 3
+| [Thursday 10 March 2011] [08:48:42] <hoschi>	I also read the introduction blog post from nicholas
+| [Thursday 10 March 2011] [08:48:53] <pieterh_1>	so please read all four chapters, and take the time to understand what they say
+| [Thursday 10 March 2011] [08:48:56] <pieterh_1>	thanks
+| [Thursday 10 March 2011] [09:12:41] <Guthur>	is sustrik still in the US
+| [Thursday 10 March 2011] [09:27:22] <pieterh_1>	Guthur: afaik he's traveling back about now
+| [Thursday 10 March 2011] [09:39:16] <private_meta>	So he finished his San Francisco Meetup? :D
+| [Thursday 10 March 2011] [09:40:26] <Guthur>	yep, sounds like it was a great success
+| [Thursday 10 March 2011] [09:41:06] <Guthur>	I hope there will be similar setup on this side of 'pond' sometime
+| [Thursday 10 March 2011] [09:41:34] <pieterh_1>	Next week, in London
+| [Thursday 10 March 2011] [09:42:14] <Guthur>	yeah, i kind of mean a more formal setup, a little like Martin mentioned
+| [Thursday 10 March 2011] [09:42:40] <Guthur>	personally I'm not overly interested in trip to the pub
+| [Thursday 10 March 2011] [09:42:50] <Guthur>	personal thing
+| [Thursday 10 March 2011] [09:42:56] <pieterh_1>	You're in London?
+| [Thursday 10 March 2011] [09:43:23] <Guthur>	nope, but I am in the UK
+| [Thursday 10 March 2011] [09:43:53] <pieterh_1>	well, if you can find an "more formal" place in London, for next Wednesday around 5-6pm, we can do that
+| [Thursday 10 March 2011] [09:44:21] <pieterh_1>	it's not really about hope, more about making it happen... :-)
+| [Thursday 10 March 2011] [09:44:37] <Guthur>	very true
+| [Thursday 10 March 2011] [09:44:38] <pieterh_1>	I'm there all day, happy to be anywhere in London
+| [Thursday 10 March 2011] [09:44:49] <Guthur>	next time maybe, it's a little short notice now for me
+| [Thursday 10 March 2011] [09:45:01] <pieterh_1>	this is the 21st century...1
+| [Thursday 10 March 2011] [09:45:03] <pieterh_1>	!
+| [Thursday 10 March 2011] [09:45:12] <Guthur>	tell that too my employer
+| [Thursday 10 March 2011] [09:45:23] <pieterh_1>	"employer"...?
+| [Thursday 10 March 2011] [09:45:33] <pieterh_1>	sorry to hear that
+| [Thursday 10 March 2011] [09:45:40] <pieterh_1>	:-) just kidding
+| [Thursday 10 March 2011] [09:45:51] <Guthur>	I'm technically suppose to give about 2 weeks notice
+| [Thursday 10 March 2011] [09:46:05] <pieterh_1>	to attend a technical seminar in the evening?
+| [Thursday 10 March 2011] [09:46:25] <pieterh_1>	your employer should be paying your costs...
+| [Thursday 10 March 2011] [09:46:26] <Guthur>	ah yes, well when I say the UK, I mean Northern Ireland
+| [Thursday 10 March 2011] [09:46:34] <pieterh_1>	sigh
+| [Thursday 10 March 2011] [09:46:35] <Guthur>	it does require a little more logistics, hehe
+| [Thursday 10 March 2011] [09:47:44] <Guthur>	I sometimes have business trips to London though
+| [Thursday 10 March 2011] [09:47:54] <Guthur>	our main regional office is there
+| [Thursday 10 March 2011] [09:48:06] <pieterh_1>	fair enough
+| [Thursday 10 March 2011] [09:48:31] <pieterh_1>	if and when you get the opportunity to find a formal location in London, we can do a meetup
+| [Thursday 10 March 2011] [09:48:39] <pieterh_1>	I'll make sure I get there
+| [Thursday 10 March 2011] [09:48:46] <Guthur>	cool
+| [Thursday 10 March 2011] [09:48:52] <Guthur>	are you going next wednesday
+| [Thursday 10 March 2011] [09:48:57] <pieterh_1>	for sure, it's in a pub!
+| [Thursday 10 March 2011] [09:49:13] <Guthur>	hehe
+| [Thursday 10 March 2011] [09:49:22] <guido_g>	*sigh*
+| [Thursday 10 March 2011] [09:49:25] <pieterh_1>	personal thing... :-) anyhow, they don't actually have *beer* in the UK
+| [Thursday 10 March 2011] [09:49:45] <guido_g>	guinness would do :)
+| [Thursday 10 March 2011] [09:50:07] <pieterh_1>	guido_g: I'm going to have to smuggle some real beer across from Brussels with me
+| [Thursday 10 March 2011] [09:50:20] <guido_g>	hehe
+| [Thursday 10 March 2011] [09:50:40] <Guthur>	what about coffee shops, I do like coffee
+| [Thursday 10 March 2011] [09:51:01] <pieterh_1>	coffee shops are great, but not after 5pm or so
+| [Thursday 10 March 2011] [09:51:15] <pieterh_1>	I suspect the timing of this meetup is "after work", easier for most people
+| [Thursday 10 March 2011] [09:53:55] <pieterh_1>	Guthur: how about a real event, in Brussels, later in the spring?
+| [Thursday 10 March 2011] [09:54:10] <pieterh_1>	a proper 0MQ seminar / workshop
+| [Thursday 10 March 2011] [09:55:21] <Guthur>	I'd be up for that
+| [Thursday 10 March 2011] [09:55:29] <Guthur>	I haven't been to brussels before
+| [Thursday 10 March 2011] [09:55:56] 	 * guido_g too
+| [Thursday 10 March 2011] [09:56:04] <Guthur>	Sounds a great idea actually, imo
+| [Thursday 10 March 2011] [09:56:09] <pieterh_1>	I'm wondering whether there'd be demand for a proper seminar session
+| [Thursday 10 March 2011] [09:56:29] <pieterh_1>	independently of a meetup later on
+| [Thursday 10 March 2011] [09:56:59] <pieterh_1>	seminar = your company pays $$$ to send you
+| [Thursday 10 March 2011] [09:57:07] <guido_g>	shit
+| [Thursday 10 March 2011] [09:57:17] <guido_g>	i'm my company
+| [Thursday 10 March 2011] [09:57:44] <pieterh_1>	guido_g: ah, but there is also an organizing team
+| [Thursday 10 March 2011] [09:58:06] <guido_g>	ok
+| [Thursday 10 March 2011] [09:58:55] 	 * guido_g managed to use ordinary makefile in eclipse
+| [Thursday 10 March 2011] [09:59:03] 	 * guido_g can do everything now
+| [Thursday 10 March 2011] [09:59:20] <pieterh_1>	eclipse, is that like an emacs clone but Java instead of Lisp?
+| [Thursday 10 March 2011] [09:59:27] <guido_g>	*NO*
+| [Thursday 10 March 2011] [09:59:30] <guido_g>	emacs works
+| [Thursday 10 March 2011] [09:59:55] <pieterh_1>	lol
+| [Thursday 10 March 2011] [09:59:55] <guido_g>	my $HOME is where I lay my .emacs
+| [Thursday 10 March 2011] [10:00:06] <pieterh_1>	vi is much better
+| [Thursday 10 March 2011] [10:00:22] <guido_g>	matter of taste
+| [Thursday 10 March 2011] [10:00:30] <guido_g>	i do use vi
+| [Thursday 10 March 2011] [10:00:36] 	 * pieterh_1 will stop trolling #zeromq
+| [Thursday 10 March 2011] [10:00:46] <guido_g>	strangely, when i edit cofnig files etc. i use vi
+| [Thursday 10 March 2011] [10:01:00] <guido_g>	or when i'm root
+| [Thursday 10 March 2011] [10:01:04] <pieterh_1>	yeah, anything system feels more natural using vi
+| [Thursday 10 March 2011] [10:01:16] <pieterh_1>	it's supposed to look ugly and be nasty
+| [Thursday 10 March 2011] [10:01:16] <guido_g>	matter of age :)
+| [Thursday 10 March 2011] [10:01:43] <pieterh_1>	OK, I'm designing a simple name service for 0MQ
+| [Thursday 10 March 2011] [10:01:52] <pieterh_1>	going to be the last example in Ch4
+| [Thursday 10 March 2011] [10:01:57] <guido_g>	cool
+| [Thursday 10 March 2011] [10:02:15] <pieterh_1>	the idea is client-service reliability with no broker
+| [Thursday 10 March 2011] [10:02:33] <guido_g>	i'm on writing a zmq reactor/ioloop in c++
+| [Thursday 10 March 2011] [10:02:33] <pieterh_1>	clients connect to N services then do a kind of paranoid pirate on them
+| [Thursday 10 March 2011] [10:02:56] <pieterh_1>	hmm, would you care to document that upfront in a language-neutral fashion?
+| [Thursday 10 March 2011] [10:03:06] <guido_g>	uh
+| [Thursday 10 March 2011] [10:03:13] <pieterh_1>	I'd like to make a reactor as an example for later in the guide
+| [Thursday 10 March 2011] [10:04:02] <guido_g>	it's just a glorified zmq_poll
+| [Thursday 10 March 2011] [10:04:33] <pieterh_1>	(a) take zmq_poll, (b) glorify it.
+| [Thursday 10 March 2011] [10:04:36] <pieterh_1>	ok, that's clear
+| [Thursday 10 March 2011] [10:04:43] <guido_g>	*sigh*
+| [Thursday 10 March 2011] [10:07:05] <guido_g>	https://github.com/guidog/cpp/blob/master/zmqcpp/reactor.cpp <- example/test how it could work
+| [Thursday 10 March 2011] [10:09:09] <guido_g>	but i'm not sure if this is the way to go in/with c++
+| [Thursday 10 March 2011] [10:09:27] <pieterh_1>	i assume you also want timer events
+| [Thursday 10 March 2011] [10:10:10] 	 * pieterh_1 is switching computers...
+| [Thursday 10 March 2011] [10:10:18] <guido_g>	again?
+| [Thursday 10 March 2011] [10:12:44] <Guthur>	emacs rocks
+| [Thursday 10 March 2011] [10:13:34] <guido_g>	yeah
+| [Thursday 10 March 2011] [10:13:53] <pieterh>	guido_g: yeah
+| [Thursday 10 March 2011] [10:54:46] <private_meta>	quitting a client because of a computer switch... preposterous
+| [Thursday 10 March 2011] [11:08:44] <guido_g>	pieterh: reactor/ioloop page https://github.com/guidog/cppzmq/wiki/ioloop
+| [Thursday 10 March 2011] [11:11:09] <pieterh>	guido_g: hmm, what I miss in these models is any kind of FSM
+| [Thursday 10 March 2011] [11:11:58] <pieterh>	i.e. "if current socket state is S and I get event E then execute steps F1, F2, F3"
+| [Thursday 10 March 2011] [11:12:12] <pieterh>	"however if state is S2 then execute F5"
+| [Thursday 10 March 2011] [11:12:20] <pieterh>	"and ignore event in any other state"
+| [Thursday 10 March 2011] [11:12:21] <pieterh>	etc.
+| [Thursday 10 March 2011] [11:12:22] <guido_g>	that would mean to track the sockets and their states
+| [Thursday 10 March 2011] [11:12:26] <pieterh>	sure
+| [Thursday 10 March 2011] [11:12:44] <guido_g>	because mq doesn't give us the required information
+| [Thursday 10 March 2011] [11:13:08] <pieterh>	np, I'll make a FSM reactor pattern at some stage
+| [Thursday 10 March 2011] [11:13:11] <pieterh>	it's not hard
+| [Thursday 10 March 2011] [11:13:25] <pieterh>	just unusual
+| [Thursday 10 March 2011] [11:13:29] <guido_g>	the hard part is to track the socket states reliably
+| [Thursday 10 March 2011] [11:13:45] <pieterh>	you don't need to
+| [Thursday 10 March 2011] [11:13:55] <guido_g>	explain
+| [Thursday 10 March 2011] [11:14:30] <pieterh>	in the FSM definition, a given state/event transition always results in a specific next state
+| [Thursday 10 March 2011] [11:14:51] <guido_g>	the finite part
+| [Thursday 10 March 2011] [11:14:51] <pieterh>	socket "state" is not a 0MQ concept, it's an application concept
+| [Thursday 10 March 2011] [11:14:59] <guido_g>	aahhhh
+| [Thursday 10 March 2011] [11:15:02] <pieterh>	imagine implementing MDP like this
+| [Thursday 10 March 2011] [11:15:11] 	 * guido_g was focused on the mq sockets
+| [Thursday 10 March 2011] [11:15:14] <pieterh>	sure
+| [Thursday 10 March 2011] [11:15:26] <guido_g>	it's more a general fsm thingie then
+| [Thursday 10 March 2011] [11:15:30] <pieterh>	yes
+| [Thursday 10 March 2011] [11:15:38] <pieterh>	but hooked into zmq sockets
+| [Thursday 10 March 2011] [11:15:47] <guido_g>	sorry, won't do that, not related to mq :)
+| [Thursday 10 March 2011] [11:16:06] <pieterh>	but hooked into zmq sockets
+| [Thursday 10 March 2011] [11:16:07] <Guthur>	that's focus for you
+| [Thursday 10 March 2011] [11:16:22] <Guthur>	dogged even
+| [Thursday 10 March 2011] [11:16:31] <pieterh>	very dogged
+| [Thursday 10 March 2011] [11:16:44] <guido_g>	pieterh: i'd say layered on top of something that can deal w/ mq socket
+| [Thursday 10 March 2011] [11:16:48] <guido_g>	+s
+| [Thursday 10 March 2011] [11:17:05] <pieterh>	weird, this is what I'm talking about
+| [Thursday 10 March 2011] [11:17:09] <pieterh>	it's like you read my mind...
+| [Thursday 10 March 2011] [11:17:14] <guido_g>	+sigh*
+| [Thursday 10 March 2011] [11:17:20] <pieterh>	oh, wait, I just said this, yeah :-)
+| [Thursday 10 March 2011] [11:17:50] <guido_g>	you said "hooked into", which imo is not the way it'll work
+| [Thursday 10 March 2011] [11:18:15] <guido_g>	the sockets are just another event source in this case
+| [Thursday 10 March 2011] [11:18:22] <pieterh>	if you *really* want to know...
+| [Thursday 10 March 2011] [11:18:36] <pieterh>	go find an old project called Libero
+| [Thursday 10 March 2011] [11:18:57] <pieterh>	there are more modern FSMs but I like the Libero FSM model, it's simple
+| [Thursday 10 March 2011] [11:19:18] 	 * pieterh really has to stop trolling #zeromq... 
+| [Thursday 10 March 2011] [11:20:13] <guido_g>	code generation...
+| [Thursday 10 March 2011] [11:20:19] <guido_g>	hmm hmm hmm
+| [Thursday 10 March 2011] [11:20:33] <pieterh>	that's how Libero does it, yes, but it's not mandatory
+| [Thursday 10 March 2011] [11:21:23] <guido_g>	allone the task of inventing a dsl for this daring
+| [Thursday 10 March 2011] [11:21:32] <guido_g>	*this is
+| [Thursday 10 March 2011] [11:21:40] <pieterh>	dsl?
+| [Thursday 10 March 2011] [11:21:49] <guido_g>	domain specific language
+| [Thursday 10 March 2011] [11:21:53] <pieterh>	ah, :-)
+| [Thursday 10 March 2011] [11:22:01] <Guthur>	crack out the Lisp
+| [Thursday 10 March 2011] [11:22:05] <guido_g>	or how to express the fsm in a programming lanugage
+| [Thursday 10 March 2011] [11:22:07] <Guthur>	only way to go for DSLs
+| [Thursday 10 March 2011] [11:22:08] <pieterh>	no, these days we just use XML or JSON or s-expressions or whatever
+| [Thursday 10 March 2011] [11:22:40] <pieterh>	trivial, and we have generic code generators for (e.g.) XML which are infinitely more powerful than Libero
+| [Thursday 10 March 2011] [11:22:45] <guido_g>	http://www.mcternan.me.uk/mscgen/  <- nice dsl :)
+| [Thursday 10 March 2011] [11:22:47] <pieterh>	if you like code generation, check out GSL4 on github
+| [Thursday 10 March 2011] [11:22:58] <guido_g>	no thanks
+| [Thursday 10 March 2011] [11:23:02] <pieterh>	the DSL is as such irrelevant as long as it has structure
+| [Thursday 10 March 2011] [11:23:12] <Guthur>	I'd rather tear my hair than use XML as a language
+| [Thursday 10 March 2011] [11:23:16] <guido_g>	i'm the only code generator i trust (sometimes)
+| [Thursday 10 March 2011] [11:23:20] <Guthur>	hair out*
+| [Thursday 10 March 2011] [11:23:25] <pieterh>	sure, shrug
+| [Thursday 10 March 2011] [11:23:37] <guido_g>	Guthur: almost done :)
+| [Thursday 10 March 2011] [11:29:40] <nadime>	Anyone know if it's an issue to set up pollitems in multiple threads?  (but only run zmq_poll in a threadsafe manner)?  getting weird behavior.
+| [Thursday 10 March 2011] [11:29:54] <guido_g>	we need to stop pieterh somehow, otherwise the ch4 of teh guide will become a tome in itself ,)
+| [Thursday 10 March 2011] [11:30:04] <nadime>	sorry let me be clearer:  these pollitems in other threads share a socket
+| [Thursday 10 March 2011] [11:30:06] <pieterh>	ssh, don't tell him...
+| [Thursday 10 March 2011] [11:30:34] <pieterh>	nadime: sharing the same socket from multiple threads?
+| [Thursday 10 March 2011] [11:30:34] <guido_g>	nadime: sounds weird, "don't do this" i'd say
+| [Thursday 10 March 2011] [11:31:50] <nadime>	yeah, so I have 10 worker threads.  10 pollitems.  they all share 1 subscribe socket.   However,, i only run zmq_poll in a threadsafe manner (i.e. only 1 thread at a time polls, then receives anything that needs to be received, then releases its memory barrier).
+| [Thursday 10 March 2011] [11:32:03] <pieterh>	nadime: how much of the Guide have you read?
+| [Thursday 10 March 2011] [11:32:06] <nadime>	all of it
+| [Thursday 10 March 2011] [11:32:21] <nadime>	i have no choice to do what i'm doing unless i completely rearchitect using XREQ/REP.
+| [Thursday 10 March 2011] [11:32:26] <pieterh>	did you read the part where it says in big letters, "DON'T SHARE SOCKETS BETWEEN THREADS!"
+| [Thursday 10 March 2011] [11:32:32] <pieterh>	like several times
+| [Thursday 10 March 2011] [11:32:47] <nadime>	ok, but then you made it possible to do so in 2.1?
+| [Thursday 10 March 2011] [11:32:55] <guido_g>	omg
+| [Thursday 10 March 2011] [11:32:56] <nadime>	what did you expect, people not to use functionality that's there?
+| [Thursday 10 March 2011] [11:33:06] <pieterh>	yeah, which I regret we even documented
+| [Thursday 10 March 2011] [11:33:18] <guido_g>	nadime: you've been warned, so...
+| [Thursday 10 March 2011] [11:33:21] <pieterh>	because people systematically do what you do, think "Hey, this is cool" and then...
+| [Thursday 10 March 2011] [11:33:24] <pieterh>	weird stuff happens
+| [Thursday 10 March 2011] [11:33:30] <pieterh>	we get this all the time, literally
+| [Thursday 10 March 2011] [11:33:37] <pieterh>	"hey dudes, weird stuff happens!?"
+| [Thursday 10 March 2011] [11:33:43] <pieterh>	"stop sharing sockets between threads"
+| [Thursday 10 March 2011] [11:33:48] <pieterh>	"hey, how did you know...?"
+| [Thursday 10 March 2011] [11:34:10] <pieterh>	the functionality was added for low-level work such as in language bindings
+| [Thursday 10 March 2011] [11:34:33] <pieterh>	I'm really sorry, but sockets are not thread safe
+| [Thursday 10 March 2011] [11:34:37] <nadime>	I understand, and perhaps I shouldn't bother using zeromq, but you do get that it's a big pain in the ass not to be able to share sockets between threads, right?
+| [Thursday 10 March 2011] [11:34:55] <pieterh>	I get it
+| [Thursday 10 March 2011] [11:34:57] <nadime>	I can give you countless examples, and you can certainly rearchitect them to not share sockets
+| [Thursday 10 March 2011] [11:35:02] <nadime>	but it requires annoying rearchitecture
+| [Thursday 10 March 2011] [11:35:09] <pieterh>	but if you make sockets threadsafe (inside 0MQ)
+| [Thursday 10 March 2011] [11:35:14] <pieterh>	you basically make a different product
+| [Thursday 10 March 2011] [11:35:23] <pieterh>	which is slow, locky, but easier to use
+| [Thursday 10 March 2011] [11:35:25] <nadime>	for example, designing a generic messaging library for other people to use without sharing sockets between threads (i.e. similar to your language binding example)
+| [Thursday 10 March 2011] [11:35:35] <guido_g>	nadime: why did you architect it that way, then?
+| [Thursday 10 March 2011] [11:35:54] 	 * pieterh guesses, reimplementing a non-0MQ design over 0MQ
+| [Thursday 10 March 2011] [11:36:25] <cremes>	nadime: no need to redesign
+| [Thursday 10 March 2011] [11:36:54] <cremes>	put a FORWARDER device in the thread handling the polling
+| [Thursday 10 March 2011] [11:36:59] <pieterh>	indeed
+| [Thursday 10 March 2011] [11:37:04] <cremes>	have each worker thread subscribe to the forwarder
+| [Thursday 10 March 2011] [11:37:08] <pieterh>	use 0MQ, don't fight it
+| [Thursday 10 March 2011] [11:37:10] <cremes>	piece of cake; this is a great pattern
+| [Thursday 10 March 2011] [11:37:53] <nadime>	yes, i can do that, and it will likely be what i end up doing, but the point is that it's (a) extra latency, (b) if you say you now can migrate sockets, then it should be ok!
+| [Thursday 10 March 2011] [11:38:08] <pieterh>	(a) it's not, it's inproc and near zero latency
+| [Thursday 10 March 2011] [11:38:25] <pieterh>	(b) 'migrate sockets using full memory barriers' is not the same as 'share from 10 threads at once'
+| [Thursday 10 March 2011] [11:38:33] <pieterh>	sorry, please do read the man page carefully
+| [Thursday 10 March 2011] [11:38:36] <cremes>	right, inproc is a few microsecons
+| [Thursday 10 March 2011] [11:38:51] <pieterh>	migration means you move the socket from thread A to thread B, where you then use it
+| [Thursday 10 March 2011] [11:39:30] <pieterh>	what you are doing is rather different afaics
+| [Thursday 10 March 2011] [11:40:57] <pieterh>	(c) if you care about latency, you don't use shared state concurrency, period
+| [Thursday 10 March 2011] [11:41:15] <pieterh>	(d) this is all covered in the Guide, isn't it?
+| [Thursday 10 March 2011] [11:42:02] <cremes>	pieterh: i don't know if telling people to read the guide *again* is a good answer
+| [Thursday 10 March 2011] [11:42:14] <cremes>	i think nadime is doing the right thing here
+| [Thursday 10 March 2011] [11:42:22] <nadime>	(a) isn't inproc implemented with tcp on windows?
+| [Thursday 10 March 2011] [11:42:27] <cremes>	he's brining up a challenge and asking "why doesn't this work?"
+| [Thursday 10 March 2011] [11:42:37] <pieterh>	cremes: he's not explaining his use case
+| [Thursday 10 March 2011] [11:42:41] <nadime>	(b) i will look at the documentation again, but i believe 2.1+ claims to be threadsafe as long as you are (which is another story)
+| [Thursday 10 March 2011] [11:42:41] <cremes>	nadime: no, ipc uses tcp, inproc is flipping pointers
+| [Thursday 10 March 2011] [11:42:56] <pieterh>	nadime: next time please explain what you want to do, ask how to do it, if you don't see the obvious answer
+| [Thursday 10 March 2011] [11:42:58] <nadime>	(c) that's not totally true, but a longer argument
+| [Thursday 10 March 2011] [11:42:58] <cremes>	pieterh: that's a common problem :)
+| [Thursday 10 March 2011] [11:43:09] <nadime>	(d) see (b)
+| [Thursday 10 March 2011] [11:43:26] <pieterh>	complaining about things not working as you expect is pointless unless you are quite expert in 0MQ and your expectations already work the right way
+| [Thursday 10 March 2011] [11:43:30] <nadime>	let me give you an example that's annoying and you can tell me if i'm missing something stupid
+| [Thursday 10 March 2011] [11:43:37] <pieterh>	go for it
+| [Thursday 10 March 2011] [11:43:39] <cremes>	the docs should probably be changed to say that sockets have enough thread safety to allow 
+| [Thursday 10 March 2011] [11:43:48] <pieterh>	cremes: sigh
+| [Thursday 10 March 2011] [11:43:57] <cremes>	language bindings to safely handle them from gc threads, etc
+| [Thursday 10 March 2011] [11:44:04] <pieterh>	nope, the docs should say, "if you share sockets you deserve the worst you get"
+| [Thursday 10 March 2011] [11:44:12] <cremes>	but they should *not* be used from multiple threads as a design pattern
+| [Thursday 10 March 2011] [11:44:19] <cremes>	pieterh: sure, that works too 
+| [Thursday 10 March 2011] [11:44:19] <nadime>	i create a log server which receives a bunch of messages from anyone who cares to tell it anything.  
+| [Thursday 10 March 2011] [11:44:27] <pieterh>	with a footnote saying, "if you're a language binding author, contact us offlist"
+| [Thursday 10 March 2011] [11:44:35] <nadime>	to go along witht his log server, i make a "logger" that instantiates a class capable of logging to this server.
+| [Thursday 10 March 2011] [11:44:50] <pieterh>	nadime: so far so good
+| [Thursday 10 March 2011] [11:44:57] <nadime>	all you do is run logger.log(<msg>) and it logs it for youl.
+| [Thursday 10 March 2011] [11:44:58] <cremes>	nadime: go on... i wrote this exact thing recently...
+| [Thursday 10 March 2011] [11:45:21] <nadime>	now let's say my friend bob uses my logger library.  he basically has to create one logger per thread
+| [Thursday 10 March 2011] [11:45:31] <pieterh>	yes
+| [Thursday 10 March 2011] [11:45:35] <cremes>	yep
+| [Thursday 10 March 2011] [11:45:40] <pieterh>	that costs... nothing... so great
+| [Thursday 10 March 2011] [11:45:46] <nadime>	of course it costs something
+| [Thursday 10 March 2011] [11:45:56] <pieterh>	not as much as this conversation
+| [Thursday 10 March 2011] [11:45:58] <pieterh>	I'm serious
+| [Thursday 10 March 2011] [11:46:02] <cremes>	pieterh: come on
+| [Thursday 10 March 2011] [11:46:22] <cremes>	nadime: anything more?
+| [Thursday 10 March 2011] [11:46:24] <pieterh>	sigh, provide me with a measurable significant cost, not "non zero"
+| [Thursday 10 March 2011] [11:46:31] <pieterh>	nadime: apologies
+| [Thursday 10 March 2011] [11:46:51] <nadime>	i don't understand, i'm not arguing your software is useless, obviously i think it's great
+| [Thursday 10 March 2011] [11:47:00] <pieterh>	you have a design that works, ok?
+| [Thursday 10 March 2011] [11:47:02] <nadime>	i'm pointing out an issue, if the gain is greater than the loss, great
+| [Thursday 10 March 2011] [11:47:09] <pieterh>	each thread creates a logger, has its own sockets, etc.
+| [Thursday 10 March 2011] [11:47:18] <pieterh>	that is the brute force design, obvious, simple, scalable
+| [Thursday 10 March 2011] [11:47:29] <cremes>	nadime: here is how i solved this *exact* case
+| [Thursday 10 March 2011] [11:47:30] <pieterh>	you can break the threads into their own processes, it still works
+| [Thursday 10 March 2011] [11:47:32] <pieterh>	right?
+| [Thursday 10 March 2011] [11:47:32] <nadime>	sure, but let's say you use a threadpool
+| [Thursday 10 March 2011] [11:47:38] <pieterh>	now you believe you have a cost issue
+| [Thursday 10 March 2011] [11:47:40] <nadime>	now the function you call within the pool has to create a new logger
+| [Thursday 10 March 2011] [11:47:46] <pieterh>	and you try to optimize that away
+| [Thursday 10 March 2011] [11:47:47] <cremes>	each thread has a pub socket
+| [Thursday 10 March 2011] [11:47:59] <pieterh>	and you instead create a much larger design and complexity cost
+| [Thursday 10 March 2011] [11:48:02] <cremes>	the log server, which handles writing the messages to persistent storage, has a sub socket
+| [Thursday 10 March 2011] [11:48:34] <cremes>	i make sure to use a single context so that i can communicate via inproc transport (no tcp or ipc overhead)
+| [Thursday 10 March 2011] [11:48:52] <nadime>	right, and that's easy using a factory
+| [Thursday 10 March 2011] [11:48:54] <cremes>	the log server binds to the well-known port first (important for inproc)
+| [Thursday 10 March 2011] [11:49:16] <cremes>	each thread instantiates a logger object (a few hundred bytes) and connects to the well-known port
+| [Thursday 10 March 2011] [11:49:19] 	 * Guthur is having great difficulty following this convo
+| [Thursday 10 March 2011] [11:49:20] <cremes>	done
+| [Thursday 10 March 2011] [11:49:35] <cremes>	Guthur: it's happening async! :)
+| [Thursday 10 March 2011] [11:49:53] <Guthur>	ZeroMQ is the answer then
+| [Thursday 10 March 2011] [11:50:05] <nadime>	no question, i'm not saying it's that hard.  i'm just saying it's a really, really different paradigm to say that if you make a library that uses zeromq it's a once per thread library
+| [Thursday 10 March 2011] [11:50:16] <pieterh>	ah, paradigms... why didn't you say so?
+| [Thursday 10 March 2011] [11:50:39] <pieterh>	you started with "I'd need to rearchitect using XREP sockets"...
+| [Thursday 10 March 2011] [11:50:53] <nadime>	well no, i have two possible solutions to be fair
+| [Thursday 10 March 2011] [11:50:57] <nadime>	use a forwarder as cremes suggested
+| [Thursday 10 March 2011] [11:51:11] <nadime>	or use XREP to evenly distribute messages
+| [Thursday 10 March 2011] [11:51:19] <pieterh>	hang on, nadime, please explain something missing here
+| [Thursday 10 March 2011] [11:51:23] <nadime>	sure?
+| [Thursday 10 March 2011] [11:51:33] <pieterh>	you have N clients sending to 1 logger, right?
+| [Thursday 10 March 2011] [11:51:41] <pieterh>	that is one half of your problem
+| [Thursday 10 March 2011] [11:51:51] <pieterh>	you then have 1 logger talking to N workers, is that so?
+| [Thursday 10 March 2011] [11:51:58] <pieterh>	could you please explain that, I missed it somehow
+| [Thursday 10 March 2011] [11:52:02] <nadime>	so the logger actually doesn't migrate sockets, i just gave you that as an example.  my more complicated multithreaded app is a market data distributor
+| [Thursday 10 March 2011] [11:52:14] 	 * cremes did that too :)
+| [Thursday 10 March 2011] [11:52:18] <nadime>	let me explain it in more detail
+| [Thursday 10 March 2011] [11:52:46] <pieterh>	please do explain the use case, otherwise it's like asking for a gallon of gas but driving up an hour later
+| [Thursday 10 March 2011] [11:53:04] <nadime>	i have a server which receives multiple market data feeds and distributes them via pub to clients which use a single sub socket.
+| [Thursday 10 March 2011] [11:53:19] <pieterh>	sure
+| [Thursday 10 March 2011] [11:53:25] <pieterh>	that's it?
+| [Thursday 10 March 2011] [11:53:30] <nadime>	my data server will handle historical data as well as realtime, and for that i want to pump it up to as fast as possible
+| [Thursday 10 March 2011] [11:53:33] <nadime>	no, hold on
+| [Thursday 10 March 2011] [11:53:51] <nadime>	so i'm operating right now at something like 100x realtime on level 2 data
+| [Thursday 10 March 2011] [11:53:55] <nadime>	which means a lot of messages
+| [Thursday 10 March 2011] [11:53:59] <pieterh>	sure
+| [Thursday 10 March 2011] [11:54:01] <nadime>	it's soemthing like 4 million/sec
+| [Thursday 10 March 2011] [11:54:12] <nadime>	zeromq is fantastic.  it's working very well.  
+| [Thursday 10 March 2011] [11:54:21] <pieterh>	continue...
+| [Thursday 10 March 2011] [11:54:28] <nadime>	the problem i have is that on my client, i.e. the data receiver, i offer a callback functionality
+| [Thursday 10 March 2011] [11:54:48] <nadime>	i.e. when the client gets message-type X, it runs a callback inline
+| [Thursday 10 March 2011] [11:54:59] <nadime>	if the callback isn't lightning fast, that can slow down message receipt
+| [Thursday 10 March 2011] [11:55:00] <pieterh>	sure
+| [Thursday 10 March 2011] [11:55:05] <nadime>	which at 4 million/sec blows things up
+| [Thursday 10 March 2011] [11:55:05] <pieterh>	sure
+| [Thursday 10 March 2011] [11:55:09] <nadime>	so
+| [Thursday 10 March 2011] [11:55:35] <nadime>	i wanted to create multiple threads so that another thread can be receiving a message while the other threads are running the callback
+| [Thursday 10 March 2011] [11:55:42] <nadime>	now let me point out
+| [Thursday 10 March 2011] [11:55:53] <nadime>	this is a case where i can easily change this to support not migrating the sockets
+| [Thursday 10 March 2011] [11:56:02] <pieterh>	hang on, nadime
+| [Thursday 10 March 2011] [11:56:19] <pieterh>	publisher and subscribers are all on different boxes?
+| [Thursday 10 March 2011] [11:56:22] <nadime>	yes
+| [Thursday 10 March 2011] [11:56:34] <pieterh>	so one subscriber has a large multicore box to play with
+| [Thursday 10 March 2011] [11:56:43] <nadime>	all of these boxes are pretty powerful, yep
+| [Thursday 10 March 2011] [11:56:52] <pieterh>	how many cores? just for info...
+| [Thursday 10 March 2011] [11:57:04] <nadime>	server has 12, clients have 6
+| [Thursday 10 March 2011] [11:57:12] <nadime>	that's physical
+| [Thursday 10 March 2011] [11:57:12] <cremes>	a forwarder device isn't even necessary in this case
+| [Thursday 10 March 2011] [11:57:14] <pieterh>	ok, great
+| [Thursday 10 March 2011] [11:57:36] <pieterh>	so imagine you have a blank sheet, and can design this from scratch
+| [Thursday 10 March 2011] [11:58:09] <nadime>	k
+| [Thursday 10 March 2011] [11:58:15] <pieterh>	you have one app thread subscribing and pulling down messages as fast as it can
+| [Thursday 10 March 2011] [11:58:31] <pieterh>	you may be able to filter, conflate, etc. but that's not important
+| [Thursday 10 March 2011] [11:58:44] <pieterh>	every now and then it decides to invoke a callback for a message
+| [Thursday 10 March 2011] [11:59:02] <pieterh>	the callbacks run as separate 0MQ threads, each waiting on a REP socket
+| [Thursday 10 March 2011] [11:59:29] <pieterh>	you can use any of a number of patterns here, including XREP routing to those callback threads
+| [Thursday 10 March 2011] [11:59:35] <pieterh>	you use inproc, of course
+| [Thursday 10 March 2011] [11:59:55] <nadime>	yes, and that's a great design, again i'm sort of not being clear here, and i apologize .. i know i can rearchitect this without that much trouble, it will probably take me half a day
+| [Thursday 10 March 2011] [11:59:56] <pieterh>	that adds effectively nothing as you invoke the callback
+| [Thursday 10 March 2011] [12:00:36] <nadime>	(a) i thought inproc was tcp on windows, so higher latency, and now i know it's not (my fault), but (b) i don't think your documentation is clear enough on support for multithreading
+| [Thursday 10 March 2011] [12:01:07] <Guthur>	something I have been meaning to ask...
+| [Thursday 10 March 2011] [12:01:09] <pieterh>	possibly
+| [Thursday 10 March 2011] [12:01:14] <Guthur>	does subscribe support regexp
+| [Thursday 10 March 2011] [12:01:24] <pieterh>	Guthur: nope, just prefix match
+| [Thursday 10 March 2011] [12:01:49] <Guthur>	ok cheers
+| [Thursday 10 March 2011] [12:02:22] <pieterh>	nadime: if you can point to anything more I can add on multithreading, to the guide, tell me
+| [Thursday 10 March 2011] [12:02:41] <pieterh>	it's hard to know what people expect, coming from other paradigms
+| [Thursday 10 March 2011] [12:02:49] <cremes>	pieterh: add a chapter on it; single line "Don't!" :)
+| [Thursday 10 March 2011] [12:02:53] <nadime>	ok, i will read through it and email the list
+| [Thursday 10 March 2011] [12:03:01] <pieterh>	cremes: half of the Guide examples are multithreaded
+| [Thursday 10 March 2011] [12:03:15] <cremes>	yes, but one socket per thread
+| [Thursday 10 March 2011] [12:03:40] <pieterh>	nadime: in very brief: use inproc from frontend to worker threads, one TCP socket to talk to the outside world
+| [Thursday 10 March 2011] [12:03:53] <pieterh>	this is a classic server model, scalable and simple
+| [Thursday 10 March 2011] [12:04:43] <pieterh>	thanks for explaining your use case, sorry if I sounded unpolite earlier
+| [Thursday 10 March 2011] [12:05:08] <nadime>	it's ok, i don't take offense, i know how annoying it is to field questions
+| [Thursday 10 March 2011] [12:05:18] <nadime>	thanks for spending so much time in here
+| [Thursday 10 March 2011] [12:07:46] <pieterh>	it's the only way to know what people are doing with 0MQ
+| [Thursday 10 March 2011] [12:08:15] <pieterh>	please do tell me how to improve the explanations of multithreading, and if you get your architecture working, it'd be cool to know
+| [Thursday 10 March 2011] [12:08:41] <nadime>	oh the architecture's been working for awhile, before i decided to launch a zillion threads on the client side ;)
+| [Thursday 10 March 2011] [12:09:07] <pieterh>	yeah, you do want to keep two cores free for your frontend
+| [Thursday 10 March 2011] [12:09:23] <pieterh>	one for the 0MQ I/O thread, one for the app thread
+| [Thursday 10 March 2011] [12:11:10] <nadime>	i've been using 4 i/o threads, but i haven't played that parameter much yet
+| [Thursday 10 March 2011] [12:11:21] <pieterh>	4 is way too high
+| [Thursday 10 March 2011] [12:11:30] <pieterh>	inproc does not need an i/o thread
+| [Thursday 10 March 2011] [12:11:58] <pieterh>	you're not doing other I/O except the sub socket, per your explanation
+| [Thursday 10 March 2011] [12:12:07] <pieterh>	so you want precisely 1 IO thread
+| [Thursday 10 March 2011] [12:12:08] <nadime>	yep, but it's a lot of messages
+| [Thursday 10 March 2011] [12:12:12] <pieterh>	lol
+| [Thursday 10 March 2011] [12:12:19] <pieterh>	you think two threads will magically make that faster?
+| [Thursday 10 March 2011] [12:12:31] <nadime>	not magically, no :)
+| [Thursday 10 March 2011] [12:12:36] <nadime>	depends on what you're doing in your library
+| [Thursday 10 March 2011] [12:12:44] <nadime>	which i haven't read much
+| [Thursday 10 March 2011] [12:13:02] <pieterh>	well, you can set-up two or four SUB sockets, partition your data into four streams, and then use 4 IO threads
+| [Thursday 10 March 2011] [12:13:19] <pieterh>	when you have 12-core client boxes, a nice architecture
+| [Thursday 10 March 2011] [12:13:26] <nadime>	in other words: you're doing little enough processing that you would set up 1 i/o thread per i/o socket
+| [Thursday 10 March 2011] [12:13:59] <nadime>	and yes, my next plan was to add additional outward facing sockets as necessary
+| [Thursday 10 March 2011] [12:14:10] <pieterh>	in other words...
+| [Thursday 10 March 2011] [12:14:15] <nadime>	sorry, by i/o socket i mean outward facing
+| [Thursday 10 March 2011] [12:14:55] <pieterh>	0MQ will spread sockets between I/O threads (at socket creation time!) though you can be explicit about it too
+| [Thursday 10 March 2011] [12:15:11] <nadime>	yes, i saw the affinity setup
+| [Thursday 10 March 2011] [12:15:11] <pieterh>	and you want to eliminate contention for cores
+| [Thursday 10 March 2011] [12:15:28] <pieterh>	the IO threads option should never have been placed into zmq_init()
+| [Thursday 10 March 2011] [12:15:39] <pieterh>	one more 'feature' people use without knowing why
+| [Thursday 10 March 2011] [12:15:59] <pieterh>	the only use case for it is when your main IO thread is clearly overloaded
+| [Thursday 10 March 2011] [12:16:23] <pieterh>	i.e. you're doing >80% CPU on it during peaks
+| [Thursday 10 March 2011] [12:16:55] <pieterh>	which will hit at 6-8M msg/sec or so, depending
+| [Thursday 10 March 2011] [12:17:32] <pieterh>	I'm not an expert in this area, sustrik will be able to give more precise figures
+| [Thursday 10 March 2011] [12:18:18] <nadime>	why didn't you guys dynamically create i/o threads when new non-inproc sockets are created?
+| [Thursday 10 March 2011] [12:18:43] <pieterh>	creating too many threads is as bad as creating too few
+| [Thursday 10 March 2011] [12:18:50] <pieterh>	and much easier
+| [Thursday 10 March 2011] [12:19:16] <nadime>	no, what i mean is, start with one thread per socket (i.e. don't even bother telling the user he can change the number) and then increment as you make new sockets
+| [Thursday 10 March 2011] [12:19:25] <pieterh>	yes, I understand what you mean
+| [Thursday 10 March 2011] [12:19:49] <pieterh>	how many threads per socket would you like? 1? 0.1? 0.000001?
+| [Thursday 10 March 2011] [12:20:09] <nadime>	obviously if you want it to be asynchronous you need 1
+| [Thursday 10 March 2011] [12:20:23] <guido_g>	i'd start w/ pinning the nic intr to a fixed core
+| [Thursday 10 March 2011] [12:20:48] <guido_g>	did make a difference in some tests i made
+| [Thursday 10 March 2011] [12:20:57] <pieterh>	so you have 10 sockets, of which one is a high volume SUB receiver, and 9 are low volume req/rep for other work
+| [Thursday 10 March 2011] [12:21:05] <nadime>	ah, i see your point
+| [Thursday 10 March 2011] [12:21:11] <pieterh>	your 6-core box spends its time switching between threads
+| [Thursday 10 March 2011] [12:21:24] <pieterh>	and your SUB socket mysteriously gets latency spikes
+| [Thursday 10 March 2011] [12:21:47] <pieterh>	wow, every time I do a REQ/REP, I lose 50usecs!
+| [Thursday 10 March 2011] [12:22:11] <pieterh>	whereas a single IO thread can handle all 10 sockets without even sweating
+| [Thursday 10 March 2011] [12:22:49] <pieterh>	guido_g: indeed, you want the NIC to talk to one core
+| [Thursday 10 March 2011] [12:23:52] <nadime>	you could try some dynamic management, but i guess the user knows more about his traffic than zeromq can and that's a whole big set of code to write to do intelligent prediction
+| [Thursday 10 March 2011] [12:24:09] <pieterh>	indeed
+| [Thursday 10 March 2011] [12:26:11] <pieterh>	nadime: if you want really high capacity, you'd use multiple NICs, a matching number of IO threads and SUB sockets, and multiple PUB sockets, one per segment
+| [Thursday 10 March 2011] [12:26:36] <nadime>	if you want really high capacity, you will make your own hardware
+| [Thursday 10 March 2011] [12:26:53] <nadime>	which is what the best high frequency trading shops are doing
+| [Thursday 10 March 2011] [12:27:09] <pieterh>	'make' = 'have built to custom specs'?
+| [Thursday 10 March 2011] [12:27:20] <pieterh>	or literally going out and boiling sand down into CPUs...?
+| [Thursday 10 March 2011] [12:28:13] <nadime>	some are actually doing their own hardware creation, i.e. having someone build chips for them
+| [Thursday 10 March 2011] [12:28:21] <pieterh>	FPGAs... 
+| [Thursday 10 March 2011] [12:28:26] <nadime>	some are using FPGAs
+| [Thursday 10 March 2011] [12:28:54] <nadime>	some just use custom NICs with the ability to write assembly onto the nic
+| [Thursday 10 March 2011] [12:29:30] <nadime>	it's an expensive business, which is why i am not in it!
+| [Thursday 10 March 2011] [12:29:48] <pieterh>	it'll all end in tears as they fight for socket space on the exchange motherboard
+| [Thursday 10 March 2011] [12:30:23] <nadime>	it will all end in tears when it's regulated away, in any case
+| [Thursday 10 March 2011] [12:31:13] <pieterh>	you're really doing 4M msg/sec on Windows?
+| [Thursday 10 March 2011] [12:31:26] <nadime>	yep
+| [Thursday 10 March 2011] [12:31:29] <pieterh>	I think that's a world record
+| [Thursday 10 March 2011] [12:31:31] <nadime>	small msgs
+| [Thursday 10 March 2011] [12:31:36] <nadime>	it's more like 3.6
+| [Thursday 10 March 2011] [12:31:41] <nadime>	and that's peak
+| [Thursday 10 March 2011] [12:32:00] <pieterh>	still extraordinary
+| [Thursday 10 March 2011] [12:32:03] <pieterh>	nice
+| [Thursday 10 March 2011] [12:32:58] <nadime>	it's very cool, let's us normalize our data feeds between our data providers so that our quants don't have to code to specific data provider specs, but still run historical backtests at many times realtime 
+| [Thursday 10 March 2011] [12:34:10] <pieterh>	clearly
+| [Thursday 10 March 2011] [12:34:52] <cremes>	pieterh: new topic... did you ever have any luck reproducing issue #174?
+| [Thursday 10 March 2011] [12:35:27] <pieterh>	cremes: not yet... I was looking at it yesterday
+| [Thursday 10 March 2011] [12:35:35] <pieterh>	we do want to resolve that for 2.1 stable
+| [Thursday 10 March 2011] [12:35:52] <cremes>	great; anything i can do to help, let me know
+| [Thursday 10 March 2011] [12:36:02] <pieterh>	will do
+| [Thursday 10 March 2011] [12:36:06] <cremes>	i've worked around it by using inproc (my new favorite transport)
+| [Thursday 10 March 2011] [12:36:13] <pieterh>	:-) inproc is nice
+| [Thursday 10 March 2011] [12:36:25] <cremes>	we really need to rename it for 3.0 though
+| [Thursday 10 March 2011] [12:36:48] <nadime>	why not call it local?
+| [Thursday 10 March 2011] [12:37:11] <cremes>	nadime: it only works between sockets in the *same* context
+| [Thursday 10 March 2011] [12:37:21] <cremes>	so :incontext or similar would be more accurate
+| [Thursday 10 March 2011] [12:37:37] <nadime>	is there a reason to create more than one context per application that i am unaware of?
+| [Thursday 10 March 2011] [12:37:43] <cremes>	inproc makes it sound as though it can be used within the same process regardless of other restrictions
+| [Thursday 10 March 2011] [12:38:03] <cremes>	nadime: when interfacing to a 3rd party library that also uses 0mq, for example
+| [Thursday 10 March 2011] [12:38:51] <nadime>	yeah i guess if they make their context private
+| [Thursday 10 March 2011] [12:39:03] <nadime>	our they don't match what you need on the i/o thread front
+| [Thursday 10 March 2011] [12:39:04] <cremes>	99% of the time you only need 1 context per process
+| [Thursday 10 March 2011] [12:39:34] <cremes>	the fear is that you could have endpoint collisions, e.g. same name for an ipc or inproc transport
+| [Thursday 10 March 2011] [12:39:59] <cremes>	also, the default max_sockets for 0mq is 512; if you don't know how many the lib is using you could run out
+| [Thursday 10 March 2011] [12:40:10] <nadime>	right
+| [Thursday 10 March 2011] [12:40:12] <cremes>	so it comes down to properly segregating your resources
+| [Thursday 10 March 2011] [12:40:15] <pieterh>	cremes: what's wrong with the old suggestion itc:
+| [Thursday 10 March 2011] [12:40:34] <pieterh>	or simply ctx:
+| [Thursday 10 March 2011] [12:40:37] <cremes>	pieterh: what did that stand for again? inter-thread-communication or similar?
+| [Thursday 10 March 2011] [12:40:40] <pieterh>	yeah
+| [Thursday 10 March 2011] [12:40:53] <cremes>	i like :intracontext
+| [Thursday 10 March 2011] [12:41:04] <cremes>	it says everything (to me)
+| [Thursday 10 March 2011] [12:41:18] <pieterh>	why not usethesamecontextifyouexpectthistowork:// ?
+| [Thursday 10 March 2011] [12:41:27] <cremes>	best one yet!
+| [Thursday 10 March 2011] [12:42:26] <pieterh>	nadime: there are quite a lot of cases where processes use multiple contexts
+| [Thursday 10 March 2011] [12:42:56] <pieterh>	e.g. you could wrap the SUB socket up in a framework that creates/destroys a context automatically 
+| [Thursday 10 March 2011] [12:43:07] <nadime>	that's what i do, but i use a factory
+| [Thursday 10 March 2011] [12:43:22] <nadime>	as in: if context exists, return, otherwise create one
+| [Thursday 10 March 2011] [12:43:49] <pieterh>	I mean, you can create a context invisibly, use that for just one object, terminate it when you destroy the object
+| [Thursday 10 March 2011] [12:44:04] <pieterh>	as long as that socket works over TCP, not inproc
