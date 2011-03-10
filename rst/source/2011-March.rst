@@ -4881,3 +4881,162 @@
 | [Wednesday 09 March 2011] [11:30:40] <Steve-o>	ok, catch you all tomorrow
 | [Wednesday 09 March 2011] [11:32:03] <mikko>	see you tomorrow 
 | [Wednesday 09 March 2011] [11:34:09] <pieterh>	bye Steve-o
+| [Wednesday 09 March 2011] [11:45:09] <pieterh>	mikko, I'll just double-check that all your changes so far work on 2.1
+| [Wednesday 09 March 2011] [11:51:08] <private_meta>	pieterh: What's "EFSM" an abbreviation for?
+| [Wednesday 09 March 2011] [12:02:49] <private_meta>	pieterh: http://zguide.zeromq.org/page:all#toc67 second point in the first list, typo, "if no reply arrived"
+| [Wednesday 09 March 2011] [12:03:52] <guido_g>	req sockets are state-bound
+| [Wednesday 09 March 2011] [12:04:21] <guido_g>	so if try to recv before a send, you get this error
+| [Wednesday 09 March 2011] [12:04:26] <guido_g>	*if you
+| [Wednesday 09 March 2011] [12:05:44] <private_meta>	ah ok, but what does EFSM actually stand for, as an abbreviation?
+| [Wednesday 09 March 2011] [12:06:06] <guido_g>	FSM := finite state machine
+| [Wednesday 09 March 2011] [12:06:12] <guido_g>	E stands for error
+| [Wednesday 09 March 2011] [12:06:56] <jfkw>	New to zeromq, mq's in general, planning to use zeromq for remote-sites to home office replicator/aggregator.
+| [Wednesday 09 March 2011] [12:07:37] <jfkw>	Got a question about integrating pgmq (AQMP, STOMP, OpenWire) as one of the endpoints. 
+| [Wednesday 09 March 2011] [12:07:53] <jfkw>	"PGMQ embeds messaging directly into PostgreSQL so that committed tuples can be published to message queues via various popular messaging protocols (AMQP, STOMP, OpenWire). Supports ActiveMQ (STOMP, OpenWire) and any transport supporting AMQP."
+| [Wednesday 09 March 2011] [12:08:27] <private_meta>	guido_g: so, the behavior of REQ Sockets can be viewed as a finite state machine where a reply can only come after a request, that is why it's called that?
+| [Wednesday 09 March 2011] [12:09:25] <guido_g>	http://api.zeromq.org/2-1-2:zmq-socket ZMQ_REQ
+| [Wednesday 09 March 2011] [12:09:27] <jfkw>	Would the application here be to read from zeromq, and have pgmq report on successful commits, removing messages as committed?
+| [Wednesday 09 March 2011] [12:11:11] <private_meta>	ah, i knew that, i was only curious about the naming
+| [Wednesday 09 March 2011] [12:11:41] <pieterh>	re
+| [Wednesday 09 March 2011] [12:11:46] <guido_g>	wb
+| [Wednesday 09 March 2011] [12:11:54] <pieterh>	private_meta: I'll clarify what EFSM means
+| [Wednesday 09 March 2011] [12:12:37] <pieterh>	jfkw: sound fine, bridging is classic way to mix different messaging technologies
+| [Wednesday 09 March 2011] [12:14:36] 	 * pieterh wants to write one more protocol spec, PGBF/0.1
+| [Wednesday 09 March 2011] [12:14:47] <pieterh>	hi guido_g :-)
+| [Wednesday 09 March 2011] [12:15:17] <guido_g>	pieterh: i've nothing to complain about today ,)
+| [Wednesday 09 March 2011] [12:15:28] <pieterh>	me neither... weird...
+| [Wednesday 09 March 2011] [12:17:01] 	 * guido_g is bringing his c++ zmq code in shape
+| [Wednesday 09 March 2011] [12:17:36] <private_meta>	pieterh: should I tell you C guide typos (e.g. in commentaries) here or should I add that to the next patch?
+| [Wednesday 09 March 2011] [12:17:59] <pieterh>	typos in the C code?
+| [Wednesday 09 March 2011] [12:18:34] <pieterh>	either make an issue, or a patch, as you prefer
+| [Wednesday 09 March 2011] [12:19:05] <private_meta>	It's just a typo in the commentary, no need to make an issue... and I will have another patch soon I guess, I'll just add it
+| [Wednesday 09 March 2011] [12:19:14] <pieterh>	or just tell me now by irc
+| [Wednesday 09 March 2011] [12:20:31] <private_meta>	lpclient.c, in the header commentary you say to start piserver, but there's no piserver, shouldn't it be lpserver?
+| [Wednesday 09 March 2011] [12:20:52] <pieterh>	indeed, I renamed pi* to lp* at some point, thanks
+| [Wednesday 09 March 2011] [12:20:56] <pieterh>	will fix it now
+| [Wednesday 09 March 2011] [12:22:10] <private_meta>	pieterh: in the C++ folder, there still is a file called "piclient.cpp"
+| [Wednesday 09 March 2011] [12:22:31] <pieterh>	mikko: fyi I've patched 0MQ/2.1 with diffs from master..openpgm-autoconf, it builds nicely
+| [Wednesday 09 March 2011] [12:22:36] <private_meta>	and piqueue
+| [Wednesday 09 March 2011] [12:22:44] <pieterh>	private_meta: hmm, probably in all the example folders, let me remove all those then
+| [Wednesday 09 March 2011] [12:22:45] <pieterh>	thanks
+| [Wednesday 09 March 2011] [12:23:07] <private_meta>	yes, they are in least one other example folder as well
+| [Wednesday 09 March 2011] [12:23:18] <pieterh>	these stubs get generated automatically
+| [Wednesday 09 March 2011] [12:23:31] <private_meta>	They weren't deleted at rename properly
+| [Wednesday 09 March 2011] [12:23:32] <private_meta>	?
+| [Wednesday 09 March 2011] [12:23:58] <private_meta>	Well, not important
+| [Wednesday 09 March 2011] [12:24:26] <pieterh>	private_meta: when someone builds a tool that lets me build the Guide, I'll use it... :-)
+| [Wednesday 09 March 2011] [12:24:37] <pieterh>	until then, it's an artistic process...
+| [Wednesday 09 March 2011] [12:24:54] <private_meta>	pieterh: I wasn't complaining ;)
+| [Wednesday 09 March 2011] [12:25:17] <pieterh>	nah, I know, I meant some things just require manual work
+| [Wednesday 09 March 2011] [12:25:22] <pieterh>	they're gone now...
+| [Wednesday 09 March 2011] [12:25:34] <pieterh>	the hard thing isn't doing the work, it's just realizing it needs done
+| [Wednesday 09 March 2011] [12:25:40] <pieterh>	so thanks :-)
+| [Wednesday 09 March 2011] [12:26:02] <mikko>	pieterh: nice!
+| [Wednesday 09 March 2011] [12:26:22] <mikko>	pieterh: i will try to make sure that the changes are correct
+| [Wednesday 09 March 2011] [12:26:25] <pieterh>	mikko: I'll reset it all now and wait for your pull request
+| [Wednesday 09 March 2011] [12:26:50] <mikko>	i'll try today
+| [Wednesday 09 March 2011] [12:26:50] <pieterh>	after that I'll post a test .tar.gz so we can double-check it *really* works
+| [Wednesday 09 March 2011] [12:26:52] <mikko>	been a crazy day
+| [Wednesday 09 March 2011] [12:26:54] <pieterh>	:-)
+| [Wednesday 09 March 2011] [12:27:01] <private_meta>	pieterh: do you use Wikidot as is?
+| [Wednesday 09 March 2011] [12:27:19] <pieterh>	private_meta: I spent several years making Wikidot a lot nicer to use
+| [Wednesday 09 March 2011] [12:27:29] <pieterh>	most of that work is on http://irongiant.wikidot.com
+| [Wednesday 09 March 2011] [12:27:45] <jfkw>	Is there an overview of zeromq built-in support for communicating with any of (AMQP, STOMP, OpenWire)? Most search results discuss 'vs.' not 'with'.
+| [Wednesday 09 March 2011] [12:27:58] <pieterh>	jfkw: there is no such support
+| [Wednesday 09 March 2011] [12:28:11] <pieterh>	"feel free to submit a patch" is the motto of this community
+| [Wednesday 09 March 2011] [12:28:20] <private_meta>	pieterh: just thought it might be nice if you could switch to a different language viewing of a guide example IN the example page without github redirect
+| [Wednesday 09 March 2011] [12:28:27] <private_meta>	but I don't know if that's hard to do
+| [Wednesday 09 March 2011] [12:28:48] <pieterh>	private_meta: ... it can be done
+| [Wednesday 09 March 2011] [12:28:52] <private_meta>	like, click on C++ and the example viewed in there is C++ instead of C
+| [Wednesday 09 March 2011] [12:29:08] <pieterh>	but it needs translation of the examples to be more complete
+| [Wednesday 09 March 2011] [12:29:49] <pieterh>	there are some tricks that can be used...
+| [Wednesday 09 March 2011] [12:29:52] <private_meta>	hmm... You already mark the examples translated by printing the language binding name in bold, so only allowing the bold ones to be selected might be a solution there
+| [Wednesday 09 March 2011] [12:29:57] <private_meta>	but, it's just a nice to have
+| [Wednesday 09 March 2011] [12:29:59] <pieterh>	it's not that simple...
+| [Wednesday 09 March 2011] [12:30:24] <pieterh>	first problem is that currently the C code is included inline in the page
+| [Wednesday 09 March 2011] [12:30:43] <pieterh>	including every language would make the pages (much) too large
+| [Wednesday 09 March 2011] [12:30:55] <pieterh>	so it means moving examples to their own page
+| [Wednesday 09 March 2011] [12:31:04] <private_meta>	Not necessarily
+| [Wednesday 09 March 2011] [12:31:07] <pieterh>	that could be nice anyhow, it would avoid githubbing
+| [Wednesday 09 March 2011] [12:31:11] <pieterh>	yes, necessarily
+| [Wednesday 09 March 2011] [12:31:26] <private_meta>	Using Javascript you could replace text in certain places
+| [Wednesday 09 March 2011] [12:31:54] <pieterh>	I'm not even going to think about writing Javascript
+| [Wednesday 09 March 2011] [12:32:31] <private_meta>	Well, the Page is already using Javascript in the Language hide/show button
+| [Wednesday 09 March 2011] [12:33:03] <private_meta>	The advantage of using js there I guess would be to avoid having to reload the page
+| [Wednesday 09 March 2011] [12:33:08] <pieterh>	Just because you cross a river on a bridge that someone built does not mean you want to build bridges
+| [Wednesday 09 March 2011] [12:33:15] <private_meta>	haha
+| [Wednesday 09 March 2011] [12:33:33] <pieterh>	one of the *great* benefits of Wikidot is precisely that I do not write HTML or JS
+| [Wednesday 09 March 2011] [12:33:43] <pieterh>	I write text, which magically appears
+| [Wednesday 09 March 2011] [12:34:01] <pieterh>	second problem is just visualization, Wikidot has a limited set of options
+| [Wednesday 09 March 2011] [12:34:12] <pieterh>	collapse/hide, hyperlink
+| [Wednesday 09 March 2011] [12:34:52] <private_meta>	So it would be changing a core feature
+| [Wednesday 09 March 2011] [12:36:27] <lt_schmidt_jr>	Should I expect to need a separate zmq libary compilation for AMD x64 as opposed to intel?
+| [Wednesday 09 March 2011] [12:36:44] <pieterh>	private_meta: if it takes more than 1 hour, it's out of scope
+| [Wednesday 09 March 2011] [12:36:59] <pieterh>	lt_schmidt_jr: don't think so, depends on the compiler
+| [Wednesday 09 March 2011] [12:37:36] <lt_schmidt_jr>	pieterh: thank you, I will give it a whirl
+| [Wednesday 09 March 2011] [12:38:10] <pieterh>	private_meta: what I'll think about is publishing the code examples on their own pages, so they are easier to look at
+| [Wednesday 09 March 2011] [12:38:23] <pieterh>	and then at least showing those in new tabs when you click on them
+| [Wednesday 09 March 2011] [12:38:50] <pieterh>	then it's possible to do collapsible blocks that include each language
+| [Wednesday 09 March 2011] [12:42:39] <private_meta>	hmm
+| [Wednesday 09 March 2011] [12:42:55] <private_meta>	I removed the git repo and made a new clone and the new updates weren't in there :/
+| [Wednesday 09 March 2011] [12:44:41] <private_meta>	pieterh: so WHAT of my changes did you put into the repository?
+| [Wednesday 09 March 2011] [12:45:01] <pieterh>	private_meta: all of them, maybe I forgot to push, let me check
+| [Wednesday 09 March 2011] [12:45:57] <pieterh>	private_meta: https://github.com/imatix/zguide/commit/62cae9ab3412065dabfcdb7bd227e00f43ccd066
+| [Wednesday 09 March 2011] [12:46:22] <pieterh>	all done, 3 hours ago
+| [Wednesday 09 March 2011] [12:46:44] <pieterh>	I'll make a fresh clone to double-check
+| [Wednesday 09 March 2011] [12:46:57] <private_meta>	pieterh: according to my patch file:  20 files changed, 217 insertions(+), 166 deletions(-)
+| [Wednesday 09 March 2011] [12:47:10] <private_meta>	According to your commit, Showing 2 changed files with 8 additions and 10 deletions. 
+| [Wednesday 09 March 2011] [12:47:51] <pieterh>	ah, indeed... :-(
+| [Wednesday 09 March 2011] [12:48:08] <pieterh>	<insert expletive>
+| [Wednesday 09 March 2011] [12:48:16] <pieterh>	give me 4 minutes...
+| [Wednesday 09 March 2011] [12:48:23] <private_meta>	sure, take your time
+| [Wednesday 09 March 2011] [12:50:47] <pieterh>	private_meta: for some reason the patches to lpclient.c and lpserver.c came with ^M line endings
+| [Wednesday 09 March 2011] [12:51:04] <pieterh>	you edited those two files on Windows and then copied them to your virtual machine?
+| [Wednesday 09 March 2011] [12:51:15] <private_meta>	hmm...
+| [Wednesday 09 March 2011] [12:51:19] <pieterh>	I just see that now, in vim
+| [Wednesday 09 March 2011] [12:51:34] <pieterh>	so your patch failed on those two files, I fixed them, committed them, and the rest were lost
+| [Wednesday 09 March 2011] [12:51:43] <private_meta>	I don't know
+| [Wednesday 09 March 2011] [12:51:57] <private_meta>	might be possible
+| [Wednesday 09 March 2011] [12:52:00] <pieterh>	probably some feature of your Eclipse gui :-)
+| [Wednesday 09 March 2011] [12:52:20] <pieterh>	anyhow, that's the autopsy
+| [Wednesday 09 March 2011] [12:52:30] <private_meta>	shouldn't have happenend
+| [Wednesday 09 March 2011] [12:52:33] <private_meta>	happened
+| [Wednesday 09 March 2011] [12:52:49] <pieterh>	Windows should never have happened, indeed
+| [Wednesday 09 March 2011] [12:52:56] <pieterh>	we live with the consequences...
+| [Wednesday 09 March 2011] [12:53:18] <pieterh>	the illegitimate child of CP/M and too much weed
+| [Wednesday 09 March 2011] [12:54:46] <pieterh>	private_meta: ok, re-clone now, it'll be good
+| [Wednesday 09 March 2011] [12:55:16] <private_meta>	k
+| [Wednesday 09 March 2011] [12:55:43] <private_meta>	good
+| [Wednesday 09 March 2011] [13:37:13] <Eruquen>	how would I translate socklisten; while (1) { sockaccept; fork, work and communicate with client; } to zmq? further communication between clients and workers could consist of a single reply or a stream of multiple replies, sometimes requiring input from clients. clients could disconnect along the way and reconnect later. no data should be lost.
+| [Wednesday 09 March 2011] [13:39:30] <pieterh>	Eruquen: have you read the Guide yet?
+| [Wednesday 09 March 2011] [13:42:10] <Eruquen>	not completely.. I'm working through the patterns right now. it all makes sense but it also makes my head explode
+| [Wednesday 09 March 2011] [13:43:02] <pieterh>	take your time
+| [Wednesday 09 March 2011] [14:07:21] <Guthur>	would polling on an inproc socket use similar mechanisms in the 0MQ engine?
+| [Wednesday 09 March 2011] [14:15:19] <Guthur>	ah ha
+| [Wednesday 09 March 2011] [14:15:39] <Guthur>	I think I may have isolated the problem with clrzmq2 on Mono on linux
+| [Wednesday 09 March 2011] [14:16:06] <Guthur>	it would appear to be something to do with Mono's implementation of threads
+| [Wednesday 09 March 2011] [14:16:36] <Guthur>	remove the threading stuff and there is no exceptions
+| [Wednesday 09 March 2011] [14:23:46] <devinus>	can somebody explain to me the difference between zeromq and rabbitmq?
+| [Wednesday 09 March 2011] [14:25:45] <cremes>	pieterh: just saw your note on the ML about critical issues for the next release
+| [Wednesday 09 March 2011] [14:25:47] <cremes>	https://github.com/zeromq/zeromq2/issues#issue/174
+| [Wednesday 09 March 2011] [14:26:01] <cremes>	looks like another user was able to confirm on a different linux (ubuntu)
+| [Wednesday 09 March 2011] [14:26:24] <cremes>	i'll do what i can to help get this fixed
+| [Wednesday 09 March 2011] [15:01:13] <Guthur>	devinus, http://www.zeromq.org/whitepapers:brokerless
+| [Wednesday 09 March 2011] [15:02:48] <devinus>	Guthur: thanks
+| [Wednesday 09 March 2011] [16:33:51] <Guthur>	binding authors, any recommendation on dealing with EINTR...
+| [Wednesday 09 March 2011] [16:34:13] <Guthur>	add logic to the binding code, or leave it to the user to catch and deal with
+| [Wednesday 09 March 2011] [17:15:35] <lt_schmidt_jr>	Hi, what version of Visual Studio is expected to work for ZMQ compilation?
+| [Wednesday 09 March 2011] [17:15:50] <lt_schmidt_jr>	Should Visual Studio 2008 suffice?
+| [Wednesday 09 March 2011] [17:17:08] <Guthur>	lt_schmidt_jr, I think it should be
+| [Wednesday 09 March 2011] [17:17:27] <lt_schmidt_jr>	thank you
+| [Wednesday 09 March 2011] [17:17:37] <Guthur>	the solution file says version 10
+| [Wednesday 09 March 2011] [17:17:40] <Guthur>	with is 2008
+| [Wednesday 09 March 2011] [17:17:50] <lt_schmidt_jr>	ah, great
+| [Wednesday 09 March 2011] [17:17:58] <Guthur>	I think it was created by visual studio 2008 express
+| [Wednesday 09 March 2011] [17:18:23] <Guthur>	studio/c++
+| [Wednesday 09 March 2011] [17:18:28] <lt_schmidt_jr>	ah, so it should work with the express version,  excellent
+| [Wednesday 09 March 2011] [23:04:20] <qw_>	The 2nd video on http://www.zeromq.org/intro:read-the-manual has left channel audio problem
+| [Wednesday 09 March 2011] [23:05:49] <Steve-o>	yup
+| [Wednesday 09 March 2011] [23:05:59] <Steve-o>	could do with a filtering
+| [Wednesday 09 March 2011] [23:08:16] <qw_>	the top video was excellent
+| [Wednesday 09 March 2011] [23:10:09] <Steve-o>	prod pieter when he's online later
