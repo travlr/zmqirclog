@@ -5807,3 +5807,287 @@
 | [Thursday 10 March 2011] [12:43:22] <nadime>	as in: if context exists, return, otherwise create one
 | [Thursday 10 March 2011] [12:43:49] <pieterh>	I mean, you can create a context invisibly, use that for just one object, terminate it when you destroy the object
 | [Thursday 10 March 2011] [12:44:04] <pieterh>	as long as that socket works over TCP, not inproc
+| [Thursday 10 March 2011] [13:23:31] <private_meta>	pieterh: do you want the version assert in the later c++ examples as well?
+| [Thursday 10 March 2011] [13:34:14] <Bob___>	is there any way to find out when a connection has been made to a PUB socket?
+| [Thursday 10 March 2011] [13:35:12] <Bob___>	I have two applications that are subscribing to each other's pub sockets to transfer messages between them, but I'm loosing messages because connection order is non-deterministic
+| [Thursday 10 March 2011] [13:36:35] <guido_g>	no
+| [Thursday 10 March 2011] [13:36:52] <Bob___>	is Pub/Sub the right model to use for that?
+| [Thursday 10 March 2011] [13:37:30] <Bob___>	here's what I'm trying to do:  I have a number of simulation engines that are started up and share messages between them
+| [Thursday 10 March 2011] [13:37:34] <guido_g>	you've to describe the use case
+| [Thursday 10 March 2011] [13:38:13] <Bob___>	I have a multicast beacon that each sim engine broadcasts to identify itself.  When another engine receives the beacon message (which contains it's pub socket address/port) it connects to it if hasn't already
+| [Thursday 10 March 2011] [13:38:34] <Bob___>	over time this gives me a fully connected network of sim engines (which is what I think I want)
+| [Thursday 10 March 2011] [13:39:05] <Bob___>	but I need to send some startup messages on connect to make the engine forward certain types of messages over it's network connection
+| [Thursday 10 March 2011] [13:39:14] <guido_g>	why not using one multicast channel for that?
+| [Thursday 10 March 2011] [13:39:51] <Bob___>	guido_g: I'm not sure I follow what you mean.  I am using a multicast channel for identifying sim engines 
+| [Thursday 10 March 2011] [13:39:55] <guido_g>	btw, pub/sub doesn't do connections, it's more like a radion transmission
+| [Thursday 10 March 2011] [13:40:11] <guido_g>	s/radion/radio/
+| [Thursday 10 March 2011] [13:40:48] <Bob___>	ok
+| [Thursday 10 March 2011] [13:40:55] <guido_g>	just have bus structure for all participants, will make alles messages available to all subscribed nodes
+| [Thursday 10 March 2011] [13:48:04] <Bob___>	guido_g: thanks!  I guess I need to rethink my connection scheme.  maybe creating  new pair sockets is the way to go.
+| [Thursday 10 March 2011] [13:48:24] <guido_g>	no, pair ist not the way to go
+| [Thursday 10 March 2011] [13:49:26] <Bob___>	you think pub/sub is right?
+| [Thursday 10 March 2011] [13:50:49] <guido_g>	if you want to communicate from every node to every other node a bus structure would fit
+| [Thursday 10 March 2011] [13:59:42] <private_meta>	pieterh: btw, building single files doesn't seem to be possible with the C++ builder
+| [Thursday 10 March 2011] [14:10:30] <private_meta>	pieterh: interestingly, if i simulate the behavior in the C build file, it still doesn't work
+| [Thursday 10 March 2011] [14:16:48] <private_meta>	ah ok, fixed
+| [Thursday 10 March 2011] [14:33:59] <private_meta>	pieterh: maybe I made a mistake, but spqueue.c, as found in the repo, seems broken
+| [Thursday 10 March 2011] [14:34:30] <private_meta>	pieterh: it never let's the client connect. I haven't yet had the time to look properly though, I'll check again tomorrow
+| [Thursday 10 March 2011] [14:58:24] <mikko>	pieterh: it's ready now
+| [Thursday 10 March 2011] [14:58:28] <mikko>	tested quickly locally
+| [Thursday 10 March 2011] [15:22:36] <pieterh>	private_meta: version assert... normally only if the code needs 2.1+ functionality
+| [Thursday 10 March 2011] [15:23:11] <pieterh>	mikko: yay!
+| [Thursday 10 March 2011] [15:23:31] <mikko>	pieterh: daily builds around 5am should run the same thing on more platforms
+| [Thursday 10 March 2011] [15:23:39] <mikko>	im exchausted
+| [Thursday 10 March 2011] [15:26:09] <pieterh>	mikko: can you tell me very briefly what the new tooling fixes?
+| [Thursday 10 March 2011] [15:26:25] <pieterh>	openpgm 5.1.113, obviously
+| [Thursday 10 March 2011] [15:26:55] <pieterh>	builds on specific platforms?
+| [Thursday 10 March 2011] [15:26:59] <mikko>	updated openpgm, removes the build duplication from zeromq side
+| [Thursday 10 March 2011] [15:27:16] <pieterh>	so it uses the openpgm build directly, right
+| [Thursday 10 March 2011] [15:27:20] <mikko>	the biggest benefit is that now it should be easier to upgrade openpgm in the future
+| [Thursday 10 March 2011] [15:27:23] <mikko>	yes
+| [Thursday 10 March 2011] [15:27:26] <mikko>	it invokes openpgm autotools build
+| [Thursday 10 March 2011] [15:27:33] <mikko>	the 'old way' was a huge hack
+| [Thursday 10 March 2011] [15:28:05] <pieterh>	this is wonderful
+| [Thursday 10 March 2011] [15:28:15] <mikko>	also, there is a hidden feature
+| [Thursday 10 March 2011] [15:28:26] <mikko>	it's not advertised much as its not well tested
+| [Thursday 10 March 2011] [15:28:34] <mikko>	you can drop in new version of libpgm
+| [Thursday 10 March 2011] [15:28:36] <mikko>	and do:
+| [Thursday 10 March 2011] [15:28:47] <mikko>	./configure --with-pgm=libpgm-x.y.z
+| [Thursday 10 March 2011] [15:29:00] <mikko>	it searches for libpgm-x.y.z.tar.gz in foreign/openpgm
+| [Thursday 10 March 2011] [15:29:05] <pieterh>	ah, you mentioned that... sweet
+| [Thursday 10 March 2011] [15:29:16] <mikko>	also, autotools builds on both packages paves way for including them in distros
+| [Thursday 10 March 2011] [15:29:26] <mikko>	which would be ideal in longer run
+| [Thursday 10 March 2011] [15:29:37] <mikko>	hopefully the new build doesn't break many things
+| [Thursday 10 March 2011] [15:32:51] <pieterh>	mikko: I'll commit this to the 2.1 and push, then we can test it with the autobuild system...
+| [Thursday 10 March 2011] [15:33:00] <mikko>	pieterh: yeah
+| [Thursday 10 March 2011] [15:33:03] <mikko>	sounds good
+| [Thursday 10 March 2011] [15:33:03] <pieterh>	done
+| [Thursday 10 March 2011] [15:33:12] <pieterh>	excellent, lovely, amazing stuff!
+| [Thursday 10 March 2011] [15:33:14] <mikko>	we can always revert if things break left right and center
+| [Thursday 10 March 2011] [15:33:24] <pieterh>	nah, never back, always forwards!
+| [Thursday 10 March 2011] [15:33:41] <pieterh>	after that we can prepare a patch to send to Sustrik upstream...
+| [Thursday 10 March 2011] [15:35:43] <pieterh>	g'nite, my kids are destroying my TV, I need to intervene...
+| [Thursday 10 March 2011] [15:37:26] <mikko>	nite!
+| [Thursday 10 March 2011] [15:59:57] <Guthur>	pieterh, how many kids you got, if you don't mind me asking?
+| [Thursday 10 March 2011] [16:30:02] <private_meta>	pieterh: I figured that, but zhelpers in c++ doesn't offer the functionality, so it's missing in all files up to now
+| [Thursday 10 March 2011] [17:16:17] <guido_g>	good night all!
+| [Thursday 10 March 2011] [17:17:37] <Guthur>	night guido_g 
+| [Friday 11 March 2011] [01:38:17] <sena>	hi I have a bit of cleanup problem when using zeromq.
+| [Friday 11 March 2011] [01:38:33] <sena>	i am using the c++ classes for coding
+| [Friday 11 March 2011] [01:39:53] <sena>	when deleting the object windows gives an run time error which says that the application was shutdown in an unusual way
+| [Friday 11 March 2011] [01:40:26] <sena>	before deleting the objects i am deleting the sockets and then contexts 
+| [Friday 11 March 2011] [01:40:50] <phaplt>	i am newbee zmq
+| [Friday 11 March 2011] [01:40:57] <sena>	the delete is fine but when trying to delete the encapsulating class the program gives the error
+| [Friday 11 March 2011] [01:41:03] <sena>	any suggestions
+| [Friday 11 March 2011] [01:41:03] <phaplt>	anybody help me tutorial
+| [Friday 11 March 2011] [01:41:14] <sena>	The version is 2.1 rc2
+| [Friday 11 March 2011] [01:41:28] <sena>	all the sockets are using ZMQ_PAIR
+| [Friday 11 March 2011] [01:42:04] <sena>	this is all inter thread communication
+| [Friday 11 March 2011] [01:53:43] <guido_g>	sena: try to give a minimal working code example and the complete error message, otherwise it's not possible to help you
+| [Friday 11 March 2011] [01:54:38] <guido_g>	sena: put both on a paste-bin like https://gist.github.com/
+| [Friday 11 March 2011] [03:35:05] <sena>	got the problem solved
+| [Friday 11 March 2011] [03:49:20] <pieterh>	g'morning folks
+| [Friday 11 March 2011] [03:51:44] <guido_g>	mornin
+| [Friday 11 March 2011] [04:00:52] <pieterh>	hi guido_g!
+| [Friday 11 March 2011] [04:05:13] <sena>	in PAIR socket pattern can one socket pair with many sockets
+| [Friday 11 March 2011] [04:18:17] <Guthur>	sena: From the man: A socket of type ZMQ_PAIR can only be connected to a single peer at any one time. No message routing or filtering is performed on messages sent over a ZMQ_PAIR socket.
+| [Friday 11 March 2011] [04:18:33] <Guthur>	http://api.zeromq.org/master:zmq-socket#toc15
+| [Friday 11 March 2011] [04:23:18] <sena>	thanx for clarifying.
+| [Friday 11 March 2011] [04:24:26] <Guthur>	you're welcome
+| [Friday 11 March 2011] [04:49:12] <Guthur>	pieterh: Should the EINTR situation be documented?
+| [Friday 11 March 2011] [04:49:25] <Guthur>	or is the mailing list message enough
+| [Friday 11 March 2011] [04:49:27] <pieterh>	Guthur: certainly in the C# binding page...
+| [Friday 11 March 2011] [04:49:47] <pieterh>	the mailing list message was clear
+| [Friday 11 March 2011] [04:49:49] <Guthur>	yeah, it's not specific to C# and Mono though
+| [Friday 11 March 2011] [04:49:54] <pieterh>	indeed...
+| [Friday 11 March 2011] [04:50:08] <Guthur>	just more apparent due to the runtimes use of signals
+| [Friday 11 March 2011] [04:50:18] <pieterh>	I'm still somewhat... surprised... that Linux poll() seems broken this way
+| [Friday 11 March 2011] [04:50:40] <pieterh>	i.e. any user signaling at all will cause EINTR
+| [Friday 11 March 2011] [04:51:06] <Guthur>	yeah, it's not nice
+| [Friday 11 March 2011] [04:51:10] <pieterh>	there is perhaps a workaround
+| [Friday 11 March 2011] [04:51:51] <pieterh>	there are two issues. first, trapping a real interrupt, i.e. SIGINT (Ctrl-C)
+| [Friday 11 March 2011] [04:52:04] <pieterh>	second, continuing with the poll if it's not a real interrupt
+| [Friday 11 March 2011] [04:52:19] <Guthur>	yep
+| [Friday 11 March 2011] [04:52:36] <pieterh>	for the first, a normal signal handler will do it, I've an example in zhelpers.h, at the end
+| [Friday 11 March 2011] [04:52:59] <pieterh>	for the second, the problem is calculating the time properly so the remaining poll is not longer than expected
+| [Friday 11 March 2011] [04:53:15] <Guthur>	hehe, that was just on the tip of my tongue
+| [Friday 11 March 2011] [04:53:21] <pieterh>	I believe there is an example of code that does this, since zmq_poll used to have the same issue of exiting randomly
+| [Friday 11 March 2011] [04:53:30] <pieterh>	it's on the wiki somewhere, afair, let me check
+| [Friday 11 March 2011] [04:53:52] <pieterh>	heh
+| [Friday 11 March 2011] [04:53:52] <pieterh>	http://www.zeromq.org/topics:zmq-poll-workaround
+| [Friday 11 March 2011] [04:55:25] <Guthur>	I could work that into clrzmq2 at the very least
+| [Friday 11 March 2011] [04:56:12] <Guthur>	cheers for the suggestion pieterh 
+| [Friday 11 March 2011] [04:56:30] <pieterh>	np :-)
+| [Friday 11 March 2011] [04:56:42] <Guthur>	this has been a nice adventure, hehe
+| [Friday 11 March 2011] [04:56:53] <Guthur>	it would be good to end it with some sort of solution
+| [Friday 11 March 2011] [04:57:20] <pieterh>	it's great that we have the binding layer where we can fix up this kind of stuff
+| [Friday 11 March 2011] [04:58:49] <Guthur>	yeah I'm happy doing that, my worst case scenario was having to leave it for the user to deal with
+| [Friday 11 March 2011] [04:59:17] <Guthur>	would make app code necessarily complex imo 
+| [Friday 11 March 2011] [05:13:23] <Guthur>	unnecessarily*
+| [Friday 11 March 2011] [05:16:09] <guido_g>	unbelievable, c++ socket_t miss a close method
+| [Friday 11 March 2011] [05:17:25] <guido_g>	so you can't close a socket in c++
+| [Friday 11 March 2011] [05:20:37] <pieterh>	srsly? wow
+| [Friday 11 March 2011] [05:21:01] <pieterh>	guido_g: can you provide a patch for that?
+| [Friday 11 March 2011] [05:21:06] <guido_g>	on the way
+| [Friday 11 March 2011] [05:21:12] <guido_g>	first issue
+| [Friday 11 March 2011] [05:21:17] <guido_g>	then ranting
+| [Friday 11 March 2011] [05:21:22] <guido_g>	then patch
+| [Friday 11 March 2011] [05:21:24] <pieterh>	excellent :-) I'll make sure it gets into 2.1 stable
+| [Friday 11 March 2011] [05:21:27] <guido_g>	stick to the process :)
+| [Friday 11 March 2011] [05:21:43] <pieterh>	process is everything
+| [Friday 11 March 2011] [05:21:54] <Guthur>	guido_g: I thought you were a python hack
+| [Friday 11 March 2011] [05:22:06] <guido_g>	Guthur: sure
+| [Friday 11 March 2011] [05:22:22] <guido_g>	re-learning c++ atm
+| [Friday 11 March 2011] [05:23:04] <Guthur>	you have my utmost sympathies
+| [Friday 11 March 2011] [05:24:14] <guido_g>	it's wanted in the industry, so i've close to no choice :/
+| [Friday 11 March 2011] [05:24:42] <Guthur>	crumbs, which industry?
+| [Friday 11 March 2011] [05:24:47] <Guthur>	broadcast?
+| [Friday 11 March 2011] [05:24:58] <Guthur>	media*
+| [Friday 11 March 2011] [05:27:50] <guido_g>	it consulting in generall, i'm only little conslutant ,)
+| [Friday 11 March 2011] [05:28:59] <guido_g>	pieterh: will a simple pull req on zeromq2/master do?
+| [Friday 11 March 2011] [05:29:13] <pieterh>	guido_g: nope, that's the one thing that won't work
+| [Friday 11 March 2011] [05:29:22] <pieterh>	sustrik is not accepting pull requests
+| [Friday 11 March 2011] [05:29:26] <pieterh>	(yet)
+| [Friday 11 March 2011] [05:29:27] <guido_g>	*sigh*
+| [Friday 11 March 2011] [05:29:57] <pieterh>	feel free to lobby him to do so, I've tried and failed (hi sustrik!)
+| [Friday 11 March 2011] [05:30:15] <pieterh>	simplest is to send a signed patch to zeromq-dev
+| [Friday 11 March 2011] [05:30:55] <guido_g>	forgot how to do this...
+| [Friday 11 March 2011] [05:30:58] <pieterh>	then I can apply that to zeromq2-1/master (my git for 2.1 releases) and sustrik can do the same for zeromq2/master (source development git)
+| [Friday 11 March 2011] [05:31:03] <pieterh>	easy
+| [Friday 11 March 2011] [05:31:03] <guido_g>	so reading
+| [Friday 11 March 2011] [05:31:30] <pieterh>	yeah, I don't keep it in memory cache either...
+| [Friday 11 March 2011] [05:31:45] <pieterh>	i assume this fix can also go into 2.0 stable?
+| [Friday 11 March 2011] [05:31:59] <guido_g>	yes, it's extremly small
+| [Friday 11 March 2011] [05:32:04] <pieterh>	lovely lovely
+| [Friday 11 March 2011] [05:32:53] <Guthur>	I'm sure there is benefits to going with the patch strategy
+| [Friday 11 March 2011] [05:32:58] <pieterh>	not really
+| [Friday 11 March 2011] [05:33:17] <pieterh>	it's better than nothing but it's weak compared to pull requests
+| [Friday 11 March 2011] [05:33:24] 	 * guido_g is off reading git book
+| [Friday 11 March 2011] [05:34:14] <pieterh>	when all our gits are on github there is really no excuse for NOT doing pull requests except "not familiar with it, won't use it, don't trust github". Sigh.
+| [Friday 11 March 2011] [05:46:16] <guido_g>	hope that goes through
+| [Friday 11 March 2011] [05:47:01] <guido_g>	https://gist.github.com/865705  <- for review
+| [Friday 11 March 2011] [05:48:04] <pieterh>	guido_g: this affects just the C++ API?
+| [Friday 11 March 2011] [05:48:13] <guido_g>	yes
+| [Friday 11 March 2011] [05:48:23] <guido_g>	in zmq.hpp, nothing else
+| [Friday 11 March 2011] [05:48:24] <pieterh>	you have a test case?
+| [Friday 11 March 2011] [05:48:41] <guido_g>	you're joking?
+| [Friday 11 March 2011] [05:48:57] <pieterh>	ok, my question is 'what's your confidence level that this patch is correct?'
+| [Friday 11 March 2011] [05:49:01] <pieterh>	assume I don't know the code
+| [Friday 11 March 2011] [05:50:42] <guido_g>	this is mostly stolen from the existing destructor code and a the error reporting of other methods.
+| [Friday 11 March 2011] [05:51:08] <guido_g>	so, given that all the other mthods are tested well... *cough*
+| [Friday 11 March 2011] [05:51:24] <guido_g>	i sure that the patch is ok
+| [Friday 11 March 2011] [05:51:43] <guido_g>	btw, will use it myself in a few seconds :)
+| [Friday 11 March 2011] [05:52:00] <pieterh>	ok, I don't want to be ungrateful, but since I'd like to put this into two stable version (2.0, 2.1), could you please confirm that it actually works by running a before/after test?
+| [Friday 11 March 2011] [05:52:10] <pieterh>	*versions
+| [Friday 11 March 2011] [05:52:31] <guido_g>	i'm on my to compile w/ and test w/ the patch
+| [Friday 11 March 2011] [05:52:38] <guido_g>	just a few seconds...
+| [Friday 11 March 2011] [05:52:42] <pieterh>	ack
+| [Friday 11 March 2011] [05:53:03] <guido_g>	oh
+| [Friday 11 March 2011] [05:53:12] <guido_g>	this is master...
+| [Friday 11 March 2011] [05:53:32] <guido_g>	are thre known issues?
+| [Friday 11 March 2011] [05:55:30] <pieterh>	what do you mean?
+| [Friday 11 March 2011] [05:56:06] <guido_g>	i'm using zeromq2-1 as development env
+| [Friday 11 March 2011] [05:56:17] <guido_g>	normally
+| [Friday 11 March 2011] [05:56:59] <pieterh>	sure
+| [Friday 11 March 2011] [05:57:15] <pieterh>	I've already pushed your patch to the 2-1 master, at https://github.com/zeromq/zeromq2-1
+| [Friday 11 March 2011] [05:58:52] <guido_g>	ok, the close works
+| [Friday 11 March 2011] [05:58:55] <guido_g>	but...
+| [Friday 11 March 2011] [05:59:30] <guido_g>	the destructor doesn't like it.
+| [Friday 11 March 2011] [05:59:35] <guido_g>	next patch
+| [Friday 11 March 2011] [05:59:50] <pieterh>	bah, pull requests only work between forks of the same repository... :-/
+| [Friday 11 March 2011] [06:00:53] <pieterh>	cumulative patches, guido_g, or one clean one with all changes?
+| [Friday 11 March 2011] [06:01:02] <pieterh>	I'll go undo that last patch then
+| [Friday 11 March 2011] [06:01:14] <guido_g>	no
+| [Friday 11 March 2011] [06:01:19] <lestrrat>	you don't really need a pullreq to do inter-repo merges.
+| [Friday 11 March 2011] [06:01:21] <lestrrat>	in git.
+| [Friday 11 March 2011] [06:01:22] <guido_g>	i'll send an addition
+| [Friday 11 March 2011] [06:01:30] <guido_g>	+inal one
+| [Friday 11 March 2011] [06:01:48] <pieterh>	lestrrat: I've used fetching + cherry-picking
+| [Friday 11 March 2011] [06:01:52] <pieterh>	is that what you mean?
+| [Friday 11 March 2011] [06:02:07] <pieterh>	guido_g: you'll want to submit a single clean patch to the list
+| [Friday 11 March 2011] [06:02:18] <pieterh>	for me, fine to patch the patch
+| [Friday 11 March 2011] [06:03:00] <lestrrat>	so if guido wants to you to pull what he's got, 1) guido fetch+merge from main repo master, 2) perterh fetches and merges from guido's repo
+| [Friday 11 March 2011] [06:03:12] <lestrrat>	this is by far the cleanest way to merge stuff 
+| [Friday 11 March 2011] [06:03:34] <lestrrat>	cherry-picking is great if you have a really complex patch application, but generally you just want to merge
+| [Friday 11 March 2011] [06:03:49] <lestrrat>	just make sure merging to the mainline is done cleanly
+| [Friday 11 March 2011] [06:03:54] <lestrrat>	(i.e., fast-forward only)
+| [Friday 11 March 2011] [06:04:15] <pieterh>	lestrrat: hang on, you overloaded my git jargon buffer... :-)
+| [Friday 11 March 2011] [06:04:18] <guido_g>	ok
+| [Friday 11 March 2011] [06:04:33] <guido_g>	unfortunately i send the first one to the list
+| [Friday 11 March 2011] [06:04:36] <pieterh>	guido_g: let's try what lestrrat is describing here...
+| [Friday 11 March 2011] [06:04:36] <guido_g>	*sent
+| [Friday 11 March 2011] [06:04:43] <pieterh>	guido_g: just email again to cancel it...
+| [Friday 11 March 2011] [06:05:12] <pieterh>	lestrrat: can you please walk us through this with actual git commands? Afterwards I'll document it, useful stuff
+| [Friday 11 March 2011] [06:05:23] <Guthur>	pieterh: does patches not become more trackable
+| [Friday 11 March 2011] [06:05:33] <lestrrat>	sure, but let me rephrase what I was saying
+| [Friday 11 March 2011] [06:05:37] <Guthur>	making it easier to review and possibly back out
+| [Friday 11 March 2011] [06:05:42] <pieterh>	Guthur: on an email list? up to a point, yes
+| [Friday 11 March 2011] [06:06:01] <lestrrat>	you basically don't want to make conflicts in master. you want the cleanest possible git merge, which is "fast-forward"
+| [Friday 11 March 2011] [06:06:12] <pieterh>	ok
+| [Friday 11 March 2011] [06:06:30] <lestrrat>	to do this, the merge target ( guido's ) need to be aligned with the mater's history
+| [Friday 11 March 2011] [06:06:48] <lestrrat>	that can only be done by hand -- and guido needs to do this by pulling from master
+| [Friday 11 March 2011] [06:07:38] <pieterh>	lestrrat: hang on, let me explain the context a little
+| [Friday 11 March 2011] [06:07:44] <lestrrat>	sure
+| [Friday 11 March 2011] [06:08:06] <pieterh>	we have three gits, a 2-2 master, a 2-1 master, and a fork of the 2-1 master which guido_g is working on
+| [Friday 11 March 2011] [06:08:30] <guido_g>	going to make a clean patch now
+| [Friday 11 March 2011] [06:08:35] <pieterh>	we want to get changes from guido_g's git into the two other gits
+| [Friday 11 March 2011] [06:09:07] <pieterh>	the 2-2 master and 2-1 master have diverged some time ago
+| [Friday 11 March 2011] [06:09:14] <lestrrat>	k
+| [Friday 11 March 2011] [06:09:24] <pieterh>	2-1 cherry-picks specific commits from 2-2, over time
+| [Friday 11 March 2011] [06:09:36] <pieterh>	we also have a 2-0 master
+| [Friday 11 March 2011] [06:09:40] <pieterh>	:-) that's our arrangement
+| [Friday 11 March 2011] [06:09:56] <pieterh>	we're now looking for a simple process everyone can use
+| [Friday 11 March 2011] [06:10:23] <lestrrat>	between 2-2 and 2-1 ,  you'd need to cherry-pick
+| [Friday 11 March 2011] [06:10:29] <pieterh>	right
+| [Friday 11 March 2011] [06:10:37] <lestrrat>	between 2-1 and guido_g, you shouldn't
+| [Friday 11 March 2011] [06:10:48] <pieterh>	we'd have made 2-1 and 2-0 *forks* except github doesn't allow that within one username
+| [Friday 11 March 2011] [06:11:14] <pieterh>	ok, so guido_g first pulls from 2-1 master, makes sure his history is correct
+| [Friday 11 March 2011] [06:11:19] <lestrrat>	well
+| [Friday 11 March 2011] [06:11:26] <lestrrat>	forking doesn't change anything in this context
+| [Friday 11 March 2011] [06:11:29] <pieterh>	ok'
+| [Friday 11 March 2011] [06:12:03] <lestrrat>	if you want to merge 2-1 and 2-0 (or whatever else), all you really need to do is to let your local git repo know about these repos
+| [Friday 11 March 2011] [06:12:08] <lestrrat>	using "git remote"
+| [Friday 11 March 2011] [06:12:18] <lestrrat>	and then, git merge would just allow you to merge these.
+| [Friday 11 March 2011] [06:12:24] <lestrrat>	(no pullreqs required)
+| [Friday 11 March 2011] [06:12:30] <pieterh>	right
+| [Friday 11 March 2011] [06:12:43] <lestrrat>	you merge, tweak, and then "git push 2-1 mybranch" or whatever.
+| [Friday 11 March 2011] [06:13:02] <pieterh>	the advantage of pullreqs is that they are like issues, trackable, discussion, etc.
+| [Friday 11 March 2011] [06:13:39] <lestrrat>	yeah, that's understood, but if somebody wants to make changes to 2-1 and 2-0, you just going to have to
+| [Friday 11 March 2011] [06:14:11] <lestrrat>	1) fork 2-1 2) make changes and send pullreq to 2-1 3) do the above git remove dance, and merge stuff to 2-0 3) push to github 2-0
+| [Friday 11 March 2011] [06:14:39] <pieterh>	yeah, and forking isn't an option, so pull reqs are basically out
+| [Friday 11 March 2011] [06:15:07] <pieterh>	ok, fast-forward merging, makes sense
+| [Friday 11 March 2011] [06:15:19] <pieterh>	thanks, I'll do my reading and make sure I understand that
+| [Friday 11 March 2011] [06:15:39] <Guthur>	we have just had the craziest enquiry from one of our clients, a rather large internet based firm, their legal team fears that because of the OCaml and Ruby code generators in the Thrift library their code maybe infected by GPL
+| [Friday 11 March 2011] [06:15:51] <Guthur>	we don't even use these code generators, doh
+| [Friday 11 March 2011] [06:15:58] <Guthur>	I think they need a new legal team
+| [Friday 11 March 2011] [06:16:30] <lestrrat>	on a different project with about 10 devs, they just follow that rule: "all merges to master MUST be fast-forwards (to make sure they apply cleanly)" "Otherwise, create your own branch and do whatever you want to do. When you're done, let us know the name of the branch so we can merge to master"
+| [Friday 11 March 2011] [06:17:42] <pieterh>	guido_g: ok, waiting for your new patch
+| [Friday 11 March 2011] [06:18:30] <lestrrat>	well, good luck with the merges :)
+| [Friday 11 March 2011] [06:18:40] <pieterh>	:-) thanks
+| [Friday 11 March 2011] [06:18:49] 	 * lestrrat goes back to dealing with the quake aftershocks 
+| [Friday 11 March 2011] [06:19:10] <pieterh>	lestrrat: good luck, I hope things aren't too bad
+| [Friday 11 March 2011] [06:19:50] <lestrrat>	things around my home is sane enough that I can blab about git merges :) but thanks anyways
+| [Friday 11 March 2011] [06:23:36] <guido_g>	https://gist.github.com/865763 < -the new and better tested one
+| [Friday 11 March 2011] [06:24:59] <pieterh>	"tested", that has a nice ring about it
+| [Friday 11 March 2011] [06:25:12] <pieterh>	guido_g: ok, thanks, applying that now to 2-0 and 2-1
+| [Friday 11 March 2011] [06:25:39] <guido_g>	tested means compiled and used in a program w/o problems
+| [Friday 11 March 2011] [06:28:02] <guido_g>	and now for the ml again
+| [Friday 11 March 2011] [06:30:07] <pieterh>	ok, applied to 2-0 and 2-1
+| [Friday 11 March 2011] [06:30:26] <guido_g>	and sent to the ml
+| [Friday 11 March 2011] [06:30:49] <guido_g>	i should really become more patient
+| [Friday 11 March 2011] [06:31:40] <pieterh>	nah, we release maintainers just have to make sure to ask the right questions
+| [Friday 11 March 2011] [06:33:18] <guido_g>	btw, why did you disable multicast loop in 2.1?
+| [Friday 11 March 2011] [06:33:41] <pieterh>	Steve-o's contribution
+| [Friday 11 March 2011] [06:35:08] <guido_g>	should be mentioned at a prominent place in the release notes, because it will break single-box testing
+| [Friday 11 March 2011] [06:35:39] <pieterh>	there was iirc some discussion of this on the list, let me check...
+| [Friday 11 March 2011] [06:38:57] <pieterh>	there is some discussion about a week ago but tbh I'm not following it totally
+| [Friday 11 March 2011] [06:39:00] <guido_g>	yes, but everyone is reading the ml or remembers all topics going on there
+| [Friday 11 March 2011] [06:39:08] <guido_g>	*but *not*
+| [Friday 11 March 2011] [06:39:24] <pieterh>	yes, I meant just for us, now, to understand this
+| [Friday 11 March 2011] [06:39:43] <pieterh>	afaics Steve says multicast loop doesn't work on Linux and lo is lossy
+| [Friday 11 March 2011] [06:40:40] <guido_g>	going to read the patch...
+| [Friday 11 March 2011] [06:44:53] <guido_g>	seems like the socket optoin for multicast loopback is turned off, nothing to w/ the lo interface
+| [Friday 11 March 2011] [06:45:14] <pieterh>	I'd suggest asking Steve, on the ml, where he posted the patch, what the rationale is
+| [Friday 11 March 2011] [06:46:55] <guido_g>	ok
+| [Friday 11 March 2011] [06:51:20] <guido_g>	time for a break (http://2.bp.blogspot.com/_ELzM_S573r8/SJthznx2u3I/AAAAAAAAGgU/dqPtF2Xr718/s400/computer-pause.jpg)
+| [Friday 11 March 2011] [06:51:46] <pieterh>	:-)
