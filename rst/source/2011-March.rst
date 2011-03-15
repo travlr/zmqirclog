@@ -541,3 +541,366 @@
 | [Monday 14 March 2011] [09:05:59] <Guthur>	that's an option, but probably a painful one
 | [Monday 14 March 2011] [09:07:03] <Steve-o>	Guthur: you actually using Solaris on x86/x64?
 | [Monday 14 March 2011] [09:09:32] <Steve-o>	it's bad enough that studio 12 is still out-of-date, Google Protobufs doesn't work well with Sun's STL stack
+| [Monday 14 March 2011] [11:15:31] <jstrom>	hm i sent an email to zeromq-dev a few hours ago, haven't showed up in archives yet.. any problems with mail delivery/bad spam detection?
+| [Monday 14 March 2011] [11:15:40] <jstrom>	or is there moderation?
+| [Monday 14 March 2011] [11:24:39] <private_meta>	jstrom: The last time I sent an email it showed up immediately, so I doubt there is moderation
+| [Monday 14 March 2011] [11:25:03] <jstrom>	okey, wierd
+| [Monday 14 March 2011] [11:25:12] <private_meta>	jstrom: and,I see an email by you in my mailbox
+| [Monday 14 March 2011] [11:25:16] <jstrom>	Just signed up but that usually doenst make any difference in mailman..
+| [Monday 14 March 2011] [11:25:18] <jstrom>	oh, okey
+| [Monday 14 March 2011] [11:25:40] <private_meta>	depending on your time zone, 1[1|2]:36
+| [Monday 14 March 2011] [11:25:48] <jstrom>	Guess its just the archive beeing slow then :) I opted for digest mail, so I didnt get the mail myself directly
+| [Monday 14 March 2011] [11:25:53] <jstrom>	yep
+| [Monday 14 March 2011] [11:27:12] <private_meta>	By the way, it's in the archive as well
+| [Monday 14 March 2011] [11:28:45] <private_meta>	jstrom: I have no idea why, but apparently your mail, if sorted by Topic, was considered as a reply to "[zeromq-dev] Poll about linger and termination behaviour!"
+| [Monday 14 March 2011] [11:29:17] <jstrom>	hah.. yeah, there I see it.. thats very wierd indeed.. the gmane archive has it correct though: http://news.gmane.org/gmane.network.zeromq.devel
+| [Monday 14 March 2011] [12:34:07] <troutwine>	Aside from tunneling, what are my options for secure transmission? SSL is not natively supported, right?
+| [Monday 14 March 2011] [12:42:33] <cremes>	troutwine: there are no built-in options for security
+| [Monday 14 March 2011] [12:42:41] <cremes>	tunneling is probably the easiest solution at this point
+| [Monday 14 March 2011] [12:42:55] <troutwine>	cremes: Tunneling is out of the question, sadly.
+| [Monday 14 March 2011] [12:42:57] <cremes>	you might want to search the mailing list archives for this question; it has come up a few times
+| [Monday 14 March 2011] [12:43:08] <cremes>	and there might be a solution for you listed there
+| [Monday 14 March 2011] [12:43:16] <troutwine>	cremes: I did, but didn't find anything terribly promising. 
+| [Monday 14 March 2011] [12:43:34] <cremes>	too bad... perhaps you could try asking again and describe your use-case
+| [Monday 14 March 2011] [12:43:56] <cremes>	maybe someone has come up with a clever solution and is waiting for someone to ask about it before sharing :)
+| [Monday 14 March 2011] [12:44:29] <troutwine>	cremes: Maybe. Thanks.
+| [Monday 14 March 2011] [12:44:33] <nadime>	it wouldn't be terribly hard to write your own ZMQ-SSL wrapper
+| [Monday 14 March 2011] [12:44:47] <nadime>	someone may have done so, and just not released it
+| [Monday 14 March 2011] [12:45:30] <nadime>	cremes -- question for you
+| [Monday 14 March 2011] [12:45:39] <cremes>	nadime: shoot
+| [Monday 14 March 2011] [12:46:02] <troutwine>	nadime: I think that's what I'm going to do, but I know squat about SSL implementations, or really about ZMQ internals. Any pointers?
+| [Monday 14 March 2011] [12:47:08] <nadime>	i don't think you need to know anything about zmq internals
+| [Monday 14 March 2011] [12:47:17] <nadime>	but you do need to look at a few SSL implementations probably
+| [Monday 14 March 2011] [12:47:40] <nadime>	you basically want to create a message class where you're encrypting the dataload
+| [Monday 14 March 2011] [12:47:51] <nadime>	you can do something much simpler than a full implementation
+| [Monday 14 March 2011] [12:47:53] <cremes>	i recommend looking at this UML diagram for a "taste" of the 0mq internals
+| [Monday 14 March 2011] [12:47:53] <cremes>	https://github.com/thijsterlouw/zeromq2-uml
+| [Monday 14 March 2011] [12:48:31] <nadime>	cremes - for high I/O throughput scenarios, is it basically recommended to have 1 input and 1 output thread (or N input/output) to avoid using a poller?
+| [Monday 14 March 2011] [12:48:54] <nadime>	the zmq implementation of poll seems incredibly slow, it was what was causing my i/o bottleneck yesterday
+| [Monday 14 March 2011] [12:50:49] <nadime>	troutwine -- how scalable do you need your solution to be?
+| [Monday 14 March 2011] [12:51:32] <nadime>	cremes - sorry, that was unclear.  i'm asking -- is it recommended to never use zmq_poll for high throughput
+| [Monday 14 March 2011] [12:51:52] <troutwine>	nadime: A few thousand concurrent clients; not terribly.
+| [Monday 14 March 2011] [12:52:13] <cremes>	nadime: it's hard to say; are you using zmq_poll with a timeout or do you use it to block?
+| [Monday 14 March 2011] [12:52:36] <nadime>	either, both are slow
+| [Monday 14 March 2011] [12:53:06] <cremes>	nadime: interesting; i don't think anyone has done any real benchmarks in this area
+| [Monday 14 March 2011] [12:53:10] <nadime>	i was running about 500k msgs/s, avg. 50B msgs, so about 25MB
+| [Monday 14 March 2011] [12:53:31] <nadime>	and i was falling behind because of a poll (with either block or timeout, tried both)
+| [Monday 14 March 2011] [12:53:42] <nadime>	so i was pushing 500k until i hit the poll, then only getting about 100k/s
+| [Monday 14 March 2011] [12:53:50] <cremes>	you only had a handful of sockets, right? like 4 or 5 of them?
+| [Monday 14 March 2011] [12:53:51] <nadime>	and my app was blowing up because of the buffering
+| [Monday 14 March 2011] [12:53:56] <nadime>	yep
+| [Monday 14 March 2011] [12:54:02] <cremes>	wow, that's terrible
+| [Monday 14 March 2011] [12:54:14] <nadime>	the memcpy was killing me
+| [Monday 14 March 2011] [12:54:25] <cremes>	any chance you could open an issue illustrating this problem?
+| [Monday 14 March 2011] [12:54:30] <nadime>	i'm on win7, so i think zmq_poll uses select()
+| [Monday 14 March 2011] [12:54:48] <cremes>	ah... windows
+| [Monday 14 March 2011] [12:54:48] <nadime>	sure in a day or two, i can probably make an example case pretty quickly
+| [Monday 14 March 2011] [12:55:04] <cremes>	windows has probably gotten the least attention out of all of the platforms
+| [Monday 14 March 2011] [12:55:05] <troutwine>	nadime: Limited by human latency, I'd guess each client is going to push one message a half-second. So a few thousand sockets, 4,000 msgs/s. 
+| [Monday 14 March 2011] [12:55:11] <troutwine>	nadime: Why do you ask?
+| [Monday 14 March 2011] [12:55:25] <cremes>	the 0mq project doesn't have a lot of windows-savvy devs working on it yet; there are a few but progress is slow
+| [Monday 14 March 2011] [12:55:32] <nadime>	worried about key exchange, troutwine
+| [Monday 14 March 2011] [12:55:37] <nadime>	not throughput
+| [Monday 14 March 2011] [12:56:03] <nadime>	you should basically look up how SSL handles key exchange, once you have keys on both sides, it's really easy to use ZMQ to do secure xfer
+| [Monday 14 March 2011] [12:56:18] <cremes>	nadime: you might want to ping Guthur and ask him about his work on using windows-native-api poll stuff
+| [Monday 14 March 2011] [12:56:34] <troutwine>	nadime: I'm reading up on SSL now. Clearly I know nothing about it. 
+| [Monday 14 March 2011] [12:57:17] <nadime>	thanks, i will do that
+| [Monday 14 March 2011] [12:57:30] <nadime>	i was planning on taking a look at the implementation when i have a sec, gotta finish this project though
+| [Monday 14 March 2011] [12:57:39] <nadime>	but if he's already working on it, maybe we can team up
+| [Monday 14 March 2011] [12:57:51] <cremes>	nadime: good idea; i'm sure he would appreciate a hand
+| [Monday 14 March 2011] [12:58:05] <cremes>	nadime: his focus is on getting ipc transport working on windows
+| [Monday 14 March 2011] [12:58:21] <cremes>	but that stuff is all tied in with polling for events and handling i/o completion
+| [Monday 14 March 2011] [12:58:27] <nadime>	ah, well i don't care about that, but happy to help re: poll implementation ;)
+| [Monday 14 March 2011] [12:58:47] <cremes>	i think a solution for both pretty much go hand in hand
+| [Monday 14 March 2011] [12:58:58] <nadime>	gotcha
+| [Monday 14 March 2011] [12:59:01] <cremes>	based on what Guthur was posting here last week and the week before
+| [Monday 14 March 2011] [12:59:09] <nadime>	he wants to do ipc using files?
+| [Monday 14 March 2011] [12:59:21] <nadime>	and the windows poll implementationc an't handle sockets and files?
+| [Monday 14 March 2011] [12:59:55] <cremes>	nadime: it's best just to ask him; he can explain it with the minimum amount of confusion (that i might add if i try)
+| [Monday 14 March 2011] [13:00:11] <nadime>	k
+| [Monday 14 March 2011] [13:00:40] <Guthur>	did I hear my name, hehe
+| [Monday 14 March 2011] [13:00:49] <cremes>	Guthur: you did!
+| [Monday 14 March 2011] [13:00:59] <nadime>	you did -- cremes was just asking me to ping you about your work on windows zmq_poll implementation
+| [Monday 14 March 2011] [13:01:03] <cremes>	nadime has noticed that zmq_poll() sucks donkey on windows
+| [Monday 14 March 2011] [13:01:31] <Guthur>	it's a 'feature'
+| [Monday 14 March 2011] [13:01:40] <Guthur>	windows comes with extra donkeys for just such cases
+| [Monday 14 March 2011] [13:01:45] <nadime>	haha
+| [Monday 14 March 2011] [13:02:08] <Guthur>	but yeah, we really need to look at getting IOCP
+| [Monday 14 March 2011] [13:02:29] <Guthur>	or possibly, at the very least, WSA_POLL (I think thats the name)
+| [Monday 14 March 2011] [13:02:44] <nadime>	what is zmq_poll implemented using right now? select()?
+| [Monday 14 March 2011] [13:02:53] <Guthur>	IOCP would be the bigger win because it would give IPC
+| [Monday 14 March 2011] [13:03:02] <Guthur>	nadime: I believe so
+| [Monday 14 March 2011] [13:03:23] <Guthur>	It only does TCP though
+| [Monday 14 March 2011] [13:03:41] <Guthur>	Select doesn't support named pipes unfortunately
+| [Monday 14 March 2011] [13:03:53] <cremes>	nadime, Guthur: i'll leave you two windows experts to hash things out :)
+| [Monday 14 March 2011] [13:03:55] <nadime>	and i take it wsa_poll doesn't either
+| [Monday 14 March 2011] [13:04:13] <Guthur>	nadime: As far as I am aware, nope
+| [Monday 14 March 2011] [13:05:03] <nadime>	IOPC looks pretty nifty
+| [Monday 14 March 2011] [13:05:41] <Guthur>	I think the only realistic option for named pipes is IOCP or WaitForMultipleObjects
+| [Monday 14 March 2011] [13:05:43] <nadime>	would eliminate the need to memcpy the fd list for in, out, err every cycle which is i think what slows down the poller on high throughput
+| [Monday 14 March 2011] [13:05:49] <Guthur>	IOCP is pretty sweet
+| [Monday 14 March 2011] [13:06:26] <Guthur>	but it doesn't naturally fit into the 0MQ engine as is, afaik
+| [Monday 14 March 2011] [13:07:01] <Guthur>	it will require an abstraction layer over named pipes and IOCP 
+| [Monday 14 March 2011] [13:07:44] <Guthur>	I think it's due to the fact that 0MQ needs some state reflection which IOCP doesn't cover, sustrik is the man to talk to for 0MQs needs though
+| [Monday 14 March 2011] [13:07:47] <nadime>	it looks like it will actually need to loop over all requested sockets/pipes instead of operating like select()
+| [Monday 14 March 2011] [13:08:11] <nadime>	nm
+| [Monday 14 March 2011] [13:08:56] <Guthur>	sorry I need to go, but i'll be back in an hour or so
+| [Monday 14 March 2011] [13:18:17] <private_meta>	github is amazingly stupid
+| [Monday 14 March 2011] [13:18:28] <private_meta>	my account doesn't work, I can't log in
+| [Monday 14 March 2011] [13:18:35] <private_meta>	they're sending me to the support page
+| [Monday 14 March 2011] [13:18:41] <private_meta>	which you can only access when you're logged in
+| [Monday 14 March 2011] [13:20:27] <michelp>	morning/afternoon/evening everybody
+| [Monday 14 March 2011] [13:21:30] <private_meta>	pieterh: If you don't mind adding that in a future release, add this to zmq.hpp: https://gist.github.com/94ced4a644021248f4d7 <- just for unifying the c++ binding and for not having to use C calls
+| [Monday 14 March 2011] [13:22:16] <private_meta>	pieterh: I don't want to clone the entire thing just to get a patch for that if you don't mind
+| [Monday 14 March 2011] [13:22:28] <guido_g>	you know how to submit patches
+| [Monday 14 March 2011] [13:22:41] <guido_g>	there is *a lot* of information missing
+| [Monday 14 March 2011] [13:23:04] <private_meta>	Ok, then leave it out
+| [Monday 14 March 2011] [13:44:23] <pieterh>	re
+| [Monday 14 March 2011] [13:44:27] <pieterh>	sorry, am in meetings all day
+| [Monday 14 March 2011] [13:44:46] <pieterh>	private_meta: patches need to follow contribution policy
+| [Monday 14 March 2011] [13:45:25] <private_meta>	So i need to go through all that (imho annoying) stuff to see a 1 line method in there?
+| [Monday 14 March 2011] [13:45:35] <pieterh>	private_meta: wrt to github are you trying to login with an organization id? 
+| [Monday 14 March 2011] [13:45:45] <pieterh>	private_meta: yes, even for a 1-line patch, sorry
+| [Monday 14 March 2011] [13:45:57] <pieterh>	well, perhaps I can make the change, hang on...
+| [Monday 14 March 2011] [13:47:23] <private_meta>	Working on zguid I'm doing multiple changes, and I understand that a patch is necessary
+| [Monday 14 March 2011] [13:47:26] <pieterh>	private_meta: I'll make that change myself, and send a patch to martin, tomorrow
+| [Monday 14 March 2011] [13:47:28] <private_meta>	a *patch
+| [Monday 14 March 2011] [13:47:46] <pieterh>	i'll get all the credit for it, be warned
+| [Monday 14 March 2011] [13:47:55] 	 * pieterh is going to tweet how he fixed the version method!
+| [Monday 14 March 2011] [13:47:57] <pieterh>	:-)
+| [Monday 14 March 2011] [13:47:59] <private_meta>	sure, I don't need the credit anyway
+| [Monday 14 March 2011] [13:48:17] <pieterh>	it's kind of a joke, credit for a 1-line method
+| [Monday 14 March 2011] [13:48:24] <private_meta>	ik
+| [Monday 14 March 2011] [13:48:27] <private_meta>	I mean creadit there in general
+| [Monday 14 March 2011] [13:48:30] <private_meta>	*credit
+| [Monday 14 March 2011] [13:48:35] <pieterh>	it's more about blame than credit
+| [Monday 14 March 2011] [13:48:43] <pieterh>	ok, have to flee, cyl
+| [Monday 14 March 2011] [13:48:47] <private_meta>	thanks
+| [Monday 14 March 2011] [14:10:04] <nadime>	anyone know: what's the behavior of the io threads f you set socket affinities to threads out of range, e.g. you have 1 io thread but you set a socket's affinity to 8
+| [Monday 14 March 2011] [14:45:25] <loxs>	hi folks, jus saw Zed's talk on 0mq at PyCon and there I saw him saying it's not a good idea to put it on the internet...
+| [Monday 14 March 2011] [14:45:44] <loxs>	uhm, it kind looks really promising for things like game networking
+| [Monday 14 March 2011] [14:46:32] <loxs>	so, are there any plans to make suitable to work on the internet?
+| [Monday 14 March 2011] [14:50:44] <loxs>	Zed said "they are working on it", but what does this mean?
+| [Monday 14 March 2011] [14:53:39] <cremes>	loxs: you need to remember the context in which zed said that
+| [Monday 14 March 2011] [14:53:51] <cremes>	he likes to 'fuzz' all of his projects (send random data to them)
+| [Monday 14 March 2011] [14:54:05] <cremes>	he noted that 0mq still has assertions that will trigger when bad data is received on the port
+| [Monday 14 March 2011] [14:54:24] <cremes>	so a perfect DOS attack would be to send random data to a 0mq socket and crash the lib
+| [Monday 14 March 2011] [14:54:42] <cremes>	the 0mq guys are 'working on it' in the sense that they are slowly but surely removing those assertions
+| [Monday 14 March 2011] [14:54:53] <cremes>	and fixing the library's behavior in the face of bad data
+| [Monday 14 March 2011] [15:01:55] <michelp>	if you can handle the overhead of it openvpn might be a good solution to securing a 0mq network over the internet
+| [Monday 14 March 2011] [15:02:11] <michelp>	i hear some game networks are using it successfully
+| [Monday 14 March 2011] [15:02:38] <michelp>	it also lets you do things like revoke access to rogue clients
+| [Monday 14 March 2011] [15:03:29] 	 * michelp is anxious to get some time to queue up zed's talk
+| [Monday 14 March 2011] [15:04:16] <cremes>	zed's talk was only "okay"; due to time pressures he touched so lightly on 85% of the important stuff
+| [Monday 14 March 2011] [15:04:34] <cremes>	that unless you were already a 0mq practitioner i doubt the audience got much out of it
+| [Monday 14 March 2011] [15:06:32] <loxs>	well, I didn't, but the idea of "one messaging system to rull them all" started some bells in my head :)
+| [Monday 14 March 2011] [15:07:29] <loxs>	michelp, well, it's not an option if you don't trust the client (if it's a game, people will try to do all kinds of hacks to cheat the game)
+| [Monday 14 March 2011] [15:07:59] <loxs>	michelp, which game networks use zeromq?
+| [Monday 14 March 2011] [15:09:43] <michelp>	loxs, i don't know, just something i read while i was cruising through google setting up my own private vpn
+| [Monday 14 March 2011] [15:12:46] <mikko>	sustrik: tested and works
+| [Monday 14 March 2011] [15:16:10] <michelp>	loxs, sorry i misread your question, i meant some game networks are using openvpn, not 0mq
+| [Monday 14 March 2011] [15:16:13] <michelp>	based on what i read only, not on any direct knowledge
+| [Monday 14 March 2011] [15:17:07] <michelp>	my suggestion was that if you were going to use 0mq over the internet, using it on a vpn might be a good approach to avoid fuzz hacks on an open port
+| [Monday 14 March 2011] [15:18:13] <loxs>	I see. Yep, you are right
+| [Monday 14 March 2011] [15:19:00] <loxs>	but it would be really cool if you could use zeromq directly for client server communication
+| [Monday 14 March 2011] [15:19:57] <sustrik>	mikko: thx
+| [Monday 14 March 2011] [15:30:08] <CIA-103>	zeromq2: 03Martin Sustrik 07master * rf987f4b 10/ src/pgm_receiver.cpp : 
+| [Monday 14 March 2011] [15:30:08] <CIA-103>	zeromq2: FreeBSD complation error fixed
+| [Monday 14 March 2011] [15:30:08] <CIA-103>	zeromq2: There was an error in pgm_receiver wrt strict aliasing.
+| [Monday 14 March 2011] [15:30:08] <CIA-103>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/ecz5VG
+| [Monday 14 March 2011] [15:34:57] <andrewvc>	cremes: around?
+| [Monday 14 March 2011] [15:37:54] <cremes>	andrewvc: for about 20m
+| [Monday 14 March 2011] [15:38:02] <andrewvc>	a couple things
+| [Monday 14 March 2011] [15:38:11] <andrewvc>	1: you know the deal with all the finalizer errors on the specs
+| [Monday 14 March 2011] [15:38:23] <andrewvc>	also, I added a zdevice branch to ffi-rzmq with a new ZMQ::Device class
+| [Monday 14 March 2011] [15:39:17] <mikko>	sustrik: i'm confused
+| [Monday 14 March 2011] [15:39:59] <mikko>	sustrik: do fixes go first to zeromq2 or zeromq2-1 repo?
+| [Monday 14 March 2011] [15:46:34] <cremes>	andrewvc: i'll take a look at the zdevice branch tonight/tomorrow and give you feedback if anything pops
+| [Monday 14 March 2011] [15:46:50] <andrewvc>	cool
+| [Monday 14 March 2011] [15:46:53] <cremes>	however, i'm not sure what you mean about finalizer errors; i'm not getting any
+| [Monday 14 March 2011] [15:47:09] <cremes>	can you pastie the errors you see? (i might have fixed 'em and forgot to push them)
+| [Monday 14 March 2011] [15:47:12] <andrewvc>	sure
+| [Monday 14 March 2011] [15:47:13] <andrewvc>	one sec
+| [Monday 14 March 2011] [15:51:01] <andrewvc>	cremes: https://gist.github.com/869738
+| [Monday 14 March 2011] [15:51:20] <andrewvc>	actually, there's a variety of errors
+| [Monday 14 March 2011] [15:51:37] <andrewvc>	that's on rbx
+| [Monday 14 March 2011] [15:52:16] <cremes>	huh
+| [Monday 14 March 2011] [15:52:29] <cremes>	i don't get those under mri; i'll try under rbx and get them patched up
+| [Monday 14 March 2011] [15:52:42] <cremes>	looks like we found another hole in rbx's ffi support
+| [Monday 14 March 2011] [15:57:50] <andrewvc>	interesting
+| [Monday 14 March 2011] [15:59:29] <sustrik>	mikko: i'm maintaining master (zeromq2)
+| [Monday 14 March 2011] [16:00:39] <sustrik>	pieter volunteered to do stable releases
+| [Monday 14 March 2011] [16:01:13] <sustrik>	so he should decide on the process for zeromq2-1
+| [Monday 14 March 2011] [16:02:36] <mikko>	sustrik: so they should be treated as separate projects?
+| [Monday 14 March 2011] [16:04:40] <sustrik>	you should ask pieter
+| [Monday 14 March 2011] [16:05:03] <sustrik>	my understanding of stable is maintaining the backward compatibility while backporting patches
+| [Monday 14 March 2011] [16:05:37] <mikko>	i shall ask him when we meet
+| [Monday 14 March 2011] [16:05:43] <sustrik>	ok
+| [Monday 14 March 2011] [16:07:09] <mikko>	sustrik: where is subscription forwarding going on?
+| [Monday 14 March 2011] [16:07:15] <mikko>	is it stable?
+| [Monday 14 March 2011] [16:07:26] <sustrik>	mikko: it's still on a branch
+| [Monday 14 March 2011] [16:07:33] <sustrik>	not finished yet
+| [Monday 14 March 2011] [16:07:37] <mikko>	ok
+| [Monday 14 March 2011] [16:07:58] <sustrik>	then it'll go to master obviously
+| [Monday 14 March 2011] [16:08:04] <sustrik>	not sure about stables
+| [Monday 14 March 2011] [16:08:19] <mikko>	it crossed my mind yesterday
+| [Monday 14 March 2011] [16:08:27] <mikko>	was writing a small utility that uses pub/sub sockets
+| [Monday 14 March 2011] [16:08:40] <mikko>	so, next i need to get pieterh to merge the freebsd pgm build fix
+| [Monday 14 March 2011] [16:08:54] <mikko>	and test steve's upstream changes 
+| [Monday 14 March 2011] [16:08:55] <sustrik>	he'll do i so, i think
+| [Monday 14 March 2011] [16:09:15] <sustrik>	ack
+| [Monday 14 March 2011] [19:42:26] <Guthur>	any suggestions on why i might get a phantom POLLIN event
+| [Monday 14 March 2011] [19:44:09] <Guthur>	oh wait nvm, something more fundamentally wrong with my code
+| [Monday 14 March 2011] [19:47:03] <Guthur>	yep I was being a silly programmer
+| [Monday 14 March 2011] [23:40:48] <michelp>	has anyone yet in the community explored distributed shared memory stores in python over 0mq?
+| [Monday 14 March 2011] [23:41:15] <michelp>	thinking in terms of doing transactional changes to objects that get propagated to N nodes
+| [Monday 14 March 2011] [23:43:58] <michelp>	it's something i've always taken an interest in, but the problem of distributing changes to threads, processes, and boxes uniformly has stumped me
+| [Tuesday 15 March 2011] [04:46:06] <guido_g>	good morning
+| [Tuesday 15 March 2011] [05:20:35] <sustrik>	morning
+| [Tuesday 15 March 2011] [05:28:34] <Evet>	morning
+| [Tuesday 15 March 2011] [05:29:10] <gambi>	morning :)
+| [Tuesday 15 March 2011] [05:44:33] <pieter_hintjens>	g'morning
+| [Tuesday 15 March 2011] [06:31:06] <private_meta>	sustrik: mind i talk to you about it outside the mailing lisT?
+| [Tuesday 15 March 2011] [06:31:08] <private_meta>	*list
+| [Tuesday 15 March 2011] [06:31:29] <private_meta>	sustrik: the zmq::version i mean
+| [Tuesday 15 March 2011] [06:39:31] <sustrik>	sure
+| [Tuesday 15 March 2011] [06:39:33] <sustrik>	what's up?
+| [Tuesday 15 March 2011] [06:41:29] <private_meta>	about the pointer vs reference thing
+| [Tuesday 15 March 2011] [06:42:07] <private_meta>	imho the only valid reason to use that would be to be coherent with the other function prototypes
+| [Tuesday 15 March 2011] [06:44:03] <sustrik>	right
+| [Tuesday 15 March 2011] [06:44:08] <sustrik>	it's a matter of style
+| [Tuesday 15 March 2011] [06:44:20] <private_meta>	Bad style, according to a lot of people
+| [Tuesday 15 March 2011] [06:44:32] <sustrik>	sure
+| [Tuesday 15 March 2011] [06:44:46] <sustrik>	the point is that it's the style that C++ API uses now
+| [Tuesday 15 March 2011] [06:44:52] <sustrik>	you can fork and restyle it
+| [Tuesday 15 March 2011] [06:46:13] <private_meta>	Wouldn't really help anyway
+| [Tuesday 15 March 2011] [06:46:56] <sustrik>	the thing with the style is you have to decide on it once and then keep it
+| [Tuesday 15 March 2011] [06:47:04] <sustrik>	some may consider it ugly
+| [Tuesday 15 March 2011] [06:47:13] <sustrik>	but that's how it goes
+| [Tuesday 15 March 2011] [06:48:52] <private_meta>	hmm... it's just nowhere near defensive programming, maybe that's what bothers me, I was taught to do that over and over
+| [Tuesday 15 March 2011] [06:49:30] <sustrik>	shrug
+| [Tuesday 15 March 2011] [06:49:34] <sustrik>	you can fork it
+| [Tuesday 15 March 2011] [06:50:03] <sustrik>	breaking backward comatibility because of styling issues is not worth it
+| [Tuesday 15 March 2011] [06:50:33] <private_meta>	Yeah, but as I said, it wouldn't really help, and I would break my own compatibility
+| [Tuesday 15 March 2011] [06:50:39] <private_meta>	It's not worth it
+| [Tuesday 15 March 2011] [06:50:43] <sustrik>	ack
+| [Tuesday 15 March 2011] [06:53:23] <private_meta>	well ok, even if I'm not quite agree with the reasoning, I can't change it anyway (and no, changing it by forking isn't what I call a helpful solution)
+| [Tuesday 15 March 2011] [06:54:21] <sustrik>	would you prefer breaking everyone's applications instead?
+| [Tuesday 15 March 2011] [06:54:33] <private_meta>	That's why I said I can't change it
+| [Tuesday 15 March 2011] [06:54:37] <sustrik>	exactly
+| [Tuesday 15 March 2011] [06:54:42] <sustrik>	nothing to do here
+| [Tuesday 15 March 2011] [06:54:51] <private_meta>	"Go on, nothing to see"
+| [Tuesday 15 March 2011] [06:54:56] <sustrik>	:)
+| [Tuesday 15 March 2011] [06:55:27] <private_meta>	"Change what you can't accept, accept what you can't change" <-- accepting can be hard
+| [Tuesday 15 March 2011] [07:38:38] <pieter_hintjens>	consistency is more important than accuracy in some cases
+| [Tuesday 15 March 2011] [07:41:33] <pieter_hintjens>	private_meta: actually, it would be possible to change the C++ style for 3.0
+| [Tuesday 15 March 2011] [07:58:51] <private_meta>	pieter_hintjens: ad consistency, I understand
+| [Tuesday 15 March 2011] [07:59:04] <private_meta>	pieter_hintjens: ad 3.0, do you not plan backwards compatibility for 3.0?
+| [Tuesday 15 March 2011] [08:11:41] <CIA-103>	zeromq2: 03Martin Sustrik 07master * r7045a4a 10/ (src/named_session.cpp src/named_session.hpp): 
+| [Tuesday 15 March 2011] [08:11:41] <CIA-103>	zeromq2: Dead code removed from named_session.cpp
+| [Tuesday 15 March 2011] [08:11:41] <CIA-103>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/fkOsT0
+| [Tuesday 15 March 2011] [09:19:23] <Evet>	sustrik: have you benchmarked zeromq on debian-kfreebsd?
+| [Tuesday 15 March 2011] [09:24:17] <sustrik>	Evet: no
+| [Tuesday 15 March 2011] [09:24:18] <sustrik>	did you?
+| [Tuesday 15 March 2011] [09:27:58] <Evet>	sustrik: downloading it now
+| [Tuesday 15 March 2011] [09:28:57] <Evet>	it seems an interesting project
+| [Tuesday 15 March 2011] [09:34:07] <sustrik>	yes
+| [Tuesday 15 March 2011] [09:34:31] <sustrik>	have a look at http://www.zeromq.org/area:results
+| [Tuesday 15 March 2011] [09:34:48] <sustrik>	if you get any numbers we can post the results on the website
+| [Tuesday 15 March 2011] [10:06:57] <private_meta>	pieter_hintjens: What might be nice (and not too much work) for the guide, imho, would be a small example output of your code. 1) for those who go through the code to make sure they understood it right without running it 2) for those who want to translate to see a rough outline what the intended result is
+| [Tuesday 15 March 2011] [10:32:04] <private_meta>	actually, overloading the C++ binding with by reference methods would be a good way to add the by reference functionality without breaking backwards compatibility
+| [Tuesday 15 March 2011] [10:35:36] <pieter_hintjens>	private_meta: back, sorry, in meetings all day...
+| [Tuesday 15 March 2011] [10:35:48] <pieter_hintjens>	actually you can make a new C++ binding at any time at all
+| [Tuesday 15 March 2011] [10:35:50] <private_meta>	np, IRC is a patient protocol
+| [Tuesday 15 March 2011] [10:36:06] <pieter_hintjens>	just as we have improvements to the other language bindings, orthogonally to 0MQ releases
+| [Tuesday 15 March 2011] [10:37:12] <pieter_hintjens>	re the guide, yes, this is a good idea, I've done it in a few places but not systematically
+| [Tuesday 15 March 2011] [10:38:28] <Evet>	do you think something like mongrel2 for xitami?
+| [Tuesday 15 March 2011] [10:39:48] <pieter_hintjens>	Evet: xitami is dead, for several reasons
+| [Tuesday 15 March 2011] [10:40:04] <pieter_hintjens>	i'm not sure what your question is... :-)
+| [Tuesday 15 March 2011] [10:41:46] <Evet>	oh, xitami was my very first webserver
+| [Tuesday 15 March 2011] [10:41:59] <Evet>	i have learnt perl on it :)
+| [Tuesday 15 March 2011] [10:43:14] <private_meta>	pieter_hintjens: sorry for being slow and only arriving at the paranoid pirate pattern now, but I have a small question there. According to Figure 59 of the guide, the Lazy Pirate Client, the Paranoid Pirate Queue and the Paranoid Pirate Worker run at the same time, am I correct?
+| [Tuesday 15 March 2011] [10:43:35] <pieter_hintjens>	yes, that's right
+| [Tuesday 15 March 2011] [10:44:29] <pieter_hintjens>	I made them as three processes, rather than three threads in one process, so you can stop and start them independently
+| [Tuesday 15 March 2011] [10:44:34] <private_meta>	So, I seem to be doing something wrong. I run ppqueue, then I run ppworker and I get an "Address already in use" error for the lpserver (which ought to run 2nd)
+| [Tuesday 15 March 2011] [10:45:31] <private_meta>	ah wait
+| [Tuesday 15 March 2011] [10:45:34] <pieter_hintjens>	you don't want to run lpserver
+| [Tuesday 15 March 2011] [10:45:39] <private_meta>	i just realized that
+| [Tuesday 15 March 2011] [10:45:40] <private_meta>	stupid me
+| [Tuesday 15 March 2011] [10:45:48] <private_meta>	I wanted lpclient and ran lpserver
+| [Tuesday 15 March 2011] [10:45:51] <pieter_hintjens>	it's not as simple as it could be...
+| [Tuesday 15 March 2011] [10:45:51] <private_meta>	>_<
+| [Tuesday 15 March 2011] [10:46:06] <private_meta>	argh
+| [Tuesday 15 March 2011] [10:46:26] <private_meta>	I'm looking through it and thinking and thinking and I don't realize I use the wrong one
+| [Tuesday 15 March 2011] [10:46:31] <private_meta>	lemme see
+| [Tuesday 15 March 2011] [10:47:40] <private_meta>	Sorry for bothering you :/
+| [Tuesday 15 March 2011] [10:48:18] <sustrik>	guys, an idea: what about factoring the C++ binding out of 0mq core in 3.0?
+| [Tuesday 15 March 2011] [10:48:53] <yrashk>	sustrik: ....and merging erlzmq2 in :D haha, kidding, sorry
+| [Tuesday 15 March 2011] [10:49:19] <sustrik>	well, i mean, all the other bindings are separate projects, why should c++ differ
+| [Tuesday 15 March 2011] [10:50:58] <yrashk>	yeah, it makes some sense
+| [Tuesday 15 March 2011] [10:51:17] <yrashk>	although I am ok with c++ binding living in there
+| [Tuesday 15 March 2011] [10:51:21] <guido_g>	good idea
+| [Tuesday 15 March 2011] [10:51:58] <sustrik>	the downside is that it ties the C++ binding to the core too much
+| [Tuesday 15 March 2011] [10:52:23] <sustrik>	so there's little space for alternative implementations
+| [Tuesday 15 March 2011] [10:52:40] <sustrik>	binding-only releases (without dragging the core along)
+| [Tuesday 15 March 2011] [10:52:43] <sustrik>	etc.
+| [Tuesday 15 March 2011] [10:54:01] <yrashk>	sustrik: I'd vote for keeping c++ binding
+| [Tuesday 15 March 2011] [10:54:59] <pieter_hintjens>	sustrik: that was the idea, forking it out, but it needs to be folded back in for a real distribution
+| [Tuesday 15 March 2011] [10:55:18] <sustrik>	sure, same as other bindings
+| [Tuesday 15 March 2011] [10:55:24] <pieter_hintjens>	exactly the same
+| [Tuesday 15 March 2011] [10:55:41] <pieter_hintjens>	makes it much easier to contribute to, improve, etc.
+| [Tuesday 15 March 2011] [10:55:49] <sustrik>	ack
+| [Tuesday 15 March 2011] [10:55:57] <sustrik>	i am +1 myself
+| [Tuesday 15 March 2011] [10:56:08] <pieter_hintjens>	I'm +1 for making it consistent with other languages
+| [Tuesday 15 March 2011] [10:56:08] <sustrik>	so far 3 +1's and a single -1
+| [Tuesday 15 March 2011] [10:56:44] <pieter_hintjens>	in any case I want to explore how to make packages that include the popular bindings
+| [Tuesday 15 March 2011] [10:57:06] <sustrik>	that's something i am wondering about for a long time
+| [Tuesday 15 March 2011] [10:57:28] <sustrik>	core + java + ruby + python + .net
+| [Tuesday 15 March 2011] [10:57:34] <pieter_hintjens>	the languages are: C++, C#, clisp, Java, Perl, PHP, Python, Ruby
+| [Tuesday 15 March 2011] [10:57:47] <pieter_hintjens>	going by the % of translations of the guide examples
+| [Tuesday 15 March 2011] [10:58:08] <sustrik>	ack
+| [Tuesday 15 March 2011] [10:58:13] <mato>	pieter_hintjens: you'll want to keep in mind that $LANGUAGE generally has it's own way of distributing extensions...
+| [Tuesday 15 March 2011] [10:58:23] <pieter_hintjens>	mato: indeed, this is the fun part
+| [Tuesday 15 March 2011] [10:58:30] <mato>	pieter_hintjens: e.g. Perl -> CPAN, Ruby -> gem, etc.
+| [Tuesday 15 March 2011] [10:58:43] <pieter_hintjens>	exactl
+| [Tuesday 15 March 2011] [10:58:47] <pieter_hintjens>	y
+| [Tuesday 15 March 2011] [10:58:58] <sustrik>	and on win32 people expect monolithic installer, i would say
+| [Tuesday 15 March 2011] [10:59:02] <mato>	then you have the linux distribution people packaging stuff on top of that separately
+| [Tuesday 15 March 2011] [10:59:26] <pieter_hintjens>	so Windows is the easiest case, in many ways
+| [Tuesday 15 March 2011] [11:00:47] <pieterh>	the process can't replace existing $LANGUAGE distribution processes but it can automate them
+| [Tuesday 15 March 2011] [11:01:58] <pieterh>	i'll spend some time studying this and make a few proposals
+| [Tuesday 15 March 2011] [11:02:18] <pieterh>	it probably will need cooperation from binding authors / communities to make work well
+| [Tuesday 15 March 2011] [11:02:27] <sustrik>	that will be useful
+| [Tuesday 15 March 2011] [11:02:37] <pieterh>	ok
+| [Tuesday 15 March 2011] [11:04:06] <pieterh>	sustrik: the poll for zmq_term is tied afaics, 4/4
+| [Tuesday 15 March 2011] [11:04:51] <pieterh>	there was one vote for infinity here on irc afair
+| [Tuesday 15 March 2011] [11:06:07] <Guthur>	+1 the extraction of C++ from core
+| [Tuesday 15 March 2011] [11:06:21] <Guthur>	+1 for extraction of C++ from the world
+| [Tuesday 15 March 2011] [11:06:29] <sustrik>	:)
+| [Tuesday 15 March 2011] [11:06:50] <sustrik>	pieterh: let's wait couple of days more
+| [Tuesday 15 March 2011] [11:07:08] <pieterh>	I do want to close the 2.1 release
+| [Tuesday 15 March 2011] [11:07:22] <pieterh>	there is not sufficient mandate afaics to revert the behavior
+| [Tuesday 15 March 2011] [11:07:40] <sustrik>	looks like
+| [Tuesday 15 March 2011] [11:07:47] <sustrik>	let's go for current solution then
+| [Tuesday 15 March 2011] [11:08:15] <pieterh>	well, this saves me a lot of work in the Guide, but I have this sinking feeling about it
+| [Tuesday 15 March 2011] [11:08:30] <pieterh>	these semantics won't change again in 3.0, right?
+| [Tuesday 15 March 2011] [11:08:46] <sustrik>	nope
+| [Tuesday 15 March 2011] [11:09:30] <pieterh>	then it's defensible, and the poll shows we did discuss the issue ad nauseam
+| [Tuesday 15 March 2011] [11:09:43] <pieterh>	if anyone still complains, they should have spoken up in time
+| [Tuesday 15 March 2011] [11:09:43] <sustrik>	ok
+| [Tuesday 15 March 2011] [11:09:49] <pieterh>	excellent
+| [Tuesday 15 March 2011] [11:10:03] <private_meta>	aw not again
+| [Tuesday 15 March 2011] [11:10:29] <pieterh>	private_meta: port in use?
+| [Tuesday 15 March 2011] [11:10:33] <private_meta>	no
+| [Tuesday 15 March 2011] [11:10:42] <private_meta>	Bad file descriptor
+| [Tuesday 15 March 2011] [11:10:42] <private_meta>	nbytes != -1 (mailbox.cpp:241)
+| [Tuesday 15 March 2011] [11:10:55] <private_meta>	don't remember right now what the error was when I had that one previously
+| [Tuesday 15 March 2011] [11:11:07] <mato>	pieterh: so what is the decision on zmq_term? 
+| [Tuesday 15 March 2011] [11:11:17] <mato>	pieterh: keep the current behaviour?
+| [Tuesday 15 March 2011] [11:11:21] <pieterh>	mato: yes
+| [Tuesday 15 March 2011] [11:11:27] <sustrik>	private_meta: is it a reproducible use case?
+| [Tuesday 15 March 2011] [11:11:29] <mato>	ok, understood
+| [Tuesday 15 March 2011] [11:11:45] <pieterh>	the problem, and the reason for the discussion, is that people migrating from 2.0 _will_ be systematically hit by this
+| [Tuesday 15 March 2011] [11:11:47] <private_meta>	sustrik: it's my translation of ppworker (not yet submitted)
+| [Tuesday 15 March 2011] [11:11:56] <cremes>	private_meta:  i have seen that assert when i ran out of sockets and/or ran out of file descriptors
+| [Tuesday 15 March 2011] [11:12:01] <cremes>	should be easy to reproduce
