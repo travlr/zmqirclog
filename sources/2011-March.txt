@@ -904,3 +904,284 @@
 | [Tuesday 15 March 2011] [11:11:47] <private_meta>	sustrik: it's my translation of ppworker (not yet submitted)
 | [Tuesday 15 March 2011] [11:11:56] <cremes>	private_meta:  i have seen that assert when i ran out of sockets and/or ran out of file descriptors
 | [Tuesday 15 March 2011] [11:12:01] <cremes>	should be easy to reproduce
+| [Tuesday 15 March 2011] [11:12:11] <sustrik>	private_meta: iirc such a problem can happen if you close the fd you get fromZMQ_FD
+| [Tuesday 15 March 2011] [11:12:34] <sustrik>	socket option i mean
+| [Tuesday 15 March 2011] [11:12:34] <cremes>	yep, that causes it too
+| [Tuesday 15 March 2011] [11:12:55] <sustrik>	cremes: if you can reproduce it, i would fix it
+| [Tuesday 15 March 2011] [11:14:12] <bpl29>	Is there a reference page for ZMQ objects such as context and socket?
+| [Tuesday 15 March 2011] [11:14:31] <pieterh>	bpl29: yes, at http://rfc.zeromq.org
+| [Tuesday 15 March 2011] [11:14:34] <private_meta>	happens when calling zmq::poll
+| [Tuesday 15 March 2011] [11:14:49] <pieterh>	bpl29: sorry! http://api.zeromq.org...
+| [Tuesday 15 March 2011] [11:14:50] <private_meta>	wait, i think I know
+| [Tuesday 15 March 2011] [11:15:04] <private_meta>	k, got it
+| [Tuesday 15 March 2011] [11:15:30] <bpl29>	thanks pieterh.  Am I wrong or is this just a function reference though?
+| [Tuesday 15 March 2011] [11:15:52] <pieterh>	bpl29: these objects are not accessed except via functions
+| [Tuesday 15 March 2011] [11:15:56] <pieterh>	opaque structures
+| [Tuesday 15 March 2011] [11:16:24] <bpl29>	Ah, I see!  Thank you!
+| [Tuesday 15 March 2011] [11:17:34] <cremes>	sustrik: i'll submit a small C example that reproduces the EBADF
+| [Tuesday 15 March 2011] [11:26:31] <Guthur>	Is 0MQ buildable on solaris 8
+| [Tuesday 15 March 2011] [11:26:39] <Guthur>	and is Sun Studio the only option
+| [Tuesday 15 March 2011] [11:26:41] <private_meta>	pieterh: again a (for you maybe opaque) question: In the ppqueue, ppworker, lpclient scenario, shouldn't lpclient connect at least ONCE? it only tells me it's trying to connect
+| [Tuesday 15 March 2011] [11:33:18] <Guthur>	pieter: which pattern would you suggest for a  N client to N servers, where the servers are processing requests to retrieve data from files
+| [Tuesday 15 March 2011] [11:49:51] <cremes>	Guthur: i'd use a REQ socket on the client, REP on the server and a QUEUE device in the middle to load balance
+| [Tuesday 15 March 2011] [11:56:00] <Guthur>	cremes: Probably a wise choice, I have to resist the temptation to over engineer
+| [Tuesday 15 March 2011] [11:57:18] <cremes>	Guthur: i suspect that over the next several months the "lazy pirate" patterns will become dominant
+| [Tuesday 15 March 2011] [11:57:43] <Guthur>	I was being drawn to Ch4 patterns actually
+| [Tuesday 15 March 2011] [11:57:50] <Guthur>	I've only started reading it though
+| [Tuesday 15 March 2011] [11:58:10] <Guthur>	I got hung up debugging peering3 in C#
+| [Tuesday 15 March 2011] [11:58:29] <Guthur>	massive 'doh' moment on my part there
+| [Tuesday 15 March 2011] [12:04:08] <private_meta>	I'm still curious if the way the zguide C variant of the paranoid pirate is intended behavior. If i run the c example, the lazy pirate client never connects
+| [Tuesday 15 March 2011] [12:04:14] <private_meta>	It shouldn't be intended
+| [Tuesday 15 March 2011] [12:04:30] <private_meta>	But somehow I don't think it should be an error on my side, I didn't really change anything
+| [Tuesday 15 March 2011] [12:47:19] <michelp>	morning
+| [Tuesday 15 March 2011] [12:48:04] <michelp>	i asked this q last night but i think everyone was in bed.  has anyone in the community experimented with using 0mq to do shared memory objects across threads/procs/boxes in python?
+| [Tuesday 15 March 2011] [12:48:35] <michelp>	it's something that's always interested me but i've never found a suitable transport for the underlying data transfer
+| [Tuesday 15 March 2011] [12:49:24] <michelp>	seems like 0mq is ideal for things like distributing new versions of objects and doing two or three phase commit between a group of data managers
+| [Tuesday 15 March 2011] [13:15:54] <Guthur>	michelp: sounds like an interesting project
+| [Tuesday 15 March 2011] [13:16:31] <Guthur>	you could maybe utilize something like tokyo cabinet as well
+| [Tuesday 15 March 2011] [13:17:28] <michelp>	for storage?  i was thinking of shipping around pickles so those would go well into a key value store where the key is the oid
+| [Tuesday 15 March 2011] [13:18:29] <michelp>	it would be nice for there to be a way for a new node to easily bootstrap objects and for objects to survive cluster destruction
+| [Tuesday 15 March 2011] [13:19:57] <michelp>	might even be possible for there to be more objects in the store than nodes have memory if there was a way to manage that.  thanks for the idea Guthur :)
+| [Tuesday 15 March 2011] [13:20:34] <Guthur>	also check out some of the stuff from Ch4 of the guide
+| [Tuesday 15 March 2011] [13:20:39] <Guthur>	for reliability
+| [Tuesday 15 March 2011] [13:20:46] <michelp>	yeah i'm about halfway through ch 3 :)
+| [Tuesday 15 March 2011] [13:21:00] <michelp>	almost there, it's a big guide, which is totally awesome
+| [Tuesday 15 March 2011] [13:21:41] <michelp>	the best documentation i've found on rabbit is a blog post.  the guide alone has convinced me that 0mq is the future, i haven't even written any code yet :)
+| [Tuesday 15 March 2011] [13:22:51] <michelp>	the guide would make an excellent 5 day course.  does anyone do 0mq training?
+| [Tuesday 15 March 2011] [13:23:14] <Guthur>	not that I am aware
+| [Tuesday 15 March 2011] [13:23:32] <Guthur>	I'm sure for corporate customers Imatix might be available for such
+| [Tuesday 15 March 2011] [13:23:39] <Guthur>	but don't quote me on that
+| [Tuesday 15 March 2011] [13:24:25] <michelp>	their services page does have various support level costs, but we're a US non-profit so it's a little out of our price range for a whole week
+| [Tuesday 15 March 2011] [13:25:11] <michelp>	if i worked for a corporation i'd be spending their money on it in a minute :)
+| [Tuesday 15 March 2011] [13:26:01] <michelp>	know if anyone in the 0mq community is going to OSCON this year?  It's here in my home town and we could get together for a BOF session
+| [Tuesday 15 March 2011] [13:27:44] <Guthur>	I'm not sure
+| [Tuesday 15 March 2011] [13:27:50] <Guthur>	there is sometimes meetups 
+| [Tuesday 15 March 2011] [13:28:00] <Guthur>	there was one in San Fran recently
+| [Tuesday 15 March 2011] [13:35:33] <Guthur>	anyone built jzmq on windows recently
+| [Tuesday 15 March 2011] [13:38:15] <pieterh>	michelp: iMatix does 0MQ training, sure
+| [Tuesday 15 March 2011] [13:39:35] <michelp>	pieterh, is it the usual services rate quoted here? http://www.imatix.com/services
+| [Tuesday 15 March 2011] [13:39:54] <pieterh>	private_meta: (a) lpclient should connect, yes, I had '-v' to enable verbose tracing of messages in the C code, that helps. (b) let me retest the C code...
+| [Tuesday 15 March 2011] [13:40:02] <pieterh>	michelp: yes, those are the usual rates
+| [Tuesday 15 March 2011] [13:40:32] <pieterh>	however if you're a non-profit, and you need help, you will find that it's readily available here
+| [Tuesday 15 March 2011] [13:41:13] <michelp>	yeah you guys have definitely be a great help so far!
+| [Tuesday 15 March 2011] [13:41:14] <pieterh>	mostly, you will benefit most by also contributing somehow to the community
+| [Tuesday 15 March 2011] [13:41:44] <Guthur>	I'm getting an error building the jzmq binding, error copying files
+| [Tuesday 15 March 2011] [13:41:57] <Guthur>	and Java users around
+| [Tuesday 15 March 2011] [13:41:59] <pieterh>	Guthur: I've not tried it in a long time... what's the error?
+| [Tuesday 15 March 2011] [13:42:35] <Guthur>	Error	1	error MSB3073: The command "copy ..\config.hpp ..\..\..\src javac ..\..\..\src\org\zeromq\ZMQ.java ..\..\..\src\org\zeromq\ZMQException.java ..\..\..\src\org\zeromq\ZMQForwarder.java ..\..\..\src\org\zeromq\ZMQQueue.java ..\..\..\src\org\zeromq\ZMQStreamer.java  :VCEnd" exited with code 9009.	C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppCommon.targets	103	6	jzmq 
+| [Tuesday 15 March 2011] [13:42:49] <pieterh>	michelp: with respect to shared objects across threads/processes, it's a design I'm going to make for Ch5 of the Guide
+| [Tuesday 15 March 2011] [13:42:58] <private_meta>	pieterh: thanks for retesting
+| [Tuesday 15 March 2011] [13:44:24] <pieterh>	Guthur: I'm searching what exit code 9009 means...
+| [Tuesday 15 March 2011] [13:44:40] <pieterh>	try running that command by hand in a shell, does it work?
+| [Tuesday 15 March 2011] [13:45:47] <pieterh>	"9009	DNS server not authoritative for zone."???
+| [Tuesday 15 March 2011] [13:45:49] <Guthur>	2 secs
+| [Tuesday 15 March 2011] [13:46:06] <michelp>	pieterh, wow awesome.  i'm tinkering with the idea here in python, what language were you going to focus on?
+| [Tuesday 15 March 2011] [13:46:37] <pieterh>	michelp: I always make the examples in C, but they can be translated into other languages quite simply
+| [Tuesday 15 March 2011] [13:47:01] <pieterh>	the idea is to make a distributed key-value store using a mix of pubsub and req/rep
+| [Tuesday 15 March 2011] [13:47:44] <Guthur>	umm syntax is incorrect
+| [Tuesday 15 March 2011] [13:48:09] <pieterh>	Guthur: syntax looks correct, yes, and the command runs successfully?
+| [Tuesday 15 March 2011] [13:48:19] <pieterh>	private_meta: indeed, it doesn't work... checking why...
+| [Tuesday 15 March 2011] [13:53:15] <Guthur>	oh wait
+| [Tuesday 15 March 2011] [13:53:30] <michelp>	pieterh, sound very interesting, i'll keep tinkering on my end for learning purposes until it comes out.  I'm also happy to proof read anything from a beginners point of view if you need that
+| [Tuesday 15 March 2011] [13:53:51] <pieterh>	michelp: what really helps is running the examples from the guide, each one, and verifying that they work
+| [Tuesday 15 March 2011] [13:54:14] <michelp>	yeah i've been doing that, which is why i'm only up to ch 3 at this point
+| [Tuesday 15 March 2011] [13:54:32] <michelp>	i've been running them in python but I know C so i've been using both as a guide to understanding
+| [Tuesday 15 March 2011] [13:54:44] <pieterh>	:-) you won't need any training
+| [Tuesday 15 March 2011] [13:55:27] <michelp>	hopefully not, but we have 7 folks on our team and i was thinking it might be worth having a group training session in the future if we can swing it
+| [Tuesday 15 March 2011] [13:55:34] <Guthur>	pieterh: the javac wasn't in the Path
+| [Tuesday 15 March 2011] [13:55:41] <Guthur>	hopefully should work now
+| [Tuesday 15 March 2011] [13:55:47] <michelp>	which is one reason why i was hoping maybe someone from imatix would be at OSCON :)
+| [Tuesday 15 March 2011] [13:56:08] <pieterh>	Guthur: worth noting on the Java bindings page, perhaps (you can edit it)
+| [Tuesday 15 March 2011] [13:56:17] <Guthur>	sure
+| [Tuesday 15 March 2011] [13:56:33] <pieterh>	michelp: we didn't plan to go
+| [Tuesday 15 March 2011] [13:56:43] <Guthur>	How does one generate a lib file again?
+| [Tuesday 15 March 2011] [13:56:52] <Guthur>	oh wait I think that is documented
+| [Tuesday 15 March 2011] [13:56:58] <michelp>	yeah it's expensive.  not to mention travel.  are you guys in the netherlands?
+| [Tuesday 15 March 2011] [13:57:22] <pieterh>	Brussels
+| [Tuesday 15 March 2011] [13:57:29] <pieterh>	Belgium
+| [Tuesday 15 March 2011] [13:58:05] <pieterh>	It's more a question of time really, plus we've found that presentations from actual 0MQ users are more effective than our own, often
+| [Tuesday 15 March 2011] [13:59:04] <michelp>	ah nice, i've never been.  been to just about every country around it except Luxembourg
+| [Tuesday 15 March 2011] [13:59:41] <michelp>	one of these days hopefully
+| [Tuesday 15 March 2011] [14:00:10] <Guthur>	ok binding page updated
+| [Tuesday 15 March 2011] [14:02:13] <pieterh>	private_meta: there was a bug in ppqueue
+| [Tuesday 15 March 2011] [14:02:24] <pieterh>	it was inserting an extra null frame at the front of the message
+| [Tuesday 15 March 2011] [14:03:11] <pieterh>	line 165, in the C code:
+| [Tuesday 15 March 2011] [14:03:13] <pieterh>	-            zmsg_wrap (msg, identity, "");
+| [Tuesday 15 March 2011] [14:03:13] <pieterh>	+            zmsg_push (msg, identity);
+| [Tuesday 15 March 2011] [14:03:21] <pieterh>	thanks for catching this!
+| [Tuesday 15 March 2011] [14:06:14] <private_meta>	thanks for fixing it
+| [Tuesday 15 March 2011] [14:06:25] <private_meta>	I'll test it a lil while later
+| [Tuesday 15 March 2011] [14:06:53] <sustrik>	pieterh: an idea about version numbering
+| [Tuesday 15 March 2011] [14:07:19] <Guthur>	is there something on the wiki about building libzmq as a static lib
+| [Tuesday 15 March 2011] [14:07:24] <sustrik>	the guarantees for minor version number bump is not clear atm
+| [Tuesday 15 March 2011] [14:07:36] <Guthur>	the java binding seems to want one
+| [Tuesday 15 March 2011] [14:07:55] <sustrik>	what if it says: "minor version number is incremented when stable branch is forked from the master"
+| [Tuesday 15 March 2011] [14:09:25] <sustrik>	Guthur: what OS?
+| [Tuesday 15 March 2011] [14:09:56] <Guthur>	sustrik: Win32
+| [Tuesday 15 March 2011] [14:10:00] <Guthur>	I think I have it though
+| [Tuesday 15 March 2011] [14:10:02] <Guthur>	sorry
+| [Tuesday 15 March 2011] [14:10:13] <Guthur>	sustrik: btw why is there an @ before your name
+| [Tuesday 15 March 2011] [14:10:27] <Guthur>	are you ops
+| [Tuesday 15 March 2011] [14:10:34] <sustrik>	Guthur: iirc building a static lib on win32 is a problem
+| [Tuesday 15 March 2011] [14:10:47] <sustrik>	yup
+| [Tuesday 15 March 2011] [14:11:04] <Guthur>	umm yeah it does seem to be an issue
+| [Tuesday 15 March 2011] [14:11:10] <Guthur>	this is problematic
+| [Tuesday 15 March 2011] [14:11:25] <Guthur>	jzmq wants a lib
+| [Tuesday 15 March 2011] [14:11:33] <sustrik>	but jzmq used to work with dlls before
+| [Tuesday 15 March 2011] [14:11:42] <sustrik>	have that changed?
+| [Tuesday 15 March 2011] [14:12:01] <Guthur>	umm not sure, it's complaining at me about not finding a libzmq.lib
+| [Tuesday 15 March 2011] [14:13:58] <sustrik>	ah
+| [Tuesday 15 March 2011] [14:14:03] <sustrik>	win32 is strange
+| [Tuesday 15 March 2011] [14:14:10] <Guthur>	yes, that it is
+| [Tuesday 15 March 2011] [14:14:25] <Guthur>	not my first choice to be sure
+| [Tuesday 15 March 2011] [14:14:31] <sustrik>	.lib is used even when doing dynamic linking
+| [Tuesday 15 March 2011] [14:14:41] <sustrik>	it's basically a table of entry points
+| [Tuesday 15 March 2011] [14:14:55] <sustrik>	it's located in lib subdir afterm msvc build
+| [Tuesday 15 March 2011] [14:14:56] <sustrik>	iirc
+| [Tuesday 15 March 2011] [14:17:08] <Guthur>	so it should be getting generated
+| [Tuesday 15 March 2011] [14:22:32] <Guthur>	where is the platform tweaks
+| [Tuesday 15 March 2011] [14:27:18] <Guthur>	i can generate a lib but then I get loads of unresolved external symbols
+| [Tuesday 15 March 2011] [14:42:13] <sustrik>	like zmq_init() and such?
+| [Tuesday 15 March 2011] [14:44:13] <Guthur>	__imp__zmq_init
+| [Tuesday 15 March 2011] [14:44:15] <Guthur>	etc
+| [Tuesday 15 March 2011] [14:48:23] <sustrik>	can you report that on the mailing list
+| [Tuesday 15 March 2011] [14:48:57] <sustrik>	it looks like it is possibly connected to the recent changes regarding symbol visibility
+| [Tuesday 15 March 2011] [14:49:32] <Guthur>	ah sure, I'll an old version to check
+| [Tuesday 15 March 2011] [14:49:40] <Guthur>	I'd really like to have something for tomorrw
+| [Tuesday 15 March 2011] [14:49:54] <Guthur>	I colleague wants to bridge from JMS to C#
+| [Tuesday 15 March 2011] [14:50:16] <Guthur>	with possibility for client/server setup
+| [Tuesday 15 March 2011] [14:50:28] <Guthur>	I'd like to show him a 0MQ solution
+| [Tuesday 15 March 2011] [14:51:31] <Guthur>	sustrik: when was that update you mentioned
+| [Tuesday 15 March 2011] [15:22:46] <mikko>	pieterh: there?
+| [Tuesday 15 March 2011] [16:00:35] <sustrik>	Guthur: december, i think
+| [Tuesday 15 March 2011] [16:04:47] <Guthur>	sustrik, ok, I'll try an earlier version
+| [Tuesday 15 March 2011] [16:05:49] <Guthur>	I'm back home now though, on a much saner platform, hehe
+| [Tuesday 15 March 2011] [17:11:26] <mikko>	pieterh: there now?
+| [Tuesday 15 March 2011] [18:05:49] <mikko>	Guthur: are you michael?
+| [Tuesday 15 March 2011] [18:07:07] <Guthur>	mikko, Indeed
+| [Tuesday 15 March 2011] [18:07:52] <mikko>	http://www.mansysadmin.com/2011/03/using-zeromq-framework-with-visual-studio-2010-tutorial/
+| [Tuesday 15 March 2011] [18:08:00] <mikko>	is this related to your problem?
+| [Tuesday 15 March 2011] [18:08:10] <mikko>	i remember something related to VS2010 being funny
+| [Tuesday 15 March 2011] [18:08:46] <Guthur>	I haven't been encountering any issues until I tried jzmq
+| [Tuesday 15 March 2011] [18:09:22] <Guthur>	I'll double check that though
+| [Tuesday 15 March 2011] [18:09:40] <Guthur>	but I am confident it was outputting to the correct directory
+| [Tuesday 15 March 2011] [18:09:56] <Guthur>	I'm just freeing up some space on my wins VM here, then I will try again
+| [Tuesday 15 March 2011] [18:10:25] 	 * Guthur made the mistake of thinking 20gb would be enough for windows and some tools
+| [Tuesday 15 March 2011] [18:23:38] <sed>	Is anyone around to answer a couple of questions about ZMQ
+| [Tuesday 15 March 2011] [18:23:40] <sed>	?
+| [Tuesday 15 March 2011] [18:28:41] <Guthur>	ask and you shall receive...
+| [Tuesday 15 March 2011] [18:28:44] <Guthur>	...maybe
+| [Tuesday 15 March 2011] [18:31:37] <cremes>	sed: that means yes
+| [Tuesday 15 March 2011] [18:31:57] <sed>	we have been testing out ZMQ for about a month and are very impressed with what it can do.  However we have noticed memory issues with the bindings in C C++ and perl.  
+| [Tuesday 15 March 2011] [18:32:29] <sed>	over the course of several weeks we see memory usage rise uniformally across multiple servers
+| [Tuesday 15 March 2011] [18:32:51] <sed>	also when running tests on single nodes top shows usage increasing
+| [Tuesday 15 March 2011] [18:33:22] <mikko>	sed: are you closing the messages ?
+| [Tuesday 15 March 2011] [18:33:24] <sed>	qwe are trying to identify the cause of this and what steps can be taken to avoid having to restart every 2 weeks
+| [Tuesday 15 March 2011] [18:33:27] <sed>	yes
+| [Tuesday 15 March 2011] [18:33:54] <cremes>	sed: are you closing and recreating sockets often?
+| [Tuesday 15 March 2011] [18:34:21] <sed>	no  the sockets remain open
+| [Tuesday 15 March 2011] [18:35:05] <cremes>	it's hard to say; an example that illustrates the problem in C or C++ would be great
+| [Tuesday 15 March 2011] [18:35:28] <cremes>	i have seen some memory leaks but they are due to closing/reopening sockets very rapidly
+| [Tuesday 15 March 2011] [18:35:43] <cremes>	i haven't heard about memory leakage with sockets that remain open indefinitely
+| [Tuesday 15 March 2011] [18:36:06] <cremes>	are you running 2.1.x or 2.0.x?
+| [Tuesday 15 March 2011] [18:36:56] <sed>	2.1.x
+| [Tuesday 15 March 2011] [18:37:31] <cremes>	what kind of sockets? (btw, feel free to provide more details without requiring us to interrogate you)
+| [Tuesday 15 March 2011] [18:38:11] <sed>	pulling up example code now   1 sec
+| [Tuesday 15 March 2011] [18:39:29] <sed>	#include <stdio.h>
+| [Tuesday 15 March 2011] [18:39:29] <sed>	#include <iostream>
+| [Tuesday 15 March 2011] [18:39:29] <sed>	#include "zmq.hpp"
+| [Tuesday 15 March 2011] [18:39:29] <sed>	int main(int argc, char *argv[]) {
+| [Tuesday 15 March 2011] [18:39:29] <sed>	    int type, tm, uid, pid, city;
+| [Tuesday 15 March 2011] [18:39:30] <sed>	    char msg[20000], ip[20],  host[100], cont[100], act[100], post[2000], get[2000];
+| [Tuesday 15 March 2011] [18:39:32] <sed>	     // prepare our sockets and context with 1 I/O thread
+| [Tuesday 15 March 2011] [18:39:34] <sed>	    zmq::context_t context(1);
+| [Tuesday 15 March 2011] [18:39:36] <sed>	    // Connect to subscriber
+| [Tuesday 15 March 2011] [18:39:38] <sed>	    zmq::socket_t subscriber(context, ZMQ_SUB);
+| [Tuesday 15 March 2011] [18:39:40] <sed>	    subscriber.setsockopt(ZMQ_SUBSCRIBE, "", 0);
+| [Tuesday 15 March 2011] [18:39:42] <sed>	    subscriber.connect("tcp://s2hs-mw-cas1:5566");
+| [Tuesday 15 March 2011] [18:39:44] <sed>	    while(1) {
+| [Tuesday 15 March 2011] [18:39:46] <sed>	        zmq::message_t* message = new zmq::message_t;
+| [Tuesday 15 March 2011] [18:39:48] <sed>	        subscriber.recv(message, ZMQ_NOBLOCK);
+| [Tuesday 15 March 2011] [18:39:50] <sed>	        strncpy(msg, static_cast<char *>(message->data()), message->size());
+| [Tuesday 15 March 2011] [18:39:54] <sed>	        delete message;
+| [Tuesday 15 March 2011] [18:39:56] <sed>	        type = atoi(&msg[0]);
+| [Tuesday 15 March 2011] [18:39:58] <sed>	        if (type == 3)
+| [Tuesday 15 March 2011] [18:40:00] <sed>	        {
+| [Tuesday 15 March 2011] [18:40:02] <sed>	            sscanf(msg,"%d %d %d %s %s %d %d %s %s %s %s", &type, &tm, &uid, &ip, &host, &pid, &city, &cont, &act, &post, &get);
+| [Tuesday 15 March 2011] [18:40:05] <sed>	            std::cout << msg << "\n";
+| [Tuesday 15 March 2011] [18:40:07] <sed>	        }
+| [Tuesday 15 March 2011] [18:40:09] <sed>	        memset ( (void *) &msg, 0, sizeof(msg));
+| [Tuesday 15 March 2011] [18:40:11] <sed>	    }
+| [Tuesday 15 March 2011] [18:40:13] <sed>	    free (subscriber);
+| [Tuesday 15 March 2011] [18:40:15] <sed>	    return 0;
+| [Tuesday 15 March 2011] [18:40:17] <sed>	}
+| [Tuesday 15 March 2011] [18:40:19] <sed>	that is a simple example script that we see the leak on
+| [Tuesday 15 March 2011] [18:40:24] <Guthur>	sed: you really really, should use pastebin
+| [Tuesday 15 March 2011] [18:40:52] <cremes>	sed: yeah, i can't read that; use gist.github.com or pastie.org to post code
+| [Tuesday 15 March 2011] [18:41:25] <sed>	http://pastebin.com/mp9uJpCs
+| [Tuesday 15 March 2011] [18:44:09] <cremes>	sed: how quickly does it leak? a few bytes for each message? is it a time based leak? e.g. it leaks even when messages aren't coming in
+| [Tuesday 15 March 2011] [18:44:55] <sed>	we have 40000 messages/sec at all times.  Would have to run seperate tests to get that data
+| [Tuesday 15 March 2011] [18:46:44] <Guthur>	i know it's not really relevant to the issue, but should that recv not be a blocking call
+| [Tuesday 15 March 2011] [18:47:17] <cremes>	sed: does the publisher leak memory or just the subscriber?
+| [Tuesday 15 March 2011] [18:47:19] <sed>	est 24k per minute
+| [Tuesday 15 March 2011] [18:47:32] <cremes>	cool
+| [Tuesday 15 March 2011] [18:47:55] <jond>	sed: I don't think recv should be non blocking, the message doesnt need to be on the heap and the free at end is just wrong
+| [Tuesday 15 March 2011] [18:47:58] <cremes>	i see this is over tcp transport; any chance you could do a test where publisher & subscriber communicate via inproc transport?
+| [Tuesday 15 March 2011] [18:50:11] <sed>	going to get a script running on the same box
+| [Tuesday 15 March 2011] [18:50:47] <Guthur>	sed: Which platform, out of curiosity
+| [Tuesday 15 March 2011] [18:52:07] <sed>	centos
+| [Tuesday 15 March 2011] [18:54:34] <mikko>	sed: you shouldnt free subscriber
+| [Tuesday 15 March 2011] [18:54:44] <mikko>	at the ed
+| [Tuesday 15 March 2011] [18:55:07] <mikko>	end*
+| [Tuesday 15 March 2011] [18:55:47] <mikko>	sed: also, you dont need to dynamically allocate 'message'
+| [Tuesday 15 March 2011] [18:56:11] <sed>	yeah  that was just testing if it was related
+| [Tuesday 15 March 2011] [18:56:46] <mikko>	that shouldnt leak
+| [Tuesday 15 March 2011] [18:56:52] <mikko>	as far as i can see
+| [Tuesday 15 March 2011] [18:57:20] <jond>	mikko: what time are you going to the pub tomorrow? hoping not to get my bag stolen this time.....
+| [Tuesday 15 March 2011] [18:57:30] <mikko>	jond: dont take a bag with you!
+| [Tuesday 15 March 2011] [18:57:43] <mikko>	jond: i probably get off from work around 17:30
+| [Tuesday 15 March 2011] [18:57:53] <mikko>	heading to white horse after that so will be there around 18:00
+| [Tuesday 15 March 2011] [18:58:03] <jond>	mikko: i have started doing that, learned the hard way
+| [Tuesday 15 March 2011] [18:58:20] <mikko>	jond: hows life nowadays?
+| [Tuesday 15 March 2011] [18:58:49] <mikko>	i guess we can chat tomorrow
+| [Tuesday 15 March 2011] [18:59:08] <jond>	better than before xmas .....
+| [Tuesday 15 March 2011] [18:59:09] <mikko>	sed: the only thing i can think of is if messages pile up
+| [Tuesday 15 March 2011] [18:59:22] <jond>	i've found a bug in xrep today
+| [Tuesday 15 March 2011] [18:59:48] <mikko>	jond: is it related to identities?
+| [Tuesday 15 March 2011] [19:01:09] <jond>	when the pipe is full when processing identity message leaves socket in bad state
+| [Tuesday 15 March 2011] [19:01:42] <jond>	i also don't think the HWM is honoured correctly but I'd need to show martin
+| [Tuesday 15 March 2011] [19:02:05] <jond>	I'm just reading up on how to submit a patch cos I havent done one for months....
+| [Tuesday 15 March 2011] [19:12:24] <mikko>	clone the repo, commit the change
+| [Tuesday 15 March 2011] [19:12:31] <mikko>	and do git format-patch -s
+| [Tuesday 15 March 2011] [19:19:59] <cremes>	this project has the most F'ed up submission policy; it's different from nearly every other github project
+| [Tuesday 15 March 2011] [19:24:58] <jond>	mikko: I've sent patch to list. I think I got it right ...
+| [Tuesday 15 March 2011] [19:26:09] <jond>	cremes: yep, it's like the version numbering. using master seems to be safest!!!
+| [Tuesday 15 March 2011] [19:26:42] <cremes>	jond: don't get me started on that either :)
+| [Tuesday 15 March 2011] [19:27:03] <cremes>	this is the only project i know that spawns a *new* repository for a branch
+| [Tuesday 15 March 2011] [19:30:18] <Guthur>	a conscientious should be reached on this issue
+| [Tuesday 15 March 2011] [19:30:30] <Guthur>	it seems to annoy a few people
+| [Tuesday 15 March 2011] [19:30:32] <cremes>	concensus?
+| [Tuesday 15 March 2011] [19:30:39] <Guthur>	cremes, yep
+| [Tuesday 15 March 2011] [19:30:39] <cremes>	:)
+| [Tuesday 15 March 2011] [19:30:50] <Guthur>	hehe trusted the spell checker too much
+| [Tuesday 15 March 2011] [19:31:20] <cremes>	i don't feel like fighting this particular battle; i'm not much of a C guy so my patches (if any) will be rare
+| [Tuesday 15 March 2011] [19:31:37] <mikko>	jond: didnt look at the contents but the format of the patch looks good
+| [Tuesday 15 March 2011] [19:31:40] <cremes>	but it seems to me like it increases the learning curve quite a bit for people new to the project
+| [Tuesday 15 March 2011] [19:32:10] <mikko>	im not fan of the dual repos either
+| [Tuesday 15 March 2011] [19:32:19] <mikko>	but that seems to work for pieterh and sustrik so i guess its ok
+| [Tuesday 15 March 2011] [19:32:35] <mikko>	the version numbering though is very odd for 2.1.x
+| [Tuesday 15 March 2011] [19:33:14] <cremes>	yes
+| [Tuesday 15 March 2011] [19:37:28] <jond>	mikko: just posted a note to the list about the operator void * on socket which allows that call to free to compile in example code above
+| [Tuesday 15 March 2011] [20:00:37] <Guthur>	mikko, That Visual studio fix worked
+| [Tuesday 15 March 2011] [20:00:45] <Guthur>	I successfully built the jzmq
+| [Tuesday 15 March 2011] [20:00:47] <Guthur>	cheers
+| [Tuesday 15 March 2011] [20:06:54] <sed>	set up an ipc connection and still see the memory increasing
+| [Tuesday 15 March 2011] [20:18:56] <Guthur>	sed: I think that would be worth putting on the mail list
+| [Tuesday 15 March 2011] [20:19:08] <Guthur>	to get wider exposure to the community
+| [Tuesday 15 March 2011] [20:24:40] <cremes>	sed: try inproc; ipc still uses sockets
+| [Tuesday 15 March 2011] [20:24:58] <sed>	k  will give that a shot
+| [Tuesday 15 March 2011] [21:15:30] <sed>	thanks for answering questions guys.  Will be looking at this tomorow so will reach out further to the community.
+| [Tuesday 15 March 2011] [22:43:47] <Honeyman>	Hello. I am using PyZMQ, and trying to do the REQ-REP communication, polling for the replies with the zmq.core.poll.select(), using timeout = 5.0 (seconds). But most of the times, this call returns immediately, without waiting for 5 seconds, returning empty lists, like if the socket is not available.
+| [Tuesday 15 March 2011] [22:47:19] <Honeyman>	What could be the reason of this problem? A bug in the PyZMQ? If pyzmq's select() is using zmq_poll(), maybe it is zmq_poll who returns prematurely, not complying to the timeouts?
+| [Tuesday 15 March 2011] [22:50:39] <Honeyman>	It is interesting that if I read from this socket no matter that it is absent from the rlist, the read always succeeds...
+| [Tuesday 15 March 2011] [23:13:38] <Honeyman>	Uh, found myself, that's that known bug in ZMQ 2.0
