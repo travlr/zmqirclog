@@ -1185,3 +1185,435 @@
 | [Tuesday 15 March 2011] [22:47:19] <Honeyman>	What could be the reason of this problem? A bug in the PyZMQ? If pyzmq's select() is using zmq_poll(), maybe it is zmq_poll who returns prematurely, not complying to the timeouts?
 | [Tuesday 15 March 2011] [22:50:39] <Honeyman>	It is interesting that if I read from this socket no matter that it is absent from the rlist, the read always succeeds...
 | [Tuesday 15 March 2011] [23:13:38] <Honeyman>	Uh, found myself, that's that known bug in ZMQ 2.0
+| [Wednesday 16 March 2011] [04:14:45] <pieterh_>	g'morning
+| [Wednesday 16 March 2011] [04:15:23] <pieterh_>	mikko: i'll be happy to explain the sanity behind the version numbering and release gits, this evening
+| [Wednesday 16 March 2011] [04:18:35] <mikko>	pieterh_: sent you my mobile number
+| [Wednesday 16 March 2011] [04:19:03] <mikko>	to work ->
+| [Wednesday 16 March 2011] [04:19:38] <pieterh_>	mikko: ok, will send you mine too
+| [Wednesday 16 March 2011] [04:54:29] <CIA-103>	zeromq2: 03Jon Dyte 07master * rb79d07b 10/ src/xrep.cpp : 
+| [Wednesday 16 March 2011] [04:54:29] <CIA-103>	zeromq2: reset socket state when identity message cannot be written to xrep
+| [Wednesday 16 March 2011] [04:54:29] <CIA-103>	zeromq2:  Signed-off-by: Jon Dyte <jon@totient.co.uk> - http://bit.ly/g67Cnf
+| [Wednesday 16 March 2011] [05:32:29] <Steve-o>	mikko: I'll add autoconf output into new tarballs
+| [Wednesday 16 March 2011] [06:16:06] <Steve-o>	mikko__
+| [Wednesday 16 March 2011] [06:34:39] <mikko__>	hi steve
+| [Wednesday 16 March 2011] [07:15:29] <Guthur>	can anyone download the tarball from github?
+| [Wednesday 16 March 2011] [07:15:41] <mikko__>	Guthur: probably
+| [Wednesday 16 March 2011] [07:15:49] <Guthur>	I can't at the moment
+| [Wednesday 16 March 2011] [07:15:51] <mikko__>	Guthur: you can use snapshots if you want the master
+| [Wednesday 16 March 2011] [07:15:58] <Guthur>	it could be my company firewall though
+| [Wednesday 16 March 2011] [07:15:59] <mikko__>	snapshot.zero.mq
+| [Wednesday 16 March 2011] [07:16:26] <mikko__>	latest is 16-Mar-2011 05:19
+| [Wednesday 16 March 2011] [07:16:29] <Guthur>	mikko__: is that from github?
+| [Wednesday 16 March 2011] [07:16:58] <mikko__>	sorry
+| [Wednesday 16 March 2011] [07:17:01] <mikko__>	i keep killing cgi irc
+| [Wednesday 16 March 2011] [07:17:02] <Guthur>	np
+| [Wednesday 16 March 2011] [07:17:07] <mikko__>	yes, it's master
+| [Wednesday 16 March 2011] [07:17:14] <Guthur>	It's more github i'm interested in
+| [Wednesday 16 March 2011] [07:17:19] <Guthur>	I actually want clrzmq2
+| [Wednesday 16 March 2011] [07:17:35] <Guthur>	but it keeps giving me a bad gateway wrror
+| [Wednesday 16 March 2011] [07:17:39] <Guthur>	error*
+| [Wednesday 16 March 2011] [07:18:08] <Guthur>	I suspect the company has started blocking the traffic, worked yesterday though
+| [Wednesday 16 March 2011] [07:18:42] <mikko__>	times out for me
+| [Wednesday 16 March 2011] [07:18:46] <Guthur>	oh
+| [Wednesday 16 March 2011] [07:18:55] <Guthur>	maybe it's not just me then
+| [Wednesday 16 March 2011] [08:22:54] <stimpie>	works for me
+| [Wednesday 16 March 2011] [08:24:28] <stimpie>	try: http://www.klaproos.net/zeromq-clrzmq2-f420936.tar.gz
+| [Wednesday 16 March 2011] [08:26:36] <CIA-103>	zeromq2: 03Martin Sustrik 07master * r32ded2b 10/ (9 files): 
+| [Wednesday 16 March 2011] [08:26:36] <CIA-103>	zeromq2: Duplicate identities now checked with zmq_connect
+| [Wednesday 16 March 2011] [08:26:36] <CIA-103>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/fgzmQX
+| [Wednesday 16 March 2011] [08:49:20] <CIA-103>	zeromq2: 03Martin Sustrik 07master * rf5015f4 10/ src/tcp_listener.cpp : 
+| [Wednesday 16 March 2011] [08:49:20] <CIA-103>	zeromq2: Incorrect errno reported from tcp_listener_t::set_address
+| [Wednesday 16 March 2011] [08:49:20] <CIA-103>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/hvsEGl
+| [Wednesday 16 March 2011] [09:31:22] <Guthur>	stimpie: cheers
+| [Wednesday 16 March 2011] [09:31:41] <Guthur>	It's actually working for me now as well
+| [Wednesday 16 March 2011] [09:31:55] <Guthur>	must have been an issue at the github end
+| [Wednesday 16 March 2011] [10:30:18] <sustrik>	cremes: hi, are you here?
+| [Wednesday 16 March 2011] [11:26:38] <cremes>	sustrik: i am here; how can i help?
+| [Wednesday 16 March 2011] [11:26:50] <sustrik>	i had a look at your issue
+| [Wednesday 16 March 2011] [11:27:00] <sustrik>	the one with leaks
+| [Wednesday 16 March 2011] [11:27:17] <sustrik>	trying to reproduce it i hit a max fd limit
+| [Wednesday 16 March 2011] [11:27:23] <sustrik>	how can i increase it
+| [Wednesday 16 March 2011] [11:27:26] <sustrik>	on linux?
+| [Wednesday 16 March 2011] [11:27:38] <cremes>	let me check...
+| [Wednesday 16 March 2011] [11:27:38] 	 * sustrik is lame admin
+| [Wednesday 16 March 2011] [11:27:42] <cremes>	:)
+| [Wednesday 16 March 2011] [11:28:42] <cremes>	http://www.cyberciti.biz/faq/linux-increase-the-maximum-number-of-open-files/
+| [Wednesday 16 March 2011] [11:28:46] <cremes>	that gives all of the details
+| [Wednesday 16 March 2011] [11:28:52] <cremes>	but i would just do "sudo sysctl -w fs.file-max=100000"
+| [Wednesday 16 March 2011] [11:29:57] <sustrik>	let me try
+| [Wednesday 16 March 2011] [11:30:14] <cremes>	fyi, this change won't survive a reboot
+| [Wednesday 16 March 2011] [11:30:58] <sustrik>	"Too many open files"
+| [Wednesday 16 March 2011] [11:31:04] <sustrik>	doesn't seem to help
+| [Wednesday 16 March 2011] [11:31:09] <mato>	sustrik: ulimit
+| [Wednesday 16 March 2011] [11:31:13] <cremes>	what is the output of ulimit ?
+| [Wednesday 16 March 2011] [11:31:17] <sustrik>	1024
+| [Wednesday 16 March 2011] [11:32:11] <mato>	sustrik: you need to change ulimit -n to some higher value, as root
+| [Wednesday 16 March 2011] [11:32:17] <mikko__>	hi mato
+| [Wednesday 16 March 2011] [11:32:19] <mikko__>	welcome back
+| [Wednesday 16 March 2011] [11:32:25] <mato>	hi mikko
+| [Wednesday 16 March 2011] [11:32:26] <mato>	thx
+| [Wednesday 16 March 2011] [11:32:34] <mikko__>	a lot of changes in the builds
+| [Wednesday 16 March 2011] [11:33:12] <mato>	sustrik: and then from that shell where you changed it, start another shell as yourself 
+| [Wednesday 16 March 2011] [11:33:37] <mato>	sustrik: so 1) sudo bash 2) ulimit -n 8192 3) su - sustrik 4) run what you need
+| [Wednesday 16 March 2011] [11:33:45] <mato>	mikko__: yes, i noticed, lots of work
+| [Wednesday 16 March 2011] [11:33:47] <sustrik>	le t me try
+| [Wednesday 16 March 2011] [11:34:04] <mato>	mikko__: also lots of release changes, etc. i'm completely out of the loop :-)
+| [Wednesday 16 March 2011] [11:34:17] <mato>	mikko__: good work taking over the autobuilds :-)
+| [Wednesday 16 March 2011] [11:34:27] <CIA-103>	zeromq2: 03Martin Sustrik 07master * rfac9c2d 10/ (doc/zmq_setsockopt.txt doc/zmq_socket.txt): 
+| [Wednesday 16 March 2011] [11:34:27] <CIA-103>	zeromq2: zmq_socket(3) and zmq_setsockopt(3) man pages improved
+| [Wednesday 16 March 2011] [11:34:27] <CIA-103>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/i8ZYxS
+| [Wednesday 16 March 2011] [11:34:46] <cremes>	sustrik: mato is correct; the change i gave you only changed the system-wide setting
+| [Wednesday 16 March 2011] [11:34:53] <cremes>	you now need ulimit to change your user setting
+| [Wednesday 16 March 2011] [11:36:04] <mikko__>	mato: we are currently integrating with openpgm autotools build
+| [Wednesday 16 March 2011] [11:36:12] <mikko__>	mato: to remove duplication of the build logic
+| [Wednesday 16 March 2011] [11:37:19] <sustrik>	mato: works! thanks!
+| [Wednesday 16 March 2011] [12:49:28] <cremes>	sustrik: any luck with reproducing that issue?
+| [Wednesday 16 March 2011] [12:50:19] <sustrik>	yup
+| [Wednesday 16 March 2011] [12:50:40] <sustrik>	i've just posted a short test case
+| [Wednesday 16 March 2011] [12:51:05] <cremes>	great!
+| [Wednesday 16 March 2011] [12:52:37] <sustrik>	cremes: can you test with that program
+| [Wednesday 16 March 2011] [12:52:48] <sustrik>	and let me know whether you are seeing the same behaviour?
+| [Wednesday 16 March 2011] [12:52:50] <cremes>	yes; i'll report back in a few
+| [Wednesday 16 March 2011] [13:02:29] <cremes>	sustrik: can't compile it on my linux box
+| [Wednesday 16 March 2011] [13:02:46] <cremes>	i get this error:  /usr/local/include/zmq.hpp:26:19: fatal error: cassert: No such file or directory
+| [Wednesday 16 March 2011] [13:03:44] <sustrik>	interesting
+| [Wednesday 16 March 2011] [13:03:51] <sustrik>	it should be a standard header file
+| [Wednesday 16 March 2011] [13:04:00] <sustrik>	are you compiling it with g++?
+| [Wednesday 16 March 2011] [13:04:25] <sustrik>	g++ -pthread -luuid -o leaker leaker.cpp .libs/libzmq.a
+| [Wednesday 16 March 2011] [13:04:38] <cremes>	i was using pieterh's 'build' script
+| [Wednesday 16 March 2011] [13:04:43] <cremes>	let me try your line
+| [Wednesday 16 March 2011] [13:05:24] <sustrik>	well, libzmq.a should be on library path
+| [Wednesday 16 March 2011] [13:05:26] <cremes>	compiled
+| [Wednesday 16 March 2011] [13:05:29] <sustrik>	good
+| [Wednesday 16 March 2011] [13:05:36] <sustrik>	does it leak?
+| [Wednesday 16 March 2011] [13:06:00] <cremes>	yes; heap jumped from 4MB to 24MB and stayed there
+| [Wednesday 16 March 2011] [13:06:12] <sustrik>	osx?
+| [Wednesday 16 March 2011] [13:06:14] <cremes>	and CPU is at 400%
+| [Wednesday 16 March 2011] [13:06:16] <cremes>	linux
+| [Wednesday 16 March 2011] [13:06:51] <cremes>	CPU dropped to 0, heap is now at 18MB
+| [Wednesday 16 March 2011] [13:07:02] <cremes>	10554 cremes    20   0  399m  18m 1148 S    0  0.2   1:44.09 leaker9                      
+| [Wednesday 16 March 2011] [13:07:28] <sustrik>	same as with the original test case?
+| [Wednesday 16 March 2011] [13:07:34] <cremes>	pretty much the same
+| [Wednesday 16 March 2011] [13:07:45] <cremes>	my original case ran longer and therefore created a larger heap
+| [Wednesday 16 March 2011] [13:07:49] <cremes>	but the idea is the same
+| [Wednesday 16 March 2011] [13:08:16] <sustrik>	well, i checked the malloc's you've reported to be leaking
+| [Wednesday 16 March 2011] [13:08:27] <sustrik>	(in yqueue_t)
+| [Wednesday 16 March 2011] [13:08:47] <sustrik>	the number of chunks get to something like 2600
+| [Wednesday 16 March 2011] [13:08:57] <sustrik>	den it gradually falls down to 0
+| [Wednesday 16 March 2011] [13:09:25] <cremes>	so this program does *not* leak on your system?
+| [Wednesday 16 March 2011] [13:09:39] <sustrik>	hard to say as it never finishes
+| [Wednesday 16 March 2011] [13:09:47] <sustrik>	let me look at mem usage
+| [Wednesday 16 March 2011] [13:09:57] <cremes>	i don't think this is a genuine leak where the mallocs are lost
+| [Wednesday 16 March 2011] [13:10:10] <cremes>	i think some structure is holding on to their references instead of freeing them up like it should
+| [Wednesday 16 March 2011] [13:10:19] <cremes>	that's why the conventional leak detectors aren't finding it
+| [Wednesday 16 March 2011] [13:10:39] <cremes>	the mallocs aren't getting orphaned; something in the lib is holding the references
+| [Wednesday 16 March 2011] [13:11:20] <sustrik>	the number of allocated chunks in yqueue_t drops to 0
+| [Wednesday 16 March 2011] [13:11:27] <sustrik>	but memory usage stays the same
+| [Wednesday 16 March 2011] [13:11:40] <sustrik>	that means that either some other object is leaking
+| [Wednesday 16 March 2011] [13:11:58] <sustrik>	or that OS simply doesn't return the allocated memory to the global pool
+| [Wednesday 16 March 2011] [13:12:21] <cremes>	i don't think it's an OS issue
+| [Wednesday 16 March 2011] [13:12:27] <sustrik>	how did you figured out that yqueue_t is leaking?
+| [Wednesday 16 March 2011] [13:13:13] <cremes>	on OSX i ran the "Instruments" application; it can track every malloc in the program and give you a trace of where it's happening
+| [Wednesday 16 March 2011] [13:13:25] <cremes>	i can send you a screenshot if you would like
+| [Wednesday 16 March 2011] [13:13:32] <sustrik>	no need
+| [Wednesday 16 March 2011] [13:13:53] <sustrik>	what i done was increment and print out a global variable after each malloc in yqueue_t
+| [Wednesday 16 March 2011] [13:14:03] <sustrik>	and decrement it and print out after each free
+| [Wednesday 16 March 2011] [13:14:15] <sustrik>	the program ends at zero :|
+| [Wednesday 16 March 2011] [13:14:36] <sustrik>	i can try with the other object you pointed out...
+| [Wednesday 16 March 2011] [13:15:19] <cremes>	i just sent you the screen shot; it can't hurt to look at it
+| [Wednesday 16 March 2011] [13:15:24] <sustrik>	ok
+| [Wednesday 16 March 2011] [13:16:22] <cremes>	convince pieterh that you need your own OSX box to test some of this stuff
+| [Wednesday 16 March 2011] [13:16:28] <cremes>	it has some really good dev tools
+| [Wednesday 16 March 2011] [13:17:56] <sustrik>	i am working on my own on this
+| [Wednesday 16 March 2011] [13:17:57] <sustrik>	anyway
+| [Wednesday 16 March 2011] [13:18:15] <sustrik>	so the leak either happens on osx and not on linux
+| [Wednesday 16 March 2011] [13:18:25] <mikko__>	ok, time to head out to the pubmeet
+| [Wednesday 16 March 2011] [13:18:35] <sustrik>	or the osx tools are incorrectly reporting the leak
+| [Wednesday 16 March 2011] [13:18:41] <sustrik>	mikko__: have a nice evening
+| [Wednesday 16 March 2011] [13:20:47] <cremes>	i see the leak on both osx and linux; the memory is never freed on the linux side
+| [Wednesday 16 March 2011] [13:21:03] <cremes>	i thought you saw the same
+| [Wednesday 16 March 2011] [13:35:17] <Guthur>	it's a wonder this was never noticed before
+| [Wednesday 16 March 2011] [13:35:31] <Guthur>	was the leak introduced recently
+| [Wednesday 16 March 2011] [13:36:50] <sustrik>	cremes: i did (using the top tool)
+| [Wednesday 16 March 2011] [13:37:15] <sustrik>	however, as for mallocs/free's in yqueue_t, those match perfectly
+| [Wednesday 16 March 2011] [13:37:21] <sustrik>	so either:
+| [Wednesday 16 March 2011] [13:37:37] <sustrik>	1. the leak is somewhere else and osx tools are reporting false positives
+| [Wednesday 16 March 2011] [13:37:57] <sustrik>	2. the leaks on linux and osx are different problems
+| [Wednesday 16 March 2011] [13:38:12] <sustrik>	3. processes don't return memory to os
+| [Wednesday 16 March 2011] [13:38:30] <sustrik>	(3) is know to be true in many cases
+| [Wednesday 16 March 2011] [13:38:49] <sustrik>	but contradicsts the report from the osx tool
+| [Wednesday 16 March 2011] [13:45:02] <cremes>	it's a head scratcher, that's for sure
+| [Wednesday 16 March 2011] [17:04:08] <jobytaffey>	Other than the data itself, is there any space in a zmq_msg_t for some user data? I have a buffer full of messages which I need to attach TTL values to. I could wrap each zmq_msg_t in a struct containing a TTL, but I'm wondering if there's a way of hiding it inside. Could I abuse the msg_content_t.hint pointer safely?
+| [Wednesday 16 March 2011] [17:17:46] <Seta00>	what's the value of EAGAIN/
+| [Wednesday 16 March 2011] [17:17:49] <Seta00>	? *
+| [Wednesday 16 March 2011] [17:18:08] <Seta00>	er.. nevermind
+| [Wednesday 16 March 2011] [17:20:24] <Seta00>	clrzmq2 doesn't let me detect EAGAIN's >_>
+| [Wednesday 16 March 2011] [17:43:30] <sustrik>	jobytaffey: check multi-part messages
+| [Wednesday 16 March 2011] [17:43:51] <sustrik>	ZMQ_SNDMORE, ZMQ_RCVMORE
+| [Wednesday 16 March 2011] [17:48:22] <jobytaffey>	I'm using multi-part msgs for some thing already. I suspect that my approach here is not very 0mq-ish. I'm generating data for clients, then storing it until they poll. Each message needs a TTL and there's a garbage collector to destroy when TTL reaches 0. It's not strictly a queue, so I'm storing zmq_msgs in RAM until they're polled for. To be honest, I've just wrapped them in a struct with a ttl...
+| [Wednesday 16 March 2011] [18:03:41] <Guthur>	sustrik, did you get any further with the mem leak investigation?
+| [Wednesday 16 March 2011] [20:01:18] <believa_>	What tag/branch to use of the zeromq github repository to get the same source as the v2.0 stable release on the zeromq website?
+| [Wednesday 16 March 2011] [20:03:27] <believa_>	actually - should be the v2.0.10 tag I'm guessing.
+| [Wednesday 16 March 2011] [20:14:07] <tokyodan>	Trying to install in Ubuntu 10.04 LTS server. I followed all the instructions. did './configure'. Then when I execute 'make' I get 'No targets specified and no makefile found'. What is wrong?
+| [Wednesday 16 March 2011] [20:14:45] <tokyodan>	all the LINUX dependencies have also been installed.
+| [Wednesday 16 March 2011] [20:17:55] <bpl29>	My make check is failing on OS X.  It's failing on test_shutdown_stress
+| [Wednesday 16 March 2011] [20:19:52] <bpl29>	I'm reading there is an assertion error in mailbox.cpp, and in fact it's commented in the source to say that this assertion should never fail.
+| [Wednesday 16 March 2011] [20:20:54] <tokyodan>	bp129 doesn't seem to be much help forthcoming here.
+| [Wednesday 16 March 2011] [20:21:44] <bpl29>	right, I'm wondering if people have actually installed on OS X.
+| [Wednesday 16 March 2011] [20:21:57] <bpl29>	There is a developer thread about this particular error, but it's dated
+| [Wednesday 16 March 2011] [20:22:33] <bpl29>	https://github.com/zeromq/zeromq2/issues#issue/161
+| [Wednesday 16 March 2011] [20:22:48] <bpl29>	Perhaps someone has gotten about this.
+| [Wednesday 16 March 2011] [20:22:55] <Guthur>	bpl29, I know someone was running on OSX today
+| [Wednesday 16 March 2011] [20:23:07] <Guthur>	and indeed I have a user of clrzmq2 who runs on OSX
+| [Wednesday 16 March 2011] [20:23:21] <tokyodan>	bp129 I'm trying on Ubuntu 10.04 server now with not much luck. I'm afraid to install on my Snow Leopard machine right now.
+| [Wednesday 16 March 2011] [20:23:21] <Guthur>	I don't use it myself so I can't really help
+| [Wednesday 16 March 2011] [20:23:46] <Guthur>	tokyodan, zeromq built fine on ubuntu 10.04 for me recently
+| [Wednesday 16 March 2011] [20:23:51] <tokyodan>	thanks bp129
+| [Wednesday 16 March 2011] [20:23:51] <Guthur>	which version are you using
+| [Wednesday 16 March 2011] [20:24:54] <Guthur>	I wasn't running server mind you
+| [Wednesday 16 March 2011] [20:25:10] <bpl29>	I just downloaded from git
+| [Wednesday 16 March 2011] [20:25:11] <tokyodan>	What causes make to error out with ''No targets specified and no makefile found' ?
+| [Wednesday 16 March 2011] [20:25:54] <tokyodan>	Guthur Did you just type 'make' with no arguments?
+| [Wednesday 16 March 2011] [20:25:59] <Guthur>	you ran autogen first, right>
+| [Wednesday 16 March 2011] [20:26:02] <Guthur>	?
+| [Wednesday 16 March 2011] [20:26:23] <tokyodan>	autogen> no. Didn't see that explained anywhere.
+| [Wednesday 16 March 2011] [20:26:39] <Guthur>	I think I ran autogen first then configure then make
+| [Wednesday 16 March 2011] [20:27:08] <tokyodan>	what does autogen do? And does it take arguments?
+| [Wednesday 16 March 2011] [20:27:31] <Guthur>	I think it should try to automatically detect settings for you platform
+| [Wednesday 16 March 2011] [20:27:57] <tokyodan>	I'm using the latest version of OMQ 2.1 (rc2)
+| [Wednesday 16 March 2011] [20:28:21] <tokyodan>	I thought that's what ./configure also did.
+| [Wednesday 16 March 2011] [20:28:41] <tokyodan>	did you run autogen on OS X or Ubuntu?
+| [Wednesday 16 March 2011] [20:28:55] <Guthur>	Ubuntu
+| [Wednesday 16 March 2011] [20:29:00] <Guthur>	you are right though
+| [Wednesday 16 March 2011] [20:29:11] <Guthur>	configure should do it
+| [Wednesday 16 March 2011] [20:29:38] <tokyodan>	Yeah. frome its output that's what it looked like it was doing.
+| [Wednesday 16 March 2011] [20:30:03] <Guthur>	my make fu is pretty weak tbh
+| [Wednesday 16 March 2011] [20:30:37] <tokyodan>	Seems like it should have created a makefile of something too, but didnt. although I got Makefile.am and Makefile.in
+| [Wednesday 16 March 2011] [20:31:26] <Guthur>	i'm just downloading fresh here to check
+| [Wednesday 16 March 2011] [20:33:09] <Guthur>	you must have ran autogen at some point
+| [Wednesday 16 March 2011] [20:33:32] <Guthur>	I have no ./configure in a fresh download
+| [Wednesday 16 March 2011] [20:34:30] <Guthur>	tokyodan, the configure completes ok?
+| [Wednesday 16 March 2011] [20:35:04] <cremes>	if you get a mailbox assertion on OSX, you need to do some kernel tuning
+| [Wednesday 16 March 2011] [20:35:21] <cremes>	search the zeromq.org site for the 'tuning guide' 
+| [Wednesday 16 March 2011] [20:35:31] <Seta00>	anyone here using clrzmq2?
+| [Wednesday 16 March 2011] [20:35:45] <cremes>	it has an entry on how to expand the socket buffers used by the kernel
+| [Wednesday 16 March 2011] [20:35:54] <Guthur>	Seta00, I do
+| [Wednesday 16 March 2011] [20:36:03] <Guthur>	Seta00, any issues?
+| [Wednesday 16 March 2011] [20:36:13] <cremes>	bpl29: look at the tuning guide
+| [Wednesday 16 March 2011] [20:36:38] <Seta00>	Guthur, it seems you can't detect EAGAIN when using NOBLOCK on a recv call.
+| [Wednesday 16 March 2011] [20:36:50] <Seta00>	so I guess I'll have to use polling?
+| [Wednesday 16 March 2011] [20:37:41] <bpl29>	cremes: where is the tuning guide located?
+| [Wednesday 16 March 2011] [20:38:03] <Guthur>	Seta00, if there is no msg the method just silently returns
+| [Wednesday 16 March 2011] [20:38:05] <cremes>	not sure... try the search box
+| [Wednesday 16 March 2011] [20:38:22] <Seta00>	bpl29, http://www.zeromq.org/docs:tuning-zeromq
+| [Wednesday 16 March 2011] [20:38:33] <bpl29>	thanks Seta00
+| [Wednesday 16 March 2011] [20:38:36] <cremes>	bpl29: that's it! ^^
+| [Wednesday 16 March 2011] [20:38:47] <bpl29>	thank you both
+| [Wednesday 16 March 2011] [20:38:51] <cremes>	on osx the default buffers are all too tiny :(
+| [Wednesday 16 March 2011] [20:38:52] <Seta00>	bpl29, for future reference: Guthur, yeah but silently returning doesn't 
+| [Wednesday 16 March 2011] [20:38:53] <Seta00>	oops
+| [Wednesday 16 March 2011] [20:38:55] <Seta00>	wrong ctrl-v
+| [Wednesday 16 March 2011] [20:38:57] <Seta00>	http://www.zeromq.org/docs:_start
+| [Wednesday 16 March 2011] [20:39:19] <Seta00>	Guthur, so I should check the output buffer?
+| [Wednesday 16 March 2011] [20:39:30] <cremes>	bpl29: btw, i run on osx all the time; once you get some tuning out of the way 0mq works really nicely on it
+| [Wednesday 16 March 2011] [20:39:52] <Guthur>	Seta00, the return byte array will be null
+| [Wednesday 16 March 2011] [20:40:32] <bpl29>	Okay, great.  I'll give it a shot.
+| [Wednesday 16 March 2011] [20:40:38] <Guthur>	Seta00, I didn't feel it was right to throw an exception for it
+| [Wednesday 16 March 2011] [20:41:05] <Seta00>	what how did I miss that
+| [Wednesday 16 March 2011] [20:41:06] <Guthur>	it should be the only time you receive a null msg
+| [Wednesday 16 March 2011] [20:41:35] <Guthur>	and empty message being byte[0]
+| [Wednesday 16 March 2011] [20:41:36] <Seta00>	yeah, I see it now
+| [Wednesday 16 March 2011] [20:41:53] <Guthur>	Seta00, cool, does that behaviour seem sane to you
+| [Wednesday 16 March 2011] [20:41:56] <mkent__>	Noob question: If you have zeromq set to queue to disk, is there any API for monitoring the disk queue?
+| [Wednesday 16 March 2011] [20:42:02] <Guthur>	I'm always looking for feedback
+| [Wednesday 16 March 2011] [20:42:13] <Seta00>	Guthur, yes it does.
+| [Wednesday 16 March 2011] [20:42:50] <Seta00>	my current zmq code is ridiculous, so I'm doing some refactoring :)
+| [Wednesday 16 March 2011] [20:43:25] <tokyodan>	Guthur the ./configure completed with 'error: unable to find a working c++ compiler'.
+| [Wednesday 16 March 2011] [20:43:41] <Guthur>	tokyodan, yeah that would be a show stopper, hehe
+| [Wednesday 16 March 2011] [20:44:12] <Seta00>	tokyodan, sudo apt-get install build-essential g++
+| [Wednesday 16 March 2011] [20:44:12] <tokyodan>	I thought Ubuntu would have a C++ compiler built in.
+| [Wednesday 16 March 2011] [20:44:13] <Seta00>	:P
+| [Wednesday 16 March 2011] [20:44:20] <Seta00>	tokyodan, only comes with a C compiler
+| [Wednesday 16 March 2011] [20:44:27] <tokyodan>	thanks Seta00
+| [Wednesday 16 March 2011] [20:44:38] <Seta00>	yw
+| [Wednesday 16 March 2011] [20:45:00] <Guthur>	Seta00, if you ever have any issues with clrzmq2 you can usually catch me around here, or raise an issue on github, which I'll try to get asap
+| [Wednesday 16 March 2011] [20:45:52] <Seta00>	Guthur, awesome, I'll keep that in mind
+| [Wednesday 16 March 2011] [20:46:03] <Guthur>	I'd really like to clean up some of the API, but I'm waiting until ZMQ 3.0
+| [Wednesday 16 March 2011] [20:48:57] <Guthur>	Seta00, Are you targetting Mono perchance?
+| [Wednesday 16 March 2011] [20:49:50] <Seta00>	Guthur, yes
+| [Wednesday 16 March 2011] [20:50:09] <Guthur>	make sure to grab the most recent version of clrzmq2
+| [Wednesday 16 March 2011] [20:50:26] <Guthur>	I found a signalling issue in relation to the Mono GC
+| [Wednesday 16 March 2011] [20:50:28] <tokyodan>	Guthur & Seta00 Thanks you guys. You got me through 'make'. It's running right now.
+| [Wednesday 16 March 2011] [20:50:38] <Guthur>	you may have seen it on the mailing list recently
+| [Wednesday 16 March 2011] [20:50:38] <Seta00>	nice :)
+| [Wednesday 16 March 2011] [20:50:56] <Guthur>	tokyodan, cool, happy coding
+| [Wednesday 16 March 2011] [20:51:43] <Guthur>	Seta00, basically signals generated by the Mono GC can cause the syscalls to return EINTR which would throw an exception in clrzmq2
+| [Wednesday 16 March 2011] [20:52:41] <Guthur>	the workaround I decided on was to reenter the call for all signals bar sigint and sigterm, which would instead exit the program
+| [Wednesday 16 March 2011] [20:53:07] <Guthur>	this mainly effected long running syscalls like those used in poll
+| [Wednesday 16 March 2011] [20:53:42] <Guthur>	obviously it was only an issue on POSIX platforms
+| [Wednesday 16 March 2011] [20:53:53] <tokyodan>	'make' finished with no errors. yeah!
+| [Wednesday 16 March 2011] [20:56:29] <tokyodan>	Well it seems to have installed OK. Now for trying it out. Still have to get the Lua part though.
+| [Wednesday 16 March 2011] [22:06:40] <tokyodan>	I installed the Lua binding on Ubuntu 10.04 server. But when I do: require 'zmq'  I get  module zmq not found. Seems like make is not putting the files into the proper Lua directories. How do I cure this outside of creating all kinds of symlinks.
+| [Wednesday 16 March 2011] [23:39:29] <tokyodan>	This doesn't work with Lua
+| [Wednesday 16 March 2011] [23:39:54] <tokyodan>	I followed this video: http://www.youtube.com/watch?v=_JCBphyciAs&feature=player_embedded
+| [Wednesday 16 March 2011] [23:41:02] <tokyodan>	And unlink in the video the send("Hello") command returns before I even start up the receiving end.
+| [Wednesday 16 March 2011] [23:41:40] <tokyodan>	I start up the recv loop on the receiving side and it just sits there blocking and waiting for input
+| [Wednesday 16 March 2011] [23:47:30] <michelp>	last night i was musing on the "supercomputer" descriptions in the guide
+| [Wednesday 16 March 2011] [23:48:16] <michelp>	having recently read "The Connection Machine" by D. Hillis it made me think that 0mq would make an excellent interconnect mechanism for various SIMD topologies
+| [Wednesday 16 March 2011] [23:50:00] <michelp>	the guide basically spells out how to do those topologies with a control channel to issue "instructions".  in conjunction with something like NumPy it would be an excellent platform for distributed computing
+| [Wednesday 16 March 2011] [23:50:18] <michelp>	anyway, just musing over dinner on the subject ;)
+| [Wednesday 16 March 2011] [23:53:48] <tokyodan>	Does the latest version on OMQ work with Lua 5.1.4?
+| [Wednesday 16 March 2011] [23:54:06] <tokyodan>	on Ubuntu 10.04 LTS Server?
+| [Wednesday 16 March 2011] [23:56:05] <michelp>	tokyodan, I don't use Lua so can't help you specifically, but have you looked at "The Missing Message Problem Solver" at http://zguide.zeromq.org/page:all ?
+| [Wednesday 16 March 2011] [23:56:20] <michelp>	it might help you diagnose the problem
+| [Thursday 17 March 2011] [00:04:44] <tokyodan>	michelp thanks!
+| [Thursday 17 March 2011] [00:05:33] <michelp>	sure np
+| [Thursday 17 March 2011] [00:06:38] <tokyodan>	I see that UP/DOWNSTREAM and replaced by PULL/PUSH. Is that correct? I've see examples with PUB/SUB?
+| [Thursday 17 March 2011] [00:10:08] <cremes>	tokyodan: yes, the UP/DOWNSTREAM names were replaced by PUSH/PULL
+| [Thursday 17 March 2011] [00:10:20] <cremes>	PUB/SUB has not changed nor are there any plans to change it
+| [Thursday 17 March 2011] [00:25:21] <tokyodan>	is there a difference between PUSH
+| [Thursday 17 March 2011] [00:25:33] <tokyodan>	PULL and PUB/SUB?
+| [Thursday 17 March 2011] [00:26:58] <cremes>	tokyodan: yes, they are quite different
+| [Thursday 17 March 2011] [00:27:19] <cremes>	in PUB/SUB, any messages sent via PUB are broadcast to *all* subscribers simultaneously
+| [Thursday 17 March 2011] [00:27:44] <cremes>	in PUSH/PULL, messages send via PUSH are delivered round-robin to all connected PULL sockets
+| [Thursday 17 March 2011] [00:27:55] <cremes>	if you haven't read the guide yet, please do so
+| [Thursday 17 March 2011] [00:28:08] <cremes>	there are lots of examples and quite a bit of text explaining this
+| [Thursday 17 March 2011] [00:28:16] <cremes>	see the channel topic for a link to the guide
+| [Thursday 17 March 2011] [00:28:17] <tokyodan>	That's what I'm going to do. Thanks.
+| [Thursday 17 March 2011] [00:28:58] <tokyodan>	I already got it printed out. I was just jumping in, installing, and trying the examples.
+| [Thursday 17 March 2011] [00:33:49] <cremes>	tokyodan: that's the best way to figure it out
+| [Thursday 17 March 2011] [03:38:10] <sustrik>	mikko: hi, are you there?
+| [Thursday 17 March 2011] [05:53:44] <pieterh_>	sustrik: ping
+| [Thursday 17 March 2011] [05:53:49] <sustrik>	pong
+| [Thursday 17 March 2011] [05:53:52] <pieterh_>	I'm sending the OpenPGM patches to the list
+| [Thursday 17 March 2011] [05:53:59] <sustrik>	great
+| [Thursday 17 March 2011] [05:54:02] <sustrik>	how was the meetup?
+| [Thursday 17 March 2011] [05:54:04] <pieterh_>	this covers the changes Mikko made but also include the tarballs, so they're large
+| [Thursday 17 March 2011] [05:54:15] <pieterh_>	the meetup was excellent, but too many people
+| [Thursday 17 March 2011] [05:54:17] <pieterh_>	:-)
+| [Thursday 17 March 2011] [05:54:23] <sustrik>	i can update the tarball myself
+| [Thursday 17 March 2011] [05:54:29] <sustrik>	no need to include it into the patch
+| [Thursday 17 March 2011] [05:54:34] <pieterh_>	I can't make a patch without the tarball, it's in one commit
+| [Thursday 17 March 2011] [05:54:41] <sustrik>	ok
+| [Thursday 17 March 2011] [05:54:42] <sustrik>	np
+| [Thursday 17 March 2011] [05:54:47] <sustrik>	too many?
+| [Thursday 17 March 2011] [05:54:56] <pieterh_>	yeah, twenty or twenty five
+| [Thursday 17 March 2011] [05:55:01] <pieterh_>	impossible to speak to everyone
+| [Thursday 17 March 2011] [05:55:02] <sustrik>	oh my, not enough chairs?
+| [Thursday 17 March 2011] [05:55:18] <pieterh_>	we found space, Mikko and Ian organized it very well
+| [Thursday 17 March 2011] [05:56:21] <pieterh_>	i'm testing that Steve's patches apply, will let you know
+| [Thursday 17 March 2011] [05:57:01] <sustrik>	i can do that
+| [Thursday 17 March 2011] [05:57:03] <sustrik>	no problem
+| [Thursday 17 March 2011] [05:58:33] <pieterh_>	ok, they apply cleanly
+| [Thursday 17 March 2011] [05:58:58] <sustrik>	thx
+| [Thursday 17 March 2011] [05:59:18] <pieterh_>	these changes are more complex than normal because they include the tarballs
+| [Thursday 17 March 2011] [05:59:33] <pieterh_>	Mikko wants to make the build system pull the tarballs down dynamically afiau
+| [Thursday 17 March 2011] [05:59:39] <pieterh_>	that would be neat
+| [Thursday 17 March 2011] [05:59:51] <sustrik>	in the past the tarballs were updated out of normal process
+| [Thursday 17 March 2011] [06:00:03] <sustrik>	ie. not via mailing list
+| [Thursday 17 March 2011] [06:00:16] <pieterh_>	yeah
+| [Thursday 17 March 2011] [06:00:33] <pieterh_>	this was because I used a pull request from Mikko's git
+| [Thursday 17 March 2011] [06:00:46] <sustrik>	as for automatic update, how would it know when to update?
+| [Thursday 17 March 2011] [06:00:58] <sustrik>	each new version?
+| [Thursday 17 March 2011] [06:01:06] <pieterh_>	hmm, at install time?
+| [Thursday 17 March 2011] [06:01:14] <sustrik>	ah, that way
+| [Thursday 17 March 2011] [06:01:19] <pieterh_>	since 0MQ now builds with any version of OpenPGM
+| [Thursday 17 March 2011] [06:02:06] <pieterh_>	all you need to do is say, "please build 0MQ with OpenPGM vx.y.z" and it would pull and unpack that tarball
+| [Thursday 17 March 2011] [06:02:17] <pieterh_>	something like that, presumably with defaults
+| [Thursday 17 March 2011] [06:02:21] <sustrik>	i see
+| [Thursday 17 March 2011] [06:02:46] <pieterh_>	this is possible because OpenPGM now has full autotooling, so 0MQ can be much more naive about it
+| [Thursday 17 March 2011] [06:02:51] <sustrik>	is steve ready to freeze the API?
+| [Thursday 17 March 2011] [06:03:00] <pieterh_>	Steve...?
+| [Thursday 17 March 2011] [06:03:04] <sustrik>	mc coy
+| [Thursday 17 March 2011] [06:03:11] <pieterh_>	I meant, "Steve... ping...?"
+| [Thursday 17 March 2011] [06:03:26] <sustrik>	if not, the auto-upload could break
+| [Thursday 17 March 2011] [06:03:34] <pieterh_>	yes
+| [Thursday 17 March 2011] [06:03:54] <pieterh_>	this is speculation, anyhow, but Mikko and Steve already did amazing work on the integration
+| [Thursday 17 March 2011] [06:04:04] <pieterh_>	so I assume they'd get this working properly
+| [Thursday 17 March 2011] [06:05:51] <sustrik>	ok, let me apply the patch
+| [Thursday 17 March 2011] [06:23:55] <sustrik>	pieterh_1: you should consult the build system maintainers before committing build-related patches imo
+| [Thursday 17 March 2011] [06:24:07] <sustrik>	mikko presumably, in this case
+| [Thursday 17 March 2011] [06:24:24] <pieterh_1>	you mean Steve's patches...
+| [Thursday 17 March 2011] [06:24:25] <pieterh_1>	right
+| [Thursday 17 March 2011] [06:24:27] <sustrik>	yes
+| [Thursday 17 March 2011] [06:24:44] <pieterh_1>	I'll ask Mikko to review them, good idea
+| [Thursday 17 March 2011] [08:04:59] <Guthur>	pieterh, with peering3 what sort of output should I expect?
+| [Thursday 17 March 2011] [08:20:22] <Guthur>	oh nvm, working now
+| [Thursday 17 March 2011] [08:30:26] <s0undt3ch>	hello ppl
+| [Thursday 17 March 2011] [08:30:42] <s0undt3ch>	can a publisher know where a connection is comming from?
+| [Thursday 17 March 2011] [08:30:53] <s0undt3ch>	ie, so I can auth/deny a subscription?
+| [Thursday 17 March 2011] [08:35:55] <sustrik>	no
+| [Thursday 17 March 2011] [09:45:43] <stimpie>	Iam getting unstable performance using jzmq on windows, 1,000,000 x 128B messages gets 300K/s. 10,000,000 x 128B messages gets 20K/s 
+| [Thursday 17 March 2011] [09:46:58] <stimpie>	it looks like this is caused by the sender, using a c sender and a java receiver gets a stable 300K/s 
+| [Thursday 17 March 2011] [09:47:31] <sustrik>	it must be java binding issue then
+| [Thursday 17 March 2011] [09:47:40] <sustrik>	try reporting it on jzmq's bug tracker
+| [Thursday 17 March 2011] [09:47:49] <sustrik>	or on the mailing list
+| [Thursday 17 March 2011] [09:49:18] <stimpie>	ok I will try to create a simple reproducible scenario. (or just provide the results to my boss, saying we shouldn't use windows ;-)
+| [Thursday 17 March 2011] [09:49:58] <fred86>	When using pub/sub sockets that stay open for a long time (without any activity), I find that after a while (maybe 1+ hours later), the client-side stops receiving messages (however when I open a new client, the new client can receive messages). Do the sockets reconnect automatically if there's a short network outage? What could the problem be? Thanks.
+| [Thursday 17 March 2011] [09:50:04] <cremes>	stimpie: does this example use PUB/SUB?
+| [Thursday 17 March 2011] [09:50:27] <cremes>	stimpie: if so, your publisher could be overrunning the subscriber; in that case the publisher will queue the messages in memory
+| [Thursday 17 March 2011] [09:50:39] <cremes>	which could lead to a slowdown if your box doesn't have enough RAM
+| [Thursday 17 March 2011] [09:51:01] <stimpie>	cremes, yes its a PUB/SUB and memory usages skyrockets
+| [Thursday 17 March 2011] [09:51:24] <cremes>	stimpie: then it is queueing in memory
+| [Thursday 17 March 2011] [09:51:49] <cremes>	does the machine running the publisher have enough RAM or is it swapping to disk?
+| [Thursday 17 March 2011] [09:52:03] <stimpie>	its starts swapping at some point 
+| [Thursday 17 March 2011] [09:52:19] <cremes>	ok, then you have your answer as to why it gets slower
+| [Thursday 17 March 2011] [09:52:41] <stimpie>	but why doesnt this occur with a c version?
+| [Thursday 17 March 2011] [09:52:51] <cremes>	which part was in C?
+| [Thursday 17 March 2011] [09:53:06] <stimpie>	I had a sender and receiver in c and in java
+| [Thursday 17 March 2011] [09:53:25] <cremes>	c -> c, no problem?
+| [Thursday 17 March 2011] [09:53:34] <cremes>	c -> java, slow?
+| [Thursday 17 March 2011] [09:53:40] <cremes>	how about java -> c, does that work?
+| [Thursday 17 March 2011] [09:53:46] <stimpie>	c->java is ok 
+| [Thursday 17 March 2011] [09:53:54] <stimpie>	java -> c, is slow
+| [Thursday 17 March 2011] [09:54:01] <cremes>	so which combo produces this slowdown?
+| [Thursday 17 March 2011] [09:54:29] <stimpie>	java -> java is slow and java -> c is slow
+| [Thursday 17 March 2011] [09:54:39] <stimpie>	c-> c, c -> java are fine
+| [Thursday 17 March 2011] [09:54:56] <cremes>	interesting...
+| [Thursday 17 March 2011] [09:55:38] <cremes>	java -> c being slow doesn't make any sense; that could certainly be a bug
+| [Thursday 17 March 2011] [09:55:57] <cremes>	does the memory usage of the publisher sky-rocket in that combination?
+| [Thursday 17 March 2011] [09:56:02] <stimpie>	yes
+| [Thursday 17 March 2011] [09:56:29] <cremes>	weird... yes, open a ticket with all of these details including the code
+| [Thursday 17 March 2011] [09:57:51] <stimpie>	I was thinking that maybe java uses some object overhead on each messages causing it to use more memory and start swaping sooner then the c versions
+| [Thursday 17 March 2011] [09:59:01] <sustrik>	fred86: yes, there's automatic reconnection
+| [Thursday 17 March 2011] [10:00:49] <fred86>	hmm, okay. Then this problem is a bit bizarre. the layout is a chatroom-like server (where the server does some processing before publishing a message). if there isn't any activity for a while, I find that the clients stop getting messages from the server.. (but they can still send messages..and I can see the server processing everything fine). and if I open new clients, they will be able to receive messages. do you have any idea wh
+| [Thursday 17 March 2011] [10:01:46] <sustrik>	no,sorry, try to make a minimal reproducible test case and i'll have a look
+| [Thursday 17 March 2011] [10:02:18] <sustrik>	stimpie: jave uses gc
+| [Thursday 17 March 2011] [10:02:22] <sustrik>	java
+| [Thursday 17 March 2011] [10:02:45] <sustrik>	which could mean that object deallocation is delayed
+| [Thursday 17 March 2011] [10:03:08] <sustrik>	in that case each message would be stored in memory twice
+| [Thursday 17 March 2011] [10:03:13] <sustrik>	once in 0mq buffer
+| [Thursday 17 March 2011] [10:03:31] <sustrik>	second time in form of gargage on java heap
+| [Thursday 17 March 2011] [10:05:19] <stimpie>	I will do some more test to see if it really is only a memory issue. 
+| [Thursday 17 March 2011] [10:43:03] <gambi>	how do I return a message via XREQ in a stream callback? on one side i've got this zmqstream and a on_recv() callback and on the other side a regular socket which does the send() (that works) and the recv() (which doesn't)
+| [Thursday 17 March 2011] [10:43:46] <gambi>	XREQ/XREP
+| [Thursday 17 March 2011] [10:44:14] <gambi>	unfortunately I'm not sure how else do explain this, sorry :(
+| [Thursday 17 March 2011] [10:48:21] <gambi>	basically I'm trying to send build something closely related to this: https://github.com/zeromq/pyzmq/blob/master/examples/heartbeat/heart.py but I'd like to have some processing done before it returns the message to the server.
+| [Thursday 17 March 2011] [10:49:21] <gambi>	sorry for the random words that mix into my sentences ... I guess I'm already quite tired ;)
+| [Thursday 17 March 2011] [10:50:30] <guido_g>	simply send the message back
+| [Thursday 17 March 2011] [10:52:09] <guido_g>	gambi: see http://zeromq.github.com/pyzmq/eventloop.html#send
+| [Thursday 17 March 2011] [10:55:42] <gambi>	guido_g: oh, great thanks for that! i'll try that right away. :)
+| [Thursday 17 March 2011] [10:56:18] <guido_g>	one should try the products documentation *before* using the product...
+| [Thursday 17 March 2011] [10:56:42] <gambi>	guido_g: oh, c'mon ... I've been reading the docs for hours ... ;)
+| [Thursday 17 March 2011] [10:56:49] <guido_g>	sure
+| [Thursday 17 March 2011] [11:21:16] <xs>	suppose the rep side of a reqrep dies after the req side has sent it's request. then the rep side recovers. shouldn't the req side re-send its request? this doesn't seem to be happening for me (i'm using multipart messages if that changes things)
+| [Thursday 17 March 2011] [11:26:24] <cremes>	xs: no, 0mq doesn't auto-resend anything
+| [Thursday 17 March 2011] [11:26:43] <cremes>	you would need to timeout the send and retry yourself
+| [Thursday 17 March 2011] [11:27:12] <cremes>	to do so you have two choices and both use zmq_poll()
+| [Thursday 17 March 2011] [11:27:22] <cremes>	1. close the REQ socket, reopen it and resend
+| [Thursday 17 March 2011] [11:27:49] <cremes>	2. use an XREQ socket (this doesn't enforce the strict req/rep/req/rep message pattern) and resend upon timeout
+| [Thursday 17 March 2011] [11:27:57] <cremes>	does that make sense to you?
+| [Thursday 17 March 2011] [11:28:13] <xs>	i think so. thanks. 
+| [Thursday 17 March 2011] [11:28:21] <xs>	am i correct in thinking i just have to timeout?
+| [Thursday 17 March 2011] [11:28:32] <xs>	there's no way for me to determine that an endpoint has disappeared and reconnected
+| [Thursday 17 March 2011] [11:28:45] <Guthur>	ch4 for of the guide covers reliability
+| [Thursday 17 March 2011] [11:28:57] <Guthur>	It might have some useful patterns
+| [Thursday 17 March 2011] [11:29:12] <cremes>	xs: correct, there is no way to determine that an endpoint has bounced
+| [Thursday 17 March 2011] [11:29:21] <xs>	ok, thanks, i'll take a look.. i had just assumed 0mq would do this for me. sorry for the noise
+| [Thursday 17 March 2011] [11:29:24] <cremes>	chapter4 of the guide is a good suggestion
+| [Thursday 17 March 2011] [12:15:33] <stimpie>	A follow up on my java -> c performance issues, when limiting the send rate I could push my message rate to a ~300K/s, going above that results in swapping. So cause is memory and not a bug in the java wrapper
+| [Thursday 17 March 2011] [12:16:05] <stimpie>	Still need to figure out how to handle such an overload in production but thats a different subject
+| [Thursday 17 March 2011] [12:20:40] <sustrik>	use hwm/swap
+| [Thursday 17 March 2011] [12:29:15] <Guthur>	pieterh, when simulating a server crash with lazy pirate client/server, should the client be generating...
+| [Thursday 17 March 2011] [12:29:17] <Guthur>	Bad file descriptor
+| [Thursday 17 March 2011] [12:29:24] <Guthur>	nbytes != -1 (mailbox.cpp:242)
