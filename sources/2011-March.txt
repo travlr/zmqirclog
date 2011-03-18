@@ -1617,3 +1617,72 @@
 | [Thursday 17 March 2011] [12:29:15] <Guthur>	pieterh, when simulating a server crash with lazy pirate client/server, should the client be generating...
 | [Thursday 17 March 2011] [12:29:17] <Guthur>	Bad file descriptor
 | [Thursday 17 March 2011] [12:29:24] <Guthur>	nbytes != -1 (mailbox.cpp:242)
+| [Thursday 17 March 2011] [12:34:25] <Guthur>	oh sorry nvm, my mistake
+| [Thursday 17 March 2011] [12:59:33] <michelp>	my coworkers have returned from pycon, it's hard to know if what they are saying about 0mq is FUD they acquired from someone else or not
+| [Thursday 17 March 2011] [12:59:57] <michelp>	for example, they are saying in the PUB/SUB case that the subscriber is guaranteed to drop the first message always, all the time
+| [Thursday 17 March 2011] [13:00:17] <michelp>	is that true? i remember seeing something about it in ch 1 but lost track of the problem in my reading of the guide
+| [Thursday 17 March 2011] [13:09:06] <sustrik>	no, it's not true
+| [Thursday 17 March 2011] [13:10:12] <michelp>	it seems to be a meme that has dug in hard from pycon.  sigh
+| [Thursday 17 March 2011] [13:10:48] <ianbarber>	it's because if you right a bit of test code, and start publishing and subscribing at the same time, you'll likely push a bunch of messages before the subscriber is finished connecting
+| [Thursday 17 March 2011] [13:11:11] <ianbarber>	this is a common new-to-0mq issue
+| [Thursday 17 March 2011] [13:13:58] <michelp>	I suspect this is the part of the guide that has formed the meme: "Even if you start a subscriber, wait a while, and then start the publisher, the subscriber will always miss the first messages that the publisher sends."
+| [Thursday 17 March 2011] [13:14:08] <michelp>	they read that far, and stop, and don't go on to read the solution
+| [Thursday 17 March 2011] [13:14:37] <michelp>	Perhaps the very next sentence should be something along the lines of "Keep reading and we'll explain how to do it right" or something like that
+| [Thursday 17 March 2011] [13:17:04] <michelp>	i think the fact that the sentence is bolded also make it stick in someone's mind more so than all the other information there.  anyway, it's unfortunate that it seems like these wrong impressions have spread through such a big community so quickly.
+| [Thursday 17 March 2011] [13:17:46] <michelp>	maybe we need an anti-FUD faq
+| [Thursday 17 March 2011] [13:18:22] <kdj>	Yeah, thats too bad. I haven't seen anything like that in my testing.
+| [Thursday 17 March 2011] [14:45:51] <Guthur>	pieterh, ping?
+| [Thursday 17 March 2011] [15:08:42] <Guthur>	private_meta, you about
+| [Thursday 17 March 2011] [16:21:32] <mikko>	 hi
+| [Thursday 17 March 2011] [16:25:09] <Guthur>	hey mikko 
+| [Thursday 17 March 2011] [16:25:28] <Guthur>	I see the meet up at London was a success
+| [Thursday 17 March 2011] [16:25:38] <Guthur>	you were there, correct?
+| [Thursday 17 March 2011] [16:26:24] <mikko>	yes
+| [Thursday 17 March 2011] [16:26:33] <mikko>	i will never drink beer again
+| [Thursday 17 March 2011] [16:28:43] <Guthur>	stick to coffee, it actually can improve productivity, instead of the opposite, hehe
+| [Thursday 17 March 2011] [16:28:59] <Guthur>	some nice topics though
+| [Thursday 17 March 2011] [16:29:12] <Guthur>	the JMS is an interesting one
+| [Thursday 17 March 2011] [16:29:54] <Guthur>	Just had this situation at work recently, not really related to 0MQ, more that someone wanted to interact with JMS outside of Java
+| [Thursday 17 March 2011] [16:30:40] <Guthur>	I suggested a thin Java wrapper and 0MQ as the glue
+| [Thursday 17 March 2011] [16:35:35] <Guthur>	mikko, did you implement any of the examples in ch4 perchance?
+| [Thursday 17 March 2011] [16:42:04] <mikko>	Guthur: nope
+| [Thursday 17 March 2011] [16:45:41] <mikko>	JMS came from Java guys at the meetup
+| [Thursday 17 March 2011] [16:45:58] <mikko>	they said that Java market is a lot easier to penetrate with JMS compatible messaging
+| [Thursday 17 March 2011] [16:48:37] <Guthur>	yeah they're probably right
+| [Thursday 17 March 2011] [16:49:18] <Guthur>	I think sustrik suggestion is the sanest one
+| [Thursday 17 March 2011] [16:49:53] <Guthur>	but probably not enough for the Java community, they like everything to be fully in the Java ecosystem
+| [Thursday 17 March 2011] [16:53:50] <Guthur>	it'd be an interesting project actually
+| [Thursday 17 March 2011] [16:57:19] <dahankzter>	I dont know, just a bridge would go a long way
+| [Thursday 17 March 2011] [16:57:53] <dahankzter>	that way old IBM MQ's can be used in conjunction with nw =MQ stuff
+| [Thursday 17 March 2011] [16:58:04] <dahankzter>	s/nw/new
+| [Thursday 17 March 2011] [17:02:22] <Guthur>	yeah, I'm probably being a little cynical
+| [Thursday 17 March 2011] [17:05:00] <dahankzter>	no, not really. its very much so but just being able to connect your new cool stuff woth the old expensive monster could go a long way
+| [Thursday 17 March 2011] [17:20:20] <sustrik>	the nice thing about the bridge is that it's cheap
+| [Thursday 17 March 2011] [17:20:41] <sustrik>	can be done in couple of days, i would say
+| [Thursday 17 March 2011] [17:23:18] <dahankzter>	perhaps the problem is vendor specific protocols?
+| [Thursday 17 March 2011] [17:23:37] <dahankzter>	jms does not define any such for the wire at least
+| [Thursday 17 March 2011] [17:26:54] <dahankzter>	I think AMQP would be a nice place to start 
+| [Thursday 17 March 2011] [17:30:59] <dahankzter>	i think you know lots of this though :) iMatix is mentioned on the AMQP site
+| [Thursday 17 March 2011] [17:48:34] <sustrik>	dhankzter: you can bridge basically any protocol or API that provides PUB/SUB and/or REQ/REP semantics
+| [Thursday 17 March 2011] [17:49:01] <sustrik>	as for AMQP there's 0mq/RabbitMQ bridge
+| [Thursday 17 March 2011] [17:52:41] <dahankzter>	yes sure. i was just thinking from my perspective where normally there is a big proprietary thing eg MQ as "standard". I would not be allowed to pull in an extra middleware thing like RabbitMQ as well as my new code+zeromq. the convincing the management factor is not negligible unfortunately.
+| [Thursday 17 March 2011] [18:14:15] <advant___>	How does zeromq guarantee message persistence and delivery without a database?  Or does it use something like hypersonic in-memory database?
+| [Thursday 17 March 2011] [18:25:55] <dahankzter>	it doesn't
+| [Thursday 17 March 2011] [18:29:47] <cremes>	advant___: it doesn't guarantee either of those things; what led you to think that?
+| [Thursday 17 March 2011] [18:36:27] <advant___>	oh i dunno, I guess that would be part of a broker anyways
+| [Thursday 17 March 2011] [20:48:26] <TokyoDan_>	In the Lua binding i don't see an equivalent for zmq_msg_close(). Why?
+| [Thursday 17 March 2011] [20:53:24] <TokyoDan>	In the Lua bindings readme i don't see an equivalent to zmq_msg_close(). Why?
+| [Thursday 17 March 2011] [21:00:32] <TokyoDan>	hello?
+| [Thursday 17 March 2011] [21:12:04] <Guthur>	TokyoDan, It possibly cleans up itself
+| [Thursday 17 March 2011] [21:12:32] <Guthur>	not familiar with Lua or the binding, but in clrzmq2 the GC actually takes care of that
+| [Thursday 17 March 2011] [21:12:44] <Guthur>	there maybe some dispose equivalent
+| [Thursday 17 March 2011] [21:13:20] <tokyodan_>	I was thinking the same thing as Lua has garbage collection. But I'm not sure.
+| [Thursday 17 March 2011] [21:13:36] <Guthur>	you could take a look at the source code
+| [Thursday 17 March 2011] [21:13:55] <Guthur>	it would probably be evident pretty quickly
+| [Thursday 17 March 2011] [21:13:58] <tokyodan_>	Good idea.
+| [Thursday 17 March 2011] [21:14:09] <Guthur>	sorry i'd have a look as well but I need to get to bed
+| [Thursday 17 March 2011] [21:14:21] <tokyodan_>	Good Night.
+| [Thursday 17 March 2011] [21:14:26] <tokyodan_>	Thanks again
+| [Thursday 17 March 2011] [21:14:30] <Guthur>	g'night
+| [Thursday 17 March 2011] [21:14:41] <Guthur>	your welcome, happy coding
+| [Thursday 17 March 2011] [21:14:46] <Guthur>	you're*
