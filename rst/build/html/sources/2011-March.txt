@@ -2,1687 +2,981 @@
 2011-March
 ===============
 
-| [Saturday 12 March 2011] [09:10:25] <pieterh>	it was written for 2.0 to be precise
-| [Saturday 12 March 2011] [09:10:43] <pieterh>	I flatly disagree that it did not apply, does not *now* apply to 2.1
-| [Saturday 12 March 2011] [09:10:48] <pieterh>	that is completely wrong
-| [Saturday 12 March 2011] [09:11:00] <sustrik>	i recall explicitly addressing 2.1 compatibility issues when writing it
-| [Saturday 12 March 2011] [09:11:12] <pieterh>	We wrote it in August
-| [Saturday 12 March 2011] [09:11:29] <pieterh>	your memory is ... curious
-| [Saturday 12 March 2011] [09:11:36] <sustrik>	ah, yes, i think thr 2.1 work started back then
-| [Saturday 12 March 2011] [09:11:36] <pieterh>	Check the history
-| [Saturday 12 March 2011] [09:11:51] <sustrik>	remember the great heats in BTS?
-| [Saturday 12 March 2011] [09:12:12] <pieterh>	please, sustrik, check the dates when you introduced the zmq_term blocking
-| [Saturday 12 March 2011] [09:12:24] <pieterh>	anyhow, this is irrelevant
-| [Saturday 12 March 2011] [09:12:34] <sustrik>	yes, it was at the same time
-| [Saturday 12 March 2011] [09:12:35] <pieterh>	you have a release policy and we are about to release a stable 2.1
-| [Saturday 12 March 2011] [09:12:41] <pieterh>	which breaks the release policy
-| [Saturday 12 March 2011] [09:12:51] <pieterh>	I'm formally against that
-| [Saturday 12 March 2011] [09:12:58] <pieterh>	and formally asking you to respect the documented policy
-| [Saturday 12 March 2011] [09:13:05] <sustrik>	i am against repeated breaking of API
-| [Saturday 12 March 2011] [09:13:13] <sustrik>	2.1.1->2.1.2
-| [Saturday 12 March 2011] [09:13:13] <pieterh>	the API includes the semantics of zmq_term
-| [Saturday 12 March 2011] [09:13:39] <sustrik>	well, let's do a poll then
-| [Saturday 12 March 2011] [09:13:46] <pieterh>	blocking or non-blocking?
-| [Saturday 12 March 2011] [09:13:59] <pieterh>	yes, let's do a poll
-| [Saturday 12 March 2011] [09:14:05] <sustrik>	default linger of 0 vs. infinite
-| [Saturday 12 March 2011] [09:14:08] <pieterh>	indeed
-| [Saturday 12 March 2011] [09:14:44] <pieterh>	note, you can add zmq_term_blocking () which does infinite blocking with a timeout
-| [Saturday 12 March 2011] [09:15:02] <sustrik>	sure, but that's not the point
-| [Saturday 12 March 2011] [09:15:06] <pieterh>	yes it is
-| [Saturday 12 March 2011] [09:15:13] <pieterh>	if people absolutely need the semantics, they are present
-| [Saturday 12 March 2011] [09:15:23] <sustrik>	we are discussing backward comaptibility not new apis
-| [Saturday 12 March 2011] [09:15:27] <pieterh>	ok, setting LINGER gives the same results
-| [Saturday 12 March 2011] [09:15:29] <sustrik>	anyway, let's ask people
-| [Saturday 12 March 2011] [09:15:37] <yrashk>	I vote for keeping it as is
-| [Saturday 12 March 2011] [09:15:39] <yrashk>	:)
-| [Saturday 12 March 2011] [09:15:44] <yrashk>	if anybody's interested :)
-| [Saturday 12 March 2011] [09:15:50] <sustrik>	i am against :)
-| [Saturday 12 March 2011] [09:15:52] <pieterh>	yrashk: 'as is' depends where you are today
-| [Saturday 12 March 2011] [09:15:56] <yrashk>	master
-| [Saturday 12 March 2011] [09:15:57] <sustrik>	let me ask on ml
-| [Saturday 12 March 2011] [09:16:07] <pieterh>	could you please be specific: infinite blocking, or not
-| [Saturday 12 March 2011] [09:16:11] <yrashk>	infinite
-| [Saturday 12 March 2011] [09:16:11] <sustrik>	yes
-| [Saturday 12 March 2011] [09:16:33] <sustrik>	there are two sides to the problem
-| [Saturday 12 March 2011] [09:16:42] <sustrik>	i'll try to explain on the ml
-| [Saturday 12 March 2011] [09:17:06] <pieterh>	sustrik: please, do point out this is for the stable 2.1 to be released shortly
-| [Saturday 12 March 2011] [09:17:19] <pieterh>	and do explain that infinite blocking means all existing apps are likely to break
-| [Saturday 12 March 2011] [09:17:25] <pieterh>	when they migrate from 2.0 to 2.1
-| [Saturday 12 March 2011] [09:17:27] <sustrik>	2.0 apps
-| [Saturday 12 March 2011] [09:17:35] <sustrik>	in the opposite case
-| [Saturday 12 March 2011] [09:17:42] <sustrik>	the 2.1 apps are going to break
-| [Saturday 12 March 2011] [09:17:48] <sustrik>	i'll explain that
-| [Saturday 12 March 2011] [09:17:56] <pieterh>	all the ones that don't explicitly set LINGER to zero, which is loads and loads
-| [Saturday 12 March 2011] [09:18:09] <pieterh>	(loads and loads take the effort to set LINGER to zero)
-| [Saturday 12 March 2011] [09:18:54] <pieterh>	yes, a poll will be interesting...
-| [Saturday 12 March 2011] [09:19:26] <pieterh>	BTW there's a line in the Release Policies page I am going to remove
-| [Saturday 12 March 2011] [09:19:32] <pieterh>	"In general we have a stable and an unstable releases of the product, e.g. 2.0.x and 2.1.x"
-| [Saturday 12 March 2011] [09:19:36] <pieterh>	that is just wrong
-| [Saturday 12 March 2011] [09:21:22] <pieterh>	bleh, the contract is vague for minor releases
-| [Saturday 12 March 2011] [09:21:29] <pieterh>	"It may even run"
-| [Saturday 12 March 2011] [09:21:38] <pieterh>	some lawyer has been editing that page...
-| [Saturday 12 March 2011] [09:30:06] <Guthur>	is the reactor pattern still ear marked for 3.0
-| [Saturday 12 March 2011] [09:30:48] <Guthur>	just thinking that if it was to replace Poll it might be a good opportunity to work IOCP into the windows version
-| [Saturday 12 March 2011] [09:31:39] <Guthur>	which would obviously immediately open up IPC
-| [Saturday 12 March 2011] [09:32:06] <pieterh>	Guthur: I don't think that's on the 3.0 roadmap
-| [Saturday 12 March 2011] [09:32:38] <Guthur>	it is according to the website
-| [Saturday 12 March 2011] [09:32:52] <Guthur>	http://www.zeromq.org/docs:3-0#toc3
-| [Saturday 12 March 2011] [09:33:19] <Guthur>	it does say replacing OR supplementing though
-| [Saturday 12 March 2011] [09:33:23] <pieterh>	indeed, but I don't think it's on the roadmap
-| [Saturday 12 March 2011] [09:33:44] <Guthur>	ok, is there a more up to date doc
-| [Saturday 12 March 2011] [09:34:34] <pieterh>	sorry to be unhelpful but the only accurate doc is the NEWS when a feature's been released
-| [Saturday 12 March 2011] [09:34:43] <pieterh>	and then the man page...
-| [Saturday 12 March 2011] [10:29:07] <zedas>	pieterh: or write a book :-)
-| [Saturday 12 March 2011] [10:29:26] <pieterh>	:-) yeah, that's always a good option
-| [Saturday 12 March 2011] [10:31:14] <sustrik>	3.0 road map is out of date
-| [Saturday 12 March 2011] [10:31:24] <sustrik>	:(
-| [Saturday 12 March 2011] [10:32:11] <sustrik>	i would rather use the page to collect the API changes
-| [Saturday 12 March 2011] [10:32:25] <pieterh>	sustrik: ctrl-e (stuff) ctrl-s
-| [Saturday 12 March 2011] [10:32:34] <sustrik>	new features, otoh, will anyway be only those that people contribute
-| [Saturday 12 March 2011] [10:32:55] <sustrik>	right
-| [Saturday 12 March 2011] [10:36:32] <Skaag>	sustrik: you heard about Sector and UDT?
-| [Saturday 12 March 2011] [10:36:48] <sustrik>	i know UDT
-| [Saturday 12 March 2011] [10:36:56] <sustrik>	don't know about Sector
-| [Saturday 12 March 2011] [10:37:04] <Skaag>	that's the funny thing
-| [Saturday 12 March 2011] [10:37:12] <Skaag>	I thought about implementing a filesystem based on ZMQ
-| [Saturday 12 March 2011] [10:37:22] <Skaag>	and while looking for prior work, I found Sector...
-| [Saturday 12 March 2011] [10:37:24] <Skaag>	http://sector.sourceforge.net/
-| [Saturday 12 March 2011] [10:37:34] <Skaag>	I'm currently installing it and about to try it out
-| [Saturday 12 March 2011] [10:37:42] <Skaag>	on paper, it looks very interesting
-| [Saturday 12 March 2011] [10:38:16] <sustrik>	there are several distributed databases out there
-| [Saturday 12 March 2011] [10:38:25] <sustrik>	i am not an expert in the topic though
-| [Saturday 12 March 2011] [10:38:30] <Skaag>	this one offers a fuse client which makes it interesting
-| [Saturday 12 March 2011] [10:38:43] <Skaag>	the reason I mentioned it is UDT actually
-| [Saturday 12 March 2011] [10:39:31] <sustrik>	like in "uses UDT" fro communication between nodes, right?
-| [Saturday 12 March 2011] [10:39:36] <Skaag>	yes
-| [Saturday 12 March 2011] [10:39:46] <sustrik>	nice
-| [Saturday 12 March 2011] [10:40:03] <sustrik>	could work well for large-scale synchronisations over a WAN
-| [Saturday 12 March 2011] [10:40:12] <Skaag>	that's what I need to establish now
-| [Saturday 12 March 2011] [10:40:50] <Skaag>	I have at the moment machines in 7 ~ 8 different data centers
-| [Saturday 12 March 2011] [10:41:02] <Skaag>	by the way, zmq is working wonders for us
-| [Saturday 12 March 2011] [10:41:17] <Skaag>	we are graphing in real-time the data from 20+ nodes
-| [Saturday 12 March 2011] [10:41:46] <Skaag>	without the illnesses we were experiencing while using rabbitmq
-| [Saturday 12 March 2011] [10:43:43] <pieterh>	Skaag: we'd welcome a short story that we could publish on the wiki...
-| [Saturday 12 March 2011] [10:43:54] <pieterh>	about your experiences in moving to 0MQ
-| [Saturday 12 March 2011] [10:43:54] <Skaag>	ok
-| [Saturday 12 March 2011] [10:44:30] <sustrik>	Skaag: what's the project?
-| [Saturday 12 March 2011] [10:45:00] <Skaag>	it's a control panel for a CDN
-| [Saturday 12 March 2011] [10:45:08] <sustrik>	is there a link?
-| [Saturday 12 March 2011] [10:45:26] <Skaag>	I'm still making the site for it :-\
-| [Saturday 12 March 2011] [10:45:32] <sustrik>	i see
-| [Saturday 12 March 2011] [10:45:52] <sustrik>	when you have it, share the link
-| [Saturday 12 March 2011] [10:45:58] <Skaag>	 will do
-| [Saturday 12 March 2011] [10:45:59] <sustrik>	it would be interesting to have a look
-| [Saturday 12 March 2011] [11:17:22] <CIA-103>	zeromq2: 03Guido Goldstein 07master * rd0c8edd 10/ include/zmq.hpp : 
-| [Saturday 12 March 2011] [11:17:22] <CIA-103>	zeromq2: Added missing close method w/ check if socket is already closed.
-| [Saturday 12 March 2011] [11:17:22] <CIA-103>	zeromq2: Signed-off-by: Guido Goldstein <github@a-nugget.de> - http://bit.ly/ggZZI6
-| [Saturday 12 March 2011] [11:37:29] <dermoth|home>	I just fixed the cia auto-voice in chanserv...
-| [Saturday 12 March 2011] [12:04:00] <guido_g>	sustrik: thx for mentioning the sign-off thingie
-| [Saturday 12 March 2011] [12:04:41] <guido_g>	didn't move the .gitconfig to the new machine
-| [Saturday 12 March 2011] [17:48:28] <nadime>	any zmq gurus around to help me figure out a performance bottleneck issue?
-| [Saturday 12 March 2011] [17:49:07] <nadime>	i think it's kind of interesting!
-| [Saturday 12 March 2011] [17:53:56] <mikko>	nadime: what's the issue?
-| [Saturday 12 March 2011] [17:54:06] <nadime>	i have the following setup
-| [Saturday 12 March 2011] [17:54:52] <nadime>	push socket fans out from a thread into N (defaults to 4) IO threads using push/pull to distribute the work to the io threads
-| [Saturday 12 March 2011] [17:55:04] <nadime>	the io threads then talk 1 to 1 with N io threads on a client
-| [Saturday 12 March 2011] [17:55:18] <nadime>	the io threads use pub/sub since it's 1 to 1
-| [Saturday 12 March 2011] [17:55:36] <nadime>	each io thread has 1 zmq io thread
-| [Saturday 12 March 2011] [17:55:40] <nadime>	and i set affinities
-| [Saturday 12 March 2011] [17:55:45] <nadime>	to make it as quick as possible
-| [Saturday 12 March 2011] [17:55:50] <nadime>	the issue i'm having
-| [Saturday 12 March 2011] [17:56:03] <nadime>	is that i see about 500k msgs/sec go into my push socket
-| [Saturday 12 March 2011] [17:56:09] <nadime>	but i fall way behind on my 4 io sockets
-| [Saturday 12 March 2011] [17:56:25] <nadime>	sorry the io sockets are tcp
-| [Saturday 12 March 2011] [17:56:49] <nadime>	so i didn't expec tthem to keep up, but i figured with 4 and a pretty solid machine (12 cores, about 1 thread per core)
-| [Saturday 12 March 2011] [17:56:59] <nadime>	they'd be ok
-| [Saturday 12 March 2011] [17:57:06] <mikko>	are they tcp over local loopback?
-| [Saturday 12 March 2011] [17:57:10] <mikko>	or over network?
-| [Saturday 12 March 2011] [17:57:15] <nadime>	local 1 GB network
-| [Saturday 12 March 2011] [17:57:29] <mikko>	what is your message size?
-| [Saturday 12 March 2011] [17:57:37] <nadime>	avg prolly 50b
-| [Saturday 12 March 2011] [17:57:47] <nadime>	sorry B
-| [Saturday 12 March 2011] [17:57:48] <nadime>	bytes
-| [Saturday 12 March 2011] [17:59:18] <mikko>	so, 50b messages x 500k would be roughly 238 megabytes per second
-| [Saturday 12 March 2011] [17:59:38] <nadime>	yeah but i fall WAY behind
-| [Saturday 12 March 2011] [17:59:49] <nadime>	like the io threads barely do 80kmsg/s
-| [Saturday 12 March 2011] [17:59:53] <mikko>	one gigabit per second is 128 megabytes per second
-| [Saturday 12 March 2011] [18:00:50] <nadime>	50b is probably wrong, i don't see anywhere near full bandwidth utilization
-| [Saturday 12 March 2011] [18:01:30] <nadime>	the point though is that what the io threads do is nowhere near even 20% capacity
-| [Saturday 12 March 2011] [18:02:32] <mikko>	are you seeing high utilisation anywhere?
-| [Saturday 12 March 2011] [18:02:37] <mikko>	or just falling rates?
-| [Saturday 12 March 2011] [18:03:21] <nadime>	no high network utilization usually around 15%
-| [Saturday 12 March 2011] [18:03:44] <mikko>	what os is this?
-| [Saturday 12 March 2011] [18:03:49] <nadime>	win7
-| [Saturday 12 March 2011] [18:03:53] <nadime>	64b
-| [Saturday 12 March 2011] [18:04:03] <mikko>	hmm, can't help you much there
-| [Saturday 12 March 2011] [18:04:14] <mikko>	i have got very little experience with windows and performance
-| [Saturday 12 March 2011] [18:04:20] <nadime>	i'm not missing anything though in terms of things you'd do with zmq?
-| [Saturday 12 March 2011] [18:05:17] <mikko>	sounds ok
-| [Saturday 12 March 2011] [18:05:25] <mikko>	i would maybe use zmq_pair socket for 1:1
-| [Saturday 12 March 2011] [18:05:34] <nadime>	k, i can try that
-| [Saturday 12 March 2011] [18:05:46] <nadime>	is the push/pull fair queuing slow?
-| [Saturday 12 March 2011] [18:05:57] <mikko>	shouldn't be
-| [Saturday 12 March 2011] [18:06:03] <nadime>	k
-| [Saturday 12 March 2011] [18:06:03] <mikko>	it's very simple algorithm
-| [Saturday 12 March 2011] [18:06:18] <nadime>	i would think
-| [Saturday 12 March 2011] [18:06:29] <mikko>	if you have a profiler available that might help
-| [Saturday 12 March 2011] [18:06:35] <mikko>	to see where time is spent
-| [Saturday 12 March 2011] [18:06:35] <nadime>	yeah i do
-| [Saturday 12 March 2011] [18:06:38] <nadime>	i will use it
-| [Saturday 12 March 2011] [18:06:58] <nadime>	i just thught i might be missing something obvious that would help
-| [Saturday 12 March 2011] [18:08:48] <mikko>	so, do i understand your architecture correctly:
-| [Saturday 12 March 2011] [18:09:03] <mikko>	you have push/pull socket, which balances work to four threads
-| [Saturday 12 March 2011] [18:09:24] <mikko>	each one of the threads has pub socket which publishes messages over tcp to workers
-| [Saturday 12 March 2011] [18:09:27] <mikko>	?
-| [Saturday 12 March 2011] [18:14:48] <mikko>	i gotta head to bed
-| [Saturday 12 March 2011] [18:15:19] <mikko>	nadime: the channel is usually more lively during the day time in europe (large amount of devs from eu)
-| [Saturday 12 March 2011] [18:39:20] <cremes>	nadime: i have a few suggestions for things to look at
-| [Saturday 12 March 2011] [18:39:52] <cremes>	1. if your PUSH socket is in the same process as your "io thread PULL sockets" you should be using inproc transport instead of tcp
-| [Saturday 12 March 2011] [18:40:16] <cremes>	2. take a look at your message serialization; sometimes deserialization is more costly than serialization
-| [Saturday 12 March 2011] [18:40:38] <cremes>	however, i assume you are sending packed structures so you are probably just casting a pointer to get to your data
-| [Saturday 12 March 2011] [18:41:21] <cremes>	3. instrument your messages so that you can measure how many nano/micro/milliseconds it takes for the PUSH to deliver to the PULL socket
-| [Saturday 12 March 2011] [18:42:14] <cremes>	4. instrument the messages that go from the "server io threads" to the "client io threads" via PUB/SUB to measure latency
-| [Saturday 12 March 2011] [19:04:32] <nadime>	i am using inproc for anything local, cremes
-| [Saturday 12 March 2011] [19:04:42] <nadime>	the only thing i use tcp for is external
-| [Saturday 12 March 2011] [19:05:41] <nadime>	thanks for the suggestions, re: instrumentation
-| [Saturday 12 March 2011] [19:06:13] <nadime>	oh incidentally, mikko, we were doing the math wrong.  50B x 500k = 25MB/s
-| [Saturday 12 March 2011] [19:06:19] <nadime>	which makes much more sense
-| [Saturday 12 March 2011] [19:06:28] <nadime>	since i'm seeing 10% utilization
-| [Saturday 12 March 2011] [19:06:30] <nadime>	10-15
-| [Saturday 12 March 2011] [20:03:04] <Guest51726>	hello, anyone awake tonight ?
-| [Saturday 12 March 2011] [20:04:56] <Evet_>	:)
-| [Saturday 12 March 2011] [20:17:03] <Guest51726>	Hello Evet, how are you ?
-| [Saturday 12 March 2011] [20:17:21] <Evet>	fine, Guest51726. you?
-| [Saturday 12 March 2011] [20:18:48] <Guest51726>	not so bad !
-| [Saturday 12 March 2011] [20:19:12] <Guest51726>	I was doing some experimenting with 0MQ, 2.1.2 the other day - tell me, is the load balancing stable ?
-| [Saturday 12 March 2011] [20:26:33] <Guest51726>	Yep.
-| [Saturday 12 March 2011] [20:41:06] <Evet>	Guest51726: i think so
-| [Saturday 12 March 2011] [20:41:49] <Guest51726>	hmmm...that wasn't what I was seeing :(
-| [Saturday 12 March 2011] [21:04:25] <emacsen>	I have a, hopefully basic question:   I'm learning zeromq. I only have my laptop and I'm trying to test push and pull requests. I heard that pull requests will be balanced across pullers. But I'm testing with ipc and all the requests go to one listener. Is that because of ipc?
-| [Saturday 12 March 2011] [21:05:01] <Guest51726>	thats a good question:  I don't know.
-| [Saturday 12 March 2011] [21:05:51] <Guest51726>	the requests really should be balanced across pullers, regardless of the transport.  However I have observed uneven load balancing myself.
-| [Sunday 13 March 2011] [01:19:07] <guido_g>	hello world!
-| [Sunday 13 March 2011] [01:34:28] <pieterh>	hey guido_g, hi!
-| [Sunday 13 March 2011] [01:34:38] <guido_g>	morning pieterh 
-| [Sunday 13 March 2011] [01:35:10] <pieterh>	another day, another little protocol spec :-)
-| [Sunday 13 March 2011] [01:35:12] <guido_g>	just pulled the zeromq2-1 changes and compiled
-| [Sunday 13 March 2011] [01:35:19] <guido_g>	ohh...
-| [Sunday 13 March 2011] [01:35:50] <guido_g>	spec:10
-| [Sunday 13 March 2011] [01:36:00] <pieterh>	yeah, brokerless reliability
-| [Sunday 13 March 2011] [01:36:12] <pieterh>	final part of chapter 4... finally... :-)
-| [Sunday 13 March 2011] [01:36:18] <guido_g>	yes!
-| [Sunday 13 March 2011] [01:36:19] <guido_g>	:)
-| [Sunday 13 March 2011] [01:37:03] <pieterh>	for 2.1 I defined ZMQ_DEALER and ZMQ_ROUTER as aliases
-| [Sunday 13 March 2011] [01:37:19] <guido_g>	seen it
-| [Sunday 13 March 2011] [01:37:30] <guido_g>	good move imho
-| [Sunday 13 March 2011] [01:38:08] <pieterh>	I'm going to change the man pages, leave the old names as deprecated
-| [Sunday 13 March 2011] [01:38:18] <pieterh>	this will make it easier for people to move to 3.0
-| [Sunday 13 March 2011] [01:38:53] <guido_g>	ok
-| [Sunday 13 March 2011] [01:39:06] <guido_g>	from spec10: "From the MQ Reference Manual[Bibliography item zmqsocket not found.]:"
-| [Sunday 13 March 2011] [01:39:18] <guido_g>	seems that a link can't be resolved
-| [Sunday 13 March 2011] [01:39:37] <pieterh>	just fixed that, thanks
-| [Sunday 13 March 2011] [01:39:53] <guido_g>	ahh
-| [Sunday 13 March 2011] [01:40:08] <guido_g>	reload did it
-| [Sunday 13 March 2011] [01:40:35] <pieterh>	I figured out how to do router-to-router connections between clients and servers
-| [Sunday 13 March 2011] [01:40:41] <guido_g>	great
-| [Sunday 13 March 2011] [01:40:54] <guido_g>	will be fun to read
-| [Sunday 13 March 2011] [01:40:56] <pieterh>	it's rather fun because neither side can talk to the other without knowing their identity first
-| [Sunday 13 March 2011] [01:41:28] <guido_g>	using ahh... router sockets
-| [Sunday 13 March 2011] [01:41:59] <guido_g>	need to get used to the new name
-| [Sunday 13 March 2011] [01:42:10] <pieterh>	:-)
-| [Sunday 13 March 2011] [01:43:39] <guido_g>	example program adjusted
-| [Sunday 13 March 2011] [06:47:53] <Guthur>	pieterh, Ch4 is turning into a bit of a monster
-| [Sunday 13 March 2011] [06:48:30] <Guthur>	good stuff though
-| [Sunday 13 March 2011] [06:49:29] <Guthur>	After sorting out my POSIX issues, and fix a bug I found during the process, I'm now ready to finish ch3
-| [Sunday 13 March 2011] [06:49:37] <Guthur>	looking forward to ch4
-| [Sunday 13 March 2011] [12:02:24] <pieterh>	Guthur: CH4 is now finished
-| [Sunday 13 March 2011] [12:03:19] <Guthur>	cool, i'm just debugging my peering3 and then i can start on ch4
-| [Sunday 13 March 2011] [12:03:26] <pieterh>	:-)
-| [Sunday 13 March 2011] [12:17:33] <mikko>	\\o
-| [Sunday 13 March 2011] [12:17:34] <mikko>	o//
-| [Sunday 13 March 2011] [12:18:06] <mikko>	pieterh: we got some more fixes going on in openpgm with steve
-| [Sunday 13 March 2011] [12:18:19] <pieterh>	mikko: nice, what's the issue?
-| [Sunday 13 March 2011] [12:18:31] <mikko>	sun linker visibility with sungcc compiler
-| [Sunday 13 March 2011] [12:18:35] <pieterh>	ah, ok
-| [Sunday 13 March 2011] [12:18:45] <mikko>	and i think i've found zeromq compile warning on freebsd 8.1
-| [Sunday 13 March 2011] [12:19:02] <mikko>	pgm_receiver.cpp:154: warning: dereferencing type-punned pointer will break strict-aliasing rules
-| [Sunday 13 March 2011] [12:19:17] <pieterh>	that definitely looks like a warning :-)
-| [Sunday 13 March 2011] [12:19:25] <mikko>	it breaks the build nowadays
-| [Sunday 13 March 2011] [12:19:39] <mikko>	previously zeromq was compiled without -Werror when openpgm was enabled
-| [Sunday 13 March 2011] [12:19:59] <mikko>	now that openpgm is built separately i added -Werror back in
-| [Sunday 13 March 2011] [12:23:03] <pieterh>	mikko: sanity check, do you see a man page for zmq_device() in your zeromq source tree?
-| [Sunday 13 March 2011] [12:24:14] <mikko>	https://github.com/zeromq/zeromq2-1/tree/master/doc
-| [Sunday 13 March 2011] [12:24:26] <mikko>	doesn't seem to be there
-| [Sunday 13 March 2011] [12:24:54] <pieterh>	funny, the method isn't documented, but I recall writing a man page for it
-| [Sunday 13 March 2011] [12:25:05] <pieterh>	which is installed on my box...
-| [Sunday 13 March 2011] [12:25:10] <pieterh>	hmm
-| [Sunday 13 March 2011] [12:25:22] <mikko>	maybe you haven't committed / pushed it?
-| [Sunday 13 March 2011] [12:25:53] <pieterh>	nope, it was reverted by the maintainers...
-| [Sunday 13 March 2011] [12:25:57] <pieterh>	sep 4
-| [Sunday 13 March 2011] [12:26:02] <pieterh>	ok, I'm adding it back to 2.0 and 2.1
-| [Sunday 13 March 2011] [12:26:53] <mikko>	when are you flying back?
-| [Sunday 13 March 2011] [12:27:09] <pieterh>	as soon as these mushrooms wear off
-| [Sunday 13 March 2011] [12:27:12] <pieterh>	what? what?
-| [Sunday 13 March 2011] [12:27:19] <pieterh>	:-) I'm not away, Mikko, happily working at home
-| [Sunday 13 March 2011] [12:27:26] <mikko>	i mean from london
-| [Sunday 13 March 2011] [12:27:43] <pieterh>	ah, I take the train, easy ride from London to Brussels
-| [Sunday 13 March 2011] [12:27:53] <mikko>	ah, ok
-| [Sunday 13 March 2011] [12:27:57] <pieterh>	if you want to meet up I'm around Wednesday afternoon
-| [Sunday 13 March 2011] [12:27:59] <mikko>	i noticed that cloudcamp (http://www.cloudcamp.org/london) is on 17th
-| [Sunday 13 March 2011] [12:28:24] <mikko>	if that is of interest to you
-| [Sunday 13 March 2011] [12:28:26] <pieterh>	sigh, yeah, won't make it
-| [Sunday 13 March 2011] [12:28:44] <mikko>	i'm gonna be on client site all next week so probably earliest we meet is in the pub
-| [Sunday 13 March 2011] [12:28:53] <mikko>	been hectic last week
-| [Sunday 13 March 2011] [12:28:57] <mikko>	setting up my own company
-| [Sunday 13 March 2011] [12:29:03] <pieterh>	nice!
-| [Sunday 13 March 2011] [12:29:21] <mikko>	almost everything ready
-| [Sunday 13 March 2011] [12:29:27] <mikko>	still need to sort out bank account
-| [Sunday 13 March 2011] [12:29:36] <mikko>	(i think at some point it would be nice to get paid)
-| [Sunday 13 March 2011] [12:31:13] <pieterh>	that's always a nice option
-| [Sunday 13 March 2011] [13:44:58] <Guthur>	I'm getting an "Operation cannot be accomplished in current state" in the clientTask of peering3
-| [Sunday 13 March 2011] [13:45:09] <Guthur>	it works for a while then that error on a recv
-| [Sunday 13 March 2011] [13:45:19] <Guthur>	any suggestions on how to find the route of the error
-| [Sunday 13 March 2011] [13:53:21] <mikko>	Guthur: req/rep sockets?
-| [Sunday 13 March 2011] [13:53:23] <pieterh>	hmm, sounds like a REQ socket state error
-| [Sunday 13 March 2011] [13:53:26] <pieterh>	let me check that
-| [Sunday 13 March 2011] [13:53:29] <mikko>	yeah, was thinking the same
-| [Sunday 13 March 2011] [13:53:52] <Guthur>	yeah re
-| [Sunday 13 March 2011] [13:53:54] <mikko>	wrong order of recv/send causes that
-| [Sunday 13 March 2011] [13:53:56] <Guthur>	req/rep
-| [Sunday 13 March 2011] [13:53:58] <mikko>	usually
-| [Sunday 13 March 2011] [13:54:27] <mikko>	so for example send/recv/recv on req socket would cause that
-| [Sunday 13 March 2011] [13:54:27] <Guthur>	oh ok, it's possible there is an error with my code
-| [Sunday 13 March 2011] [13:54:45] <pieterh>	Guthur: it could be a bug in the design, as well
-| [Sunday 13 March 2011] [13:54:47] <mikko>	there possibly should be a way to recover the socket
-| [Sunday 13 March 2011] [13:55:02] <pieterh>	well, what I do is close it and reopen, in later examples
-| [Sunday 13 March 2011] [13:55:29] <pieterh>	kind of annoying but finally it works ok
-| [Sunday 13 March 2011] [13:59:47] <Guthur>	dinner time, I'll check my code later
-| [Sunday 13 March 2011] [15:10:05] <guido_g>	http://pycon.blip.tv/file/4878885/  <- zeds mq talk at pycon
-| [Sunday 13 March 2011] [15:22:21] <mikko>	interesting observations
-| [Sunday 13 March 2011] [15:25:29] <Skaag>	mikko: getting paid is very important, but can be dangerous if not done right
-| [Sunday 13 March 2011] [15:25:44] <Skaag>	need to consider it strategically
-| [Sunday 13 March 2011] [15:26:25] <Skaag>	but no doubt, it has to happen
-| [Sunday 13 March 2011] [15:32:25] <mikko>	Skaag: i really haven't got much savings so there isnt that much room for strategy
-| [Sunday 13 March 2011] [15:32:28] <mikko>	:)
-| [Sunday 13 March 2011] [15:32:53] <Skaag>	well ok but here's what I mean:
-| [Sunday 13 March 2011] [15:33:05] <Skaag>	Assuming you have a client who wishes to hire your services - what does he need exactly?
-| [Sunday 13 March 2011] [15:33:16] <mikko>	services?
-| [Sunday 13 March 2011] [15:33:17] <Skaag>	And the question is, of course, how many such offers you get
-| [Sunday 13 March 2011] [15:33:34] <Skaag>	the danger i'm talking about is one of stifling innovation
-| [Sunday 13 March 2011] [15:33:46] <Skaag>	basically the elimination of time for creativity
-| [Sunday 13 March 2011] [15:34:23] <Skaag>	sometimes you need to delegate work to a team, make a cut from the top, but remain "CTO" and continue to research and develop the core technology
-| [Sunday 13 March 2011] [15:34:38] <Skaag>	you don't have a day job?
-| [Sunday 13 March 2011] [15:34:46] <Skaag>	I was certain you were hired for good pay at the very least :)
-| [Sunday 13 March 2011] [15:34:48] <mikko>	i have but not soon
-| [Sunday 13 March 2011] [15:34:59] <Skaag>	company closing?
-| [Sunday 13 March 2011] [15:35:00] <mikko>	i resigned to start my own company
-| [Sunday 13 March 2011] [15:35:12] <Skaag>	ah, good luck!!
-| [Sunday 13 March 2011] [15:35:33] <mikko>	thanks
-| [Sunday 13 March 2011] [15:35:40] <Skaag>	it's not easy, the path you have chosen
-| [Sunday 13 March 2011] [15:35:44] <Skaag>	:)
-| [Sunday 13 March 2011] [15:35:51] <Skaag>	but certainly, most fulfilling :)
-| [Sunday 13 March 2011] [15:36:28] <Skaag>	some would say, easiest is to be the cow in the shed, slowly milked, given music and food...
-| [Sunday 13 March 2011] [15:36:32] <Skaag>	:)
-| [Sunday 13 March 2011] [15:36:52] <mikko>	probably
-| [Sunday 13 March 2011] [15:36:59] <mikko>	i like the excitement of setting up a company
-| [Sunday 13 March 2011] [15:37:03] <mikko>	even if it fails eventually
-| [Sunday 13 March 2011] [15:37:19] <mikko>	knowing that there won't be food on the table unless you do something about it
-| [Sunday 13 March 2011] [15:38:12] <guido_g>	hmmm i gained ~20kg in the 2 years since i went freelancing
-| [Sunday 13 March 2011] [15:38:20] <mikko>	sustrik: there?
-| [Sunday 13 March 2011] [15:43:37] <Skaag>	mikko: I so know what you're talking about, that I can't help but remember all the pain :)
-| [Sunday 13 March 2011] [15:44:10] <Skaag>	If you need any help, I am here
-| [Sunday 13 March 2011] [15:44:38] <mikko>	i'm not overly worried at the moment
-| [Sunday 13 March 2011] [15:44:53] <mikko>	not yet at least :)
-| [Sunday 13 March 2011] [15:52:02] <Skaag>	what's the goal of the company?
-| [Sunday 13 March 2011] [15:53:50] <mikko>	i got a few SaaS ideas but i guess initially just bring the food to table
-| [Sunday 13 March 2011] [15:53:58] <mikko>	initially providing services i would guess
-| [Sunday 13 March 2011] [15:54:24] <Skaag>	ok so the classic "Tech Guy opens a Company" scenario, as I thought :)
-| [Sunday 13 March 2011] [15:54:58] <mikko>	yeah
-| [Sunday 13 March 2011] [15:55:05] <mikko>	initially it will just be me
-| [Sunday 13 March 2011] [15:55:10] <Skaag>	(not saying it in any negative way!)
-| [Sunday 13 March 2011] [15:55:12] <mikko>	i haven't really planned things very far
-| [Sunday 13 March 2011] [15:55:27] <mikko>	i just kinda felt that i need new challenges
-| [Sunday 13 March 2011] [15:55:40] <Skaag>	I did it for other reasons
-| [Sunday 13 March 2011] [15:55:53] <Skaag>	I wanted a stable passive income to allow me to research things in my free time
-| [Sunday 13 March 2011] [15:56:16] <mikko>	did it work out?
-| [Sunday 13 March 2011] [15:56:18] <Skaag>	corporate took too much of my time, they were the hungry pig that never had enough
-| [Sunday 13 March 2011] [15:56:22] <Skaag>	actually yes :)
-| [Sunday 13 March 2011] [15:56:32] <Skaag>	thanks to my wife though
-| [Sunday 13 March 2011] [15:56:43] <Skaag>	if she hadn't taken the financial parts from me, it would have failed miserably
-| [Sunday 13 March 2011] [15:56:54] <Skaag>	not ashamed to admit it
-| [Sunday 13 March 2011] [15:57:11] <Skaag>	she's a woman who is not afraid to bill customers for her husband's work/hours :)
-| [Sunday 13 March 2011] [15:57:25] <Skaag>	and she will hunt them down, until hell freezes, or they pay!!
-| [Sunday 13 March 2011] [15:57:46] <Skaag>	and better not tell her the payment is late, for she will unleash upon you her furious anger, and terrible might!! :)
-| [Sunday 13 March 2011] [15:58:06] <Skaag>	ok I may be exaggerating it a bit, but more or less that's how it is! :)
-| [Sunday 13 March 2011] [15:58:19] <mikko>	in UK it seems very common to delay 50+ or so days
-| [Sunday 13 March 2011] [15:58:33] <Skaag>	never go down that route
-| [Sunday 13 March 2011] [15:58:35] <Skaag>	never.
-| [Sunday 13 March 2011] [15:58:45] <Skaag>	do not agree to that.
-| [Sunday 13 March 2011] [15:59:07] <mikko>	no, i mean companies just not paying even when the terms say 30 days or so
-| [Sunday 13 March 2011] [15:59:48] <Skaag>	don't even agree for 30 days
-| [Sunday 13 March 2011] [16:00:11] <mikko>	30 days is common here
-| [Sunday 13 March 2011] [16:00:16] <Skaag>	7 days from the presentation of the invoice.
-| [Sunday 13 March 2011] [16:00:38] <mikko>	back in finland 7 days was reasonable
-| [Sunday 13 March 2011] [16:00:43] <mikko>	here, i don't think so
-| [Sunday 13 March 2011] [16:00:52] <Skaag>	and I don't know how tax authorities work in the UK, but VAT in Israel want their chunk of the money whether or not you received payment, for any invoices you produced.
-| [Sunday 13 March 2011] [16:01:02] <Skaag>	mikko, seriously, who cares what is common
-| [Sunday 13 March 2011] [16:01:10] <Skaag>	start with 7 days and let the customer squirm
-| [Sunday 13 March 2011] [16:01:23] <Skaag>	and then if you do heed the 30 days, at least he will feel he won something
-| [Sunday 13 March 2011] [16:01:25] <Skaag>	he earned them ;)
-| [Sunday 13 March 2011] [16:01:55] <Skaag>	I hate seeing people get fucked, especially if I care about them and their future
-| [Sunday 13 March 2011] [16:04:26] <mikko>	pieterh: have you done work on zns or still gathering ideas?
-| [Sunday 13 March 2011] [16:06:34] <nadime>	if mikko or cremes are here -- solved my IO bottleneck problem
-| [Sunday 13 March 2011] [16:06:53] <nadime>	profiler did the trick
-| [Sunday 13 March 2011] [16:14:25] <michelp>	i have to agree with Skaag on this one, when the customer balks that 30 days is normal, tell them to go hire a normal person.  you're better than normal.
-| [Sunday 13 March 2011] [16:18:27] <Skaag>	exactly my point - this is Mikko!!!! Not some random developer.
-| [Sunday 13 March 2011] [16:18:37] <Skaag>	I mean c'mon, is nothing holy anymore?!
-| [Sunday 13 March 2011] [16:18:40] <Skaag>	:)
-| [Sunday 13 March 2011] [16:38:04] <mikko>	nadime: what was the issue?
-| [Sunday 13 March 2011] [18:17:49] <nadime>	mikko - i was using a poller in a bottleneck thread for no good reason
-| [Sunday 13 March 2011] [18:40:32] <Guthur>	should a SUB socket connect block until it's connected to an endpoint?
-| [Sunday 13 March 2011] [18:43:48] <Guthur>	the example in peering3 seems to block
-| [Sunday 13 March 2011] [18:44:00] <Guthur>	but mine does not which has me scratching my head
-| [Sunday 13 March 2011] [18:44:20] <yo>	yo
-| [Sunday 13 March 2011] [18:44:26] <yo>	what's up
-| [Sunday 13 March 2011] [20:06:28] <travlr>	Zed's Presentation -- PyCon 2011: Advanced Network Architectures With ZeroMQ : http://blip.tv/file/4878885
-| [Sunday 13 March 2011] [20:07:02] <Guthur>	decent presentation, a bit lightning fast though
-| [Sunday 13 March 2011] [20:07:33] <travlr>	ahh, i now see guido_g beat me to the link.
-| [Sunday 13 March 2011] [20:07:46] <travlr>	Guthur: yeah i'm watching it now
-| [Sunday 13 March 2011] [20:08:02] <Guthur>	pieterh sent it on the mailing list
-| [Sunday 13 March 2011] [20:08:22] <travlr>	credit to pieter then. ;)
-| [Sunday 13 March 2011] [20:19:36] <Guthur>	ah it's not blocking, question from before, just printf was not showing
-| [Sunday 13 March 2011] [21:16:50] <gholt>	I can't beleive he only got 30mins for 0mq. 0mq does run length encoding?
-| [Monday 14 March 2011] [00:02:39] <cleifer>	kind of random question, but if i'm using a pub/sub style interaction and want to "flush" the queue of messages waiting to be published, is there a good way?
-| [Monday 14 March 2011] [02:11:57] <CIA-103>	zeromq2: 03Martin Sustrik 07master * r2970d6c 10/ src/pgm_socket.cpp : 
-| [Monday 14 March 2011] [02:11:57] <CIA-103>	zeromq2: Remove obsolete assert from pgm_socket.cpp
-| [Monday 14 March 2011] [02:11:57] <CIA-103>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/eTHjYC
-| [Monday 14 March 2011] [02:19:33] <sustrik>	mikko: hi, are you there by chance?
-| [Monday 14 March 2011] [02:45:58] <dermoth|home>	hi sustrik 
-| [Monday 14 March 2011] [02:46:04] <sustrik>	hi
-| [Monday 14 March 2011] [02:46:38] <dermoth|home>	you may remember my issue with the devices deadlocking due to a blocking socket...
-| [Monday 14 March 2011] [02:49:43] <dermoth|home>	src/signaler.cpp, making the send MSG_DONTWAIT in zmq::signaler_t::send...
-| [Monday 14 March 2011] [02:50:11] <dermoth|home>	I believe i've seen talks abot who to make is non-blocking, was this solved yet?
-| [Monday 14 March 2011] [02:50:48] <dermoth|home>	in 2.1 I think the code is in mailbox.cpp...
-| [Monday 14 March 2011] [02:53:46] <dermoth|home>	well, sustrik if not I was just wondering if you have considered the use of a pipe... I've used them in the past, and one nice thing about them is that a non-blocking pipe write (up to a defined limit) is atomic, it either goes trough entirely or fail, whihc I feel is what the current problem was with making sockets non-blocking...
-| [Monday 14 March 2011] [02:55:26] <dermoth|home>	POSIX.1-2001  says  that write(2)s of less than PIPE_BUF bytes must be atomic: the output data is written to the pipe as a contiguous sequence. [...] O_NONBLOCK enabled, n <= PIPE_BUF: If there is room to write n bytes to the pipe, then write(2) succeeds immediately, writing all n bytes; otherwise write(2) fails, with errno set to EAGAIN.
-| [Monday 14 March 2011] [02:56:54] <sustrik>	dermoth: is pipe different from a socket pair in this respect?
-| [Monday 14 March 2011] [02:58:53] <sustrik>	the nice thing at least is that pipe is unidirectional rather than bidrectional
-| [Monday 14 March 2011] [02:59:07] <sustrik>	meaning it will consume less buffer memory
-| [Monday 14 March 2011] [02:59:16] <dermoth|home>	sustrik, I have little experience with sockets, but afaik a non-blocking write can he partial and there's no threshold for atomicity. OTOH  POSIX.1-2001 says that anything less than or equal to PIPE_BUF must be written atomically. IIRC it also defines PIPE_BUF be at least 512 bytes, iirc in Linux it's 4096 though...
-| [Monday 14 March 2011] [03:00:45] <dermoth|home>	as with above, from "man 7 pipe" on Ubuntu: POSIX.1-2001 requires PIPE_BUF to be at least 512 bytes.  (On Linux, PIPE_BUF  is  4096 bytes.)
-| [Monday 14 March 2011] [03:01:44] <sustrik>	yep
-| [Monday 14 March 2011] [03:01:53] <sustrik>	i recall reading the same about socketpair
-| [Monday 14 March 2011] [03:01:58] <dermoth|home>	note that if you wish to poll on a pipe, it must be open with O_RDWR
-| [Monday 14 March 2011] [03:02:00] <sustrik>	cannot find that now though
-| [Monday 14 March 2011] [03:02:42] <sustrik>	anyway, i can try using pipes
-| [Monday 14 March 2011] [03:02:54] <sustrik>	however, it's likely to break on some OSes
-| [Monday 14 March 2011] [03:03:13] <sustrik>	so i would postpone the experiment till stable 2.1 is out
-| [Monday 14 March 2011] [03:03:53] <sustrik>	hm, can you set SNDBUF on a pipe?
-| [Monday 14 March 2011] [03:04:56] <dermoth|home>	likely not...
-| [Monday 14 March 2011] [03:08:28] <dermoth|home>	well I just thought i'd share this in case it can be of any help, although i'm far from understanding all the magic that happens behind the zmq api :) 
-| [Monday 14 March 2011] [03:11:40] <dermoth|home>	btw the MSG_DONTWAIT fix worked like a charm, I can get occasional restarts but no more communication deadlock. BTW it seems the data is help on the devices, not the PUSH clients - and when I kill them (SIGTERM) all data is flushed to the PULL clients
-| [Monday 14 March 2011] [03:11:47] <dermoth|home>	data is *held*
-| [Monday 14 March 2011] [03:53:10] <pieterh>	g'morning
-| [Monday 14 March 2011] [03:54:00] <guido_g>	morning
-| [Monday 14 March 2011] [03:54:57] <pieterh>	random poll to 0MQ users here: does anyone use the devices packaged with the library?
-| [Monday 14 March 2011] [03:59:25] <pieterh>	{poll timeout: ENORESPONSE}
-| [Monday 14 March 2011] [04:01:49] <guido_g>	pieterh: saw the guide ch4 checkins yesterday, when will the online version of the be updated?
-| [Monday 14 March 2011] [04:02:00] <pieterh>	guido_g: was going to do that now in fact
-| [Monday 14 March 2011] [04:02:05] <pieterh>	am just reviewing the text once again
-| [Monday 14 March 2011] [04:02:16] <guido_g>	ok, won't disturb you then ,)
-| [Monday 14 March 2011] [04:02:41] <pieterh>	np, let me launch it then...
-| [Monday 14 March 2011] [04:03:06] <guido_g>	no hurry, page set to auto-reload
-| [Monday 14 March 2011] [04:06:41] <mikko>	sustrik: i am now
-| [Monday 14 March 2011] [04:10:00] <sustrik>	mikko: the bsd bug
-| [Monday 14 March 2011] [04:10:08] <sustrik>	if i send you a patch can you check it?
-| [Monday 14 March 2011] [04:10:13] <mikko>	sustrik: sure
-| [Monday 14 March 2011] [04:10:18] <sustrik>	ok
-| [Monday 14 March 2011] [04:10:27] <mikko>	the pgm type punned pointer?
-| [Monday 14 March 2011] [04:10:44] <mikko>	pgm_receiver.cpp:154: warning: dereferencing type-punned pointer will break strict-aliasing rules
-| [Monday 14 March 2011] [04:10:47] <mikko>	this one?
-| [Monday 14 March 2011] [04:12:18] <sustrik>	yes
-| [Monday 14 March 2011] [04:13:31] <sustrik>	sent
-| [Monday 14 March 2011] [04:17:48] <mikko>	will test later today!
-| [Monday 14 March 2011] [04:25:07] <pieterh>	mikko: when the openpgm integration is stable, can you send a patch to the ML?
-| [Monday 14 March 2011] [04:28:36] <sustrik>	pieterh: is there any particular reason why you want to drop devices in 2.1?
-| [Monday 14 March 2011] [04:28:55] <pieterh>	sustrik: I'm not dropping devices, just those undocumented, unmaintained examples
-| [Monday 14 March 2011] [04:29:06] <pieterh>	0MQ core should not have these, period
-| [Monday 14 March 2011] [04:29:06] <pieterh>	I'
-| [Monday 14 March 2011] [04:29:24] <pieterh>	I've been asking for this cleanup since September and each time it's been refused for... no good reason
-| [Monday 14 March 2011] [04:29:25] <sustrik>	it's more work to do and you risk annoying users
-| [Monday 14 March 2011] [04:29:28] <pieterh>	nope
-| [Monday 14 March 2011] [04:29:40] <pieterh>	I've asked now several times if anyone uses these
-| [Monday 14 March 2011] [04:29:46] <sustrik>	and it's going to be removed from master once 2.1 is out anyway
-| [Monday 14 March 2011] [04:30:01] <sustrik>	so you would have to reconcile both patches afterwards
-| [Monday 14 March 2011] [04:30:04] <pieterh>	I want 2.1 to be clean
-| [Monday 14 March 2011] [04:30:13] <sustrik>	sure, i don't care
-| [Monday 14 March 2011] [04:30:15] <pieterh>	currently it has junk in it
-| [Monday 14 March 2011] [04:30:20] <pieterh>	undocumented, bleh :-/
-| [Monday 14 March 2011] [04:30:34] <pieterh>	these should have gone ages ago
-| [Monday 14 March 2011] [04:30:45] <pieterh>	also I've restored the zmq_device(3) man page which seems essential
-| [Monday 14 March 2011] [04:30:58] <pieterh>	lastly, having these devices in there gives them special weight they do not deserve
-| [Monday 14 March 2011] [04:31:10] <pieterh>	and which contradicts developing *real* apps elsewhere
-| [Monday 14 March 2011] [04:31:19] <pieterh>	finally, they are unmaintained
-| [Monday 14 March 2011] [04:31:26] <pieterh>	and have survived several attempts at improvement
-| [Monday 14 March 2011] [04:31:31] <pieterh>	which is inexcusable
-| [Monday 14 March 2011] [04:31:33] <sustrik>	well, i would say that 2.1 should be called something else than stable then
-| [Monday 14 March 2011] [04:31:41] <pieterh>	when unused code resists improvement, it has to be killed
-| [Monday 14 March 2011] [04:31:50] <sustrik>	what about "iMatix enterprise distribution"?
-| [Monday 14 March 2011] [04:31:54] <pieterh>	"stable and clean" if you prefer
-| [Monday 14 March 2011] [04:32:14] <pieterh>	you focus on making the core, I'll take responsibility for clean packages, ok?
-| [Monday 14 March 2011] [04:32:20] <sustrik>	sure
-| [Monday 14 March 2011] [04:32:23] <pieterh>	thanks
-| [Monday 14 March 2011] [04:32:55] <pieterh>	I note that both Jon Dyte and myself contributed documented, cleaned up improvements to those devices
-| [Monday 14 March 2011] [04:33:01] <pieterh>	both times, rejected for no good reason
-| [Monday 14 March 2011] [04:33:10] <pieterh>	this annoys me to a point you perhaps can't appreciate
-| [Monday 14 March 2011] [04:33:14] <sustrik>	they are scheduled for removeal
-| [Monday 14 March 2011] [04:33:16] <sustrik>	freezed
-| [Monday 14 March 2011] [04:33:26] <pieterh>	bogus argument
-| [Monday 14 March 2011] [04:33:36] <pieterh>	for the last 6 months?
-| [Monday 14 March 2011] [04:33:40] <sustrik>	yes
-| [Monday 14 March 2011] [04:33:41] <sustrik>	till 3.0
-| [Monday 14 March 2011] [04:33:43] <pieterh>	lol
-| [Monday 14 March 2011] [04:33:59] <pieterh>	I'm not even going to argue this
-| [Monday 14 March 2011] [04:34:08] <pieterh>	you want a distribution with rubbish in it, make it
-| [Monday 14 March 2011] [04:34:10] <sustrik>	well, if you want a stable stable you have to maintain it for 5+ years
-| [Monday 14 March 2011] [04:34:20] <sustrik>	backward compatible
-| [Monday 14 March 2011] [04:34:21] <pieterh>	I'm not interested in releasing crap
-| [Monday 14 March 2011] [04:34:25] <pieterh>	no excuses
-| [Monday 14 March 2011] [04:34:44] <pieterh>	and everything in the distribution must be maintained or documented, or removed
-| [Monday 14 March 2011] [04:34:46] <sustrik>	maintaining crap is what "stable" means
-| [Monday 14 March 2011] [04:34:46] <pieterh>	no excuses
-| [Monday 14 March 2011] [04:34:56] <sustrik>	otherwise you are doing dev branch
-| [Monday 14 March 2011] [04:35:11] <sustrik>	anyway, it's up to you
-| [Monday 14 March 2011] [04:35:22] <pieterh>	no Martin, and with all due respect, maintaining releases over years is something I'm expert in, whereas you are not
-| [Monday 14 March 2011] [04:35:56] <sustrik>	i don't really care
-| [Monday 14 March 2011] [04:36:08] <pieterh>	then don't argue with me
-| [Monday 14 March 2011] [04:36:09] <sustrik>	do it as you believe it's best
-| [Monday 14 March 2011] [04:36:13] <pieterh>	I always do
-| [Monday 14 March 2011] [04:36:15] <sustrik>	just warning you
-| [Monday 14 March 2011] [04:36:24] <pieterh>	and I'm intensely interested in the opinions of real users
-| [Monday 14 March 2011] [04:36:43] <pieterh>	but not interested in discussing "policies" that are unhelpful and arbitrary in this case
-| [Monday 14 March 2011] [04:40:59] <pieterh>	again, if *anyone* here is actually using these device apps, please speak up
-| [Monday 14 March 2011] [04:41:07] <pieterh>	I'll ask again on the ML before taking a final decision
-| [Monday 14 March 2011] [04:41:46] <pieterh>	mikko: there's been some changes to the Wikidot API, so it broke
-| [Monday 14 March 2011] [04:42:02] <pieterh>	if you're generating the api.zeromq.org it'll have stopped working
-| [Monday 14 March 2011] [04:54:21] <guido_g>	pieterh: fig62.png seems to be missing
-| [Monday 14 March 2011] [04:54:37] <pieterh>	guido_g: thanks, let me fix that
-| [Monday 14 March 2011] [04:55:37] <guido_g>	and a feature request: is it possible to fold the code listings like the toc?
-| [Monday 14 March 2011] [04:56:21] <pieterh>	guido_g: yes, it's a good idea
-| [Monday 14 March 2011] [04:56:37] <pieterh>	I'm redesigning the whole code listing UI, will do this as part of that
-| [Monday 14 March 2011] [04:56:40] <guido_g>	they're simply too large for the main text now
-| [Monday 14 March 2011] [04:56:52] <pieterh>	yup, monsterous :-)
-| [Monday 14 March 2011] [04:56:53] <guido_g>	great! thanks in advance
-| [Monday 14 March 2011] [04:58:13] <pieterh>	guido_g: ok, the images should all be working now, may need a reload
-| [Monday 14 March 2011] [04:58:35] <guido_g>	works now
-| [Monday 14 March 2011] [04:58:40] <Guthur>	+1 for code folding
-| [Monday 14 March 2011] [04:58:58] <guido_g>	:)
-| [Monday 14 March 2011] [05:00:07] 	 * guido_g is going to do the chores first
-| [Monday 14 March 2011] [05:21:48] <Guthur>	pieterh: 5 specifications within 13 days, that's quite a feat
-| [Monday 14 March 2011] [07:28:08] <pieterh>	Guthur: ... am in meetings all day...
-| [Monday 14 March 2011] [07:28:16] <pieterh>	making specifications is kind of a hobby of mine
-| [Monday 14 March 2011] [07:28:29] <pieterh>	I think it's time to properly document the 0MQ wire protocols, all of them
-| [Monday 14 March 2011] [07:28:38] <dermoth|home>	pieterh, i do - I run a pool of streamer devices
-| [Monday 14 March 2011] [07:28:56] <pieterh>	dermoth|home: do you use the code from the repository or have you made your own versions?
-| [Monday 14 March 2011] [07:30:47] <Guthur>	+1 on 0MQ wire protocols
-| [Monday 14 March 2011] [07:30:47] <dermoth|home>	pieterh, not sure if we're talking about the same repo... i'm running the devices from the code zmq library, not the separate (newer) project. The goal is to flush asap the httpd workers asap to avoid loss when they crash/restart, and also simplify the configuration (everything connect to the same pool of "servers"
-| [Monday 14 March 2011] [07:30:59] <Guthur>	better to get it done sooner rather than later in imo
-| [Monday 14 March 2011] [07:31:07] <dermoth|home>	from the *core* library
-| [Monday 14 March 2011] [08:24:12] <Guthur>	is there a minimum language version requirement for the python or perl binding
-| [Monday 14 March 2011] [08:24:46] <private_meta>	Is the lack of a dedicated zmq::version call intended?
-| [Monday 14 March 2011] [08:25:27] <Guthur>	also, how is 0MQ on solaris?
-| [Monday 14 March 2011] [08:57:51] <Guthur>	re My solaris question; I notice the daily build is on solaris 10, anyone know if 0MQ is working on solaris 8
-| [Monday 14 March 2011] [09:00:36] <Steve-o>	I wouldn't expect much unless you try G++ 
-| [Monday 14 March 2011] [09:03:48] <Steve-o>	Wasn't it EOL a while ago?
-| [Monday 14 March 2011] [09:04:56] <Steve-o>	Forte might be too old, but I think at least one of the Sun ONE Studio's runs on 8?
-| [Monday 14 March 2011] [09:05:22] <Guthur>	Steve-o: Yeah we need to move soon
-| [Monday 14 March 2011] [09:05:36] <private_meta>	pieterh: I know it's just a wrapper, but for uniformity it would be nice to have the zmq::version call in the C++ version
-| [Monday 14 March 2011] [09:05:46] <Guthur>	I wish we could easily migrate to RH
-| [Monday 14 March 2011] [09:05:59] <Guthur>	that's an option, but probably a painful one
-| [Monday 14 March 2011] [09:07:03] <Steve-o>	Guthur: you actually using Solaris on x86/x64?
-| [Monday 14 March 2011] [09:09:32] <Steve-o>	it's bad enough that studio 12 is still out-of-date, Google Protobufs doesn't work well with Sun's STL stack
-| [Monday 14 March 2011] [11:15:31] <jstrom>	hm i sent an email to zeromq-dev a few hours ago, haven't showed up in archives yet.. any problems with mail delivery/bad spam detection?
-| [Monday 14 March 2011] [11:15:40] <jstrom>	or is there moderation?
-| [Monday 14 March 2011] [11:24:39] <private_meta>	jstrom: The last time I sent an email it showed up immediately, so I doubt there is moderation
-| [Monday 14 March 2011] [11:25:03] <jstrom>	okey, wierd
-| [Monday 14 March 2011] [11:25:12] <private_meta>	jstrom: and,I see an email by you in my mailbox
-| [Monday 14 March 2011] [11:25:16] <jstrom>	Just signed up but that usually doenst make any difference in mailman..
-| [Monday 14 March 2011] [11:25:18] <jstrom>	oh, okey
-| [Monday 14 March 2011] [11:25:40] <private_meta>	depending on your time zone, 1[1|2]:36
-| [Monday 14 March 2011] [11:25:48] <jstrom>	Guess its just the archive beeing slow then :) I opted for digest mail, so I didnt get the mail myself directly
-| [Monday 14 March 2011] [11:25:53] <jstrom>	yep
-| [Monday 14 March 2011] [11:27:12] <private_meta>	By the way, it's in the archive as well
-| [Monday 14 March 2011] [11:28:45] <private_meta>	jstrom: I have no idea why, but apparently your mail, if sorted by Topic, was considered as a reply to "[zeromq-dev] Poll about linger and termination behaviour!"
-| [Monday 14 March 2011] [11:29:17] <jstrom>	hah.. yeah, there I see it.. thats very wierd indeed.. the gmane archive has it correct though: http://news.gmane.org/gmane.network.zeromq.devel
-| [Monday 14 March 2011] [12:34:07] <troutwine>	Aside from tunneling, what are my options for secure transmission? SSL is not natively supported, right?
-| [Monday 14 March 2011] [12:42:33] <cremes>	troutwine: there are no built-in options for security
-| [Monday 14 March 2011] [12:42:41] <cremes>	tunneling is probably the easiest solution at this point
-| [Monday 14 March 2011] [12:42:55] <troutwine>	cremes: Tunneling is out of the question, sadly.
-| [Monday 14 March 2011] [12:42:57] <cremes>	you might want to search the mailing list archives for this question; it has come up a few times
-| [Monday 14 March 2011] [12:43:08] <cremes>	and there might be a solution for you listed there
-| [Monday 14 March 2011] [12:43:16] <troutwine>	cremes: I did, but didn't find anything terribly promising. 
-| [Monday 14 March 2011] [12:43:34] <cremes>	too bad... perhaps you could try asking again and describe your use-case
-| [Monday 14 March 2011] [12:43:56] <cremes>	maybe someone has come up with a clever solution and is waiting for someone to ask about it before sharing :)
-| [Monday 14 March 2011] [12:44:29] <troutwine>	cremes: Maybe. Thanks.
-| [Monday 14 March 2011] [12:44:33] <nadime>	it wouldn't be terribly hard to write your own ZMQ-SSL wrapper
-| [Monday 14 March 2011] [12:44:47] <nadime>	someone may have done so, and just not released it
-| [Monday 14 March 2011] [12:45:30] <nadime>	cremes -- question for you
-| [Monday 14 March 2011] [12:45:39] <cremes>	nadime: shoot
-| [Monday 14 March 2011] [12:46:02] <troutwine>	nadime: I think that's what I'm going to do, but I know squat about SSL implementations, or really about ZMQ internals. Any pointers?
-| [Monday 14 March 2011] [12:47:08] <nadime>	i don't think you need to know anything about zmq internals
-| [Monday 14 March 2011] [12:47:17] <nadime>	but you do need to look at a few SSL implementations probably
-| [Monday 14 March 2011] [12:47:40] <nadime>	you basically want to create a message class where you're encrypting the dataload
-| [Monday 14 March 2011] [12:47:51] <nadime>	you can do something much simpler than a full implementation
-| [Monday 14 March 2011] [12:47:53] <cremes>	i recommend looking at this UML diagram for a "taste" of the 0mq internals
-| [Monday 14 March 2011] [12:47:53] <cremes>	https://github.com/thijsterlouw/zeromq2-uml
-| [Monday 14 March 2011] [12:48:31] <nadime>	cremes - for high I/O throughput scenarios, is it basically recommended to have 1 input and 1 output thread (or N input/output) to avoid using a poller?
-| [Monday 14 March 2011] [12:48:54] <nadime>	the zmq implementation of poll seems incredibly slow, it was what was causing my i/o bottleneck yesterday
-| [Monday 14 March 2011] [12:50:49] <nadime>	troutwine -- how scalable do you need your solution to be?
-| [Monday 14 March 2011] [12:51:32] <nadime>	cremes - sorry, that was unclear.  i'm asking -- is it recommended to never use zmq_poll for high throughput
-| [Monday 14 March 2011] [12:51:52] <troutwine>	nadime: A few thousand concurrent clients; not terribly.
-| [Monday 14 March 2011] [12:52:13] <cremes>	nadime: it's hard to say; are you using zmq_poll with a timeout or do you use it to block?
-| [Monday 14 March 2011] [12:52:36] <nadime>	either, both are slow
-| [Monday 14 March 2011] [12:53:06] <cremes>	nadime: interesting; i don't think anyone has done any real benchmarks in this area
-| [Monday 14 March 2011] [12:53:10] <nadime>	i was running about 500k msgs/s, avg. 50B msgs, so about 25MB
-| [Monday 14 March 2011] [12:53:31] <nadime>	and i was falling behind because of a poll (with either block or timeout, tried both)
-| [Monday 14 March 2011] [12:53:42] <nadime>	so i was pushing 500k until i hit the poll, then only getting about 100k/s
-| [Monday 14 March 2011] [12:53:50] <cremes>	you only had a handful of sockets, right? like 4 or 5 of them?
-| [Monday 14 March 2011] [12:53:51] <nadime>	and my app was blowing up because of the buffering
-| [Monday 14 March 2011] [12:53:56] <nadime>	yep
-| [Monday 14 March 2011] [12:54:02] <cremes>	wow, that's terrible
-| [Monday 14 March 2011] [12:54:14] <nadime>	the memcpy was killing me
-| [Monday 14 March 2011] [12:54:25] <cremes>	any chance you could open an issue illustrating this problem?
-| [Monday 14 March 2011] [12:54:30] <nadime>	i'm on win7, so i think zmq_poll uses select()
-| [Monday 14 March 2011] [12:54:48] <cremes>	ah... windows
-| [Monday 14 March 2011] [12:54:48] <nadime>	sure in a day or two, i can probably make an example case pretty quickly
-| [Monday 14 March 2011] [12:55:04] <cremes>	windows has probably gotten the least attention out of all of the platforms
-| [Monday 14 March 2011] [12:55:05] <troutwine>	nadime: Limited by human latency, I'd guess each client is going to push one message a half-second. So a few thousand sockets, 4,000 msgs/s. 
-| [Monday 14 March 2011] [12:55:11] <troutwine>	nadime: Why do you ask?
-| [Monday 14 March 2011] [12:55:25] <cremes>	the 0mq project doesn't have a lot of windows-savvy devs working on it yet; there are a few but progress is slow
-| [Monday 14 March 2011] [12:55:32] <nadime>	worried about key exchange, troutwine
-| [Monday 14 March 2011] [12:55:37] <nadime>	not throughput
-| [Monday 14 March 2011] [12:56:03] <nadime>	you should basically look up how SSL handles key exchange, once you have keys on both sides, it's really easy to use ZMQ to do secure xfer
-| [Monday 14 March 2011] [12:56:18] <cremes>	nadime: you might want to ping Guthur and ask him about his work on using windows-native-api poll stuff
-| [Monday 14 March 2011] [12:56:34] <troutwine>	nadime: I'm reading up on SSL now. Clearly I know nothing about it. 
-| [Monday 14 March 2011] [12:57:17] <nadime>	thanks, i will do that
-| [Monday 14 March 2011] [12:57:30] <nadime>	i was planning on taking a look at the implementation when i have a sec, gotta finish this project though
-| [Monday 14 March 2011] [12:57:39] <nadime>	but if he's already working on it, maybe we can team up
-| [Monday 14 March 2011] [12:57:51] <cremes>	nadime: good idea; i'm sure he would appreciate a hand
-| [Monday 14 March 2011] [12:58:05] <cremes>	nadime: his focus is on getting ipc transport working on windows
-| [Monday 14 March 2011] [12:58:21] <cremes>	but that stuff is all tied in with polling for events and handling i/o completion
-| [Monday 14 March 2011] [12:58:27] <nadime>	ah, well i don't care about that, but happy to help re: poll implementation ;)
-| [Monday 14 March 2011] [12:58:47] <cremes>	i think a solution for both pretty much go hand in hand
-| [Monday 14 March 2011] [12:58:58] <nadime>	gotcha
-| [Monday 14 March 2011] [12:59:01] <cremes>	based on what Guthur was posting here last week and the week before
-| [Monday 14 March 2011] [12:59:09] <nadime>	he wants to do ipc using files?
-| [Monday 14 March 2011] [12:59:21] <nadime>	and the windows poll implementationc an't handle sockets and files?
-| [Monday 14 March 2011] [12:59:55] <cremes>	nadime: it's best just to ask him; he can explain it with the minimum amount of confusion (that i might add if i try)
-| [Monday 14 March 2011] [13:00:11] <nadime>	k
-| [Monday 14 March 2011] [13:00:40] <Guthur>	did I hear my name, hehe
-| [Monday 14 March 2011] [13:00:49] <cremes>	Guthur: you did!
-| [Monday 14 March 2011] [13:00:59] <nadime>	you did -- cremes was just asking me to ping you about your work on windows zmq_poll implementation
-| [Monday 14 March 2011] [13:01:03] <cremes>	nadime has noticed that zmq_poll() sucks donkey on windows
-| [Monday 14 March 2011] [13:01:31] <Guthur>	it's a 'feature'
-| [Monday 14 March 2011] [13:01:40] <Guthur>	windows comes with extra donkeys for just such cases
-| [Monday 14 March 2011] [13:01:45] <nadime>	haha
-| [Monday 14 March 2011] [13:02:08] <Guthur>	but yeah, we really need to look at getting IOCP
-| [Monday 14 March 2011] [13:02:29] <Guthur>	or possibly, at the very least, WSA_POLL (I think thats the name)
-| [Monday 14 March 2011] [13:02:44] <nadime>	what is zmq_poll implemented using right now? select()?
-| [Monday 14 March 2011] [13:02:53] <Guthur>	IOCP would be the bigger win because it would give IPC
-| [Monday 14 March 2011] [13:03:02] <Guthur>	nadime: I believe so
-| [Monday 14 March 2011] [13:03:23] <Guthur>	It only does TCP though
-| [Monday 14 March 2011] [13:03:41] <Guthur>	Select doesn't support named pipes unfortunately
-| [Monday 14 March 2011] [13:03:53] <cremes>	nadime, Guthur: i'll leave you two windows experts to hash things out :)
-| [Monday 14 March 2011] [13:03:55] <nadime>	and i take it wsa_poll doesn't either
-| [Monday 14 March 2011] [13:04:13] <Guthur>	nadime: As far as I am aware, nope
-| [Monday 14 March 2011] [13:05:03] <nadime>	IOPC looks pretty nifty
-| [Monday 14 March 2011] [13:05:41] <Guthur>	I think the only realistic option for named pipes is IOCP or WaitForMultipleObjects
-| [Monday 14 March 2011] [13:05:43] <nadime>	would eliminate the need to memcpy the fd list for in, out, err every cycle which is i think what slows down the poller on high throughput
-| [Monday 14 March 2011] [13:05:49] <Guthur>	IOCP is pretty sweet
-| [Monday 14 March 2011] [13:06:26] <Guthur>	but it doesn't naturally fit into the 0MQ engine as is, afaik
-| [Monday 14 March 2011] [13:07:01] <Guthur>	it will require an abstraction layer over named pipes and IOCP 
-| [Monday 14 March 2011] [13:07:44] <Guthur>	I think it's due to the fact that 0MQ needs some state reflection which IOCP doesn't cover, sustrik is the man to talk to for 0MQs needs though
-| [Monday 14 March 2011] [13:07:47] <nadime>	it looks like it will actually need to loop over all requested sockets/pipes instead of operating like select()
-| [Monday 14 March 2011] [13:08:11] <nadime>	nm
-| [Monday 14 March 2011] [13:08:56] <Guthur>	sorry I need to go, but i'll be back in an hour or so
-| [Monday 14 March 2011] [13:18:17] <private_meta>	github is amazingly stupid
-| [Monday 14 March 2011] [13:18:28] <private_meta>	my account doesn't work, I can't log in
-| [Monday 14 March 2011] [13:18:35] <private_meta>	they're sending me to the support page
-| [Monday 14 March 2011] [13:18:41] <private_meta>	which you can only access when you're logged in
-| [Monday 14 March 2011] [13:20:27] <michelp>	morning/afternoon/evening everybody
-| [Monday 14 March 2011] [13:21:30] <private_meta>	pieterh: If you don't mind adding that in a future release, add this to zmq.hpp: https://gist.github.com/94ced4a644021248f4d7 <- just for unifying the c++ binding and for not having to use C calls
-| [Monday 14 March 2011] [13:22:16] <private_meta>	pieterh: I don't want to clone the entire thing just to get a patch for that if you don't mind
-| [Monday 14 March 2011] [13:22:28] <guido_g>	you know how to submit patches
-| [Monday 14 March 2011] [13:22:41] <guido_g>	there is *a lot* of information missing
-| [Monday 14 March 2011] [13:23:04] <private_meta>	Ok, then leave it out
-| [Monday 14 March 2011] [13:44:23] <pieterh>	re
-| [Monday 14 March 2011] [13:44:27] <pieterh>	sorry, am in meetings all day
-| [Monday 14 March 2011] [13:44:46] <pieterh>	private_meta: patches need to follow contribution policy
-| [Monday 14 March 2011] [13:45:25] <private_meta>	So i need to go through all that (imho annoying) stuff to see a 1 line method in there?
-| [Monday 14 March 2011] [13:45:35] <pieterh>	private_meta: wrt to github are you trying to login with an organization id? 
-| [Monday 14 March 2011] [13:45:45] <pieterh>	private_meta: yes, even for a 1-line patch, sorry
-| [Monday 14 March 2011] [13:45:57] <pieterh>	well, perhaps I can make the change, hang on...
-| [Monday 14 March 2011] [13:47:23] <private_meta>	Working on zguid I'm doing multiple changes, and I understand that a patch is necessary
-| [Monday 14 March 2011] [13:47:26] <pieterh>	private_meta: I'll make that change myself, and send a patch to martin, tomorrow
-| [Monday 14 March 2011] [13:47:28] <private_meta>	a *patch
-| [Monday 14 March 2011] [13:47:46] <pieterh>	i'll get all the credit for it, be warned
-| [Monday 14 March 2011] [13:47:55] 	 * pieterh is going to tweet how he fixed the version method!
-| [Monday 14 March 2011] [13:47:57] <pieterh>	:-)
-| [Monday 14 March 2011] [13:47:59] <private_meta>	sure, I don't need the credit anyway
-| [Monday 14 March 2011] [13:48:17] <pieterh>	it's kind of a joke, credit for a 1-line method
-| [Monday 14 March 2011] [13:48:24] <private_meta>	ik
-| [Monday 14 March 2011] [13:48:27] <private_meta>	I mean creadit there in general
-| [Monday 14 March 2011] [13:48:30] <private_meta>	*credit
-| [Monday 14 March 2011] [13:48:35] <pieterh>	it's more about blame than credit
-| [Monday 14 March 2011] [13:48:43] <pieterh>	ok, have to flee, cyl
-| [Monday 14 March 2011] [13:48:47] <private_meta>	thanks
-| [Monday 14 March 2011] [14:10:04] <nadime>	anyone know: what's the behavior of the io threads f you set socket affinities to threads out of range, e.g. you have 1 io thread but you set a socket's affinity to 8
-| [Monday 14 March 2011] [14:45:25] <loxs>	hi folks, jus saw Zed's talk on 0mq at PyCon and there I saw him saying it's not a good idea to put it on the internet...
-| [Monday 14 March 2011] [14:45:44] <loxs>	uhm, it kind looks really promising for things like game networking
-| [Monday 14 March 2011] [14:46:32] <loxs>	so, are there any plans to make suitable to work on the internet?
-| [Monday 14 March 2011] [14:50:44] <loxs>	Zed said "they are working on it", but what does this mean?
-| [Monday 14 March 2011] [14:53:39] <cremes>	loxs: you need to remember the context in which zed said that
-| [Monday 14 March 2011] [14:53:51] <cremes>	he likes to 'fuzz' all of his projects (send random data to them)
-| [Monday 14 March 2011] [14:54:05] <cremes>	he noted that 0mq still has assertions that will trigger when bad data is received on the port
-| [Monday 14 March 2011] [14:54:24] <cremes>	so a perfect DOS attack would be to send random data to a 0mq socket and crash the lib
-| [Monday 14 March 2011] [14:54:42] <cremes>	the 0mq guys are 'working on it' in the sense that they are slowly but surely removing those assertions
-| [Monday 14 March 2011] [14:54:53] <cremes>	and fixing the library's behavior in the face of bad data
-| [Monday 14 March 2011] [15:01:55] <michelp>	if you can handle the overhead of it openvpn might be a good solution to securing a 0mq network over the internet
-| [Monday 14 March 2011] [15:02:11] <michelp>	i hear some game networks are using it successfully
-| [Monday 14 March 2011] [15:02:38] <michelp>	it also lets you do things like revoke access to rogue clients
-| [Monday 14 March 2011] [15:03:29] 	 * michelp is anxious to get some time to queue up zed's talk
-| [Monday 14 March 2011] [15:04:16] <cremes>	zed's talk was only "okay"; due to time pressures he touched so lightly on 85% of the important stuff
-| [Monday 14 March 2011] [15:04:34] <cremes>	that unless you were already a 0mq practitioner i doubt the audience got much out of it
-| [Monday 14 March 2011] [15:06:32] <loxs>	well, I didn't, but the idea of "one messaging system to rull them all" started some bells in my head :)
-| [Monday 14 March 2011] [15:07:29] <loxs>	michelp, well, it's not an option if you don't trust the client (if it's a game, people will try to do all kinds of hacks to cheat the game)
-| [Monday 14 March 2011] [15:07:59] <loxs>	michelp, which game networks use zeromq?
-| [Monday 14 March 2011] [15:09:43] <michelp>	loxs, i don't know, just something i read while i was cruising through google setting up my own private vpn
-| [Monday 14 March 2011] [15:12:46] <mikko>	sustrik: tested and works
-| [Monday 14 March 2011] [15:16:10] <michelp>	loxs, sorry i misread your question, i meant some game networks are using openvpn, not 0mq
-| [Monday 14 March 2011] [15:16:13] <michelp>	based on what i read only, not on any direct knowledge
-| [Monday 14 March 2011] [15:17:07] <michelp>	my suggestion was that if you were going to use 0mq over the internet, using it on a vpn might be a good approach to avoid fuzz hacks on an open port
-| [Monday 14 March 2011] [15:18:13] <loxs>	I see. Yep, you are right
-| [Monday 14 March 2011] [15:19:00] <loxs>	but it would be really cool if you could use zeromq directly for client server communication
-| [Monday 14 March 2011] [15:19:57] <sustrik>	mikko: thx
-| [Monday 14 March 2011] [15:30:08] <CIA-103>	zeromq2: 03Martin Sustrik 07master * rf987f4b 10/ src/pgm_receiver.cpp : 
-| [Monday 14 March 2011] [15:30:08] <CIA-103>	zeromq2: FreeBSD complation error fixed
-| [Monday 14 March 2011] [15:30:08] <CIA-103>	zeromq2: There was an error in pgm_receiver wrt strict aliasing.
-| [Monday 14 March 2011] [15:30:08] <CIA-103>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/ecz5VG
-| [Monday 14 March 2011] [15:34:57] <andrewvc>	cremes: around?
-| [Monday 14 March 2011] [15:37:54] <cremes>	andrewvc: for about 20m
-| [Monday 14 March 2011] [15:38:02] <andrewvc>	a couple things
-| [Monday 14 March 2011] [15:38:11] <andrewvc>	1: you know the deal with all the finalizer errors on the specs
-| [Monday 14 March 2011] [15:38:23] <andrewvc>	also, I added a zdevice branch to ffi-rzmq with a new ZMQ::Device class
-| [Monday 14 March 2011] [15:39:17] <mikko>	sustrik: i'm confused
-| [Monday 14 March 2011] [15:39:59] <mikko>	sustrik: do fixes go first to zeromq2 or zeromq2-1 repo?
-| [Monday 14 March 2011] [15:46:34] <cremes>	andrewvc: i'll take a look at the zdevice branch tonight/tomorrow and give you feedback if anything pops
-| [Monday 14 March 2011] [15:46:50] <andrewvc>	cool
-| [Monday 14 March 2011] [15:46:53] <cremes>	however, i'm not sure what you mean about finalizer errors; i'm not getting any
-| [Monday 14 March 2011] [15:47:09] <cremes>	can you pastie the errors you see? (i might have fixed 'em and forgot to push them)
-| [Monday 14 March 2011] [15:47:12] <andrewvc>	sure
-| [Monday 14 March 2011] [15:47:13] <andrewvc>	one sec
-| [Monday 14 March 2011] [15:51:01] <andrewvc>	cremes: https://gist.github.com/869738
-| [Monday 14 March 2011] [15:51:20] <andrewvc>	actually, there's a variety of errors
-| [Monday 14 March 2011] [15:51:37] <andrewvc>	that's on rbx
-| [Monday 14 March 2011] [15:52:16] <cremes>	huh
-| [Monday 14 March 2011] [15:52:29] <cremes>	i don't get those under mri; i'll try under rbx and get them patched up
-| [Monday 14 March 2011] [15:52:42] <cremes>	looks like we found another hole in rbx's ffi support
-| [Monday 14 March 2011] [15:57:50] <andrewvc>	interesting
-| [Monday 14 March 2011] [15:59:29] <sustrik>	mikko: i'm maintaining master (zeromq2)
-| [Monday 14 March 2011] [16:00:39] <sustrik>	pieter volunteered to do stable releases
-| [Monday 14 March 2011] [16:01:13] <sustrik>	so he should decide on the process for zeromq2-1
-| [Monday 14 March 2011] [16:02:36] <mikko>	sustrik: so they should be treated as separate projects?
-| [Monday 14 March 2011] [16:04:40] <sustrik>	you should ask pieter
-| [Monday 14 March 2011] [16:05:03] <sustrik>	my understanding of stable is maintaining the backward compatibility while backporting patches
-| [Monday 14 March 2011] [16:05:37] <mikko>	i shall ask him when we meet
-| [Monday 14 March 2011] [16:05:43] <sustrik>	ok
-| [Monday 14 March 2011] [16:07:09] <mikko>	sustrik: where is subscription forwarding going on?
-| [Monday 14 March 2011] [16:07:15] <mikko>	is it stable?
-| [Monday 14 March 2011] [16:07:26] <sustrik>	mikko: it's still on a branch
-| [Monday 14 March 2011] [16:07:33] <sustrik>	not finished yet
-| [Monday 14 March 2011] [16:07:37] <mikko>	ok
-| [Monday 14 March 2011] [16:07:58] <sustrik>	then it'll go to master obviously
-| [Monday 14 March 2011] [16:08:04] <sustrik>	not sure about stables
-| [Monday 14 March 2011] [16:08:19] <mikko>	it crossed my mind yesterday
-| [Monday 14 March 2011] [16:08:27] <mikko>	was writing a small utility that uses pub/sub sockets
-| [Monday 14 March 2011] [16:08:40] <mikko>	so, next i need to get pieterh to merge the freebsd pgm build fix
-| [Monday 14 March 2011] [16:08:54] <mikko>	and test steve's upstream changes 
-| [Monday 14 March 2011] [16:08:55] <sustrik>	he'll do i so, i think
-| [Monday 14 March 2011] [16:09:15] <sustrik>	ack
-| [Monday 14 March 2011] [19:42:26] <Guthur>	any suggestions on why i might get a phantom POLLIN event
-| [Monday 14 March 2011] [19:44:09] <Guthur>	oh wait nvm, something more fundamentally wrong with my code
-| [Monday 14 March 2011] [19:47:03] <Guthur>	yep I was being a silly programmer
-| [Monday 14 March 2011] [23:40:48] <michelp>	has anyone yet in the community explored distributed shared memory stores in python over 0mq?
-| [Monday 14 March 2011] [23:41:15] <michelp>	thinking in terms of doing transactional changes to objects that get propagated to N nodes
-| [Monday 14 March 2011] [23:43:58] <michelp>	it's something i've always taken an interest in, but the problem of distributing changes to threads, processes, and boxes uniformly has stumped me
-| [Tuesday 15 March 2011] [04:46:06] <guido_g>	good morning
-| [Tuesday 15 March 2011] [05:20:35] <sustrik>	morning
-| [Tuesday 15 March 2011] [05:28:34] <Evet>	morning
-| [Tuesday 15 March 2011] [05:29:10] <gambi>	morning :)
-| [Tuesday 15 March 2011] [05:44:33] <pieter_hintjens>	g'morning
-| [Tuesday 15 March 2011] [06:31:06] <private_meta>	sustrik: mind i talk to you about it outside the mailing lisT?
-| [Tuesday 15 March 2011] [06:31:08] <private_meta>	*list
-| [Tuesday 15 March 2011] [06:31:29] <private_meta>	sustrik: the zmq::version i mean
-| [Tuesday 15 March 2011] [06:39:31] <sustrik>	sure
-| [Tuesday 15 March 2011] [06:39:33] <sustrik>	what's up?
-| [Tuesday 15 March 2011] [06:41:29] <private_meta>	about the pointer vs reference thing
-| [Tuesday 15 March 2011] [06:42:07] <private_meta>	imho the only valid reason to use that would be to be coherent with the other function prototypes
-| [Tuesday 15 March 2011] [06:44:03] <sustrik>	right
-| [Tuesday 15 March 2011] [06:44:08] <sustrik>	it's a matter of style
-| [Tuesday 15 March 2011] [06:44:20] <private_meta>	Bad style, according to a lot of people
-| [Tuesday 15 March 2011] [06:44:32] <sustrik>	sure
-| [Tuesday 15 March 2011] [06:44:46] <sustrik>	the point is that it's the style that C++ API uses now
-| [Tuesday 15 March 2011] [06:44:52] <sustrik>	you can fork and restyle it
-| [Tuesday 15 March 2011] [06:46:13] <private_meta>	Wouldn't really help anyway
-| [Tuesday 15 March 2011] [06:46:56] <sustrik>	the thing with the style is you have to decide on it once and then keep it
-| [Tuesday 15 March 2011] [06:47:04] <sustrik>	some may consider it ugly
-| [Tuesday 15 March 2011] [06:47:13] <sustrik>	but that's how it goes
-| [Tuesday 15 March 2011] [06:48:52] <private_meta>	hmm... it's just nowhere near defensive programming, maybe that's what bothers me, I was taught to do that over and over
-| [Tuesday 15 March 2011] [06:49:30] <sustrik>	shrug
-| [Tuesday 15 March 2011] [06:49:34] <sustrik>	you can fork it
-| [Tuesday 15 March 2011] [06:50:03] <sustrik>	breaking backward comatibility because of styling issues is not worth it
-| [Tuesday 15 March 2011] [06:50:33] <private_meta>	Yeah, but as I said, it wouldn't really help, and I would break my own compatibility
-| [Tuesday 15 March 2011] [06:50:39] <private_meta>	It's not worth it
-| [Tuesday 15 March 2011] [06:50:43] <sustrik>	ack
-| [Tuesday 15 March 2011] [06:53:23] <private_meta>	well ok, even if I'm not quite agree with the reasoning, I can't change it anyway (and no, changing it by forking isn't what I call a helpful solution)
-| [Tuesday 15 March 2011] [06:54:21] <sustrik>	would you prefer breaking everyone's applications instead?
-| [Tuesday 15 March 2011] [06:54:33] <private_meta>	That's why I said I can't change it
-| [Tuesday 15 March 2011] [06:54:37] <sustrik>	exactly
-| [Tuesday 15 March 2011] [06:54:42] <sustrik>	nothing to do here
-| [Tuesday 15 March 2011] [06:54:51] <private_meta>	"Go on, nothing to see"
-| [Tuesday 15 March 2011] [06:54:56] <sustrik>	:)
-| [Tuesday 15 March 2011] [06:55:27] <private_meta>	"Change what you can't accept, accept what you can't change" <-- accepting can be hard
-| [Tuesday 15 March 2011] [07:38:38] <pieter_hintjens>	consistency is more important than accuracy in some cases
-| [Tuesday 15 March 2011] [07:41:33] <pieter_hintjens>	private_meta: actually, it would be possible to change the C++ style for 3.0
-| [Tuesday 15 March 2011] [07:58:51] <private_meta>	pieter_hintjens: ad consistency, I understand
-| [Tuesday 15 March 2011] [07:59:04] <private_meta>	pieter_hintjens: ad 3.0, do you not plan backwards compatibility for 3.0?
-| [Tuesday 15 March 2011] [08:11:41] <CIA-103>	zeromq2: 03Martin Sustrik 07master * r7045a4a 10/ (src/named_session.cpp src/named_session.hpp): 
-| [Tuesday 15 March 2011] [08:11:41] <CIA-103>	zeromq2: Dead code removed from named_session.cpp
-| [Tuesday 15 March 2011] [08:11:41] <CIA-103>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/fkOsT0
-| [Tuesday 15 March 2011] [09:19:23] <Evet>	sustrik: have you benchmarked zeromq on debian-kfreebsd?
-| [Tuesday 15 March 2011] [09:24:17] <sustrik>	Evet: no
-| [Tuesday 15 March 2011] [09:24:18] <sustrik>	did you?
-| [Tuesday 15 March 2011] [09:27:58] <Evet>	sustrik: downloading it now
-| [Tuesday 15 March 2011] [09:28:57] <Evet>	it seems an interesting project
-| [Tuesday 15 March 2011] [09:34:07] <sustrik>	yes
-| [Tuesday 15 March 2011] [09:34:31] <sustrik>	have a look at http://www.zeromq.org/area:results
-| [Tuesday 15 March 2011] [09:34:48] <sustrik>	if you get any numbers we can post the results on the website
-| [Tuesday 15 March 2011] [10:06:57] <private_meta>	pieter_hintjens: What might be nice (and not too much work) for the guide, imho, would be a small example output of your code. 1) for those who go through the code to make sure they understood it right without running it 2) for those who want to translate to see a rough outline what the intended result is
-| [Tuesday 15 March 2011] [10:32:04] <private_meta>	actually, overloading the C++ binding with by reference methods would be a good way to add the by reference functionality without breaking backwards compatibility
-| [Tuesday 15 March 2011] [10:35:36] <pieter_hintjens>	private_meta: back, sorry, in meetings all day...
-| [Tuesday 15 March 2011] [10:35:48] <pieter_hintjens>	actually you can make a new C++ binding at any time at all
-| [Tuesday 15 March 2011] [10:35:50] <private_meta>	np, IRC is a patient protocol
-| [Tuesday 15 March 2011] [10:36:06] <pieter_hintjens>	just as we have improvements to the other language bindings, orthogonally to 0MQ releases
-| [Tuesday 15 March 2011] [10:37:12] <pieter_hintjens>	re the guide, yes, this is a good idea, I've done it in a few places but not systematically
-| [Tuesday 15 March 2011] [10:38:28] <Evet>	do you think something like mongrel2 for xitami?
-| [Tuesday 15 March 2011] [10:39:48] <pieter_hintjens>	Evet: xitami is dead, for several reasons
-| [Tuesday 15 March 2011] [10:40:04] <pieter_hintjens>	i'm not sure what your question is... :-)
-| [Tuesday 15 March 2011] [10:41:46] <Evet>	oh, xitami was my very first webserver
-| [Tuesday 15 March 2011] [10:41:59] <Evet>	i have learnt perl on it :)
-| [Tuesday 15 March 2011] [10:43:14] <private_meta>	pieter_hintjens: sorry for being slow and only arriving at the paranoid pirate pattern now, but I have a small question there. According to Figure 59 of the guide, the Lazy Pirate Client, the Paranoid Pirate Queue and the Paranoid Pirate Worker run at the same time, am I correct?
-| [Tuesday 15 March 2011] [10:43:35] <pieter_hintjens>	yes, that's right
-| [Tuesday 15 March 2011] [10:44:29] <pieter_hintjens>	I made them as three processes, rather than three threads in one process, so you can stop and start them independently
-| [Tuesday 15 March 2011] [10:44:34] <private_meta>	So, I seem to be doing something wrong. I run ppqueue, then I run ppworker and I get an "Address already in use" error for the lpserver (which ought to run 2nd)
-| [Tuesday 15 March 2011] [10:45:31] <private_meta>	ah wait
-| [Tuesday 15 March 2011] [10:45:34] <pieter_hintjens>	you don't want to run lpserver
-| [Tuesday 15 March 2011] [10:45:39] <private_meta>	i just realized that
-| [Tuesday 15 March 2011] [10:45:40] <private_meta>	stupid me
-| [Tuesday 15 March 2011] [10:45:48] <private_meta>	I wanted lpclient and ran lpserver
-| [Tuesday 15 March 2011] [10:45:51] <pieter_hintjens>	it's not as simple as it could be...
-| [Tuesday 15 March 2011] [10:45:51] <private_meta>	>_<
-| [Tuesday 15 March 2011] [10:46:06] <private_meta>	argh
-| [Tuesday 15 March 2011] [10:46:26] <private_meta>	I'm looking through it and thinking and thinking and I don't realize I use the wrong one
-| [Tuesday 15 March 2011] [10:46:31] <private_meta>	lemme see
-| [Tuesday 15 March 2011] [10:47:40] <private_meta>	Sorry for bothering you :/
-| [Tuesday 15 March 2011] [10:48:18] <sustrik>	guys, an idea: what about factoring the C++ binding out of 0mq core in 3.0?
-| [Tuesday 15 March 2011] [10:48:53] <yrashk>	sustrik: ....and merging erlzmq2 in :D haha, kidding, sorry
-| [Tuesday 15 March 2011] [10:49:19] <sustrik>	well, i mean, all the other bindings are separate projects, why should c++ differ
-| [Tuesday 15 March 2011] [10:50:58] <yrashk>	yeah, it makes some sense
-| [Tuesday 15 March 2011] [10:51:17] <yrashk>	although I am ok with c++ binding living in there
-| [Tuesday 15 March 2011] [10:51:21] <guido_g>	good idea
-| [Tuesday 15 March 2011] [10:51:58] <sustrik>	the downside is that it ties the C++ binding to the core too much
-| [Tuesday 15 March 2011] [10:52:23] <sustrik>	so there's little space for alternative implementations
-| [Tuesday 15 March 2011] [10:52:40] <sustrik>	binding-only releases (without dragging the core along)
-| [Tuesday 15 March 2011] [10:52:43] <sustrik>	etc.
-| [Tuesday 15 March 2011] [10:54:01] <yrashk>	sustrik: I'd vote for keeping c++ binding
-| [Tuesday 15 March 2011] [10:54:59] <pieter_hintjens>	sustrik: that was the idea, forking it out, but it needs to be folded back in for a real distribution
-| [Tuesday 15 March 2011] [10:55:18] <sustrik>	sure, same as other bindings
-| [Tuesday 15 March 2011] [10:55:24] <pieter_hintjens>	exactly the same
-| [Tuesday 15 March 2011] [10:55:41] <pieter_hintjens>	makes it much easier to contribute to, improve, etc.
-| [Tuesday 15 March 2011] [10:55:49] <sustrik>	ack
-| [Tuesday 15 March 2011] [10:55:57] <sustrik>	i am +1 myself
-| [Tuesday 15 March 2011] [10:56:08] <pieter_hintjens>	I'm +1 for making it consistent with other languages
-| [Tuesday 15 March 2011] [10:56:08] <sustrik>	so far 3 +1's and a single -1
-| [Tuesday 15 March 2011] [10:56:44] <pieter_hintjens>	in any case I want to explore how to make packages that include the popular bindings
-| [Tuesday 15 March 2011] [10:57:06] <sustrik>	that's something i am wondering about for a long time
-| [Tuesday 15 March 2011] [10:57:28] <sustrik>	core + java + ruby + python + .net
-| [Tuesday 15 March 2011] [10:57:34] <pieter_hintjens>	the languages are: C++, C#, clisp, Java, Perl, PHP, Python, Ruby
-| [Tuesday 15 March 2011] [10:57:47] <pieter_hintjens>	going by the % of translations of the guide examples
-| [Tuesday 15 March 2011] [10:58:08] <sustrik>	ack
-| [Tuesday 15 March 2011] [10:58:13] <mato>	pieter_hintjens: you'll want to keep in mind that $LANGUAGE generally has it's own way of distributing extensions...
-| [Tuesday 15 March 2011] [10:58:23] <pieter_hintjens>	mato: indeed, this is the fun part
-| [Tuesday 15 March 2011] [10:58:30] <mato>	pieter_hintjens: e.g. Perl -> CPAN, Ruby -> gem, etc.
-| [Tuesday 15 March 2011] [10:58:43] <pieter_hintjens>	exactl
-| [Tuesday 15 March 2011] [10:58:47] <pieter_hintjens>	y
-| [Tuesday 15 March 2011] [10:58:58] <sustrik>	and on win32 people expect monolithic installer, i would say
-| [Tuesday 15 March 2011] [10:59:02] <mato>	then you have the linux distribution people packaging stuff on top of that separately
-| [Tuesday 15 March 2011] [10:59:26] <pieter_hintjens>	so Windows is the easiest case, in many ways
-| [Tuesday 15 March 2011] [11:00:47] <pieterh>	the process can't replace existing $LANGUAGE distribution processes but it can automate them
-| [Tuesday 15 March 2011] [11:01:58] <pieterh>	i'll spend some time studying this and make a few proposals
-| [Tuesday 15 March 2011] [11:02:18] <pieterh>	it probably will need cooperation from binding authors / communities to make work well
-| [Tuesday 15 March 2011] [11:02:27] <sustrik>	that will be useful
-| [Tuesday 15 March 2011] [11:02:37] <pieterh>	ok
-| [Tuesday 15 March 2011] [11:04:06] <pieterh>	sustrik: the poll for zmq_term is tied afaics, 4/4
-| [Tuesday 15 March 2011] [11:04:51] <pieterh>	there was one vote for infinity here on irc afair
-| [Tuesday 15 March 2011] [11:06:07] <Guthur>	+1 the extraction of C++ from core
-| [Tuesday 15 March 2011] [11:06:21] <Guthur>	+1 for extraction of C++ from the world
-| [Tuesday 15 March 2011] [11:06:29] <sustrik>	:)
-| [Tuesday 15 March 2011] [11:06:50] <sustrik>	pieterh: let's wait couple of days more
-| [Tuesday 15 March 2011] [11:07:08] <pieterh>	I do want to close the 2.1 release
-| [Tuesday 15 March 2011] [11:07:22] <pieterh>	there is not sufficient mandate afaics to revert the behavior
-| [Tuesday 15 March 2011] [11:07:40] <sustrik>	looks like
-| [Tuesday 15 March 2011] [11:07:47] <sustrik>	let's go for current solution then
-| [Tuesday 15 March 2011] [11:08:15] <pieterh>	well, this saves me a lot of work in the Guide, but I have this sinking feeling about it
-| [Tuesday 15 March 2011] [11:08:30] <pieterh>	these semantics won't change again in 3.0, right?
-| [Tuesday 15 March 2011] [11:08:46] <sustrik>	nope
-| [Tuesday 15 March 2011] [11:09:30] <pieterh>	then it's defensible, and the poll shows we did discuss the issue ad nauseam
-| [Tuesday 15 March 2011] [11:09:43] <pieterh>	if anyone still complains, they should have spoken up in time
-| [Tuesday 15 March 2011] [11:09:43] <sustrik>	ok
-| [Tuesday 15 March 2011] [11:09:49] <pieterh>	excellent
-| [Tuesday 15 March 2011] [11:10:03] <private_meta>	aw not again
-| [Tuesday 15 March 2011] [11:10:29] <pieterh>	private_meta: port in use?
-| [Tuesday 15 March 2011] [11:10:33] <private_meta>	no
-| [Tuesday 15 March 2011] [11:10:42] <private_meta>	Bad file descriptor
-| [Tuesday 15 March 2011] [11:10:42] <private_meta>	nbytes != -1 (mailbox.cpp:241)
-| [Tuesday 15 March 2011] [11:10:55] <private_meta>	don't remember right now what the error was when I had that one previously
-| [Tuesday 15 March 2011] [11:11:07] <mato>	pieterh: so what is the decision on zmq_term? 
-| [Tuesday 15 March 2011] [11:11:17] <mato>	pieterh: keep the current behaviour?
-| [Tuesday 15 March 2011] [11:11:21] <pieterh>	mato: yes
-| [Tuesday 15 March 2011] [11:11:27] <sustrik>	private_meta: is it a reproducible use case?
-| [Tuesday 15 March 2011] [11:11:29] <mato>	ok, understood
-| [Tuesday 15 March 2011] [11:11:45] <pieterh>	the problem, and the reason for the discussion, is that people migrating from 2.0 _will_ be systematically hit by this
-| [Tuesday 15 March 2011] [11:11:47] <private_meta>	sustrik: it's my translation of ppworker (not yet submitted)
-| [Tuesday 15 March 2011] [11:11:56] <cremes>	private_meta:  i have seen that assert when i ran out of sockets and/or ran out of file descriptors
-| [Tuesday 15 March 2011] [11:12:01] <cremes>	should be easy to reproduce
-| [Tuesday 15 March 2011] [11:12:11] <sustrik>	private_meta: iirc such a problem can happen if you close the fd you get fromZMQ_FD
-| [Tuesday 15 March 2011] [11:12:34] <sustrik>	socket option i mean
-| [Tuesday 15 March 2011] [11:12:34] <cremes>	yep, that causes it too
-| [Tuesday 15 March 2011] [11:12:55] <sustrik>	cremes: if you can reproduce it, i would fix it
-| [Tuesday 15 March 2011] [11:14:12] <bpl29>	Is there a reference page for ZMQ objects such as context and socket?
-| [Tuesday 15 March 2011] [11:14:31] <pieterh>	bpl29: yes, at http://rfc.zeromq.org
-| [Tuesday 15 March 2011] [11:14:34] <private_meta>	happens when calling zmq::poll
-| [Tuesday 15 March 2011] [11:14:49] <pieterh>	bpl29: sorry! http://api.zeromq.org...
-| [Tuesday 15 March 2011] [11:14:50] <private_meta>	wait, i think I know
-| [Tuesday 15 March 2011] [11:15:04] <private_meta>	k, got it
-| [Tuesday 15 March 2011] [11:15:30] <bpl29>	thanks pieterh.  Am I wrong or is this just a function reference though?
-| [Tuesday 15 March 2011] [11:15:52] <pieterh>	bpl29: these objects are not accessed except via functions
-| [Tuesday 15 March 2011] [11:15:56] <pieterh>	opaque structures
-| [Tuesday 15 March 2011] [11:16:24] <bpl29>	Ah, I see!  Thank you!
-| [Tuesday 15 March 2011] [11:17:34] <cremes>	sustrik: i'll submit a small C example that reproduces the EBADF
-| [Tuesday 15 March 2011] [11:26:31] <Guthur>	Is 0MQ buildable on solaris 8
-| [Tuesday 15 March 2011] [11:26:39] <Guthur>	and is Sun Studio the only option
-| [Tuesday 15 March 2011] [11:26:41] <private_meta>	pieterh: again a (for you maybe opaque) question: In the ppqueue, ppworker, lpclient scenario, shouldn't lpclient connect at least ONCE? it only tells me it's trying to connect
-| [Tuesday 15 March 2011] [11:33:18] <Guthur>	pieter: which pattern would you suggest for a  N client to N servers, where the servers are processing requests to retrieve data from files
-| [Tuesday 15 March 2011] [11:49:51] <cremes>	Guthur: i'd use a REQ socket on the client, REP on the server and a QUEUE device in the middle to load balance
-| [Tuesday 15 March 2011] [11:56:00] <Guthur>	cremes: Probably a wise choice, I have to resist the temptation to over engineer
-| [Tuesday 15 March 2011] [11:57:18] <cremes>	Guthur: i suspect that over the next several months the "lazy pirate" patterns will become dominant
-| [Tuesday 15 March 2011] [11:57:43] <Guthur>	I was being drawn to Ch4 patterns actually
-| [Tuesday 15 March 2011] [11:57:50] <Guthur>	I've only started reading it though
-| [Tuesday 15 March 2011] [11:58:10] <Guthur>	I got hung up debugging peering3 in C#
-| [Tuesday 15 March 2011] [11:58:29] <Guthur>	massive 'doh' moment on my part there
-| [Tuesday 15 March 2011] [12:04:08] <private_meta>	I'm still curious if the way the zguide C variant of the paranoid pirate is intended behavior. If i run the c example, the lazy pirate client never connects
-| [Tuesday 15 March 2011] [12:04:14] <private_meta>	It shouldn't be intended
-| [Tuesday 15 March 2011] [12:04:30] <private_meta>	But somehow I don't think it should be an error on my side, I didn't really change anything
-| [Tuesday 15 March 2011] [12:47:19] <michelp>	morning
-| [Tuesday 15 March 2011] [12:48:04] <michelp>	i asked this q last night but i think everyone was in bed.  has anyone in the community experimented with using 0mq to do shared memory objects across threads/procs/boxes in python?
-| [Tuesday 15 March 2011] [12:48:35] <michelp>	it's something that's always interested me but i've never found a suitable transport for the underlying data transfer
-| [Tuesday 15 March 2011] [12:49:24] <michelp>	seems like 0mq is ideal for things like distributing new versions of objects and doing two or three phase commit between a group of data managers
-| [Tuesday 15 March 2011] [13:15:54] <Guthur>	michelp: sounds like an interesting project
-| [Tuesday 15 March 2011] [13:16:31] <Guthur>	you could maybe utilize something like tokyo cabinet as well
-| [Tuesday 15 March 2011] [13:17:28] <michelp>	for storage?  i was thinking of shipping around pickles so those would go well into a key value store where the key is the oid
-| [Tuesday 15 March 2011] [13:18:29] <michelp>	it would be nice for there to be a way for a new node to easily bootstrap objects and for objects to survive cluster destruction
-| [Tuesday 15 March 2011] [13:19:57] <michelp>	might even be possible for there to be more objects in the store than nodes have memory if there was a way to manage that.  thanks for the idea Guthur :)
-| [Tuesday 15 March 2011] [13:20:34] <Guthur>	also check out some of the stuff from Ch4 of the guide
-| [Tuesday 15 March 2011] [13:20:39] <Guthur>	for reliability
-| [Tuesday 15 March 2011] [13:20:46] <michelp>	yeah i'm about halfway through ch 3 :)
-| [Tuesday 15 March 2011] [13:21:00] <michelp>	almost there, it's a big guide, which is totally awesome
-| [Tuesday 15 March 2011] [13:21:41] <michelp>	the best documentation i've found on rabbit is a blog post.  the guide alone has convinced me that 0mq is the future, i haven't even written any code yet :)
-| [Tuesday 15 March 2011] [13:22:51] <michelp>	the guide would make an excellent 5 day course.  does anyone do 0mq training?
-| [Tuesday 15 March 2011] [13:23:14] <Guthur>	not that I am aware
-| [Tuesday 15 March 2011] [13:23:32] <Guthur>	I'm sure for corporate customers Imatix might be available for such
-| [Tuesday 15 March 2011] [13:23:39] <Guthur>	but don't quote me on that
-| [Tuesday 15 March 2011] [13:24:25] <michelp>	their services page does have various support level costs, but we're a US non-profit so it's a little out of our price range for a whole week
-| [Tuesday 15 March 2011] [13:25:11] <michelp>	if i worked for a corporation i'd be spending their money on it in a minute :)
-| [Tuesday 15 March 2011] [13:26:01] <michelp>	know if anyone in the 0mq community is going to OSCON this year?  It's here in my home town and we could get together for a BOF session
-| [Tuesday 15 March 2011] [13:27:44] <Guthur>	I'm not sure
-| [Tuesday 15 March 2011] [13:27:50] <Guthur>	there is sometimes meetups 
-| [Tuesday 15 March 2011] [13:28:00] <Guthur>	there was one in San Fran recently
-| [Tuesday 15 March 2011] [13:35:33] <Guthur>	anyone built jzmq on windows recently
-| [Tuesday 15 March 2011] [13:38:15] <pieterh>	michelp: iMatix does 0MQ training, sure
-| [Tuesday 15 March 2011] [13:39:35] <michelp>	pieterh, is it the usual services rate quoted here? http://www.imatix.com/services
-| [Tuesday 15 March 2011] [13:39:54] <pieterh>	private_meta: (a) lpclient should connect, yes, I had '-v' to enable verbose tracing of messages in the C code, that helps. (b) let me retest the C code...
-| [Tuesday 15 March 2011] [13:40:02] <pieterh>	michelp: yes, those are the usual rates
-| [Tuesday 15 March 2011] [13:40:32] <pieterh>	however if you're a non-profit, and you need help, you will find that it's readily available here
-| [Tuesday 15 March 2011] [13:41:13] <michelp>	yeah you guys have definitely be a great help so far!
-| [Tuesday 15 March 2011] [13:41:14] <pieterh>	mostly, you will benefit most by also contributing somehow to the community
-| [Tuesday 15 March 2011] [13:41:44] <Guthur>	I'm getting an error building the jzmq binding, error copying files
-| [Tuesday 15 March 2011] [13:41:57] <Guthur>	and Java users around
-| [Tuesday 15 March 2011] [13:41:59] <pieterh>	Guthur: I've not tried it in a long time... what's the error?
-| [Tuesday 15 March 2011] [13:42:35] <Guthur>	Error	1	error MSB3073: The command "copy ..\config.hpp ..\..\..\src javac ..\..\..\src\org\zeromq\ZMQ.java ..\..\..\src\org\zeromq\ZMQException.java ..\..\..\src\org\zeromq\ZMQForwarder.java ..\..\..\src\org\zeromq\ZMQQueue.java ..\..\..\src\org\zeromq\ZMQStreamer.java  :VCEnd" exited with code 9009.	C:\Program Files\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppCommon.targets	103	6	jzmq 
-| [Tuesday 15 March 2011] [13:42:49] <pieterh>	michelp: with respect to shared objects across threads/processes, it's a design I'm going to make for Ch5 of the Guide
-| [Tuesday 15 March 2011] [13:42:58] <private_meta>	pieterh: thanks for retesting
-| [Tuesday 15 March 2011] [13:44:24] <pieterh>	Guthur: I'm searching what exit code 9009 means...
-| [Tuesday 15 March 2011] [13:44:40] <pieterh>	try running that command by hand in a shell, does it work?
-| [Tuesday 15 March 2011] [13:45:47] <pieterh>	"9009	DNS server not authoritative for zone."???
-| [Tuesday 15 March 2011] [13:45:49] <Guthur>	2 secs
-| [Tuesday 15 March 2011] [13:46:06] <michelp>	pieterh, wow awesome.  i'm tinkering with the idea here in python, what language were you going to focus on?
-| [Tuesday 15 March 2011] [13:46:37] <pieterh>	michelp: I always make the examples in C, but they can be translated into other languages quite simply
-| [Tuesday 15 March 2011] [13:47:01] <pieterh>	the idea is to make a distributed key-value store using a mix of pubsub and req/rep
-| [Tuesday 15 March 2011] [13:47:44] <Guthur>	umm syntax is incorrect
-| [Tuesday 15 March 2011] [13:48:09] <pieterh>	Guthur: syntax looks correct, yes, and the command runs successfully?
-| [Tuesday 15 March 2011] [13:48:19] <pieterh>	private_meta: indeed, it doesn't work... checking why...
-| [Tuesday 15 March 2011] [13:53:15] <Guthur>	oh wait
-| [Tuesday 15 March 2011] [13:53:30] <michelp>	pieterh, sound very interesting, i'll keep tinkering on my end for learning purposes until it comes out.  I'm also happy to proof read anything from a beginners point of view if you need that
-| [Tuesday 15 March 2011] [13:53:51] <pieterh>	michelp: what really helps is running the examples from the guide, each one, and verifying that they work
-| [Tuesday 15 March 2011] [13:54:14] <michelp>	yeah i've been doing that, which is why i'm only up to ch 3 at this point
-| [Tuesday 15 March 2011] [13:54:32] <michelp>	i've been running them in python but I know C so i've been using both as a guide to understanding
-| [Tuesday 15 March 2011] [13:54:44] <pieterh>	:-) you won't need any training
-| [Tuesday 15 March 2011] [13:55:27] <michelp>	hopefully not, but we have 7 folks on our team and i was thinking it might be worth having a group training session in the future if we can swing it
-| [Tuesday 15 March 2011] [13:55:34] <Guthur>	pieterh: the javac wasn't in the Path
-| [Tuesday 15 March 2011] [13:55:41] <Guthur>	hopefully should work now
-| [Tuesday 15 March 2011] [13:55:47] <michelp>	which is one reason why i was hoping maybe someone from imatix would be at OSCON :)
-| [Tuesday 15 March 2011] [13:56:08] <pieterh>	Guthur: worth noting on the Java bindings page, perhaps (you can edit it)
-| [Tuesday 15 March 2011] [13:56:17] <Guthur>	sure
-| [Tuesday 15 March 2011] [13:56:33] <pieterh>	michelp: we didn't plan to go
-| [Tuesday 15 March 2011] [13:56:43] <Guthur>	How does one generate a lib file again?
-| [Tuesday 15 March 2011] [13:56:52] <Guthur>	oh wait I think that is documented
-| [Tuesday 15 March 2011] [13:56:58] <michelp>	yeah it's expensive.  not to mention travel.  are you guys in the netherlands?
-| [Tuesday 15 March 2011] [13:57:22] <pieterh>	Brussels
-| [Tuesday 15 March 2011] [13:57:29] <pieterh>	Belgium
-| [Tuesday 15 March 2011] [13:58:05] <pieterh>	It's more a question of time really, plus we've found that presentations from actual 0MQ users are more effective than our own, often
-| [Tuesday 15 March 2011] [13:59:04] <michelp>	ah nice, i've never been.  been to just about every country around it except Luxembourg
-| [Tuesday 15 March 2011] [13:59:41] <michelp>	one of these days hopefully
-| [Tuesday 15 March 2011] [14:00:10] <Guthur>	ok binding page updated
-| [Tuesday 15 March 2011] [14:02:13] <pieterh>	private_meta: there was a bug in ppqueue
-| [Tuesday 15 March 2011] [14:02:24] <pieterh>	it was inserting an extra null frame at the front of the message
-| [Tuesday 15 March 2011] [14:03:11] <pieterh>	line 165, in the C code:
-| [Tuesday 15 March 2011] [14:03:13] <pieterh>	-            zmsg_wrap (msg, identity, "");
-| [Tuesday 15 March 2011] [14:03:13] <pieterh>	+            zmsg_push (msg, identity);
-| [Tuesday 15 March 2011] [14:03:21] <pieterh>	thanks for catching this!
-| [Tuesday 15 March 2011] [14:06:14] <private_meta>	thanks for fixing it
-| [Tuesday 15 March 2011] [14:06:25] <private_meta>	I'll test it a lil while later
-| [Tuesday 15 March 2011] [14:06:53] <sustrik>	pieterh: an idea about version numbering
-| [Tuesday 15 March 2011] [14:07:19] <Guthur>	is there something on the wiki about building libzmq as a static lib
-| [Tuesday 15 March 2011] [14:07:24] <sustrik>	the guarantees for minor version number bump is not clear atm
-| [Tuesday 15 March 2011] [14:07:36] <Guthur>	the java binding seems to want one
-| [Tuesday 15 March 2011] [14:07:55] <sustrik>	what if it says: "minor version number is incremented when stable branch is forked from the master"
-| [Tuesday 15 March 2011] [14:09:25] <sustrik>	Guthur: what OS?
-| [Tuesday 15 March 2011] [14:09:56] <Guthur>	sustrik: Win32
-| [Tuesday 15 March 2011] [14:10:00] <Guthur>	I think I have it though
-| [Tuesday 15 March 2011] [14:10:02] <Guthur>	sorry
-| [Tuesday 15 March 2011] [14:10:13] <Guthur>	sustrik: btw why is there an @ before your name
-| [Tuesday 15 March 2011] [14:10:27] <Guthur>	are you ops
-| [Tuesday 15 March 2011] [14:10:34] <sustrik>	Guthur: iirc building a static lib on win32 is a problem
-| [Tuesday 15 March 2011] [14:10:47] <sustrik>	yup
-| [Tuesday 15 March 2011] [14:11:04] <Guthur>	umm yeah it does seem to be an issue
-| [Tuesday 15 March 2011] [14:11:10] <Guthur>	this is problematic
-| [Tuesday 15 March 2011] [14:11:25] <Guthur>	jzmq wants a lib
-| [Tuesday 15 March 2011] [14:11:33] <sustrik>	but jzmq used to work with dlls before
-| [Tuesday 15 March 2011] [14:11:42] <sustrik>	have that changed?
-| [Tuesday 15 March 2011] [14:12:01] <Guthur>	umm not sure, it's complaining at me about not finding a libzmq.lib
-| [Tuesday 15 March 2011] [14:13:58] <sustrik>	ah
-| [Tuesday 15 March 2011] [14:14:03] <sustrik>	win32 is strange
-| [Tuesday 15 March 2011] [14:14:10] <Guthur>	yes, that it is
-| [Tuesday 15 March 2011] [14:14:25] <Guthur>	not my first choice to be sure
-| [Tuesday 15 March 2011] [14:14:31] <sustrik>	.lib is used even when doing dynamic linking
-| [Tuesday 15 March 2011] [14:14:41] <sustrik>	it's basically a table of entry points
-| [Tuesday 15 March 2011] [14:14:55] <sustrik>	it's located in lib subdir afterm msvc build
-| [Tuesday 15 March 2011] [14:14:56] <sustrik>	iirc
-| [Tuesday 15 March 2011] [14:17:08] <Guthur>	so it should be getting generated
-| [Tuesday 15 March 2011] [14:22:32] <Guthur>	where is the platform tweaks
-| [Tuesday 15 March 2011] [14:27:18] <Guthur>	i can generate a lib but then I get loads of unresolved external symbols
-| [Tuesday 15 March 2011] [14:42:13] <sustrik>	like zmq_init() and such?
-| [Tuesday 15 March 2011] [14:44:13] <Guthur>	__imp__zmq_init
-| [Tuesday 15 March 2011] [14:44:15] <Guthur>	etc
-| [Tuesday 15 March 2011] [14:48:23] <sustrik>	can you report that on the mailing list
-| [Tuesday 15 March 2011] [14:48:57] <sustrik>	it looks like it is possibly connected to the recent changes regarding symbol visibility
-| [Tuesday 15 March 2011] [14:49:32] <Guthur>	ah sure, I'll an old version to check
-| [Tuesday 15 March 2011] [14:49:40] <Guthur>	I'd really like to have something for tomorrw
-| [Tuesday 15 March 2011] [14:49:54] <Guthur>	I colleague wants to bridge from JMS to C#
-| [Tuesday 15 March 2011] [14:50:16] <Guthur>	with possibility for client/server setup
-| [Tuesday 15 March 2011] [14:50:28] <Guthur>	I'd like to show him a 0MQ solution
-| [Tuesday 15 March 2011] [14:51:31] <Guthur>	sustrik: when was that update you mentioned
-| [Tuesday 15 March 2011] [15:22:46] <mikko>	pieterh: there?
-| [Tuesday 15 March 2011] [16:00:35] <sustrik>	Guthur: december, i think
-| [Tuesday 15 March 2011] [16:04:47] <Guthur>	sustrik, ok, I'll try an earlier version
-| [Tuesday 15 March 2011] [16:05:49] <Guthur>	I'm back home now though, on a much saner platform, hehe
-| [Tuesday 15 March 2011] [17:11:26] <mikko>	pieterh: there now?
-| [Tuesday 15 March 2011] [18:05:49] <mikko>	Guthur: are you michael?
-| [Tuesday 15 March 2011] [18:07:07] <Guthur>	mikko, Indeed
-| [Tuesday 15 March 2011] [18:07:52] <mikko>	http://www.mansysadmin.com/2011/03/using-zeromq-framework-with-visual-studio-2010-tutorial/
-| [Tuesday 15 March 2011] [18:08:00] <mikko>	is this related to your problem?
-| [Tuesday 15 March 2011] [18:08:10] <mikko>	i remember something related to VS2010 being funny
-| [Tuesday 15 March 2011] [18:08:46] <Guthur>	I haven't been encountering any issues until I tried jzmq
-| [Tuesday 15 March 2011] [18:09:22] <Guthur>	I'll double check that though
-| [Tuesday 15 March 2011] [18:09:40] <Guthur>	but I am confident it was outputting to the correct directory
-| [Tuesday 15 March 2011] [18:09:56] <Guthur>	I'm just freeing up some space on my wins VM here, then I will try again
-| [Tuesday 15 March 2011] [18:10:25] 	 * Guthur made the mistake of thinking 20gb would be enough for windows and some tools
-| [Tuesday 15 March 2011] [18:23:38] <sed>	Is anyone around to answer a couple of questions about ZMQ
-| [Tuesday 15 March 2011] [18:23:40] <sed>	?
-| [Tuesday 15 March 2011] [18:28:41] <Guthur>	ask and you shall receive...
-| [Tuesday 15 March 2011] [18:28:44] <Guthur>	...maybe
-| [Tuesday 15 March 2011] [18:31:37] <cremes>	sed: that means yes
-| [Tuesday 15 March 2011] [18:31:57] <sed>	we have been testing out ZMQ for about a month and are very impressed with what it can do.  However we have noticed memory issues with the bindings in C C++ and perl.  
-| [Tuesday 15 March 2011] [18:32:29] <sed>	over the course of several weeks we see memory usage rise uniformally across multiple servers
-| [Tuesday 15 March 2011] [18:32:51] <sed>	also when running tests on single nodes top shows usage increasing
-| [Tuesday 15 March 2011] [18:33:22] <mikko>	sed: are you closing the messages ?
-| [Tuesday 15 March 2011] [18:33:24] <sed>	qwe are trying to identify the cause of this and what steps can be taken to avoid having to restart every 2 weeks
-| [Tuesday 15 March 2011] [18:33:27] <sed>	yes
-| [Tuesday 15 March 2011] [18:33:54] <cremes>	sed: are you closing and recreating sockets often?
-| [Tuesday 15 March 2011] [18:34:21] <sed>	no  the sockets remain open
-| [Tuesday 15 March 2011] [18:35:05] <cremes>	it's hard to say; an example that illustrates the problem in C or C++ would be great
-| [Tuesday 15 March 2011] [18:35:28] <cremes>	i have seen some memory leaks but they are due to closing/reopening sockets very rapidly
-| [Tuesday 15 March 2011] [18:35:43] <cremes>	i haven't heard about memory leakage with sockets that remain open indefinitely
-| [Tuesday 15 March 2011] [18:36:06] <cremes>	are you running 2.1.x or 2.0.x?
-| [Tuesday 15 March 2011] [18:36:56] <sed>	2.1.x
-| [Tuesday 15 March 2011] [18:37:31] <cremes>	what kind of sockets? (btw, feel free to provide more details without requiring us to interrogate you)
-| [Tuesday 15 March 2011] [18:38:11] <sed>	pulling up example code now   1 sec
-| [Tuesday 15 March 2011] [18:39:29] <sed>	#include <stdio.h>
-| [Tuesday 15 March 2011] [18:39:29] <sed>	#include <iostream>
-| [Tuesday 15 March 2011] [18:39:29] <sed>	#include "zmq.hpp"
-| [Tuesday 15 March 2011] [18:39:29] <sed>	int main(int argc, char *argv[]) {
-| [Tuesday 15 March 2011] [18:39:29] <sed>	    int type, tm, uid, pid, city;
-| [Tuesday 15 March 2011] [18:39:30] <sed>	    char msg[20000], ip[20],  host[100], cont[100], act[100], post[2000], get[2000];
-| [Tuesday 15 March 2011] [18:39:32] <sed>	     // prepare our sockets and context with 1 I/O thread
-| [Tuesday 15 March 2011] [18:39:34] <sed>	    zmq::context_t context(1);
-| [Tuesday 15 March 2011] [18:39:36] <sed>	    // Connect to subscriber
-| [Tuesday 15 March 2011] [18:39:38] <sed>	    zmq::socket_t subscriber(context, ZMQ_SUB);
-| [Tuesday 15 March 2011] [18:39:40] <sed>	    subscriber.setsockopt(ZMQ_SUBSCRIBE, "", 0);
-| [Tuesday 15 March 2011] [18:39:42] <sed>	    subscriber.connect("tcp://s2hs-mw-cas1:5566");
-| [Tuesday 15 March 2011] [18:39:44] <sed>	    while(1) {
-| [Tuesday 15 March 2011] [18:39:46] <sed>	        zmq::message_t* message = new zmq::message_t;
-| [Tuesday 15 March 2011] [18:39:48] <sed>	        subscriber.recv(message, ZMQ_NOBLOCK);
-| [Tuesday 15 March 2011] [18:39:50] <sed>	        strncpy(msg, static_cast<char *>(message->data()), message->size());
-| [Tuesday 15 March 2011] [18:39:54] <sed>	        delete message;
-| [Tuesday 15 March 2011] [18:39:56] <sed>	        type = atoi(&msg[0]);
-| [Tuesday 15 March 2011] [18:39:58] <sed>	        if (type == 3)
-| [Tuesday 15 March 2011] [18:40:00] <sed>	        {
-| [Tuesday 15 March 2011] [18:40:02] <sed>	            sscanf(msg,"%d %d %d %s %s %d %d %s %s %s %s", &type, &tm, &uid, &ip, &host, &pid, &city, &cont, &act, &post, &get);
-| [Tuesday 15 March 2011] [18:40:05] <sed>	            std::cout << msg << "\n";
-| [Tuesday 15 March 2011] [18:40:07] <sed>	        }
-| [Tuesday 15 March 2011] [18:40:09] <sed>	        memset ( (void *) &msg, 0, sizeof(msg));
-| [Tuesday 15 March 2011] [18:40:11] <sed>	    }
-| [Tuesday 15 March 2011] [18:40:13] <sed>	    free (subscriber);
-| [Tuesday 15 March 2011] [18:40:15] <sed>	    return 0;
-| [Tuesday 15 March 2011] [18:40:17] <sed>	}
-| [Tuesday 15 March 2011] [18:40:19] <sed>	that is a simple example script that we see the leak on
-| [Tuesday 15 March 2011] [18:40:24] <Guthur>	sed: you really really, should use pastebin
-| [Tuesday 15 March 2011] [18:40:52] <cremes>	sed: yeah, i can't read that; use gist.github.com or pastie.org to post code
-| [Tuesday 15 March 2011] [18:41:25] <sed>	http://pastebin.com/mp9uJpCs
-| [Tuesday 15 March 2011] [18:44:09] <cremes>	sed: how quickly does it leak? a few bytes for each message? is it a time based leak? e.g. it leaks even when messages aren't coming in
-| [Tuesday 15 March 2011] [18:44:55] <sed>	we have 40000 messages/sec at all times.  Would have to run seperate tests to get that data
-| [Tuesday 15 March 2011] [18:46:44] <Guthur>	i know it's not really relevant to the issue, but should that recv not be a blocking call
-| [Tuesday 15 March 2011] [18:47:17] <cremes>	sed: does the publisher leak memory or just the subscriber?
-| [Tuesday 15 March 2011] [18:47:19] <sed>	est 24k per minute
-| [Tuesday 15 March 2011] [18:47:32] <cremes>	cool
-| [Tuesday 15 March 2011] [18:47:55] <jond>	sed: I don't think recv should be non blocking, the message doesnt need to be on the heap and the free at end is just wrong
-| [Tuesday 15 March 2011] [18:47:58] <cremes>	i see this is over tcp transport; any chance you could do a test where publisher & subscriber communicate via inproc transport?
-| [Tuesday 15 March 2011] [18:50:11] <sed>	going to get a script running on the same box
-| [Tuesday 15 March 2011] [18:50:47] <Guthur>	sed: Which platform, out of curiosity
-| [Tuesday 15 March 2011] [18:52:07] <sed>	centos
-| [Tuesday 15 March 2011] [18:54:34] <mikko>	sed: you shouldnt free subscriber
-| [Tuesday 15 March 2011] [18:54:44] <mikko>	at the ed
-| [Tuesday 15 March 2011] [18:55:07] <mikko>	end*
-| [Tuesday 15 March 2011] [18:55:47] <mikko>	sed: also, you dont need to dynamically allocate 'message'
-| [Tuesday 15 March 2011] [18:56:11] <sed>	yeah  that was just testing if it was related
-| [Tuesday 15 March 2011] [18:56:46] <mikko>	that shouldnt leak
-| [Tuesday 15 March 2011] [18:56:52] <mikko>	as far as i can see
-| [Tuesday 15 March 2011] [18:57:20] <jond>	mikko: what time are you going to the pub tomorrow? hoping not to get my bag stolen this time.....
-| [Tuesday 15 March 2011] [18:57:30] <mikko>	jond: dont take a bag with you!
-| [Tuesday 15 March 2011] [18:57:43] <mikko>	jond: i probably get off from work around 17:30
-| [Tuesday 15 March 2011] [18:57:53] <mikko>	heading to white horse after that so will be there around 18:00
-| [Tuesday 15 March 2011] [18:58:03] <jond>	mikko: i have started doing that, learned the hard way
-| [Tuesday 15 March 2011] [18:58:20] <mikko>	jond: hows life nowadays?
-| [Tuesday 15 March 2011] [18:58:49] <mikko>	i guess we can chat tomorrow
-| [Tuesday 15 March 2011] [18:59:08] <jond>	better than before xmas .....
-| [Tuesday 15 March 2011] [18:59:09] <mikko>	sed: the only thing i can think of is if messages pile up
-| [Tuesday 15 March 2011] [18:59:22] <jond>	i've found a bug in xrep today
-| [Tuesday 15 March 2011] [18:59:48] <mikko>	jond: is it related to identities?
-| [Tuesday 15 March 2011] [19:01:09] <jond>	when the pipe is full when processing identity message leaves socket in bad state
-| [Tuesday 15 March 2011] [19:01:42] <jond>	i also don't think the HWM is honoured correctly but I'd need to show martin
-| [Tuesday 15 March 2011] [19:02:05] <jond>	I'm just reading up on how to submit a patch cos I havent done one for months....
-| [Tuesday 15 March 2011] [19:12:24] <mikko>	clone the repo, commit the change
-| [Tuesday 15 March 2011] [19:12:31] <mikko>	and do git format-patch -s
-| [Tuesday 15 March 2011] [19:19:59] <cremes>	this project has the most F'ed up submission policy; it's different from nearly every other github project
-| [Tuesday 15 March 2011] [19:24:58] <jond>	mikko: I've sent patch to list. I think I got it right ...
-| [Tuesday 15 March 2011] [19:26:09] <jond>	cremes: yep, it's like the version numbering. using master seems to be safest!!!
-| [Tuesday 15 March 2011] [19:26:42] <cremes>	jond: don't get me started on that either :)
-| [Tuesday 15 March 2011] [19:27:03] <cremes>	this is the only project i know that spawns a *new* repository for a branch
-| [Tuesday 15 March 2011] [19:30:18] <Guthur>	a conscientious should be reached on this issue
-| [Tuesday 15 March 2011] [19:30:30] <Guthur>	it seems to annoy a few people
-| [Tuesday 15 March 2011] [19:30:32] <cremes>	concensus?
-| [Tuesday 15 March 2011] [19:30:39] <Guthur>	cremes, yep
-| [Tuesday 15 March 2011] [19:30:39] <cremes>	:)
-| [Tuesday 15 March 2011] [19:30:50] <Guthur>	hehe trusted the spell checker too much
-| [Tuesday 15 March 2011] [19:31:20] <cremes>	i don't feel like fighting this particular battle; i'm not much of a C guy so my patches (if any) will be rare
-| [Tuesday 15 March 2011] [19:31:37] <mikko>	jond: didnt look at the contents but the format of the patch looks good
-| [Tuesday 15 March 2011] [19:31:40] <cremes>	but it seems to me like it increases the learning curve quite a bit for people new to the project
-| [Tuesday 15 March 2011] [19:32:10] <mikko>	im not fan of the dual repos either
-| [Tuesday 15 March 2011] [19:32:19] <mikko>	but that seems to work for pieterh and sustrik so i guess its ok
-| [Tuesday 15 March 2011] [19:32:35] <mikko>	the version numbering though is very odd for 2.1.x
-| [Tuesday 15 March 2011] [19:33:14] <cremes>	yes
-| [Tuesday 15 March 2011] [19:37:28] <jond>	mikko: just posted a note to the list about the operator void * on socket which allows that call to free to compile in example code above
-| [Tuesday 15 March 2011] [20:00:37] <Guthur>	mikko, That Visual studio fix worked
-| [Tuesday 15 March 2011] [20:00:45] <Guthur>	I successfully built the jzmq
-| [Tuesday 15 March 2011] [20:00:47] <Guthur>	cheers
-| [Tuesday 15 March 2011] [20:06:54] <sed>	set up an ipc connection and still see the memory increasing
-| [Tuesday 15 March 2011] [20:18:56] <Guthur>	sed: I think that would be worth putting on the mail list
-| [Tuesday 15 March 2011] [20:19:08] <Guthur>	to get wider exposure to the community
-| [Tuesday 15 March 2011] [20:24:40] <cremes>	sed: try inproc; ipc still uses sockets
-| [Tuesday 15 March 2011] [20:24:58] <sed>	k  will give that a shot
-| [Tuesday 15 March 2011] [21:15:30] <sed>	thanks for answering questions guys.  Will be looking at this tomorow so will reach out further to the community.
-| [Tuesday 15 March 2011] [22:43:47] <Honeyman>	Hello. I am using PyZMQ, and trying to do the REQ-REP communication, polling for the replies with the zmq.core.poll.select(), using timeout = 5.0 (seconds). But most of the times, this call returns immediately, without waiting for 5 seconds, returning empty lists, like if the socket is not available.
-| [Tuesday 15 March 2011] [22:47:19] <Honeyman>	What could be the reason of this problem? A bug in the PyZMQ? If pyzmq's select() is using zmq_poll(), maybe it is zmq_poll who returns prematurely, not complying to the timeouts?
-| [Tuesday 15 March 2011] [22:50:39] <Honeyman>	It is interesting that if I read from this socket no matter that it is absent from the rlist, the read always succeeds...
-| [Tuesday 15 March 2011] [23:13:38] <Honeyman>	Uh, found myself, that's that known bug in ZMQ 2.0
-| [Wednesday 16 March 2011] [04:14:45] <pieterh_>	g'morning
-| [Wednesday 16 March 2011] [04:15:23] <pieterh_>	mikko: i'll be happy to explain the sanity behind the version numbering and release gits, this evening
-| [Wednesday 16 March 2011] [04:18:35] <mikko>	pieterh_: sent you my mobile number
-| [Wednesday 16 March 2011] [04:19:03] <mikko>	to work ->
-| [Wednesday 16 March 2011] [04:19:38] <pieterh_>	mikko: ok, will send you mine too
-| [Wednesday 16 March 2011] [04:54:29] <CIA-103>	zeromq2: 03Jon Dyte 07master * rb79d07b 10/ src/xrep.cpp : 
-| [Wednesday 16 March 2011] [04:54:29] <CIA-103>	zeromq2: reset socket state when identity message cannot be written to xrep
-| [Wednesday 16 March 2011] [04:54:29] <CIA-103>	zeromq2:  Signed-off-by: Jon Dyte <jon@totient.co.uk> - http://bit.ly/g67Cnf
-| [Wednesday 16 March 2011] [05:32:29] <Steve-o>	mikko: I'll add autoconf output into new tarballs
-| [Wednesday 16 March 2011] [06:16:06] <Steve-o>	mikko__
-| [Wednesday 16 March 2011] [06:34:39] <mikko__>	hi steve
-| [Wednesday 16 March 2011] [07:15:29] <Guthur>	can anyone download the tarball from github?
-| [Wednesday 16 March 2011] [07:15:41] <mikko__>	Guthur: probably
-| [Wednesday 16 March 2011] [07:15:49] <Guthur>	I can't at the moment
-| [Wednesday 16 March 2011] [07:15:51] <mikko__>	Guthur: you can use snapshots if you want the master
-| [Wednesday 16 March 2011] [07:15:58] <Guthur>	it could be my company firewall though
-| [Wednesday 16 March 2011] [07:15:59] <mikko__>	snapshot.zero.mq
-| [Wednesday 16 March 2011] [07:16:26] <mikko__>	latest is 16-Mar-2011 05:19
-| [Wednesday 16 March 2011] [07:16:29] <Guthur>	mikko__: is that from github?
-| [Wednesday 16 March 2011] [07:16:58] <mikko__>	sorry
-| [Wednesday 16 March 2011] [07:17:01] <mikko__>	i keep killing cgi irc
-| [Wednesday 16 March 2011] [07:17:02] <Guthur>	np
-| [Wednesday 16 March 2011] [07:17:07] <mikko__>	yes, it's master
-| [Wednesday 16 March 2011] [07:17:14] <Guthur>	It's more github i'm interested in
-| [Wednesday 16 March 2011] [07:17:19] <Guthur>	I actually want clrzmq2
-| [Wednesday 16 March 2011] [07:17:35] <Guthur>	but it keeps giving me a bad gateway wrror
-| [Wednesday 16 March 2011] [07:17:39] <Guthur>	error*
-| [Wednesday 16 March 2011] [07:18:08] <Guthur>	I suspect the company has started blocking the traffic, worked yesterday though
-| [Wednesday 16 March 2011] [07:18:42] <mikko__>	times out for me
-| [Wednesday 16 March 2011] [07:18:46] <Guthur>	oh
-| [Wednesday 16 March 2011] [07:18:55] <Guthur>	maybe it's not just me then
-| [Wednesday 16 March 2011] [08:22:54] <stimpie>	works for me
-| [Wednesday 16 March 2011] [08:24:28] <stimpie>	try: http://www.klaproos.net/zeromq-clrzmq2-f420936.tar.gz
-| [Wednesday 16 March 2011] [08:26:36] <CIA-103>	zeromq2: 03Martin Sustrik 07master * r32ded2b 10/ (9 files): 
-| [Wednesday 16 March 2011] [08:26:36] <CIA-103>	zeromq2: Duplicate identities now checked with zmq_connect
-| [Wednesday 16 March 2011] [08:26:36] <CIA-103>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/fgzmQX
-| [Wednesday 16 March 2011] [08:49:20] <CIA-103>	zeromq2: 03Martin Sustrik 07master * rf5015f4 10/ src/tcp_listener.cpp : 
-| [Wednesday 16 March 2011] [08:49:20] <CIA-103>	zeromq2: Incorrect errno reported from tcp_listener_t::set_address
-| [Wednesday 16 March 2011] [08:49:20] <CIA-103>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/hvsEGl
-| [Wednesday 16 March 2011] [09:31:22] <Guthur>	stimpie: cheers
-| [Wednesday 16 March 2011] [09:31:41] <Guthur>	It's actually working for me now as well
-| [Wednesday 16 March 2011] [09:31:55] <Guthur>	must have been an issue at the github end
-| [Wednesday 16 March 2011] [10:30:18] <sustrik>	cremes: hi, are you here?
-| [Wednesday 16 March 2011] [11:26:38] <cremes>	sustrik: i am here; how can i help?
-| [Wednesday 16 March 2011] [11:26:50] <sustrik>	i had a look at your issue
-| [Wednesday 16 March 2011] [11:27:00] <sustrik>	the one with leaks
-| [Wednesday 16 March 2011] [11:27:17] <sustrik>	trying to reproduce it i hit a max fd limit
-| [Wednesday 16 March 2011] [11:27:23] <sustrik>	how can i increase it
-| [Wednesday 16 March 2011] [11:27:26] <sustrik>	on linux?
-| [Wednesday 16 March 2011] [11:27:38] <cremes>	let me check...
-| [Wednesday 16 March 2011] [11:27:38] 	 * sustrik is lame admin
-| [Wednesday 16 March 2011] [11:27:42] <cremes>	:)
-| [Wednesday 16 March 2011] [11:28:42] <cremes>	http://www.cyberciti.biz/faq/linux-increase-the-maximum-number-of-open-files/
-| [Wednesday 16 March 2011] [11:28:46] <cremes>	that gives all of the details
-| [Wednesday 16 March 2011] [11:28:52] <cremes>	but i would just do "sudo sysctl -w fs.file-max=100000"
-| [Wednesday 16 March 2011] [11:29:57] <sustrik>	let me try
-| [Wednesday 16 March 2011] [11:30:14] <cremes>	fyi, this change won't survive a reboot
-| [Wednesday 16 March 2011] [11:30:58] <sustrik>	"Too many open files"
-| [Wednesday 16 March 2011] [11:31:04] <sustrik>	doesn't seem to help
-| [Wednesday 16 March 2011] [11:31:09] <mato>	sustrik: ulimit
-| [Wednesday 16 March 2011] [11:31:13] <cremes>	what is the output of ulimit ?
-| [Wednesday 16 March 2011] [11:31:17] <sustrik>	1024
-| [Wednesday 16 March 2011] [11:32:11] <mato>	sustrik: you need to change ulimit -n to some higher value, as root
-| [Wednesday 16 March 2011] [11:32:17] <mikko__>	hi mato
-| [Wednesday 16 March 2011] [11:32:19] <mikko__>	welcome back
-| [Wednesday 16 March 2011] [11:32:25] <mato>	hi mikko
-| [Wednesday 16 March 2011] [11:32:26] <mato>	thx
-| [Wednesday 16 March 2011] [11:32:34] <mikko__>	a lot of changes in the builds
-| [Wednesday 16 March 2011] [11:33:12] <mato>	sustrik: and then from that shell where you changed it, start another shell as yourself 
-| [Wednesday 16 March 2011] [11:33:37] <mato>	sustrik: so 1) sudo bash 2) ulimit -n 8192 3) su - sustrik 4) run what you need
-| [Wednesday 16 March 2011] [11:33:45] <mato>	mikko__: yes, i noticed, lots of work
-| [Wednesday 16 March 2011] [11:33:47] <sustrik>	le t me try
-| [Wednesday 16 March 2011] [11:34:04] <mato>	mikko__: also lots of release changes, etc. i'm completely out of the loop :-)
-| [Wednesday 16 March 2011] [11:34:17] <mato>	mikko__: good work taking over the autobuilds :-)
-| [Wednesday 16 March 2011] [11:34:27] <CIA-103>	zeromq2: 03Martin Sustrik 07master * rfac9c2d 10/ (doc/zmq_setsockopt.txt doc/zmq_socket.txt): 
-| [Wednesday 16 March 2011] [11:34:27] <CIA-103>	zeromq2: zmq_socket(3) and zmq_setsockopt(3) man pages improved
-| [Wednesday 16 March 2011] [11:34:27] <CIA-103>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/i8ZYxS
-| [Wednesday 16 March 2011] [11:34:46] <cremes>	sustrik: mato is correct; the change i gave you only changed the system-wide setting
-| [Wednesday 16 March 2011] [11:34:53] <cremes>	you now need ulimit to change your user setting
-| [Wednesday 16 March 2011] [11:36:04] <mikko__>	mato: we are currently integrating with openpgm autotools build
-| [Wednesday 16 March 2011] [11:36:12] <mikko__>	mato: to remove duplication of the build logic
-| [Wednesday 16 March 2011] [11:37:19] <sustrik>	mato: works! thanks!
-| [Wednesday 16 March 2011] [12:49:28] <cremes>	sustrik: any luck with reproducing that issue?
-| [Wednesday 16 March 2011] [12:50:19] <sustrik>	yup
-| [Wednesday 16 March 2011] [12:50:40] <sustrik>	i've just posted a short test case
-| [Wednesday 16 March 2011] [12:51:05] <cremes>	great!
-| [Wednesday 16 March 2011] [12:52:37] <sustrik>	cremes: can you test with that program
-| [Wednesday 16 March 2011] [12:52:48] <sustrik>	and let me know whether you are seeing the same behaviour?
-| [Wednesday 16 March 2011] [12:52:50] <cremes>	yes; i'll report back in a few
-| [Wednesday 16 March 2011] [13:02:29] <cremes>	sustrik: can't compile it on my linux box
-| [Wednesday 16 March 2011] [13:02:46] <cremes>	i get this error:  /usr/local/include/zmq.hpp:26:19: fatal error: cassert: No such file or directory
-| [Wednesday 16 March 2011] [13:03:44] <sustrik>	interesting
-| [Wednesday 16 March 2011] [13:03:51] <sustrik>	it should be a standard header file
-| [Wednesday 16 March 2011] [13:04:00] <sustrik>	are you compiling it with g++?
-| [Wednesday 16 March 2011] [13:04:25] <sustrik>	g++ -pthread -luuid -o leaker leaker.cpp .libs/libzmq.a
-| [Wednesday 16 March 2011] [13:04:38] <cremes>	i was using pieterh's 'build' script
-| [Wednesday 16 March 2011] [13:04:43] <cremes>	let me try your line
-| [Wednesday 16 March 2011] [13:05:24] <sustrik>	well, libzmq.a should be on library path
-| [Wednesday 16 March 2011] [13:05:26] <cremes>	compiled
-| [Wednesday 16 March 2011] [13:05:29] <sustrik>	good
-| [Wednesday 16 March 2011] [13:05:36] <sustrik>	does it leak?
-| [Wednesday 16 March 2011] [13:06:00] <cremes>	yes; heap jumped from 4MB to 24MB and stayed there
-| [Wednesday 16 March 2011] [13:06:12] <sustrik>	osx?
-| [Wednesday 16 March 2011] [13:06:14] <cremes>	and CPU is at 400%
-| [Wednesday 16 March 2011] [13:06:16] <cremes>	linux
-| [Wednesday 16 March 2011] [13:06:51] <cremes>	CPU dropped to 0, heap is now at 18MB
-| [Wednesday 16 March 2011] [13:07:02] <cremes>	10554 cremes    20   0  399m  18m 1148 S    0  0.2   1:44.09 leaker9                      
-| [Wednesday 16 March 2011] [13:07:28] <sustrik>	same as with the original test case?
-| [Wednesday 16 March 2011] [13:07:34] <cremes>	pretty much the same
-| [Wednesday 16 March 2011] [13:07:45] <cremes>	my original case ran longer and therefore created a larger heap
-| [Wednesday 16 March 2011] [13:07:49] <cremes>	but the idea is the same
-| [Wednesday 16 March 2011] [13:08:16] <sustrik>	well, i checked the malloc's you've reported to be leaking
-| [Wednesday 16 March 2011] [13:08:27] <sustrik>	(in yqueue_t)
-| [Wednesday 16 March 2011] [13:08:47] <sustrik>	the number of chunks get to something like 2600
-| [Wednesday 16 March 2011] [13:08:57] <sustrik>	den it gradually falls down to 0
-| [Wednesday 16 March 2011] [13:09:25] <cremes>	so this program does *not* leak on your system?
-| [Wednesday 16 March 2011] [13:09:39] <sustrik>	hard to say as it never finishes
-| [Wednesday 16 March 2011] [13:09:47] <sustrik>	let me look at mem usage
-| [Wednesday 16 March 2011] [13:09:57] <cremes>	i don't think this is a genuine leak where the mallocs are lost
-| [Wednesday 16 March 2011] [13:10:10] <cremes>	i think some structure is holding on to their references instead of freeing them up like it should
-| [Wednesday 16 March 2011] [13:10:19] <cremes>	that's why the conventional leak detectors aren't finding it
-| [Wednesday 16 March 2011] [13:10:39] <cremes>	the mallocs aren't getting orphaned; something in the lib is holding the references
-| [Wednesday 16 March 2011] [13:11:20] <sustrik>	the number of allocated chunks in yqueue_t drops to 0
-| [Wednesday 16 March 2011] [13:11:27] <sustrik>	but memory usage stays the same
-| [Wednesday 16 March 2011] [13:11:40] <sustrik>	that means that either some other object is leaking
-| [Wednesday 16 March 2011] [13:11:58] <sustrik>	or that OS simply doesn't return the allocated memory to the global pool
-| [Wednesday 16 March 2011] [13:12:21] <cremes>	i don't think it's an OS issue
-| [Wednesday 16 March 2011] [13:12:27] <sustrik>	how did you figured out that yqueue_t is leaking?
-| [Wednesday 16 March 2011] [13:13:13] <cremes>	on OSX i ran the "Instruments" application; it can track every malloc in the program and give you a trace of where it's happening
-| [Wednesday 16 March 2011] [13:13:25] <cremes>	i can send you a screenshot if you would like
-| [Wednesday 16 March 2011] [13:13:32] <sustrik>	no need
-| [Wednesday 16 March 2011] [13:13:53] <sustrik>	what i done was increment and print out a global variable after each malloc in yqueue_t
-| [Wednesday 16 March 2011] [13:14:03] <sustrik>	and decrement it and print out after each free
-| [Wednesday 16 March 2011] [13:14:15] <sustrik>	the program ends at zero :|
-| [Wednesday 16 March 2011] [13:14:36] <sustrik>	i can try with the other object you pointed out...
-| [Wednesday 16 March 2011] [13:15:19] <cremes>	i just sent you the screen shot; it can't hurt to look at it
-| [Wednesday 16 March 2011] [13:15:24] <sustrik>	ok
-| [Wednesday 16 March 2011] [13:16:22] <cremes>	convince pieterh that you need your own OSX box to test some of this stuff
-| [Wednesday 16 March 2011] [13:16:28] <cremes>	it has some really good dev tools
-| [Wednesday 16 March 2011] [13:17:56] <sustrik>	i am working on my own on this
-| [Wednesday 16 March 2011] [13:17:57] <sustrik>	anyway
-| [Wednesday 16 March 2011] [13:18:15] <sustrik>	so the leak either happens on osx and not on linux
-| [Wednesday 16 March 2011] [13:18:25] <mikko__>	ok, time to head out to the pubmeet
-| [Wednesday 16 March 2011] [13:18:35] <sustrik>	or the osx tools are incorrectly reporting the leak
-| [Wednesday 16 March 2011] [13:18:41] <sustrik>	mikko__: have a nice evening
-| [Wednesday 16 March 2011] [13:20:47] <cremes>	i see the leak on both osx and linux; the memory is never freed on the linux side
-| [Wednesday 16 March 2011] [13:21:03] <cremes>	i thought you saw the same
-| [Wednesday 16 March 2011] [13:35:17] <Guthur>	it's a wonder this was never noticed before
-| [Wednesday 16 March 2011] [13:35:31] <Guthur>	was the leak introduced recently
-| [Wednesday 16 March 2011] [13:36:50] <sustrik>	cremes: i did (using the top tool)
-| [Wednesday 16 March 2011] [13:37:15] <sustrik>	however, as for mallocs/free's in yqueue_t, those match perfectly
-| [Wednesday 16 March 2011] [13:37:21] <sustrik>	so either:
-| [Wednesday 16 March 2011] [13:37:37] <sustrik>	1. the leak is somewhere else and osx tools are reporting false positives
-| [Wednesday 16 March 2011] [13:37:57] <sustrik>	2. the leaks on linux and osx are different problems
-| [Wednesday 16 March 2011] [13:38:12] <sustrik>	3. processes don't return memory to os
-| [Wednesday 16 March 2011] [13:38:30] <sustrik>	(3) is know to be true in many cases
-| [Wednesday 16 March 2011] [13:38:49] <sustrik>	but contradicsts the report from the osx tool
-| [Wednesday 16 March 2011] [13:45:02] <cremes>	it's a head scratcher, that's for sure
-| [Wednesday 16 March 2011] [17:04:08] <jobytaffey>	Other than the data itself, is there any space in a zmq_msg_t for some user data? I have a buffer full of messages which I need to attach TTL values to. I could wrap each zmq_msg_t in a struct containing a TTL, but I'm wondering if there's a way of hiding it inside. Could I abuse the msg_content_t.hint pointer safely?
-| [Wednesday 16 March 2011] [17:17:46] <Seta00>	what's the value of EAGAIN/
-| [Wednesday 16 March 2011] [17:17:49] <Seta00>	? *
-| [Wednesday 16 March 2011] [17:18:08] <Seta00>	er.. nevermind
-| [Wednesday 16 March 2011] [17:20:24] <Seta00>	clrzmq2 doesn't let me detect EAGAIN's >_>
-| [Wednesday 16 March 2011] [17:43:30] <sustrik>	jobytaffey: check multi-part messages
-| [Wednesday 16 March 2011] [17:43:51] <sustrik>	ZMQ_SNDMORE, ZMQ_RCVMORE
-| [Wednesday 16 March 2011] [17:48:22] <jobytaffey>	I'm using multi-part msgs for some thing already. I suspect that my approach here is not very 0mq-ish. I'm generating data for clients, then storing it until they poll. Each message needs a TTL and there's a garbage collector to destroy when TTL reaches 0. It's not strictly a queue, so I'm storing zmq_msgs in RAM until they're polled for. To be honest, I've just wrapped them in a struct with a ttl...
-| [Wednesday 16 March 2011] [18:03:41] <Guthur>	sustrik, did you get any further with the mem leak investigation?
-| [Wednesday 16 March 2011] [20:01:18] <believa_>	What tag/branch to use of the zeromq github repository to get the same source as the v2.0 stable release on the zeromq website?
-| [Wednesday 16 March 2011] [20:03:27] <believa_>	actually - should be the v2.0.10 tag I'm guessing.
-| [Wednesday 16 March 2011] [20:14:07] <tokyodan>	Trying to install in Ubuntu 10.04 LTS server. I followed all the instructions. did './configure'. Then when I execute 'make' I get 'No targets specified and no makefile found'. What is wrong?
-| [Wednesday 16 March 2011] [20:14:45] <tokyodan>	all the LINUX dependencies have also been installed.
-| [Wednesday 16 March 2011] [20:17:55] <bpl29>	My make check is failing on OS X.  It's failing on test_shutdown_stress
-| [Wednesday 16 March 2011] [20:19:52] <bpl29>	I'm reading there is an assertion error in mailbox.cpp, and in fact it's commented in the source to say that this assertion should never fail.
-| [Wednesday 16 March 2011] [20:20:54] <tokyodan>	bp129 doesn't seem to be much help forthcoming here.
-| [Wednesday 16 March 2011] [20:21:44] <bpl29>	right, I'm wondering if people have actually installed on OS X.
-| [Wednesday 16 March 2011] [20:21:57] <bpl29>	There is a developer thread about this particular error, but it's dated
-| [Wednesday 16 March 2011] [20:22:33] <bpl29>	https://github.com/zeromq/zeromq2/issues#issue/161
-| [Wednesday 16 March 2011] [20:22:48] <bpl29>	Perhaps someone has gotten about this.
-| [Wednesday 16 March 2011] [20:22:55] <Guthur>	bpl29, I know someone was running on OSX today
-| [Wednesday 16 March 2011] [20:23:07] <Guthur>	and indeed I have a user of clrzmq2 who runs on OSX
-| [Wednesday 16 March 2011] [20:23:21] <tokyodan>	bp129 I'm trying on Ubuntu 10.04 server now with not much luck. I'm afraid to install on my Snow Leopard machine right now.
-| [Wednesday 16 March 2011] [20:23:21] <Guthur>	I don't use it myself so I can't really help
-| [Wednesday 16 March 2011] [20:23:46] <Guthur>	tokyodan, zeromq built fine on ubuntu 10.04 for me recently
-| [Wednesday 16 March 2011] [20:23:51] <tokyodan>	thanks bp129
-| [Wednesday 16 March 2011] [20:23:51] <Guthur>	which version are you using
-| [Wednesday 16 March 2011] [20:24:54] <Guthur>	I wasn't running server mind you
-| [Wednesday 16 March 2011] [20:25:10] <bpl29>	I just downloaded from git
-| [Wednesday 16 March 2011] [20:25:11] <tokyodan>	What causes make to error out with ''No targets specified and no makefile found' ?
-| [Wednesday 16 March 2011] [20:25:54] <tokyodan>	Guthur Did you just type 'make' with no arguments?
-| [Wednesday 16 March 2011] [20:25:59] <Guthur>	you ran autogen first, right>
-| [Wednesday 16 March 2011] [20:26:02] <Guthur>	?
-| [Wednesday 16 March 2011] [20:26:23] <tokyodan>	autogen> no. Didn't see that explained anywhere.
-| [Wednesday 16 March 2011] [20:26:39] <Guthur>	I think I ran autogen first then configure then make
-| [Wednesday 16 March 2011] [20:27:08] <tokyodan>	what does autogen do? And does it take arguments?
-| [Wednesday 16 March 2011] [20:27:31] <Guthur>	I think it should try to automatically detect settings for you platform
-| [Wednesday 16 March 2011] [20:27:57] <tokyodan>	I'm using the latest version of OMQ 2.1 (rc2)
-| [Wednesday 16 March 2011] [20:28:21] <tokyodan>	I thought that's what ./configure also did.
-| [Wednesday 16 March 2011] [20:28:41] <tokyodan>	did you run autogen on OS X or Ubuntu?
-| [Wednesday 16 March 2011] [20:28:55] <Guthur>	Ubuntu
-| [Wednesday 16 March 2011] [20:29:00] <Guthur>	you are right though
-| [Wednesday 16 March 2011] [20:29:11] <Guthur>	configure should do it
-| [Wednesday 16 March 2011] [20:29:38] <tokyodan>	Yeah. frome its output that's what it looked like it was doing.
-| [Wednesday 16 March 2011] [20:30:03] <Guthur>	my make fu is pretty weak tbh
-| [Wednesday 16 March 2011] [20:30:37] <tokyodan>	Seems like it should have created a makefile of something too, but didnt. although I got Makefile.am and Makefile.in
-| [Wednesday 16 March 2011] [20:31:26] <Guthur>	i'm just downloading fresh here to check
-| [Wednesday 16 March 2011] [20:33:09] <Guthur>	you must have ran autogen at some point
-| [Wednesday 16 March 2011] [20:33:32] <Guthur>	I have no ./configure in a fresh download
-| [Wednesday 16 March 2011] [20:34:30] <Guthur>	tokyodan, the configure completes ok?
-| [Wednesday 16 March 2011] [20:35:04] <cremes>	if you get a mailbox assertion on OSX, you need to do some kernel tuning
-| [Wednesday 16 March 2011] [20:35:21] <cremes>	search the zeromq.org site for the 'tuning guide' 
-| [Wednesday 16 March 2011] [20:35:31] <Seta00>	anyone here using clrzmq2?
-| [Wednesday 16 March 2011] [20:35:45] <cremes>	it has an entry on how to expand the socket buffers used by the kernel
-| [Wednesday 16 March 2011] [20:35:54] <Guthur>	Seta00, I do
-| [Wednesday 16 March 2011] [20:36:03] <Guthur>	Seta00, any issues?
-| [Wednesday 16 March 2011] [20:36:13] <cremes>	bpl29: look at the tuning guide
-| [Wednesday 16 March 2011] [20:36:38] <Seta00>	Guthur, it seems you can't detect EAGAIN when using NOBLOCK on a recv call.
-| [Wednesday 16 March 2011] [20:36:50] <Seta00>	so I guess I'll have to use polling?
-| [Wednesday 16 March 2011] [20:37:41] <bpl29>	cremes: where is the tuning guide located?
-| [Wednesday 16 March 2011] [20:38:03] <Guthur>	Seta00, if there is no msg the method just silently returns
-| [Wednesday 16 March 2011] [20:38:05] <cremes>	not sure... try the search box
-| [Wednesday 16 March 2011] [20:38:22] <Seta00>	bpl29, http://www.zeromq.org/docs:tuning-zeromq
-| [Wednesday 16 March 2011] [20:38:33] <bpl29>	thanks Seta00
-| [Wednesday 16 March 2011] [20:38:36] <cremes>	bpl29: that's it! ^^
-| [Wednesday 16 March 2011] [20:38:47] <bpl29>	thank you both
-| [Wednesday 16 March 2011] [20:38:51] <cremes>	on osx the default buffers are all too tiny :(
-| [Wednesday 16 March 2011] [20:38:52] <Seta00>	bpl29, for future reference: Guthur, yeah but silently returning doesn't 
-| [Wednesday 16 March 2011] [20:38:53] <Seta00>	oops
-| [Wednesday 16 March 2011] [20:38:55] <Seta00>	wrong ctrl-v
-| [Wednesday 16 March 2011] [20:38:57] <Seta00>	http://www.zeromq.org/docs:_start
-| [Wednesday 16 March 2011] [20:39:19] <Seta00>	Guthur, so I should check the output buffer?
-| [Wednesday 16 March 2011] [20:39:30] <cremes>	bpl29: btw, i run on osx all the time; once you get some tuning out of the way 0mq works really nicely on it
-| [Wednesday 16 March 2011] [20:39:52] <Guthur>	Seta00, the return byte array will be null
-| [Wednesday 16 March 2011] [20:40:32] <bpl29>	Okay, great.  I'll give it a shot.
-| [Wednesday 16 March 2011] [20:40:38] <Guthur>	Seta00, I didn't feel it was right to throw an exception for it
-| [Wednesday 16 March 2011] [20:41:05] <Seta00>	what how did I miss that
-| [Wednesday 16 March 2011] [20:41:06] <Guthur>	it should be the only time you receive a null msg
-| [Wednesday 16 March 2011] [20:41:35] <Guthur>	and empty message being byte[0]
-| [Wednesday 16 March 2011] [20:41:36] <Seta00>	yeah, I see it now
-| [Wednesday 16 March 2011] [20:41:53] <Guthur>	Seta00, cool, does that behaviour seem sane to you
-| [Wednesday 16 March 2011] [20:41:56] <mkent__>	Noob question: If you have zeromq set to queue to disk, is there any API for monitoring the disk queue?
-| [Wednesday 16 March 2011] [20:42:02] <Guthur>	I'm always looking for feedback
-| [Wednesday 16 March 2011] [20:42:13] <Seta00>	Guthur, yes it does.
-| [Wednesday 16 March 2011] [20:42:50] <Seta00>	my current zmq code is ridiculous, so I'm doing some refactoring :)
-| [Wednesday 16 March 2011] [20:43:25] <tokyodan>	Guthur the ./configure completed with 'error: unable to find a working c++ compiler'.
-| [Wednesday 16 March 2011] [20:43:41] <Guthur>	tokyodan, yeah that would be a show stopper, hehe
-| [Wednesday 16 March 2011] [20:44:12] <Seta00>	tokyodan, sudo apt-get install build-essential g++
-| [Wednesday 16 March 2011] [20:44:12] <tokyodan>	I thought Ubuntu would have a C++ compiler built in.
-| [Wednesday 16 March 2011] [20:44:13] <Seta00>	:P
-| [Wednesday 16 March 2011] [20:44:20] <Seta00>	tokyodan, only comes with a C compiler
-| [Wednesday 16 March 2011] [20:44:27] <tokyodan>	thanks Seta00
-| [Wednesday 16 March 2011] [20:44:38] <Seta00>	yw
-| [Wednesday 16 March 2011] [20:45:00] <Guthur>	Seta00, if you ever have any issues with clrzmq2 you can usually catch me around here, or raise an issue on github, which I'll try to get asap
-| [Wednesday 16 March 2011] [20:45:52] <Seta00>	Guthur, awesome, I'll keep that in mind
-| [Wednesday 16 March 2011] [20:46:03] <Guthur>	I'd really like to clean up some of the API, but I'm waiting until ZMQ 3.0
-| [Wednesday 16 March 2011] [20:48:57] <Guthur>	Seta00, Are you targetting Mono perchance?
-| [Wednesday 16 March 2011] [20:49:50] <Seta00>	Guthur, yes
-| [Wednesday 16 March 2011] [20:50:09] <Guthur>	make sure to grab the most recent version of clrzmq2
-| [Wednesday 16 March 2011] [20:50:26] <Guthur>	I found a signalling issue in relation to the Mono GC
-| [Wednesday 16 March 2011] [20:50:28] <tokyodan>	Guthur & Seta00 Thanks you guys. You got me through 'make'. It's running right now.
-| [Wednesday 16 March 2011] [20:50:38] <Guthur>	you may have seen it on the mailing list recently
-| [Wednesday 16 March 2011] [20:50:38] <Seta00>	nice :)
-| [Wednesday 16 March 2011] [20:50:56] <Guthur>	tokyodan, cool, happy coding
-| [Wednesday 16 March 2011] [20:51:43] <Guthur>	Seta00, basically signals generated by the Mono GC can cause the syscalls to return EINTR which would throw an exception in clrzmq2
-| [Wednesday 16 March 2011] [20:52:41] <Guthur>	the workaround I decided on was to reenter the call for all signals bar sigint and sigterm, which would instead exit the program
-| [Wednesday 16 March 2011] [20:53:07] <Guthur>	this mainly effected long running syscalls like those used in poll
-| [Wednesday 16 March 2011] [20:53:42] <Guthur>	obviously it was only an issue on POSIX platforms
-| [Wednesday 16 March 2011] [20:53:53] <tokyodan>	'make' finished with no errors. yeah!
-| [Wednesday 16 March 2011] [20:56:29] <tokyodan>	Well it seems to have installed OK. Now for trying it out. Still have to get the Lua part though.
-| [Wednesday 16 March 2011] [22:06:40] <tokyodan>	I installed the Lua binding on Ubuntu 10.04 server. But when I do: require 'zmq'  I get  module zmq not found. Seems like make is not putting the files into the proper Lua directories. How do I cure this outside of creating all kinds of symlinks.
-| [Wednesday 16 March 2011] [23:39:29] <tokyodan>	This doesn't work with Lua
-| [Wednesday 16 March 2011] [23:39:54] <tokyodan>	I followed this video: http://www.youtube.com/watch?v=_JCBphyciAs&feature=player_embedded
-| [Wednesday 16 March 2011] [23:41:02] <tokyodan>	And unlink in the video the send("Hello") command returns before I even start up the receiving end.
-| [Wednesday 16 March 2011] [23:41:40] <tokyodan>	I start up the recv loop on the receiving side and it just sits there blocking and waiting for input
-| [Wednesday 16 March 2011] [23:47:30] <michelp>	last night i was musing on the "supercomputer" descriptions in the guide
-| [Wednesday 16 March 2011] [23:48:16] <michelp>	having recently read "The Connection Machine" by D. Hillis it made me think that 0mq would make an excellent interconnect mechanism for various SIMD topologies
-| [Wednesday 16 March 2011] [23:50:00] <michelp>	the guide basically spells out how to do those topologies with a control channel to issue "instructions".  in conjunction with something like NumPy it would be an excellent platform for distributed computing
-| [Wednesday 16 March 2011] [23:50:18] <michelp>	anyway, just musing over dinner on the subject ;)
-| [Wednesday 16 March 2011] [23:53:48] <tokyodan>	Does the latest version on OMQ work with Lua 5.1.4?
-| [Wednesday 16 March 2011] [23:54:06] <tokyodan>	on Ubuntu 10.04 LTS Server?
-| [Wednesday 16 March 2011] [23:56:05] <michelp>	tokyodan, I don't use Lua so can't help you specifically, but have you looked at "The Missing Message Problem Solver" at http://zguide.zeromq.org/page:all ?
-| [Wednesday 16 March 2011] [23:56:20] <michelp>	it might help you diagnose the problem
-| [Thursday 17 March 2011] [00:04:44] <tokyodan>	michelp thanks!
-| [Thursday 17 March 2011] [00:05:33] <michelp>	sure np
-| [Thursday 17 March 2011] [00:06:38] <tokyodan>	I see that UP/DOWNSTREAM and replaced by PULL/PUSH. Is that correct? I've see examples with PUB/SUB?
-| [Thursday 17 March 2011] [00:10:08] <cremes>	tokyodan: yes, the UP/DOWNSTREAM names were replaced by PUSH/PULL
-| [Thursday 17 March 2011] [00:10:20] <cremes>	PUB/SUB has not changed nor are there any plans to change it
-| [Thursday 17 March 2011] [00:25:21] <tokyodan>	is there a difference between PUSH
-| [Thursday 17 March 2011] [00:25:33] <tokyodan>	PULL and PUB/SUB?
-| [Thursday 17 March 2011] [00:26:58] <cremes>	tokyodan: yes, they are quite different
-| [Thursday 17 March 2011] [00:27:19] <cremes>	in PUB/SUB, any messages sent via PUB are broadcast to *all* subscribers simultaneously
-| [Thursday 17 March 2011] [00:27:44] <cremes>	in PUSH/PULL, messages send via PUSH are delivered round-robin to all connected PULL sockets
-| [Thursday 17 March 2011] [00:27:55] <cremes>	if you haven't read the guide yet, please do so
-| [Thursday 17 March 2011] [00:28:08] <cremes>	there are lots of examples and quite a bit of text explaining this
-| [Thursday 17 March 2011] [00:28:16] <cremes>	see the channel topic for a link to the guide
-| [Thursday 17 March 2011] [00:28:17] <tokyodan>	That's what I'm going to do. Thanks.
-| [Thursday 17 March 2011] [00:28:58] <tokyodan>	I already got it printed out. I was just jumping in, installing, and trying the examples.
-| [Thursday 17 March 2011] [00:33:49] <cremes>	tokyodan: that's the best way to figure it out
-| [Thursday 17 March 2011] [03:38:10] <sustrik>	mikko: hi, are you there?
-| [Thursday 17 March 2011] [05:53:44] <pieterh_>	sustrik: ping
-| [Thursday 17 March 2011] [05:53:49] <sustrik>	pong
-| [Thursday 17 March 2011] [05:53:52] <pieterh_>	I'm sending the OpenPGM patches to the list
-| [Thursday 17 March 2011] [05:53:59] <sustrik>	great
-| [Thursday 17 March 2011] [05:54:02] <sustrik>	how was the meetup?
-| [Thursday 17 March 2011] [05:54:04] <pieterh_>	this covers the changes Mikko made but also include the tarballs, so they're large
-| [Thursday 17 March 2011] [05:54:15] <pieterh_>	the meetup was excellent, but too many people
-| [Thursday 17 March 2011] [05:54:17] <pieterh_>	:-)
-| [Thursday 17 March 2011] [05:54:23] <sustrik>	i can update the tarball myself
-| [Thursday 17 March 2011] [05:54:29] <sustrik>	no need to include it into the patch
-| [Thursday 17 March 2011] [05:54:34] <pieterh_>	I can't make a patch without the tarball, it's in one commit
-| [Thursday 17 March 2011] [05:54:41] <sustrik>	ok
-| [Thursday 17 March 2011] [05:54:42] <sustrik>	np
-| [Thursday 17 March 2011] [05:54:47] <sustrik>	too many?
-| [Thursday 17 March 2011] [05:54:56] <pieterh_>	yeah, twenty or twenty five
-| [Thursday 17 March 2011] [05:55:01] <pieterh_>	impossible to speak to everyone
-| [Thursday 17 March 2011] [05:55:02] <sustrik>	oh my, not enough chairs?
-| [Thursday 17 March 2011] [05:55:18] <pieterh_>	we found space, Mikko and Ian organized it very well
-| [Thursday 17 March 2011] [05:56:21] <pieterh_>	i'm testing that Steve's patches apply, will let you know
-| [Thursday 17 March 2011] [05:57:01] <sustrik>	i can do that
-| [Thursday 17 March 2011] [05:57:03] <sustrik>	no problem
-| [Thursday 17 March 2011] [05:58:33] <pieterh_>	ok, they apply cleanly
-| [Thursday 17 March 2011] [05:58:58] <sustrik>	thx
-| [Thursday 17 March 2011] [05:59:18] <pieterh_>	these changes are more complex than normal because they include the tarballs
-| [Thursday 17 March 2011] [05:59:33] <pieterh_>	Mikko wants to make the build system pull the tarballs down dynamically afiau
-| [Thursday 17 March 2011] [05:59:39] <pieterh_>	that would be neat
-| [Thursday 17 March 2011] [05:59:51] <sustrik>	in the past the tarballs were updated out of normal process
-| [Thursday 17 March 2011] [06:00:03] <sustrik>	ie. not via mailing list
-| [Thursday 17 March 2011] [06:00:16] <pieterh_>	yeah
-| [Thursday 17 March 2011] [06:00:33] <pieterh_>	this was because I used a pull request from Mikko's git
-| [Thursday 17 March 2011] [06:00:46] <sustrik>	as for automatic update, how would it know when to update?
-| [Thursday 17 March 2011] [06:00:58] <sustrik>	each new version?
-| [Thursday 17 March 2011] [06:01:06] <pieterh_>	hmm, at install time?
-| [Thursday 17 March 2011] [06:01:14] <sustrik>	ah, that way
-| [Thursday 17 March 2011] [06:01:19] <pieterh_>	since 0MQ now builds with any version of OpenPGM
-| [Thursday 17 March 2011] [06:02:06] <pieterh_>	all you need to do is say, "please build 0MQ with OpenPGM vx.y.z" and it would pull and unpack that tarball
-| [Thursday 17 March 2011] [06:02:17] <pieterh_>	something like that, presumably with defaults
-| [Thursday 17 March 2011] [06:02:21] <sustrik>	i see
-| [Thursday 17 March 2011] [06:02:46] <pieterh_>	this is possible because OpenPGM now has full autotooling, so 0MQ can be much more naive about it
-| [Thursday 17 March 2011] [06:02:51] <sustrik>	is steve ready to freeze the API?
-| [Thursday 17 March 2011] [06:03:00] <pieterh_>	Steve...?
-| [Thursday 17 March 2011] [06:03:04] <sustrik>	mc coy
-| [Thursday 17 March 2011] [06:03:11] <pieterh_>	I meant, "Steve... ping...?"
-| [Thursday 17 March 2011] [06:03:26] <sustrik>	if not, the auto-upload could break
-| [Thursday 17 March 2011] [06:03:34] <pieterh_>	yes
-| [Thursday 17 March 2011] [06:03:54] <pieterh_>	this is speculation, anyhow, but Mikko and Steve already did amazing work on the integration
-| [Thursday 17 March 2011] [06:04:04] <pieterh_>	so I assume they'd get this working properly
-| [Thursday 17 March 2011] [06:05:51] <sustrik>	ok, let me apply the patch
-| [Thursday 17 March 2011] [06:23:55] <sustrik>	pieterh_1: you should consult the build system maintainers before committing build-related patches imo
-| [Thursday 17 March 2011] [06:24:07] <sustrik>	mikko presumably, in this case
-| [Thursday 17 March 2011] [06:24:24] <pieterh_1>	you mean Steve's patches...
-| [Thursday 17 March 2011] [06:24:25] <pieterh_1>	right
-| [Thursday 17 March 2011] [06:24:27] <sustrik>	yes
-| [Thursday 17 March 2011] [06:24:44] <pieterh_1>	I'll ask Mikko to review them, good idea
-| [Thursday 17 March 2011] [08:04:59] <Guthur>	pieterh, with peering3 what sort of output should I expect?
-| [Thursday 17 March 2011] [08:20:22] <Guthur>	oh nvm, working now
-| [Thursday 17 March 2011] [08:30:26] <s0undt3ch>	hello ppl
-| [Thursday 17 March 2011] [08:30:42] <s0undt3ch>	can a publisher know where a connection is comming from?
-| [Thursday 17 March 2011] [08:30:53] <s0undt3ch>	ie, so I can auth/deny a subscription?
-| [Thursday 17 March 2011] [08:35:55] <sustrik>	no
-| [Thursday 17 March 2011] [09:45:43] <stimpie>	Iam getting unstable performance using jzmq on windows, 1,000,000 x 128B messages gets 300K/s. 10,000,000 x 128B messages gets 20K/s 
-| [Thursday 17 March 2011] [09:46:58] <stimpie>	it looks like this is caused by the sender, using a c sender and a java receiver gets a stable 300K/s 
-| [Thursday 17 March 2011] [09:47:31] <sustrik>	it must be java binding issue then
-| [Thursday 17 March 2011] [09:47:40] <sustrik>	try reporting it on jzmq's bug tracker
-| [Thursday 17 March 2011] [09:47:49] <sustrik>	or on the mailing list
-| [Thursday 17 March 2011] [09:49:18] <stimpie>	ok I will try to create a simple reproducible scenario. (or just provide the results to my boss, saying we shouldn't use windows ;-)
-| [Thursday 17 March 2011] [09:49:58] <fred86>	When using pub/sub sockets that stay open for a long time (without any activity), I find that after a while (maybe 1+ hours later), the client-side stops receiving messages (however when I open a new client, the new client can receive messages). Do the sockets reconnect automatically if there's a short network outage? What could the problem be? Thanks.
-| [Thursday 17 March 2011] [09:50:04] <cremes>	stimpie: does this example use PUB/SUB?
-| [Thursday 17 March 2011] [09:50:27] <cremes>	stimpie: if so, your publisher could be overrunning the subscriber; in that case the publisher will queue the messages in memory
-| [Thursday 17 March 2011] [09:50:39] <cremes>	which could lead to a slowdown if your box doesn't have enough RAM
-| [Thursday 17 March 2011] [09:51:01] <stimpie>	cremes, yes its a PUB/SUB and memory usages skyrockets
-| [Thursday 17 March 2011] [09:51:24] <cremes>	stimpie: then it is queueing in memory
-| [Thursday 17 March 2011] [09:51:49] <cremes>	does the machine running the publisher have enough RAM or is it swapping to disk?
-| [Thursday 17 March 2011] [09:52:03] <stimpie>	its starts swapping at some point 
-| [Thursday 17 March 2011] [09:52:19] <cremes>	ok, then you have your answer as to why it gets slower
-| [Thursday 17 March 2011] [09:52:41] <stimpie>	but why doesnt this occur with a c version?
-| [Thursday 17 March 2011] [09:52:51] <cremes>	which part was in C?
-| [Thursday 17 March 2011] [09:53:06] <stimpie>	I had a sender and receiver in c and in java
-| [Thursday 17 March 2011] [09:53:25] <cremes>	c -> c, no problem?
-| [Thursday 17 March 2011] [09:53:34] <cremes>	c -> java, slow?
-| [Thursday 17 March 2011] [09:53:40] <cremes>	how about java -> c, does that work?
-| [Thursday 17 March 2011] [09:53:46] <stimpie>	c->java is ok 
-| [Thursday 17 March 2011] [09:53:54] <stimpie>	java -> c, is slow
-| [Thursday 17 March 2011] [09:54:01] <cremes>	so which combo produces this slowdown?
-| [Thursday 17 March 2011] [09:54:29] <stimpie>	java -> java is slow and java -> c is slow
-| [Thursday 17 March 2011] [09:54:39] <stimpie>	c-> c, c -> java are fine
-| [Thursday 17 March 2011] [09:54:56] <cremes>	interesting...
-| [Thursday 17 March 2011] [09:55:38] <cremes>	java -> c being slow doesn't make any sense; that could certainly be a bug
-| [Thursday 17 March 2011] [09:55:57] <cremes>	does the memory usage of the publisher sky-rocket in that combination?
-| [Thursday 17 March 2011] [09:56:02] <stimpie>	yes
-| [Thursday 17 March 2011] [09:56:29] <cremes>	weird... yes, open a ticket with all of these details including the code
-| [Thursday 17 March 2011] [09:57:51] <stimpie>	I was thinking that maybe java uses some object overhead on each messages causing it to use more memory and start swaping sooner then the c versions
-| [Thursday 17 March 2011] [09:59:01] <sustrik>	fred86: yes, there's automatic reconnection
-| [Thursday 17 March 2011] [10:00:49] <fred86>	hmm, okay. Then this problem is a bit bizarre. the layout is a chatroom-like server (where the server does some processing before publishing a message). if there isn't any activity for a while, I find that the clients stop getting messages from the server.. (but they can still send messages..and I can see the server processing everything fine). and if I open new clients, they will be able to receive messages. do you have any idea wh
-| [Thursday 17 March 2011] [10:01:46] <sustrik>	no,sorry, try to make a minimal reproducible test case and i'll have a look
-| [Thursday 17 March 2011] [10:02:18] <sustrik>	stimpie: jave uses gc
-| [Thursday 17 March 2011] [10:02:22] <sustrik>	java
-| [Thursday 17 March 2011] [10:02:45] <sustrik>	which could mean that object deallocation is delayed
-| [Thursday 17 March 2011] [10:03:08] <sustrik>	in that case each message would be stored in memory twice
-| [Thursday 17 March 2011] [10:03:13] <sustrik>	once in 0mq buffer
-| [Thursday 17 March 2011] [10:03:31] <sustrik>	second time in form of gargage on java heap
-| [Thursday 17 March 2011] [10:05:19] <stimpie>	I will do some more test to see if it really is only a memory issue. 
-| [Thursday 17 March 2011] [10:43:03] <gambi>	how do I return a message via XREQ in a stream callback? on one side i've got this zmqstream and a on_recv() callback and on the other side a regular socket which does the send() (that works) and the recv() (which doesn't)
-| [Thursday 17 March 2011] [10:43:46] <gambi>	XREQ/XREP
-| [Thursday 17 March 2011] [10:44:14] <gambi>	unfortunately I'm not sure how else do explain this, sorry :(
-| [Thursday 17 March 2011] [10:48:21] <gambi>	basically I'm trying to send build something closely related to this: https://github.com/zeromq/pyzmq/blob/master/examples/heartbeat/heart.py but I'd like to have some processing done before it returns the message to the server.
-| [Thursday 17 March 2011] [10:49:21] <gambi>	sorry for the random words that mix into my sentences ... I guess I'm already quite tired ;)
-| [Thursday 17 March 2011] [10:50:30] <guido_g>	simply send the message back
-| [Thursday 17 March 2011] [10:52:09] <guido_g>	gambi: see http://zeromq.github.com/pyzmq/eventloop.html#send
-| [Thursday 17 March 2011] [10:55:42] <gambi>	guido_g: oh, great thanks for that! i'll try that right away. :)
-| [Thursday 17 March 2011] [10:56:18] <guido_g>	one should try the products documentation *before* using the product...
-| [Thursday 17 March 2011] [10:56:42] <gambi>	guido_g: oh, c'mon ... I've been reading the docs for hours ... ;)
-| [Thursday 17 March 2011] [10:56:49] <guido_g>	sure
-| [Thursday 17 March 2011] [11:21:16] <xs>	suppose the rep side of a reqrep dies after the req side has sent it's request. then the rep side recovers. shouldn't the req side re-send its request? this doesn't seem to be happening for me (i'm using multipart messages if that changes things)
-| [Thursday 17 March 2011] [11:26:24] <cremes>	xs: no, 0mq doesn't auto-resend anything
-| [Thursday 17 March 2011] [11:26:43] <cremes>	you would need to timeout the send and retry yourself
-| [Thursday 17 March 2011] [11:27:12] <cremes>	to do so you have two choices and both use zmq_poll()
-| [Thursday 17 March 2011] [11:27:22] <cremes>	1. close the REQ socket, reopen it and resend
-| [Thursday 17 March 2011] [11:27:49] <cremes>	2. use an XREQ socket (this doesn't enforce the strict req/rep/req/rep message pattern) and resend upon timeout
-| [Thursday 17 March 2011] [11:27:57] <cremes>	does that make sense to you?
-| [Thursday 17 March 2011] [11:28:13] <xs>	i think so. thanks. 
-| [Thursday 17 March 2011] [11:28:21] <xs>	am i correct in thinking i just have to timeout?
-| [Thursday 17 March 2011] [11:28:32] <xs>	there's no way for me to determine that an endpoint has disappeared and reconnected
-| [Thursday 17 March 2011] [11:28:45] <Guthur>	ch4 for of the guide covers reliability
-| [Thursday 17 March 2011] [11:28:57] <Guthur>	It might have some useful patterns
-| [Thursday 17 March 2011] [11:29:12] <cremes>	xs: correct, there is no way to determine that an endpoint has bounced
-| [Thursday 17 March 2011] [11:29:21] <xs>	ok, thanks, i'll take a look.. i had just assumed 0mq would do this for me. sorry for the noise
-| [Thursday 17 March 2011] [11:29:24] <cremes>	chapter4 of the guide is a good suggestion
-| [Thursday 17 March 2011] [12:15:33] <stimpie>	A follow up on my java -> c performance issues, when limiting the send rate I could push my message rate to a ~300K/s, going above that results in swapping. So cause is memory and not a bug in the java wrapper
-| [Thursday 17 March 2011] [12:16:05] <stimpie>	Still need to figure out how to handle such an overload in production but thats a different subject
-| [Thursday 17 March 2011] [12:20:40] <sustrik>	use hwm/swap
-| [Thursday 17 March 2011] [12:29:15] <Guthur>	pieterh, when simulating a server crash with lazy pirate client/server, should the client be generating...
-| [Thursday 17 March 2011] [12:29:17] <Guthur>	Bad file descriptor
-| [Thursday 17 March 2011] [12:29:24] <Guthur>	nbytes != -1 (mailbox.cpp:242)
-| [Thursday 17 March 2011] [12:34:25] <Guthur>	oh sorry nvm, my mistake
-| [Thursday 17 March 2011] [12:59:33] <michelp>	my coworkers have returned from pycon, it's hard to know if what they are saying about 0mq is FUD they acquired from someone else or not
-| [Thursday 17 March 2011] [12:59:57] <michelp>	for example, they are saying in the PUB/SUB case that the subscriber is guaranteed to drop the first message always, all the time
-| [Thursday 17 March 2011] [13:00:17] <michelp>	is that true? i remember seeing something about it in ch 1 but lost track of the problem in my reading of the guide
-| [Thursday 17 March 2011] [13:09:06] <sustrik>	no, it's not true
-| [Thursday 17 March 2011] [13:10:12] <michelp>	it seems to be a meme that has dug in hard from pycon.  sigh
-| [Thursday 17 March 2011] [13:10:48] <ianbarber>	it's because if you right a bit of test code, and start publishing and subscribing at the same time, you'll likely push a bunch of messages before the subscriber is finished connecting
-| [Thursday 17 March 2011] [13:11:11] <ianbarber>	this is a common new-to-0mq issue
-| [Thursday 17 March 2011] [13:13:58] <michelp>	I suspect this is the part of the guide that has formed the meme: "Even if you start a subscriber, wait a while, and then start the publisher, the subscriber will always miss the first messages that the publisher sends."
-| [Thursday 17 March 2011] [13:14:08] <michelp>	they read that far, and stop, and don't go on to read the solution
-| [Thursday 17 March 2011] [13:14:37] <michelp>	Perhaps the very next sentence should be something along the lines of "Keep reading and we'll explain how to do it right" or something like that
-| [Thursday 17 March 2011] [13:17:04] <michelp>	i think the fact that the sentence is bolded also make it stick in someone's mind more so than all the other information there.  anyway, it's unfortunate that it seems like these wrong impressions have spread through such a big community so quickly.
-| [Thursday 17 March 2011] [13:17:46] <michelp>	maybe we need an anti-FUD faq
-| [Thursday 17 March 2011] [13:18:22] <kdj>	Yeah, thats too bad. I haven't seen anything like that in my testing.
-| [Thursday 17 March 2011] [14:45:51] <Guthur>	pieterh, ping?
-| [Thursday 17 March 2011] [15:08:42] <Guthur>	private_meta, you about
-| [Thursday 17 March 2011] [16:21:32] <mikko>	 hi
-| [Thursday 17 March 2011] [16:25:09] <Guthur>	hey mikko 
-| [Thursday 17 March 2011] [16:25:28] <Guthur>	I see the meet up at London was a success
-| [Thursday 17 March 2011] [16:25:38] <Guthur>	you were there, correct?
-| [Thursday 17 March 2011] [16:26:24] <mikko>	yes
-| [Thursday 17 March 2011] [16:26:33] <mikko>	i will never drink beer again
-| [Thursday 17 March 2011] [16:28:43] <Guthur>	stick to coffee, it actually can improve productivity, instead of the opposite, hehe
-| [Thursday 17 March 2011] [16:28:59] <Guthur>	some nice topics though
-| [Thursday 17 March 2011] [16:29:12] <Guthur>	the JMS is an interesting one
-| [Thursday 17 March 2011] [16:29:54] <Guthur>	Just had this situation at work recently, not really related to 0MQ, more that someone wanted to interact with JMS outside of Java
-| [Thursday 17 March 2011] [16:30:40] <Guthur>	I suggested a thin Java wrapper and 0MQ as the glue
-| [Thursday 17 March 2011] [16:35:35] <Guthur>	mikko, did you implement any of the examples in ch4 perchance?
-| [Thursday 17 March 2011] [16:42:04] <mikko>	Guthur: nope
-| [Thursday 17 March 2011] [16:45:41] <mikko>	JMS came from Java guys at the meetup
-| [Thursday 17 March 2011] [16:45:58] <mikko>	they said that Java market is a lot easier to penetrate with JMS compatible messaging
-| [Thursday 17 March 2011] [16:48:37] <Guthur>	yeah they're probably right
-| [Thursday 17 March 2011] [16:49:18] <Guthur>	I think sustrik suggestion is the sanest one
-| [Thursday 17 March 2011] [16:49:53] <Guthur>	but probably not enough for the Java community, they like everything to be fully in the Java ecosystem
-| [Thursday 17 March 2011] [16:53:50] <Guthur>	it'd be an interesting project actually
-| [Thursday 17 March 2011] [16:57:19] <dahankzter>	I dont know, just a bridge would go a long way
-| [Thursday 17 March 2011] [16:57:53] <dahankzter>	that way old IBM MQ's can be used in conjunction with nw =MQ stuff
-| [Thursday 17 March 2011] [16:58:04] <dahankzter>	s/nw/new
-| [Thursday 17 March 2011] [17:02:22] <Guthur>	yeah, I'm probably being a little cynical
-| [Thursday 17 March 2011] [17:05:00] <dahankzter>	no, not really. its very much so but just being able to connect your new cool stuff woth the old expensive monster could go a long way
-| [Thursday 17 March 2011] [17:20:20] <sustrik>	the nice thing about the bridge is that it's cheap
-| [Thursday 17 March 2011] [17:20:41] <sustrik>	can be done in couple of days, i would say
-| [Thursday 17 March 2011] [17:23:18] <dahankzter>	perhaps the problem is vendor specific protocols?
-| [Thursday 17 March 2011] [17:23:37] <dahankzter>	jms does not define any such for the wire at least
-| [Thursday 17 March 2011] [17:26:54] <dahankzter>	I think AMQP would be a nice place to start 
-| [Thursday 17 March 2011] [17:30:59] <dahankzter>	i think you know lots of this though :) iMatix is mentioned on the AMQP site
-| [Thursday 17 March 2011] [17:48:34] <sustrik>	dhankzter: you can bridge basically any protocol or API that provides PUB/SUB and/or REQ/REP semantics
-| [Thursday 17 March 2011] [17:49:01] <sustrik>	as for AMQP there's 0mq/RabbitMQ bridge
-| [Thursday 17 March 2011] [17:52:41] <dahankzter>	yes sure. i was just thinking from my perspective where normally there is a big proprietary thing eg MQ as "standard". I would not be allowed to pull in an extra middleware thing like RabbitMQ as well as my new code+zeromq. the convincing the management factor is not negligible unfortunately.
-| [Thursday 17 March 2011] [18:14:15] <advant___>	How does zeromq guarantee message persistence and delivery without a database?  Or does it use something like hypersonic in-memory database?
-| [Thursday 17 March 2011] [18:25:55] <dahankzter>	it doesn't
-| [Thursday 17 March 2011] [18:29:47] <cremes>	advant___: it doesn't guarantee either of those things; what led you to think that?
-| [Thursday 17 March 2011] [18:36:27] <advant___>	oh i dunno, I guess that would be part of a broker anyways
-| [Thursday 17 March 2011] [20:48:26] <TokyoDan_>	In the Lua binding i don't see an equivalent for zmq_msg_close(). Why?
-| [Thursday 17 March 2011] [20:53:24] <TokyoDan>	In the Lua bindings readme i don't see an equivalent to zmq_msg_close(). Why?
-| [Thursday 17 March 2011] [21:00:32] <TokyoDan>	hello?
-| [Thursday 17 March 2011] [21:12:04] <Guthur>	TokyoDan, It possibly cleans up itself
-| [Thursday 17 March 2011] [21:12:32] <Guthur>	not familiar with Lua or the binding, but in clrzmq2 the GC actually takes care of that
-| [Thursday 17 March 2011] [21:12:44] <Guthur>	there maybe some dispose equivalent
-| [Thursday 17 March 2011] [21:13:20] <tokyodan_>	I was thinking the same thing as Lua has garbage collection. But I'm not sure.
-| [Thursday 17 March 2011] [21:13:36] <Guthur>	you could take a look at the source code
-| [Thursday 17 March 2011] [21:13:55] <Guthur>	it would probably be evident pretty quickly
-| [Thursday 17 March 2011] [21:13:58] <tokyodan_>	Good idea.
-| [Thursday 17 March 2011] [21:14:09] <Guthur>	sorry i'd have a look as well but I need to get to bed
-| [Thursday 17 March 2011] [21:14:21] <tokyodan_>	Good Night.
-| [Thursday 17 March 2011] [21:14:26] <tokyodan_>	Thanks again
-| [Thursday 17 March 2011] [21:14:30] <Guthur>	g'night
-| [Thursday 17 March 2011] [21:14:41] <Guthur>	your welcome, happy coding
-| [Thursday 17 March 2011] [21:14:46] <Guthur>	you're*
+| [Friday 18 March 2011] [06:51:12] <sustrik>	oh well
+| [Friday 18 March 2011] [06:51:41] <sustrik>	so it's up to the rest of erlzmq community to drive the project forward
+| [Friday 18 March 2011] [06:51:51] <yrashk>	yup
+| [Friday 18 March 2011] [06:52:01] <yrashk>	but again
+| [Friday 18 March 2011] [06:52:10] <yrashk>	erlzmq and erlzq2 can't be merged by any means
+| [Friday 18 March 2011] [06:52:15] <yrashk>	they are way too different
+| [Friday 18 March 2011] [06:52:17] <sustrik>	yes, the codebase itself cannot be merged
+| [Friday 18 March 2011] [06:52:25] <yrashk>	erlzmq2 won't work with older Erlang VMs
+| [Friday 18 March 2011] [06:52:30] <yrashk>	as it uses a new binding technique
+| [Friday 18 March 2011] [06:52:30] <sustrik>	what could be merged is functionality
+| [Friday 18 March 2011] [06:52:39] <yrashk>	I thiknk they are very close functionally
+| [Friday 18 March 2011] [06:53:00] <sustrik>	close = equivalent?
+| [Friday 18 March 2011] [06:53:00] <yrashk>	we don't have an active mode (like saleyn had for the main erlzmq)
+| [Friday 18 March 2011] [06:53:11] <yrashk>	APIs is not absolutely equivalent, no
+| [Friday 18 March 2011] [06:53:22] <yrashk>	module names are different, app name is different
+| [Friday 18 March 2011] [06:53:24] <sustrik>	the problem is that as long as there's functionality missing, those using one binding
+| [Friday 18 March 2011] [06:53:28] <yrashk>	some calls might look a little bit different
+| [Friday 18 March 2011] [06:53:29] <sustrik>	cannot switch to anotherone
+| [Friday 18 March 2011] [06:53:39] <yrashk>	I don't think we have any functionality missing, really
+| [Friday 18 March 2011] [06:53:52] <yrashk>	active mode was controversial anyway
+| [Friday 18 March 2011] [06:54:01] <yrashk>	I think jugg opposed it a lot
+| [Friday 18 March 2011] [06:54:14] <sustrik>	doesn't it have to do with pushback?
+| [Friday 18 March 2011] [06:54:27] <sustrik>	won't passive mode just exhaust all the memory
+| [Friday 18 March 2011] [06:54:34] <sustrik>	if sender is faster than receiver?
+| [Friday 18 March 2011] [06:54:50] <yrashk>	well
+| [Friday 18 March 2011] [06:55:00] <yrashk>	passive mode is pretty much reliant on the way 0mq works
+| [Friday 18 March 2011] [06:55:34] <yrashk>	recv/poll
+| [Friday 18 March 2011] [06:55:50] <yrashk>	there are certain issues why we haven't implemented active mode yet
+| [Friday 18 March 2011] [06:56:07] <yrashk>	we could have done a workaround.. but still not sure if it is worth it
+| [Friday 18 March 2011] [06:56:22] <yrashk>	it probably is worth a try
+| [Friday 18 March 2011] [06:56:23] <sustrik>	is there any other way to implement pushback?
+| [Friday 18 March 2011] [06:56:34] <yrashk>	what od you mean by a pushback?
+| [Friday 18 March 2011] [06:56:59] <sustrik>	meaning that when the receiving end is not able to keep up with the sender
+| [Friday 18 March 2011] [06:57:05] <sustrik>	the sender gets blocked
+| [Friday 18 March 2011] [06:57:19] <sustrik>	until the receiver catches up
+| [Friday 18 March 2011] [06:57:23] <yrashk>	not sure how to do anything about this
+| [Friday 18 March 2011] [06:57:36] <sustrik>	i think that was what active mode was for
+| [Friday 18 March 2011] [06:57:37] <yrashk>	basically what we do is we just pass messages back to erlang
+| [Friday 18 March 2011] [06:57:42] <yrashk>	either directly or as actual essages
+| [Friday 18 March 2011] [06:58:03] <yrashk>	active mode is just something that does recv for you, basically
+| [Friday 18 March 2011] [06:58:25] <yrashk>	so I am not sure
+| [Friday 18 March 2011] [06:58:45] <sustrik>	the problem is that erlang stores the messages in erlang mailbox
+| [Friday 18 March 2011] [06:58:50] <yrashk>	yep
+| [Friday 18 March 2011] [06:58:51] <sustrik>	which grows indefinitely
+| [Friday 18 March 2011] [06:58:57] <yrashk>	but we don't send them unless you request
+| [Friday 18 March 2011] [06:59:10] <yrashk>	active is what sends them regardless of whether you can keep up
+| [Friday 18 March 2011] [06:59:16] <yrashk>	our recv() algo is simple
+| [Friday 18 March 2011] [06:59:27] <yrashk>	1. recv noblock
+| [Friday 18 March 2011] [06:59:31] <yrashk>	2. if there was something, return
+| [Friday 18 March 2011] [06:59:40] <yrashk>	3. if not, let the reader thread poll it
+| [Friday 18 March 2011] [06:59:51] <sustrik>	yes, that's ok
+| [Friday 18 March 2011] [06:59:52] <yrashk>	4. when something appears there, send a message to the original requesting process
+| [Friday 18 March 2011] [06:59:58] <sustrik>	what about the sender side?
+| [Friday 18 March 2011] [07:00:16] <yrashk>	sender just does send() and that's it
+| [Friday 18 March 2011] [07:00:27] <sustrik>	it blocks the thread?
+| [Friday 18 March 2011] [07:00:38] <yrashk>	you mean the scheduler?
+| [Friday 18 March 2011] [07:00:42] <sustrik>	then you can end up with deadlocked erlang VM
+| [Friday 18 March 2011] [07:00:51] <sustrik>	i mean physicall thread
+| [Friday 18 March 2011] [07:00:57] <sustrik>	from erlang's thread pool
+| [Friday 18 March 2011] [07:01:02] <yrashk>	if you don't pass noblock, yes it will block the scheduler
+| [Friday 18 March 2011] [07:01:08] <yrashk>	we don't use erlang's thead pool
+| [Friday 18 March 2011] [07:01:20] <yrashk>	NIF calls block the scheduler
+| [Friday 18 March 2011] [07:01:35] <sustrik>	i mean, erlang VM has to execute in an OS thread(s)
+| [Friday 18 March 2011] [07:01:46] <yrashk>	so if zmq_send blocks, the VM is blocked (well, one cpu core is blocked, to be precise)
+| [Friday 18 March 2011] [07:01:59] <sustrik>	exactly
+| [Friday 18 March 2011] [07:02:00] <yrashk>	yes, erlang vm usually has # of schedulers equal to number of cores
+| [Friday 18 March 2011] [07:02:08] <sustrik>	so, if there's 1 CPU
+| [Friday 18 March 2011] [07:02:20] <yrashk>	and 1 core?
+| [Friday 18 March 2011] [07:02:27] <sustrik>	and you call invoke 0mq in a blocking way
+| [Friday 18 March 2011] [07:02:41] <sustrik>	the whole OS process gets bloecked
+| [Friday 18 March 2011] [07:02:43] <yrashk>	it will fuck up, yes
+| [Friday 18 March 2011] [07:02:52] <yrashk>	we were thinking about non-blocking send()
+| [Friday 18 March 2011] [07:02:58] <yrashk>	just haven't done it yet
+| [Friday 18 March 2011] [07:03:08] <yrashk>	there's nothing that prevents us from doing it
+| [Friday 18 March 2011] [07:03:30] <sustrik>	that would mean busy-looping and 100% CPU usage, no?
+| [Friday 18 March 2011] [07:03:54] <yrashk>	nah
+| [Friday 18 March 2011] [07:04:02] <yrashk>	we poll on internal inproc sockets
+| [Friday 18 March 2011] [07:04:06] <yrashk>	for commands
+| [Friday 18 March 2011] [07:04:13] <yrashk>	in the receiver thread
+| [Friday 18 March 2011] [07:04:17] <yrashk>	which does async recv
+| [Friday 18 March 2011] [07:04:37] <yrashk>	so we can do the same thing for send, pretty much
+| [Friday 18 March 2011] [07:04:41] <yrashk>	may be even in the same thread
+| [Friday 18 March 2011] [07:04:43] <sustrik>	aha
+| [Friday 18 March 2011] [07:04:55] <yrashk>	no biggie
+| [Friday 18 March 2011] [07:05:00] <sustrik>	that way the polling doesn't block the erlang scheduler, right?
+| [Friday 18 March 2011] [07:05:02] <yrashk>	will take probabyl an hour or two to implement
+| [Friday 18 March 2011] [07:05:07] <yrashk>	it does not
+| [Friday 18 March 2011] [07:05:10] <yrashk>	it never does
+| [Friday 18 March 2011] [07:05:14] <sustrik>	nice
+| [Friday 18 March 2011] [07:05:21] <yrashk>	it's always in that second thread
+| [Friday 18 March 2011] [07:05:27] <yrashk>	we have one thread per context
+| [Friday 18 March 2011] [07:05:38] <yrashk>	which I guess is good enough
+| [Friday 18 March 2011] [07:05:43] <yrashk>	originally I had a thread per socket
+| [Friday 18 March 2011] [07:05:47] <yrashk>	and that was a tad nasty
+| [Friday 18 March 2011] [07:05:56] <yrashk>	but evax refactored this nicely
+| [Friday 18 March 2011] [07:06:05] <sustrik>	so erlang allows you to say "please invoke this code when this file descriptor becomes active"?
+| [Friday 18 March 2011] [07:06:23] <sustrik>	and erlang scheduler will do that for you
+| [Friday 18 March 2011] [07:06:28] <yrashk>	no, it's all manual
+| [Friday 18 March 2011] [07:06:41] <yrashk>	there's some FD stuff in there, but not for NIFs afaik
+| [Friday 18 March 2011] [07:06:59] <yrashk>	basically, when we poll in that thread
+| [Friday 18 March 2011] [07:07:01] <sustrik>	the question is whether waiting for FD blocks the OS thread or not
+| [Friday 18 March 2011] [07:07:16] <yrashk>	you mean zmq_poll?
+| [Friday 18 March 2011] [07:07:22] <sustrik>	are you using zmq_poll?
+| [Friday 18 March 2011] [07:07:24] <yrashk>	yes
+| [Friday 18 March 2011] [07:07:33] <sustrik>	zmq_poll is blocking
+| [Friday 18 March 2011] [07:07:38] <yrashk>	yes, and that's fine
+| [Friday 18 March 2011] [07:07:43] <yrashk>	because we're in a separate thread
+| [Friday 18 March 2011] [07:07:54] <yrashk>	which erlang has no idea about
+| [Friday 18 March 2011] [07:07:55] <sustrik>	outside of erlang VM?
+| [Friday 18 March 2011] [07:07:59] <sustrik>	i see
+| [Friday 18 March 2011] [07:08:01] <yrashk>	well, it's in the same process
+| [Friday 18 March 2011] [07:08:11] <yrashk>	but it's separate from the scheduler
+| [Friday 18 March 2011] [07:08:24] <yrashk>	so all NIF calls are generally very short
+| [Friday 18 March 2011] [07:08:35] <sustrik>	yep, that could work
+| [Friday 18 March 2011] [07:08:35] <yrashk>	except for send() which might theoretically block
+| [Friday 18 March 2011] [07:08:43] <yrashk>	but that's something we can definitely fix
+| [Friday 18 March 2011] [07:08:51] <yrashk>	I just never saw zmq_send() blocking
+| [Friday 18 March 2011] [07:08:51] <sustrik>	but can be done in same way as recv()
+| [Friday 18 March 2011] [07:08:54] <yrashk>	yes
+| [Friday 18 March 2011] [07:08:55] <yrashk>	absolutely
+| [Friday 18 March 2011] [07:09:01] <sustrik>	you get that for high loads
+| [Friday 18 March 2011] [07:09:06] <yrashk>	like I said, it's an easy change
+| [Friday 18 March 2011] [07:09:13] <yrashk>	since we have worked out the approach
+| [Friday 18 March 2011] [07:09:20] <sustrik>	would be good to get that in
+| [Friday 18 March 2011] [07:09:27] <sustrik>	it's essential for some applications
+| [Friday 18 March 2011] [07:09:31] <yrashk>	I see
+| [Friday 18 March 2011] [07:09:35] <sustrik>	such as rabbitmq/0mq bridge
+| [Friday 18 March 2011] [07:09:37] <yrashk>	I am adding a github issue right now
+| [Friday 18 March 2011] [07:10:17] <yrashk>	https://github.com/zeromq/erlzmq2/issues/1
+| [Friday 18 March 2011] [07:10:21] <sustrik>	:)
+| [Friday 18 March 2011] [07:10:41] <sustrik>	what about the third erlzmq binding?
+| [Friday 18 March 2011] [07:10:48] <sustrik>	any additional functionality there?
+| [Friday 18 March 2011] [07:11:16] <yrashk>	cstar/jugg's?
+| [Friday 18 March 2011] [07:11:21] <sustrik>	i guess
+| [Friday 18 March 2011] [07:11:30] <yrashk>	I don't remember any special functionality there
+| [Friday 18 March 2011] [07:11:37] <yrashk>	it looked more polished than the official one
+| [Friday 18 March 2011] [07:11:41] <yrashk>	to my eye
+| [Friday 18 March 2011] [07:11:55] <yrashk>	so I guess it's good for older erlangs
+| [Friday 18 March 2011] [07:12:11] <sustrik>	aha, that's the catch, right?
+| [Friday 18 March 2011] [07:12:11] <yrashk>	or if you have any reasons to use port driver instead of NIF
+| [Friday 18 March 2011] [07:12:16] <sustrik>	old arlangs don't have NIF
+| [Friday 18 March 2011] [07:12:19] <yrashk>	yeah they don't
+| [Friday 18 March 2011] [07:12:42] <sustrik>	well, if you believe there's all the functionality in erlzmq2
+| [Friday 18 March 2011] [07:12:44] <yrashk>	and some of those have (like last R13Bs and early R14As) but the API was changing a lot
+| [Friday 18 March 2011] [07:12:58] <yrashk>	so we're pretty much >=R14B01 or so
+| [Friday 18 March 2011] [07:13:12] <sustrik>	let's discuss making it a primary erlang binding on the mailing list
+| [Friday 18 March 2011] [07:13:22] <yrashk>	also, jugg was never able to clock performance comparable to erlzmq2
+| [Friday 18 March 2011] [07:13:29] <sustrik>	yes, i recall that
+| [Friday 18 March 2011] [07:13:30] <yrashk>	lets do that
+| [Friday 18 March 2011] [07:13:37] <yrashk>	we have like 1.3mln/sec for 1bytes
+| [Friday 18 March 2011] [07:13:41] <yrashk>	which is not bad
+| [Friday 18 March 2011] [07:13:46] <yrashk>	not great, but decent
+| [Friday 18 March 2011] [07:13:51] <sustrik>	it's very nice
+| [Friday 18 March 2011] [07:13:55] <yrashk>	(on my mac pro)
+| [Friday 18 March 2011] [07:13:58] <sustrik>	comparable to other non-C languages
+| [Friday 18 March 2011] [07:14:02] <yrashk>	c-to-c on my mac pro is like twice as fast
+| [Friday 18 March 2011] [07:14:23] <yrashk>	2.5+mln/sec
+| [Friday 18 March 2011] [07:14:31] <yrashk>	but we weren't able to squeeze out more yet
+| [Friday 18 March 2011] [07:14:36] <yrashk>	and I am not sure we can
+| [Friday 18 March 2011] [07:14:56] <sustrik>	you have to keep in mind that erlang runtime does a lot of stuff
+| [Friday 18 March 2011] [07:15:00] <sustrik>	scheduling etc.
+| [Friday 18 March 2011] [07:15:08] <sustrik>	which takes some time itself
+| [Friday 18 March 2011] [07:15:17] <yrashk>	of course
+| [Friday 18 March 2011] [07:15:28] <yrashk>	I know erlang fairly well
+| [Friday 18 March 2011] [07:15:31] <yrashk>	or so I think
+| [Friday 18 March 2011] [07:15:37] <sustrik>	with throughput over 1M/sec
+| [Friday 18 March 2011] [07:15:46] <sustrik>	you are getting to nanosecond ranges
+| [Friday 18 March 2011] [07:15:53] <yrashk>	well that's for 1bytes
+| [Friday 18 March 2011] [07:15:59] <yrashk>	1Kb is like 300K/sec
+| [Friday 18 March 2011] [07:16:13] <yrashk>	which is still okay I guess
+| [Friday 18 March 2011] [07:16:22] <sustrik>	100% bandwidth utilisation i would guess
+| [Friday 18 March 2011] [07:16:28] <sustrik>	1GbE?
+| [Friday 18 March 2011] [07:16:36] <yrashk>	it's all localhost tests :)
+| [Friday 18 March 2011] [07:16:57] <yrashk>	both for c-to-c and erlang-to-erlang
+| [Friday 18 March 2011] [07:17:04] <sustrik>	ack
+| [Friday 18 March 2011] [07:17:07] <yrashk>	for comparison
+| [Friday 18 March 2011] [07:17:11] <yrashk>	tcp transport
+| [Friday 18 March 2011] [07:17:14] <sustrik>	the larger the message, the less the erlang overhead
+| [Friday 18 March 2011] [07:17:16] <yrashk>	ipc was about the same
+| [Friday 18 March 2011] [07:17:41] <sustrik>	anyway, 1.3M is great
+| [Friday 18 March 2011] [07:18:30] 	 * yrashk performs a happy dance
+| [Friday 18 March 2011] [07:19:11] <yrashk>	anyway
+| [Friday 18 March 2011] [07:19:18] <yrashk>	lets discuss binding issue on the mailing list?
+| [Friday 18 March 2011] [07:19:28] <yrashk>	I am subscribed (digest mode)
+| [Friday 18 March 2011] [07:19:59] <yrashk>	will be back in about 30 mins
+| [Friday 18 March 2011] [07:21:22] <sustrik>	yrashk: yes, send the proposal to the mailing listr
+| [Friday 18 March 2011] [07:27:32] <Guthur>	talking of bindings, sustrik do you think it would be wise to discuss marking clrzmq as deprecated and that users should consider either the interop binding or clrzmq2
+| [Friday 18 March 2011] [07:27:52] <Guthur>	the rational being that the original binding isn't really actively developed
+| [Friday 18 March 2011] [07:28:10] <sustrik>	it's a community project, discuss it on the mailing list
+| [Friday 18 March 2011] [07:28:14] <Guthur>	sure
+| [Friday 18 March 2011] [07:28:19] <sustrik>	and if there's no opposition, let's do it
+| [Friday 18 March 2011] [07:28:22] <Guthur>	just interested in what you think
+| [Friday 18 March 2011] [07:28:45] <sustrik>	i would rather have actively maintained bindings as "official" :)
+| [Friday 18 March 2011] [07:28:49] <Guthur>	ok, I'm raise it on the list later today
+| [Friday 18 March 2011] [07:48:26] <pieterh_>	sustrik: ping
+| [Friday 18 March 2011] [07:48:32] <sustrik>	pong
+| [Friday 18 March 2011] [07:48:41] <pieterh_>	random question about pub/sub...
+| [Friday 18 March 2011] [07:48:54] <pieterh_>	if I send a two-frame message, first key then value, I expect to receive two frames, right?
+| [Friday 18 March 2011] [07:49:09] <sustrik>	yes
+| [Friday 18 March 2011] [07:49:26] <pieterh_>	ok, I have a test case where it appears to sometimes fail at connection startup
+| [Friday 18 March 2011] [07:49:39] <pieterh_>	loses first frame, sometimes
+| [Friday 18 March 2011] [07:49:40] <pieterh_>	i
+| [Friday 18 March 2011] [07:49:43] <sustrik>	ok
+| [Friday 18 March 2011] [07:49:50] <pieterh_>	I'll post the server and client, hang on...
+| [Friday 18 March 2011] [07:50:45] <Guthur>	pieterh_: with your lazy pirate patterns did you notice that reconnecting after CPU overload rarely happened?
+| [Friday 18 March 2011] [07:51:20] <Guthur>	I've noticed this behaviour, even with the C examples
+| [Friday 18 March 2011] [07:51:24] <pieterh_>	Guthur: what do you mean?
+| [Friday 18 March 2011] [07:51:29] <pieterh_>	the client doesn't reconnect? 
+| [Friday 18 March 2011] [07:51:46] <Guthur>	yeah, it tries and thinks the server is not there
+| [Friday 18 March 2011] [07:51:50] <pieterh_>	normal, because its timeouts are quite aggressive, and simulation of CPU overload is quite a long pause afair
+| [Friday 18 March 2011] [07:51:54] <Guthur>	if I remove the 1sec sleep it connects
+| [Friday 18 March 2011] [07:52:05] <pieterh_>	try making the client more patient...
+| [Friday 18 March 2011] [07:52:11] <Guthur>	1sec (heavy work)
+| [Friday 18 March 2011] [07:52:15] <pieterh_>	i'll retest, hang on a sec...
+| [Friday 18 March 2011] [07:53:10] <pieterh_>	sustrik: so, https://gist.github.com/875932
+| [Friday 18 March 2011] [07:53:16] <pieterh_>	start the server, then the client
+| [Friday 18 March 2011] [07:53:25] <sustrik>	ok, will give it a look
+| [Friday 18 March 2011] [07:53:44] <pieterh_>	thanks, this is hitting one of my examples and I can't see my fault
+| [Friday 18 March 2011] [07:53:53] <pieterh_>	so made a simplistic case, it still hits...
+| [Friday 18 March 2011] [07:58:07] <pieterh_>	Guthur: it's just because the client is too impatient
+| [Friday 18 March 2011] [07:59:03] <Guthur>	pieterh_: ok, cheers for testing
+| [Friday 18 March 2011] [07:59:50] <pieterh_>	Guthur: I'll change the 'CPU overload' delay to 2 seconds instead of 5
+| [Friday 18 March 2011] [07:59:57] <pieterh_>	this lets the client recover
+| [Friday 18 March 2011] [08:00:09] <Guthur>	sounds good
+| [Friday 18 March 2011] [08:01:02] <yrashk>	sustrik: what exactly should be in that proposal?
+| [Friday 18 March 2011] [08:01:08] <Guthur>	it had me scratching my head for a while yesterday, for a moment I thought the Mono runtime was just insanely slow
+| [Friday 18 March 2011] [08:01:18] <Guthur>	but then seen the same in C
+| [Friday 18 March 2011] [08:02:18] <pieterh_>	yeah, it's good to be able to compare the different languages
+| [Friday 18 March 2011] [08:02:19] <sustrik>	yrashk: "i propose making erlzmq2 an official erlang binding while keeping erlzmq as a binding for old versions of erlang"
+| [Friday 18 March 2011] [08:02:25] <sustrik>	then list your arguments
+| [Friday 18 March 2011] [08:02:28] <yrashk>	ok
+| [Friday 18 March 2011] [08:02:29] <sustrik>	and ask people to comment
+| [Friday 18 March 2011] [08:02:36] <pieterh_>	sustrik: I think that was already agreed...
+| [Friday 18 March 2011] [08:02:46] <yrashk>	can I refer to you as it was your idea?
+| [Friday 18 March 2011] [08:02:51] <pieterh_>	so erlzmq kind of became v1
+| [Friday 18 March 2011] [08:03:01] <sustrik>	did it?
+| [Friday 18 March 2011] [08:03:04] <yrashk>	wel
+| [Friday 18 March 2011] [08:03:05] <yrashk>	well
+| [Friday 18 March 2011] [08:03:05] <pieterh_>	yrashk: I missed something, why are you asking for people to comment on this?
+| [Friday 18 March 2011] [08:03:09] <yrashk>	ont the wiki, eys
+| [Friday 18 March 2011] [08:03:16] <yrashk>	pieterh_: I am not, sustrik does
+| [Friday 18 March 2011] [08:03:41] <pieterh_>	sustrik: we already afaik got agreement from the erlzmq authors to make v2
+| [Friday 18 March 2011] [08:03:52] <yrashk>	pieterh_: just one of them
+| [Friday 18 March 2011] [08:04:01] <pieterh_>	yrashk: ah... did you ask the others?
+| [Friday 18 March 2011] [08:04:03] <yrashk>	pieterh_: saleyn is unable to answer for some sad reasons
+| [Friday 18 March 2011] [08:04:10] <pieterh_>	ok
+| [Friday 18 March 2011] [08:04:26] <sustrik>	if it was discussed already, then there's no point in discussing it anew
+| [Friday 18 March 2011] [08:04:31] <pieterh_>	indeed
+| [Friday 18 March 2011] [08:04:34] <yrashk>	ok
+| [Friday 18 March 2011] [08:04:35] <sustrik>	i just missed the original discussion
+| [Friday 18 March 2011] [08:04:39] <yrashk>	ya it was discussed here 
+| [Friday 18 March 2011] [08:04:51] <pieterh_>	it's already an official repository, and the name was made coherent, the wiki correct, etc.
+| [Friday 18 March 2011] [08:05:08] <sustrik>	then there's no problem
+| [Friday 18 March 2011] [08:05:14] <yrashk>	sweet
+| [Friday 18 March 2011] [08:05:17] <yrashk>	less work for me then
+| [Friday 18 March 2011] [08:05:23] <yrashk>	we'll then improve send() some time later
+| [Friday 18 March 2011] [08:05:26] <pieterh_>	given that it's much faster and sticks to the same API, there was no real argument...
+| [Friday 18 March 2011] [08:05:35] <sustrik>	i see
+| [Friday 18 March 2011] [08:05:38] <yrashk>	to make it behave better on blocking sends
+| [Friday 18 March 2011] [08:05:38] <evax>	yrashk, sustrik: doing it now
+| [Friday 18 March 2011] [08:05:45] <yrashk>	evax: oh the issue #1?
+| [Friday 18 March 2011] [08:05:50] <evax>	yes
+| [Friday 18 March 2011] [08:06:01] <yrashk>	evax: I bet it should be easy to replicate the same method as we do with recv
+| [Friday 18 March 2011] [08:06:05] <yrashk>	may be even the same thread
+| [Friday 18 March 2011] [08:06:28] <evax>	same thread, yes
+| [Friday 18 March 2011] [08:06:32] <yrashk>	sweet
+| [Friday 18 March 2011] [08:06:47] <yrashk>	should be fairly trivial then
+| [Friday 18 March 2011] [08:06:56] <yrashk>	just adding an enum flag to recv structure
+| [Friday 18 March 2011] [08:07:07] <yrashk>	and renaming recv structure to something like command or someting
+| [Friday 18 March 2011] [08:07:16] <yrashk>	also, evax
+| [Friday 18 March 2011] [08:07:22] <evax>	yes, along those lines
+| [Friday 18 March 2011] [08:07:24] <yrashk>	do you plan to do exactly the same scheme?
+| [Friday 18 March 2011] [08:07:26] <yrashk>	i.e.
+| [Friday 18 March 2011] [08:07:30] <yrashk>	recv noblock first
+| [Friday 18 March 2011] [08:07:33] <evax>	sure
+| [Friday 18 March 2011] [08:07:35] <yrashk>	err
+| [Friday 18 March 2011] [08:07:37] <yrashk>	send*
+| [Friday 18 March 2011] [08:07:41] <yrashk>	if it says EAGAIN
+| [Friday 18 March 2011] [08:07:43] <yrashk>	then pool it
+| [Friday 18 March 2011] [08:07:56] <evax>	shouldn't I ?
+| [Friday 18 March 2011] [08:08:04] <yrashk>	so that we don't pool when it is unnecessary
+| [Friday 18 March 2011] [08:08:10] <yrashk>	I think it's a good approach
+| [Friday 18 March 2011] [08:08:22] <yrashk>	zmq_send(.., ZMQ_NOBLOCK) -> if EGAGAIN, pool
+| [Friday 18 March 2011] [08:08:27] <yrashk>	otherwise, be done with it
+| [Friday 18 March 2011] [08:08:30] <yrashk>	EAGAIN*
+| [Friday 18 March 2011] [08:08:49] <yrashk>	that looks really very much the same way recv does
+| [Friday 18 March 2011] [08:11:21] <evax>	except we have to store the msg somewhere
+| [Friday 18 March 2011] [08:12:17] <yrashk>	in the same struct
+| [Friday 18 March 2011] [08:12:25] <yrashk>	recv, but renamed
+| [Friday 18 March 2011] [08:12:35] <yrashk>	and extended accordingly
+| [Friday 18 March 2011] [08:12:57] <evax>	this goes over the ipc socket, so for big messages its ugly
+| [Friday 18 March 2011] [08:13:01] <yrashk>	just copy the zms_msg
+| [Friday 18 March 2011] [08:13:07] <yrashk>	it is
+| [Friday 18 March 2011] [08:13:13] <yrashk>	but its not ipc
+| [Friday 18 March 2011] [08:13:16] <yrashk>	inproc
+| [Friday 18 March 2011] [08:13:21] <evax>	yeah
+| [Friday 18 March 2011] [08:13:24] <yrashk>	we just pass a pointer
+| [Friday 18 March 2011] [08:13:31] <yrashk>	how about that?
+| [Friday 18 March 2011] [08:13:59] <yrashk>	and then zmq_msg_close it when done sending it in a loop
+| [Friday 18 March 2011] [08:14:23] <yrashk>	theres more important problem
+| [Friday 18 March 2011] [08:14:33] <yrashk>	in that thread we poll
+| [Friday 18 March 2011] [08:14:47] <yrashk>	but if we do the blocking send there
+| [Friday 18 March 2011] [08:15:09] <yrashk>	then receivers will get blocked untill the send is over
+| [Friday 18 March 2011] [08:15:12] <yrashk>	mhm
+| [Friday 18 March 2011] [08:15:18] <evax>	reading zmq.h shouldn't be a problem to pass the msg in, ideed
+| [Friday 18 March 2011] [08:15:39] <yrashk>	yeah, so pointer in that struct for msg is cool
+| [Friday 18 March 2011] [08:15:50] <yrashk>	but this problem above bothers me
+| [Friday 18 March 2011] [08:15:53] <yrashk>	not nice
+| [Friday 18 March 2011] [08:16:50] <yrashk>	also separate sending thread isnt solving this completely
+| [Friday 18 March 2011] [08:17:02] <yrashk>	it will help us from blocking poller
+| [Friday 18 March 2011] [08:17:23] <yrashk>	but it will not b able to send more than one thing at a time
+| [Friday 18 March 2011] [08:17:33] <yrashk>	since sending is blocked
+| [Friday 18 March 2011] [08:17:44] <yrashk>	if only we had a reverse poll
+| [Friday 18 March 2011] [08:17:47] <yrashk>	wait
+| [Friday 18 March 2011] [08:18:00] <yrashk>	dont we have that kind of event in poll?
+| [Friday 18 March 2011] [08:18:08] <evax>	it has to be in the same thread
+| [Friday 18 March 2011] [08:18:14] <yrashk>	not sure how it will help tho
+| [Friday 18 March 2011] [08:18:43] <evax>	and I'm not sure sending and recving are allowed at the same time
+| [Friday 18 March 2011] [08:19:05] <evax>	if one must not use a socket in multiple threads
+| [Friday 18 March 2011] [08:19:37] <yrashk>	hey
+| [Friday 18 March 2011] [08:19:52] <yrashk>	how about using zmq_pollout event?
+| [Friday 18 March 2011] [08:20:03] <evax>	sure
+| [Friday 18 March 2011] [08:20:09] <yrashk>	it guarantees you can send without blocking
+| [Friday 18 March 2011] [08:20:27] <yrashk>	so we can embed this into our poller
+| [Friday 18 March 2011] [08:21:03] <yrashk>	this way we wont be blocking the poller ever
+| [Friday 18 March 2011] [08:21:11] <yrashk>	i think it is a sound idea
+| [Friday 18 March 2011] [08:21:56] <yrashk>	sustrik, wdyt? will it work fine? any precautions?
+| [Friday 18 March 2011] [08:23:28] <yrashk>	i really like it
+| [Friday 18 March 2011] [08:42:40] <sustrik>	yes, that's what POLLOUT is for
+| [Friday 18 March 2011] [08:43:08] <yrashk>	sweet
+| [Friday 18 March 2011] [08:43:22] <yrashk>	so hopefully we'll have this non-blocking very soon then
+| [Friday 18 March 2011] [08:43:32] <yrashk>	as it will not change our poller much
+| [Friday 18 March 2011] [08:45:51] <Steve-o>	mikko: looks like all the platforms are good now
+| [Friday 18 March 2011] [09:06:34] <pieterh_>	 sustrik: I think your email is inaccurate in some key ways
+| [Friday 18 March 2011] [09:06:53] <pieterh_>	most critically, you are claiming a purpose for XREP that was never documented before
+| [Friday 18 March 2011] [09:06:56] <sustrik>	feel free to discuss
+| [Friday 18 March 2011] [09:07:09] <sustrik>	that's why i sent the email out
+| [Friday 18 March 2011] [09:07:11] <pieterh_>	as a user, and the developer of many devices, the notion that you would break this, is... shocking
+| [Friday 18 March 2011] [09:07:40] <sustrik>	that's why it has to be solved
+| [Friday 18 March 2011] [09:07:41] <pieterh_>	it suggests (a) you don't know wtf you were doing, (b) you don't care about your users, (c) you don't understand what they are doing
+| [Friday 18 March 2011] [09:07:48] <pieterh_>	none of this is true, but it's what your email suggests
+| [Friday 18 March 2011] [09:07:50] <sustrik>	i would start with ZMQ)ROUTER socket type
+| [Friday 18 March 2011] [09:08:19] <sustrik>	shrug, it has to be solved somehow
+| [Friday 18 March 2011] [09:08:20] <pieterh_>	it's unavoidable that people use this as a ROUTER
+| [Friday 18 March 2011] [09:08:27] <pieterh_>	so, embrace that and make it work nicely
+| [Friday 18 March 2011] [09:08:28] <sustrik>	feel free to propose a solution
+| [Friday 18 March 2011] [09:08:32] <pieterh_>	I've done that many times
+| [Friday 18 March 2011] [09:08:39] <sustrik>	ZMQ_ROUTER, right?
+| [Friday 18 March 2011] [09:08:40] <pieterh_>	call it by the right name, make it work a little better
+| [Friday 18 March 2011] [09:08:42] <pieterh_>	yes
+| [Friday 18 March 2011] [09:08:43] <pieterh_>	of course
+| [Friday 18 March 2011] [09:08:49] <sustrik>	that's option 2 i think
+| [Friday 18 March 2011] [09:08:51] <pieterh_>	you will see the overwhelming consensus on the list
+| [Friday 18 March 2011] [09:09:02] <sustrik>	sure
+| [Friday 18 March 2011] [09:09:03] <pieterh_>	you did read that thread, right?
+| [Friday 18 March 2011] [09:09:04] <sustrik>	np
+| [Friday 18 March 2011] [09:09:17] <sustrik>	yes
+| [Friday 18 March 2011] [09:09:21] <pieterh_>	I like your solution of a verbose compile option
+| [Friday 18 March 2011] [09:09:29] <sustrik>	i am just explaining the internals
+| [Friday 18 March 2011] [09:09:40] <sustrik>	opt.2 is probably the best
+| [Friday 18 March 2011] [09:09:53] <pieterh_>	well, you're saying you might make a different implementation of "return to sender" 
+| [Friday 18 March 2011] [09:10:03] <sustrik>	definitely
+| [Friday 18 March 2011] [09:10:10] <pieterh_>	which (and I give you the raw emotion) is ... shokcing
+| [Friday 18 March 2011] [09:10:11] <pieterh_>	shocking
+| [Friday 18 March 2011] [09:10:14] <sustrik>	that's the XREP should be separated from REOUTER
+| [Friday 18 March 2011] [09:10:17] <sustrik>	ROUTER*
+| [Friday 18 March 2011] [09:10:29] <sustrik>	they are two distinct things
+| [Friday 18 March 2011] [09:10:32] <pieterh_>	you have a better idea for the REP-REQ chain?
+| [Friday 18 March 2011] [09:10:40] <sustrik>	not at the moment
+| [Friday 18 March 2011] [09:10:51] <sustrik>	but it's conceptually different from router
+| [Friday 18 March 2011] [09:10:56] <pieterh_>	precisely, and afaics it's impossible without creating stateful fabric
+| [Friday 18 March 2011] [09:11:02] <sustrik>	say the dropping of unroutable messages ->
+| [Friday 18 March 2011] [09:11:03] <pieterh_>	conceptually it's the same
+| [Friday 18 March 2011] [09:11:05] <pieterh_>	it's a use case
+| [Friday 18 March 2011] [09:11:08] <sustrik>	ROUTER should not drop
+| [Friday 18 March 2011] [09:11:10] <sustrik>	XREP should
+| [Friday 18 March 2011] [09:11:14] <pieterh_>	yes it should
+| [Friday 18 March 2011] [09:11:24] <pieterh_>	ROUTER should drop BUT it should be able to warn you
+| [Friday 18 March 2011] [09:11:45] <pieterh_>	there is nothing useful you can do with an unroutable message but since it often suggests a programming error, you need visibility
+| [Friday 18 March 2011] [09:11:47] <pieterh_>	that's all
+| [Friday 18 March 2011] [09:11:52] <sustrik>	sure
+| [Friday 18 March 2011] [09:12:08] <pieterh_>	I literally go into src/xrep.cpp and add a printf
+| [Friday 18 March 2011] [09:12:15] <pieterh_>	so I can debug a complex router
+| [Friday 18 March 2011] [09:12:41] <pieterh_>	doing a req-rep chain is just one use case for routing
+| [Friday 18 March 2011] [09:12:44] <pieterh_>	it's not a core pattern
+| [Friday 18 March 2011] [09:12:50] <sustrik>	it is
+| [Friday 18 March 2011] [09:13:00] <pieterh_>	not a *separate* core pattern
+| [Friday 18 March 2011] [09:13:02] <pieterh_>	afaics
+| [Friday 18 March 2011] [09:14:18] <pieterh_>	tbh the envelope concept is ugly as heck but I can't see anything simpler or better
+| [Friday 18 March 2011] [09:14:38] <sustrik>	the one described in the email is nice
+| [Friday 18 March 2011] [09:14:46] <sustrik>	but works on only for req/rep
+| [Friday 18 March 2011] [09:14:49] <sustrik>	not for router
+| [Friday 18 March 2011] [09:15:02] <sustrik>	and it has some scaling issues
+| [Friday 18 March 2011] [09:15:12] <sustrik>	so it's not a real alternative, i think
+| [Friday 18 March 2011] [09:16:29] 	 * pieterh_ is re-reading the email
+| [Friday 18 March 2011] [09:16:36] <pieterh_>	XPUB/XSUB are hop-by-hop?
+| [Friday 18 March 2011] [09:16:53] <sustrik>	yes
+| [Friday 18 March 2011] [09:16:59] <pieterh_>	the fact you implement PUB on XPUB, REQ on XREQ, is irrelevant to the user
+| [Friday 18 March 2011] [09:17:04] <pieterh_>	it's vital to you, irrelevant to me
+| [Friday 18 March 2011] [09:17:15] <pieterh_>	in fact, worse than irrelevant, it's negative data
+| [Friday 18 March 2011] [09:17:53] <pieterh_>	you basically ask me as user to think about your implementation design, which breaks my brain
+| [Friday 18 March 2011] [09:18:05] <pieterh_>	"The end-to-end type is always layered on top of the corresponding X socket"
+| [Friday 18 March 2011] [09:18:06] <sustrik>	it works like IP and TCP
+| [Friday 18 March 2011] [09:18:10] <pieterh_>	that's rubbish, sorry
+| [Friday 18 March 2011] [09:18:14] <pieterh_>	I don't know IP
+| [Friday 18 March 2011] [09:18:16] <sustrik>	a TCP user doesn't have to be aware of IP
+| [Friday 18 March 2011] [09:18:19] <sustrik>	but it's there
+| [Friday 18 March 2011] [09:18:32] <pieterh_>	sorry, it does not work for me, not at all
+| [Friday 18 March 2011] [09:18:42] <pieterh_>	what I want are a set of socket types with clear names and clear semantics
+| [Friday 18 March 2011] [09:18:50] <Steve-o>	+1
+| [Friday 18 March 2011] [09:18:51] <pieterh_>	I don't want some layering and abstraction I need to learn first
+| [Friday 18 March 2011] [09:18:52] <sustrik>	that's the option 2
+| [Friday 18 March 2011] [09:18:59] <sustrik>	ZMQ_ROUTER
+| [Friday 18 March 2011] [09:19:06] <pieterh_>	do not try to sell me your abstractions, it's what AMQP does and it's bogus
+| [Friday 18 March 2011] [09:19:22] <sustrik>	what do you want exactly then?
+| [Friday 18 March 2011] [09:19:25] <sustrik>	i am not following
+| [Friday 18 March 2011] [09:19:28] <pieterh_>	I want clear socket names
+| [Friday 18 March 2011] [09:19:33] <sustrik>	ZMQ_ROUTER
+| [Friday 18 March 2011] [09:19:35] <pieterh_>	clear semantics that are documented up-front
+| [Friday 18 March 2011] [09:19:36] <pieterh_>	yes
+| [Friday 18 March 2011] [09:19:46] <pieterh_>	this is, sadly, reverse engineering
+| [Friday 18 March 2011] [09:19:47] <sustrik>	what's the problem then?
+| [Friday 18 March 2011] [09:19:55] <pieterh_>	it's me trying to make names that fit your semantics
+| [Friday 18 March 2011] [09:20:12] <pieterh_>	there's no problem so long as you don't come back with abstractions that hurt my brain
+| [Friday 18 March 2011] [09:20:13] <pieterh_>	:-)
+| [Friday 18 March 2011] [09:20:23] <pieterh_>	it is already hard enough
+| [Friday 18 March 2011] [09:20:35] <sustrik>	that's an abstraction on which 0mq is working from very beginning
+| [Friday 18 March 2011] [09:20:38] <sustrik>	just ignore it
+| [Friday 18 March 2011] [09:20:55] <sustrik>	as a user you don't have to care
+| [Friday 18 March 2011] [09:20:58] <pieterh_>	do you understand that your semantics are counter-productive for mine?
+| [Friday 18 March 2011] [09:21:08] <pieterh_>	we have a conflict, as user vs. designer?
+| [Friday 18 March 2011] [09:21:27] <sustrik>	i don't think so
+| [Friday 18 March 2011] [09:21:37] <pieterh_>	it's been that way so far
+| [Friday 18 March 2011] [09:21:43] <pieterh_>	e.g. The end-to-end type is always layered on top of the corresponding X socket
+| [Friday 18 March 2011] [09:21:49] <sustrik>	yes
+| [Friday 18 March 2011] [09:22:03] <pieterh_>	that is toxic for me as user
+| [Friday 18 March 2011] [09:22:12] <sustrik>	you don't have to care
+| [Friday 18 March 2011] [09:22:20] <sustrik>	use just the non-X types
+| [Friday 18 March 2011] [09:22:26] <sustrik>	that's what proposition 2 is about
+| [Friday 18 March 2011] [09:22:34] <sustrik>	people want to use routing
+| [Friday 18 March 2011] [09:22:43] <sustrik>	so let's make routing a first-class non-X socket
+| [Friday 18 March 2011] [09:22:46] <sustrik>	ZMQ_ROUTER
+| [Friday 18 March 2011] [09:22:53] <pieterh_>	well, you can make internal socket types that are undocumented
+| [Friday 18 March 2011] [09:23:05] <pieterh_>	but ZMQ_ROUTER and ZMQ_DEALER cannot be internal and undocumented
+| [Friday 18 March 2011] [09:23:15] <pieterh_>	since they cover 40%, as I said, of real application use cases
+| [Friday 18 March 2011] [09:23:24] <sustrik>	X-sockets must be documented because they are used to make devices
+| [Friday 18 March 2011] [09:23:32] <pieterh_>	devices are apps
+| [Friday 18 March 2011] [09:23:43] <sustrik>	i.e. intermdiate nodes with no end-to-end functionalitty
+| [Friday 18 March 2011] [09:23:46] <pieterh_>	X-sockets are your terminology
+| [Friday 18 March 2011] [09:23:55] <pieterh_>	I'm against that terminology
+| [Friday 18 March 2011] [09:24:02] <sustrik>	what would you want instead?
+| [Friday 18 March 2011] [09:24:09] <pieterh_>	especially when you explain it
+| [Friday 18 March 2011] [09:24:16] <sustrik>	i admitt the X- thing is stupid
+| [Friday 18 March 2011] [09:24:18] <pieterh_>	just a clear set of sockets that are properly documented and match real requirements
+| [Friday 18 March 2011] [09:24:23] <pieterh_>	it's not hard
+| [Friday 18 March 2011] [09:24:24] <pieterh_>	design from the use case backwards
+| [Friday 18 March 2011] [09:24:29] <sustrik>	haven't though of anything better though
+| [Friday 18 March 2011] [09:24:30] <pieterh_>	not from the implementation forwards
+| [Friday 18 March 2011] [09:24:36] <pieterh_>	I don't *care* how you implement stuff
+| [Friday 18 March 2011] [09:24:58] <pieterh_>	what I do care about is the clarity of documentation as a contract
+| [Friday 18 March 2011] [09:25:00] <pieterh_>	clear names
+| [Friday 18 March 2011] [09:25:09] <sustrik>	the problem is that X- sockets have to be exposed because of device implementers
+| [Friday 18 March 2011] [09:25:12] <pieterh_>	clear semantics that directly speak to user requirements
+| [Friday 18 March 2011] [09:25:16] <pieterh_>	?
+| [Friday 18 March 2011] [09:25:21] <sustrik>	so they can't be hidden
+| [Friday 18 March 2011] [09:25:22] <pieterh_>	ZMQ_ROUTER is not a problem
+| [Friday 18 March 2011] [09:25:28] <pieterh_>	sigh
+| [Friday 18 March 2011] [09:25:32] <pieterh_>	devices are apps
+| [Friday 18 March 2011] [09:25:34] <sustrik>	no, the problem is layering
+| [Friday 18 March 2011] [09:25:40] <pieterh_>	that's your problem, not mine
+| [Friday 18 March 2011] [09:25:55] <pieterh_>	that's an implementation detail
+| [Friday 18 March 2011] [09:25:58] <pieterh_>	look... just make small steps here
+| [Friday 18 March 2011] [09:26:06] <sustrik>	ok, so just ignore the X types
+| [Friday 18 March 2011] [09:26:09] <pieterh_>	rename XREP and XREQ to ROUTER and DEALER
+| [Friday 18 March 2011] [09:26:17] <pieterh_>	and stop using weird names that make no sense 
+| [Friday 18 March 2011] [09:26:17] <sustrik>	it's mine problem, not yours
+| [Friday 18 March 2011] [09:26:33] <pieterh_>	if you want to use undocumented internal socket types, fine
+| [Friday 18 March 2011] [09:26:38] <pieterh_>	but they don't exist for me
+| [Friday 18 March 2011] [09:26:45] <sustrik>	they must be documented because of devices
+| [Friday 18 March 2011] [09:26:57] <sustrik>	there's no way to create a device with REQ/REP
+| [Friday 18 March 2011] [09:27:01] <sustrik>	it would blockl
+| [Friday 18 March 2011] [09:27:01] <pieterh_>	then they are not internal
+| [Friday 18 March 2011] [09:27:07] <pieterh_>	well, I do know that
+| [Friday 18 March 2011] [09:27:25] <pieterh_>	when I say "undocumented internal socket types" I do not mean ROUTER/DEALER
+| [Friday 18 March 2011] [09:27:25] <pieterh_>	obviously
+| [Friday 18 March 2011] [09:27:41] <pieterh_>	I mean e.g. XPUB/XSUB
+| [Friday 18 March 2011] [09:27:51] <sustrik>	so my proposition is let distiquish XREP/XREQ
+| [Friday 18 March 2011] [09:27:55] <sustrik>	from ROUTER/DEALER
+| [Friday 18 March 2011] [09:28:03] <sustrik>	you can then use ROUTER/DEALER
+| [Friday 18 March 2011] [09:28:04] <pieterh_>	why?
+| [Friday 18 March 2011] [09:28:12] <pieterh_>	why keep the old names at all?
+| [Friday 18 March 2011] [09:28:15] <sustrik>	because it's a different messaging pattern
+| [Friday 18 March 2011] [09:28:21] <pieterh_>	sigh
+| [Friday 18 March 2011] [09:28:23] <pieterh_>	this is just bogus
+| [Friday 18 March 2011] [09:28:25] <sustrik>	it SMTP-like messaging
+| [Friday 18 March 2011] [09:28:27] <pieterh_>	it's not a different pattern
+| [Friday 18 March 2011] [09:28:34] <pieterh_>	it's just one use case
+| [Friday 18 March 2011] [09:28:38] <sustrik>	specify an address, the message will get there
+| [Friday 18 March 2011] [09:28:41] <pieterh_>	you have said it, there's no better way to implement it
+| [Friday 18 March 2011] [09:28:48] <sustrik>	while req/rep is:
+| [Friday 18 March 2011] [09:28:52] <pieterh_>	"message will get there" is not a socket semantic
+| [Friday 18 March 2011] [09:29:01] <sustrik>	specify the name of the service, you task will be executed
+| [Friday 18 March 2011] [09:29:18] <pieterh_>	that is Majordomo
+| [Friday 18 March 2011] [09:29:21] <pieterh_>	have you actually read the Guide?
+| [Friday 18 March 2011] [09:29:28] <sustrik>	most of it
+| [Friday 18 March 2011] [09:29:38] <pieterh_>	you should perhaps see what people do with your work
+| [Friday 18 March 2011] [09:29:39] <sustrik>	anyway, let's move this discussion on the mailing list
+| [Friday 18 March 2011] [09:29:43] <pieterh_>	it's all based on real questions on the list
+| [Friday 18 March 2011] [09:29:49] <pieterh_>	SOA is not a socket semantic
+| [Friday 18 March 2011] [09:30:16] <pieterh_>	my advice, honestly, is to make small, careful evolutionary steps
+| [Friday 18 March 2011] [09:30:26] <pieterh_>	do not make radical changes to things that took years to learn
+| [Friday 18 March 2011] [09:30:28] <sustrik>	#define ZMQ_ROUTER ZMQ_XREP
+| [Friday 18 March 2011] [09:30:31] <pieterh_>	people will not like you for it
+| [Friday 18 March 2011] [09:30:32] <pieterh_>	sure
+| [Friday 18 March 2011] [09:30:33] <sustrik>	that's as small as it gets
+| [Friday 18 March 2011] [09:30:36] <pieterh_>	I've done that in 2.1
+| [Friday 18 March 2011] [09:30:40] <pieterh_>	precisely that
+| [Friday 18 March 2011] [09:30:45] <sustrik>	i'll do that in trunk
+| [Friday 18 March 2011] [09:30:48] <pieterh_>	it's sufficient for me
+| [Friday 18 March 2011] [09:30:54] <sustrik>	but i would like it to be discussed first
+| [Friday 18 March 2011] [09:31:03] <pieterh_>	the naming has been discussed several times
+| [Friday 18 March 2011] [09:31:05] <sustrik>	i assume that would be the preferred option
+| [Friday 18 March 2011] [09:31:09] <pieterh_>	it's not the same issue as semantic changes
+| [Friday 18 March 2011] [09:31:16] <sustrik>	but i don't want to do it without discussion on the list
+| [Friday 18 March 2011] [09:31:21] <pieterh_>	you are mixing two issues and making the discussion harder
+| [Friday 18 March 2011] [09:31:35] <pieterh_>	the naming *has* been discussed several times, with clear consensus
+| [Friday 18 March 2011] [09:31:40] <pieterh_>	shall I point you to the thread?
+| [Friday 18 March 2011] [09:31:44] <sustrik>	explain your point of view on the list then
+| [Friday 18 March 2011] [09:31:54] <sustrik>	we are a community
+| [Friday 18 March 2011] [09:31:56] <pieterh_>	I've done that, of course
+| [Friday 18 March 2011] [09:31:59] <pieterh_>	we're also on IRC
+| [Friday 18 March 2011] [09:32:03] <pieterh_>	this is logged
+| [Friday 18 March 2011] [09:32:18] <sustrik>	yep, but lot of people are not here at the moment
+| [Friday 18 March 2011] [09:32:25] <pieterh_>	the list is also fairly passive
+| [Friday 18 March 2011] [09:32:39] <pieterh_>	nonetheless, I have asked about renaming the sockets and there was *clear* consensus
+| [Friday 18 March 2011] [09:32:43] <pieterh_>	please do respect that
+| [Friday 18 March 2011] [09:32:47] <pieterh_>	we are a community, as you say
+| [Friday 18 March 2011] [09:32:48] <sustrik>	it's polite to allow even those in other timezones to discuss
+| [Friday 18 March 2011] [09:33:10] <pieterh_>	also, reopening a discussion because you weren't there, or don't like the outcome is unpolite
+| [Friday 18 March 2011] [09:33:17] <sustrik>	yep, i am for ZMQ_ROUTER options as well
+| [Friday 18 March 2011] [09:33:22] <pieterh_>	so, we make that
+| [Friday 18 March 2011] [09:33:29] <pieterh_>	and we consider the semantics as a separate issue
+| [Friday 18 March 2011] [09:33:32] <sustrik>	it's supplying the missing pieces of information
+| [Friday 18 March 2011] [09:33:44] <pieterh_>	i'm always in favor of better semantics but they must be carefully worked out of use cases
+| [Friday 18 March 2011] [09:33:53] <sustrik>	yup
+| [Friday 18 March 2011] [09:33:55] <pieterh_>	abstract "it's like XYZ" discussions are pointless IMO
+| [Friday 18 March 2011] [09:33:59] <pieterh_>	we are not like XYZ
+| [Friday 18 March 2011] [09:34:04] <sustrik>	sure, say so
+| [Friday 18 March 2011] [09:34:07] <pieterh_>	XYZ is like us, done badly
+| [Friday 18 March 2011] [09:34:07] <pieterh_>	period
+| [Friday 18 March 2011] [09:34:18] <pieterh_>	what, again?
+| [Friday 18 March 2011] [09:34:18] <pieterh_>	:-)
+| [Friday 18 March 2011] [09:34:40] <sustrik>	:)
+| [Friday 18 March 2011] [09:34:55] <pieterh_>	btw, for IPC, what do you think about making a shared memory transport?
+| [Friday 18 March 2011] [09:35:11] <pieterh_>	one can make a portable shmem layer, then use that
+| [Friday 18 March 2011] [09:35:29] <sustrik>	there's an API problem with that
+| [Friday 18 March 2011] [09:35:32] <pieterh_>	all we need is a portable shmem api people can implement
+| [Friday 18 March 2011] [09:35:39] <sustrik>	when you allocate a message
+| [Friday 18 March 2011] [09:35:48] <sustrik>	(zmq_msg_init_size)
+| [Friday 18 March 2011] [09:35:54] <sustrik>	it's allocated in process heap
+| [Friday 18 March 2011] [09:36:01] <pieterh_>	right, that's fine, we copy data
+| [Friday 18 March 2011] [09:36:20] <sustrik>	if you copy data then there's not much point in using shmem
+| [Friday 18 March 2011] [09:36:32] <pieterh_>	much, much faster than IPC
+| [Friday 18 March 2011] [09:36:45] <pieterh_>	also, am I wrong, but with ZMQ you *always* have to copy data on recv?
+| [Friday 18 March 2011] [09:36:49] <sustrik>	if that's the case, then sure
+| [Friday 18 March 2011] [09:36:57] <sustrik>	it have been discussed serveral times
+| [Friday 18 March 2011] [09:37:03] <pieterh_>	shmem?
+| [Friday 18 March 2011] [09:37:07] <sustrik>	yep
+| [Friday 18 March 2011] [09:37:18] <sustrik>	but nobody really tried to implement it
+| [Friday 18 March 2011] [09:37:21] <pieterh_>	I've not seen any attempt to slice it into two
+| [Friday 18 March 2011] [09:37:21] <sustrik>	at least afaik
+| [Friday 18 March 2011] [09:37:37] <sustrik>	two what?
+| [Friday 18 March 2011] [09:37:40] <pieterh_>	two layers
+| [Friday 18 March 2011] [09:37:57] <pieterh_>	so, abstract shmem api, and implementations thereof, and use thereof
+| [Friday 18 March 2011] [09:38:12] <pieterh_>	the problem is today, you'd have to know both sides of the cake to make it
+| [Friday 18 March 2011] [09:38:21] <pieterh_>	both how to make a transport in 0MQ, and how to do shmem on system X
+| [Friday 18 March 2011] [09:38:28] <pieterh_>	I'd like to slice this into two problems
+| [Friday 18 March 2011] [09:38:46] <sustrik>	how would you do that?
+| [Friday 18 March 2011] [09:38:54] <Steve-o>	re: shmem I got as far as this and haven't looked at it again:  https://gist.github.com/876073
+| [Friday 18 March 2011] [09:38:55] <pieterh_>	well, classic portable API solution
+| [Friday 18 March 2011] [09:39:06] <pieterh_>	like how I made portable threading in ZFL
+| [Friday 18 March 2011] [09:39:42] <sustrik>	currently 0MQ uses ZMQ_HAVE_... macros to provide OS-specific functionality
+| [Friday 18 March 2011] [09:39:45] <pieterh_>	first step is to agree on what constitutes the necessary shmem api for a portable shmem transport in 0MQ
+| [Friday 18 March 2011] [09:39:58] <pieterh_>	sure, but that's not helpful here, forget it
+| [Friday 18 March 2011] [09:40:07] <pieterh_>	you do that in some module, shmem.cpp or whatever
+| [Friday 18 March 2011] [09:40:11] <sustrik>	ah, you are speaking of internal apis, right?
+| [Friday 18 March 2011] [09:40:14] <pieterh_>	yes
+| [Friday 18 March 2011] [09:40:20] <sustrik>	abstraction for transports
+| [Friday 18 March 2011] [09:40:23] <pieterh_>	a portability API for shmem
+| [Friday 18 March 2011] [09:40:24] <pieterh_>	yes
+| [Friday 18 March 2011] [09:40:30] <sustrik>	that would be great
+| [Friday 18 March 2011] [09:40:38] <pieterh_>	it means one person writes the transport, another group makes it work on random boxes
+| [Friday 18 March 2011] [09:40:38] <sustrik>	i was thinking about it for a long time
+| [Friday 18 March 2011] [09:40:43] <sustrik>	but it's rather complex
+| [Friday 18 March 2011] [09:40:48] <pieterh_>	all we need is a simple abstract API
+| [Friday 18 March 2011] [09:40:52] <pieterh_>	shmem_get_block ()
+| [Friday 18 March 2011] [09:40:56] <pieterh_>	shmem_write ()
+| [Friday 18 March 2011] [09:41:00] <pieterh_>	etc. I have no idea...
+| [Friday 18 March 2011] [09:41:05] <sustrik>	ah, at that level
+| [Friday 18 March 2011] [09:41:21] <sustrik>	so not generic API for transports
+| [Friday 18 March 2011] [09:41:30] <mato>	guys, re ROUTER, if we are going to formalize this then rather than just renaming XREP shouldn't we think about what the real semantics are for people who wish to do routing by design?
+| [Friday 18 March 2011] [09:41:30] <pieterh_>	no, only for shmem
+| [Friday 18 March 2011] [09:41:31] <sustrik>	rather generic API for shmem
+| [Friday 18 March 2011] [09:41:44] <mato>	since the current use of router has simply evolved out of what XREP provides.
+| [Friday 18 March 2011] [09:41:46] <pieterh_>	sustrik: yes, just to solve this case
+| [Friday 18 March 2011] [09:41:48] <sustrik>	spieterh: sure, feel free to implement
+| [Friday 18 March 2011] [09:41:53] <pieterh_>	mato: yes, but it seems there's no better way
+| [Friday 18 March 2011] [09:42:12] <pieterh_>	sustrik: my problem is I have zero idea what a transport would need
+| [Friday 18 March 2011] [09:42:14] <mato>	pieterh_: why so? there's no hurry, 3.0 is a way away yet
+| [Friday 18 March 2011] [09:42:17] <sustrik>	mato: ack
+| [Friday 18 March 2011] [09:42:26] <pieterh_>	I'm happy to make shmem implementations of some defined API
+| [Friday 18 March 2011] [09:42:37] <mato>	pieterh_: aren't we supposed to be master programmers doing this well, rather than making rash decisions?
+| [Friday 18 March 2011] [09:42:39] <sustrik>	pieterh: great
+| [Friday 18 March 2011] [09:42:42] <pieterh_>	mato: there's no hurry except the current names are painful
+| [Friday 18 March 2011] [09:42:42] <sustrik>	mato: my feeling is people want SMTP like-semantivc
+| [Friday 18 March 2011] [09:42:44] <pieterh_>	mato: lol
+| [Friday 18 March 2011] [09:42:48] <pieterh_>	double lol
+| [Friday 18 March 2011] [09:42:58] <pieterh_>	the man pages document code rather than code implementing man pages
+| [Friday 18 March 2011] [09:43:10] <mato>	huh?
+| [Friday 18 March 2011] [09:43:18] <pieterh_>	shrug
+| [Friday 18 March 2011] [09:43:23] <pieterh_>	if you don't know what I mean, forget it
+| [Friday 18 March 2011] [09:43:42] <pieterh_>	anyhow, where is the rash decision?
+| [Friday 18 March 2011] [09:43:51] <pieterh_>	there has been extensive discussion about the names of sockets
+| [Friday 18 March 2011] [09:43:52] <sustrik>	mato: there's one issue in the bugtracker to do with man pages
+| [Friday 18 March 2011] [09:44:10] <mato>	but the names don't fit with the big picture
+| [Friday 18 March 2011] [09:44:10] <sustrik>	could you have a look at it?
+| [Friday 18 March 2011] [09:44:12] <pieterh_>	and renaming XREP and XREQ has been agreed by the list, with total consensus
+| [Friday 18 March 2011] [09:44:24] <mato>	i love your dogmatism
+| [Friday 18 March 2011] [09:44:25] <pieterh_>	mato: what big picture? show me the design docs...
+| [Friday 18 March 2011] [09:44:29] <mato>	4 people replied
+| [Friday 18 March 2011] [09:44:31] <pieterh_>	if it's just in someone's head, it's not on paper
+| [Friday 18 March 2011] [09:44:34] <mato>	total consensus
+| [Friday 18 March 2011] [09:44:41] <pieterh_>	4 people replied, no-one said no, that's total consensus, yes
+| [Friday 18 March 2011] [09:44:52] <pieterh_>	it's not exactly a hypertalkative list
+| [Friday 18 March 2011] [09:44:58] <mato>	right.
+| [Friday 18 March 2011] [09:45:03] <pieterh_>	but if you want to veto it, go for it
+| [Friday 18 March 2011] [09:45:28] <pieterh_>	I'm going to switch to the new names ASAP in any case
+| [Friday 18 March 2011] [09:45:37] <mato>	right, so you're going to fork the api
+| [Friday 18 March 2011] [09:45:46] <pieterh_>	no, I'm implementing the consensus
+| [Friday 18 March 2011] [09:45:47] <mato>	thanks for that.
+| [Friday 18 March 2011] [09:45:54] <pieterh_>	if you don't want to follow, fork the API
+| [Friday 18 March 2011] [09:45:59] <pieterh_>	please don't be silly, mato
+| [Friday 18 March 2011] [09:46:05] <pieterh_>	this was discussed ad nauseam
+| [Friday 18 March 2011] [09:46:28] <pieterh_>	Just like a 3.0 version will 'fork the api'?
+| [Friday 18 March 2011] [09:46:33] <pieterh_>	improvements that solve real problems people face
+| [Friday 18 March 2011] [09:46:49] <pieterh_>	if you find this offensive, well... sigh
+| [Friday 18 March 2011] [09:47:01] <mato>	forget it
+| [Friday 18 March 2011] [09:47:07] <pieterh_>	whatever
+| [Friday 18 March 2011] [09:47:18] <pieterh_>	discuss on that thread, it's public
+| [Friday 18 March 2011] [09:47:21] <pieterh_>	give your reasons
+| [Friday 18 March 2011] [09:47:53] <mato>	sure. 
+| [Friday 18 March 2011] [09:52:53] <drbobbeaty>	Guys, I don't mean to poke my ideas in in the middle of a discussion, but would there be a significant issue if the 2.x codebase used BOTH names, and then the 3.x codebase used just the 'new' one? That way, people that use the names for a significant part of their understanding of their function can have both while not breaking backward compatibility.
+| [Friday 18 March 2011] [09:53:50] <drbobbeaty>	I can see that names are important to understand, I deal with that from the users of my libraries every day. I sweat the names for a long time to make sure they are concise, descriptive, and clear.
+| [Friday 18 March 2011] [09:53:54] <ianbarber>	upstream downstream were (are?) still valid
+| [Friday 18 March 2011] [09:54:38] <drbobbeaty>	But I can also see that the original design was based on these names, and they, too, have value to a group of users for just that reason. They understand the library and function in terms of these names.
+| [Friday 18 March 2011] [09:54:48] <drbobbeaty>	Just my USD $0.02
+| [Friday 18 March 2011] [09:55:59] <sustrik>	drbobbeaty: i think almost everybody agrees that ZMQ_ROUTER being introduced
+| [Friday 18 March 2011] [09:56:19] <sustrik>	the discussion was about whether original XREP should remain as a different socket type
+| [Friday 18 March 2011] [09:56:53] <drbobbeaty>	Oh... there... I should have stayed quiet. I thought it was about a name change. Please forgive my ignorance.
+| [Friday 18 March 2011] [09:57:09] <mato>	sustrik: that is precisely the point.
+| [Friday 18 March 2011] [10:00:22] <jhawk28>	I suspect that it will become more clear as more "devices" are written
+| [Friday 18 March 2011] [10:04:45] <mato>	sustrik: SMTP, yes, that's an interesting insight
+| [Friday 18 March 2011] [10:04:50] <mato>	sustrik: I think you're right
+| [Friday 18 March 2011] [10:05:14] <mato>	sustrik: what is the manpage issue? i can't find it...
+| [Friday 18 March 2011] [10:05:20] <sustrik>	jhaw28: i would say so
+| [Friday 18 March 2011] [10:05:38] <sustrik>	mato: let me see
+| [Friday 18 March 2011] [10:08:49] <sustrik>	mato: issue 130
+| [Friday 18 March 2011] [10:10:11] <mile>	hi
+| [Friday 18 March 2011] [10:10:17] <jhawk28>	b.....tlllrrrrr
+| [Friday 18 March 2011] [10:10:19] <jhawk28>	]
+| [Friday 18 March 2011] [10:10:27] <mile>	does anyone have hands-on experience with erlang bindings?
+| [Friday 18 March 2011] [10:11:33] <mato>	sustrik: hmm, i can see how that might a bug in the manpage, but isn't it just exposing an inconsistency in the internal implementation?
+| [Friday 18 March 2011] [10:11:52] <sustrik>	mile: ask yrashk
+| [Friday 18 March 2011] [10:12:02] <sustrik>	he should be here i think
+| [Friday 18 March 2011] [10:12:02] <mato>	sustrik: shouldn't the blocking behaviour be identical irrespective of the use of bind/connect?
+| [Friday 18 March 2011] [10:12:16] <sustrik>	the problem is that on bind side
+| [Friday 18 March 2011] [10:12:22] <sustrik>	when there's no connection
+| [Friday 18 March 2011] [10:12:25] <sustrik>	there's no queue
+| [Friday 18 March 2011] [10:12:27] <mile>	sustrik, tx, will do
+| [Friday 18 March 2011] [10:12:39] <mato>	sustrik: yes, you're describing the implementation
+| [Friday 18 March 2011] [10:12:41] <sustrik>	and thus nowhere to store the message in
+| [Friday 18 March 2011] [10:13:33] <sustrik>	the alternative would be to have one pipe pre-prepared even on bind side
+| [Friday 18 March 2011] [10:13:41] <sustrik>	and assign it to first connected peer
+| [Friday 18 March 2011] [10:13:55] <mato>	that would seem to result in more consistent behaviour on the user side
+| [Friday 18 March 2011] [10:14:09] <sustrik>	ok, then create an issue for that
+| [Friday 18 March 2011] [10:14:17] <yrashk>	sustrik: mile I am here
+| [Friday 18 March 2011] [10:14:17] <sustrik>	so that we don't forget
+| [Friday 18 March 2011] [10:14:27] <mato>	alright.
+| [Friday 18 March 2011] [10:14:32] <mile>	yrashk, hi, great :)
+| [Friday 18 March 2011] [10:14:46] <mile>	i'm looking into connecting yaws to 0mq
+| [Friday 18 March 2011] [10:14:56] <mile>	as a http front-end
+| [Friday 18 March 2011] [10:15:16] <mile>	but I'm not sure about the state of the erlang bindings
+| [Friday 18 March 2011] [10:15:45] <yrashk>	mile: what do you mean?
+| [Friday 18 March 2011] [10:15:46] <mile>	since the alternative is hacking nginx, which I would very much like to avoid :)
+| [Friday 18 March 2011] [10:16:08] <yrashk>	mile: what exactly are you worried about re: state?
+| [Friday 18 March 2011] [10:16:31] <mile>	the bindings page states the both versions are not API compatible
+| [Friday 18 March 2011] [10:16:54] <mile>	and I couldn't find much of the benchmarks regarding the performance
+| [Friday 18 March 2011] [10:17:38] <yrashk>	mile: short version: erlzmq is slow, erlzmq2 is fast
+| [Friday 18 March 2011] [10:17:57] <yrashk>	on 1byte messages erlzmq2 does 1.3mln/sec (localhost) [on my mac pro]
+| [Friday 18 March 2011] [10:18:03] <yrashk>	on 1Kbyte messages -- about 300K/sec
+| [Friday 18 March 2011] [10:18:37] <mile>	that should saturate a gbit ethernet, right?
+| [Friday 18 March 2011] [10:18:41] <yrashk>	their API are close to each other, though -- but not exactly the same, but fairly close
+| [Friday 18 March 2011] [10:18:47] <yrashk>	hopefully, I guess
+| [Friday 18 March 2011] [10:18:48] <yrashk>	never tried yet
+| [Friday 18 March 2011] [10:19:01] <mile>	ok, thanks!
+| [Friday 18 March 2011] [10:19:09] <mile>	i will be looking into this
+| [Friday 18 March 2011] [10:19:25] <mile>	and report if I find something interesing ;)
+| [Friday 18 March 2011] [10:19:34] <sustrik>	300K/sec = 2.45Gb/sec
+| [Friday 18 March 2011] [10:20:08] <mile>	yeah :)
+| [Friday 18 March 2011] [10:21:26] <yrashk>	mile: for erlzmq2, you have to have >=R14B01
+| [Friday 18 March 2011] [10:21:34] <yrashk>	as it is a NIF-based binding
+| [Friday 18 March 2011] [10:21:49] <mato>	sustrik: i guess i should close the original issue then?
+| [Friday 18 March 2011] [10:22:01] <yrashk>	mile: sure, I'd be pleased to see reports, erlzmq2 is fairly young
+| [Friday 18 March 2011] [10:22:05] <yrashk>	but seems to work well
+| [Friday 18 March 2011] [10:22:10] <sustrik>	yes, just mention the number of the new one when closing it
+| [Friday 18 March 2011] [10:22:14] <yrashk>	if anything evax and I always ready to fix it :)
+| [Friday 18 March 2011] [10:22:34] <mile>	yrashk, greta :)
+| [Friday 18 March 2011] [10:22:54] <mile>	I'll try to make a good benchmark for aws+0mq
+| [Friday 18 March 2011] [10:23:01] <mile>	yaws*
+| [Friday 18 March 2011] [10:23:17] <mile>	kind of like mongrail2
+| [Friday 18 March 2011] [10:23:37] <mile>	thats what I'm aiming for
+| [Friday 18 March 2011] [10:23:48] <mile>	only simpler and hopefully much faster
+| [Friday 18 March 2011] [10:23:57] <sustrik>	mile: as for intreraction with nginx, meto mentioned he's going to have a look at that
+| [Friday 18 March 2011] [10:24:23] <mato>	i will, if i get the funding :-)
+| [Friday 18 March 2011] [10:24:49] <yrashk>	mile: just please understand that those beforementioned benchmarks are from localhost
+| [Friday 18 March 2011] [10:24:51] <mile>	I looked into it a couple of days ago, but it kind of freaked me out
+| [Friday 18 March 2011] [10:24:57] <yrashk>	I haven't tested anything else yet
+| [Friday 18 March 2011] [10:25:21] <mile>	yrashk, sure, I will be setting up 2 boxes on a gbit switch
+| [Friday 18 March 2011] [10:25:31] <mile>	and see how they perform
+| [Friday 18 March 2011] [10:25:34] <yrashk>	sweet
+| [Friday 18 March 2011] [10:25:49] <yrashk>	mile: please send them over if possible (yrashk@gmail.com)
+| [Friday 18 March 2011] [10:25:50] <mile>	and try to replicate the ck1mil
+| [Friday 18 March 2011] [10:26:44] <mile>	I hope I'll manage to do it next week
+| [Friday 18 March 2011] [10:26:53] <mile>	then I'm gone for like 10 days :)
+| [Friday 18 March 2011] [10:27:35] <mile>	but both nginx and yaws plugins would be very very cool stuff :)
+| [Friday 18 March 2011] [10:27:59] <mile>	hopefully I'll get something useful to opensource :)
+| [Friday 18 March 2011] [10:28:15] <mato>	mile: i've been poring over the nginx internals, it looks doable but non-trivial
+| [Friday 18 March 2011] [10:28:48] <mile>	mato, I was looking into proxy-modules for that, but my C is not good enough...
+| [Friday 18 March 2011] [10:29:02] <mile>	since it in deed appears to be nontrivial :)
+| [Friday 18 March 2011] [10:29:14] <mato>	mile: my C is more than good enough, but it's still a non-trivial amount of work.
+| [Friday 18 March 2011] [10:29:31] <mile>	but yaws has a very elegant way of attaching stuff
+| [Friday 18 March 2011] [10:29:42] <mato>	yaws? /me goes off to google that
+| [Friday 18 March 2011] [10:29:49] <mile>	erlang yaws
+| [Friday 18 March 2011] [10:30:12] <mile>	so I'll be looking into the performance of that combo
+| [Friday 18 March 2011] [10:30:25] <mato>	aha, ok
+| [Friday 18 March 2011] [10:30:29] 	 * mato has no erlang-fu
+| [Friday 18 March 2011] [10:31:18] <mile>	my erlang is not that good
+| [Friday 18 March 2011] [10:31:26] <mile>	but it's straitforward as hell
+| [Friday 18 March 2011] [10:31:41] <mile>	as long as one had something to do with functional programming 
+| [Friday 18 March 2011] [10:31:41] <mile>	:)
+| [Friday 18 March 2011] [10:32:26] <yrashk>	it is indeed very straightforward
+| [Friday 18 March 2011] [10:33:20] <mile>	the only problem is that you don't get to find many erlang developers
+| [Friday 18 March 2011] [10:33:31] <mile>	so its hard to sell it
+| [Friday 18 March 2011] [10:33:42] <mile>	in small companies - hence the 0mq
+| [Friday 18 March 2011] [10:34:02] <mile>	make the frontend in less then 100lines of erlang
+| [Friday 18 March 2011] [10:34:26] <yrashk>	mile: my company is about to change it (i.e. make erlang more popular)
+| [Friday 18 March 2011] [10:34:29] <mile>	and let others use whatever they want on the other side of 0mq
+| [Friday 18 March 2011] [10:34:30] <yrashk>	:)
+| [Friday 18 March 2011] [10:35:17] <mile>	thats a good thing! :)
+| [Friday 18 March 2011] [10:35:45] <mile>	I had contact with haskell some time ago, and I'm sincerely charmed by erlang :)
+| [Friday 18 March 2011] [10:35:59] <yrashk>	nice!
+| [Friday 18 March 2011] [10:36:10] <yrashk>	I've been doing erlang on and off since 2001
+| [Friday 18 March 2011] [10:37:11] <mile>	that's a while :)
+| [Friday 18 March 2011] [10:37:39] <mile>	I pinged you, hopefully next week I'll have some data
+| [Friday 18 March 2011] [10:38:03] <yrashk>	sweet
+| [Friday 18 March 2011] [10:38:05] <yrashk>	thanks
+| [Friday 18 March 2011] [10:39:00] <mile>	I'm off for a weekend, thanks for the advice! 
+| [Friday 18 March 2011] [11:03:16] <Guthur>	pieterh & sustrik: was that long discussion just about the naming of XREP and XREQ
+| [Friday 18 March 2011] [11:04:05] <sustrik>	it was not about naming :)
+| [Friday 18 March 2011] [11:04:40] <sustrik>	ultimately, it was about what should be done by 0mq itself and what should be done by the layers on top of it
+| [Friday 18 March 2011] [11:05:58] <Guthur>	sustrik: ok, sorry I just came back and it was very long and I found it hard to figure out what was going on
+| [Friday 18 March 2011] [11:06:17] <sustrik>	there's a thread on the ML if you are interested
+| [Friday 18 March 2011] [11:09:31] <Guthur>	ok, I'll check it out
+| [Friday 18 March 2011] [11:24:46] <sustrik>	pieterh: still here?
+| [Friday 18 March 2011] [11:25:10] <sustrik>	the use case for the error you've reported have scrolled out of my irc window
+| [Friday 18 March 2011] [11:25:15] <sustrik>	can you repost it?
+| [Friday 18 March 2011] [11:29:19] <sustrik>	<sustrik> the use case for the error you've reported have scrolled out of my irc window
+| [Friday 18 March 2011] [11:29:19] <sustrik>	<sustrik> can you repost it?
+| [Friday 18 March 2011] [11:29:35] <sustrik>	pieterh_: ^^
+| [Friday 18 March 2011] [11:29:55] <pieterh_>	sustrik: sorry, was offline for a while
+| [Friday 18 March 2011] [11:30:01] <sustrik>	np
+| [Friday 18 March 2011] [11:30:02] <pieterh_>	you lost the URIs?
+| [Friday 18 March 2011] [11:30:06] <sustrik>	yep
+| [Friday 18 March 2011] [11:30:10] <pieterh_>	https://gist.github.com/875932
+| [Friday 18 March 2011] [11:30:14] <sustrik>	thanks
+| [Friday 18 March 2011] [11:30:21] <pieterh_>	it looks like the first frame after a handshake gets lost
+| [Friday 18 March 2011] [11:30:34] 	 * sustrik is having a look...
+| [Friday 18 March 2011] [11:30:36] <pieterh_>	but randomly...
+| [Friday 18 March 2011] [11:30:43] <pieterh_>	thanks, I appreciate it, it's blocking me
+| [Friday 18 March 2011] [11:40:31] <evax>	working on erlzmq2 some weird behaviour happens at times: after calling zmq_term and our own poller thread has ended, one thread enters a busy loop because SIGFE is trapped but keeps being raised
+| [Friday 18 March 2011] [11:40:54] <evax>	*SIGFPE
+| [Friday 18 March 2011] [11:43:01] <evax>	when zmq_term returns, all zmq threads have ended ?
+| [Friday 18 March 2011] [11:46:59] <pieterh_>	evax: it should say so in the man page
+| [Friday 18 March 2011] [11:48:48] <mikko-_>	pieter: all 2-1 builds succeed now
+| [Friday 18 March 2011] [11:49:27] <pieterh_>	mikko: yup
+| [Friday 18 March 2011] [11:49:37] <evax>	pieterh_: thanks, I was reading an outdated man page...
+| [Friday 18 March 2011] [11:49:40] <pieterh_>	there are a couple of issues still to close, then 2-1 is ready to release
+| [Friday 18 March 2011] [11:50:03] <pieterh_>	evax: does it say something useful in the man page?
+| [Friday 18 March 2011] [11:51:40] <evax>	pieterh_: that it can fail with EINTR now
+| [Friday 18 March 2011] [11:52:21] <pieterh_>	ok
+| [Friday 18 March 2011] [12:26:52] <evax>	pieterh_: in the case of inproc sockets, is it possible that a zmq_recv succeeds before the associated send returns ?
+| [Friday 18 March 2011] [12:28:56] <evax>	this is with a PUSH/PULL pair and the zmq_recv if right after a zmq_poll
+| [Friday 18 March 2011] [12:30:21] <sustrik>	yes, it's possible
+| [Friday 18 March 2011] [12:30:55] <evax>	sustrik: thanks, then that's what's biting us
+| [Friday 18 March 2011] [12:33:07] <Guthur>	evax: out of curiosity what are you working on for erlzmq?
+| [Friday 18 March 2011] [12:33:28] <Guthur>	it is elrzmq, correct?
+| [Friday 18 March 2011] [12:34:45] <evax>	we send a message to shut down the system, and sometimes before the zmq_send returns our polling thread recvs the request, closes the sockets and terminates the context, and this fires the SIGFPE busyloop in the original thread
+| [Friday 18 March 2011] [12:34:57] <evax>	Guthur: erlzmq2, the NIF base version
+| [Friday 18 March 2011] [12:35:55] <Guthur>	ah ok
+| [Friday 18 March 2011] [12:36:09] <Guthur>	so you are using zmq to manage the state of your zmq binding
+| [Friday 18 March 2011] [12:36:14] <Guthur>	many kudos there, hehe
+| [Friday 18 March 2011] [12:39:11] <evax>	Guthur: I wanted to implementing non blocking send, but I stumbled on this busy loop issue
+| [Friday 18 March 2011] [12:39:54] <evax>	Guthur: yeah, it felt really natural
+| [Friday 18 March 2011] [12:40:23] <michelp>	wow you guys overflowed my backscroll :)
+| [Friday 18 March 2011] [12:40:45] <Guthur>	it has been very busy today
+| [Friday 18 March 2011] [12:41:37] <Guthur>	I'm still digesting the XREP vs. ROUTER stuff, the details are on the mailing list though
+| [Friday 18 March 2011] [12:42:46] <Guthur>	sustrik: if XREP really could suddenly change, it probably should never have been exposed
+| [Friday 18 March 2011] [12:43:03] <Guthur>	but I suppose that's been argued already
+| [Friday 18 March 2011] [12:43:21] <sustrik>	yup
+| [Friday 18 March 2011] [12:54:46] <Guthur>	and those cool devices that guide demonstrates are pretty cool
+| [Friday 18 March 2011] [12:54:51] <Guthur>	would be a shame if they broke
+| [Friday 18 March 2011] [12:58:18] <sustrik>	i'm not proposing to break them
+| [Friday 18 March 2011] [12:58:36] <sustrik>	it was just illustration
+| [Friday 18 March 2011] [14:09:34] <evax>	sustrik: erlzmq2 can no more block the VM on send
+| [Friday 18 March 2011] [14:09:55] <sustrik>	nice!
+| [Friday 18 March 2011] [14:10:16] <sustrik>	thanks for quick fix
+| [Friday 18 March 2011] [14:11:25] <evax>	np, let me know if there are other features missing
+| [Friday 18 March 2011] [14:15:54] <sustrik>	sure
+| [Friday 18 March 2011] [14:49:59] <pieterh_>	sustrik: sorry, was away... did you manage to reproduce the pub-sub issue?
+| [Friday 18 March 2011] [15:16:21] <pieterh>	ok, reproduced on second box
+| [Friday 18 March 2011] [16:17:05] <Guthur>	pieterh, do you mean to not increment the sequence in that gist?
+| [Friday 18 March 2011] [18:08:59] <rfw>	hi there, does the pyzmq.eventloop ioloop have epoll support like tornado's?
+| [Friday 18 March 2011] [18:53:33] <yrashk>	so 8 years for saleyn :-(((
+| [Friday 18 March 2011] [19:43:19] <Guthur>	yrashk, have you seen the first paragraph of the wiki page
+| [Friday 18 March 2011] [19:44:07] <Guthur>	Goldman Sachs code, which is described as "there is a danger that somebody who knew how to use this program could use it to manipulate markets in unfair ways."
+| [Friday 18 March 2011] [19:44:23] <Guthur>	but it's fine for Goldman to have it
+| [Saturday 19 March 2011] [08:13:02] <Guthur>	pieterh, some of the code examples in ch4 have lines of code longer than the width of the code box
+| [Saturday 19 March 2011] [08:13:19] <Guthur>	only a minor issue, but thought it worth raising.
+| [Saturday 19 March 2011] [08:13:30] <Guthur>	I'm using chrome, if it matter
+| [Saturday 19 March 2011] [09:55:56] <FlaPer87>	hi everyone, is it possible to have 2 threads listening to the same zmq socket? is there an example here[0] showing that? https://github.com/imatix/zguide
+| [Saturday 19 March 2011] [09:58:09] <mikko>	FlaPer87: no
+| [Saturday 19 March 2011] [09:58:28] <FlaPer87>	mikko ok, thnx :)
+| [Saturday 19 March 2011] [09:58:30] <mikko>	FlaPer87: you can not access the same socket from multiple threads concurrently
+| [Saturday 19 March 2011] [09:58:34] <mikko>	FlaPer87: what is the use-case?
+| [Saturday 19 March 2011] [09:59:00] <mikko>	sec, my fish stock is boiling over
+| [Saturday 19 March 2011] [10:00:27] <FlaPer87>	mikko I was wondering if that was possible in order to process more messages p/second. Now that I think about it that was a stupid question :P
+| [Saturday 19 March 2011] [10:10:02] <Guthur>	FlaPer87, there is some examples in the guide showing custom routing to N worker threads
+| [Saturday 19 March 2011] [10:10:30] <Guthur>	lruqueue, shows a device doing this
+| [Saturday 19 March 2011] [10:13:47] <Guthur>	or the parallel pipeline pattern shown here;  http://zguide.zeromq.org/page:all#toc8
+| [Saturday 19 March 2011] [10:14:20] <FlaPer87>	Guthur, that's useful, let me check
+| [Saturday 19 March 2011] [10:14:26] <FlaPer87>	Guthur thnx
+| [Saturday 19 March 2011] [12:13:16] <dermoth_>	FlaPer87, you can have two threads connect to the same endpoint... if the connection has to be incoming, you can use a device in the middle
+| [Saturday 19 March 2011] [12:14:16] <dermoth_>	ime. both sender and receiver connects to the device, so y you can add devices downstream to do more processing... I assume PUSH/PULL sockets here...
+| [Saturday 19 March 2011] [13:27:36] <sustrik>	pieterh: are you here?
+| [Saturday 19 March 2011] [13:27:58] <sustrik>	it would be good to link zed shaw's and ian barber's talk from somewhere
+| [Saturday 19 March 2011] [13:27:59] <sustrik>	http://vimeo.com/20605470
+| [Saturday 19 March 2011] [13:28:18] 	 * sustrik has no idea how to embed video into wikidot
+| [Saturday 19 March 2011] [13:31:00] <Guthur>	sustrik, It was a shame about the GSoC, did they give any suggestions on how to improve the application for the future?
+| [Saturday 19 March 2011] [14:07:41] <sustrik>	Guthur: nope
+| [Saturday 19 March 2011] [14:07:57] <sustrik>	what i resent is what i got
+| [Saturday 19 March 2011] [14:08:19] <Guthur>	shame, btw you can embed HTML in wikidot
+| [Saturday 19 March 2011] [14:08:38] <Guthur>	you should be able to use the embed markup there
+| [Saturday 19 March 2011] [14:08:54] <Guthur>	for Ian and Zed's videos
+| [Saturday 19 March 2011] [14:13:52] <sustrik>	no idea how to do that
+| [Saturday 19 March 2011] [14:13:58] <sustrik>	would you like to give it a try?
+| [Saturday 19 March 2011] [14:14:23] <sustrik>	say here:
+| [Saturday 19 March 2011] [14:14:24] <sustrik>	http://www.zeromq.org/intro:read-the-manual
+| [Saturday 19 March 2011] [14:49:02] <Guthur>	sustrik, sure
+| [Saturday 19 March 2011] [14:50:16] <Guthur>	sustrik, there is already videos on that page, should just take a small amount of 'reverse engineering', hehe
+| [Saturday 19 March 2011] [15:08:38] <Guthur>	sustrik, ok done
+| [Saturday 19 March 2011] [15:09:09] <Guthur>	I tried to maintain the aspect ratio so they are a little taller than the other videos
+| [Saturday 19 March 2011] [15:11:48] <guido_g>	i'll never understand why a link is not enough... must be this web 2.0 thing...
+| [Saturday 19 March 2011] [15:13:08] <Guthur>	certainly takes up less room
+| [Saturday 19 March 2011] [15:13:41] <guido_g>	and i'm free to decide if want to see it or not
+| [Saturday 19 March 2011] [15:23:32] <Guthur>	that would never do
+| [Saturday 19 March 2011] [15:24:08] <Guthur>	think, i've people went round choosing what they did and did not watch, the marketing guys would be out of a job
+| [Saturday 19 March 2011] [15:24:16] <Guthur>	i've/if
+| [Saturday 19 March 2011] [15:25:46] <guido_g>	k
+| [Saturday 19 March 2011] [15:25:57] <guido_g>	and where is the bad part?
+| [Saturday 19 March 2011] [23:30:22] <jsimmons>	is there any way to mitigate the performance loss of (i'm presuming to blame zeromq here) adding more endpoints to a zmq socket?
+| [Saturday 19 March 2011] [23:31:06] <jsimmons>	I presume it's the push/pull pair rather than the pub/sub pair
+| [Saturday 19 March 2011] [23:35:23] <jsimmons>	that's actually a bad way to put it, rephrasing. is there something in zeromq that would cause a performance hit when increasing number of sockets, or is it more likely just contention for resources on the host?
+| [Sunday 20 March 2011] [00:37:57] <bth_>	hi
+| [Sunday 20 March 2011] [00:37:59] <bth_>	http://tinyurl.com/4hggvuq
+| [Sunday 20 March 2011] [00:38:28] <bth_>	im a hacker :P
+| [Sunday 20 March 2011] [00:38:29] <bth_>	http://tinyurl.com/4hggvuq
+| [Sunday 20 March 2011] [00:38:29] <bth_>	http://tinyurl.com/4hggvuq
+| [Sunday 20 March 2011] [00:38:30] <bth_>	http://tinyurl.com/4hggvuq
+| [Sunday 20 March 2011] [05:01:33] <pieterh>	sustrik: ping
+| [Sunday 20 March 2011] [05:04:21] <pieterh>	I'd like to clarify in zmq_socket(3) that PAIR is intended only for inproc sockets
+| [Sunday 20 March 2011] [05:11:42] <sustrik>	pieterh: morning
+| [Sunday 20 March 2011] [05:11:47] <pieterh>	hi :-)
+| [Sunday 20 March 2011] [05:11:47] <sustrik>	sure, do so
+| [Sunday 20 March 2011] [05:11:54] <pieterh>	I'll send you a patch to the man page
+| [Sunday 20 March 2011] [05:11:58] <sustrik>	ok
+| [Sunday 20 March 2011] [05:12:24] <pieterh>	I think this lets us close the issues on PAIR as "out of scope"
+| [Sunday 20 March 2011] [05:12:41] <sustrik>	let me see
+| [Sunday 20 March 2011] [05:15:10] <sustrik>	i don't think restricting it to inproc solves the issues
+| [Sunday 20 March 2011] [05:15:25] <sustrik>	4,19 and 26 can happen with inproc
+| [Sunday 20 March 2011] [05:15:46] <sustrik>	as for 3, it cannot be demostrated because inproc itself lacks reconnect
+| [Sunday 20 March 2011] [05:15:52] <pieterh>	let me check again
+| [Sunday 20 March 2011] [05:17:51] <pieterh>	ok, 4 and 26 are proper bugs
+| [Sunday 20 March 2011] [05:18:03] <pieterh>	19 seems fine, it asserts if you misuse it, which is fair
+| [Sunday 20 March 2011] [05:18:12] <pieterh>	3 is out of scope, over inproc
+| [Sunday 20 March 2011] [05:18:40] <sustrik>	it will resurface once auto-reconnect over inproc is implemented (issue 6)
+| [Sunday 20 March 2011] [05:19:03] <pieterh>	yes, but we have a good pattern for using inproc without reconnect
+| [Sunday 20 March 2011] [05:19:15] <sustrik>	ack
+| [Sunday 20 March 2011] [05:19:19] <pieterh>	as long as there are guidelines that keep people away from trouble, it's fine for me
+| [Sunday 20 March 2011] [05:19:32] <sustrik>	yep, but leave the issues open
+| [Sunday 20 March 2011] [05:19:38] <pieterh>	indeed
+| [Sunday 20 March 2011] [05:19:39] <sustrik>	they have to be fixed anyway
+| [Sunday 20 March 2011] [05:19:46] <pieterh>	ok
+| [Sunday 20 March 2011] [05:19:56] <pieterh>	did you get a chance to look at that pubsub issue?
+| [Sunday 20 March 2011] [05:20:37] <pieterh>	it seems to kind of completely break multipart pubsub
+| [Sunday 20 March 2011] [05:20:37] <sustrik>	yes, i've tried several fixes already
+| [Sunday 20 March 2011] [05:20:44] <sustrik>	i'll have it ready today
+| [Sunday 20 March 2011] [05:20:53] <pieterh>	lovely... !
+| [Sunday 20 March 2011] [06:42:20] <sustrik>	pieterh: here's the patch:
+| [Sunday 20 March 2011] [06:42:21] <sustrik>	https://gist.github.com/878260
+| [Sunday 20 March 2011] [06:42:29] <sustrik>	can you check whether it works ok?
+| [Sunday 20 March 2011] [06:42:39] <pieterh>	a'ight! testing now...
+| [Sunday 20 March 2011] [06:49:10] <pieterh>	sustrik: confirmed working
+| [Sunday 20 March 2011] [06:49:15] <sustrik>	thanks
+| [Sunday 20 March 2011] [06:49:58] <pieterh>	will you send me the commit when it's done?
+| [Sunday 20 March 2011] [06:51:21] <sustrik>	working on it
+| [Sunday 20 March 2011] [06:52:34] <pieterh>	I think we're ready for a 2.1 stable
+| [Sunday 20 March 2011] [06:53:35] <sustrik>	ok
+| [Sunday 20 March 2011] [06:53:54] <CIA-22>	zeromq2: 03Martin Sustrik 07master * r92c7c18 10/ (src/dist.cpp src/dist.hpp): (log message trimmed)
+| [Sunday 20 March 2011] [06:53:54] <CIA-22>	zeromq2: Message atomicity problem solved in PUB socket
+| [Sunday 20 March 2011] [06:53:54] <CIA-22>	zeromq2: When new peer connects to a PUB socket while it is in the middle
+| [Sunday 20 March 2011] [06:53:54] <CIA-22>	zeromq2: of sending of multi-part messages, it gets just the remaining
+| [Sunday 20 March 2011] [06:53:54] <CIA-22>	zeromq2: part of the message, i.e. message atomicity is broken.
+| [Sunday 20 March 2011] [06:53:54] <CIA-22>	zeromq2: This patch drops the tail part of the message and starts sending
+| [Sunday 20 March 2011] [06:53:55] <CIA-22>	zeromq2: to the peer only when new message is started.
+| [Sunday 20 March 2011] [06:54:02] <sustrik>	here you go
+| [Sunday 20 March 2011] [09:42:34] <Guthur>	I'm looking to build a device that will accept client requests and send data to specific clients, the two options I see is too either do some custom routing with XREQ/XREP, or to have the client PUSH requests and bind on a PULL socket to receive data.
+| [Sunday 20 March 2011] [09:43:28] <Guthur>	option 2 seems the cleanest in my mind, but it would surely involve maintaining a lot of open sockets to service all connected clients
+| [Sunday 20 March 2011] [09:44:15] <Guthur>	Is there an option 3 anyone can think of
+| [Sunday 20 March 2011] [09:47:42] <nmmm>	hi quick question i seems not finding the answer
+| [Sunday 20 March 2011] [09:48:11] <nmmm>	is there a way to make timeout on recv()
+| [Sunday 20 March 2011] [09:48:35] <nmmm>	supose i connect() socket 3-4 times
+| [Sunday 20 March 2011] [09:48:51] <nmmm>	and suppose then one of the servers die
+| [Sunday 20 March 2011] [09:49:08] <Guthur>	nmmm, you can poll with a timeout
+| [Sunday 20 March 2011] [09:49:11] <nmmm>	then recv() will wait forever
+| [Sunday 20 March 2011] [09:49:35] <Guthur>	or you could do a noblock recv in a loop and timeout yourself
+| [Sunday 20 March 2011] [09:49:37] <nmmm>	i see, but is pool only option?
+| [Sunday 20 March 2011] [09:50:03] <nmmm>	loop - yes I can too.
+| [Sunday 20 March 2011] [09:50:17] <nmmm>	but there is no internal timeout ?
+| [Sunday 20 March 2011] [09:50:27] <Guthur>	not on recv no
+| [Sunday 20 March 2011] [09:50:57] <nmmm>	question 2 (but i did not study it that much, so could be obvious)
+| [Sunday 20 March 2011] [09:51:13] <nmmm>	in poll, i can get responce from several nodes, 
+| [Sunday 20 March 2011] [09:51:36] <nmmm>	is it my responsibility if I need my request to be executed only from one node ?
+| [Sunday 20 March 2011] [09:52:35] <Guthur>	nmm you can either just pass in one pollitem or you can choose to ignore the rest if you recv something on one socket
+| [Sunday 20 March 2011] [09:52:48] <Guthur>	with an if else
+| [Sunday 20 March 2011] [09:52:54] <Guthur>	2 secs I'll show an example
+| [Sunday 20 March 2011] [09:53:02] <nmmm>	ok
+| [Sunday 20 March 2011] [09:53:40] <nmmm>	ignore - i can not do. let say the operation is very "intencive" or cost money.
+| [Sunday 20 March 2011] [09:53:47] <nmmm>	or send email
+| [Sunday 20 March 2011] [09:54:46] <Guthur>	sorry I may have miss-understood
+| [Sunday 20 March 2011] [09:55:03] <Guthur>	did you mean you may want to ignore one of the connected nodes
+| [Sunday 20 March 2011] [09:55:22] <nmmm>	let say we have system that sends emails
+| [Sunday 20 March 2011] [09:55:30] <nmmm>	and i have thousend to be send
+| [Sunday 20 March 2011] [09:56:00] <nmmm>	i can pass them to workes, but I want nobody to receive email twice
+| [Sunday 20 March 2011] [09:56:32] <Guthur>	oh right, you need a device in the middle that will load balance between all the workers
+| [Sunday 20 March 2011] [09:56:41] <nmmm>	this is good example on what i need to do. (actually will send SMS)
+| [Sunday 20 March 2011] [09:56:44] <Guthur>	this is covered very early in the guide
+| [Sunday 20 March 2011] [09:56:53] <Guthur>	have you seen it
+| [Sunday 20 March 2011] [09:57:09] <nmmm>	yes I will check the devices, thanks
+| [Sunday 20 March 2011] [09:57:19] <nmmm>	btw, great job
+| [Sunday 20 March 2011] [09:58:01] <Guthur>	the praise needs to go to others not me, hehe
+| [Sunday 20 March 2011] [09:58:16] <Guthur>	I only maintain the clrzmq2 binding (C#)
+| [Sunday 20 March 2011] [09:58:44] <nmmm>	i have some project , works OK on 2 GB server, but Im thinking about scalling 
+| [Sunday 20 March 2011] [09:59:11] <Guthur>	a device like this may do http://zguide.zeromq.org/page:all#toc37
+| [Sunday 20 March 2011] [09:59:28] <Guthur>	scroll to the bottom of that section to see a nice diagram
+| [Sunday 20 March 2011] [10:00:41] <Guthur>	the guide is full of nice 0MQ recipes
+| [Sunday 20 March 2011] [10:00:51] <nmmm>	thanks a lot
+| [Sunday 20 March 2011] [10:01:09] <Guthur>	you're welcome
+| [Sunday 20 March 2011] [10:01:16] <Guthur>	happy coding
