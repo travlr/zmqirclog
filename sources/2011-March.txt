@@ -980,3 +980,258 @@
 | [Sunday 20 March 2011] [10:00:51] <nmmm>	thanks a lot
 | [Sunday 20 March 2011] [10:01:09] <Guthur>	you're welcome
 | [Sunday 20 March 2011] [10:01:16] <Guthur>	happy coding
+| [Sunday 20 March 2011] [15:54:11] <CIA-22>	zeromq2: 03Martin Sustrik 07master * r1619b3d 10/ (src/lb.cpp src/lb.hpp): 
+| [Sunday 20 March 2011] [15:54:11] <CIA-22>	zeromq2: Message atomicity bug in load-balancer fixed
+| [Sunday 20 March 2011] [15:54:11] <CIA-22>	zeromq2: If the peer getting the message have disconnected in the middle
+| [Sunday 20 March 2011] [15:54:11] <CIA-22>	zeromq2: of multiplart message, the remaining part of the message went
+| [Sunday 20 March 2011] [15:54:11] <CIA-22>	zeromq2: to a different peer. This patch fixes the issue.
+| [Sunday 20 March 2011] [15:54:11] <CIA-22>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/eAhwVE
+| [Monday 21 March 2011] [05:54:40] <pieterh>	sustrik: ping
+| [Monday 21 March 2011] [06:01:31] <pieterh>	ok, new packages of 0MQ 2.0 and 2.1 are fresh and hot!
+| [Monday 21 March 2011] [06:05:29] <Guthur>	pieterh: should all socket types be able to connect and bind in any order?
+| [Monday 21 March 2011] [06:05:46] <pieterh>	Guthur: in an ideal world, yes, but there are gaps
+| [Monday 21 March 2011] [06:05:52] <pieterh>	e.g. PAIR sockets can't
+| [Monday 21 March 2011] [06:06:01] <Guthur>	what about PUSH/PULL
+| [Monday 21 March 2011] [06:06:08] <pieterh>	anything over inproc can't either
+| [Monday 21 March 2011] [06:06:14] <Guthur>	ah it was the inproc
+| [Monday 21 March 2011] [06:06:19] <pieterh>	yep
+| [Monday 21 March 2011] [06:06:35] <pieterh>	with inproc the pattern is 'bind, start child thread, which connects'
+| [Monday 21 March 2011] [06:06:47] <Guthur>	I suppose inproc ain't so bad, relatively easy to control the order
+| [Monday 21 March 2011] [06:07:03] <pieterh>	since it's structurally different from other transports, I use it only when I'm doing literal multithreading
+| [Monday 21 March 2011] [06:07:17] <pieterh>	as compared to multitasking with threads... which I use tcp or ipc for
+| [Monday 21 March 2011] [06:07:44] <pieterh>	btw I fixed the guide examples to fit 73 columns, thanks for that hint
+| [Monday 21 March 2011] [06:07:58] <Guthur>	you're welcome
+| [Monday 21 March 2011] [06:08:30] <Guthur>	it wasn't too bad, but you had set the bar high so these wee things are noticeable, hehe
+| [Monday 21 March 2011] [06:09:22] <Guthur>	Ian Barber's PHP conf video is really good
+| [Monday 21 March 2011] [06:10:02] <pieterh>	the bar is never too high :-)
+| [Monday 21 March 2011] [06:10:23] <pieterh>	Ian Barber is a phenomenon, it was great to meet him in London last week
+| [Monday 21 March 2011] [06:11:01] <pieterh>	but then, this community seems to attract bru
+| [Monday 21 March 2011] [06:11:06] <pieterh>	*brilliant people
+| [Monday 21 March 2011] [06:11:29] <Guthur>	The mention of stable/unstable components was very enlighting
+| [Monday 21 March 2011] [06:11:54] <Guthur>	static/dynamic is the other way of describing it
+| [Monday 21 March 2011] [06:13:19] <Guthur>	His highlevel description of a imaging process system was a inspirational as well, fanning out and in where appropriate
+| [Monday 21 March 2011] [06:13:39] <Guthur>	I'm looking a similar architecture for a 0MQ FIX engine
+| [Monday 21 March 2011] [06:13:42] <Guthur>	a/at
+| [Monday 21 March 2011] [06:14:19] <pieterh>	yup, understanding the stable/unstable aspects of an architecture is key to making it right
+| [Monday 21 March 2011] [06:21:56] <Guthur>	I find myself now looking at my arch and asking the question is this a stable/unstable component
+| [Monday 21 March 2011] [06:59:44] <sustrik>	pieterh: pong
+| [Monday 21 March 2011] [07:00:22] <pieterh>	sustrik: I was just wondering if it was OK to mention the plans for 3.0 to zeromq-dev
+| [Monday 21 March 2011] [07:00:36] <sustrik>	yes
+| [Monday 21 March 2011] [07:00:40] <sustrik>	i'm going to do that now
+| [Monday 21 March 2011] [07:00:50] 	 * sustrik was waiting for stable 2
+| [Monday 21 March 2011] [07:00:57] <pieterh>	goodo
+| [Monday 21 March 2011] [07:01:19] <pieterh>	I think it's important to say that we will maintain 2.1 for a long time
+| [Monday 21 March 2011] [07:01:44] <pieterh>	change is fun but also scary to anyone wanting to use 0MQ in production
+| [Monday 21 March 2011] [07:02:02] <sustrik>	yep, several years presumably
+| [Monday 21 March 2011] [07:02:17] <pieterh>	well, I was thinking of 6-12 months, more like :-)
+| [Monday 21 March 2011] [07:02:34] <sustrik>	although the impact of new API won't be that bad as it will affect only C apps
+| [Monday 21 March 2011] [07:02:39] <pieterh>	I assume we will have a 3.0 stable fairly rapidly
+| [Monday 21 March 2011] [07:02:45] <pieterh>	indeed
+| [Monday 21 March 2011] [07:03:09] <Guthur>	sustrik:why will the API change only effect C apps?
+| [Monday 21 March 2011] [07:03:09] <pieterh>	if we do the API changes separately from semantic changes like xpub/xsub, it's less painful
+| [Monday 21 March 2011] [07:03:20] <pieterh>	Guthur: also affect all bindings, of course
+| [Monday 21 March 2011] [07:03:30] <sustrik>	Guthur: have a look at 3.0 roadmap
+| [Monday 21 March 2011] [07:03:42] <sustrik>	you'll see that most changes don't affect the bindings API
+| [Monday 21 March 2011] [07:03:56] <sustrik>	although it obviously affect binding implemetations
+| [Monday 21 March 2011] [07:04:05] <Guthur>	oh the roadmap page has been updated
+| [Monday 21 March 2011] [07:04:14] <Guthur>	I had not noticed that
+| [Monday 21 March 2011] [07:04:25] <sustrik>	yes, i've listed all the backward imcompatible changes there
+| [Monday 21 March 2011] [07:04:26] <pieterh>	sustrik: I'm going to already switch to the new ROUTER/DEALER terminology in the guide
+| [Monday 21 March 2011] [07:04:28] <sustrik>	feel free to comment
+| [Monday 21 March 2011] [07:04:37] <pieterh>	this pushes that change up
+| [Monday 21 March 2011] [07:04:56] <sustrik>	ok
+| [Monday 21 March 2011] [07:05:02] <sustrik>	pieterh: yes, 2 steps
+| [Monday 21 March 2011] [07:05:20] <sustrik>	1, change the API --> do as quickly as possible
+| [Monday 21 March 2011] [07:05:22] <pieterh>	sustrik: I'd like to get a stable 3.0 with new API and no real functionality changes, so we can kill 2.0
+| [Monday 21 March 2011] [07:05:23] <pieterh>	yes
+| [Monday 21 March 2011] [07:05:26] <sustrik>	2. add new functionality
+| [Monday 21 March 2011] [07:05:33] <pieterh>	yes, +1
+| [Monday 21 March 2011] [07:06:53] <pieterh>	I think the new release process is working nicely, it's certainly easy
+| [Monday 21 March 2011] [07:07:30] <sustrik>	well, nobody have really tested the recent changes
+| [Monday 21 March 2011] [07:07:38] <sustrik>	let's hope it works as expected
+| [Monday 21 March 2011] [07:08:06] <Guthur>	what needs to be done to zmq_send/recv to make them coherent with POSIX?
+| [Monday 21 March 2011] [07:08:25] <sustrik>	zmq_send (void *data, size_t size, int flags);
+| [Monday 21 March 2011] [07:08:32] <sustrik>	same for zmq_recv
+| [Monday 21 March 2011] [07:08:44] <sustrik>	no zmq_msg_t
+| [Monday 21 March 2011] [07:08:46] <pieterh>	sustrik: I've been testing pretty heavily, via Guide examples
+| [Monday 21 March 2011] [07:08:53] <sustrik>	ah, ok then
+| [Monday 21 March 2011] [07:09:02] <Guthur>	and then they would wrap it as a zmq_msg internally?
+| [Monday 21 March 2011] [07:09:07] <sustrik>	yes
+| [Monday 21 March 2011] [07:09:22] <Guthur>	umm, that's pretty nice
+| [Monday 21 March 2011] [07:09:24] <sustrik>	the original signature will still be available as zmq_sendmsg and zmq_recvmsg
+| [Monday 21 March 2011] [07:09:24] <pieterh>	sustrik: one thing I noticed is missing is zero-copy on recv
+| [Monday 21 March 2011] [07:09:34] <sustrik>	yes?
+| [Monday 21 March 2011] [07:09:44] <Guthur>	that could actually simplify bindings
+| [Monday 21 March 2011] [07:09:46] <pieterh>	I assume this is what we can do with 3.0
+| [Monday 21 March 2011] [07:10:08] <pieterh>	size = zmq_recv (socket, void **data)
+| [Monday 21 March 2011] [07:10:27] <Guthur>	*authoring bindings
+| [Monday 21 March 2011] [07:10:27] <pieterh>	where I get a malloc'd blob I can then pass around
+| [Monday 21 March 2011] [07:10:48] <sustrik>	can't be done
+| [Monday 21 March 2011] [07:11:03] <sustrik>	because you don't know what allocation mechanism was used to allocate the buffer
+| [Monday 21 March 2011] [07:11:14] <sustrik>	thus, you don't know whether to free it or what
+| [Monday 21 March 2011] [07:11:21] <pieterh>	ah, I mean recv() would always allocate on the heap
+| [Monday 21 March 2011] [07:11:31] <sustrik>	copying the data?
+| [Monday 21 March 2011] [07:11:50] <pieterh>	no copying, allocate a block, read into that block, and provide the caller with the block address
+| [Monday 21 March 2011] [07:11:58] <pieterh>	the caller then uses the block with no copying
+| [Monday 21 March 2011] [07:12:05] <pieterh>	today, you have to always copy the data received
+| [Monday 21 March 2011] [07:12:06] <sustrik>	the socket is not in control of the allocation process
+| [Monday 21 March 2011] [07:12:18] <sustrik>	it can be say another socket allocating buffer
+| [Monday 21 March 2011] [07:12:25] <sustrik>	and sending it via inproc
+| [Monday 21 March 2011] [07:12:34] <pieterh>	inproc is special...
+| [Monday 21 March 2011] [07:12:41] <sustrik>	it is
+| [Monday 21 March 2011] [07:12:49] <pieterh>	forgetting inproc for a second...
+| [Monday 21 March 2011] [07:13:07] <sustrik>	you still have the VSM problem
+| [Monday 21 March 2011] [07:13:16] <sustrik>	very small messages are allocated on the stack
+| [Monday 21 March 2011] [07:13:24] <sustrik>	to speed the processing
+| [Monday 21 March 2011] [07:13:25] <pieterh>	in C?
+| [Monday 21 March 2011] [07:13:32] <sustrik>	inside libzmq
+| [Monday 21 March 2011] [07:13:42] <pieterh>	how do you return a zmq_msg_t referring to a VSM on the stack?
+| [Monday 21 March 2011] [07:13:53] <sustrik>	it's embedded
+| [Monday 21 March 2011] [07:14:04] <sustrik>	see the definition in zmq.h
+| [Monday 21 March 2011] [07:14:28] <pieterh>	ok, sure
+| [Monday 21 March 2011] [07:14:30] <sustrik>	in short, there are different alloc/dealloc mechanisms
+| [Monday 21 March 2011] [07:14:43] <sustrik>	zmq_msg_t cleanly wraps the buffer and the deallocation function
+| [Monday 21 March 2011] [07:14:44] <pieterh>	ok, at the risk of being glib, forget VSMs for a second too, they're special
+| [Monday 21 March 2011] [07:14:51] <sustrik>	ok
+| [Monday 21 March 2011] [07:15:00] <pieterh>	the bulk case is large messages, where copying is a cost
+| [Monday 21 March 2011] [07:15:01] <Guthur>	so inproc is special and VSM is special
+| [Monday 21 March 2011] [07:15:09] <pieterh>	yes, this is accurate, they're both optimizations
+| [Monday 21 March 2011] [07:15:20] <pieterh>	which means they can depend on a more complex API, that's fine
+| [Monday 21 March 2011] [07:16:16] <pieterh>	sustrik: the semantic which I used in the zmsg class, and which works really neatly
+| [Monday 21 March 2011] [07:16:21] <sustrik>	if you don't care about allocation and copying cost in inproc and small message scenarios
+| [Monday 21 March 2011] [07:16:24] <Guthur>	at the moment though this specialness is too apparent the user, the inproc issue earlier withstanding
+| [Monday 21 March 2011] [07:16:33] <pieterh>	is that recv() returns a freshly allocated block, and send() always frees a block when it's done
+| [Monday 21 March 2011] [07:16:38] <Guthur>	iis/isn't
+| [Monday 21 March 2011] [07:16:55] <sustrik>	you can wrap zmq_sendmsg to do the transformation of zmq_msg_t into alloc'd buffer
+| [Monday 21 March 2011] [07:17:36] <pieterh>	sustrik: I do care, but we can (will) make multiple levels of API
+| [Monday 21 March 2011] [07:17:55] <sustrik>	and what's the point of the proposal?
+| [Monday 21 March 2011] [07:18:00] 	 * sustrik doesn't get it
+| [Monday 21 March 2011] [07:18:06] <pieterh>	hmm, well,.. :-)
+| [Monday 21 March 2011] [07:18:12] <pieterh>	zero-copy on read
+| [Monday 21 March 2011] [07:18:19] <pieterh>	in the simplest possible fashion
+| [Monday 21 March 2011] [07:18:37] <pieterh>	ok, forget it, POSIX socket API doesn't offer this
+| [Monday 21 March 2011] [07:18:43] <sustrik>	while at the same time sacrificing zero copy in some scenarios
+| [Monday 21 March 2011] [07:18:50] <sustrik>	zero-copy is a beast
+| [Monday 21 March 2011] [07:18:54] <pieterh>	as long as you can recv() directly into a user-allocated buffer, you get zero copy
+| [Monday 21 March 2011] [07:18:55] <sustrik>	no support in POSIX
+| [Monday 21 March 2011] [07:19:23] <pieterh>	I just want to be able to store message contents without copying them
+| [Monday 21 March 2011] [07:19:28] <sustrik>	yes, but that makes the messaging lock-step
+| [Monday 21 March 2011] [07:19:37] <pieterh>	indeed
+| [Monday 21 March 2011] [07:19:44] <pieterh>	only the recv knows how much memory to allocate
+| [Monday 21 March 2011] [07:19:54] <sustrik>	exactly
+| [Monday 21 March 2011] [07:20:05] <sustrik>	so think of zmq_msg_t as a buffer
+| [Monday 21 March 2011] [07:20:06] <pieterh>	or else, as has been discussed, a user-pluggable allocator
+| [Monday 21 March 2011] [07:20:10] <pieterh>	which is horrid IMO
+| [Monday 21 March 2011] [07:20:38] <sustrik>	yuck
+| [Monday 21 March 2011] [07:20:53] <sustrik>	you can use tcmalloc and similar though
+| [Monday 21 March 2011] [07:21:00] <sustrik>	as they expose alloc/free API
+| [Monday 21 March 2011] [07:21:07] <pieterh>	they look like malloc/free
+| [Monday 21 March 2011] [07:21:16] <sustrik>	you just link the library
+| [Monday 21 March 2011] [07:21:19] <pieterh>	yup
+| [Monday 21 March 2011] [07:21:22] <sustrik>	and all allocations are redirected
+| [Monday 21 March 2011] [07:21:33] <pieterh>	anyhow, think about it, if there's a way to return a fresh buffer on recv
+| [Monday 21 March 2011] [07:21:39] <pieterh>	it would be elegant IMO
+| [Monday 21 March 2011] [07:21:45] <sustrik>	well, zmq_msg_t is a buffer
+| [Monday 21 March 2011] [07:21:51] <sustrik>	it looks something like this:
+| [Monday 21 March 2011] [07:21:52] <pieterh>	yeah, but it's not a buffer
+| [Monday 21 March 2011] [07:22:00] <sustrik>	struct zmq_msg_t
+| [Monday 21 March 2011] [07:22:01] <sustrik>	{
+| [Monday 21 March 2011] [07:22:03] <sustrik>	   void *data
+| [Monday 21 March 2011] [07:22:05] <pieterh>	it's a structure that contains a buffer
+| [Monday 21 March 2011] [07:22:06] <sustrik>	   size_t size;
+| [Monday 21 March 2011] [07:22:15] <sustrik>	   free_fn_t free_fn;
+| [Monday 21 March 2011] [07:22:16] <sustrik>	}
+| [Monday 21 March 2011] [07:22:16] <sustrik>	;
+| [Monday 21 March 2011] [07:22:18] <pieterh>	well... 
+| [Monday 21 March 2011] [07:22:24] <pieterh>	ok, point taken, it does work
+| [Monday 21 March 2011] [07:22:28] <pieterh>	it's a blob descriptor
+| [Monday 21 March 2011] [07:22:33] <sustrik>	yes
+| [Monday 21 March 2011] [07:23:05] <pieterh>	(a) it should be called 'blob_t' and (b) recv() should return a freshly created blob
+| [Monday 21 March 2011] [07:23:18] <pieterh>	blob_t *blob = zmq_recv (socket)
+| [Monday 21 March 2011] [07:23:28] <sustrik>	recv has to return int
+| [Monday 21 March 2011] [07:23:34] <sustrik>	to be POSIX compliant
+| [Monday 21 March 2011] [07:23:40] <sustrik>	int + errno
+| [Monday 21 March 2011] [07:23:45] <pieterh>	int rc = zmq_recv (socket, &blob)
+| [Monday 21 March 2011] [07:23:49] <sustrik>	yes
+| [Monday 21 March 2011] [07:23:59] <sustrik>	that's how it works now
+| [Monday 21 March 2011] [07:23:59] <pieterh>	point being, recv creates the buffer
+| [Monday 21 March 2011] [07:24:02] <sustrik>	except for the name
+| [Monday 21 March 2011] [07:24:09] <pieterh>	no, now you need this extra init
+| [Monday 21 March 2011] [07:24:17] <sustrik>	ah
+| [Monday 21 March 2011] [07:24:17] <pieterh>	rather annoying
+| [Monday 21 March 2011] [07:24:28] <sustrik>	that's to avoid additional malloc
+| [Monday 21 March 2011] [07:24:38] <pieterh>	optimization
+| [Monday 21 March 2011] [07:24:39] <sustrik>	so you create blob_t on the stack
+| [Monday 21 March 2011] [07:24:51] <sustrik>	which is really fast
+| [Monday 21 March 2011] [07:24:55] <pieterh>	I know you want that but it shouldn't be in the simple API
+| [Monday 21 March 2011] [07:24:58] <sustrik>	instead of putting it on the heap
+| [Monday 21 March 2011] [07:25:21] <pieterh>	simple API should be just fast enough, and as simple as it can be, and POSIX like
+| [Monday 21 March 2011] [07:25:23] <pieterh>	IMO
+| [Monday 21 March 2011] [07:25:24] <sustrik>	in 3.0 the simple API will be POSIX like
+| [Monday 21 March 2011] [07:25:35] <sustrik>	zmq_send (void*, size_t)
+| [Monday 21 March 2011] [07:25:45] <sustrik>	zero-copy is never neat
+| [Monday 21 March 2011] [07:25:53] <sustrik>	it's optimisation in itself
+| [Monday 21 March 2011] [07:26:00] <pieterh>	what's the zmq_recv syntax for 3.0...?
+| [Monday 21 March 2011] [07:26:03] <sustrik>	and one that crosses all levels of stack
+| [Monday 21 March 2011] [07:26:08] <sustrik>	and makes mess of layering
+| [Monday 21 March 2011] [07:26:27] <pieterh>	int size = zmq_recv (socket, void *)...?
+| [Monday 21 March 2011] [07:26:28] <sustrik>	zmq_recv (void *buf, size_t *size, int flags);
+| [Monday 21 March 2011] [07:26:39] <sustrik>	forgor socket
+| [Monday 21 March 2011] [07:26:41] <sustrik>	forgot
+| [Monday 21 March 2011] [07:26:52] <sustrik>	same as POSIX recv()
+| [Monday 21 March 2011] [07:27:32] <pieterh>	ok, should be 'ssize_t zmq_recv(void *socket, void *buf, size_t len, int flags);
+| [Monday 21 March 2011] [07:27:41] <sustrik>	size_t *len
+| [Monday 21 March 2011] [07:27:45] <pieterh>	nope
+| [Monday 21 March 2011] [07:27:51] <pieterh>	size_t len, maximum size of buffer
+| [Monday 21 March 2011] [07:27:58] <sustrik>	ah
+| [Monday 21 March 2011] [07:27:59] <pieterh>	return code is actual size read
+| [Monday 21 March 2011] [07:28:00] <sustrik>	you are right
+| [Monday 21 March 2011] [07:28:11] <pieterh>	it's hugely annoying because you have to allocate randomly huge buffers
+| [Monday 21 March 2011] [07:28:25] <pieterh>	and there's no way to recover if the buffer was too small
+| [Monday 21 March 2011] [07:28:37] <pieterh>	conclusion: you *cannot* use the POSIX socket API 100% for recv
+| [Monday 21 March 2011] [07:28:38] <sustrik>	EMSGSIZE
+| [Monday 21 March 2011] [07:28:43] <pieterh>	no way to recover
+| [Monday 21 March 2011] [07:28:48] <sustrik>	then you can increase the buffer
+| [Monday 21 March 2011] [07:28:50] <sustrik>	and recv() anew
+| [Monday 21 March 2011] [07:28:53] <pieterh>	'please go back and re-read'?
+| [Monday 21 March 2011] [07:28:53] <sustrik>	however
+| [Monday 21 March 2011] [07:28:57] <pieterh>	ugh
+| [Monday 21 March 2011] [07:29:05] <pieterh>	ugh and ugh
+| [Monday 21 March 2011] [07:29:15] <sustrik>	in most scenarios you want to put the limit on message size anyway
+| [Monday 21 March 2011] [07:29:17] <pieterh>	it means putting message lengths into separate frames
+| [Monday 21 March 2011] [07:29:27] <sustrik>	setsockopt (MAXMSGSIZE, 1000);
+| [Monday 21 March 2011] [07:29:35] <pieterh>	that's orthogonal to this
+| [Monday 21 March 2011] [07:29:39] <sustrik>	char buff [1000];
+| [Monday 21 March 2011] [07:29:46] <sustrik>	zmq_recv (buff, 1000);
+| [Monday 21 March 2011] [07:29:50] <pieterh>	ugh and ugh again
+| [Monday 21 March 2011] [07:30:03] <pieterh>	I have frames of 8 bytes and frames of 2MB
+| [Monday 21 March 2011] [07:30:42] <pieterh>	seriously unsatisfactory to not be able to properly allocate the right buffer size for each frame
+| [Monday 21 March 2011] [07:30:50] <sustrik>	then you need to use more complex API
+| [Monday 21 March 2011] [07:31:16] <pieterh>	this makes the simple API almost useless IMO
+| [Monday 21 March 2011] [07:31:21] <pieterh>	nice for send, useless for recv
+| [Monday 21 March 2011] [07:32:25] <sustrik>	what's the alternative then?
+| [Monday 21 March 2011] [07:32:40] <sustrik>	tha'ts how UDP works, irrc
+| [Monday 21 March 2011] [07:32:42] <pieterh>	I don't know, but reading into a pre-allocated buffer is inacceptable IMO
+| [Monday 21 March 2011] [07:32:47] <pieterh>	UDP has maximum frame sizes
+| [Monday 21 March 2011] [07:32:51] <pieterh>	TCP is a stream
+| [Monday 21 March 2011] [07:32:54] <sustrik>	ZMQ_MAXMSGSIZE
+| [Monday 21 March 2011] [07:33:04] <sustrik>	same as MTU
+| [Monday 21 March 2011] [07:33:07] <pieterh>	0MQ is message-oriented, that means different read/write semantics
+| [Monday 21 March 2011] [07:33:09] <sustrik>	but on messaging level
+| [Monday 21 March 2011] [07:33:15] <pieterh>	it's not the same thing
+| [Monday 21 March 2011] [07:33:24] <pieterh>	you have a 64-bit message size
+| [Monday 21 March 2011] [07:33:48] <sustrik>	well, i think there are 2 distinct use cases here
+| [Monday 21 March 2011] [07:33:54] <sustrik>	1. something like market data
+| [Monday 21 March 2011] [07:34:02] <pieterh>	I think it's necessary to define semantics that fit messaging
+| [Monday 21 March 2011] [07:34:03] <sustrik>	you want to limit max size of message
+| [Monday 21 March 2011] [07:34:10] <pieterh>	not try to make 0MQ look like TCP, it's not
+| [Monday 21 March 2011] [07:34:22] <sustrik>	to prevent someone killing the transmission by pushing 4GB blob
+| [Monday 21 March 2011] [07:34:30] <pieterh>	this is orthogonal
+| [Monday 21 March 2011] [07:34:33] <pieterh>	it's not the issue
+| [Monday 21 March 2011] [07:34:37] <sustrik>	in such case zmq_recv() is sufficient
+| [Monday 21 March 2011] [07:34:46] <pieterh>	I can't agree...
+| [Monday 21 March 2011] [07:34:46] <sustrik>	2. something like FTP
+| [Monday 21 March 2011] [07:34:52] <pieterh>	let's say I want to hold a queue of messages
+| [Monday 21 March 2011] [07:34:59] <sustrik>	in that case you don't know the size in advance
+| [Monday 21 March 2011] [07:35:00] <pieterh>	might be 1M messages, held for 1 second
+| [Monday 21 March 2011] [07:35:09] <pieterh>	I have to allocate the maximum frame size for each one
