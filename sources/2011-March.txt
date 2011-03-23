@@ -2844,3 +2844,270 @@
 | [Tuesday 22 March 2011] [12:34:03] <mikko>	probably need to run with a profiler to see
 | [Tuesday 22 March 2011] [12:35:16] <ianbarber>	yeah, i guess
 | [Tuesday 22 March 2011] [13:01:46] <pieterh>	ianbarber: destroying messages, allocs, etc. don't make that much impact
+| [Tuesday 22 March 2011] [13:06:53] <ianbarber>	yeah, that's what i concluded. 
+| [Tuesday 22 March 2011] [14:32:11] <picasso>	i'm designing an analytics system that needs to handle  potentially heavy loads and usage spikes
+| [Tuesday 22 March 2011] [14:32:25] <picasso>	creating a web service API (preferrably in PHP), packaging  incoming requests and dumping onto a message queue, and then  processing these requests in the background
+| [Tuesday 22 March 2011] [14:33:57] <picasso>	i apologize for not being too familiar with zeroMQ, but is this a type of problem that would be a good use case for zero?
+| [Tuesday 22 March 2011] [14:43:00] <cremes>	picasso: yep, it sure would
+| [Tuesday 22 March 2011] [14:43:26] <cremes>	have you read the guide? http://zero.mq/zg
+| [Tuesday 22 March 2011] [14:43:35] <cremes>	it covers several use-cases
+| [Tuesday 22 March 2011] [14:46:05] <picasso>	seems i have quite a bit of reading to do :)
+| [Tuesday 22 March 2011] [15:13:22] <cremes>	picasso: just a little bit!
+| [Tuesday 22 March 2011] [15:49:06] <michelp>	i'm just reading the news about Sergey Aleynikov, was he a 0mq developer?
+| [Tuesday 22 March 2011] [15:49:47] <michelp>	i saw his github (maybe bitbucket) googleing around a few days ago but now it appears to be gone
+| [Tuesday 22 March 2011] [15:49:54] <michelp>	and it looked like he had made some contributions
+| [Tuesday 22 March 2011] [15:50:13] <michelp>	weird that i can't find it now, they must have deleted it
+| [Tuesday 22 March 2011] [15:52:07] <pieterh>	michelp: he wrote the original Erlang binding for 0MQ
+| [Tuesday 22 March 2011] [15:52:48] <pieterh>	user id on github is saleyn
+| [Tuesday 22 March 2011] [15:53:32] <michelp>	i'm not up on the details, but his sentence seems extremely harsh for just moving code, it doesn't sound they proved he used it in any way
+| [Tuesday 22 March 2011] [15:56:03] <michelp>	ah it's still up on github
+| [Tuesday 22 March 2011] [15:57:10] <cremes>	michelp: it doesn't matter if he used it or not; let's say you take a candy bar from the store but you don't eat it; has it been stolen?
+| [Tuesday 22 March 2011] [15:57:13] <cremes>	or not?
+| [Tuesday 22 March 2011] [15:58:54] <michelp>	yeah i guess it has.  the couple of stories i've read so far don't have much detail, but i just found one that does
+| [Tuesday 22 March 2011] [15:59:10] <pieterh>	michelp: crimes against property are usually treated harshly unless you're wealthy
+| [Tuesday 22 March 2011] [15:59:23] <spht>	dang: He was employed for two years at Goldman on a salary of $400,000. In early June, he left Goldman to join Teza Technologies, a Chicago start-up which offered to triple his pay.
+| [Tuesday 22 March 2011] [16:00:13] <spht>	$1.2M coding, that's pretty decent I'd say :)
+| [Tuesday 22 March 2011] [16:08:01] <pieterh>	aight, zapi the high-level C binding for 0MQ is now ready and working!
+| [Tuesday 22 March 2011] [16:08:07] <pieterh>	http://zero.mq/c
+| [Tuesday 22 March 2011] [16:09:13] <mikko>	cool!
+| [Tuesday 22 March 2011] [16:09:42] <mikko>	did you take zfl build as base?
+| [Tuesday 22 March 2011] [16:09:50] <pieterh>	yes, for the autotools
+| [Tuesday 22 March 2011] [16:09:55] <mikko>	very good
+| [Tuesday 22 March 2011] [16:10:00] <mikko>	should be about the same process
+| [Tuesday 22 March 2011] [16:10:02] <pieterh>	the only change was to switch to valgrind for the selftest script
+| [Tuesday 22 March 2011] [16:10:18] <pieterh>	much better than whatever heap checker I was using in ZFL
+| [Tuesday 22 March 2011] [17:24:12] <pieterh>	sigh
+| [Tuesday 22 March 2011] [18:00:11] <Guthur>	pieterh, you work fast
+| [Tuesday 22 March 2011] [18:00:18] <pieterh>	yeah
+| [Tuesday 22 March 2011] [18:00:22] <pieterh>	am just making packages now
+| [Tuesday 22 March 2011] [18:00:26] <pieterh>	beta release in one day
+| [Tuesday 22 March 2011] [18:00:49] <pieterh>	will aim to also upload man pages to a web site, should be doable
+| [Tuesday 22 March 2011] [18:01:06] <pieterh>	first replying to people who confuse posix streams with length-specified messages
+| [Tuesday 22 March 2011] [18:01:07] <pieterh>	sigh
+| [Tuesday 22 March 2011] [18:01:10] <Guthur>	In the same time I haven't got nearly as far with the 0MQ-FIX bridge
+| [Tuesday 22 March 2011] [18:01:23] <Guthur>	admittedly I had to go to work in the middle
+| [Tuesday 22 March 2011] [18:03:06] <Guthur>	robustly extracting a FIX message from a socket wrote buffer is non too trivial exercise though
+| [Tuesday 22 March 2011] [18:03:23] <pieterh>	FIX is complex
+| [Tuesday 22 March 2011] [18:03:35] <pieterh>	that's why I suggested doing that totally separately
+| [Tuesday 22 March 2011] [18:05:24] <Guthur>	it's actually my first time working directly with raw sockets as well
+| [Tuesday 22 March 2011] [18:05:33] <Guthur>	so all a bit of a learning curce
+| [Tuesday 22 March 2011] [18:05:38] <Guthur>	curve*
+| [Tuesday 22 March 2011] [18:24:26] <pieterh>	raw sockets are pretty OK if you're not trying to be multithreaded or something
+| [Tuesday 22 March 2011] [18:31:26] <Guthur>	hehe, I quickly decided not to try that
+| [Tuesday 22 March 2011] [18:32:03] <Guthur>	it's not so much the Sockets it's extracting the individual messages from the stream
+| [Tuesday 22 March 2011] [18:32:20] <Guthur>	ensuring they are complete and valid
+| [Tuesday 22 March 2011] [18:34:11] <Guthur>	just trying to find the nice solution, I've made a state transition table, which should help
+| [Tuesday 22 March 2011] [18:34:28] <Guthur>	and just ran a small socket demo to sanity check my socket understanding
+| [Tuesday 22 March 2011] [18:34:48] <Guthur>	so all set now to do the real work
+| [Tuesday 22 March 2011] [18:46:52] <pieterh>	Guthur: are you working in C or C# for this?
+| [Tuesday 22 March 2011] [18:49:08] <Guthur>	C# for the time being, I think it might suit being implement in C, if its 'dumb' enough
+| [Tuesday 22 March 2011] [19:01:22] <pieterh>	I'm really curious to see how you get with this
+| [Tuesday 22 March 2011] [20:31:38] <Guthur>	out of curiosity do many specifically build 0MQ for 64bit platform?
+| [Tuesday 22 March 2011] [20:33:46] <Guthur>	oh nvm, it's not really the issue I had mind
+| [Tuesday 22 March 2011] [20:38:11] <klestes>	greetings 
+| [Tuesday 22 March 2011] [20:38:31] <klestes>	anyone here ?
+| [Tuesday 22 March 2011] [20:39:02] <Guthur>	klestes, a few
+| [Tuesday 22 March 2011] [20:39:21] <Guthur>	i wont be here long though, just about to hit the sack
+| [Tuesday 22 March 2011] [20:39:25] <Guthur>	what's up?
+| [Tuesday 22 March 2011] [20:39:33] <klestes>	good.  I am preparing to do my first patch submission
+| [Tuesday 22 March 2011] [20:39:51] <klestes>	where are you, Guth ?
+| [Tuesday 22 March 2011] [20:39:57] <Guthur>	UK
+| [Tuesday 22 March 2011] [20:40:07] <klestes>	ah.  Hows the weather ?
+| [Tuesday 22 March 2011] [20:40:09] <Guthur>	I'm not much of a git gurur
+| [Tuesday 22 March 2011] [20:40:20] <Guthur>	it's actually been quite good recently
+| [Tuesday 22 March 2011] [20:40:22] <klestes>	me either !  
+| [Tuesday 22 March 2011] [20:40:28] <klestes>	great !
+| [Tuesday 22 March 2011] [20:40:37] <Guthur>	pieterh, ping
+| [Tuesday 22 March 2011] [20:40:51] <Guthur>	pieterh might be able to help, if he's about
+| [Tuesday 22 March 2011] [20:41:00] <klestes>	yep, if you hear the 0Mgods gripe about that damn newbie patch, I was susccessful :)
+| [Tuesday 22 March 2011] [20:41:17] <klestes>	I think the SF meetup was today, so he may be out of it.  or having beer.
+| [Tuesday 22 March 2011] [20:41:32] <klestes>	anyway, if I botch it, there's always tomorrow.
+| [Tuesday 22 March 2011] [20:41:43] <Guthur>	oh ok, well there is a couple of resources on the web on how to make git patches
+| [Tuesday 22 March 2011] [20:41:51] <klestes>	yes, I am reading one now.
+| [Tuesday 22 March 2011] [20:42:04] <Guthur>	it's actually not too hard, I just can't remember otoh
+| [Tuesday 22 March 2011] [20:42:32] <Guthur>	I really need sleep though, sorry I can't be more help
+| [Tuesday 22 March 2011] [20:42:44] <klestes>	thats ok.
+| [Tuesday 22 March 2011] [20:42:53] <klestes>	I wonder if I can submit just a plain diff the first time ?
+| [Tuesday 22 March 2011] [20:43:09] <Guthur>	they do like signed off patches to be honest
+| [Tuesday 22 March 2011] [20:43:16] <klestes>	ah, ok.
+| [Tuesday 22 March 2011] [20:43:39] <Guthur>	anyhoo must go, later klestes 
+| [Tuesday 22 March 2011] [20:43:40] <klestes>	now,what exactly qualifies a patch as being 'signed off' - use of the git format-patch command ?
+| [Tuesday 22 March 2011] [20:43:52] <klestes>	nice talking to you, guthur.  Have a good night !
+| [Tuesday 22 March 2011] [20:44:31] <Guthur>	we should probably document this process somewhere
+| [Tuesday 22 March 2011] [20:44:41] <Guthur>	g'night
+| [Tuesday 22 March 2011] [21:06:14] <klestes>	well, my first patch has been submitted.  Bombs away !!
+| [Tuesday 22 March 2011] [21:06:22] <klestes>	and to all, a good nyte.
+| [Wednesday 23 March 2011] [02:03:42] <Freejack>	Has anyone tried plugging ZeroMQ into anything besides sockets? (i.e. TIPC, DIPC, LINX, Streams, etc...)?
+| [Wednesday 23 March 2011] [02:07:56] <sustrik>	Freejack: nope
+| [Wednesday 23 March 2011] [02:08:06] <sustrik>	you are free to try
+| [Wednesday 23 March 2011] [02:08:42] <sustrik>	however, if the underlying transport doesn't use file descriptors, it will be pretty hard to integrate into 0mq
+| [Wednesday 23 March 2011] [02:08:59] <Freejack>	Sounds like a plan. Yeah, it uses file descriptors.
+| [Wednesday 23 March 2011] [02:09:46] <Freejack>	I've been playing with message queues for a while now...and find posix queues and Linx Queues to be extremely efficient.
+| [Wednesday 23 March 2011] [02:11:09] <Freejack>	Linx Queues especially. Their like traveling at light speed compared to sockets over the LAN.
+| [Wednesday 23 March 2011] [02:13:50] <Freejack>	sustrik: Besides...since ZeroMQ is in fact a high level MQ API, I figure the two would be a good match.
+| [Wednesday 23 March 2011] [02:14:23] <sustrik>	sure
+| [Wednesday 23 March 2011] [02:14:28] <sustrik>	go on with it
+| [Wednesday 23 March 2011] [02:17:55] <Freejack>	Guess I'd better start grokking the code. bbl.
+| [Wednesday 23 March 2011] [04:30:20] <pieterh>	sustrik: how easy is it to add a transport layer to 0MQ?
+| [Wednesday 23 March 2011] [04:44:16] <sustrik>	pieterh: depends
+| [Wednesday 23 March 2011] [04:44:39] <sustrik>	what transport do you have in mind?
+| [Wednesday 23 March 2011] [04:45:17] <pieterh>	well, of course TLS/SSL for a start
+| [Wednesday 23 March 2011] [04:45:25] <pieterh>	but more generally, any virtual stream
+| [Wednesday 23 March 2011] [04:46:05] <pieterh>	we get these questions about implementing UDP, SCTP, etc. regularly
+| [Wednesday 23 March 2011] [04:46:19] <pieterh>	and there is no good answer except "go study the code and send us a patch"
+| [Wednesday 23 March 2011] [04:47:21] <pieterh>	have you ever looked at e.g. the Linux user-space file system (FUSE)?
+| [Wednesday 23 March 2011] [04:50:10] <sustrik>	it would be nice to have standardised interface for transports
+| [Wednesday 23 March 2011] [04:50:25] <sustrik>	however, it's hard to define it
+| [Wednesday 23 March 2011] [04:50:57] <sustrik>	given the pretty large differences between trasnsports (inproc, pgm, tcp)
+| [Wednesday 23 March 2011] [04:51:06] <sustrik>	as FUSE: no
+| [Wednesday 23 March 2011] [04:59:00] <pieterh>	FUSE is just an analogy
+| [Wednesday 23 March 2011] [04:59:25] <pieterh>	you can keep a bunch of native transports tightly bound to whatever...
+| [Wednesday 23 March 2011] [04:59:43] <pieterh>	but it would be neat to have a virtual interface for stream transports
+| [Wednesday 23 March 2011] [05:00:08] <pieterh>	e.g. I'd like to explore making a shmem transport, but where do I start?
+| [Wednesday 23 March 2011] [05:00:54] <sustrik>	it's a connection-based transport, so have a look how tcp transport works
+| [Wednesday 23 March 2011] [05:01:19] <sustrik>	zmq_listener_t, zmq_connecter_t, zmq_init_t, zmq_engine_t
+| [Wednesday 23 March 2011] [05:01:33] <pieterh>	no, I'm not asking for documentation now, here, on IRC... :-)
+| [Wednesday 23 March 2011] [05:02:36] <pieterh>	if tcp is the right model for all connected stream transports
+| [Wednesday 23 March 2011] [05:02:55] <sustrik>	probably not
+| [Wednesday 23 March 2011] [05:03:00] <sustrik>	no idea actually
+| [Wednesday 23 March 2011] [05:03:03] <pieterh>	right
+| [Wednesday 23 March 2011] [05:03:38] <pieterh>	IMO this is a major barrier to contributors able to extend 0MQ's transports
+| [Wednesday 23 March 2011] [05:03:42] <sustrik>	agreed
+| [Wednesday 23 March 2011] [05:04:46] <Guthur>	+1 that, hehe
+| [Wednesday 23 March 2011] [05:05:01] <sustrik>	the question is how to define the interface
+| [Wednesday 23 March 2011] [05:05:15] <sustrik>	right now 0mq doesn't do much for you
+| [Wednesday 23 March 2011] [05:05:26] <pieterh>	well, it can IMO map the 0MQ API semantics
+| [Wednesday 23 March 2011] [05:05:27] <sustrik>	there's a framework for launching async objects
+| [Wednesday 23 March 2011] [05:05:32] <pieterh>	bind, connect, send, recv
+| [Wednesday 23 March 2011] [05:05:41] <sustrik>	nope, it's event-driven
+| [Wednesday 23 March 2011] [05:06:00] <sustrik>	another part of functionality, is pollers
+| [Wednesday 23 March 2011] [05:06:09] <sustrik>	which allow you to register your fds
+| [Wednesday 23 March 2011] [05:06:18] <sustrik>	and get events such as pollin and pollout
+| [Wednesday 23 March 2011] [05:06:24] <pieterh>	so any transport layer has to export FDs
+| [Wednesday 23 March 2011] [05:06:39] <pieterh>	is that how the pgm transport works?
+| [Wednesday 23 March 2011] [05:06:41] <sustrik>	well, it can run a thread of it's own
+| [Wednesday 23 March 2011] [05:06:48] <sustrik>	and ignore the I/O threads
+| [Wednesday 23 March 2011] [05:06:55] <pieterh>	that's a good start IMO
+| [Wednesday 23 March 2011] [05:06:55] <sustrik>	= standard pollers
+| [Wednesday 23 March 2011] [05:07:35] <pieterh>	how about... a transport as a bridge?
+| [Wednesday 23 March 2011] [05:07:40] <sustrik>	?
+| [Wednesday 23 March 2011] [05:07:43] <pieterh>	hehe
+| [Wednesday 23 March 2011] [05:07:53] <pieterh>	ok, this is crazy, but...
+| [Wednesday 23 March 2011] [05:08:03] <pieterh>	transport X runs as its own thread, OK?
+| [Wednesday 23 March 2011] [05:08:09] <pieterh>	it communicates purely over inproc
+| [Wednesday 23 March 2011] [05:08:22] <pieterh>	define an inproc API back to 0MQ core
+| [Wednesday 23 March 2011] [05:08:32] <pieterh>	*any* thread can register, use it, become a transport
+| [Wednesday 23 March 2011] [05:09:06] <sustrik>	can you be more specific?
+| [Wednesday 23 March 2011] [05:09:31] <pieterh>	I've not had coffee yet, I know close to nothing about the 0MQ internals, and you want more details? 
+| [Wednesday 23 March 2011] [05:09:35] <pieterh>	:-)
+| [Wednesday 23 March 2011] [05:09:52] <sustrik>	i don't understand what you meant, that's all
+| [Wednesday 23 March 2011] [05:09:55] <ianbarber>	is that better than just writing a 0MQ bridge in 'userland'?
+| [Wednesday 23 March 2011] [05:09:56] <ianbarber>	(not sure why i added scare quotes there :))
+| [Wednesday 23 March 2011] [05:10:10] <pieterh>	ianbarber: it's exactly the same except it can be hidden as a transport
+| [Wednesday 23 March 2011] [05:10:20] <pieterh>	i.e. you can plug in and plug out without changing code
+| [Wednesday 23 March 2011] [05:10:33] <pieterh>	whereas if it's in userland, its architecturally significant
+| [Wednesday 23 March 2011] [05:10:43] <pieterh>	it's FUSE by analogy
+| [Wednesday 23 March 2011] [05:10:57] <ianbarber>	maybe have that functionality as a device or similar
+| [Wednesday 23 March 2011] [05:11:00] <pieterh>	sustrik: specifics...
+| [Wednesday 23 March 2011] [05:11:09] <pieterh>	a transport thread has to register, using some name
+| [Wednesday 23 March 2011] [05:11:21] <pieterh>	that name becomes available to applications for binding and connecting
+| [Wednesday 23 March 2011] [05:11:28] <sustrik>	that's inproc
+| [Wednesday 23 March 2011] [05:11:32] <pieterh>	hang on
+| [Wednesday 23 March 2011] [05:11:54] <pieterh>	the transport thread then accepts a set of control messages over inproc
+| [Wednesday 23 March 2011] [05:11:57] <pieterh>	- bind to endpoint
+| [Wednesday 23 March 2011] [05:12:00] <pieterh>	- connect to endpoint
+| [Wednesday 23 March 2011] [05:12:06] <pieterh>	- send message
+| [Wednesday 23 March 2011] [05:12:09] <pieterh>	- ?
+| [Wednesday 23 March 2011] [05:12:26] <pieterh>	it returns events asynchronously
+| [Wednesday 23 March 2011] [05:12:41] <pieterh>	obviously there has to be a peer inside 0MQ able to manage these threads and events
+| [Wednesday 23 March 2011] [05:12:52] <pieterh>	so it's a virtualized transport
+| [Wednesday 23 March 2011] [05:13:12] <pieterh>	now, I can write an SSL transport really simply
+| [Wednesday 23 March 2011] [05:13:22] <pieterh>	or a transport that logs everything
+| [Wednesday 23 March 2011] [05:13:35] <sustrik>	looks like an obvious case for layering on top of 0mq
+| [Wednesday 23 March 2011] [05:13:48] <pieterh>	of course you can layer it on top but that's missing the point
+| [Wednesday 23 March 2011] [05:13:53] <sustrik>	basically, 0mq is used as a transport between the "transport" and the user
+| [Wednesday 23 March 2011] [05:14:07] <pieterh>	if you layer it at the bottom you get different effects
+| [Wednesday 23 March 2011] [05:14:13] <pieterh>	again, please understand FUSE
+| [Wednesday 23 March 2011] [05:14:25] <pieterh>	I can implement a file system in user space
+| [Wednesday 23 March 2011] [05:14:37] <pieterh>	all my tools work on that file system, since it's just a virtualized transport layer
+| [Wednesday 23 March 2011] [05:15:02] <pieterh>	in 0MQ jargon, my devices, brokers, etc. would automatically work over any virtualized transport
+| [Wednesday 23 March 2011] [05:15:10] <sustrik>	ack, what's needed is an interface from kernel back to user space
+| [Wednesday 23 March 2011] [05:15:16] <pieterh>	it's much, much, much cleaner than implementing the transport on top of 0MQ
+| [Wednesday 23 March 2011] [05:15:19] <pieterh>	yes
+| [Wednesday 23 March 2011] [05:15:28] <sustrik>	but we already have that :)
+| [Wednesday 23 March 2011] [05:15:35] <sustrik>	it's inproc
+| [Wednesday 23 March 2011] [05:15:47] <pieterh>	that's the transport for the interface, it's not the interface
+| [Wednesday 23 March 2011] [05:16:20] <pieterh>	what I want is to inject user space code inside the 0MQ API, not on top of it
+| [Wednesday 23 March 2011] [05:16:43] <pieterh>	but instead of going and modifying core and sending you a patch
+| [Wednesday 23 March 2011] [05:16:44] <sustrik>	ok
+| [Wednesday 23 March 2011] [05:16:51] <pieterh>	I want to write a thread that talks to your code, over inproc
+| [Wednesday 23 March 2011] [05:16:56] <sustrik>	have a look at 0mq internals and find a way to do that
+| [Wednesday 23 March 2011] [05:17:20] <pieterh>	i've just made it really easy for you to offer dozens of contributors a virtualized transport layer
+| [Wednesday 23 March 2011] [05:17:29] <sustrik>	ack
+| [Wednesday 23 March 2011] [05:17:48] <pieterh>	you know full well I'm not competent to look at the 0MQ internals and find a way to actually implement this
+| [Wednesday 23 March 2011] [05:18:06] <pieterh>	if you want people to invest in new transport layers, do *not* tell them to go read the code
+| [Wednesday 23 March 2011] [05:18:08] <pieterh>	it will not work
+| [Wednesday 23 March 2011] [05:18:19] <pieterh>	it's basically saying "piss off" with a smile
+| [Wednesday 23 March 2011] [05:18:19] <sustrik>	the point is that's it not obvious how to do it
+| [Wednesday 23 March 2011] [05:18:30] <sustrik>	given that internally, 0mq uses very different model
+| [Wednesday 23 March 2011] [05:18:38] <sustrik>	it's completely event driven
+| [Wednesday 23 March 2011] [05:18:51] <sustrik>	so there's no such thing as say "connect"
+| [Wednesday 23 March 2011] [05:18:51] <pieterh>	you can clearly make event driven APIs over inproc
+| [Wednesday 23 March 2011] [05:19:28] <sustrik>	it's different kind of events, those that are passed via mailbox_t
+| [Wednesday 23 March 2011] [05:19:33] <pieterh>	how many user contributed transports since 0MQ went fully open source?
+| [Wednesday 23 March 2011] [05:19:34] <sustrik>	see command.hpp
+| [Wednesday 23 March 2011] [05:19:41] <sustrik>	none
+| [Wednesday 23 March 2011] [05:19:53] <sustrik>	you don't have to convince me
+| [Wednesday 23 March 2011] [05:19:56] <pieterh>	and this is the reason IMO, no abstract interface
+| [Wednesday 23 March 2011] [05:20:02] <sustrik>	i am all for standardised transport API
+| [Wednesday 23 March 2011] [05:20:10] <sustrik>	i just don't know how to implement it
+| [Wednesday 23 March 2011] [05:20:13] <sustrik>	that's it
+| [Wednesday 23 March 2011] [05:20:27] <pieterh>	well, forget efficiency as such, this is about extensibility, not performance
+| [Wednesday 23 March 2011] [05:20:41] <pieterh>	what are the events passed via mailboxes?
+| [Wednesday 23 March 2011] [05:21:03] <sustrik>	internal events, such as "there's a new pipe you should start dealing with"
+| [Wednesday 23 March 2011] [05:21:30] <pieterh>	so how about pipes extended across inproc?
+| [Wednesday 23 March 2011] [05:21:35] <pieterh>	logically, I mean
+| [Wednesday 23 March 2011] [05:21:56] <sustrik>	the concept is that the pipe itself is agnostic about who's on the either end of it
+| [Wednesday 23 March 2011] [05:22:03] <pieterh>	we already have this virtualized interface internally, with mailboxes and pipes
+| [Wednesday 23 March 2011] [05:22:11] <sustrik>	with inproc, there's a socket on both ends
+| [Wednesday 23 March 2011] [05:22:25] <sustrik>	with tcp, there's a socket on one end and a session on the other
+| [Wednesday 23 March 2011] [05:22:27] <pieterh>	yes, but you can hide that, obviously
+| [Wednesday 23 March 2011] [05:22:37] <sustrik>	propose a way
+| [Wednesday 23 March 2011] [05:22:42] <sustrik>	it's not easy
+| [Wednesday 23 March 2011] [05:22:51] <sustrik>	i've spent a lot of time thinking about it
+| [Wednesday 23 March 2011] [05:22:59] <sustrik>	but haven't get to anything sensible so far
+| [Wednesday 23 March 2011] [05:23:13] <pieterh>	well, thinking by yourself is not often a very productive process...
+| [Wednesday 23 March 2011] [05:23:27] <sustrik>	sure, feel free to help
+| [Wednesday 23 March 2011] [05:23:33] <pieterh>	this is what I'm doing now
+| [Wednesday 23 March 2011] [05:23:42] <pieterh>	or trying to, anyhow
+| [Wednesday 23 March 2011] [05:23:51] <sustrik>	well, have a look at the internals first
+| [Wednesday 23 March 2011] [05:23:58] <sustrik>	so that you have an idea of how it works
+| [Wednesday 23 March 2011] [05:24:04] <pieterh>	is this documented somewhere?
+| [Wednesday 23 March 2011] [05:24:12] <sustrik>	source code
+| [Wednesday 23 March 2011] [05:24:22] <pieterh>	asking me to read C++ code simply to discuss architecture is a waste of my time, sorry
+| [Wednesday 23 March 2011] [05:24:37] <sustrik>	ok, let it be then
+| [Wednesday 23 March 2011] [05:24:51] 	 * sustrik is doing accounting today
+| [Wednesday 23 March 2011] [05:25:26] <ianbarber>	one thing that maybe is worth considering for connectors is just sticking the files into a different directory
+| [Wednesday 23 March 2011] [05:25:53] <pieterh>	ianbarber: what connectors, and what files? I'm confused
+| [Wednesday 23 March 2011] [05:26:00] <ianbarber>	for the transports, sorry
+| [Wednesday 23 March 2011] [05:26:14] <pieterh>	actually I'd like to not even use inproc but IPC
+| [Wednesday 23 March 2011] [05:26:19] <pieterh>	so a transport can be a separate process
+| [Wednesday 23 March 2011] [05:26:33] <ianbarber>	so like, once i realised there would be a connector and a socket and listener, it was easier to browse around
+| [Wednesday 23 March 2011] [05:26:54] <pieterh>	ah, you mean organization of the 0MQ source code?
+| [Wednesday 23 March 2011] [05:26:57] <ianbarber>	and in terms of people building new ones, the best reference is usually other examples
+| [Wednesday 23 March 2011] [05:26:57] <ianbarber>	yeah
+| [Wednesday 23 March 2011] [05:27:08] <pieterh>	yeah, nice
+| [Wednesday 23 March 2011] [05:27:20] <pieterh>	so all the code for one transport is actually identifiable in one place
+| [Wednesday 23 March 2011] [05:27:24] <ianbarber>	yeah
+| [Wednesday 23 March 2011] [05:27:29] <pieterh>	excellent suggestion
+| [Wednesday 23 March 2011] [05:27:32] <pieterh>	send a patch to the list
+| [Wednesday 23 March 2011] [05:27:44] <pieterh>	:-) sorry, just being facetious
+| [Wednesday 23 March 2011] [05:28:03] 	 * pieterh really needs a coffee
+| [Wednesday 23 March 2011] [05:28:26] <pieterh>	sustrik: if this all ends up with me learning C++ I'm seriously never going to forgive you
+| [Wednesday 23 March 2011] [05:28:38] <sustrik>	:)
+| [Wednesday 23 March 2011] [05:29:00] <sustrik>	here's a beginning of a design document:
+| [Wednesday 23 March 2011] [05:29:00] <sustrik>	http://www.zeromq.org/whitepapers:architecture
+| [Wednesday 23 March 2011] [05:29:10] <sustrik>	i never had time to finish it though
+| [Wednesday 23 March 2011] [05:30:07] <ianbarber>	oh, this looks like a good start!
+| [Wednesday 23 March 2011] [05:30:42] <ianbarber>	already helpful
+| [Wednesday 23 March 2011] [05:30:53] <sustrik>	if only it was at least 5x longer :|
