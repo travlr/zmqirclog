@@ -5006,6 +5006,65 @@
 <div class="line">[Friday 25 March 2011] [13:12:33] &lt;cremes&gt;    anddam: did you modify your sendspace/recvspace kernel params?</div>
 <div class="line">[Friday 25 March 2011] [13:13:18] &lt;cremes&gt;    and to answer your first question, it can affect your tests if the soft limit (ulimit -a) is lower than the number of sockets created</div>
 <div class="line">[Friday 25 March 2011] [13:13:28] &lt;anddam&gt;    no, I&#8217;m checking sysctl syntax to avoid rebooting</div>
+<div class="line">[Friday 25 March 2011] [13:16:21] &lt;anddam&gt;    cremes: not that hard sysctl -w</div>
+<div class="line">[Friday 25 March 2011] [13:19:11] &lt;anddam&gt;    cremes: you were damn right</div>
+<div class="line">[Friday 25 March 2011] [13:19:28] &lt;cremes&gt;    :)</div>
+<div class="line">[Friday 25 March 2011] [13:19:40] &lt;anddam&gt;    <a class="reference external" href="http://pastesite.com/22571">http://pastesite.com/22571</a></div>
+<div class="line">[Friday 25 March 2011] [13:19:46] &lt;anddam&gt;    so my issue is only mongrel2</div>
+<div class="line">[Friday 25 March 2011] [13:19:53] &lt;anddam&gt;    I had no issues with a debian</div>
+<div class="line">[Friday 25 March 2011] [13:29:25] &lt;anddam&gt;    cremes: seems this is it <a class="reference external" href="https://gist.github.com/724778">https://gist.github.com/724778</a></div>
+<div class="line">[Friday 25 March 2011] [13:29:43] &lt;anddam&gt;    in fact,   zmq &#64;2.1.3_0 (active)</div>
+<div class="line">[Friday 25 March 2011] [13:30:32] &lt;cremes&gt;    yes, the termination semantics changed from 2.0.10 to 2.1.0</div>
+<div class="line">[Friday 25 March 2011] [13:31:16] &lt;anddam&gt;    I&#8217;ll checkout from repo, but I&#8217;m packaging for macports a stable tarball would be better</div>
+<div class="line">[Friday 25 March 2011] [13:31:19] &lt;anddam&gt;    thanks, bye</div>
+<div class="line">[Friday 25 March 2011] [13:48:29] &lt;mih&gt;       hello. One question about  new 2.1.3 version. It is build only .la static lib (even with &#8211;enable-shared option). Is it bug or feature?</div>
+<div class="line">[Friday 25 March 2011] [13:55:39] &lt;cremes&gt;    mih: by default it should produce a shared library</div>
+<div class="line">[Friday 25 March 2011] [16:30:54] &lt;traviscline&gt;       I want running web server processes to on certain events share internal state information. Just to clarify i&#8217;ll likely want a pub socket in each process and (at least one) corresponding sub sockets elsewhere for each of them. A friend suggested using req/rep on startup for the procs to know where to bind, sound reasonable?</div>
+<div class="line">[Friday 25 March 2011] [16:43:29] &lt;dermoth|work&gt;      traviscline, in general for in pub/sub you have one suv with many put connecting to it</div>
+<div class="line">[Friday 25 March 2011] [16:43:37] &lt;dermoth|work&gt;      one sub with many pub</div>
+<div class="line">[Friday 25 March 2011] [16:43:44] &lt;dermoth|work&gt;      oops</div>
+<div class="line">[Friday 25 March 2011] [16:43:49] &lt;dermoth|work&gt;      i mean toe opposite</div>
+<div class="line">[Friday 25 March 2011] [16:44:09] &lt;dermoth|work&gt;      now I get what you mean :)</div>
+<div class="line">[Friday 25 March 2011] [16:45:12] &lt;dermoth|work&gt;      traviscline, so it is that any web process should be ble to update the other processes?</div>
+<div class="line">[Friday 25 March 2011] [17:04:10] &lt;dermoth|work&gt;      traviscline, well assuming this is what you want, you&#8217;ll need a forwarder device; all processes will connect their pub and sub sockets to it... and I strongly suggest testing it, expecially thing like all web servers reloading at once (could happen when logrotate kicks in if you leave it on)</div>
+<div class="line">[Friday 25 March 2011] [17:05:02] &lt;dermoth|work&gt;      traviscline, ohoh I feel a cache pool like memcached might be better suited gfor that and could consume much less resources than two tcp connections per web process</div>
+<div class="line">[Friday 25 March 2011] [18:13:34] &lt;mikko&gt;     evenin&#8217;</div>
+<div class="line">[Friday 25 March 2011] [18:20:44] &lt;Seta00&gt;    hey I want a dot on that community map too :3</div>
+<div class="line">[Saturday 26 March 2011] [05:39:23] &lt;CIA-22&gt;  zeromq2: 03Martin Sustrik 07pre30 * rabb184a 10/ (6 files in 4 dirs):</div>
+<div class="line">[Saturday 26 March 2011] [05:39:23] &lt;CIA-22&gt;  zeromq2: ZMQ_NOBLOCK renamed ZMQ_DONTWAIT</div>
+<div class="line">[Saturday 26 March 2011] [05:39:23] &lt;CIA-22&gt;  zeromq2: Done because of POSIX compliance</div>
+<div class="line">[Saturday 26 March 2011] [05:39:23] &lt;CIA-22&gt;  zeromq2: Signed-off-by: Martin Sustrik &lt;<a class="reference external" href="mailto:sustrik&#37;&#52;&#48;250bpm&#46;com">sustrik<span>&#64;</span>250bpm<span>&#46;</span>com</a>&gt; - <a class="reference external" href="http://bit.ly/hEKZog">http://bit.ly/hEKZog</a></div>
+<div class="line">[Saturday 26 March 2011] [06:06:26] &lt;CIA-22&gt;  zeromq2: 03Martin Sustrik 07pre30 * r82dbef3 10/ src/zmq.cpp :</div>
+<div class="line">[Saturday 26 March 2011] [06:06:26] &lt;CIA-22&gt;  zeromq2: Memory leak in zmq_recv fixed</div>
+<div class="line">[Saturday 26 March 2011] [06:06:26] &lt;CIA-22&gt;  zeromq2: Signed-off-by: Martin Sustrik &lt;<a class="reference external" href="mailto:sustrik&#37;&#52;&#48;250bpm&#46;com">sustrik<span>&#64;</span>250bpm<span>&#46;</span>com</a>&gt; - <a class="reference external" href="http://bit.ly/ie2raB">http://bit.ly/ie2raB</a></div>
+<div class="line">[Saturday 26 March 2011] [09:45:47] &lt;Guthur&gt;  I see someone mention compiled binary size on ARM cores on the mailing list...</div>
+<div class="line">[Saturday 26 March 2011] [09:46:04] &lt;Guthur&gt;  can ZeroMQ be successfully cross compiled for the ARM</div>
+<div class="line">[Saturday 26 March 2011] [10:04:41] &lt;sustrik&gt; Guthur: iirc someone have done it</div>
+<div class="line">[Saturday 26 March 2011] [10:04:53] &lt;sustrik&gt; there should be a mail about it on the mailing list</div>
+<div class="line">[Saturday 26 March 2011] [10:05:02] &lt;sustrik&gt; or maybe a wiki page on the site</div>
+<div class="line">[Saturday 26 March 2011] [10:05:30] &lt;Guthur&gt;  sustrik, I&#8217;ll have a look</div>
+<div class="line">[Saturday 26 March 2011] [10:05:52] &lt;Guthur&gt;  Is there some search mechanism for the mailing list bar google</div>
+<div class="line">[Saturday 26 March 2011] [10:10:36] &lt;Guthur&gt;  oh nvm</div>
+<div class="line">[Saturday 26 March 2011] [10:32:43] &lt;Guthur&gt;  pieterh, I have the opportunity of presenting ZeroMQ to my team at work, any suggestions on content</div>
+<div class="line">[Saturday 26 March 2011] [12:17:06] &lt;Eruquen&gt; is there a difference between zmq_zmsg_t and zmsg_t?</div>
+<div class="line">[Saturday 26 March 2011] [12:18:02] &lt;sustrik&gt; what&#8217;s zmsg_t?</div>
+<div class="line">[Saturday 26 March 2011] [12:21:07] &lt;Eruquen&gt; a type that is used in the C examples</div>
+<div class="line">[Saturday 26 March 2011] [12:22:03] &lt;Eruquen&gt; maybe that&#8217;s why I get abitrary results vom zmq_msg_size</div>
+<div class="line">[Saturday 26 March 2011] [12:42:30] &lt;sustrik&gt; i assume it&#8217;s some layer on top of 0mq that&#8217;s used by the guide</div>
+<div class="line">[Saturday 26 March 2011] [12:42:35] &lt;sustrik&gt; no idea how it works</div>
+<div class="line">[Saturday 26 March 2011] [12:42:36] &lt;sustrik&gt; sorry</div>
+<div class="line">[Saturday 26 March 2011] [12:52:21] &lt;Guthur&gt;  Eruquen, source is here <a class="reference external" href="https://github.com/imatix/zguide/blob/master/examples/C/zmsg.h">https://github.com/imatix/zguide/blob/master/examples/C/zmsg.h</a></div>
+<div class="line">[Saturday 26 March 2011] [12:52:47] &lt;Guthur&gt;  it provides some useful helper functions for msg</div>
+<div class="line">[Saturday 26 March 2011] [14:30:36] &lt;Zevv&gt;    Hi all. Just learned about 0mq, seems that this can fix a lot of my daily pains. One question: is it possible in a inproc environment to pass pointers around ? I&#8217;m considering if 0mq can be used in our app which shares video data among a few threads on an embedded device which is painfully slow doing memcpy()&#8217;s</div>
+<div class="line">[Saturday 26 March 2011] [14:31:05] &lt;Zevv&gt;    most of the messaging is probably ok to do using 0mq, but only the video data itself - several MB&#8217;s per frame - can not be copied around for performance reasons</div>
+<div class="line">[Saturday 26 March 2011] [14:31:13] &lt;Zevv&gt;    is this a known scenario ?</div>
+<div class="line">[Saturday 26 March 2011] [14:58:55] &lt;Guthur&gt;  Zevv, sure you could pass the memory address around if you want</div>
+<div class="line">[Saturday 26 March 2011] [15:11:01] &lt;dermoth|home&gt;    Hey... I posted on the mailing list about PUSH/PULL sockets not failing over... now I&#8217;m reading 2.1 documentation, and it seems ZMQ_BACKLOG is what I want... Basically I want to fail over to other devices connected to the same socket as soon as possible, without alrering the high watermark</div>
+<div class="line">[Saturday 26 March 2011] [15:12:01] &lt;dermoth|home&gt;    so multiple devices can be used for redundancy, without queueing message if one is down.</div>
+<div class="line">[Saturday 26 March 2011] [15:17:41] &lt;sustrik&gt; dermoth|home: ZMQ_BACKLOG has to do only with connecting, it has no effect on messages themselves</div>
+<div class="line">[Saturday 26 March 2011] [15:17:46] &lt;sustrik&gt; see man listen</div>
+<div class="line">[Saturday 26 March 2011] [15:23:10] &lt;dermoth|home&gt;    oh</div>
+<div class="line">[Saturday 26 March 2011] [15:23:55] &lt;dermoth|home&gt;    right, i missed the &#8220;peer connection&#8221; part</div>
 </div>
 </div>
 

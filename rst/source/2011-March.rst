@@ -4961,3 +4961,62 @@
 | [Friday 25 March 2011] [13:12:33] <cremes>	anddam: did you modify your sendspace/recvspace kernel params?
 | [Friday 25 March 2011] [13:13:18] <cremes>	and to answer your first question, it can affect your tests if the soft limit (ulimit -a) is lower than the number of sockets created
 | [Friday 25 March 2011] [13:13:28] <anddam>	no, I'm checking sysctl syntax to avoid rebooting
+| [Friday 25 March 2011] [13:16:21] <anddam>	cremes: not that hard sysctl -w
+| [Friday 25 March 2011] [13:19:11] <anddam>	cremes: you were damn right
+| [Friday 25 March 2011] [13:19:28] <cremes>	:)
+| [Friday 25 March 2011] [13:19:40] <anddam>	http://pastesite.com/22571
+| [Friday 25 March 2011] [13:19:46] <anddam>	so my issue is only mongrel2
+| [Friday 25 March 2011] [13:19:53] <anddam>	I had no issues with a debian
+| [Friday 25 March 2011] [13:29:25] <anddam>	cremes: seems this is it https://gist.github.com/724778
+| [Friday 25 March 2011] [13:29:43] <anddam>	in fact,   zmq @2.1.3_0 (active)
+| [Friday 25 March 2011] [13:30:32] <cremes>	yes, the termination semantics changed from 2.0.10 to 2.1.0
+| [Friday 25 March 2011] [13:31:16] <anddam>	I'll checkout from repo, but I'm packaging for macports a stable tarball would be better 
+| [Friday 25 March 2011] [13:31:19] <anddam>	thanks, bye
+| [Friday 25 March 2011] [13:48:29] <mih>	hello. One question about  new 2.1.3 version. It is build only .la static lib (even with --enable-shared option). Is it bug or feature?
+| [Friday 25 March 2011] [13:55:39] <cremes>	mih: by default it should produce a shared library
+| [Friday 25 March 2011] [16:30:54] <traviscline>	I want running web server processes to on certain events share internal state information. Just to clarify i'll likely want a pub socket in each process and (at least one) corresponding sub sockets elsewhere for each of them. A friend suggested using req/rep on startup for the procs to know where to bind, sound reasonable?
+| [Friday 25 March 2011] [16:43:29] <dermoth|work>	traviscline, in general for in pub/sub you have one suv with many put connecting to it
+| [Friday 25 March 2011] [16:43:37] <dermoth|work>	one sub with many pub
+| [Friday 25 March 2011] [16:43:44] <dermoth|work>	oops
+| [Friday 25 March 2011] [16:43:49] <dermoth|work>	i mean toe opposite
+| [Friday 25 March 2011] [16:44:09] <dermoth|work>	now I get what you mean :)
+| [Friday 25 March 2011] [16:45:12] <dermoth|work>	traviscline, so it is that any web process should be ble to update the other processes?
+| [Friday 25 March 2011] [17:04:10] <dermoth|work>	traviscline, well assuming this is what you want, you'll need a forwarder device; all processes will connect their pub and sub sockets to it... and I strongly suggest testing it, expecially thing like all web servers reloading at once (could happen when logrotate kicks in if you leave it on)
+| [Friday 25 March 2011] [17:05:02] <dermoth|work>	traviscline, ohoh I feel a cache pool like memcached might be better suited gfor that and could consume much less resources than two tcp connections per web process
+| [Friday 25 March 2011] [18:13:34] <mikko>	evenin'
+| [Friday 25 March 2011] [18:20:44] <Seta00>	hey I want a dot on that community map too :3
+| [Saturday 26 March 2011] [05:39:23] <CIA-22>	zeromq2: 03Martin Sustrik 07pre30 * rabb184a 10/ (6 files in 4 dirs): 
+| [Saturday 26 March 2011] [05:39:23] <CIA-22>	zeromq2: ZMQ_NOBLOCK renamed ZMQ_DONTWAIT
+| [Saturday 26 March 2011] [05:39:23] <CIA-22>	zeromq2: Done because of POSIX compliance
+| [Saturday 26 March 2011] [05:39:23] <CIA-22>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/hEKZog
+| [Saturday 26 March 2011] [06:06:26] <CIA-22>	zeromq2: 03Martin Sustrik 07pre30 * r82dbef3 10/ src/zmq.cpp : 
+| [Saturday 26 March 2011] [06:06:26] <CIA-22>	zeromq2: Memory leak in zmq_recv fixed
+| [Saturday 26 March 2011] [06:06:26] <CIA-22>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/ie2raB
+| [Saturday 26 March 2011] [09:45:47] <Guthur>	I see someone mention compiled binary size on ARM cores on the mailing list...
+| [Saturday 26 March 2011] [09:46:04] <Guthur>	can ZeroMQ be successfully cross compiled for the ARM
+| [Saturday 26 March 2011] [10:04:41] <sustrik>	Guthur: iirc someone have done it
+| [Saturday 26 March 2011] [10:04:53] <sustrik>	there should be a mail about it on the mailing list
+| [Saturday 26 March 2011] [10:05:02] <sustrik>	or maybe a wiki page on the site
+| [Saturday 26 March 2011] [10:05:30] <Guthur>	sustrik, I'll have a look
+| [Saturday 26 March 2011] [10:05:52] <Guthur>	Is there some search mechanism for the mailing list bar google
+| [Saturday 26 March 2011] [10:10:36] <Guthur>	oh nvm
+| [Saturday 26 March 2011] [10:32:43] <Guthur>	pieterh, I have the opportunity of presenting ZeroMQ to my team at work, any suggestions on content
+| [Saturday 26 March 2011] [12:17:06] <Eruquen>	is there a difference between zmq_zmsg_t and zmsg_t?
+| [Saturday 26 March 2011] [12:18:02] <sustrik>	what's zmsg_t?
+| [Saturday 26 March 2011] [12:21:07] <Eruquen>	a type that is used in the C examples
+| [Saturday 26 March 2011] [12:22:03] <Eruquen>	maybe that's why I get abitrary results vom zmq_msg_size
+| [Saturday 26 March 2011] [12:42:30] <sustrik>	i assume it's some layer on top of 0mq that's used by the guide
+| [Saturday 26 March 2011] [12:42:35] <sustrik>	no idea how it works
+| [Saturday 26 March 2011] [12:42:36] <sustrik>	sorry
+| [Saturday 26 March 2011] [12:52:21] <Guthur>	Eruquen, source is here https://github.com/imatix/zguide/blob/master/examples/C/zmsg.h
+| [Saturday 26 March 2011] [12:52:47] <Guthur>	it provides some useful helper functions for msg
+| [Saturday 26 March 2011] [14:30:36] <Zevv>	Hi all. Just learned about 0mq, seems that this can fix a lot of my daily pains. One question: is it possible in a inproc environment to pass pointers around ? I'm considering if 0mq can be used in our app which shares video data among a few threads on an embedded device which is painfully slow doing memcpy()'s
+| [Saturday 26 March 2011] [14:31:05] <Zevv>	most of the messaging is probably ok to do using 0mq, but only the video data itself - several MB's per frame - can not be copied around for performance reasons
+| [Saturday 26 March 2011] [14:31:13] <Zevv>	is this a known scenario ?
+| [Saturday 26 March 2011] [14:58:55] <Guthur>	Zevv, sure you could pass the memory address around if you want
+| [Saturday 26 March 2011] [15:11:01] <dermoth|home>	Hey... I posted on the mailing list about PUSH/PULL sockets not failing over... now I'm reading 2.1 documentation, and it seems ZMQ_BACKLOG is what I want... Basically I want to fail over to other devices connected to the same socket as soon as possible, without alrering the high watermark
+| [Saturday 26 March 2011] [15:12:01] <dermoth|home>	so multiple devices can be used for redundancy, without queueing message if one is down.
+| [Saturday 26 March 2011] [15:17:41] <sustrik>	dermoth|home: ZMQ_BACKLOG has to do only with connecting, it has no effect on messages themselves
+| [Saturday 26 March 2011] [15:17:46] <sustrik>	see man listen
+| [Saturday 26 March 2011] [15:23:10] <dermoth|home>	oh
+| [Saturday 26 March 2011] [15:23:55] <dermoth|home>	right, i missed the "peer connection" part 
