@@ -5020,3 +5020,11 @@
 | [Saturday 26 March 2011] [15:17:46] <sustrik>	see man listen
 | [Saturday 26 March 2011] [15:23:10] <dermoth|home>	oh
 | [Saturday 26 March 2011] [15:23:55] <dermoth|home>	right, i missed the "peer connection" part 
+| [Saturday 26 March 2011] [16:08:34] <seb`>	can zeromq 2.1 talk to 2.0.10?
+| [Saturday 26 March 2011] [16:08:49] <sustrik>	let me see
+| [Saturday 26 March 2011] [16:08:58] <seb`>	it would make it easier to upgrade:-)
+| [Saturday 26 March 2011] [16:09:02] <seb`>	sustrik: thanks:-)
+| [Saturday 26 March 2011] [16:09:45] <sustrik>	yes, it can
+| [Saturday 26 March 2011] [16:09:52] <seb`>	cool
+| [Saturday 26 March 2011] [16:10:44] <seb`>	that will really save me from upgrade hell
+| [Saturday 26 March 2011] [16:11:02] <sustrik>	:)
