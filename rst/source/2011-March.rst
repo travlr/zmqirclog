@@ -5028,3 +5028,362 @@
 | [Saturday 26 March 2011] [16:09:52] <seb`>	cool
 | [Saturday 26 March 2011] [16:10:44] <seb`>	that will really save me from upgrade hell
 | [Saturday 26 March 2011] [16:11:02] <sustrik>	:)
+| [Saturday 26 March 2011] [16:30:38] <Guthur>	surely if it couldn't that would be a big issue
+| [Saturday 26 March 2011] [18:43:36] <thatch__>	Is there a way to verify that a remote zeromq server is available before atempting to connect to it?
+| [Saturday 26 March 2011] [19:05:02] <Guthur>	thatch__, you could checkout chapter 4 of the guide for some reliability patterns
+| [Saturday 26 March 2011] [19:05:37] <thatch__>	thanks :)
+| [Sunday 27 March 2011] [00:17:27] <EduardoFonseca>	Hi Guys. I'm trying to figure out how to implement connection dettection on top of zeroMQ. Any tips?
+| [Sunday 27 March 2011] [00:17:35] <EduardoFonseca>	*detection, sorry.
+| [Sunday 27 March 2011] [00:33:39] <seb`>	EduardoFonseca: you could send a first message to signal the connection
+| [Sunday 27 March 2011] [00:33:58] <seb`>	it would have to be added to your own protocol
+| [Sunday 27 March 2011] [00:37:56] <EduardoFonseca>	great
+| [Sunday 27 March 2011] [00:38:07] <EduardoFonseca>	but what about detecting when this connection has gone away?
+| [Sunday 27 March 2011] [00:38:43] <EduardoFonseca>	I tried implementing heartbeats, but the code started to get really complex. 
+| [Sunday 27 March 2011] [00:38:57] <seb`>	I was going to suggest that:-)
+| [Sunday 27 March 2011] [00:39:21] <seb`>	on req/rep a heartbeat should not be that complex
+| [Sunday 27 March 2011] [00:40:22] <EduardoFonseca>	I'm using XREQ and XREP... but the loadbalancing part got complex.
+| [Sunday 27 March 2011] [00:40:44] <EduardoFonseca>	I was planning to reimplement the Majordomo pattern... but, why use zeroMQ if you need a broker? :)
+| [Sunday 27 March 2011] [13:09:55] <mikko>	howdy guys
+| [Sunday 27 March 2011] [13:57:22] <Guthur>	hey mikko 
+| [Sunday 27 March 2011] [13:57:54] <Guthur>	do you know if Ian Barbers PHP presentation slides are available anywhere for download, besides slideshare
+| [Sunday 27 March 2011] [13:58:08] <mikko>	Guthur: let me check
+| [Sunday 27 March 2011] [13:59:19] <mikko>	his blog seems to be down
+| [Sunday 27 March 2011] [14:06:31] <Guthur>	ok, I'll check it later
+| [Sunday 27 March 2011] [14:06:36] <Guthur>	cheers mikko 
+| [Sunday 27 March 2011] [14:14:07] <mikko>	i can ask him for a pdf
+| [Sunday 27 March 2011] [14:25:19] <Guthur>	mikko, that would great, cheers
+| [Sunday 27 March 2011] [14:36:12] <pieter_hintjens>	Guthur: slideshare should offer downloads, doesn't it?
+| [Sunday 27 March 2011] [14:36:42] <Guthur>	pieter_hintjens, It does. i just didn't want to sign up
+| [Sunday 27 March 2011] [14:36:53] <pieter_hintjens>	yeah
+| [Sunday 27 March 2011] [14:41:29] <mikko>	finally got some more build capacity online
+| [Sunday 27 March 2011] [14:41:34] <mikko>	x86_64 centos
+| [Sunday 27 March 2011] [14:41:46] <mikko>	rpms are now built every night
+| [Sunday 27 March 2011] [14:43:01] <mikko>	pieter_hintjens: i'll try to add libzapi today
+| [Sunday 27 March 2011] [14:43:08] <pieter_hintjens>	mikko: nice!
+| [Sunday 27 March 2011] [14:43:18] <pieter_hintjens>	I also renamed ZFL to libzfl, you saw that
+| [Sunday 27 March 2011] [14:43:23] <mikko>	i did
+| [Sunday 27 March 2011] [14:43:27] <Guthur>	I was actually going to draw some inspiration from Ian's presentation for a presentation at work
+| [Sunday 27 March 2011] [14:43:28] <mikko>	i was away yesterday and today
+| [Sunday 27 March 2011] [14:43:31] <mikko>	spa weekend
+| [Sunday 27 March 2011] [14:43:42] <pieter_hintjens>	:-) it was excellent weather here in Belgium
+| [Sunday 27 March 2011] [14:43:42] <mikko>	been doing nothing but soaking in warm water
+| [Sunday 27 March 2011] [14:44:13] <Guthur>	I've been wanting to ask him if it would be ok to borrow some stuff, just haven't been able to catch him in here
+| [Sunday 27 March 2011] [14:49:07] 	 * pieterh is making a new version of the guide
+| [Sunday 27 March 2011] [14:49:18] <pieterh>	all code blocks highlighted, all collapsible (except a few)
+| [Sunday 27 March 2011] [14:49:19] <pieterh>	http://zguide.zeromq.org/test:ch1
+| [Sunday 27 March 2011] [15:40:18] 	 * pieterh has created a monster, the Guide won't load any longer...
+| [Sunday 27 March 2011] [15:45:24] <Guthur>	it loads for me
+| [Sunday 27 March 2011] [15:45:32] 	 * pieterh is fixing it as we speak...
+| [Sunday 27 March 2011] [15:45:37] <Guthur>	but there is issues with the language translation link
+| [Sunday 27 March 2011] [15:45:41] <Guthur>	links*
+| [Sunday 27 March 2011] [15:45:50] <pieterh>	yes, reload in a few heartbeats...
+| [Sunday 27 March 2011] [15:45:54] <pieterh>	the problem is the marked up code blocks are huge
+| [Sunday 27 March 2011] [15:46:10] <pieterh>	including 320 of them in the page kind of does not work
+| [Sunday 27 March 2011] [15:46:44] <Guthur>	hehe, I can imagine
+| [Sunday 27 March 2011] [15:47:06] <pieterh>	it should work better now, code examples appear in a new tab
+| [Sunday 27 March 2011] [15:47:17] <pieterh>	shame, it was kind of nice to have them inline...
+| [Sunday 27 March 2011] [15:50:17] <Guthur>	oh new tabs, umm, I tend to curse pages that do that
+| [Sunday 27 March 2011] [15:51:32] <Guthur>	is the C version still inline?
+| [Sunday 27 March 2011] [15:53:36] <pieterh>	well, nope, but I'm going to make a further round of improvements
+| [Sunday 27 March 2011] [15:53:52] <pieterh>	will inline the C version
+| [Sunday 27 March 2011] [15:53:58] <pieterh>	and ditto for the PHP version
+| [Sunday 27 March 2011] [15:56:28] <mikko>	pieterh: http://build.zero.mq/job/libzapi/3/console
+| [Sunday 27 March 2011] [15:56:38] <mikko>	ROUTER and DEALER are not in the main repo?
+| [Sunday 27 March 2011] [15:56:52] <mikko>	the one that sustrik maintains
+| [Sunday 27 March 2011] [15:56:55] <pieterh>	nope
+| [Sunday 27 March 2011] [15:57:07] <pieterh>	libzapi needs 2.1.latest
+| [Sunday 27 March 2011] [15:57:26] <pieterh>	I'm hoping sustrik will eventually make the ROUTER/DEALER changes but can't force him to
+| [Sunday 27 March 2011] [15:57:34] <pieterh>	mikko: hang on, I'
+| [Sunday 27 March 2011] [15:57:36] <mikko>	this situation is very confusing
+| [Sunday 27 March 2011] [15:57:39] <pieterh>	I'll make a patch to libzapi
+| [Sunday 27 March 2011] [15:57:50] <pieterh>	it'll become less confusing over time
+| [Sunday 27 March 2011] [15:57:58] <pieterh>	a lot of change happening in a lot of places...
+| [Sunday 27 March 2011] [15:58:03] <pieterh>	gimme 2 minutes...
+| [Sunday 27 March 2011] [15:58:09] <mikko>	no hurry
+| [Sunday 27 March 2011] [16:00:16] <pieterh>	mikko: ok, done, new version pushed
+| [Sunday 27 March 2011] [16:00:38] <mikko>	kicking off a new build
+| [Sunday 27 March 2011] [16:00:48] <mikko>	#4 on the way
+| [Sunday 27 March 2011] [16:00:51] <pieterh>	:-)
+| [Sunday 27 March 2011] [16:02:40] <mikko>	builds
+| [Sunday 27 March 2011] [16:02:52] <mikko>	http://build.zero.mq/job/libzapi/4/cobertura/_default_/
+| [Sunday 27 March 2011] [16:02:57] <mikko>	here is the code coverage
+| [Sunday 27 March 2011] [16:04:02] <mikko>	i will refactor the builds as soon as the repository rename happens
+| [Sunday 27 March 2011] [16:04:16] <Guthur>	pieterh, are you using ROUTER/DEALER in the guide
+| [Sunday 27 March 2011] [16:04:16] <mikko>	so that i can do the changes in one go
+| [Sunday 27 March 2011] [16:04:27] <pieterh>	Guthur: not yet, but that's the next step
+| [Sunday 27 March 2011] [16:04:45] <pieterh>	then, move the C code over to using libzapi
+| [Sunday 27 March 2011] [16:04:57] <pieterh>	mikko: sweet!
+| [Sunday 27 March 2011] [16:05:48] <mikko>	zeromq2-2, is this a new branch as well?
+| [Sunday 27 March 2011] [16:06:00] <pieterh>	mikko: yes, that's the packaging project for 2.2
+| [Sunday 27 March 2011] [16:06:10] <pieterh>	the packaging projects will include more than libzmq, hopefully
+| [Sunday 27 March 2011] [16:06:17] <mikko>	did my patch get through to the list ?
+| [Sunday 27 March 2011] [16:06:21] <pieterh>	but they'll track the libzmq major/minor versions
+| [Sunday 27 March 2011] [16:06:25] <pieterh>	yes, your patch made it
+| [Sunday 27 March 2011] [16:06:38] <mikko>	cool, not very good connectivity out in the sticks
+| [Sunday 27 March 2011] [16:06:56] <pieterh>	from the hot spas... :-)
+| [Sunday 27 March 2011] [16:08:02] <mikko>	so, what is the role of zeromq2, zeromq2-2 and zeromq2-1 repos?
+| [Sunday 27 March 2011] [16:08:14] <pieterh>	just for consistency, really
+| [Sunday 27 March 2011] [16:08:26] <pieterh>	zeromq2 will be deprecated, become a map for visitors who use the old URI
+| [Sunday 27 March 2011] [16:08:45] <mikko>	do we in the future push changes to upstream first?
+| [Sunday 27 March 2011] [16:08:48] <pieterh>	2-1 and 2-2 are packaging projects, 2-2 will be where we add new projects like libzapi
+| [Sunday 27 March 2011] [16:08:49] <mikko>	because that would be ideal
+| [Sunday 27 March 2011] [16:09:05] <pieterh>	yes, if possible
+| [Sunday 27 March 2011] [16:09:11] <pieterh>	sometimes it won't be possible
+| [Sunday 27 March 2011] [16:09:29] <pieterh>	the 3.0 libzmq core will eventually change too much
+| [Sunday 27 March 2011] [16:10:14] <pieterh>	we already had this case for one patch to 2.0, which had to be hand-made for that version
+| [Sunday 27 March 2011] [16:10:42] <mikko>	something in this model feels very wrong but i really can't put my finger on it
+| [Sunday 27 March 2011] [16:11:04] <mikko>	it feels like duplicating the effort in some ways
+| [Sunday 27 March 2011] [16:11:11] <pieterh>	in fact it's not
+| [Sunday 27 March 2011] [16:11:25] <mikko>	i made the openpgm build patches twice
+| [Sunday 27 March 2011] [16:11:30] <mikko>	2-1 and upstream
+| [Sunday 27 March 2011] [16:11:37] <pieterh>	yes, because you used pull requests to send to me
+| [Sunday 27 March 2011] [16:11:54] <pieterh>	and sustrik does not accept anything except patches to ML
+| [Sunday 27 March 2011] [16:12:03] <pieterh>	it would not change if we had one repo, two branches
+| [Sunday 27 March 2011] [16:12:33] <pieterh>	the advantage is you were able to get rapid feedback that your changes worked
+| [Sunday 27 March 2011] [16:12:39] <mikko>	so, we are still doing the patches on ML?
+| [Sunday 27 March 2011] [16:12:43] <pieterh>	if you send upstream, you have no control over when they are released
+| [Sunday 27 March 2011] [16:12:56] <pieterh>	i guess so, yes
+| [Sunday 27 March 2011] [16:13:09] <pieterh>	I'd rather use the pull model explained on the contributing page
+| [Sunday 27 March 2011] [16:13:26] <pieterh>	especially since that's how Sustriks sends me changes... :-/
+| [Sunday 27 March 2011] [16:14:25] <pieterh>	basically, any contributor has to convince the project owner to accept his patch
+| [Sunday 27 March 2011] [16:14:37] <pieterh>	project owner can define how patches are submitted
+| [Sunday 27 March 2011] [16:15:17] <pieterh>	and contributor is the one who stresses if project A and project B have different codebases
+| [Sunday 27 March 2011] [16:15:26] <Guthur>	but is this not sort of fracturing zeromq too much
+| [Sunday 27 March 2011] [16:15:30] <pieterh>	nah
+| [Sunday 27 March 2011] [16:15:32] <mikko>	yes, it is
+| [Sunday 27 March 2011] [16:15:33] <Guthur>	projects with in a project
+| [Sunday 27 March 2011] [16:15:40] <pieterh>	libzmq != ZeroMQ
+| [Sunday 27 March 2011] [16:15:42] <mikko>	this puts more pressure on contributors
+| [Sunday 27 March 2011] [16:15:49] <pieterh>	yes, mikko, it does
+| [Sunday 27 March 2011] [16:15:59] <pieterh>	but that's necessary if we're not to have bottlenecks
+| [Sunday 27 March 2011] [16:16:15] <mikko>	we already have massive bottlenecks
+| [Sunday 27 March 2011] [16:16:27] <pieterh>	yes, but this is one big one removed
+| [Sunday 27 March 2011] [16:16:32] <mikko>	we have three separate branches as three separate projects
+| [Sunday 27 March 2011] [16:16:43] <pieterh>	that's not a bottleneck... 
+| [Sunday 27 March 2011] [16:16:44] <mikko>	every contributor has to mix and match their patches
+| [Sunday 27 March 2011] [16:16:52] <mikko>	and only one person can accept that patch
+| [Sunday 27 March 2011] [16:17:01] <pieterh>	sorry, this isn't accurate, mikko
+| [Sunday 27 March 2011] [16:17:04] <mikko>	if that person is on hols your patch is sitting and waiting somewhere
+| [Sunday 27 March 2011] [16:17:26] <pieterh>	this is standard with Git
+| [Sunday 27 March 2011] [16:17:36] <pieterh>	you send patches or pull requests to a project maintainer
+| [Sunday 27 March 2011] [16:17:41] <mikko>	no, it's not 
+| [Sunday 27 March 2011] [16:17:52] <pieterh>	you want everyone to commit to the repository?
+| [Sunday 27 March 2011] [16:17:55] <mikko>	this is one possible workflow
+| [Sunday 27 March 2011] [16:18:08] <mikko>	who do you mean by everyone?
+| [Sunday 27 March 2011] [16:18:13] <pieterh>	it's the one that scales to many projects, because each one is smallish
+| [Sunday 27 March 2011] [16:18:43] <pieterh>	and this only affects libzmq because it's got several incompatible versions
+| [Sunday 27 March 2011] [16:18:57] <pieterh>	that is only one project out of 20 or 30
+| [Sunday 27 March 2011] [16:20:50] <pieterh>	mikko: do you have an alternative proposal that lets us do what we want to do?
+| [Sunday 27 March 2011] [16:21:20] <mikko>	currently we are doing everything very differently from what people contributing to open source are used to
+| [Sunday 27 March 2011] [16:21:31] <mikko>	and that alienates contributors 
+| [Sunday 27 March 2011] [16:21:44] <pieterh>	that's true if you look at the core project but it's not true for the overall scheme
+| [Sunday 27 March 2011] [16:22:22] <pieterh>	each project accepts contributors and contributions in its own way
+| [Sunday 27 March 2011] [16:22:32] <pieterh>	this is consistent with how open source communities work
+| [Sunday 27 March 2011] [16:22:44] <pieterh>	the only difference here is we have separate projects for *packaging* ZeroMQ
+| [Sunday 27 March 2011] [16:22:52] <pieterh>	but that is necessary because libzmq != ZeroMQ
+| [Sunday 27 March 2011] [16:23:02] <pieterh>	which will become much clearer once the core repo is renamed
+| [Sunday 27 March 2011] [16:23:37] <mikko>	a contributor should not need to understand this amazing complex grand schema
+| [Sunday 27 March 2011] [16:23:55] <pieterh>	well, we do have a lot of projects, how do you propose to map this?
+| [Sunday 27 March 2011] [16:23:57] <mikko>	it should be as straigh-forward as: i run 2.1, find the git repo, make a patch
+| [Sunday 27 March 2011] [16:24:04] <pieterh>	the packaging projects are largely hidden
+| [Sunday 27 March 2011] [16:24:17] <pieterh>	make your patches against the libzmq git
+| [Sunday 27 March 2011] [16:24:33] <mikko>	this should not be followed by having to understand that actually if my patch goes to libzmq i need to get it accepted to zeromq2-2 and zeromq2-1
+| [Sunday 27 March 2011] [16:24:46] <mikko>	and possibly need to rework the patch for each version separately
+| [Sunday 27 March 2011] [16:24:51] <pieterh>	well, fair enough, but understand that...
+| [Sunday 27 March 2011] [16:25:04] <pieterh>	these repositories are for stabilization 
+| [Sunday 27 March 2011] [16:25:12] <mikko>	but they aren't
+| [Sunday 27 March 2011] [16:25:20] <pieterh>	that means they only in theory get bug fixes or very safe functional changes
+| [Sunday 27 March 2011] [16:25:21] <mikko>	we pushed openpgm build fixes straight to 2-1
+| [Sunday 27 March 2011] [16:25:29] <mikko>	not through 'libzmq' repo
+| [Sunday 27 March 2011] [16:25:36] <pieterh>	indeed, let's not do that again
+| [Sunday 27 March 2011] [16:25:45] <pieterh>	however, realize that it's how you got those changes *tested* rapidly
+| [Sunday 27 March 2011] [16:26:00] <pieterh>	next time, send to the ML
+| [Sunday 27 March 2011] [16:26:07] <Guthur>	i've not really seen various version of a library being seen as projects
+| [Sunday 27 March 2011] [16:26:22] <pieterh>	RHEL x.x?
+| [Sunday 27 March 2011] [16:26:23] <Guthur>	if that happens they usually fork off and rename, 
+| [Sunday 27 March 2011] [16:26:55] <Guthur>	not familiar with RH to be honest
+| [Sunday 27 March 2011] [16:27:02] <pieterh>	the linux kernel is repackaged in many distributions, each is a project
+| [Sunday 27 March 2011] [16:27:42] <Guthur>	yes but are we not talking about the 'kernel' at the moment
+| [Sunday 27 March 2011] [16:27:51] <pieterh>	well, libzmq is like the kernel for ZeroMQ
+| [Sunday 27 March 2011] [16:28:14] <pieterh>	mikko: next time you send me a pull request for 2-1, I'll reject it, OK?
+| [Sunday 27 March 2011] [16:28:19] <Guthur>	so 2, 2-1, 2-2 are distros?
+| [Sunday 27 March 2011] [16:28:24] <pieterh>	yes, thank you
+| [Sunday 27 March 2011] [16:28:29] <pieterh>	2 is not
+| [Sunday 27 March 2011] [16:28:33] <pieterh>	2 is dead
+| [Sunday 27 March 2011] [16:28:45] <pieterh>	will be dead once it's been renamed to libzmq
+| [Sunday 27 March 2011] [16:29:04] <Guthur>	seems I a bit crazy to me, but i'm not overly experienced with these sort of things
+| [Sunday 27 March 2011] [16:29:26] <pieterh>	there is no other way to create the freedom to make real packaging projects
+| [Sunday 27 March 2011] [16:29:36] <pieterh>	it seems pretty clear to me
+| [Sunday 27 March 2011] [16:29:53] <pieterh>	alternative is to all work in one repo, and have no packaging projects
+| [Sunday 27 March 2011] [16:30:02] <mikko>	hahaha, you designed the schema
+| [Sunday 27 March 2011] [16:30:07] <mikko>	of course it's clear to you
+| [Sunday 27 March 2011] [16:30:16] <pieterh>	sure
+| [Sunday 27 March 2011] [16:30:22] <mikko>	but from contributor's point of view the situation is not very good (imho)
+| [Sunday 27 March 2011] [16:30:33] <pieterh>	well, it'll be clearer IMO when libzmq is properly named
+| [Sunday 27 March 2011] [16:30:43] <pieterh>	"send your patch to the libzmq project"
+| [Sunday 27 March 2011] [16:30:50] <pieterh>	and that can downstream to the various distros
+| [Sunday 27 March 2011] [16:30:53] <mikko>	what happens when sustrik is on holidays?
+| [Sunday 27 March 2011] [16:31:00] <pieterh>	ask him, I don't know
+| [Sunday 27 March 2011] [16:31:10] <pieterh>	mikko: this is not a command-and-control model
+| [Sunday 27 March 2011] [16:31:13] <mikko>	see, are we not creating massive bottlenecks?
+| [Sunday 27 March 2011] [16:31:28] <pieterh>	propose an alternative to "person who knows the code real well"
+| [Sunday 27 March 2011] [16:31:38] <pieterh>	we're not *creating* that bottleneck, it exists
+| [Sunday 27 March 2011] [16:31:48] <pieterh>	seriously, your alternative is what, clone sustrik?
+| [Sunday 27 March 2011] [16:32:05] <pieterh>	there are other people who know the core structures pretty well
+| [Sunday 27 March 2011] [16:32:14] <pieterh>	if sustrik is unable to act as maintainer, I'm sure he'll delegate
+| [Sunday 27 March 2011] [16:32:21] <pieterh>	but it is *his* responsibility
+| [Sunday 27 March 2011] [16:32:35] <pieterh>	you and me can debate that for years, it matters not at all
+| [Sunday 27 March 2011] [16:32:52] <mikko>	yes, what i don't get is this cycle:
+| [Sunday 27 March 2011] [16:32:56] <Guthur>	could we not have the situation where the 'distros' start deviating quite far from the main dev branch
+| [Sunday 27 March 2011] [16:33:05] <pieterh>	Guthur: unlikely, why would they?
+| [Sunday 27 March 2011] [16:33:31] <mikko>	fork libzmq, create patch, commit, create signed patch, reset, wait for a merge, then pull down your own changes 
+| [Sunday 27 March 2011] [16:33:32] <pieterh>	the very point is that the people maintaining distros don't know the code
+| [Sunday 27 March 2011] [16:33:40] <Guthur>	just curious really, they seemed to have become more than just previous versions
+| [Sunday 27 March 2011] [16:33:46] <pieterh>	mikko: ack, it's complex and I don't like it
+| [Sunday 27 March 2011] [16:33:50] <Guthur>	they seemed to have become their own projects
+| [Sunday 27 March 2011] [16:34:06] <mikko>	forgot the "send mail to mailing-list" from that 
+| [Sunday 27 March 2011] [16:34:12] <pieterh>	Guthur: 'seem to' is mild, the goal was to create dependent projects
+| [Sunday 27 March 2011] [16:34:16] <pieterh>	mikko: yes, I know
+| [Sunday 27 March 2011] [16:34:29] <pieterh>	I've lobbied sustrik on this several times, here and on the list
+| [Sunday 27 March 2011] [16:34:49] <pieterh>	next time, chime in, on the ML thread ... :-/
+| [Sunday 27 March 2011] [16:35:10] <mikko>	i had forgotten about the ML patches already
+| [Sunday 27 March 2011] [16:35:18] <pieterh>	I spent a lot of effort documenting alternative flows on the contributing page
+| [Sunday 27 March 2011] [16:39:55] <Guthur>	pieterh, dependent or independent?
+| [Sunday 27 March 2011] [16:40:04] <pieterh>	both :-)
+| [Sunday 27 March 2011] [16:40:17] <pieterh>	look, 2-1 is not a good example, it's too young
+| [Sunday 27 March 2011] [16:40:33] <Guthur>	though it already as deviation
+| [Sunday 27 March 2011] [16:40:36] <pieterh>	2-2 will include, in my plans, libzmq, libzapi, the new C++ binding
+| [Sunday 27 March 2011] [16:40:43] <Guthur>	where something needs forward ported
+| [Sunday 27 March 2011] [16:40:53] <pieterh>	obviously it depends on those N projects
+| [Sunday 27 March 2011] [16:41:03] <Guthur>	admittedly only a minor #define
+| [Sunday 27 March 2011] [16:41:11] <pieterh>	yes
+| [Sunday 27 March 2011] [16:41:32] <pieterh>	one way would be to use submodules and branches in the source repo
+| [Sunday 27 March 2011] [16:41:50] <pieterh>	that would require that the branches are maintained in that repo
+| [Sunday 27 March 2011] [16:42:26] <pieterh>	experience is that this wasn't happening, due to complexity of moving changes between branches (or somesuch)
+| [Sunday 27 March 2011] [16:42:47] <pieterh>	lack of interest from main developers in maintaining branches
+| [Sunday 27 March 2011] [16:42:54] <mikko>	it's the same amount of complexity as between different repos
+| [Sunday 27 March 2011] [16:42:58] <pieterh>	yes
+| [Sunday 27 March 2011] [16:43:12] <pieterh>	exactly, but with different repos, you can slice the work over several people much more easily
+| [Sunday 27 March 2011] [16:43:22] <pieterh>	this is the key insight
+| [Sunday 27 March 2011] [16:43:31] <pieterh>	collaborating inside one repo is really difficult
+| [Sunday 27 March 2011] [16:43:35] <pieterh>	it demands agreement
+| [Sunday 27 March 2011] [16:43:42] <pieterh>	clearly we don't get that easily
+| [Sunday 27 March 2011] [16:43:44] <Guthur>	I thought git made it easier
+| [Sunday 27 March 2011] [16:43:54] <pieterh>	it doesn't change people and make them less stubborn
+| [Sunday 27 March 2011] [16:43:58] <Guthur>	certainly easier than the likes of SVN
+| [Sunday 27 March 2011] [16:44:04] <pieterh>	git makes it easier to have many repos
+| [Sunday 27 March 2011] [16:44:15] 	 * Guthur has SVN pain at work, it's not pretty
+| [Sunday 27 March 2011] [16:44:19] <pieterh>	indeed
+| [Sunday 27 March 2011] [16:44:34] <pieterh>	git lets us solve the problem by slicing projects up, like I said on the ML, per ego
+| [Sunday 27 March 2011] [16:44:45] <pieterh>	it's actually a really pleasant way to work
+| [Sunday 27 March 2011] [16:44:53] <Guthur>	yeah, that discussion got a little out of hand
+| [Sunday 27 March 2011] [16:45:09] <Guthur>	well it appeared so from an onlookers perspective
+| [Sunday 27 March 2011] [16:45:14] <pieterh>	exactly, and that was the same last time we discussed multiple branches in the main repo
+| [Sunday 27 March 2011] [16:46:39] <pieterh>	that was sometime in July iir, and my conclusion was "don't work in the core repo, ever"
+| [Sunday 27 March 2011] [16:47:18] <mikko>	as the community grows an ideal process to me would be to have multiple people with commit access
+| [Sunday 27 March 2011] [16:47:29] <mikko>	and each set of changes is mailed automatically to mailing-list
+| [Sunday 27 March 2011] [16:47:52] <pieterh>	mikko: yes, probably a good model
+| [Sunday 27 March 2011] [16:48:36] <mikko>	this also gives more visibility to changes going into repo and allows easily start conversation on mailing-list
+| [Sunday 27 March 2011] [16:48:53] <pieterh>	however, I'm not going to raise this discussion for libzmq
+| [Sunday 27 March 2011] [16:49:15] <pieterh>	you already have committer access to libzapi and libzfl
+| [Sunday 27 March 2011] [16:50:25] <Guthur>	libzmq is the heart of it all though, and so the most important
+| [Sunday 27 March 2011] [16:50:27] <mikko>	yes
+| [Sunday 27 March 2011] [16:50:39] <mikko>	for example now i would be keen on getting coverage into libzmq
+| [Sunday 27 March 2011] [16:50:39] <pieterh>	yes
+| [Sunday 27 March 2011] [16:50:51] <mikko>	but it's futile to work on the stuff before openpgm patch has been merged
+| [Sunday 27 March 2011] [16:51:08] <pieterh>	mikko: my experience contributing to core has been quite negative, I have to admit
+| [Sunday 27 March 2011] [16:51:10] <mikko>	i don't even know if rebase works well on that cycle
+| [Sunday 27 March 2011] [16:51:50] <mikko>	as in, when i pull back the changes merged by sustrik does that conflict with my local changes?
+| [Sunday 27 March 2011] [16:51:59] <mikko>	or is it the same commit?
+| [Sunday 27 March 2011] [16:52:08] <pieterh>	depends how you do it IMO
+| [Sunday 27 March 2011] [16:58:43] <pieterh>	Guthur: OK, I'm able to inline the main language, the page is slow but loads
+| [Sunday 27 March 2011] [17:00:28] <Seta00>	pieterh: the libzapi project file is broken
+| [Sunday 27 March 2011] [17:00:54] <pieterh>	Seta00: yes, I've not tested it yet on MSVC
+| [Sunday 27 March 2011] [17:01:03] <pieterh>	do you want to try fixing it and sending a patch?
+| [Sunday 27 March 2011] [17:01:25] <Seta00>	yes
+| [Sunday 27 March 2011] [17:01:31] <pieterh>	it's a copy of the libzfl project file, but obviously refers to the wrong sources & includes
+| [Sunday 27 March 2011] [17:01:33] <pieterh>	thanks! :-)
+| [Sunday 27 March 2011] [17:06:19] <pieterh>	g'night folks, I need to crash, early morning tomorrow
+| [Sunday 27 March 2011] [17:06:48] <Seta00>	pieterh: just a small question before you go, if you have to include non-standard headers to the project, where should they go? on the standard include directory?
+| [Sunday 27 March 2011] [17:06:55] <Seta00>	(MSVC doesn't have inttypes.h)
+| [Sunday 27 March 2011] [17:07:05] <Seta00>	but there's https://code.google.com/p/msinttypes/
+| [Sunday 27 March 2011] [17:07:24] <pieterh>	Seta00: hmm, edit zapi_prelude.h to include the right files and move the existing include to one of the #if UNIX blocks
+| [Sunday 27 March 2011] [17:07:33] <Seta00>	okay thanks
+| [Sunday 27 March 2011] [17:07:49] <pieterh>	there's a section in the doc on Porting libzapi, may be helpful
+| [Sunday 27 March 2011] [17:39:14] <Seta00>	apparently msvc has no implementation of sigaction
+| [Sunday 27 March 2011] [17:39:23] <Seta00>	:(
+| [Sunday 27 March 2011] [17:42:31] <JusticeFries>	what are the differences in typical use cases for 0mq vs something like rabbitmq?
+| [Sunday 27 March 2011] [19:05:16] <klestes>	hello, is anyone talking today ?
+| [Sunday 27 March 2011] [19:19:27] <klestes>	if anyone does see this, what is the best way to interoperate with channels in basic (non 0MQ) tcp ?  do you have to write a custom gateway, TCP <--> 0MQ, or is there a better solution inherent in 0MQ that I've missed ?
+| [Sunday 27 March 2011] [19:20:09] <jdroid->	i've been using zmq with python and am trying to compile some stuff with c now, but I keep getting errors.
+| [Sunday 27 March 2011] [19:20:36] <jdroid->	does this make sense to anyone? http://pastebin.com/7Mj5KSSH
+| [Sunday 27 March 2011] [19:20:44] 	 * jdroid- is very rusty with c...
+| [Sunday 27 March 2011] [19:21:06] <jdroid->	here's the code: http://pastebin.com/efKgRJiK
+| [Sunday 27 March 2011] [19:21:22] <klestes>	you have to program a lot lower with C than with python - how would you say the experience has been using python with 0MQ ?
+| [Sunday 27 March 2011] [19:22:06] <jdroid->	The experience with python has been awesome so far. Very easy.
+| [Sunday 27 March 2011] [19:22:23] <jdroid->	I built a Mongrel2 handler with eventlet and zeromq recently. github.com/j2labs/brubeck
+| [Sunday 27 March 2011] [19:23:20] <jdroid->	I've been posting a few pyzmq examples to github as it comes up in conversation, but I want to add a multilang example AND get back in C doing it.
+| [Sunday 27 March 2011] [19:23:26] <jdroid->	https://github.com/j2labs/zmq_examples
+| [Sunday 27 March 2011] [19:23:53] <klestes>	after learning Perl, my goal is never go back to C!  Evah !
+| [Sunday 27 March 2011] [19:24:13] <jdroid->	After learning Perl, I vowed never to go back to Perl. So right back atcha buddy!
+| [Sunday 27 March 2011] [19:24:31] <jdroid->	:)
+| [Sunday 27 March 2011] [19:24:47] <klestes>	also you might want to check out the new zapi.  Hintjen is very excited about it, so it could be big.
+| [Sunday 27 March 2011] [19:25:06] <klestes>	well, I'm not going to stir up a fight.  I have a lot of respect for Python, and might be doing some work in it soon myself.
+| [Sunday 27 March 2011] [19:26:28] <klestes>	my point was to be, programming 0MQ in either python or perl is much easier than C, IMHO.
+| [Sunday 27 March 2011] [19:26:52] <jdroid->	Well I'm only kidding anyway. Perl is a fine language if you're working with people who respect others. :)
+| [Sunday 27 March 2011] [19:28:29] <klestes>	It has its warts, and its uhm, non warty really ok type features.
+| [Sunday 27 March 2011] [19:28:53] <klestes>	I get sick of all those $ signs all the time, esp. since its been a while since I've seen $$$$ !
+| [Sunday 27 March 2011] [19:29:32] <jdroid->	You'll dig python then I'm sure. The code is generally as easy to read as people say.
+| [Sunday 27 March 2011] [19:29:38] <jdroid->	But anyway... I'm trying to get some c compiled!
+| [Sunday 27 March 2011] [19:29:52] <klestes>	I looked at your code, but not being in C for at least a decade, I couildn't catch anything right off the bat.  I know its either a linking issue, or maybe forgetting to include a header (but you seem to have done that right)
+| [Sunday 27 March 2011] [19:30:19] <klestes>	what compiler are you using, Gcc ?
+| [Sunday 27 March 2011] [19:31:03] <jdroid->	oh great question actually... i'm using the gcc xcode gave me
+| [Sunday 27 March 2011] [19:31:34] <jdroid->	seems to compile mongrel2 just fine, so i figure i've got my args wrong somehow
+| [Sunday 27 March 2011] [19:31:50] <jdroid->	gcc 4.2.1 specifically tho
+| [Sunday 27 March 2011] [19:31:51] <klestes>	uhm, xcode - are you on OS/X ?
+| [Sunday 27 March 2011] [19:31:54] <jdroid->	yep
+| [Sunday 27 March 2011] [19:31:59] <klestes>	lucky guy !
+| [Sunday 27 March 2011] [19:32:09] <jdroid->	i guess..? macs are cheap these days
+| [Sunday 27 March 2011] [19:32:18] <klestes>	someday I'm gonna go mac...and never come back.
+| [Sunday 27 March 2011] [19:32:33] <klestes>	well, depends on what kinda mac you want.  the one I want is 2.5 - 3k.
+| [Sunday 27 March 2011] [19:34:03] <klestes>	try compiling and linking one of the simple examples from the guide.  do you get the same errors ?
+| [Sunday 27 March 2011] [19:35:54] <jdroid->	i seem to get the same errrors
+| [Sunday 27 March 2011] [19:35:56] <jdroid->	hmm
+| [Sunday 27 March 2011] [19:36:11] <jdroid->	i tried this: http://zguide.zeromq.org/c:hwclient
+| [Sunday 27 March 2011] [19:38:51] <jdroid->	ah got it
+| [Sunday 27 March 2011] [19:39:00] <jdroid->	i forgot -lzmq at the end of the gcc cmd
+| [Sunday 27 March 2011] [19:39:42] <JusticeFries>	what is the difference in typical use case for 0mq versus something in the realm of rabbitmq?
+| [Sunday 27 March 2011] [19:40:05] <jdroid->	JusticeFries: I think the mistake there is assuming zmq is a replacement for rabbitmq
+| [Sunday 27 March 2011] [19:40:19] <JusticeFries>	nope
+| [Sunday 27 March 2011] [19:40:23] <JusticeFries>	not assuming replacement.
+| [Sunday 27 March 2011] [19:40:30] <JusticeFries>	i'm interested in how they complement each other, too. :)
+| [Sunday 27 March 2011] [19:40:34] <JusticeFries>	and what each one excels at.
+| [Sunday 27 March 2011] [19:40:53] <jdroid->	:)
+| [Sunday 27 March 2011] [19:41:30] <jdroid->	So ZMQ is more like sockets with messaging semantics. You'd still build your broker, which might be dropping stuff from one zmq socket in a db, while sending stuff out of the db across another socket
+| [Sunday 27 March 2011] [19:41:58] <JusticeFries>	okay.
+| [Sunday 27 March 2011] [19:42:05] <JusticeFries>	unix sockets, or something more specific to ZMQ?
+| [Sunday 27 March 2011] [19:42:16] <jdroid->	Zmq offers multiple types of sockets.
+| [Sunday 27 March 2011] [19:42:21] <JusticeFries>	fair enough.
+| [Sunday 27 March 2011] [19:42:25] <jdroid->	You could use unix sockets if you want. You could use tcp just as easily
+| [Sunday 27 March 2011] [19:43:49] <JusticeFries>	so then - I'm looking at doing something that settles somewhere near rabbit's topic exchanges. basically, using it for some group messaging functions for end users that doesn't hit the DB.
+| [Sunday 27 March 2011] [19:43:52] <klestes>	I've heard that rabbitMQ is somewhat synergetic with ZMQ, it can be made into a broker.
+| [Sunday 27 March 2011] [19:44:01] <JusticeFries>	i've heard that too.
+| [Sunday 27 March 2011] [19:44:10] <klestes>	we musta read the same article ;)_
+| [Sunday 27 March 2011] [19:44:15] <JusticeFries>	just not sure where to fit it in, or if it is even useful in this current context.
+| [Sunday 27 March 2011] [19:44:44] <jdroid->	what you heard is probably that zeromq has amqp support: http://www.zeromq.org/docs:welcome-from-amqp
+| [Sunday 27 March 2011] [19:44:58] <JusticeFries>	either that or ilya's blog.
+| [Sunday 27 March 2011] [19:45:02] <JusticeFries>	igvita
+| [Sunday 27 March 2011] [19:45:33] <JusticeFries>	heh I like the gross generalizations.
+| [Sunday 27 March 2011] [19:45:46] <jdroid->	thanks. i'm the James Dennis that's quoted!
+| [Sunday 27 March 2011] [19:45:51] <klestes>	yeah, he does that well :)
+| [Sunday 27 March 2011] [19:45:59] <JusticeFries>	ha nice.
+| [Sunday 27 March 2011] [19:46:13] <klestes>	its a small 0world after all.
+| [Sunday 27 March 2011] [19:46:26] <JusticeFries>	well i may assault you with questions later - though the guide is pretty extensive
+| [Sunday 27 March 2011] [19:46:34] <klestes>	0mq used to - didn't they chunk the amqp thang ?
+| [Sunday 27 March 2011] [19:46:49] <klestes>	yeah, and it seems to be getting biggeer and betta' all the time...
+| [Sunday 27 March 2011] [21:35:55] <jdroid->	These slides are awesome: http://www.slideshare.net/IanBarber/zeromq-is-the-answer
+| [Sunday 27 March 2011] [21:41:34] <xet>	hi
+| [Sunday 27 March 2011] [21:42:33] <xet>	im doing some tests in a small pub/sub app
+| [Sunday 27 March 2011] [21:42:43] <xet>	need some help
+| [Monday 28 March 2011] [03:29:36] <guido_g>	pieterh: what the hell did you do to the guide? firefox uses 100% cpu and opera takes ages to load the page.
+| [Monday 28 March 2011] [06:59:32] <pieterh>	guido_g: hi
