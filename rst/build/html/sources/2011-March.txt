@@ -4722,4 +4722,859 @@
 | [Thursday 24 March 2011] [13:58:41] <klestes>	once I have these two chatting, I introduce a second client PULLing from the server as well.
 | [Thursday 24 March 2011] [13:59:01] <klestes>	my question is, upon introduction of the second client, will the load be balanced again ?
 | [Thursday 24 March 2011] [14:03:19] <klestes>	(oooh! FF6 is out !)
-| [Thursday 
+| [Thursday 24 March 2011] [14:03:53] <klestes>	(sorry, bug in my FPU, thats FF4)
+| [Thursday 24 March 2011] [14:08:12] <sustrik>	patches to the spelling are acceptable
+| [Thursday 24 March 2011] [14:09:02] <sustrik>	the load already assigned to the first client won't be re-balanced
+| [Thursday 24 March 2011] [14:09:11] <sustrik>	but new messages will be
+| [Thursday 24 March 2011] [14:10:13] <klestes>	ok, thats what I had thought the proper behavior should be.
+| [Thursday 24 March 2011] [14:10:40] <klestes>	where in the source is the load balancing mechanism ?
+| [Thursday 24 March 2011] [14:14:53] <cremes>	sustrik: running a test using jemalloc and LD_PRELOAD on linux
+| [Thursday 24 March 2011] [14:14:58] <cremes>	results look promising so far
+| [Thursday 24 March 2011] [14:23:04] <pieterh>	sustrik: actually there are some nice improvements in the 2.2 branch over 2.1...
+| [Thursday 24 March 2011] [14:23:22] <pieterh>	e.g. checking &logging of duplicate identities...
+| [Thursday 24 March 2011] [14:23:26] <pieterh>	I'll check them all
+| [Thursday 24 March 2011] [14:25:51] <cremes>	pieterh: i have an open ticket on that duplicate identity commit; i get crashes with it
+| [Thursday 24 March 2011] [14:26:06] <pieterh>	cremes: ah, right...
+| [Thursday 24 March 2011] [14:26:18] <pieterh>	well, 2.2 is not going to be stable for a while, that's OK
+| [Thursday 24 March 2011] [14:26:37] <cremes>	true; hopefully i'll be able to come up with a small repro
+| [Thursday 24 March 2011] [14:27:51] <Guthur>	is 2.2 available?
+| [Thursday 24 March 2011] [14:27:59] <Guthur>	is it the pgm stuff?
+| [Thursday 24 March 2011] [14:28:03] <pieterh>	Guthur: not yet, soon enough
+| [Thursday 24 March 2011] [14:28:08] <pieterh>	the pgm stuff is already in 2.1
+| [Thursday 24 March 2011] [14:28:33] <klestes>	can you not get 2.2 with git ?
+| [Thursday 24 March 2011] [14:28:41] <sustrik>	still missing in master :(
+| [Thursday 24 March 2011] [14:28:56] <pieterh>	sustrik: what's missing in master?
+| [Thursday 24 March 2011] [14:28:59] <pieterh>	ah, yes
+| [Thursday 24 March 2011] [14:29:01] <sustrik>	jemalloc: let me know whether it helps
+| [Thursday 24 March 2011] [14:29:24] <pieterh>	sustrik, mikko is still working on making a patch, maybe he's stuck, I'll ask him... I know he's real busy right now
+| [Thursday 24 March 2011] [14:29:39] <pieterh>	I'm applying those openpgm changes to 2.2, I'll see if it works
+| [Thursday 24 March 2011] [14:29:55] <pieterh>	configure.in, Makefile.am, libpgm tarball, that's it...
+| [Thursday 24 March 2011] [14:38:45] <Guthur>	would it be possible to expose the subscription mechanism on SUB sockets, so that people could maybe add other models to replace the prefix one
+| [Thursday 24 March 2011] [14:39:32] <Guthur>	this is in relation to 3.0
+| [Thursday 24 March 2011] [14:47:04] <pieterh>	Guthur: it's a neat idea but probably quite difficult to make happen
+| [Thursday 24 March 2011] [14:56:33] <sustrik>	Guthur: can be doable on top of 0mq, with XPUB/XSUB sockets
+| [Thursday 24 March 2011] [14:56:37] <sustrik>	when those are finished :)
+| [Thursday 24 March 2011] [14:58:19] <pieterh>	sustrik: upstream arbitrary subscription keys?
+| [Thursday 24 March 2011] [15:02:24] <sustrik>	possibly
+| [Thursday 24 March 2011] [15:02:27] <sustrik>	we'll see
+| [Thursday 24 March 2011] [15:02:35] <sustrik>	it's not done yet
+| [Thursday 24 March 2011] [15:02:54] <pieterh>	could be fun to turn xpub sockets into mini exchanges
+| [Thursday 24 March 2011] [15:03:42] <pieterh>	sustrik: if you want a patch for the openpgm stuff, I can make it, have tested that on 2.2
+| [Thursday 24 March 2011] [15:04:14] <pieterh>	but I think you want the real author's patch... sigh
+| [Thursday 24 March 2011] [15:04:20] <pieterh>	well, it's LGPL
+| [Thursday 24 March 2011] [15:04:28] <pieterh>	already signed off
+| [Thursday 24 March 2011] [15:04:50] <pieterh>	this whole free software concept sometimes confuses me... :-)
+| [Thursday 24 March 2011] [15:29:39] <Guthur>	cool, I look forward to seeing XSUB and XPUB
+| [Thursday 24 March 2011] [15:29:55] <Guthur>	will they need to be renamed after they have been released for a while, hehe
+| [Thursday 24 March 2011] [15:31:31] <cremes>	Guthur: yes, they are going to be renamed SUCK and BLOW
+| [Thursday 24 March 2011] [15:31:51] <cremes>	no one raised any objection on the mailing list, so that's going into 2.1.4 
+| [Thursday 24 March 2011] [15:31:52] <cremes>	:)
+| [Thursday 24 March 2011] [15:41:59] <jond>	cremes: what's the conclusion on jemalloc
+| [Thursday 24 March 2011] [15:42:39] <cremes>	jond: superior to glibc malloc on linux for the way i use 0mq
+| [Thursday 24 March 2011] [15:43:10] <cremes>	the memory footprint still grows, but now the 'fragmentation leak' is slower
+| [Thursday 24 March 2011] [15:43:40] <jond>	cremes: does jemalloc just replace malloc/free et al or the C++ operator's as well
+| [Thursday 24 March 2011] [15:44:10] <cremes>	jond: it's my understanding that under the covers C++ #new, et al. are calling malloc/free
+| [Thursday 24 March 2011] [15:44:20] <cremes>	so jemalloc replaces them too
+| [Thursday 24 March 2011] [15:44:32] <pieterh>	cremes: sometimes you're evil...
+| [Thursday 24 March 2011] [15:44:49] <cremes>	pieterh: ah, you like the new pub/sub names then?
+| [Thursday 24 March 2011] [15:45:07] <pieterh>	I think the old names were fine (PUB/SUB)
+| [Thursday 24 March 2011] [15:45:35] 	 * cremes is leaving shortly to do evil elsewhere
+| [Thursday 24 March 2011] [15:45:53] <jond>	cremes: ok ; think I asked the tcmalloc people a while back and technically new etc don't have to use malloc free ....
+| [Thursday 24 March 2011] [15:46:29] <cremes>	jond: that's true; from comments i have read while researching this stuff, no one was able to find a case where c++ did *not*
+| [Thursday 24 March 2011] [15:46:31] <jond>	pieterh: HOOKER and PIMP?
+| [Thursday 24 March 2011] [15:46:33] <cremes>	use malloc/free
+| [Thursday 24 March 2011] [15:46:46] <pieterh>	HOOKER would be XSUB then?
+| [Thursday 24 March 2011] [15:46:53] <cremes>	jond: ooh, good replacement names for PUSH/PULL
+| [Thursday 24 March 2011] [15:47:05] <cremes>	:)
+| [Thursday 24 March 2011] [15:47:12] <pieterh>	where does JOHN fit in? that's my question
+| [Thursday 24 March 2011] [15:47:32] <cremes>	pieterh: PAIR -> JOHN
+| [Thursday 24 March 2011] [15:47:45] <pieterh>	surely PAIR-> FABIO
+| [Thursday 24 March 2011] [15:47:53] <cremes>	surely
+| [Thursday 24 March 2011] [15:48:05] <pieterh>	let's start a Naming Committee
+| [Thursday 24 March 2011] [15:48:14] <pieterh>	with its own repository
+| [Thursday 24 March 2011] [15:48:35] <cremes>	heh
+| [Thursday 24 March 2011] [15:48:39] 	 * pieterh is very happy to be generating zapi man pages from the C source code
+| [Thursday 24 March 2011] [15:49:16] <jond>	cremes: c++ new et al; that's what I've read too, but there's probably some obscure games console compiler somewhere
+| [Thursday 24 March 2011] [15:49:46] <cremes>	jond: probably
+| [Thursday 24 March 2011] [15:50:00] <cremes>	but since i don't use it, i don't care ;)
+| [Thursday 24 March 2011] [15:51:19] <jond>	so you just LD_PRELOAD with jemalloc on the path and that's it? I'm sure google recommend recompile with tcmalloc though LD_PRELOAD can work
+| [Thursday 24 March 2011] [15:52:01] <cremes>	yes
+| [Thursday 24 March 2011] [15:52:14] <cremes>	LD_PRELOAD=/usr/local/lib/libjemalloc.so a.out
+| [Thursday 24 March 2011] [15:53:15] <jond>	cremes does it improve ruby performance at all apart from 0mq aspect?
+| [Thursday 24 March 2011] [15:53:56] <cremes>	jond: if it does, i can't see it... there may be a small % difference but i can't tell
+| [Thursday 24 March 2011] [15:54:51] <jond>	cremes: I'll go and have a look at jemalloc now
+| [Thursday 24 March 2011] [15:55:08] <cremes>	jond: when i ran sustrik's leak repro (ticket 174) the resident memory would jump to 25MB and stay there
+| [Thursday 24 March 2011] [15:55:17] <cremes>	with jemalloc it would drop back down to 15MB
+| [Thursday 24 March 2011] [15:55:31] <cremes>	so while it isn't perfect, it *was* able to help out a bit
+| [Thursday 24 March 2011] [15:58:21] <jond>	cremes: i may give jemalloc a test against an app at work, non zeromq though sadly
+| [Thursday 24 March 2011] [16:04:25] <cremes>	jond: please share your results (0mq or non-0mq) with me; i'd love to hear your results
+| [Thursday 24 March 2011] [16:16:26] <jond>	pieterh: you ever thought of putting a 'jobs' section on the website?
+| [Thursday 24 March 2011] [16:16:45] <pieterh>	jond: yes
+| [Thursday 24 March 2011] [16:17:22] <pieterh>	but rather, I'd like to make a 'marketplace'
+| [Thursday 24 March 2011] [16:17:32] <jond>	pieterh: yes better idea
+| [Thursday 24 March 2011] [16:18:07] <pieterh>	the idea would be that proven contributors can promote their business
+| [Thursday 24 March 2011] [16:18:47] <pieterh>	this would happen on the main website (not the community site) and would be run by iMatix
+| [Thursday 24 March 2011] [16:19:32] <pieterh>	'run' = vetted, more than anything else
+| [Thursday 24 March 2011] [16:20:28] <sustrik>	btw, i've created a zeromq group on linked-in long time ago
+| [Thursday 24 March 2011] [16:20:49] 	 * pieterh dislikes linkedin intensely...
+| [Thursday 24 March 2011] [16:21:08] <sustrik>	i don't use it much
+| [Thursday 24 March 2011] [16:21:19] <sustrik>	i don't even recall why i've created the group
+| [Thursday 24 March 2011] [16:21:25] <sustrik>	someone asked me to, i suppose
+| [Thursday 24 March 2011] [16:21:27] <pieterh>	the idea of promoting partners able to help in specific areas, or specific regions, seems win-win
+| [Thursday 24 March 2011] [16:21:38] 	 * sustrik checks the group
+| [Thursday 24 March 2011] [16:21:42] <pieterh>	:-)
+| [Thursday 24 March 2011] [16:21:52] <sustrik>	intersting
+| [Thursday 24 March 2011] [16:21:55] <sustrik>	28 members
+| [Thursday 24 March 2011] [16:22:11] <sustrik>	looks like some people are actually using linkedin
+| [Thursday 24 March 2011] [16:22:35] <pieterh>	some people do seem to like collecting contacts, indeed... 
+| [Thursday 24 March 2011] [16:22:57] <Moltar>	I'm trying to limit the outstanding messages in python using setsockopt(zmq.HWM, 1000) (for example) and it seems that this has no effect.  Any suggestions to what I might be doing wrong?
+| [Thursday 24 March 2011] [16:24:48] <hexa>	Hi I just went tought the guide.. and wow :) .. but it got me many ideas one of which is to use it to do some worker/task management  inprocess ..  but I'm struggling to find a way to pass for exemple function pointers to a generic worker thread.. I checked google protobufs .. things like that but i'm not sure about it when it comes to pointers etc.. any suggestions ideas on this ?
+| [Thursday 24 March 2011] [16:25:44] <pieterh>	hexa: the way I send pointers between threads is printf ("%p", pointer) and sscanf (message, "%p", &pointer)
+| [Thursday 24 March 2011] [16:25:46] <sustrik>	Moltar: the messages are presumably queued in TCP buffers
+| [Thursday 24 March 2011] [16:25:46] <pieterh>	seems to work
+| [Thursday 24 March 2011] [16:26:15] <pieterh>	hexa: there's an example in the zapi, zctx class, somewhere in http://zero.mq/c
+| [Thursday 24 March 2011] [16:26:19] <hexa>	pieterh, heheh guess that would work.. but I would like something a bit more versatile...
+| [Thursday 24 March 2011] [16:27:00] <pieterh>	well, just shove the pointer in a message of the right size
+| [Thursday 24 March 2011] [16:27:02] <Moltar>	sustrik: I'm using unix-domain socket with zSocket.bind('ipc:///tmp/sendalias'), so probably queued in unix socket buffer
+| [Thursday 24 March 2011] [16:27:48] <Moltar>	sustrik: But I have quite a lot of data to push to my worker processes, and I don't think having gigabytes of data in this buffer is going to be a good idea.
+| [Thursday 24 March 2011] [16:28:33] <hexa>	pieterh, heh I guess I could just do void* func , void* marshalling_func, void* data  , pieterh thx for the link I hadn't see that yet
+| [Thursday 24 March 2011] [16:33:27] <jond>	sustrik: what's the status of subscription forwarding in master?
+| [Thursday 24 March 2011] [16:50:27] <SurfaceTension>	still nobody with a (rough) number for the binary code size on arm thumb?
+| [Thursday 24 March 2011] [17:11:02] <sustrik>	Moltar: you can set the buffer size using ZMQ_SNDBUF and ZMQ_RCVBUF options
+| [Thursday 24 March 2011] [17:11:09] <sustrik>	jond: no progress
+| [Thursday 24 March 2011] [17:11:52] <sustrik>	SurfaceTension: try asking on the mailing list
+| [Thursday 24 March 2011] [17:12:01] <Moltar>	sustrik: Thanks, I'll give that a go
+| [Thursday 24 March 2011] [17:12:02] <sustrik>	there are few people using 0mq on ARM iirc
+| [Thursday 24 March 2011] [17:18:37] <jond>	sustrik: does that mean it's all in master but incomplete or on that branch?
+| [Thursday 24 March 2011] [17:19:07] <sustrik>	it's incomplete and located in sub-forward branch
+| [Thursday 24 March 2011] [17:20:27] <jond>	sustrik: ok, thanks. I'm abandoning xrep you see from my proof of concept
+| [Thursday 24 March 2011] [17:56:08] <SurfaceTension>	sustrik: will do, thanks
+| [Thursday 24 March 2011] [18:47:14] <Guthur>	thrift provides a means for RPC, which I suppose could be used instead passing func ptrs
+| [Thursday 24 March 2011] [18:47:37] <Guthur>	but hexa has left...
+| [Thursday 24 March 2011] [21:24:11] <Seta00>	where is that 'c' tool available?
+| [Thursday 24 March 2011] [22:29:26] <dku>	Is it incorrect to call recv() twice consequitively on a ZMQ_REQ socket?
+| [Thursday 24 March 2011] [22:29:41] <dku>	(without a send() in between, i mean)
+| [Thursday 24 March 2011] [22:30:00] <lowenhart>	hey guys
+| [Thursday 24 March 2011] [22:32:40] <lowenhart>	anyone know of a good decorator for zeromq + django?
+| [Friday 25 March 2011] [04:06:23] <pieterh>	Seta00: on the C binding page
+| [Friday 25 March 2011] [04:06:32] <pieterh>	dku: nope
+| [Friday 25 March 2011] [04:25:33] <pieterh>	sustrik: I've sent an email to zeromq-dev regarding the repository rename
+| [Friday 25 March 2011] [04:25:52] <pieterh>	it'd be interesting to see what the response is, if any
+| [Friday 25 March 2011] [05:27:43] <private_meta>	pieterh: btw, if you really want to push something like zmsg into zapi, it'd require a redesign imho
+| [Friday 25 March 2011] [05:41:47] <private_meta>	pieterh: for C++ it would be interesting to work with templates, just as an idea
+| [Friday 25 March 2011] [05:44:55] <guido_g>	reminds me why i left c++
+| [Friday 25 March 2011] [06:01:50] <private_meta>	I don't see generic programming as that bad of an idea
+| [Friday 25 March 2011] [06:02:03] <private_meta>	If it's used in places where it can be an advantage
+| [Friday 25 March 2011] [06:44:55] <Seta00>	pieterh: the zip archive on that page is missing the MSVS project/solution files, btw
+| [Friday 25 March 2011] [06:45:05] <Seta00>	they are on the repo but not on the archive for some reason
+| [Friday 25 March 2011] [07:13:18] <private_meta>	pieterh: btw, what was the reason to use the 0-byte in the messages?
+| [Friday 25 March 2011] [07:21:27] <Guthur>	private_meta: you mean a message with no contents?
+| [Friday 25 March 2011] [07:21:46] <private_meta>	no, 0-bytes in non-empty messages
+| [Friday 25 March 2011] [07:22:06] <Guthur>	is this in a guide example?
+| [Friday 25 March 2011] [07:22:45] <private_meta>	uuid encoding in multipart messages
+| [Friday 25 March 2011] [07:23:38] <Guthur>	0MQ uuid will start with a byte of 0, iirc
+| [Friday 25 March 2011] [07:24:03] <Guthur>	and that would have to be added back when encoding the string presentation back to binary
+| [Friday 25 March 2011] [07:25:05] <private_meta>	I know, I want to know the reason for this decision
+| [Friday 25 March 2011] [07:27:18] <Guthur>	it's not a valid UUID for 0MQ without the 0
+| [Friday 25 March 2011] [07:27:45] <Guthur>	maybe I am misunderstanding your question
+| [Friday 25 March 2011] [07:27:58] <private_meta>	Yes, you are...
+| [Friday 25 March 2011] [07:28:14] <private_meta>	I want to know the reason why they used the 0-byte in the uuid in the first place
+| [Friday 25 March 2011] [07:28:25] <private_meta>	It's a design-question
+| [Friday 25 March 2011] [07:29:09] <Guthur>	yeah I'd imagine so
+| [Friday 25 March 2011] [07:29:21] <private_meta>	...
+| [Friday 25 March 2011] [07:29:35] <Guthur>	possibly to make it more identifiable as a UUID 
+| [Friday 25 March 2011] [07:29:40] <Guthur>	at a guess
+| [Friday 25 March 2011] [07:29:49] <Guthur>	sustrik: ?
+| [Friday 25 March 2011] [07:40:56] <Seta00>	OpenPGM is the only implementation of PGM on 0MQ, right?
+| [Friday 25 March 2011] [07:41:09] <Seta00>	as in, I can't use PGM on normal builds
+| [Friday 25 March 2011] [07:51:28] <private_meta>	pieterh: finally fixed it
+| [Friday 25 March 2011] [08:28:41] <so_solid_moo>	hi peeps. is the freelance pattern stuff built into a library at all, like zfl or something?
+| [Friday 25 March 2011] [08:40:12] <iphony>	Has anyone successfully compiled the zmq c library for the iphone? 
+| [Friday 25 March 2011] [09:51:30] <private_meta>	pieterh: are you here?
+| [Friday 25 March 2011] [11:38:08] <nikolay>	hi
+| [Friday 25 March 2011] [11:38:15] <cremes>	hi
+| [Friday 25 March 2011] [11:38:28] <nikolay>	I am trying following
+| [Friday 25 March 2011] [11:38:32] <nikolay>	star a server,
+| [Friday 25 March 2011] [11:38:41] <nikolay>	then do curl localhost:5555
+| [Friday 25 March 2011] [11:39:07] <nikolay>	request is invalid of cource, and server do "Assertion failed: fetched (rep.cpp:232)"
+| [Friday 25 March 2011] [11:39:24] <nikolay>	the server app is in PHP
+| [Friday 25 March 2011] [11:39:40] <nikolay>	how I can do so PHP not to crash?
+| [Friday 25 March 2011] [11:40:21] <cremes>	nikolay: you can't connect a non-0mq socket to a 0mq socket unless you conform to the 0mq wire protocol
+| [Friday 25 March 2011] [11:40:28] <cremes>	otherwise you'll get assertions
+| [Friday 25 March 2011] [11:40:50] <nikolay>	yes, but generally how i can "catch" the assert() call ? 
+| [Friday 25 March 2011] [11:40:56] <cremes>	you can't
+| [Friday 25 March 2011] [11:41:14] <cremes>	you should open a bug issue  on github; 0mq asserts on a lot of 'invalid' data when it probably shouldn't
+| [Friday 25 March 2011] [11:41:37] <cremes>	it should probably just disconnect the socket that sent the invalid data
+| [Friday 25 March 2011] [11:41:40] <nikolay>	hmm this is kind of stupid , isn't it ? then server will crash, instead to close the conn
+| [Friday 25 March 2011] [11:41:42] <cremes>	instead of asserting
+| [Friday 25 March 2011] [11:41:52] <cremes>	nikolay: yes, it's stupid; open a 0mq bug
+| [Friday 25 March 2011] [11:42:07] <nikolay>	good idea , thank you
+| [Friday 25 March 2011] [11:42:22] <cremes>	nikolay: make sure you include some code that can reproduce the *entire* problem (client and server)
+| [Friday 25 March 2011] [11:42:34] <cremes>	along with the steps to reproduce the crash
+| [Friday 25 March 2011] [11:42:50] <nikolay>	is not a problem , but it may happen if the client app is killed
+| [Friday 25 March 2011] [11:43:07] <nikolay>	thanks 
+| [Friday 25 March 2011] [11:43:27] <nikolay>	bye
+| [Friday 25 March 2011] [11:51:56] <Guthur>	cremes: it same strange there hasn't been more effort to remove asserts
+| [Friday 25 March 2011] [11:52:01] <Guthur>	same/seems
+| [Friday 25 March 2011] [11:52:30] <cremes>	Guthur: 2.1 is way better than 2.0; sustrik removed quite a few asserts but there are still a bunch left
+| [Friday 25 March 2011] [11:52:51] <cremes>	that's why i think writing unit tests for the internal classes is a good idea
+| [Friday 25 March 2011] [11:53:16] <cremes>	it will help reign in the use of asserts and it will encourage writing code to actually handle those error conditions instead
+| [Friday 25 March 2011] [11:53:20] <cremes>	of just aborting
+| [Friday 25 March 2011] [11:54:24] <Guthur>	yep, is there a strategy in place yet for refactoring the current code base to facilitate unit testing
+| [Friday 25 March 2011] [11:56:04] <cremes>	Guthur: nope, no strategy yet
+| [Friday 25 March 2011] [11:56:17] <cremes>	i'm going to do a quick spike this weekend using cxxtest on yqueue.cpp
+| [Friday 25 March 2011] [11:56:36] <Seta00>	the documentation for zmg_msg_init_data says "If provided, the deallocation function ffn shall be called...", but the parameter isn't optional. should I just pass NULL?
+| [Friday 25 March 2011] [11:56:43] <cremes>	the way i like to do unit testing is going to require *most* of these classes to become a lot smaller than they are
+| [Friday 25 March 2011] [11:56:50] <cremes>	so that they can be thoroughly tested
+| [Friday 25 March 2011] [11:56:58] <cremes>	Seta00: yes
+| [Friday 25 March 2011] [11:57:04] <Seta00>	cremes: thanks
+| [Friday 25 March 2011] [11:59:08] <Guthur>	cremes: ack
+| [Friday 25 March 2011] [12:00:13] <cremes>	i don't know if all of that refactoring would/will fit with sustrik's style
+| [Friday 25 March 2011] [12:00:38] <cremes>	the classes look big to me; but then again, c++ is so verbose even simple classes look pretty large
+| [Friday 25 March 2011] [12:20:02] <Guthur>	I think sustrik would buy if it could deliver better test coverage
+| [Friday 25 March 2011] [12:24:08] <Guthur>	buy in*
+| [Friday 25 March 2011] [12:57:37] <anddam>	hello
+| [Friday 25 March 2011] [12:58:19] <cremes>	hi
+| [Friday 25 March 2011] [13:01:17] <anddam>	I've built mongrel2 using zeromq from macports, when I try to kill the test server it get stucks with http://pastesite.com/22567 (after ^C at line :49)
+| [Friday 25 March 2011] [13:01:31] <anddam>	can it be possibly related to this zmq's test error http://pastesite.com/22568 ?
+| [Friday 25 March 2011] [13:03:37] <anddam>	nice mailbox.cpp:191 " This should never happen as we've already checked that command size less than PIPE_BUF."
+| [Friday 25 March 2011] [13:03:45] <anddam>	seems it's happening
+| [Friday 25 March 2011] [13:05:53] <klestes>	Thats the beauty of ZeroMQ:  It makes the impossible possible !
+| [Friday 25 March 2011] [13:07:45] <anddam>	"the possimpible"
+| [Friday 25 March 2011] [13:08:16] <cremes>	anddam: check the tuning guide:  http://www.zeromq.org/docs:tuning-zeromq
+| [Friday 25 March 2011] [13:08:31] <cremes>	usually mailbox errors in 0mq are due to the tiny default buffer sizes on osx
+| [Friday 25 March 2011] [13:08:33] <klestes>	anddam:  Nice word !
+| [Friday 25 March 2011] [13:08:37] <anddam>	this happens on OS X, anyone confirming he's got zmq working on osx?
+| [Friday 25 March 2011] [13:08:44] <anddam>	klestes: that's from that tv show
+| [Friday 25 March 2011] [13:08:57] <klestes>	there's a tv show of that name ?
+| [Friday 25 March 2011] [13:09:05] <cremes>	anddam: i use 0mq on osx every day; works fine after doing a little kernel tuning
+| [Friday 25 March 2011] [13:09:18] <klestes>	OS X seems to be a bitch to program on, from what I've seen hereabouts.
+| [Friday 25 March 2011] [13:09:41] <cremes>	no harder than linux
+| [Friday 25 March 2011] [13:09:44] <cremes>	same apis
+| [Friday 25 March 2011] [13:09:45] <anddam>	cremes: I understand system tuning but how can test reach linux?
+| [Friday 25 March 2011] [13:10:13] <cremes>	anddam: i don't understand your question, please rephrase
+| [Friday 25 March 2011] [13:10:19] <anddam>	klestes: I think it depends on your targets, if you're going to do iOS development it's not a bitch
+| [Friday 25 March 2011] [13:10:33] <anddam>	cremes: of course you don't understand it, I mixed two phrases
+| [Friday 25 March 2011] [13:10:39] <klestes>	good to know.
+| [Friday 25 March 2011] [13:11:31] <anddam>	cremes: my hardlimit for files is unlimited
+| [Friday 25 March 2011] [13:11:45] <anddam>	how could that affect tests?
+| [Friday 25 March 2011] [13:12:33] <cremes>	anddam: did you modify your sendspace/recvspace kernel params?
+| [Friday 25 March 2011] [13:13:18] <cremes>	and to answer your first question, it can affect your tests if the soft limit (ulimit -a) is lower than the number of sockets created
+| [Friday 25 March 2011] [13:13:28] <anddam>	no, I'm checking sysctl syntax to avoid rebooting
+| [Friday 25 March 2011] [13:16:21] <anddam>	cremes: not that hard sysctl -w
+| [Friday 25 March 2011] [13:19:11] <anddam>	cremes: you were damn right
+| [Friday 25 March 2011] [13:19:28] <cremes>	:)
+| [Friday 25 March 2011] [13:19:40] <anddam>	http://pastesite.com/22571
+| [Friday 25 March 2011] [13:19:46] <anddam>	so my issue is only mongrel2
+| [Friday 25 March 2011] [13:19:53] <anddam>	I had no issues with a debian
+| [Friday 25 March 2011] [13:29:25] <anddam>	cremes: seems this is it https://gist.github.com/724778
+| [Friday 25 March 2011] [13:29:43] <anddam>	in fact,   zmq @2.1.3_0 (active)
+| [Friday 25 March 2011] [13:30:32] <cremes>	yes, the termination semantics changed from 2.0.10 to 2.1.0
+| [Friday 25 March 2011] [13:31:16] <anddam>	I'll checkout from repo, but I'm packaging for macports a stable tarball would be better 
+| [Friday 25 March 2011] [13:31:19] <anddam>	thanks, bye
+| [Friday 25 March 2011] [13:48:29] <mih>	hello. One question about  new 2.1.3 version. It is build only .la static lib (even with --enable-shared option). Is it bug or feature?
+| [Friday 25 March 2011] [13:55:39] <cremes>	mih: by default it should produce a shared library
+| [Friday 25 March 2011] [16:30:54] <traviscline>	I want running web server processes to on certain events share internal state information. Just to clarify i'll likely want a pub socket in each process and (at least one) corresponding sub sockets elsewhere for each of them. A friend suggested using req/rep on startup for the procs to know where to bind, sound reasonable?
+| [Friday 25 March 2011] [16:43:29] <dermoth|work>	traviscline, in general for in pub/sub you have one suv with many put connecting to it
+| [Friday 25 March 2011] [16:43:37] <dermoth|work>	one sub with many pub
+| [Friday 25 March 2011] [16:43:44] <dermoth|work>	oops
+| [Friday 25 March 2011] [16:43:49] <dermoth|work>	i mean toe opposite
+| [Friday 25 March 2011] [16:44:09] <dermoth|work>	now I get what you mean :)
+| [Friday 25 March 2011] [16:45:12] <dermoth|work>	traviscline, so it is that any web process should be ble to update the other processes?
+| [Friday 25 March 2011] [17:04:10] <dermoth|work>	traviscline, well assuming this is what you want, you'll need a forwarder device; all processes will connect their pub and sub sockets to it... and I strongly suggest testing it, expecially thing like all web servers reloading at once (could happen when logrotate kicks in if you leave it on)
+| [Friday 25 March 2011] [17:05:02] <dermoth|work>	traviscline, ohoh I feel a cache pool like memcached might be better suited gfor that and could consume much less resources than two tcp connections per web process
+| [Friday 25 March 2011] [18:13:34] <mikko>	evenin'
+| [Friday 25 March 2011] [18:20:44] <Seta00>	hey I want a dot on that community map too :3
+| [Saturday 26 March 2011] [05:39:23] <CIA-22>	zeromq2: 03Martin Sustrik 07pre30 * rabb184a 10/ (6 files in 4 dirs): 
+| [Saturday 26 March 2011] [05:39:23] <CIA-22>	zeromq2: ZMQ_NOBLOCK renamed ZMQ_DONTWAIT
+| [Saturday 26 March 2011] [05:39:23] <CIA-22>	zeromq2: Done because of POSIX compliance
+| [Saturday 26 March 2011] [05:39:23] <CIA-22>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/hEKZog
+| [Saturday 26 March 2011] [06:06:26] <CIA-22>	zeromq2: 03Martin Sustrik 07pre30 * r82dbef3 10/ src/zmq.cpp : 
+| [Saturday 26 March 2011] [06:06:26] <CIA-22>	zeromq2: Memory leak in zmq_recv fixed
+| [Saturday 26 March 2011] [06:06:26] <CIA-22>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/ie2raB
+| [Saturday 26 March 2011] [09:45:47] <Guthur>	I see someone mention compiled binary size on ARM cores on the mailing list...
+| [Saturday 26 March 2011] [09:46:04] <Guthur>	can ZeroMQ be successfully cross compiled for the ARM
+| [Saturday 26 March 2011] [10:04:41] <sustrik>	Guthur: iirc someone have done it
+| [Saturday 26 March 2011] [10:04:53] <sustrik>	there should be a mail about it on the mailing list
+| [Saturday 26 March 2011] [10:05:02] <sustrik>	or maybe a wiki page on the site
+| [Saturday 26 March 2011] [10:05:30] <Guthur>	sustrik, I'll have a look
+| [Saturday 26 March 2011] [10:05:52] <Guthur>	Is there some search mechanism for the mailing list bar google
+| [Saturday 26 March 2011] [10:10:36] <Guthur>	oh nvm
+| [Saturday 26 March 2011] [10:32:43] <Guthur>	pieterh, I have the opportunity of presenting ZeroMQ to my team at work, any suggestions on content
+| [Saturday 26 March 2011] [12:17:06] <Eruquen>	is there a difference between zmq_zmsg_t and zmsg_t?
+| [Saturday 26 March 2011] [12:18:02] <sustrik>	what's zmsg_t?
+| [Saturday 26 March 2011] [12:21:07] <Eruquen>	a type that is used in the C examples
+| [Saturday 26 March 2011] [12:22:03] <Eruquen>	maybe that's why I get abitrary results vom zmq_msg_size
+| [Saturday 26 March 2011] [12:42:30] <sustrik>	i assume it's some layer on top of 0mq that's used by the guide
+| [Saturday 26 March 2011] [12:42:35] <sustrik>	no idea how it works
+| [Saturday 26 March 2011] [12:42:36] <sustrik>	sorry
+| [Saturday 26 March 2011] [12:52:21] <Guthur>	Eruquen, source is here https://github.com/imatix/zguide/blob/master/examples/C/zmsg.h
+| [Saturday 26 March 2011] [12:52:47] <Guthur>	it provides some useful helper functions for msg
+| [Saturday 26 March 2011] [14:30:36] <Zevv>	Hi all. Just learned about 0mq, seems that this can fix a lot of my daily pains. One question: is it possible in a inproc environment to pass pointers around ? I'm considering if 0mq can be used in our app which shares video data among a few threads on an embedded device which is painfully slow doing memcpy()'s
+| [Saturday 26 March 2011] [14:31:05] <Zevv>	most of the messaging is probably ok to do using 0mq, but only the video data itself - several MB's per frame - can not be copied around for performance reasons
+| [Saturday 26 March 2011] [14:31:13] <Zevv>	is this a known scenario ?
+| [Saturday 26 March 2011] [14:58:55] <Guthur>	Zevv, sure you could pass the memory address around if you want
+| [Saturday 26 March 2011] [15:11:01] <dermoth|home>	Hey... I posted on the mailing list about PUSH/PULL sockets not failing over... now I'm reading 2.1 documentation, and it seems ZMQ_BACKLOG is what I want... Basically I want to fail over to other devices connected to the same socket as soon as possible, without alrering the high watermark
+| [Saturday 26 March 2011] [15:12:01] <dermoth|home>	so multiple devices can be used for redundancy, without queueing message if one is down.
+| [Saturday 26 March 2011] [15:17:41] <sustrik>	dermoth|home: ZMQ_BACKLOG has to do only with connecting, it has no effect on messages themselves
+| [Saturday 26 March 2011] [15:17:46] <sustrik>	see man listen
+| [Saturday 26 March 2011] [15:23:10] <dermoth|home>	oh
+| [Saturday 26 March 2011] [15:23:55] <dermoth|home>	right, i missed the "peer connection" part 
+| [Saturday 26 March 2011] [16:08:34] <seb`>	can zeromq 2.1 talk to 2.0.10?
+| [Saturday 26 March 2011] [16:08:49] <sustrik>	let me see
+| [Saturday 26 March 2011] [16:08:58] <seb`>	it would make it easier to upgrade:-)
+| [Saturday 26 March 2011] [16:09:02] <seb`>	sustrik: thanks:-)
+| [Saturday 26 March 2011] [16:09:45] <sustrik>	yes, it can
+| [Saturday 26 March 2011] [16:09:52] <seb`>	cool
+| [Saturday 26 March 2011] [16:10:44] <seb`>	that will really save me from upgrade hell
+| [Saturday 26 March 2011] [16:11:02] <sustrik>	:)
+| [Saturday 26 March 2011] [16:30:38] <Guthur>	surely if it couldn't that would be a big issue
+| [Saturday 26 March 2011] [18:43:36] <thatch__>	Is there a way to verify that a remote zeromq server is available before atempting to connect to it?
+| [Saturday 26 March 2011] [19:05:02] <Guthur>	thatch__, you could checkout chapter 4 of the guide for some reliability patterns
+| [Saturday 26 March 2011] [19:05:37] <thatch__>	thanks :)
+| [Sunday 27 March 2011] [00:17:27] <EduardoFonseca>	Hi Guys. I'm trying to figure out how to implement connection dettection on top of zeroMQ. Any tips?
+| [Sunday 27 March 2011] [00:17:35] <EduardoFonseca>	*detection, sorry.
+| [Sunday 27 March 2011] [00:33:39] <seb`>	EduardoFonseca: you could send a first message to signal the connection
+| [Sunday 27 March 2011] [00:33:58] <seb`>	it would have to be added to your own protocol
+| [Sunday 27 March 2011] [00:37:56] <EduardoFonseca>	great
+| [Sunday 27 March 2011] [00:38:07] <EduardoFonseca>	but what about detecting when this connection has gone away?
+| [Sunday 27 March 2011] [00:38:43] <EduardoFonseca>	I tried implementing heartbeats, but the code started to get really complex. 
+| [Sunday 27 March 2011] [00:38:57] <seb`>	I was going to suggest that:-)
+| [Sunday 27 March 2011] [00:39:21] <seb`>	on req/rep a heartbeat should not be that complex
+| [Sunday 27 March 2011] [00:40:22] <EduardoFonseca>	I'm using XREQ and XREP... but the loadbalancing part got complex.
+| [Sunday 27 March 2011] [00:40:44] <EduardoFonseca>	I was planning to reimplement the Majordomo pattern... but, why use zeroMQ if you need a broker? :)
+| [Sunday 27 March 2011] [13:09:55] <mikko>	howdy guys
+| [Sunday 27 March 2011] [13:57:22] <Guthur>	hey mikko 
+| [Sunday 27 March 2011] [13:57:54] <Guthur>	do you know if Ian Barbers PHP presentation slides are available anywhere for download, besides slideshare
+| [Sunday 27 March 2011] [13:58:08] <mikko>	Guthur: let me check
+| [Sunday 27 March 2011] [13:59:19] <mikko>	his blog seems to be down
+| [Sunday 27 March 2011] [14:06:31] <Guthur>	ok, I'll check it later
+| [Sunday 27 March 2011] [14:06:36] <Guthur>	cheers mikko 
+| [Sunday 27 March 2011] [14:14:07] <mikko>	i can ask him for a pdf
+| [Sunday 27 March 2011] [14:25:19] <Guthur>	mikko, that would great, cheers
+| [Sunday 27 March 2011] [14:36:12] <pieter_hintjens>	Guthur: slideshare should offer downloads, doesn't it?
+| [Sunday 27 March 2011] [14:36:42] <Guthur>	pieter_hintjens, It does. i just didn't want to sign up
+| [Sunday 27 March 2011] [14:36:53] <pieter_hintjens>	yeah
+| [Sunday 27 March 2011] [14:41:29] <mikko>	finally got some more build capacity online
+| [Sunday 27 March 2011] [14:41:34] <mikko>	x86_64 centos
+| [Sunday 27 March 2011] [14:41:46] <mikko>	rpms are now built every night
+| [Sunday 27 March 2011] [14:43:01] <mikko>	pieter_hintjens: i'll try to add libzapi today
+| [Sunday 27 March 2011] [14:43:08] <pieter_hintjens>	mikko: nice!
+| [Sunday 27 March 2011] [14:43:18] <pieter_hintjens>	I also renamed ZFL to libzfl, you saw that
+| [Sunday 27 March 2011] [14:43:23] <mikko>	i did
+| [Sunday 27 March 2011] [14:43:27] <Guthur>	I was actually going to draw some inspiration from Ian's presentation for a presentation at work
+| [Sunday 27 March 2011] [14:43:28] <mikko>	i was away yesterday and today
+| [Sunday 27 March 2011] [14:43:31] <mikko>	spa weekend
+| [Sunday 27 March 2011] [14:43:42] <pieter_hintjens>	:-) it was excellent weather here in Belgium
+| [Sunday 27 March 2011] [14:43:42] <mikko>	been doing nothing but soaking in warm water
+| [Sunday 27 March 2011] [14:44:13] <Guthur>	I've been wanting to ask him if it would be ok to borrow some stuff, just haven't been able to catch him in here
+| [Sunday 27 March 2011] [14:49:07] 	 * pieterh is making a new version of the guide
+| [Sunday 27 March 2011] [14:49:18] <pieterh>	all code blocks highlighted, all collapsible (except a few)
+| [Sunday 27 March 2011] [14:49:19] <pieterh>	http://zguide.zeromq.org/test:ch1
+| [Sunday 27 March 2011] [15:40:18] 	 * pieterh has created a monster, the Guide won't load any longer...
+| [Sunday 27 March 2011] [15:45:24] <Guthur>	it loads for me
+| [Sunday 27 March 2011] [15:45:32] 	 * pieterh is fixing it as we speak...
+| [Sunday 27 March 2011] [15:45:37] <Guthur>	but there is issues with the language translation link
+| [Sunday 27 March 2011] [15:45:41] <Guthur>	links*
+| [Sunday 27 March 2011] [15:45:50] <pieterh>	yes, reload in a few heartbeats...
+| [Sunday 27 March 2011] [15:45:54] <pieterh>	the problem is the marked up code blocks are huge
+| [Sunday 27 March 2011] [15:46:10] <pieterh>	including 320 of them in the page kind of does not work
+| [Sunday 27 March 2011] [15:46:44] <Guthur>	hehe, I can imagine
+| [Sunday 27 March 2011] [15:47:06] <pieterh>	it should work better now, code examples appear in a new tab
+| [Sunday 27 March 2011] [15:47:17] <pieterh>	shame, it was kind of nice to have them inline...
+| [Sunday 27 March 2011] [15:50:17] <Guthur>	oh new tabs, umm, I tend to curse pages that do that
+| [Sunday 27 March 2011] [15:51:32] <Guthur>	is the C version still inline?
+| [Sunday 27 March 2011] [15:53:36] <pieterh>	well, nope, but I'm going to make a further round of improvements
+| [Sunday 27 March 2011] [15:53:52] <pieterh>	will inline the C version
+| [Sunday 27 March 2011] [15:53:58] <pieterh>	and ditto for the PHP version
+| [Sunday 27 March 2011] [15:56:28] <mikko>	pieterh: http://build.zero.mq/job/libzapi/3/console
+| [Sunday 27 March 2011] [15:56:38] <mikko>	ROUTER and DEALER are not in the main repo?
+| [Sunday 27 March 2011] [15:56:52] <mikko>	the one that sustrik maintains
+| [Sunday 27 March 2011] [15:56:55] <pieterh>	nope
+| [Sunday 27 March 2011] [15:57:07] <pieterh>	libzapi needs 2.1.latest
+| [Sunday 27 March 2011] [15:57:26] <pieterh>	I'm hoping sustrik will eventually make the ROUTER/DEALER changes but can't force him to
+| [Sunday 27 March 2011] [15:57:34] <pieterh>	mikko: hang on, I'
+| [Sunday 27 March 2011] [15:57:36] <mikko>	this situation is very confusing
+| [Sunday 27 March 2011] [15:57:39] <pieterh>	I'll make a patch to libzapi
+| [Sunday 27 March 2011] [15:57:50] <pieterh>	it'll become less confusing over time
+| [Sunday 27 March 2011] [15:57:58] <pieterh>	a lot of change happening in a lot of places...
+| [Sunday 27 March 2011] [15:58:03] <pieterh>	gimme 2 minutes...
+| [Sunday 27 March 2011] [15:58:09] <mikko>	no hurry
+| [Sunday 27 March 2011] [16:00:16] <pieterh>	mikko: ok, done, new version pushed
+| [Sunday 27 March 2011] [16:00:38] <mikko>	kicking off a new build
+| [Sunday 27 March 2011] [16:00:48] <mikko>	#4 on the way
+| [Sunday 27 March 2011] [16:00:51] <pieterh>	:-)
+| [Sunday 27 March 2011] [16:02:40] <mikko>	builds
+| [Sunday 27 March 2011] [16:02:52] <mikko>	http://build.zero.mq/job/libzapi/4/cobertura/_default_/
+| [Sunday 27 March 2011] [16:02:57] <mikko>	here is the code coverage
+| [Sunday 27 March 2011] [16:04:02] <mikko>	i will refactor the builds as soon as the repository rename happens
+| [Sunday 27 March 2011] [16:04:16] <Guthur>	pieterh, are you using ROUTER/DEALER in the guide
+| [Sunday 27 March 2011] [16:04:16] <mikko>	so that i can do the changes in one go
+| [Sunday 27 March 2011] [16:04:27] <pieterh>	Guthur: not yet, but that's the next step
+| [Sunday 27 March 2011] [16:04:45] <pieterh>	then, move the C code over to using libzapi
+| [Sunday 27 March 2011] [16:04:57] <pieterh>	mikko: sweet!
+| [Sunday 27 March 2011] [16:05:48] <mikko>	zeromq2-2, is this a new branch as well?
+| [Sunday 27 March 2011] [16:06:00] <pieterh>	mikko: yes, that's the packaging project for 2.2
+| [Sunday 27 March 2011] [16:06:10] <pieterh>	the packaging projects will include more than libzmq, hopefully
+| [Sunday 27 March 2011] [16:06:17] <mikko>	did my patch get through to the list ?
+| [Sunday 27 March 2011] [16:06:21] <pieterh>	but they'll track the libzmq major/minor versions
+| [Sunday 27 March 2011] [16:06:25] <pieterh>	yes, your patch made it
+| [Sunday 27 March 2011] [16:06:38] <mikko>	cool, not very good connectivity out in the sticks
+| [Sunday 27 March 2011] [16:06:56] <pieterh>	from the hot spas... :-)
+| [Sunday 27 March 2011] [16:08:02] <mikko>	so, what is the role of zeromq2, zeromq2-2 and zeromq2-1 repos?
+| [Sunday 27 March 2011] [16:08:14] <pieterh>	just for consistency, really
+| [Sunday 27 March 2011] [16:08:26] <pieterh>	zeromq2 will be deprecated, become a map for visitors who use the old URI
+| [Sunday 27 March 2011] [16:08:45] <mikko>	do we in the future push changes to upstream first?
+| [Sunday 27 March 2011] [16:08:48] <pieterh>	2-1 and 2-2 are packaging projects, 2-2 will be where we add new projects like libzapi
+| [Sunday 27 March 2011] [16:08:49] <mikko>	because that would be ideal
+| [Sunday 27 March 2011] [16:09:05] <pieterh>	yes, if possible
+| [Sunday 27 March 2011] [16:09:11] <pieterh>	sometimes it won't be possible
+| [Sunday 27 March 2011] [16:09:29] <pieterh>	the 3.0 libzmq core will eventually change too much
+| [Sunday 27 March 2011] [16:10:14] <pieterh>	we already had this case for one patch to 2.0, which had to be hand-made for that version
+| [Sunday 27 March 2011] [16:10:42] <mikko>	something in this model feels very wrong but i really can't put my finger on it
+| [Sunday 27 March 2011] [16:11:04] <mikko>	it feels like duplicating the effort in some ways
+| [Sunday 27 March 2011] [16:11:11] <pieterh>	in fact it's not
+| [Sunday 27 March 2011] [16:11:25] <mikko>	i made the openpgm build patches twice
+| [Sunday 27 March 2011] [16:11:30] <mikko>	2-1 and upstream
+| [Sunday 27 March 2011] [16:11:37] <pieterh>	yes, because you used pull requests to send to me
+| [Sunday 27 March 2011] [16:11:54] <pieterh>	and sustrik does not accept anything except patches to ML
+| [Sunday 27 March 2011] [16:12:03] <pieterh>	it would not change if we had one repo, two branches
+| [Sunday 27 March 2011] [16:12:33] <pieterh>	the advantage is you were able to get rapid feedback that your changes worked
+| [Sunday 27 March 2011] [16:12:39] <mikko>	so, we are still doing the patches on ML?
+| [Sunday 27 March 2011] [16:12:43] <pieterh>	if you send upstream, you have no control over when they are released
+| [Sunday 27 March 2011] [16:12:56] <pieterh>	i guess so, yes
+| [Sunday 27 March 2011] [16:13:09] <pieterh>	I'd rather use the pull model explained on the contributing page
+| [Sunday 27 March 2011] [16:13:26] <pieterh>	especially since that's how Sustriks sends me changes... :-/
+| [Sunday 27 March 2011] [16:14:25] <pieterh>	basically, any contributor has to convince the project owner to accept his patch
+| [Sunday 27 March 2011] [16:14:37] <pieterh>	project owner can define how patches are submitted
+| [Sunday 27 March 2011] [16:15:17] <pieterh>	and contributor is the one who stresses if project A and project B have different codebases
+| [Sunday 27 March 2011] [16:15:26] <Guthur>	but is this not sort of fracturing zeromq too much
+| [Sunday 27 March 2011] [16:15:30] <pieterh>	nah
+| [Sunday 27 March 2011] [16:15:32] <mikko>	yes, it is
+| [Sunday 27 March 2011] [16:15:33] <Guthur>	projects with in a project
+| [Sunday 27 March 2011] [16:15:40] <pieterh>	libzmq != ZeroMQ
+| [Sunday 27 March 2011] [16:15:42] <mikko>	this puts more pressure on contributors
+| [Sunday 27 March 2011] [16:15:49] <pieterh>	yes, mikko, it does
+| [Sunday 27 March 2011] [16:15:59] <pieterh>	but that's necessary if we're not to have bottlenecks
+| [Sunday 27 March 2011] [16:16:15] <mikko>	we already have massive bottlenecks
+| [Sunday 27 March 2011] [16:16:27] <pieterh>	yes, but this is one big one removed
+| [Sunday 27 March 2011] [16:16:32] <mikko>	we have three separate branches as three separate projects
+| [Sunday 27 March 2011] [16:16:43] <pieterh>	that's not a bottleneck... 
+| [Sunday 27 March 2011] [16:16:44] <mikko>	every contributor has to mix and match their patches
+| [Sunday 27 March 2011] [16:16:52] <mikko>	and only one person can accept that patch
+| [Sunday 27 March 2011] [16:17:01] <pieterh>	sorry, this isn't accurate, mikko
+| [Sunday 27 March 2011] [16:17:04] <mikko>	if that person is on hols your patch is sitting and waiting somewhere
+| [Sunday 27 March 2011] [16:17:26] <pieterh>	this is standard with Git
+| [Sunday 27 March 2011] [16:17:36] <pieterh>	you send patches or pull requests to a project maintainer
+| [Sunday 27 March 2011] [16:17:41] <mikko>	no, it's not 
+| [Sunday 27 March 2011] [16:17:52] <pieterh>	you want everyone to commit to the repository?
+| [Sunday 27 March 2011] [16:17:55] <mikko>	this is one possible workflow
+| [Sunday 27 March 2011] [16:18:08] <mikko>	who do you mean by everyone?
+| [Sunday 27 March 2011] [16:18:13] <pieterh>	it's the one that scales to many projects, because each one is smallish
+| [Sunday 27 March 2011] [16:18:43] <pieterh>	and this only affects libzmq because it's got several incompatible versions
+| [Sunday 27 March 2011] [16:18:57] <pieterh>	that is only one project out of 20 or 30
+| [Sunday 27 March 2011] [16:20:50] <pieterh>	mikko: do you have an alternative proposal that lets us do what we want to do?
+| [Sunday 27 March 2011] [16:21:20] <mikko>	currently we are doing everything very differently from what people contributing to open source are used to
+| [Sunday 27 March 2011] [16:21:31] <mikko>	and that alienates contributors 
+| [Sunday 27 March 2011] [16:21:44] <pieterh>	that's true if you look at the core project but it's not true for the overall scheme
+| [Sunday 27 March 2011] [16:22:22] <pieterh>	each project accepts contributors and contributions in its own way
+| [Sunday 27 March 2011] [16:22:32] <pieterh>	this is consistent with how open source communities work
+| [Sunday 27 March 2011] [16:22:44] <pieterh>	the only difference here is we have separate projects for *packaging* ZeroMQ
+| [Sunday 27 March 2011] [16:22:52] <pieterh>	but that is necessary because libzmq != ZeroMQ
+| [Sunday 27 March 2011] [16:23:02] <pieterh>	which will become much clearer once the core repo is renamed
+| [Sunday 27 March 2011] [16:23:37] <mikko>	a contributor should not need to understand this amazing complex grand schema
+| [Sunday 27 March 2011] [16:23:55] <pieterh>	well, we do have a lot of projects, how do you propose to map this?
+| [Sunday 27 March 2011] [16:23:57] <mikko>	it should be as straigh-forward as: i run 2.1, find the git repo, make a patch
+| [Sunday 27 March 2011] [16:24:04] <pieterh>	the packaging projects are largely hidden
+| [Sunday 27 March 2011] [16:24:17] <pieterh>	make your patches against the libzmq git
+| [Sunday 27 March 2011] [16:24:33] <mikko>	this should not be followed by having to understand that actually if my patch goes to libzmq i need to get it accepted to zeromq2-2 and zeromq2-1
+| [Sunday 27 March 2011] [16:24:46] <mikko>	and possibly need to rework the patch for each version separately
+| [Sunday 27 March 2011] [16:24:51] <pieterh>	well, fair enough, but understand that...
+| [Sunday 27 March 2011] [16:25:04] <pieterh>	these repositories are for stabilization 
+| [Sunday 27 March 2011] [16:25:12] <mikko>	but they aren't
+| [Sunday 27 March 2011] [16:25:20] <pieterh>	that means they only in theory get bug fixes or very safe functional changes
+| [Sunday 27 March 2011] [16:25:21] <mikko>	we pushed openpgm build fixes straight to 2-1
+| [Sunday 27 March 2011] [16:25:29] <mikko>	not through 'libzmq' repo
+| [Sunday 27 March 2011] [16:25:36] <pieterh>	indeed, let's not do that again
+| [Sunday 27 March 2011] [16:25:45] <pieterh>	however, realize that it's how you got those changes *tested* rapidly
+| [Sunday 27 March 2011] [16:26:00] <pieterh>	next time, send to the ML
+| [Sunday 27 March 2011] [16:26:07] <Guthur>	i've not really seen various version of a library being seen as projects
+| [Sunday 27 March 2011] [16:26:22] <pieterh>	RHEL x.x?
+| [Sunday 27 March 2011] [16:26:23] <Guthur>	if that happens they usually fork off and rename, 
+| [Sunday 27 March 2011] [16:26:55] <Guthur>	not familiar with RH to be honest
+| [Sunday 27 March 2011] [16:27:02] <pieterh>	the linux kernel is repackaged in many distributions, each is a project
+| [Sunday 27 March 2011] [16:27:42] <Guthur>	yes but are we not talking about the 'kernel' at the moment
+| [Sunday 27 March 2011] [16:27:51] <pieterh>	well, libzmq is like the kernel for ZeroMQ
+| [Sunday 27 March 2011] [16:28:14] <pieterh>	mikko: next time you send me a pull request for 2-1, I'll reject it, OK?
+| [Sunday 27 March 2011] [16:28:19] <Guthur>	so 2, 2-1, 2-2 are distros?
+| [Sunday 27 March 2011] [16:28:24] <pieterh>	yes, thank you
+| [Sunday 27 March 2011] [16:28:29] <pieterh>	2 is not
+| [Sunday 27 March 2011] [16:28:33] <pieterh>	2 is dead
+| [Sunday 27 March 2011] [16:28:45] <pieterh>	will be dead once it's been renamed to libzmq
+| [Sunday 27 March 2011] [16:29:04] <Guthur>	seems I a bit crazy to me, but i'm not overly experienced with these sort of things
+| [Sunday 27 March 2011] [16:29:26] <pieterh>	there is no other way to create the freedom to make real packaging projects
+| [Sunday 27 March 2011] [16:29:36] <pieterh>	it seems pretty clear to me
+| [Sunday 27 March 2011] [16:29:53] <pieterh>	alternative is to all work in one repo, and have no packaging projects
+| [Sunday 27 March 2011] [16:30:02] <mikko>	hahaha, you designed the schema
+| [Sunday 27 March 2011] [16:30:07] <mikko>	of course it's clear to you
+| [Sunday 27 March 2011] [16:30:16] <pieterh>	sure
+| [Sunday 27 March 2011] [16:30:22] <mikko>	but from contributor's point of view the situation is not very good (imho)
+| [Sunday 27 March 2011] [16:30:33] <pieterh>	well, it'll be clearer IMO when libzmq is properly named
+| [Sunday 27 March 2011] [16:30:43] <pieterh>	"send your patch to the libzmq project"
+| [Sunday 27 March 2011] [16:30:50] <pieterh>	and that can downstream to the various distros
+| [Sunday 27 March 2011] [16:30:53] <mikko>	what happens when sustrik is on holidays?
+| [Sunday 27 March 2011] [16:31:00] <pieterh>	ask him, I don't know
+| [Sunday 27 March 2011] [16:31:10] <pieterh>	mikko: this is not a command-and-control model
+| [Sunday 27 March 2011] [16:31:13] <mikko>	see, are we not creating massive bottlenecks?
+| [Sunday 27 March 2011] [16:31:28] <pieterh>	propose an alternative to "person who knows the code real well"
+| [Sunday 27 March 2011] [16:31:38] <pieterh>	we're not *creating* that bottleneck, it exists
+| [Sunday 27 March 2011] [16:31:48] <pieterh>	seriously, your alternative is what, clone sustrik?
+| [Sunday 27 March 2011] [16:32:05] <pieterh>	there are other people who know the core structures pretty well
+| [Sunday 27 March 2011] [16:32:14] <pieterh>	if sustrik is unable to act as maintainer, I'm sure he'll delegate
+| [Sunday 27 March 2011] [16:32:21] <pieterh>	but it is *his* responsibility
+| [Sunday 27 March 2011] [16:32:35] <pieterh>	you and me can debate that for years, it matters not at all
+| [Sunday 27 March 2011] [16:32:52] <mikko>	yes, what i don't get is this cycle:
+| [Sunday 27 March 2011] [16:32:56] <Guthur>	could we not have the situation where the 'distros' start deviating quite far from the main dev branch
+| [Sunday 27 March 2011] [16:33:05] <pieterh>	Guthur: unlikely, why would they?
+| [Sunday 27 March 2011] [16:33:31] <mikko>	fork libzmq, create patch, commit, create signed patch, reset, wait for a merge, then pull down your own changes 
+| [Sunday 27 March 2011] [16:33:32] <pieterh>	the very point is that the people maintaining distros don't know the code
+| [Sunday 27 March 2011] [16:33:40] <Guthur>	just curious really, they seemed to have become more than just previous versions
+| [Sunday 27 March 2011] [16:33:46] <pieterh>	mikko: ack, it's complex and I don't like it
+| [Sunday 27 March 2011] [16:33:50] <Guthur>	they seemed to have become their own projects
+| [Sunday 27 March 2011] [16:34:06] <mikko>	forgot the "send mail to mailing-list" from that 
+| [Sunday 27 March 2011] [16:34:12] <pieterh>	Guthur: 'seem to' is mild, the goal was to create dependent projects
+| [Sunday 27 March 2011] [16:34:16] <pieterh>	mikko: yes, I know
+| [Sunday 27 March 2011] [16:34:29] <pieterh>	I've lobbied sustrik on this several times, here and on the list
+| [Sunday 27 March 2011] [16:34:49] <pieterh>	next time, chime in, on the ML thread ... :-/
+| [Sunday 27 March 2011] [16:35:10] <mikko>	i had forgotten about the ML patches already
+| [Sunday 27 March 2011] [16:35:18] <pieterh>	I spent a lot of effort documenting alternative flows on the contributing page
+| [Sunday 27 March 2011] [16:39:55] <Guthur>	pieterh, dependent or independent?
+| [Sunday 27 March 2011] [16:40:04] <pieterh>	both :-)
+| [Sunday 27 March 2011] [16:40:17] <pieterh>	look, 2-1 is not a good example, it's too young
+| [Sunday 27 March 2011] [16:40:33] <Guthur>	though it already as deviation
+| [Sunday 27 March 2011] [16:40:36] <pieterh>	2-2 will include, in my plans, libzmq, libzapi, the new C++ binding
+| [Sunday 27 March 2011] [16:40:43] <Guthur>	where something needs forward ported
+| [Sunday 27 March 2011] [16:40:53] <pieterh>	obviously it depends on those N projects
+| [Sunday 27 March 2011] [16:41:03] <Guthur>	admittedly only a minor #define
+| [Sunday 27 March 2011] [16:41:11] <pieterh>	yes
+| [Sunday 27 March 2011] [16:41:32] <pieterh>	one way would be to use submodules and branches in the source repo
+| [Sunday 27 March 2011] [16:41:50] <pieterh>	that would require that the branches are maintained in that repo
+| [Sunday 27 March 2011] [16:42:26] <pieterh>	experience is that this wasn't happening, due to complexity of moving changes between branches (or somesuch)
+| [Sunday 27 March 2011] [16:42:47] <pieterh>	lack of interest from main developers in maintaining branches
+| [Sunday 27 March 2011] [16:42:54] <mikko>	it's the same amount of complexity as between different repos
+| [Sunday 27 March 2011] [16:42:58] <pieterh>	yes
+| [Sunday 27 March 2011] [16:43:12] <pieterh>	exactly, but with different repos, you can slice the work over several people much more easily
+| [Sunday 27 March 2011] [16:43:22] <pieterh>	this is the key insight
+| [Sunday 27 March 2011] [16:43:31] <pieterh>	collaborating inside one repo is really difficult
+| [Sunday 27 March 2011] [16:43:35] <pieterh>	it demands agreement
+| [Sunday 27 March 2011] [16:43:42] <pieterh>	clearly we don't get that easily
+| [Sunday 27 March 2011] [16:43:44] <Guthur>	I thought git made it easier
+| [Sunday 27 March 2011] [16:43:54] <pieterh>	it doesn't change people and make them less stubborn
+| [Sunday 27 March 2011] [16:43:58] <Guthur>	certainly easier than the likes of SVN
+| [Sunday 27 March 2011] [16:44:04] <pieterh>	git makes it easier to have many repos
+| [Sunday 27 March 2011] [16:44:15] 	 * Guthur has SVN pain at work, it's not pretty
+| [Sunday 27 March 2011] [16:44:19] <pieterh>	indeed
+| [Sunday 27 March 2011] [16:44:34] <pieterh>	git lets us solve the problem by slicing projects up, like I said on the ML, per ego
+| [Sunday 27 March 2011] [16:44:45] <pieterh>	it's actually a really pleasant way to work
+| [Sunday 27 March 2011] [16:44:53] <Guthur>	yeah, that discussion got a little out of hand
+| [Sunday 27 March 2011] [16:45:09] <Guthur>	well it appeared so from an onlookers perspective
+| [Sunday 27 March 2011] [16:45:14] <pieterh>	exactly, and that was the same last time we discussed multiple branches in the main repo
+| [Sunday 27 March 2011] [16:46:39] <pieterh>	that was sometime in July iir, and my conclusion was "don't work in the core repo, ever"
+| [Sunday 27 March 2011] [16:47:18] <mikko>	as the community grows an ideal process to me would be to have multiple people with commit access
+| [Sunday 27 March 2011] [16:47:29] <mikko>	and each set of changes is mailed automatically to mailing-list
+| [Sunday 27 March 2011] [16:47:52] <pieterh>	mikko: yes, probably a good model
+| [Sunday 27 March 2011] [16:48:36] <mikko>	this also gives more visibility to changes going into repo and allows easily start conversation on mailing-list
+| [Sunday 27 March 2011] [16:48:53] <pieterh>	however, I'm not going to raise this discussion for libzmq
+| [Sunday 27 March 2011] [16:49:15] <pieterh>	you already have committer access to libzapi and libzfl
+| [Sunday 27 March 2011] [16:50:25] <Guthur>	libzmq is the heart of it all though, and so the most important
+| [Sunday 27 March 2011] [16:50:27] <mikko>	yes
+| [Sunday 27 March 2011] [16:50:39] <mikko>	for example now i would be keen on getting coverage into libzmq
+| [Sunday 27 March 2011] [16:50:39] <pieterh>	yes
+| [Sunday 27 March 2011] [16:50:51] <mikko>	but it's futile to work on the stuff before openpgm patch has been merged
+| [Sunday 27 March 2011] [16:51:08] <pieterh>	mikko: my experience contributing to core has been quite negative, I have to admit
+| [Sunday 27 March 2011] [16:51:10] <mikko>	i don't even know if rebase works well on that cycle
+| [Sunday 27 March 2011] [16:51:50] <mikko>	as in, when i pull back the changes merged by sustrik does that conflict with my local changes?
+| [Sunday 27 March 2011] [16:51:59] <mikko>	or is it the same commit?
+| [Sunday 27 March 2011] [16:52:08] <pieterh>	depends how you do it IMO
+| [Sunday 27 March 2011] [16:58:43] <pieterh>	Guthur: OK, I'm able to inline the main language, the page is slow but loads
+| [Sunday 27 March 2011] [17:00:28] <Seta00>	pieterh: the libzapi project file is broken
+| [Sunday 27 March 2011] [17:00:54] <pieterh>	Seta00: yes, I've not tested it yet on MSVC
+| [Sunday 27 March 2011] [17:01:03] <pieterh>	do you want to try fixing it and sending a patch?
+| [Sunday 27 March 2011] [17:01:25] <Seta00>	yes
+| [Sunday 27 March 2011] [17:01:31] <pieterh>	it's a copy of the libzfl project file, but obviously refers to the wrong sources & includes
+| [Sunday 27 March 2011] [17:01:33] <pieterh>	thanks! :-)
+| [Sunday 27 March 2011] [17:06:19] <pieterh>	g'night folks, I need to crash, early morning tomorrow
+| [Sunday 27 March 2011] [17:06:48] <Seta00>	pieterh: just a small question before you go, if you have to include non-standard headers to the project, where should they go? on the standard include directory?
+| [Sunday 27 March 2011] [17:06:55] <Seta00>	(MSVC doesn't have inttypes.h)
+| [Sunday 27 March 2011] [17:07:05] <Seta00>	but there's https://code.google.com/p/msinttypes/
+| [Sunday 27 March 2011] [17:07:24] <pieterh>	Seta00: hmm, edit zapi_prelude.h to include the right files and move the existing include to one of the #if UNIX blocks
+| [Sunday 27 March 2011] [17:07:33] <Seta00>	okay thanks
+| [Sunday 27 March 2011] [17:07:49] <pieterh>	there's a section in the doc on Porting libzapi, may be helpful
+| [Sunday 27 March 2011] [17:39:14] <Seta00>	apparently msvc has no implementation of sigaction
+| [Sunday 27 March 2011] [17:39:23] <Seta00>	:(
+| [Sunday 27 March 2011] [17:42:31] <JusticeFries>	what are the differences in typical use cases for 0mq vs something like rabbitmq?
+| [Sunday 27 March 2011] [19:05:16] <klestes>	hello, is anyone talking today ?
+| [Sunday 27 March 2011] [19:19:27] <klestes>	if anyone does see this, what is the best way to interoperate with channels in basic (non 0MQ) tcp ?  do you have to write a custom gateway, TCP <--> 0MQ, or is there a better solution inherent in 0MQ that I've missed ?
+| [Sunday 27 March 2011] [19:20:09] <jdroid->	i've been using zmq with python and am trying to compile some stuff with c now, but I keep getting errors.
+| [Sunday 27 March 2011] [19:20:36] <jdroid->	does this make sense to anyone? http://pastebin.com/7Mj5KSSH
+| [Sunday 27 March 2011] [19:20:44] 	 * jdroid- is very rusty with c...
+| [Sunday 27 March 2011] [19:21:06] <jdroid->	here's the code: http://pastebin.com/efKgRJiK
+| [Sunday 27 March 2011] [19:21:22] <klestes>	you have to program a lot lower with C than with python - how would you say the experience has been using python with 0MQ ?
+| [Sunday 27 March 2011] [19:22:06] <jdroid->	The experience with python has been awesome so far. Very easy.
+| [Sunday 27 March 2011] [19:22:23] <jdroid->	I built a Mongrel2 handler with eventlet and zeromq recently. github.com/j2labs/brubeck
+| [Sunday 27 March 2011] [19:23:20] <jdroid->	I've been posting a few pyzmq examples to github as it comes up in conversation, but I want to add a multilang example AND get back in C doing it.
+| [Sunday 27 March 2011] [19:23:26] <jdroid->	https://github.com/j2labs/zmq_examples
+| [Sunday 27 March 2011] [19:23:53] <klestes>	after learning Perl, my goal is never go back to C!  Evah !
+| [Sunday 27 March 2011] [19:24:13] <jdroid->	After learning Perl, I vowed never to go back to Perl. So right back atcha buddy!
+| [Sunday 27 March 2011] [19:24:31] <jdroid->	:)
+| [Sunday 27 March 2011] [19:24:47] <klestes>	also you might want to check out the new zapi.  Hintjen is very excited about it, so it could be big.
+| [Sunday 27 March 2011] [19:25:06] <klestes>	well, I'm not going to stir up a fight.  I have a lot of respect for Python, and might be doing some work in it soon myself.
+| [Sunday 27 March 2011] [19:26:28] <klestes>	my point was to be, programming 0MQ in either python or perl is much easier than C, IMHO.
+| [Sunday 27 March 2011] [19:26:52] <jdroid->	Well I'm only kidding anyway. Perl is a fine language if you're working with people who respect others. :)
+| [Sunday 27 March 2011] [19:28:29] <klestes>	It has its warts, and its uhm, non warty really ok type features.
+| [Sunday 27 March 2011] [19:28:53] <klestes>	I get sick of all those $ signs all the time, esp. since its been a while since I've seen $$$$ !
+| [Sunday 27 March 2011] [19:29:32] <jdroid->	You'll dig python then I'm sure. The code is generally as easy to read as people say.
+| [Sunday 27 March 2011] [19:29:38] <jdroid->	But anyway... I'm trying to get some c compiled!
+| [Sunday 27 March 2011] [19:29:52] <klestes>	I looked at your code, but not being in C for at least a decade, I couildn't catch anything right off the bat.  I know its either a linking issue, or maybe forgetting to include a header (but you seem to have done that right)
+| [Sunday 27 March 2011] [19:30:19] <klestes>	what compiler are you using, Gcc ?
+| [Sunday 27 March 2011] [19:31:03] <jdroid->	oh great question actually... i'm using the gcc xcode gave me
+| [Sunday 27 March 2011] [19:31:34] <jdroid->	seems to compile mongrel2 just fine, so i figure i've got my args wrong somehow
+| [Sunday 27 March 2011] [19:31:50] <jdroid->	gcc 4.2.1 specifically tho
+| [Sunday 27 March 2011] [19:31:51] <klestes>	uhm, xcode - are you on OS/X ?
+| [Sunday 27 March 2011] [19:31:54] <jdroid->	yep
+| [Sunday 27 March 2011] [19:31:59] <klestes>	lucky guy !
+| [Sunday 27 March 2011] [19:32:09] <jdroid->	i guess..? macs are cheap these days
+| [Sunday 27 March 2011] [19:32:18] <klestes>	someday I'm gonna go mac...and never come back.
+| [Sunday 27 March 2011] [19:32:33] <klestes>	well, depends on what kinda mac you want.  the one I want is 2.5 - 3k.
+| [Sunday 27 March 2011] [19:34:03] <klestes>	try compiling and linking one of the simple examples from the guide.  do you get the same errors ?
+| [Sunday 27 March 2011] [19:35:54] <jdroid->	i seem to get the same errrors
+| [Sunday 27 March 2011] [19:35:56] <jdroid->	hmm
+| [Sunday 27 March 2011] [19:36:11] <jdroid->	i tried this: http://zguide.zeromq.org/c:hwclient
+| [Sunday 27 March 2011] [19:38:51] <jdroid->	ah got it
+| [Sunday 27 March 2011] [19:39:00] <jdroid->	i forgot -lzmq at the end of the gcc cmd
+| [Sunday 27 March 2011] [19:39:42] <JusticeFries>	what is the difference in typical use case for 0mq versus something in the realm of rabbitmq?
+| [Sunday 27 March 2011] [19:40:05] <jdroid->	JusticeFries: I think the mistake there is assuming zmq is a replacement for rabbitmq
+| [Sunday 27 March 2011] [19:40:19] <JusticeFries>	nope
+| [Sunday 27 March 2011] [19:40:23] <JusticeFries>	not assuming replacement.
+| [Sunday 27 March 2011] [19:40:30] <JusticeFries>	i'm interested in how they complement each other, too. :)
+| [Sunday 27 March 2011] [19:40:34] <JusticeFries>	and what each one excels at.
+| [Sunday 27 March 2011] [19:40:53] <jdroid->	:)
+| [Sunday 27 March 2011] [19:41:30] <jdroid->	So ZMQ is more like sockets with messaging semantics. You'd still build your broker, which might be dropping stuff from one zmq socket in a db, while sending stuff out of the db across another socket
+| [Sunday 27 March 2011] [19:41:58] <JusticeFries>	okay.
+| [Sunday 27 March 2011] [19:42:05] <JusticeFries>	unix sockets, or something more specific to ZMQ?
+| [Sunday 27 March 2011] [19:42:16] <jdroid->	Zmq offers multiple types of sockets.
+| [Sunday 27 March 2011] [19:42:21] <JusticeFries>	fair enough.
+| [Sunday 27 March 2011] [19:42:25] <jdroid->	You could use unix sockets if you want. You could use tcp just as easily
+| [Sunday 27 March 2011] [19:43:49] <JusticeFries>	so then - I'm looking at doing something that settles somewhere near rabbit's topic exchanges. basically, using it for some group messaging functions for end users that doesn't hit the DB.
+| [Sunday 27 March 2011] [19:43:52] <klestes>	I've heard that rabbitMQ is somewhat synergetic with ZMQ, it can be made into a broker.
+| [Sunday 27 March 2011] [19:44:01] <JusticeFries>	i've heard that too.
+| [Sunday 27 March 2011] [19:44:10] <klestes>	we musta read the same article ;)_
+| [Sunday 27 March 2011] [19:44:15] <JusticeFries>	just not sure where to fit it in, or if it is even useful in this current context.
+| [Sunday 27 March 2011] [19:44:44] <jdroid->	what you heard is probably that zeromq has amqp support: http://www.zeromq.org/docs:welcome-from-amqp
+| [Sunday 27 March 2011] [19:44:58] <JusticeFries>	either that or ilya's blog.
+| [Sunday 27 March 2011] [19:45:02] <JusticeFries>	igvita
+| [Sunday 27 March 2011] [19:45:33] <JusticeFries>	heh I like the gross generalizations.
+| [Sunday 27 March 2011] [19:45:46] <jdroid->	thanks. i'm the James Dennis that's quoted!
+| [Sunday 27 March 2011] [19:45:51] <klestes>	yeah, he does that well :)
+| [Sunday 27 March 2011] [19:45:59] <JusticeFries>	ha nice.
+| [Sunday 27 March 2011] [19:46:13] <klestes>	its a small 0world after all.
+| [Sunday 27 March 2011] [19:46:26] <JusticeFries>	well i may assault you with questions later - though the guide is pretty extensive
+| [Sunday 27 March 2011] [19:46:34] <klestes>	0mq used to - didn't they chunk the amqp thang ?
+| [Sunday 27 March 2011] [19:46:49] <klestes>	yeah, and it seems to be getting biggeer and betta' all the time...
+| [Sunday 27 March 2011] [21:35:55] <jdroid->	These slides are awesome: http://www.slideshare.net/IanBarber/zeromq-is-the-answer
+| [Sunday 27 March 2011] [21:41:34] <xet>	hi
+| [Sunday 27 March 2011] [21:42:33] <xet>	im doing some tests in a small pub/sub app
+| [Sunday 27 March 2011] [21:42:43] <xet>	need some help
+| [Monday 28 March 2011] [03:29:36] <guido_g>	pieterh: what the hell did you do to the guide? firefox uses 100% cpu and opera takes ages to load the page.
+| [Monday 28 March 2011] [06:59:32] <pieterh>	guido_g: hi
+| [Monday 28 March 2011] [09:43:54] <nicolas>	hi
+| [Monday 28 March 2011] [09:56:03] <pieterh>	nicolas: hi 
+| [Monday 28 March 2011] [10:07:42] <nicolas>	i'm having some trouble with zmq pub/sub in c++
+| [Monday 28 March 2011] [10:08:29] <nicolas>	memory starts to be eaten by my application
+| [Monday 28 March 2011] [10:08:48] <nicolas>	and it has no memory leaks
+| [Monday 28 March 2011] [10:09:03] <nicolas>	its just a simple client/server pair to do performance tests
+| [Monday 28 March 2011] [10:15:09] <nicolas>	it seems to be that the client is receiving or processing data faster than the server, and then the server starts to eat memory up
+| [Monday 28 March 2011] [10:21:59] <pieterh>	nicolas: yes, this is normal
+| [Monday 28 March 2011] [10:22:09] <pieterh>	the client is presumably slower than the server
+| [Monday 28 March 2011] [10:23:04] <pieterh>	you should set a high-water mark, on the PUB socket
+| [Monday 28 March 2011] [10:24:31] <traviscline>	nicolas: with 0mq it's up to you in some sense how you want to deal with that mismatch, covered well by the guide
+| [Monday 28 March 2011] [10:25:53] <CIA-22>	jzmq: 03Gonzalo Diethelm 07master * re3dc6dc 10/ (2 files): Got rid of calls to sleep() in all examples / tests. - http://bit.ly/fnyW8U
+| [Monday 28 March 2011] [10:45:54] <nicolas>	I see
+| [Monday 28 March 2011] [10:46:33] <nicolas>	pieterh: thanks
+| [Monday 28 March 2011] [10:46:44] <pieterh>	nicolas: np
+| [Monday 28 March 2011] [10:46:50] <nicolas>	traviscline: any particular seciton of the guide that might be helpful for my problem ?
+| [Monday 28 March 2011] [10:47:32] <traviscline>	nicolas: absolutely read the whole thing, but in particular look for HWM references
+| [Monday 28 March 2011] [10:47:33] <pieterh>	nicolas: this is explained in Ch2, http://zguide.zeromq.org/page:all#toc43
+| [Monday 28 March 2011] [10:47:45] <nicolas>	thanks!
+| [Monday 28 March 2011] [11:17:33] <private_meta>	ahahaha... binary star... good name
+| [Monday 28 March 2011] [11:24:38] <private_meta>	pieterh: there?
+| [Monday 28 March 2011] [12:21:09] <rbancroft>	l
+| [Monday 28 March 2011] [12:21:25] <rbancroft>	im sorry, mischan
+| [Monday 28 March 2011] [12:22:58] <mikko>	hi
+| [Monday 28 March 2011] [12:53:11] <private_meta>	pieterh: a short question about zmsg. You are using unsigned characters as storage option for message parts, but whatever input or output you do or get from zmsg is signed char. You told me that void * instead of char * should be used, but still I find it somewhat inconsistent that you store in unsigned char and input/output in the zmsg as signed char.
+| [Monday 28 March 2011] [12:53:48] <private_meta>	pieterh: maybe some consistency update would be good, like making it signed char as the entire existing api of zmsg is signed char only
+| [Monday 28 March 2011] [13:40:38] <pieterh>	private_meta: re
+| [Monday 28 March 2011] [13:41:25] <pieterh>	zmsg in the Guide is string-based but in libzapi I moved to a proper binary API
+| [Monday 28 March 2011] [15:03:35] <pieterh>	mikko: hi!
+| [Monday 28 March 2011] [15:08:07] <jobytaffey>	Hi, I'm having a problem with libev and REP sockets. I get the fd from ZMQ_FD, I watch for EV_READ and then zmq_recv(). I then watch for EV_WRITE and zmq_send(). But, after the first pair of messages, I never see EV_READ again. Oddly, if I ctrl-c my REQ test app (infinite loop doing zmq_send + zmq_recv) my REP app receives a packet. Any ideas?
+| [Monday 28 March 2011] [15:09:58] <pieterh>	jobytaffey: are you checking for errors on all 0MQ calls?
+| [Monday 28 March 2011] [15:10:09] <jobytaffey>	I believe so, yes.
+| [Monday 28 March 2011] [15:11:14] <pieterh>	Sounds like you're stuck in a blocking call which exits when you press Ctrl-C, and then your test app does a send on the REQ socket
+| [Monday 28 March 2011] [15:11:49] <pieterh>	without a minimal example to look at, it's hard to help...
+| [Monday 28 March 2011] [15:12:07] <jobytaffey>	I thought you'd say that, I'll get to work on one :-)
+| [Monday 28 March 2011] [15:14:26] <mikko>	pieterh: hi
+| [Monday 28 March 2011] [15:14:35] <pieterh>	mikko: excellent latency this evening :-)
+| [Monday 28 March 2011] [15:40:35] <Guthur>	Describing ZeroMQ in five minutes, is it possible? hehe
+| [Monday 28 March 2011] [15:41:05] <Guthur>	there is space for a 5 min lightening talk at the ELS, and I'm tempted to give it a go
+| [Monday 28 March 2011] [15:41:17] <mikko>	whats ELS?
+| [Monday 28 March 2011] [15:41:53] <Guthur>	European Lisp Symposium
+| [Monday 28 March 2011] [15:42:02] <Guthur>	it's on this week in Hamburg
+| [Monday 28 March 2011] [15:43:45] <jond>	Guthur : which lisp are you using out of interest?
+| [Monday 28 March 2011] [15:44:01] <pieterh>	Guthur: 5 minutes is kind of tight :-)
+| [Monday 28 March 2011] [15:44:21] <pieterh>	you can say exactly one thing, and repeat it three times
+| [Monday 28 March 2011] [15:44:23] <jdroid->	Guthur: I think you can get the gist of it quickly.
+| [Monday 28 March 2011] [15:44:48] <Guthur>	jond, I don't get to use it nearly as much as I like, but it would be usually Common Lisp, SBCL would be my implementation of choice
+| [Monday 28 March 2011] [15:44:57] <jdroid->	I wrote this on HN yesterday and realized you actually can describe zmq fast. You just need to start with saying it's a sockets system.
+| [Monday 28 March 2011] [15:44:59] <jdroid->	http://news.ycombinator.com/item?id=2377224
+| [Monday 28 March 2011] [15:45:26] <jdroid->	Put messaging in to the idea once they understand how the socket's side of it works. I think Zed takes this approach too, but I'm inferring that from having seen him speak
+| [Monday 28 March 2011] [15:45:32] <pieterh>	"That's correct that ZeroMQ isn't a server"...
+| [Monday 28 March 2011] [15:45:32] <jond>	Guthur: didnt zed shaw have a "sockets done right" article somewhere which might have been appropriated into the guide somewhere?
+| [Monday 28 March 2011] [15:45:48] <pieterh>	jond: I had used part of Zed's text, originally, but took it out again
+| [Monday 28 March 2011] [15:45:52] <jdroid->	pieterh: do you take issue with that line?
+| [Monday 28 March 2011] [15:45:53] <Guthur>	I'll have a look
+| [Monday 28 March 2011] [15:46:06] <pieterh>	jdroid-: nope, it's accurate
+| [Monday 28 March 2011] [15:46:10] <jdroid->	sweet
+| [Monday 28 March 2011] [15:46:26] <jdroid->	here's the whole thread: http://news.ycombinator.com/item?id=2376822
+| [Monday 28 March 2011] [15:46:27] <pieterh>	I'm just lolling because I finished writing Binary Star, a pattern for a high-availability server pair
+| [Monday 28 March 2011] [15:46:54] <pieterh>	0MQ is a high-level language for constructing asynchronous messaging architectures
+| [Monday 28 March 2011] [15:47:08] <pieterh>	it has implementations in 20+ programming languages
+| [Monday 28 March 2011] [15:47:12] <Guthur>	I suppose it will be a good challenge to try a lightening talk, if nothing else
+| [Monday 28 March 2011] [15:47:30] <pieterh>	it can construct brokers, clients, services, data distribution, workload distribution
+| [Monday 28 March 2011] [15:47:35] <jdroid->	Guthur: I put together these examples with that in mind: https://github.com/j2labs/zmq_examples
+| [Monday 28 March 2011] [15:48:13] <jond>	pieterh : but actually via zfl zapi it becomes less about 0mq
+| [Monday 28 March 2011] [15:48:27] <pieterh>	jond: it's the same high level language
+| [Monday 28 March 2011] [15:48:44] <jdroid->	You can simulate OneMQ, using ZeroMQ. And with a OneMQ, you can simulate InfinityMQ.
+| [Monday 28 March 2011] [15:48:51] <jdroid->	Maybe that' not quite it... there's a ZOI analogy in there somewhere
+| [Monday 28 March 2011] [15:49:04] <pieterh>	well, all messaging systems are turing equivalent I guess
+| [Monday 28 March 2011] [15:49:10] <pieterh>	but they're not the same
+| [Monday 28 March 2011] [15:51:02] <pieterh>	IMO it's inaccurate to describe XREP/XREQ as non-blocking versions of REP/REQ
+| [Monday 28 March 2011] [15:51:41] <jond>	has anyone got a link to the Ian Barber presentation?
+| [Monday 28 March 2011] [15:52:21] <mpales>	pieterh: the guide describes them in the same way
+| [Monday 28 March 2011] [15:52:37] <jobytaffey>	I'd really appreciate it if someone could take a look at my libev/REQ:REP problem. It's probably something silly, but I can't see it. There's a minimal example (files and tarball) here http://www.hodgepig.org/testcase/
+| [Monday 28 March 2011] [15:52:48] <pieterh>	mpales: then I need to fix that, I'm going to review that whole explanation
+| [Monday 28 March 2011] [15:52:51] <Guthur>	jond, http://vimeo.com/20605470
+| [Monday 28 March 2011] [15:54:38] <pieterh>	jobytaffey: maybe the client should connect to localhost, not *?
+| [Monday 28 March 2011] [15:54:39] <mpales>	pieterh: in ch2: A Request-Reply Broker, there is this sentence: Luckily there are non-blocking versions of these two sockets, called XREQ and XREP.
+| [Monday 28 March 2011] [15:54:50] <pieterh>	mpales: ugh... 
+| [Monday 28 March 2011] [15:54:59] <jobytaffey>	pieterh: Would that make a difference? It does connect ok.
+| [Monday 28 March 2011] [15:55:14] <jond>	Guthur: cheers. also sbcl is pretty cool, though havent used lisp for quite a while (though did manage to have a job where i did it for three years!)
+| [Monday 28 March 2011] [15:55:27] <pieterh>	jobytaffey: you connect to a name or IP address, not an interface
+| [Monday 28 March 2011] [15:56:13] <pieterh>	mpales: thanks for pointing this out, I'm going to try to make the explanations more accurate
+| [Monday 28 March 2011] [15:56:17] <Guthur>	jond, not many get the opportunity do such employment
+| [Monday 28 March 2011] [15:56:21] <jobytaffey>	Ah, I see what you mean. * means bind to any i/f, but you need to be explicit for the connect.
+| [Monday 28 March 2011] [15:56:46] <pieterh>	jobytaffey: indeed, fix this and see if your code works better, the rest looks fine though I've not run it
+| [Monday 28 March 2011] [15:56:55] <jobytaffey>	No, that didn't help.
+| [Monday 28 March 2011] [15:57:00] <Guthur>	jond, are you still in software development?
+| [Monday 28 March 2011] [15:57:26] <mpales>	pieterh: there is another thing I'd like to ask you
+| [Monday 28 March 2011] [15:57:29] <jond>	Guthur: yes. http://xkcd.com/297/
+| [Monday 28 March 2011] [15:57:34] <pieterh>	mpales: sure...
+| [Monday 28 March 2011] [15:58:16] <pieterh>	jond: "elegant weapons..." lol
+| [Monday 28 March 2011] [15:59:30] <mpales>	pieterh: the guide explains how to send a big file using multipart messages
+| [Monday 28 March 2011] [15:59:37] <Guthur>	jond, i love how when 'new' languages get new features which users trumpet the features are often ones that Lisps have had for over 20 years
+| [Monday 28 March 2011] [15:59:56] <pieterh>	mpales: well, multipart messages are not really meant for files
+| [Monday 28 March 2011] [16:00:07] <mpales>	pieterh: but also explains that until last part is sent/recvd, everything is kept in memory
+| [Monday 28 March 2011] [16:00:14] <pieterh>	rather, it's a simple way to marshal data
+| [Monday 28 March 2011] [16:00:19] <pieterh>	indeed, all in memory
+| [Monday 28 March 2011] [16:00:36] <pieterh>	if you want to send files you need to send chunks as individual messages
+| [Monday 28 March 2011] [16:01:37] <pieterh>	if you want to do restartable file transfer, then
+| [Monday 28 March 2011] [16:01:43] <pieterh>	handshake with the recipient, ask how much of the file they have, then send the rest
+| [Monday 28 March 2011] [16:02:05] <pieterh>	if you send large chunks, e.g. 1MB, you can destroy any network
+| [Monday 28 March 2011] [16:02:25] <jond>	Guthur. it's all true but http://xkcd.com/224/ and there's rarely any paying work in it
+| [Monday 28 March 2011] [16:02:46] <mpales>	pieterh: i see, my mistake, multipart messages are not mentioned in this context
+| [Monday 28 March 2011] [16:03:25] <pieterh>	mpales: I'll make a file transfer example later on
+| [Monday 28 March 2011] [16:03:36] <jdroid->	pieterh: agreed, the guide gave me that text. In fact, the italicized text is literally copied from the guide so grep for that
+| [Monday 28 March 2011] [16:04:16] <pieterh>	jdroid-: lol, that's funny, I was about to rant about how inaccurate that text was :-)
+| [Monday 28 March 2011] [16:04:49] <jdroid->	in yo face!
+| [Monday 28 March 2011] [16:04:51] <jdroid->	:D
+| [Monday 28 March 2011] [16:04:56] <mpales>	pieterh: great!
+| [Monday 28 March 2011] [16:05:02] <pieterh>	:-)
+| [Monday 28 March 2011] [16:05:38] <mpales>	pieterh: i really like the style of the guide, thanks for the amazing work
+| [Monday 28 March 2011] [16:05:57] <pieterh>	mpales: np, it's fun to write, though it's getting quite ... large...
+| [Monday 28 March 2011] [16:07:04] <Guthur>	jond: I recently seen a job in London looking for a functional programmer with knowledge of clojure, very well paid
+| [Monday 28 March 2011] [16:07:32] <Guthur>	though that's relative to your current pay grade of course
+| [Monday 28 March 2011] [16:07:55] <Guthur>	mine is most certainly on the lower end, hehe
+| [Monday 28 March 2011] [16:08:25] <mpales>	pieterh: yes, it is
+| [Monday 28 March 2011] [16:10:15] <mpales>	pieterh: btw. I used to read the guide with a larger font size, but since last week when I increase the font size, the browser goes mad... I use google chrome
+| [Monday 28 March 2011] [16:11:02] <pieterh>	mpales: yeah, the HTML got significantly fatter, since I added color markup for the code examples
+| [Monday 28 March 2011] [16:11:51] <pieterh>	oh, I just tried a larger font in Chrome, it gets very unhappy...
+| [Monday 28 March 2011] [16:13:29] <mpales>	pieterh: you can get some cash from google if you report it :-)
+| [Monday 28 March 2011] [16:14:21] <i2pi>	Hi. I have a PUSH/PULL queue working with multiple PULL'ers. I'm using NOBLOCK on both ends. I'd like the PUSH'er to not block if no PULLers are available, but for messages to be queued up for when the PULLers come back online. Is this possible? If so, how? 
+| [Monday 28 March 2011] [16:14:54] <pieterh>	mpales: they'll just tell me to stop writing insane HTML... :-)
+| [Monday 28 March 2011] [16:15:20] <pieterh>	i2pi: you can use zmq_poll
+| [Monday 28 March 2011] [16:16:07] <i2pi>	pieterh: reading the docs now. Thanks.
+| [Monday 28 March 2011] [16:16:30] <Guthur>	pieterh,  your guide has actually only 3 validation errors
+| [Monday 28 March 2011] [16:16:43] <Guthur>	which is a lot better than the vast majority of the internet
+| [Monday 28 March 2011] [16:16:55] <pieterh>	Guthur: ah, that's because in fact I don't write any of the HTML at all
+| [Monday 28 March 2011] [16:17:07] <pieterh>	mpales: firefox has no trouble resizing the font, interestingly
+| [Monday 28 March 2011] [16:17:09] <Guthur>	probably the best way, hehe
+| [Monday 28 March 2011] [16:17:39] <i2pi>	pieterh: Hmm. I'm not sure if i understand this correctly. Can you give me a hint?
+| [Monday 28 March 2011] [16:18:13] <pieterh>	i2pi: you poll on the PUSH socket using ZMQ_POLLOUT
+| [Monday 28 March 2011] [16:18:24] <mpales>	pieterh: yes, looks definitely like a chrome bug
+| [Monday 28 March 2011] [16:18:28] <pieterh>	I've not tried that, to be honest, but it's the proper way IMO
+| [Monday 28 March 2011] [16:18:39] <pieterh>	mpales: yes, I'm looking for a place to file it
+| [Monday 28 March 2011] [16:19:08] <mpales>	pieterh: settings / tools / report...
+| [Monday 28 March 2011] [16:20:11] <i2pi>	pieterh: Is the correct pattern to try doing a zmq_send() and if that fails with EAGAIN, then add that item to a list to poll. And then keep polling until the recvr returns?
+| [Monday 28 March 2011] [16:20:53] <pieterh>	i2pi: look at the zmq_poll examples in the Guide, do the same except writing rather than reading
+| [Monday 28 March 2011] [16:21:03] <pieterh>	you loop: poll / write / poll / write...
+| [Monday 28 March 2011] [16:21:13] <pieterh>	doing a write only when poll tells you it's OK
+| [Monday 28 March 2011] [16:21:19] <pieterh>	s/write/send/
+| [Monday 28 March 2011] [16:21:35] <i2pi>	so, its up to my app to maintain the queue of unsent items?
+| [Monday 28 March 2011] [16:21:59] <i2pi>	(I'm coming from AMQP, where I expect the queue to do queuing for me)
+| [Monday 28 March 2011] [16:23:16] <jobytaffey>	The plot thickens on my problem - tcpdump shows that despite my evserver.c calling zmq_send() and it returning 0, the packet is never transmitted (I assume, because it thinks the socket is blocked).
+| [Monday 28 March 2011] [16:24:03] <pieterh>	i2pi: you need to read the Guide
+| [Monday 28 March 2011] [16:24:22] <i2pi>	ok :)
+| [Monday 28 March 2011] [16:24:37] <pieterh>	jobytaffey: have you already written some examples without using evserver?
+| [Monday 28 March 2011] [16:25:04] <jobytaffey>	Yes, they're in the URL I posted. There's a REQ/REP client and server without libev.
+| [Monday 28 March 2011] [16:25:20] <i2pi>	pieterh: I started on the guide, and please don't take offense to this, but it is a little daunting that it starts very philosophically. I'd rather get straight into the meat. 
+| [Monday 28 March 2011] [16:25:43] <pieterh>	i2pi: there's only about 1 page of philosophy, then it gets straight into code...
+| [Monday 28 March 2011] [18:22:04] <private_meta>	pieterh: yes, you hinted on that before, but right now, the zguide version is still inconsistent
+| [Monday 28 March 2011] [18:44:33] <i2pi>	pieterh: I'm a few hours into the guide and I'm still not seeing it in the guide. 
+| [Monday 28 March 2011] [22:32:59] <Dawgmatix>	any pointers on how to write a zeromq device in python?
+| [Monday 28 March 2011] [22:37:44] <traviscline>	Dawgmatix: http://zeromq.github.com/pyzmq/devices.html read that?
+| [Monday 28 March 2011] [22:38:10] <Dawgmatix>	ah no, wasnt aware of that documentation
+| [Monday 28 March 2011] [22:38:19] <Dawgmatix>	have just read the guide so far
+| [Monday 28 March 2011] [22:38:26] <Dawgmatix>	and written some small programs 
+| [Monday 28 March 2011] [22:39:29] <Dawgmatix>	thanks for the pointer :)
+| [Wednesday 30 March 2011] [07:06:00] <drbobbeaty>	pieterh: any news on the release of 2.1.4 with the fixes we worked on? I'm interested in getting it and using it.
+| [Wednesday 30 March 2011] [07:09:31] <mikko__>	sustrik: weekend is fine by me
+| [Wednesday 30 March 2011] [07:10:25] <sustrik>	ok, let's get in touch on weekend
+| [Wednesday 30 March 2011] [07:13:13] <murkel>	Hi...  I'm having an issue with poll() on zmq sockets (2.1.3 cpp) which are not yet connected on the TCP layer: the timeouts are not honoured.
+| [Wednesday 30 March 2011] [07:13:29] <murkel>	If I create a REQ socket, connect to an endpoint without a server listening, transmit a message and then poll( ZMQ_POLLIN ) before recv(), the poll never times out.
+| [Wednesday 30 March 2011] [07:14:19] <murkel>	just as a test, I noticed that the poll never times out if I try to send two messages over the same un-connected socket.
+| [Wednesday 30 March 2011] [07:14:38] <murkel>	Is this the correct approach or should I be doing this differently?
+| [Wednesday 30 March 2011] [07:15:48] <sustrik>	can you post the test program to the mailing list?
+| [Wednesday 30 March 2011] [07:16:25] <murkel>	okay ...
+| [Wednesday 30 March 2011] [07:16:30] <sustrik>	thx
+| [Wednesday 30 March 2011] [07:34:59] <drbobbeaty>	mikko__, sustrik: thanks guys. That would be great.
+| [Wednesday 30 March 2011] [07:36:00] <sustrik>	drbobbeaty: please, do make sure that the changes you are interested in have made it to the mikko's patch as posted on the mailing list
+| [Wednesday 30 March 2011] [07:36:28] <drbobbeaty>	Yup, they sure did. I tested it.
+| [Wednesday 30 March 2011] [07:36:45] <sustrik>	:)
+| [Thursday 31 March 2011] [12:22:25] <djc>	would it be acceptable to have a mode of building zeromq linking with an externally-built openpgm?
+| [Thursday 31 March 2011] [12:22:33] <djc>	and if so, how can we make that happen?
+| [Thursday 31 March 2011] [12:25:41] <rforte>	does anyone know if zmq has been successfully built/used on iOS?
+| [Thursday 31 March 2011] [12:44:07] <CIA-22>	zeromq2: 03Martin Sustrik 07pre30 * r17fdb5e 10/ src/zmq.cpp : 
+| [Thursday 31 March 2011] [12:44:07] <CIA-22>	zeromq2: zmq_recv() returns size of the message even if it's truncated
+| [Thursday 31 March 2011] [12:44:07] <CIA-22>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/hqUOiu
+| [Thursday 31 March 2011] [12:44:09] <CIA-22>	zeromq2: 03Mikko Koppanen 07pre30 * rfbf1f51 10/ (7 files in 3 dirs): 
+| [Thursday 31 March 2011] [12:44:10] <CIA-22>	zeromq2: Upstream the openpgm build fixes. Add DSO symbol visibility to OpenPGM builds
+| [Thursday 31 March 2011] [12:44:10] <CIA-22>	zeromq2: Signed-off-by: Mikko Koppanen <mkoppanen@php.net> - http://bit.ly/eoZoFT
+| [Thursday 31 March 2011] [12:44:11] <CIA-22>	zeromq2: 03Martin Sustrik 07pre30 * rd36d9a3 10/ src/zmq_engine.cpp : 
+| [Thursday 31 March 2011] [12:44:12] <CIA-22>	zeromq2: Comments improvement
+| [Thursday 31 March 2011] [12:44:12] <CIA-22>	zeromq2: related to fairness while reading/writing large messages
+| [Thursday 31 March 2011] [12:44:12] <CIA-22>	zeromq2: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/hmvGwd
+| [Thursday 31 March 2011] [12:45:14] <sustrik>	djc: i think that may be possible, however, ask on the mailing list
+| [Thursday 31 March 2011] [12:46:13] <sustrik>	rforte: there were some people discussing iOS issues some time ago
+| [Thursday 31 March 2011] [12:46:18] <sustrik>	so i assum it's possible
+| [Thursday 31 March 2011] [12:47:57] <djc>	sustrik: I opened issue 15 about it
+| [Thursday 31 March 2011] [12:48:22] <sustrik>	ok
+| [Thursday 31 March 2011] [12:53:49] <cremes>	rforte: it builds and runs fine on osx
