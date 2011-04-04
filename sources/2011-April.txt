@@ -1043,3 +1043,401 @@
 | [Sunday 03 April 2011] [15:31:26] <pieterh>	I have to go tuck the kids into bed, cyal
 | [Sunday 03 April 2011] [15:35:53] <mikko>	https://build.zero.mq/job/libzmq_GCC-debian/432/cobertura/_default_/
 | [Sunday 03 April 2011] [15:54:09] <mikko>	pieterh: there?
+| [Sunday 03 April 2011] [22:28:19] <lestrrat>	I assume jenkins is complaining about the perl binding because of the upcoming 3.0 changes
+| [Sunday 03 April 2011] [22:28:31] <lestrrat>	can the tests run against the 2.1.x tree for now?
+| [Sunday 03 April 2011] [22:31:50] <mikko>	lestrrat: yeah
+| [Sunday 03 April 2011] [22:31:54] <mikko>	been doing a lot of changes lately
+| [Sunday 03 April 2011] [22:35:31] <mikko>	building now
+| [Monday 04 April 2011] [04:17:47] Notice	-NickServ- travlr_ is not a registered nickname.
+| [Monday 04 April 2011] [04:17:50] Notice	-ChanServ- [#qt] Here are the rules for #qt: (1) Don't just join, ask, and quit - stay around and answer questions yourself! (2) Be patient, people may not see your question right away.
+| [Monday 04 April 2011] [04:29:05] <mikko-->	sustrik
+| [Monday 04 April 2011] [04:29:07] <mikko-->	pieterh
+| [Monday 04 April 2011] [04:29:11] <pieter_hintjens1>	hi mikko
+| [Monday 04 April 2011] [04:31:19] <mikko-->	pieterh: rpm packaging is broken
+| [Monday 04 April 2011] [04:31:23] <mikko-->	device manual pages
+| [Monday 04 April 2011] [04:31:29] <mikko-->	http://build.zero.mq/view/RPM%20packaging/
+| [Monday 04 April 2011] [04:31:31] <mikko-->	all branches
+| [Monday 04 April 2011] [04:31:37] <pieter_hintjens1>	let me take a look
+| [Monday 04 April 2011] [04:31:40] <mikko-->	i was up until 4 AM adding / fixing builds
+| [Monday 04 April 2011] [04:31:44] <mikko-->	almost everything there
+| [Monday 04 April 2011] [04:31:49] <mikko-->	still needs libzfl
+| [Monday 04 April 2011] [04:32:05] <pieter_hintjens1>	i saw it... a lot of work!
+| [Monday 04 April 2011] [04:36:55] <pieter_hintjens1>	OK, found the error for zmq_device, should build now
+| [Monday 04 April 2011] [04:38:05] <pieter_hintjens1>	for master, it's zmq_cpp, I assume that's been removed from the tree but not the zeromq.spec file
+| [Monday 04 April 2011] [04:40:34] <mikko-->	it's the device manual page
+| [Monday 04 April 2011] [04:40:42] <mikko-->	that causes the packaging error for 2-2 and 2-1
+| [Monday 04 April 2011] [04:40:49] <pieter_hintjens1>	I've fixed that, mikko
+| [Monday 04 April 2011] [04:40:56] <mikko-->	cool
+| [Monday 04 April 2011] [04:41:10] <pieter_hintjens1>	there's still a problem with master, due to a reference to the zmq_cpp man page
+| [Monday 04 April 2011] [04:41:42] <pieter_hintjens1>	I think at some point we should consider generating these files automatically
+| [Monday 04 April 2011] [04:42:01] <pieter_hintjens1>	the current approach breaks every time anything is added or removed
+| [Monday 04 April 2011] [04:42:06] <sustrik__>	fixing it
+| [Monday 04 April 2011] [04:42:08] <sustrik__>	a second
+| [Monday 04 April 2011] [04:42:53] <sustrik__>	btw: source line is wrong
+| [Monday 04 April 2011] [04:43:02] <sustrik__>	Source:        http://www.zeromq.org/local--files/area:download/%{name}-%{version}.tar.gz
+| [Monday 04 April 2011] [04:43:24] <pieter_hintjens1>	hmm, indeed
+| [Monday 04 April 2011] [04:43:31] <mikko-->	sustrik: https://build.zero.mq/view/libzmq/job/libzmq_GCC-debian/440/cppcheckResult/source.20/?
+| [Monday 04 April 2011] [04:43:37] <mikko-->	see the highlighted line
+| [Monday 04 April 2011] [04:44:16] <sustrik__>	mikko: "The page isn't redirecting properly"
+| [Monday 04 April 2011] [04:44:51] <mikko-->	oh, indeed
+| [Monday 04 April 2011] [04:45:03] <mikko-->	hmm, i wonder what happened to permissions there
+| [Monday 04 April 2011] [04:45:04] <mikko-->	sec
+| [Monday 04 April 2011] [04:45:58] <mikko-->	brbr
+| [Monday 04 April 2011] [04:46:02] <sustrik__>	this should be probably changed as well:
+| [Monday 04 April 2011] [04:46:02] <sustrik__>	Name:          zeromq
+| [Monday 04 April 2011] [04:46:06] <sustrik__>	should be libzmq
+| [Monday 04 April 2011] [04:46:42] <sustrik__>	otherwise the "source" line won't expand properly
+| [Monday 04 April 2011] [04:47:07] <pieter_hintjens1>	sustrik__: the source line isn't going to be accurate anyhow
+| [Monday 04 April 2011] [04:48:00] <sustrik__>	2 issues
+| [Monday 04 April 2011] [04:48:03] <sustrik__>	the name
+| [Monday 04 April 2011] [04:48:05] <sustrik__>	the path
+| [Monday 04 April 2011] [04:48:17] <sustrik__>	should i try to fix it?
+| [Monday 04 April 2011] [04:48:26] <sustrik__>	i have no idea how rpm packaging works :|
+| [Monday 04 April 2011] [04:48:46] <pieter_hintjens1>	presumably it's a comment rather than functional
+| [Monday 04 April 2011] [04:48:53] <pieter_hintjens1>	because it's been wrong for some time
+| [Monday 04 April 2011] [04:49:48] <pieter_hintjens1>	I'd suggest leaving the package name as zeromq, and fixing the URI to download.zeromq.org
+| [Monday 04 April 2011] [04:49:53] <pieter_hintjens1>	that is at least accurate
+| [Monday 04 April 2011] [04:50:08] <pieter_hintjens1>	http://download.zeromq.org/%{name}-%{version}.tar.gz
+| [Monday 04 April 2011] [04:56:55] <mikko-->	sustrik:
+| [Monday 04 April 2011] [04:56:57] <mikko-->	http://build.zero.mq/view/libzmq/job/libzmq_GCC-debian/440/cppcheckResult/source.20/?
+| [Monday 04 April 2011] [04:57:01] <mikko-->	should load now
+| [Monday 04 April 2011] [05:17:36] <mikko_k>	sustrik: did you get it?
+| [Monday 04 April 2011] [05:34:40] <sustrik__>	mikko_k: yes
+| [Monday 04 April 2011] [05:34:48] <sustrik__>	what problem does it report?
+| [Monday 04 April 2011] [05:35:36] <sustrik__>	unnecessary cast?
+| [Monday 04 April 2011] [05:36:27] <mikko_k>	unused variable
+| [Monday 04 April 2011] [05:36:59] <sustrik__>	ok, let me fix it
+| [Monday 04 April 2011] [05:37:04] <sustrik__>	what about the rpm stuff?
+| [Monday 04 April 2011] [05:37:12] <sustrik__>	do you have any idea how it works?
+| [Monday 04 April 2011] [05:37:14] <mikko_k>	yeah
+| [Monday 04 April 2011] [05:37:52] <sustrik__>	%{name} -- what does it resolves to?
+| [Monday 04 April 2011] [05:38:26] <mikko_k>	Name:
+| [Monday 04 April 2011] [05:38:45] <sustrik__>	aha
+| [Monday 04 April 2011] [05:38:53] <sustrik__>	thus we have to change Name: to libzmq
+| [Monday 04 April 2011] [05:39:01] <sustrik__>	or hard-wite libzmq into the source path
+| [Monday 04 April 2011] [05:39:52] <mikko_k>	you don't have to use %{name}
+| [Monday 04 April 2011] [05:39:59] <mikko_k>	it just seems to be a common convention
+| [Monday 04 April 2011] [05:40:23] <sustrik__>	what is the name used for?
+| [Monday 04 April 2011] [05:40:27] <mikko_k>	usually you see %{name}-%{version}.tar.gz 
+| [Monday 04 April 2011] [05:40:29] <sustrik__>	tracking identity of tha package?
+| [Monday 04 April 2011] [05:40:52] <sustrik__>	if so, we have to keep zeromq as name
+| [Monday 04 April 2011] [05:40:54] <mikko_k>	sustrik__: i guess it's just a convention
+| [Monday 04 April 2011] [05:40:59] <mikko_k>	you can hardcode it as well
+| [Monday 04 April 2011] [05:41:17] <pieter_hintjens1>	like I said, the package name will have to remain zeromq
+| [Monday 04 April 2011] [05:41:17] <sustrik__>	i mean, if the guys at RH/CentOS are using name
+| [Monday 04 April 2011] [05:41:28] <sustrik__>	to say "this is the same package, just a newer version"
+| [Monday 04 April 2011] [05:41:36] <mikko_k>	yeah
+| [Monday 04 April 2011] [05:41:38] <mikko_k>	makes sense
+| [Monday 04 April 2011] [05:41:38] <pieter_hintjens1>	unless we make separate distributions for the core library and the package
+| [Monday 04 April 2011] [05:41:56] <sustrik__>	ok, let me hardwire the path then
+| [Monday 04 April 2011] [05:48:31] <sustrik__>	hm, are we going to keep the name of the dist "zeromq"
+| [Monday 04 April 2011] [05:48:40] <sustrik__>	or are we going to change it to libzmq?
+| [Monday 04 April 2011] [05:49:00] <pieter_hintjens1>	sustrik__: for the third time... :-) we have to keep the name of the dist as "zeromq"
+| [Monday 04 April 2011] [05:49:16] <pieter_hintjens1>	unless we also (which we can do) create a package specifically and only for libzmq
+| [Monday 04 April 2011] [05:49:33] <sustrik__>	the dist is only libzmq
+| [Monday 04 April 2011] [05:49:42] <sustrik__>	i mean
+| [Monday 04 April 2011] [05:49:49] <sustrik__>	what you get when you type "make dist"
+| [Monday 04 April 2011] [05:50:13] <pieter_hintjens1>	then you can use package = libzmq in master, for sure
+| [Monday 04 April 2011] [05:50:20] <pieter_hintjens1>	in the dist branches it's zeromq
+| [Monday 04 April 2011] [05:50:39] <sustrik__>	ok
+| [Monday 04 April 2011] [05:50:47] <pieter_hintjens1>	however unless you're uploading those .tag.gz files somewhere, they're not on any download URI
+| [Monday 04 April 2011] [05:50:53] <Guthur>	still naming discussions I see, hehe
+| [Monday 04 April 2011] [05:51:10] <pieter_hintjens1>	Guthur: well, the naming is just settling into place afaics
+| [Monday 04 April 2011] [05:51:45] <Guthur>	cool, I've been out of the loop somewhat, being in Hamburg 
+| [Monday 04 April 2011] [05:51:49] <pieter_hintjens1>	sustrik__: in any case if we start including other projects into the zeromq dist the redhat packaging will change
+| [Monday 04 April 2011] [05:51:58] <sustrik__>	BuildRequires: glib2-devel
+| [Monday 04 April 2011] [05:52:11] <sustrik__>	the rpm file looks completely out-of-date
+| [Monday 04 April 2011] [05:52:16] <pieter_hintjens1>	Guthur: I've heard that Internet is coming to Hamburg in 2015...
+| [Monday 04 April 2011] [05:52:58] <Guthur>	pieter_hintjens1: yeah the sooner the better, getting a wifi connection was more challenging than I expected
+| [Monday 04 April 2011] [05:53:02] <sustrik__>	why so?
+| [Monday 04 April 2011] [05:53:22] <sustrik__>	with packaging for distros you want to have individual project be different packages
+| [Monday 04 April 2011] [05:53:27] <Guthur>	well there was one at the conference but the only other one I really got was at a starbucks
+| [Monday 04 April 2011] [05:53:34] <sustrik__>	so that it works ok with package managers
+| [Monday 04 April 2011] [05:53:48] <pieterh>	sustrik__: you're probably right
+| [Monday 04 April 2011] [05:54:14] 	 * sustrik__ has no packaging experience whatsoever :|
+| [Monday 04 April 2011] [05:54:22] <pieterh>	but I'm not sure we *don't* want a ZeroMQ distro that includes everything sane
+| [Monday 04 April 2011] [05:55:23] <sustrik__>	definitely on win32
+| [Monday 04 April 2011] [05:55:32] <sustrik__>	no idea about deifferent UX-es
+| [Monday 04 April 2011] [05:55:43] <pieterh>	well, openpgm is a good example
+| [Monday 04 April 2011] [05:55:43] 	 * so_solid_moo is a fedora developer if you have any questions about that specifically :)
+| [Monday 04 April 2011] [05:55:57] <pieterh>	do you want to have to go build it separately?
+| [Monday 04 April 2011] [05:56:29] <sustrik__>	the distros are pretty clear about not wanting bundled libs
+| [Monday 04 April 2011] [05:56:40] <pieterh>	yes, but that's not really our problem here
+| [Monday 04 April 2011] [05:56:45] <pieterh>	this is not about libzmq in a distro
+| [Monday 04 April 2011] [05:56:49] <sustrik__>	that's why mikko did the separate compile work last week
+| [Monday 04 April 2011] [05:56:58] <sustrik__>	rpm?
+| [Monday 04 April 2011] [05:57:02] <pieterh>	it's about making our own packages (this RPM stuff is not RHEL)
+| [Monday 04 April 2011] [05:57:28] <sustrik__>	well, the script is in directory called "redhat" :)
+| [Monday 04 April 2011] [05:57:28] <pieterh>	it's about making RPMs that can be used to install 0MQ on boxes
+| [Monday 04 April 2011] [05:57:40] <mikko_k>	i can provide unofficial yum repository later
+| [Monday 04 April 2011] [05:57:49] <mikko_k>	now that there is 64bit build capacity
+| [Monday 04 April 2011] [05:58:07] <sustrik__>	mikko: what do you thing of the glib dep in the rpm?
+| [Monday 04 April 2011] [05:58:31] <pieterh>	sustrik__: it's clearly out of date but should we be maintaining the rpm spec?
+| [Monday 04 April 2011] [05:58:39] <pieterh>	there's an author
+| [Monday 04 April 2011] [05:58:50] <sustrik__>	mikko?
+| [Monday 04 April 2011] [06:03:24] <sustrik__>	mikko_k: are you there?
+| [Monday 04 April 2011] [06:03:36] <sustrik__>	what do you thing of the glib dep in the rpm?
+| [Monday 04 April 2011] [06:04:16] <pieterh>	sustrik__: that's a hangover from OpenPGM, isn't it?
+| [Monday 04 April 2011] [06:04:24] <sustrik__>	looks like
+| [Monday 04 April 2011] [06:04:35] <pieterh>	do we really want to be maintaining this file though?
+| [Monday 04 April 2011] [06:04:46] <sustrik__>	where else should it go?
+| [Monday 04 April 2011] [06:05:02] <pieterh>	my question is whether we (you, me, Mikko) should be editing and fixing this spec file
+| [Monday 04 April 2011] [06:05:20] <pieterh>	there's an author who wrote it, and people who use it (probably the same person)
+| [Monday 04 April 2011] [06:05:33] <sustrik__>	mikko is listed as an author
+| [Monday 04 April 2011] [06:06:32] <pieterh>	ok, git blame confirms it
+| [Monday 04 April 2011] [06:06:49] <mikko_k>	i can edit it
+| [Monday 04 April 2011] [06:06:55] <mikko_k>	when i get home
+| [Monday 04 April 2011] [06:07:24] <sustrik__>	it's up to you
+| [Monday 04 April 2011] [06:07:30] <sustrik__>	you are the build system maintainer
+| [Monday 04 April 2011] [06:07:37] <sustrik__>	if you want it there, there is stays
+| [Monday 04 April 2011] [06:07:50] <sustrik__>	if you want to remove it, do so
+| [Monday 04 April 2011] [06:08:13] <mikko_k>	glib dependency should go afaik
+| [Monday 04 April 2011] [06:08:58] <sustrik__>	do you want me to fix it?
+| [Monday 04 April 2011] [06:09:08] <sustrik__>	or would you check it yourself later on?
+| [Monday 04 April 2011] [06:09:34] <mikko_k>	two things at least:
+| [Monday 04 April 2011] [06:09:50] <mikko_k>	well, i can do it tonight
+| [Monday 04 April 2011] [06:09:59] <mikko_k>	i'll add option to use system openpgm to spec files
+| [Monday 04 April 2011] [06:10:13] <mikko_k>	so that in future RHEL/etc can easily package the two separately
+| [Monday 04 April 2011] [06:10:23] <mikko_k>	possibly package openpgm 5.1.115 as RPM as well
+| [Monday 04 April 2011] [06:10:30] <mikko_k>	and provide a yum repository for these
+| [Monday 04 April 2011] [06:10:30] <sustrik__>	ok
+| [Monday 04 April 2011] [06:10:41] <sustrik__>	if you want a help just ask
+| [Monday 04 April 2011] [06:11:16] <mikko_k>	do we have zeromq GPG key?
+| [Monday 04 April 2011] [06:11:21] <mikko_k>	that i can use to sign the packages
+| [Monday 04 April 2011] [06:11:26] <mikko_k>	or should i create one?
+| [Monday 04 April 2011] [06:12:31] <sustrik__>	hm, mato would be right person to answer that
+| [Monday 04 April 2011] [06:12:38] <sustrik__>	he's out of town today though
+| [Monday 04 April 2011] [06:35:46] <mikko_k>	sustrik: https://build.zero.mq/view/libzmq/job/libzmq_mingw32-debian/281/console
+| [Monday 04 April 2011] [06:36:31] <pieterh>	mikko_k: as far as I know we don't have a ZeroMQ GPG key
+| [Monday 04 April 2011] [06:36:47] <pieterh>	and you should create one IMO
+| [Monday 04 April 2011] [06:41:49] <sustrik__>	mato is doing debian packaging
+| [Monday 04 April 2011] [06:41:53] <sustrik__>	he may have one
+| [Monday 04 April 2011] [06:43:10] <pieterh>	I'd assume if he did anything in the name of the 0MQ community he'd share it
+| [Monday 04 April 2011] [06:44:04] <sustrik__>	isn't the key confidential?
+| [Monday 04 April 2011] [06:44:12] <pieterh>	its existence shouldn't be
+| [Monday 04 April 2011] [06:44:16] 	 * sustrik__ has no idea about security
+| [Monday 04 April 2011] [06:44:45] <pieterh>	given that you and myself are the benevolent dictators here, we should have all the keys
+| [Monday 04 April 2011] [06:45:15] <pieterh>	that is how we have worked since the start, it's a good principle
+| [Monday 04 April 2011] [06:46:01] <pieterh>	I assume mato would by default work like that, and since he's not shared any keys, I assume they don't exist
+| [Monday 04 April 2011] [06:46:44] <sustrik__>	if it's used for signing official debian distro, it does exist
+| [Monday 04 April 2011] [06:46:48] <sustrik__>	wait till tomorrow
+| [Monday 04 April 2011] [06:47:04] <pieterh>	of course
+| [Monday 04 April 2011] [06:47:11] <mikko_k>	sustrik: did you see the new error ?
+| [Monday 04 April 2011] [06:48:20] <sustrik__>	yes, fixing it
+| [Monday 04 April 2011] [06:48:23] <sustrik__>	wait a sec
+| [Monday 04 April 2011] [06:51:02] <mikko_k>	cool, thanks
+| [Monday 04 April 2011] [06:51:41] <sustrik__>	mikko_k: ok, done
+| [Monday 04 April 2011] [07:03:31] <ianbarber>	sustrik__: mato was saying that he didn't actually adding the debian packages directly as he wasn't a debian dev, so the packages may be signed by the repo
+| [Monday 04 April 2011] [07:04:23] <sustrik__>	aha
+| [Monday 04 April 2011] [07:04:34] <sustrik__>	then we presumably have no key
+| [Monday 04 April 2011] [07:04:57] <sustrik__>	mikko: feel free to generate one
+| [Monday 04 April 2011] [07:05:27] <pieterh>	sustrik__: you sure you don't want to wait a day and ask Mato?
+| [Monday 04 April 2011] [07:05:45] <sustrik__>	well, if he's not signing the packages
+| [Monday 04 April 2011] [07:06:05] <mikko_k>	sustrik: http://build.zero.mq/view/libzmq/job/libzmq_mingw32-debian/283/consoleText 
+| [Monday 04 April 2011] [07:06:10] <mikko_k>	lunch!
+| [Monday 04 April 2011] [07:06:44] <sustrik__>	anyway, no haste, we can discuss the key matter tomorrow
+| [Monday 04 April 2011] [07:06:53] <sustrik__>	mikko_k: thx, giving it a look
+| [Monday 04 April 2011] [07:10:01] <ianbarber>	sustrik__: thanks for the reply to my router idea by the way, good point about the two distinctions. I hadn't thought about the stateful service situation much, but it is a different and tricky problem. 
+| [Monday 04 April 2011] [07:13:23] <sustrik__>	ianbarber: yes, that's why Erlang doesn't allow for any local state
+| [Monday 04 April 2011] [07:13:46] <sustrik__>	no state => scalability & transpatrent failover
+| [Monday 04 April 2011] [07:13:51] <sustrik__>	state => ?
+| [Monday 04 April 2011] [07:13:52] <ianbarber>	yeah
+| [Monday 04 April 2011] [07:21:25] <sustrik__>	mikko: fixed
+| [Monday 04 April 2011] [07:45:51] <mikko_k>	pieterh: http://build.zero.mq/job/libzapi-master_libzmq_mingw32-debian/2/consoleText
+| [Monday 04 April 2011] [09:47:56] <pieterh>	mikko_k: fixed, should build on Win32 now but I've not had time to try that yet
+| [Monday 04 April 2011] [09:49:26] <pieterh>	sustrik__: did you say you could, or could not, make it to Brussels for the 10th?
+| [Monday 04 April 2011] [10:04:52] Notice	-NickServ- travlr__ is not a registered nickname.
+| [Monday 04 April 2011] [10:04:55] Notice	-ChanServ- [#qt] Here are the rules for #qt: (1) Don't just join, ask, and quit - stay around and answer questions yourself! (2) Be patient, people may not see your question right away.
+| [Monday 04 April 2011] [10:23:38] <saurabhd>	hi...i have problem related to zmq_device..
+| [Monday 04 April 2011] [10:23:44] <saurabhd>	anyone can help out?
+| [Monday 04 April 2011] [10:53:00] <boothead>	hi guys, i would like to close a socket with one unsent message in the buffer and then open another socket to the same endpoint as the first - would ZMQ_LINGER let me chuck the unsent messages?
+| [Monday 04 April 2011] [10:55:00] <sustrik__>	boothead: set linger to zero
+| [Monday 04 April 2011] [10:55:11] <sustrik__>	pieterh: no, i won't be able to come
+| [Monday 04 April 2011] [10:56:45] <boothead>	sustrik__, thanks, I will try that.
+| [Monday 04 April 2011] [10:59:33] <boothead>	does it matter if i set linger before or after connecting (like identity?)
+| [Monday 04 April 2011] [10:59:53] <sustrik__>	it does not matter
+| [Monday 04 April 2011] [11:02:47] <boothead>	thanks sustrik__ works perfectly :-)
+| [Monday 04 April 2011] [12:00:10] <pieterh>	sustrik__: I'm going to cancel it then, not much point
+| [Monday 04 April 2011] [12:12:28] <ianbarber>	sustrik__: is your moscow talk going to a) be videoed b) in english? 
+| [Monday 04 April 2011] [12:25:20] <pieterh>	sustrik__: I can look for another date in May, it was already mostly full
+| [Monday 04 April 2011] [12:31:32] <ianbarber>	i am still waiting to find out whether i am OK for that date from work, end of the financial year = bottom of the priority pile i suspect :)
+| [Monday 04 April 2011] [13:58:00] <eyeris>	If I create a push/pull pair with an explicit identity on each side, does the durability (which I assume is journaled) allow the two sides to operate in a disconnected state? (total noob here, just reading the guide)
+| [Monday 04 April 2011] [13:58:53] <michaelgreene_>	I'm in the process of converting a system I'm using from 2.0.11 to 2.1.4 and have a few hundred automated tests that run a pyzmq test harness against my system that is implemented using the low-level C API.  All the tests seem to pass still, but I see "Invalid argument (mutex.hpp:98)" printed while tearing down each test. Any ideas what this is actually telling me? It looks like that line is just a lock acquire.
+| [Monday 04 April 2011] [13:59:08] <pieterh>	eyeris: nope
+| [Monday 04 April 2011] [13:59:30] <pieterh>	the durability is not reliable, it just creates a kind of persistent network buffer
+| [Monday 04 April 2011] [14:00:11] <pieterh>	michaelgreene_: sounds like code is using a closed socket or somesuch
+| [Monday 04 April 2011] [14:00:16] <eyeris>	pieterh: OK, thanks.
+| [Monday 04 April 2011] [14:00:41] <pieterh>	eyeris: if you want disconnected clients / workers, check out the Majordomo pattern in Ch4
+| [Monday 04 April 2011] [14:00:55] <pieterh>	hmm, sorry, the Titanic pattern :-)
+| [Monday 04 April 2011] [14:11:46] <Guthur>	what would be the major wins for zeromq if it reaches the kernel, low latency?
+| [Monday 04 April 2011] [14:12:19] <pieterh>	Guthur: accessibility to any application that uses normal sockets, in theory
+| [Monday 04 April 2011] [14:15:26] <Guthur>	pieterh, is that what you see as  the biggest win?
+| [Monday 04 April 2011] [14:16:22] <Guthur>	which reminds me, one of the common questions I got asked at the ELS, was 'why should I use zeromq sockets over plain TCP'
+| [Monday 04 April 2011] [14:19:59] <pieterh>	Guthur: you'd have to ask sustrik, kernelification is his vision
+| [Monday 04 April 2011] [14:20:30] <pieterh>	why use zeromq sockets over plain TCP... turns 2,000 lines of code into 20, that's all
+| [Monday 04 April 2011] [14:21:36] <pieterh>	it's pretty exhaustively explained in the Guide, all the difficulties you have to solve if you use TCP sockets
+| [Monday 04 April 2011] [14:22:35] <Guthur>	yeah, it was an easy one to answer to be fair
+| [Monday 04 April 2011] [14:34:52] <sustrik__>	pieterh: it's more about money, i extremely short of it atm, so i am not sure i can actually afford going to bxl now
+| [Monday 04 April 2011] [14:35:07] <sustrik__>	i you are willing to reschedule though
+| [Monday 04 April 2011] [14:35:28] <sustrik__>	it would be nice to move it to later on
+| [Monday 04 April 2011] [14:35:34] <sustrik__>	prepare a real program
+| [Monday 04 April 2011] [14:35:46] <pieterh>	unconfs don't really have programs, that's the point
+| [Monday 04 April 2011] [14:35:58] <sustrik__>	why would anyone come then?
+| [Monday 04 April 2011] [14:36:05] <pieterh>	to meet other people
+| [Monday 04 April 2011] [14:36:15] <pieterh>	iot
+| [Monday 04 April 2011] [14:36:23] <pieterh>	it's basically an extended meetup
+| [Monday 04 April 2011] [14:36:47] <sustrik__>	then pair it with some other conference or something
+| [Monday 04 April 2011] [14:37:04] <pieterh>	why? you don't think it's worth meeting people just for 0MQ?
+| [Monday 04 April 2011] [14:37:05] <sustrik__>	it's unlikely that many people will travel to bxl just to have a beer
+| [Monday 04 April 2011] [14:37:10] <pieterh>	sigh
+| [Monday 04 April 2011] [14:37:18] <sustrik__>	it's expensive
+| [Monday 04 April 2011] [14:37:26] <pieterh>	well, I'm happy to travel to London just to meet 0MQ folk
+| [Monday 04 April 2011] [14:37:36] <sustrik__>	that's you
+| [Monday 04 April 2011] [14:37:45] <sustrik__>	and london is quite close to bxl
+| [Monday 04 April 2011] [14:38:40] <sustrik__>	ianbarber: no idea about video
+| [Monday 04 April 2011] [14:38:51] <sustrik__>	i'll speak in english
+| [Monday 04 April 2011] [14:39:11] <sustrik__>	not much help if it's not recorded though :)
+| [Monday 04 April 2011] [14:39:23] <ianbarber>	cool :) well, if you have slides they would be great to see
+| [Monday 04 April 2011] [14:39:32] <ianbarber>	 on slideshare or something
+| [Monday 04 April 2011] [14:39:49] <sustrik__>	definitely
+| [Monday 04 April 2011] [14:39:56] <ianbarber>	sustrik__: unconfs are quite fun, people do go to them as well - the idea is that people talk, but the schedule isn't decided up front
+| [Monday 04 April 2011] [14:40:40] <pieterh>	look, Brussels is central, easy to get to
+| [Monday 04 April 2011] [14:41:00] <pieterh>	but I'm not really stressed to make a conference now
+| [Monday 04 April 2011] [14:41:19] <sustrik__>	sure, if there's an interest why not
+| [Monday 04 April 2011] [14:41:19] <pieterh>	it'd be good for 0MQ, good to spread the word
+| [Monday 04 April 2011] [14:41:56] <Guthur>	+1 on unconf being pretty good
+| [Monday 04 April 2011] [14:42:15] <Guthur>	I'm been to one before, local mind you, and I thought it was very successful
+| [Monday 04 April 2011] [14:42:50] <ianbarber>	i wonder if it would be an idea to have a brusels 0MQ meetup this month? just to gauge the local scene as well
+| [Monday 04 April 2011] [14:43:35] <sustrik__>	that's what pieter is organising
+| [Monday 04 April 2011] [14:43:39] <Guthur>	you made cannibalism the unconf a bit, considering it's so close
+| [Monday 04 April 2011] [14:43:58] <Guthur>	cannibalize*
+| [Monday 04 April 2011] [14:44:03] <sustrik__>	ah
+| [Monday 04 April 2011] [14:44:10] 	 * sustrik__ misunderstood
+| [Monday 04 April 2011] [14:45:45] <pieterh>	it's not sensible to try to make a conventional conference, we'd not get speakers
+| [Monday 04 April 2011] [14:45:45] <pieterh>	nor is it sensible to try to mix with another conference, not in Brussels
+| [Monday 04 April 2011] [14:45:45] <pieterh>	unless you are passionate about EU farming subsidy discussions
+| [Monday 04 April 2011] [14:45:46] <pieterh>	sure, why not
+| [Monday 04 April 2011] [14:45:46] <pieterh>	I've always enjoyed the unconf model
+| [Monday 04 April 2011] [14:45:46] 	 * pieterh has also organized large classic conferences
+| [Monday 04 April 2011] [14:45:46] <pieterh>	they are extraordinarily hard work and expensive, since speakers expect to have their costs paid
+| [Monday 04 April 2011] [14:47:10] <Guthur>	i thought that's why conferences usually charge
+| [Monday 04 April 2011] [14:47:24] <ianbarber>	and sponsored
+| [Monday 04 April 2011] [14:47:26] <pieterh>	indeed
+| [Monday 04 April 2011] [14:47:30] <pieterh>	which is a lot of work
+| [Monday 04 April 2011] [14:47:51] <ianbarber>	yeah, a traditional conference is serious effort
+| [Monday 04 April 2011] [14:48:04] <pieterh>	when I organized 2-day conferences against software patents, it took 2-3 months *full time* per conference
+| [Monday 04 April 2011] [14:48:40] <sustrik__>	yuck
+| [Monday 04 April 2011] [14:48:45] <pieterh>	you can do it in 2 weeks with a team of 10 people
+| [Monday 04 April 2011] [14:48:57] <pieterh>	thus, an unconf is much cooler
+| [Monday 04 April 2011] [14:49:08] <pieterh>	you just need a good location, and a good subject
+| [Monday 04 April 2011] [14:49:37] <ianbarber>	unconference is still a fair bit of work, particularly in convincing people to go. I think it would be easier to get people to go the more experts there are though, particularly pieterh sustrik__ and mato, but as many contributors as possible really. 
+| [Monday 04 April 2011] [14:49:53] <Guthur>	+1 that
+| [Monday 04 April 2011] [14:49:55] <pieterh>	ianbarber: indeed, it usually takes 2-3 events for the notion to take off
+| [Monday 04 April 2011] [14:50:05] <pieterh>	I'd expect a fairly quite first unconf
+| [Monday 04 April 2011] [14:50:24] <pieterh>	but the point is that without starting, you can't build it up
+| [Monday 04 April 2011] [14:50:37] <Guthur>	The thing that puts me in two minds about this unconf is that there is little visibility of that expert driven content
+| [Monday 04 April 2011] [14:50:47] <pieterh>	sustrik__: do you remember the first AMQP conference?
+| [Monday 04 April 2011] [14:50:54] <sustrik__>	which one was that?
+| [Monday 04 April 2011] [14:51:01] <pieterh>	don't know if you were there, in London
+| [Monday 04 April 2011] [14:51:09] <pieterh>	the one with three people in the audience
+| [Monday 04 April 2011] [14:51:10] <sustrik__>	don't think so
+| [Monday 04 April 2011] [14:51:23] <sustrik__>	i remember the one when you got those business types into your loft :)
+| [Monday 04 April 2011] [14:51:36] <sustrik__>	ah, the qcon
+| [Monday 04 April 2011] [14:51:39] <sustrik__>	i think
+| [Monday 04 April 2011] [14:51:43] <sustrik__>	heard about it
+| [Monday 04 April 2011] [14:51:43] <pieterh>	sustrik__: agh, flashbacks... yes, the qcon one
+| [Monday 04 April 2011] [14:51:54] <Guthur>	hehe, a pile of suits in a loft
+| [Monday 04 April 2011] [14:51:55] <pieterh>	Guthur: we could post some topics for discussion on the wiki page
+| [Monday 04 April 2011] [14:51:59] <Guthur>	a pretty picture
+| [Monday 04 April 2011] [14:52:35] <Guthur>	pieterh, that would beneficial I think
+| [Monday 04 April 2011] [14:53:17] <Guthur>	would help me sell it to myself at least, hehe
+| [Monday 04 April 2011] [14:53:23] <pieterh>	but it's basically up to attendees to be prepared to present stuff
+| [Monday 04 April 2011] [14:53:27] <pieterh>	well, I can post stuff I'd talk about but that's it
+| [Monday 04 April 2011] [14:53:29] 	 * pieterh has to go tuck the kids into bed, bb rs
+| [Monday 04 April 2011] [14:53:38] <sustrik__>	cyl
+| [Monday 04 April 2011] [14:53:47] 	 * Guthur is travelling twice this month to mainland europe
+| [Monday 04 April 2011] [14:53:49] <sustrik__>	well, who's going to attend?
+| [Monday 04 April 2011] [14:54:31] <Guthur>	if I got to 0MQ  unconf that would be 3 trips in a little over a month
+| [Monday 04 April 2011] [14:54:45] <sustrik__>	same here
+| [Monday 04 April 2011] [14:55:08] <Guthur>	sustrik__, where are you based?
+| [Monday 04 April 2011] [14:55:13] <sustrik__>	Bratislava
+| [Monday 04 April 2011] [14:55:24] <sustrik__>	Slovakia
+| [Monday 04 April 2011] [14:55:32] <Guthur>	ah, I always assume you where belgian as well for some reason
+| [Monday 04 April 2011] [14:56:09] <sustrik__>	Well, if I was in bxl, I could attend an uncof there every day
+| [Monday 04 April 2011] [14:56:40] <Guthur>	...true
+| [Monday 04 April 2011] [14:56:46] <sustrik__>	but travelling across half of europe just to have a beer
+| [Monday 04 April 2011] [14:56:59] <sustrik__>	dunno
+| [Monday 04 April 2011] [14:59:04] <ianbarber>	would you come to the conference if it was a traditional conference (though one you weren't speaking at)?
+| [Monday 04 April 2011] [14:59:44] <guido_g>	would depend on the progem
+| [Monday 04 April 2011] [15:00:20] <guido_g>	for me the main reason to go to a conference is learn something
+| [Monday 04 April 2011] [15:00:21] <Guthur>	oh hi guido_g, sorry never got a chance to give you a call while in Hamburg
+| [Monday 04 April 2011] [15:00:40] <Guthur>	the schedule was a lot fuller than I thought
+| [Monday 04 April 2011] [15:00:40] <jond>	sustrik__, ianbarber: referring to earlier stuff that was a good point about the statefull servers because that's exactly the problem i have....
+| [Monday 04 April 2011] [15:00:47] <guido_g>	Guthur: thought so, Guthur lost in lisp :)
+| [Monday 04 April 2011] [15:01:19] <Guthur>	hehe, indeed, it was great to finally meet some other lispers
+| [Monday 04 April 2011] [15:01:24] <Guthur>	a rare breed
+| [Monday 04 April 2011] [15:01:33] <guido_g>	indeed
+| [Monday 04 April 2011] [15:01:42] <guido_g>	most of them must be quite old  :)
+| [Monday 04 April 2011] [15:02:17] <Guthur>	there is always a chosen few who pick up the torch
+| [Monday 04 April 2011] [15:02:36] <Guthur>	there was actually some pretty cool stuff
+| [Monday 04 April 2011] [15:03:12] <jond>	guthur:  what was the best presentation?
+| [Monday 04 April 2011] [15:03:45] <Guthur>	3 stand out ones, I need to go away for 15 mins though
+| [Monday 04 April 2011] [15:03:48] <Guthur>	back soon
+| [Monday 04 April 2011] [15:05:53] <sustrik__>	ianbarber: well, i just spent 6 days on a conference that i weren't speaking at
+| [Monday 04 April 2011] [15:06:06] <sustrik__>	it's a const/benefit thing i would guess
+| [Monday 04 April 2011] [15:06:37] <sustrik__>	if it solves a problem, i don't object to travelling
+| [Monday 04 April 2011] [15:07:27] <sustrik__>	jond: yes, the stateful services are a problem
+| [Monday 04 April 2011] [15:07:52] <sustrik__>	i am not even sure there's an accepted generic solution for that
+| [Monday 04 April 2011] [15:08:28] <sustrik__>	the most cases i've seen simply tweaked the architecture until it kind of worked
+| [Monday 04 April 2011] [15:15:47] <WebWeasel>	I was wondering how long 0mq has been in development?
+| [Monday 04 April 2011] [15:19:30] <jond>	sustrik: yes, 0mq patterns tend to assume that all workers nodes can do identical tasks, but retrieving state would not be solution as it would be too slow and as the messages are small it's quicker to route to process or thread hosting the state.
+| [Monday 04 April 2011] [15:21:49] <jond>	and as topic matching and subscription forwarding would be useful for that, rather than use xrep route to identity
+| [Monday 04 April 2011] [15:22:07] <jond>	that's why i'm always interested in that
+| [Monday 04 April 2011] [15:25:58] <sustrik__>	WebWeasel: since Nov 2007 iirc
+| [Monday 04 April 2011] [15:26:19] <WebWeasel>	Thank you.
+| [Monday 04 April 2011] [15:27:17] <sustrik__>	jond: well, the basic idea is that all the state is contained in the message itself
+| [Monday 04 April 2011] [15:28:10] <guido_g>	rest, the mq way :)
+| [Monday 04 April 2011] [15:28:42] <sustrik__>	yeah
+| [Monday 04 April 2011] [15:28:52] <sustrik__>	the problem is that legacy apps don't work that way
+| [Monday 04 April 2011] [15:29:27] <sustrik__>	thus porting a legacy app to 0mq may is often problematic
+| [Monday 04 April 2011] [15:29:50] <guido_g>	true
+| [Monday 04 April 2011] [15:30:05] <guido_g>	but that applies to basically everything
+| [Monday 04 April 2011] [15:30:19] <sustrik__>	true
+| [Monday 04 April 2011] [15:33:07] <jond>	sustrik__: yes, i am just not sure it always possible though with ordering guarantees etc. it might need another layer of indirection, ie another set of queues in front of the pool which can perform any request. 
+| [Monday 04 April 2011] [15:34:01] <Guthur>	jond: the standout presentations for me where,  Compiling for the Common Case, Reconfigurable Computing on Steroids: Using Common Lisp to Generate Domain Specific Hardware, The Scheme Natural Language Toolkit, and Implementing huge term automata.
+| [Monday 04 April 2011] [15:34:22] <Guthur>	the Common Case one was not very specific to Lisp though
+| [Monday 04 April 2011] [15:34:49] <Guthur>	but it did promise greater benefits for dynamic languages in general
+| [Monday 04 April 2011] [15:35:26] <Guthur>	the talk was given by Craig Zilles, who does some R&D for intel
+| [Monday 04 April 2011] [15:36:20] <Guthur>	it's basically compiling highly optimized code that will be run the majority of the time, and then falling back to more general code for the edge cases
+| [Monday 04 April 2011] [15:36:42] <Guthur>	sounded pretty cool
+| [Monday 04 April 2011] [15:37:45] <Guthur>	the reconfigurable computing was also interesting, a company Novasparks which is developing FPGA based low latency computing boxes using Common Lisp to program the hardware
+| [Monday 04 April 2011] [15:38:12] <Guthur>	they will aim to expose a DSL to the customer for reconfiguration
+| [Monday 04 April 2011] [15:39:13] <Guthur>	The NLP stuff was just interesting, and the huge term automata was a little over my head but still a nice use of functional programming paradigm to solve a problem that would not otherwise be solvable
+| [Monday 04 April 2011] [15:39:58] <Guthur>	unless you had infinite memory of course
+| [Monday 04 April 2011] [15:40:16] <jond>	guthur: there was job going in london looking for people programming FPGAm didnt mention lisp though
+| [Monday 04 April 2011] [15:40:49] <jond>	guthur: was the NLP/ huge automata scheme?
+| [Monday 04 April 2011] [15:53:35] <Guthur>	jond: NLP was Scheme
+| [Monday 04 April 2011] [15:53:49] <Guthur>	the huge automata was CL, some graph theory stuff
+| [Monday 04 April 2011] [15:54:43] <jond>	guthur: cheers i'll look for papers on website, might even checkout clojure
+| [Monday 04 April 2011] [15:55:07] <Guthur>	I find it hard to warm to clojure
+| [Monday 04 April 2011] [15:55:24] <Guthur>	it breaks the nice uniformity of Lisp syntax
+| [Monday 04 April 2011] [15:55:27] <michaelgreene_>	Continuing my port to 2.1, in some cases I end up waiting on a single socket when terminating the context out of several created by my application.  One red flag in gdb is that socket.mailbox shows { w = 26, r = 27 }.  Should these numbers be balanced? Is there a way to tell whether this socket is waiting on a send or just hasn't been closed? Also, is there anywhere for me to poke at the data that ZMQ is waiting on in the case of a send?
+| [Monday 04 April 2011] [15:55:49] <Guthur>	it uses square brackets for parameter lists and arrays I think
+| [Monday 04 April 2011] [15:56:22] <jond>	guthur: that  was a point i made to a friend about a year ago, seemed to change things for no good reason
+| [Monday 04 April 2011] [15:56:27] <Guthur>	michaelgreene_, I think you may want the Linger opt
+| [Monday 04 April 2011] [15:56:50] <jond>	guthur: have you read kizcales mop book?
+| [Monday 04 April 2011] [15:57:31] <Guthur>	jond: nope, link?
+| [Monday 04 April 2011] [15:58:05] <Guthur>	ah AMOP
+| [Monday 04 April 2011] [15:58:20] <michaelgreene_>	Guthur: I am aware that setting Linger could force the socket down, but that is not the behavior I want.  In my case, most of the sockets close cleanly, and I want to figure out what is causing 1 socket to remain unclosed and hold up context termination.  I'm just not sure how to debug it do to not being familiar enough with ZMQ's implementation structures.
+| [Monday 04 April 2011] [15:58:41] <Guthur>	jond, It's something I have been meaning to pick up, it's often cited as a must read
+| [Monday 04 April 2011] [15:58:50] <realazthat__>	ahoy
+| [Monday 04 April 2011] [15:58:51] <jond>	guthur: old but worth a read
+| [Monday 04 April 2011] [16:00:05] <jond>	guthur: outta here for a while. i really ought to talk 0mq here when i get back.....
+| [Monday 04 April 2011] [16:00:17] <Guthur>	michaelgreene_, I'm not sure of any easy way to reflect that information
+| [Monday 04 April 2011] [16:01:06] <Guthur>	jond, Lisp is cool, i should start was 0MQ project in CL
+| [Monday 04 April 2011] [16:02:27] <Guthur>	michaelgreene_, someone more knowledgeable of 0MQ might be able to answer it
+| [Monday 04 April 2011] [16:02:32] <Guthur>	but I suspect it is not possible
+| [Monday 04 April 2011] [16:03:17] <Guthur>	the public API certainly does not provide anything
+| [Monday 04 April 2011] [16:03:26] <michaelgreene_>	I'm not sure how it could not be possible... the data has to exist somewhere, or the reaper wouldn't have an appropriate condition triggered for it to terminate.
+| [Monday 04 April 2011] [16:03:34] <michaelgreene_>	Oh, sure, but I'm in gdb, not the public API.
+| [Monday 04 April 2011] [16:03:53] <Guthur>	sustrik__, might be able to answer it
