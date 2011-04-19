@@ -4059,3 +4059,67 @@
 | [Sunday 17 April 2011] [13:56:18] <seangrove>	Thanks for the tip
 | [Sunday 17 April 2011] [13:56:32] <seangrove>	I need to refactor zmq out of the frontend of my app right now anyway
 | [Sunday 17 April 2011] [13:57:36] <seangrove>	Put it where it really belongs 
+| [Monday 18 April 2011] [02:14:12] <NikoS>	hi, all. I'm testing my application based on zmq with pub/sub sockets. Test creates 1000 threads which emulates chat, each thread has own sub socket for recieving msgs and use general pub socket to send msg to chat. Application crashes after ~550 threads has joined to chat with error "ZMQError: Too many open files". I've increased ulimit, but anyway it crashes after ~550 threads
+| [Monday 18 April 2011] [02:15:33] <NikoS>	I forgot to add that i write on python with pyzmq
+| [Monday 18 April 2011] [02:16:40] <NikoS>	Has anyone tested zeromq application on same manner?
+| [Monday 18 April 2011] [02:16:46] <guido_g>	which ulimit setting did yoi increase and how?
+| [Monday 18 April 2011] [02:16:59] <guido_g>	and why do you do so much threads?
+| [Monday 18 April 2011] [02:17:12] <guido_g>	it's not a mq problem at all
+| [Monday 18 April 2011] [02:17:40] <NikoS>	i've set it to 65535
+| [Monday 18 April 2011] [02:18:02] <guido_g>	set what to 65535?
+| [Monday 18 April 2011] [02:19:22] <NikoS>	fs.file_max in /etc/sysctl.conf
+| [Monday 18 April 2011] [02:21:00] <guido_g>	check if "ulimit -n" changed
+| [Monday 18 April 2011] [02:21:23] <NikoS>	done ) it's realy 65535
+| [Monday 18 April 2011] [02:22:11] <guido_g>	in the same shell the python program runs?
+| [Monday 18 April 2011] [02:22:18] <NikoS>	yes
+| [Monday 18 April 2011] [02:23:31] <guido_g>	which transport you're using?
+| [Monday 18 April 2011] [02:24:46] <NikoS>	Transport? Is it subscriber/publisher pattern?
+| [Monday 18 April 2011] [02:24:59] <guido_g>	*sigh*
+| [Monday 18 April 2011] [02:25:32] <guido_g>	is it tcp, incproc or what?
+| [Monday 18 April 2011] [02:25:32] <NikoS>	)
+| [Monday 18 April 2011] [02:26:36] <NikoS>	ooph ) tcp
+| [Monday 18 April 2011] [02:27:20] <guido_g>	then check with netstat how many sockets are opened when the program runs
+| [Monday 18 April 2011] [02:35:17] <NikoS>	It seems that application opens more than 2000 unix sockets
+| [Monday 18 April 2011] [03:06:01] <sustrik>	NikoS: there's max_sockets limit in 0mq
+| [Monday 18 April 2011] [03:06:10] <sustrik>	set by defaault to 512
+| [Monday 18 April 2011] [03:06:28] <sustrik>	if you need more sockets, you have to modify src/config.hpp
+| [Monday 18 April 2011] [03:06:34] <sustrik>	and recompile the whole thing
+| [Monday 18 April 2011] [04:59:57] <NikolaVeber>	is zhelpers library maintained along with the distribution?
+| [Monday 18 April 2011] [05:00:16] <NikolaVeber>	it is used in most of the examples in the guide
+| [Monday 18 April 2011] [07:25:01] <NikolaVeber>	does anyone have experience with php-zmq?
+| [Monday 18 April 2011] [07:28:43] <sustrik>	mikko should, he's the author :)
+| [Monday 18 April 2011] [07:29:59] <NikolaVeber>	:)
+| [Monday 18 April 2011] [07:30:22] <NikolaVeber>	Docs say its experimental, I'm just wondering how experimental :)
+| [Monday 18 April 2011] [07:34:56] <mikko>	a bit
+| [Monday 18 April 2011] [07:35:23] <mikko>	it's fairly stable
+| [Monday 18 April 2011] [07:35:31] <mikko>	i think it's going to be 1.0.0 very soon
+| [Monday 18 April 2011] [07:42:21] <NikolaVeber>	great! :)
+| [Monday 18 April 2011] [07:43:45] <mikko>	the api is unlikely to change in near future
+| [Monday 18 April 2011] [07:43:54] <mikko>	at least not in a backwards incompatible way
+| [Monday 18 April 2011] [13:05:41] <rod_>	Hi, I'm trying to work through some of the examples in chapter 3 of the zguide in PHP, and have come to some that use the Zmsg class - but can't find where this is available?  Or am I supposed to write it myself?  Pointers appreciated, cheers
+| [Monday 18 April 2011] [13:11:34] <guido_g>	https://github.com/imatix/zguide/tree/master/examples/PHP
+| [Monday 18 April 2011] [13:12:31] <rod_>	aha wicked - looks like lots of good stuff there.  thanks very much guido_g.
+| [Monday 18 April 2011] [17:24:17] <benwaine>	Hello
+| [Monday 18 April 2011] [17:25:03] <benwaine>	Im having loads of fun with 0mq but have hit my first problem. Anyone round to help?
+| [Monday 18 April 2011] [17:26:22] <mikko>	benwaine: yep
+| [Monday 18 April 2011] [17:26:28] <benwaine>	woo hoo :)
+| [Monday 18 April 2011] [17:26:52] <benwaine>	A quick intro to what im doing:
+| [Monday 18 April 2011] [17:27:53] <benwaine>	I have a connection to twitter with an open stream. As tweets come in they get sent to workers using push and pull sockets.
+| [Monday 18 April 2011] [17:28:20] <benwaine>	I then had them fan back into a sink as in the example in the guide
+| [Monday 18 April 2011] [17:28:57] <benwaine>	all good so far. However I then want to push all the processed tweets into a queue device
+| [Monday 18 April 2011] [17:29:28] <benwaine>	I get the error: Fatal error: Uncaught exception 'ZMQSocketException' with message 'Failed to bind the ZMQ: Operation not supported by device' 
+| [Monday 18 April 2011] [17:29:49] <benwaine>	when trying to bin the queue device to localhost
+| [Monday 18 April 2011] [17:30:02] <mikko>	you have to bind by ip / iface
+| [Monday 18 April 2011] [17:30:06] <mikko>	not by hostname
+| [Monday 18 April 2011] [17:32:22] <benwaine>	ahh i see. Is that true only of devices? I have it working with localhost in another example? 
+| [Monday 18 April 2011] [17:32:44] <mikko>	benwaine: it shouldn't really work
+| [Monday 18 April 2011] [17:32:58] <mikko>	unless it's been fixed very recently
+| [Monday 18 April 2011] [17:33:11] <mikko>	connecting by hostname is ok
+| [Monday 18 April 2011] [17:33:13] <mikko>	but not binding
+| [Monday 18 April 2011] [17:33:34] <benwaine>	ahh yes - i can see in my code I am connecting not binding
+| [Monday 18 April 2011] [17:34:09] <benwaine>	Is it advisable to bind by IP or just use *:port ?
+| [Monday 18 April 2011] [17:37:13] <mikko>	maybe *
+| [Monday 18 April 2011] [17:37:18] <mikko>	makes it a bit more portable
+| [Monday 18 April 2011] [17:37:31] <mikko>	if binding to 0.0.0.0 is not a problem there
+| [Monday 18 April 2011] [17:37:33] <mikko>	brb
+| [Monday 18 April 2011] [17:57:31] <benwaine>	Mikko: That got me back on track. Thanks very much.
