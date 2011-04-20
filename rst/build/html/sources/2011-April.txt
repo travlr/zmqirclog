@@ -4123,3 +4123,398 @@
 | [Monday 18 April 2011] [17:37:31] <mikko>	if binding to 0.0.0.0 is not a problem there
 | [Monday 18 April 2011] [17:37:33] <mikko>	brb
 | [Monday 18 April 2011] [17:57:31] <benwaine>	Mikko: That got me back on track. Thanks very much.
+| [Tuesday 19 April 2011] [04:42:03] <djc>	pieter_hintjens: you have "probabably" in the guide
+| [Tuesday 19 April 2011] [04:47:03] <djc>	I was wondering, are subscription filters applied on the publisher, on the subscriber, or is that behavior undefined?
+| [Tuesday 19 April 2011] [04:50:31] <pieter_hintjens>	djc: hi
+| [Tuesday 19 April 2011] [04:50:41] <pieter_hintjens>	they're applied on the subscriber at present
+| [Tuesday 19 April 2011] [04:51:16] <djc>	that's what I thought, perhaps it should be in the docs somewhere (possibly with caveat about future changes)
+| [Tuesday 19 April 2011] [04:51:34] <pieterh>	where does the guide say 'probably'? I can't find that
+| [Tuesday 19 April 2011] [04:51:59] <djc>	http://zguide.zeromq.org/page:all#toc40
+| [Tuesday 19 April 2011] [04:53:06] <pieterh>	that points to a section on zero copy... ??
+| [Tuesday 19 April 2011] [04:53:24] <djc>	yeah, and in the second line it has "probabably"
+| [Tuesday 19 April 2011] [04:53:55] <pieterh>	heh
+| [Tuesday 19 April 2011] [04:54:45] <pieterh>	djc: thanks for catching that, fixing it now
+| [Tuesday 19 April 2011] [05:14:46] <djc>	pieterh: so can you add something about the filtering behavior, too?
+| [Tuesday 19 April 2011] [05:14:56] <djc>	either to the guide or to the reference
+| [Tuesday 19 April 2011] [05:15:13] <pieterh>	I don't have write access to the reference
+| [Tuesday 19 April 2011] [05:15:22] <pieterh>	but I'll add this to the guide, yes
+| [Tuesday 19 April 2011] [05:15:44] <djc>	nice
+| [Tuesday 19 April 2011] [05:16:05] <guido_g>	pieterh: and while you're at it: https://github.com/imatix/zguide/issues/50  :)
+| [Tuesday 19 April 2011] [05:16:09] <djc>	final question for the day: is there any intended ETA for 2.1.5? as the gentoo maintainer, I'm kind of looking forward to 2.1.5 :)
+| [Tuesday 19 April 2011] [05:16:11] <guido_g>	howdy all, btw
+| [Tuesday 19 April 2011] [05:16:16] <pieterh>	hi guido_g
+| [Tuesday 19 April 2011] [05:16:30] <pieterh>	djc: there are no real issues with 2.1.4 in fact
+| [Tuesday 19 April 2011] [05:16:44] <drbobbeaty>	pieterh: I need to talk to David still about the support contract. I'm sorry it's taking so long, but I'm in the middle of a near-impossible time-frame.
+| [Tuesday 19 April 2011] [05:17:00] <pieterh>	drbobbeaty: np
+| [Tuesday 19 April 2011] [05:17:12] <drbobbeaty>	pieterh: the only issue I know of with 2.1.4 is the one Martin patched just today with the message bit flags.
+| [Tuesday 19 April 2011] [05:17:25] <djc>	pieterh: sure, I just want --with-system-pgm
+| [Tuesday 19 April 2011] [05:17:32] <drbobbeaty>	I'm going to try it today
+| [Tuesday 19 April 2011] [05:17:33] <pieterh>	djc, ah, ok
+| [Tuesday 19 April 2011] [05:17:44] <pieterh>	drbobbeaty: that was message validation afaik
+| [Tuesday 19 April 2011] [05:17:52] <pieterh>	i.e. runtime validation that message objects are sane
+| [Tuesday 19 April 2011] [05:17:58] <drbobbeaty>	yes indeed.
+| [Tuesday 19 April 2011] [05:18:23] <pieterh>	djc: I'll push the 2.1.5 release up for you then
+| [Tuesday 19 April 2011] [05:18:51] <djc>	awesome
+| [Tuesday 19 April 2011] [05:20:16] <pieterh>	guido_g: would a link to the git repository & explanation be OK?
+| [Tuesday 19 April 2011] [05:20:29] <guido_g>	pieterh: i think so
+| [Tuesday 19 April 2011] [05:20:37] <pieterh>	ok, making that now
+| [Tuesday 19 April 2011] [05:21:16] <guido_g>	the issue came up yesterday where one looked for something but wasn't aware of the Guides repo and the examples
+| [Tuesday 19 April 2011] [05:22:31] <djc>	pieterh: also, in the "Getting the Message Out" section, it would be nice if "In Chapter Two I'll explain how to" came with a more concrete reference to a section in chapter 2
+| [Tuesday 19 April 2011] [05:23:01] <pieterh>	djc: I don't like making concrete references because they're a pain to maintain
+| [Tuesday 19 April 2011] [05:23:16] <pieterh>	lacking tools to do it properly, for now
+| [Tuesday 19 April 2011] [05:23:21] <pieterh>	will think about improving this...
+| [Tuesday 19 April 2011] [05:24:47] <djc>	what tech are you using for the guide?
+| [Tuesday 19 April 2011] [05:25:16] <pieterh>	djc: well, it's in the repo bin directory, a perl script that mangles text into wikidot format
+| [Tuesday 19 April 2011] [05:25:17] <djc>	it feels kind of silly that you only have a kind of abstract reference and I have to go hunting for the section if I want it, particularly for html docs
+| [Tuesday 19 April 2011] [05:25:25] <pieterh>	yeah, I know
+| [Tuesday 19 April 2011] [05:25:40] <djc>	perhaps you should learn sphinx?
+| [Tuesday 19 April 2011] [05:25:47] <djc>	it's pretty easy and very powerful
+| [Tuesday 19 April 2011] [05:25:58] <pieterh>	djc: won't help
+| [Tuesday 19 April 2011] [05:26:04] <pieterh>	the tool chain is very specific
+| [Tuesday 19 April 2011] [05:26:21] <djc>	what's very specific about it?
+| [Tuesday 19 April 2011] [05:26:40] <pieterh>	well, it turns text diagrams into images, extracts code blocks and colorizes them
+| [Tuesday 19 April 2011] [05:26:45] <pieterh>	builds all the links in the text
+| [Tuesday 19 April 2011] [05:26:49] <djc>	sphinx comes with a graphviz extension, so you can still do the graphs
+| [Tuesday 19 April 2011] [05:26:59] <djc>	and it also has code blocks and syntax highlighting
+| [Tuesday 19 April 2011] [05:27:01] <djc>	all built in
+| [Tuesday 19 April 2011] [05:27:07] <pieterh>	djc: forget it :-) srsly
+| [Tuesday 19 April 2011] [05:27:13] <djc>	mkay
+| [Tuesday 19 April 2011] [05:27:20] <pieterh>	unless you're willing to rewrite the whole guide to fit...
+| [Tuesday 19 April 2011] [05:28:25] <djc>	I could take a stab at it, if you're willing to use sphinx after that :)
+| [Tuesday 19 April 2011] [05:28:25] <pieterh>	however, if you want to collect any weak references in the text, I'll turn them into hyperlinks
+| [Tuesday 19 April 2011] [05:28:39] <pieterh>	djc: you're welcome to play with it, the text is all open source
+| [Tuesday 19 April 2011] [05:28:55] <pieterh>	but seriously, it's not going to work, there's a reason I made this from scratch
+| [Tuesday 19 April 2011] [07:04:02] <drbobbeaty>	pieterh: Are you planning on a 2.1.5? And if so, will the patch Martin sent this morning about the Seg Fault on zmq_msg_size() make it in? And when would you be cutting that 2.1.5 release?
+| [Tuesday 19 April 2011] [07:10:07] <sustrik>	drbobbeaty: hi
+| [Tuesday 19 April 2011] [07:10:15] <sustrik>	what version are you using today?
+| [Tuesday 19 April 2011] [07:11:02] <drbobbeaty>	2.1.4, and I can patch it with your patch, but I wondered if Pieter was going to cut another release sometime soon. I thought I saw him say something about it earlier this morning
+| [Tuesday 19 April 2011] [07:11:44] <sustrik>	not sure whether the patch would apply cleanly
+| [Tuesday 19 April 2011] [07:12:10] <sustrik>	i guess, i should commit it to the master
+| [Tuesday 19 April 2011] [07:12:18] <sustrik>	and move it to pieter for backporting
+| [Tuesday 19 April 2011] [07:12:26] <drbobbeaty>	That would be great.
+| [Tuesday 19 April 2011] [07:12:40] <sustrik>	ok
+| [Tuesday 19 April 2011] [07:13:13] <sustrik>	done
+| [Tuesday 19 April 2011] [07:13:47] <drbobbeaty>	Wow... exceptionally fast. Thanks.
+| [Tuesday 19 April 2011] [08:18:17] <NikolaVeber>	mikko, I can't find the php-zmq package in PECL
+| [Tuesday 19 April 2011] [08:18:25] <NikolaVeber>	is that a feature or a bug? :)
+| [Tuesday 19 April 2011] [08:24:35] <mikko>	NikolaVeber: feature
+| [Tuesday 19 April 2011] [08:24:45] <mikko>	http://pear.zero.mq/
+| [Tuesday 19 April 2011] [08:24:53] <NikolaVeber>	then there is a bug in the installation docs ;)
+| [Tuesday 19 April 2011] [08:25:10] <mikko>	php docgen autogenerates those
+| [Tuesday 19 April 2011] [08:25:14] <NikolaVeber>	but pear works even better :)
+| [Tuesday 19 April 2011] [08:25:22] <mikko>	i'll update them at some point
+| [Tuesday 19 April 2011] [08:25:42] <NikolaVeber>	great, thanks!
+| [Tuesday 19 April 2011] [08:25:55] <NikolaVeber>	maybe just update README
+| [Tuesday 19 April 2011] [08:26:04] <NikolaVeber>	thats the first place I looked
+| [Tuesday 19 April 2011] [08:27:36] <mikko>	updated
+| [Tuesday 19 April 2011] [08:50:16] <NikolaVeber>	thanks!
+| [Tuesday 19 April 2011] [10:01:43] <NikolaVeber>	mikko, I'm getting 'Failed to bind the ZMQ: Address already in use'
+| [Tuesday 19 April 2011] [10:01:51] <NikolaVeber>	on what I believe should be a persistent socket
+| [Tuesday 19 April 2011] [10:02:54] <NikolaVeber>	I have set $context = new ZMQContext(1, true);
+| [Tuesday 19 April 2011] [10:03:05] <NikolaVeber>	and $queue = new ZMQSocket($context, ZMQ::SOCKET_PUSH, "MySock1");
+| [Tuesday 19 April 2011] [10:03:16] <NikolaVeber>	then bind to tcp://*:5555
+| [Tuesday 19 April 2011] [10:03:27] <mikko>	you bind persistent socket only once
+| [Tuesday 19 April 2011] [10:03:47] <mikko>	you might have socket in the background that's been bound 
+| [Tuesday 19 April 2011] [10:03:55] <mikko>	the persistent sockets work a lot better with connecting sockets
+| [Tuesday 19 April 2011] [10:04:30] <NikolaVeber>	so I should check in each call if the persistent socket is up and running
+| [Tuesday 19 April 2011] [10:04:41] <NikolaVeber>	and if not, bind it?
+| [Tuesday 19 April 2011] [10:05:56] <guido_g>	it's not a matter of the mq socket, it's like that the port is already used
+| [Tuesday 19 April 2011] [10:06:24] <guido_g>	given that you bind to every available interface this is not surprising
+| [Tuesday 19 April 2011] [10:07:13] <NikolaVeber>	I'm testing this isolated, after restarting the apache,  I can bind again
+| [Tuesday 19 April 2011] [10:07:50] <NikolaVeber>	but I'll try with connecting, not binding
+| [Tuesday 19 April 2011] [10:08:04] <NikolaVeber>	that I need to change anyhow.. :)
+| [Tuesday 19 April 2011] [10:30:13] <mikko>	NikolaVeber: with connecting use the on_new callback
+| [Tuesday 19 April 2011] [10:30:24] <mikko>	that is called only when new underlying socket is created
+| [Tuesday 19 April 2011] [10:38:46] <neale1>	My introduction to 0MQ article was published in the April/May z/Journal (a web/paper magazine for IBM mainframe users). http://www.mainframezone.com/it-management/lightweight-messaging-middleware/P1
+| [Tuesday 19 April 2011] [10:52:58] <mikko>	neale1: have you had any follow-ups / reactions?
+| [Tuesday 19 April 2011] [10:54:44] <neale1>	It only came out a few days ago. It looks like I'll be presenting on it in Orlando in August at the IBM user group meeting "SHARE"
+| [Tuesday 19 April 2011] [11:09:56] <NikolaVeber>	mikko, I followed this example
+| [Tuesday 19 April 2011] [11:09:56] <NikolaVeber>	http://php.zero.mq/zmqsocket.connect.html
+| [Tuesday 19 April 2011] [11:10:17] <NikolaVeber>	can you point me to the on_new references in the docs?
+| [Tuesday 19 April 2011] [11:10:31] <NikolaVeber>	sorry
+| [Tuesday 19 April 2011] [11:10:34] <NikolaVeber>	got it
+| [Tuesday 19 April 2011] [11:22:58] <ianbarber>	neale1: very nice article!
+| [Tuesday 19 April 2011] [11:25:02] <neale1>	Tks
+| [Tuesday 19 April 2011] [11:43:56] <jfs>	anybody know if any problems building pyzmq (via easy_install pyzmq) on osx against zeromq 2.1.4? I'm getting the error "zmq/core/constants.c:2574: fatal error: error writing to -: Broken pipe"
+| [Tuesday 19 April 2011] [13:39:31] <ketralnis>	How does setsockopt(ZMQ_SUBSCRIBE, filter) behave with multipart messages? Does it match only the first body?
+| [Tuesday 19 April 2011] [14:16:06] <cremes>	ketralnis: it matches the bytes in the first message part only
+| [Tuesday 19 April 2011] [14:16:35] <cremes>	so you should always prepend your topic to the first thing you send
+| [Tuesday 19 April 2011] [14:21:32] <ketralnis>	cremes: thanks :)
+| [Tuesday 19 April 2011] [14:21:46] <cremes>	you are welcome
+| [Tuesday 19 April 2011] [14:49:14] <CudaDeveloper>	How do I get push/pull not to do fair sheduling? When one worker is much slower than the rest, fair scheduling means it holds everything up.
+| [Tuesday 19 April 2011] [15:42:23] <cremes>	CudaDeveloper: fair scheduling is the only kind available for those sockets; if you need a different algo, you will need to roll
+| [Tuesday 19 April 2011] [15:42:36] <cremes>	your own and (likely) build it on top of xreq/xrep
+| [Tuesday 19 April 2011] [15:56:25] <crodas>	hi guys, I have little doubt about pubsub
+| [Tuesday 19 April 2011] [15:56:30] <crodas>	is this the right place to ask?
+| [Tuesday 19 April 2011] [15:56:36] <crodas>	or mailing list is better?
+| [Tuesday 19 April 2011] [16:01:25] <crodas>	I'm building a chat server using pubsub. I'm wondering which is better, subscribe my peers to many channels, or if they listen to their account ID and I send one message to each one (message goes to channel) 
+| [Tuesday 19 April 2011] [16:05:43] <cremes>	crodas: i would start with one pub socket for all channels
+| [Tuesday 19 April 2011] [16:06:06] <cremes>	then each chat user would subscribe to the channels they care about
+| [Tuesday 19 April 2011] [16:06:11] <crodas>	cremes: so the peers are subscribing to their channel ?
+| [Tuesday 19 April 2011] [16:06:13] <crodas>	great
+| [Tuesday 19 April 2011] [16:06:30] <crodas>	thanks
+| [Tuesday 19 April 2011] [16:06:33] <cremes>	all chat messages go to a single pub socket
+| [Tuesday 19 April 2011] [16:06:35] <cremes>	so, yes
+| [Tuesday 19 April 2011] [16:06:54] <crodas>	btw, I'm going to give a talk about ZeroMQ in Jun :-)
+| [Tuesday 19 April 2011] [16:07:01] <crodas>	it is so awesome that I have to tell the people about it
+| [Tuesday 19 April 2011] [16:07:10] <cremes>	great enws
+| [Tuesday 19 April 2011] [16:07:12] <crodas>	(I'm using it with PHP and NodeJS)
+| [Tuesday 19 April 2011] [16:07:32] <cremes>	nodejs scales nicely so it will pair up with 0mq quite well
+| [Tuesday 19 April 2011] [16:07:46] <crodas>	indeed
+| [Tuesday 19 April 2011] [16:08:03] <crodas>	but mongrel2 with any other language (such as PHP) is awesome
+| [Tuesday 19 April 2011] [16:12:32] <mikko>	crodas: where is the talk?
+| [Tuesday 19 April 2011] [16:12:41] <crodas>	Rio de Janeiro, Brazil
+| [Tuesday 19 April 2011] [16:12:50] <crodas>	it is 100% confirmed yet
+| [Tuesday 19 April 2011] [16:12:56] <crodas>	but almost 
+| [Tuesday 19 April 2011] [16:13:30] <mikko>	which conference is that?
+| [Tuesday 19 April 2011] [16:17:47] <crodas>	I don't recall, looking no
+| [Tuesday 19 April 2011] [16:17:49] <crodas>	*now*
+| [Tuesday 19 April 2011] [16:17:57] <crodas>	FSLDC (Frum de Software Livre de Duque de Caxias)
+| [Tuesday 19 April 2011] [16:18:25] <crodas>	http://forumsoftwarelivre.com.br/2011/
+| [Tuesday 19 April 2011] [16:18:35] <crodas>	perhaps someone could record the talk
+| [Tuesday 19 April 2011] [16:18:44] <sustrik>	nice
+| [Tuesday 19 April 2011] [16:18:51] <crodas>	(It'd be in English, I don't speak Portuguese, just Spanish and English)
+| [Tuesday 19 April 2011] [16:19:09] <sustrik>	once you have the talk confirmed, place a link to zero.mq page
+| [Tuesday 19 April 2011] [16:19:35] <crodas>	how do I do that?
+| [Tuesday 19 April 2011] [16:19:41] <sustrik>	it's wiki
+| [Tuesday 19 April 2011] [16:19:51] <crodas>	cool, I'll do it
+| [Tuesday 19 April 2011] [16:20:02] <sustrik>	great
+| [Tuesday 19 April 2011] [16:21:13] <crodas>	I'll upload my slides next week
+| [Tuesday 19 April 2011] [16:21:17] <crodas>	so I can have feedback
+| [Tuesday 19 April 2011] [16:21:39] <crodas>	I'm kinda new with ZeroMQ (~2 months) but I'm using it already on various projects
+| [Tuesday 19 April 2011] [16:25:42] <ianbarber>	to be honest, i think with 0mq you spend a few weeks learning everything the library can do, and then months understanding good messaging architectures :) that's part of the fun
+| [Tuesday 19 April 2011] [16:27:11] <crodas>	ianbarber: actually Derick Rethans (I don't know how to spell it) showed me your video
+| [Tuesday 19 April 2011] [16:27:22] <crodas>	I became a fun since then :-)
+| [Tuesday 19 April 2011] [16:27:30] <crodas>	*fanatic*
+| [Tuesday 19 April 2011] [16:27:34] <ianbarber>	:) 
+| [Tuesday 19 April 2011] [16:27:50] <crodas>	kudos, I owe lots of beers
+| [Tuesday 19 April 2011] [16:28:25] <ianbarber>	giving further talks is the best payback :) i'll have to thank derick next time i see him
+| [Tuesday 19 April 2011] [16:28:56] <crodas>	I'll spread the word here in South America
+| [Tuesday 19 April 2011] [23:33:02] <crodas>	does pub/sub works with 'inproc' ?
+| [Wednesday 20 April 2011] [00:51:01] <sustrik>	crodas: yes
+| [Wednesday 20 April 2011] [00:51:30] <crodas>	sustrik: I supposed that, I can't make it work with node's driver
+| [Wednesday 20 April 2011] [00:51:37] <crodas>	so it's a driver bug.
+| [Wednesday 20 April 2011] [00:54:39] <sustrik>	possibly
+| [Wednesday 20 April 2011] [01:10:40] <guido_g>	good morning all
+| [Wednesday 20 April 2011] [01:11:01] <guido_g>	while browsing i found http://jeffkreeftmeijer.com/2010/why-arent-you-using-git-flow/
+| [Wednesday 20 April 2011] [01:11:17] <guido_g>	just as a point for the next process discussion ,)
+| [Wednesday 20 April 2011] [01:19:03] <sustrik>	thx
+| [Wednesday 20 April 2011] [01:19:45] <guido_g>	i'm not sure it'll fit the mindset of you and the other main devs
+| [Wednesday 20 April 2011] [01:26:52] <sustrik>	it was already discussed in the past
+| [Wednesday 20 April 2011] [01:27:13] <sustrik>	the main problem, imo, is to agree on who's going to do what etc.
+| [Wednesday 20 April 2011] [01:27:16] <guido_g>	oh sorry, i must have missed that
+| [Wednesday 20 April 2011] [01:27:32] <sustrik>	the physical proces is just a consequence of that
+| [Wednesday 20 April 2011] [01:28:07] <guido_g>	given that you don't know beforehand who will participate, this is a big problem
+| [Wednesday 20 April 2011] [01:28:26] <sustrik>	there's me, mikko and pieter at least
+| [Wednesday 20 April 2011] [01:28:34] <sustrik>	we are doing most of the work
+| [Wednesday 20 April 2011] [01:28:40] <guido_g>	but the link wasn't meant to re-start that discussion
+| [Wednesday 20 April 2011] [01:28:44] <guido_g>	ack
+| [Wednesday 20 April 2011] [01:29:24] <guido_g>	we should talk about that at brussels
+| [Wednesday 20 April 2011] [01:29:37] <sustrik>	definitely
+| [Wednesday 20 April 2011] [01:31:23] <guido_g>	hmmm.... seems i need to write down the points i want to talk about
+| [Wednesday 20 April 2011] [01:31:34] <sustrik>	sure, do so
+| [Wednesday 20 April 2011] [01:31:38] <sustrik>	i should do the same
+| [Wednesday 20 April 2011] [01:31:55] <sustrik>	maybe we can post that on the wiki page
+| [Wednesday 20 April 2011] [01:32:18] <guido_g>	good idea
+| [Wednesday 20 April 2011] [02:03:18] <guido_g>	added a few lines to the wiki page
+| [Wednesday 20 April 2011] [03:39:22] <djc>	where is this talk video from ianbarber?
+| [Wednesday 20 April 2011] [03:40:08] <ianbarber>	PHP UK 2011
+| [Wednesday 20 April 2011] [04:01:20] <djc>	http://www.phpconference.co.uk/talk/zeromq-answer to be exact :)
+| [Wednesday 20 April 2011] [04:01:21] <djc>	thanks
+| [Wednesday 20 April 2011] [06:14:41] <pieterh>	hi folks
+| [Wednesday 20 April 2011] [06:17:54] <mikko>	pieterh: hi
+| [Wednesday 20 April 2011] [06:18:00] <mikko>	pieterh: two new attendees from london
+| [Wednesday 20 April 2011] [06:18:04] <mikko>	possibly more coming later
+| [Wednesday 20 April 2011] [06:18:06] <pieterh>	sweet!
+| [Wednesday 20 April 2011] [06:18:19] <pieterh>	how are you doing mikko?
+| [Wednesday 20 April 2011] [06:18:32] <pieterh>	still doing the weird stuff with the kinnect?
+| [Wednesday 20 April 2011] [06:18:32] <mikko>	awesomely busy
+| [Wednesday 20 April 2011] [06:18:35] <mikko>	yes
+| [Wednesday 20 April 2011] [06:18:37] <pieterh>	:)
+| [Wednesday 20 April 2011] [06:19:01] <mikko>	http://code.google.com/p/lecturerecorder/wiki/ProgramSummary
+| [Wednesday 20 April 2011] [06:19:02] <pieterh>	i have a serious question for you
+| [Wednesday 20 April 2011] [06:19:18] <mikko>	sure
+| [Wednesday 20 April 2011] [06:19:25] <pieterh>	oso I'
+| [Wednesday 20 April 2011] [06:19:39] <pieterh>	fingers aren't awake yet... 
+| [Wednesday 20 April 2011] [06:19:46] <pieterh>	so I'd like to start on libzutil
+| [Wednesday 20 April 2011] [06:20:35] <pieterh>	i'd like people who get the zeromq package to get a single library (libzmq) but containing libzutil as well
+| [Wednesday 20 April 2011] [06:20:47] <pieterh>	is that possible in your opinion?
+| [Wednesday 20 April 2011] [06:21:06] <pieterh>	assuming libzutil is a separate git, like libzapi, using autotools
+| [Wednesday 20 April 2011] [06:21:29] <mikko>	how do you want them to get it?
+| [Wednesday 20 April 2011] [06:21:36] <mikko>	single ./configure?
+| [Wednesday 20 April 2011] [06:21:41] <pieterh>	yes, I think so
+| [Wednesday 20 April 2011] [06:21:47] <pieterh>	but probably via a packaging project of some kind
+| [Wednesday 20 April 2011] [06:21:53] <pieterh>	e.g. zeromq2-2
+| [Wednesday 20 April 2011] [06:22:00] <mikko>	zeromq-bundle or something?
+| [Wednesday 20 April 2011] [06:22:02] <pieterh>	actually, also including libzapi
+| [Wednesday 20 April 2011] [06:22:11] <pieterh>	zeromq-bundle is right
+| [Wednesday 20 April 2011] [06:22:32] <pieterh>	anyone going to libzmq git will get just the core library
+| [Wednesday 20 April 2011] [06:22:33] <mikko>	you could create packaging project that contains simple build that invokes the sub builds
+| [Wednesday 20 April 2011] [06:22:36] <pieterh>	yes
+| [Wednesday 20 April 2011] [06:23:02] <pieterh>	hmm, excellent
+| [Wednesday 20 April 2011] [06:23:27] <pieterh>	so zeromq2-2 can be this, simple build that invokes subbuilds for libzmq, libzutil, libzapi
+| [Wednesday 20 April 2011] [06:24:07] <pieterh>	would you help me make this?
+| [Wednesday 20 April 2011] [06:24:20] <pieterh>	all I need are some outlines, I can do all the grunt work
+| [Wednesday 20 April 2011] [06:26:20] <mikko>	sure, this is very much similar to how openpgm is built inside zeromq build
+| [Wednesday 20 April 2011] [06:26:36] <pieterh>	that's what I thought but I've not looked more closely
+| [Wednesday 20 April 2011] [06:27:02] <pieterh>	ok, so I'll start with a minimal libzutil rsn, with one class, and then we can experiment with this
+| [Wednesday 20 April 2011] [06:27:19] <pieterh>	zeromq2-2 will basically be the same stable 2.1 plus this extra stuff (zutil, zapi)
+| [Wednesday 20 April 2011] [06:27:35] <pieterh>	the point is to make life easier for people when 3.0 arrives
+| [Wednesday 20 April 2011] [06:27:42] <pieterh>	premigration
+| [Wednesday 20 April 2011] [06:28:40] <pieterh>	sustrik: you around?
+| [Wednesday 20 April 2011] [06:30:33] 	 * pieterh is going to make a 2.1.5 release today
+| [Wednesday 20 April 2011] [07:07:12] 	 * pieterh has just pushed the 2.1.5 release
+| [Wednesday 20 April 2011] [07:58:18] <NikolaVeber>	I'm trying to open one socket per thread
+| [Wednesday 20 April 2011] [07:58:23] <NikolaVeber>	for a benchmark
+| [Wednesday 20 April 2011] [07:58:35] <NikolaVeber>	and then stress the server
+| [Wednesday 20 April 2011] [07:58:44] <NikolaVeber>	should I open one context
+| [Wednesday 20 April 2011] [07:58:49] <NikolaVeber>	or one per thread?
+| [Wednesday 20 April 2011] [07:59:54] <NikolaVeber>	does it make any sense at all, sending from multiple threads VS sequential loop
+| [Wednesday 20 April 2011] [08:00:02] <NikolaVeber>	it's a PUSH socket
+| [Wednesday 20 April 2011] [08:08:51] <pieterh>	hi NikolaVeber
+| [Wednesday 20 April 2011] [08:09:17] <pieterh>	it makes no sense to start multiple threads
+| [Wednesday 20 April 2011] [08:09:37] <pieterh>	unless you know you're full with 1 thread
+| [Wednesday 20 April 2011] [08:09:53] <djc>	pieterh: thanks for the release
+| [Wednesday 20 April 2011] [08:09:58] <djc>	mikko: around?
+| [Wednesday 20 April 2011] [08:10:01] <pieterh>	djc: happy to oblige
+| [Wednesday 20 April 2011] [08:11:05] <djc>	pieterh: --with-system-pgm doesn't seem to entirely do the trick here :(
+| [Wednesday 20 April 2011] [08:11:20] <pieterh>	djc: interesting... mikko: you around?
+| [Wednesday 20 April 2011] [08:11:35] <pieterh>	djc: you want to discuss this with mikko
+| [Wednesday 20 April 2011] [08:11:41] <djc>	yeah, I figured :)
+| [Wednesday 20 April 2011] [08:19:55] <NikolaVeber>	pieterh, ok, tx :)
+| [Wednesday 20 April 2011] [08:20:24] <pieterh>	NikolaVeber: a single client thread, looping, can overwhelm a server that does *anything* at all with the messages
+| [Wednesday 20 April 2011] [08:20:40] <pieterh>	the only reason to have multiple client threads is to test server parallelism
+| [Wednesday 20 April 2011] [08:24:15] <NikolaVeber>	then it should work for me, I just need to bring the server to the max
+| [Wednesday 20 April 2011] [08:24:22] <NikolaVeber>	and measure latencies along the way
+| [Wednesday 20 April 2011] [08:36:13] <djc>	hmm, maybe I could use some advice
+| [Wednesday 20 April 2011] [08:36:30] <djc>	I have a set of n sources (like ZMQ publishers)
+| [Wednesday 20 April 2011] [08:36:44] <djc>	and a set of m sinks
+| [Wednesday 20 April 2011] [08:37:16] <djc>	and in the middle are some rules about which sinks want to receive what data (think ZMQ_SUBSCRIBE filters) from what sources
+| [Wednesday 20 April 2011] [08:37:28] <djc>	what do I use?
+| [Wednesday 20 April 2011] [08:37:50] <guido_g>	more coffee :)
+| [Wednesday 20 April 2011] [08:38:31] <djc>	I don't do coffee, maybe that's my problem :P
+| [Wednesday 20 April 2011] [08:38:32] <drbobbeaty>	pieterh: Question about the newly released 2.1.5... and maybe this is for mikko, but I'm getting errors in the build - all with the 'make check-TESTS' target. Throwing a lot of zmq::error_t exceptions. What's up?
+| [Wednesday 20 April 2011] [08:38:53] <guido_g>	djc: oh sorry
+| [Wednesday 20 April 2011] [08:39:12] <pieterh>	drbobbeaty: we'll check it out
+| [Wednesday 20 April 2011] [08:39:22] <pieterh>	seems I was a little hasty with the 2.1.5 release
+| [Wednesday 20 April 2011] [08:39:35] <drbobbeaty>	pieterh: thanks for checking on this. I really appreciate it.
+| [Wednesday 20 April 2011] [08:40:14] <guido_g>	djc: did you see chapter 5 of guide? http://zguide.zeromq.org/page:all#Chapter-Five-Advanced-Publish-Subscribe
+| [Wednesday 20 April 2011] [08:40:32] <guido_g>	maybe there is something you can use
+| [Wednesday 20 April 2011] [08:40:46] <pieterh>	djc: "rules" meaning what?
+| [Wednesday 20 April 2011] [08:41:01] <pieterh>	data that you can move around, or code?
+| [Wednesday 20 April 2011] [08:41:15] <djc>	pieterh: things that will change during execution
+| [Wednesday 20 April 2011] [08:41:30] <pieterh>	I'd suggest a couple of flows
+| [Wednesday 20 April 2011] [08:41:31] <djc>	e.g. the client says I now want to subscribe to source b with filters c
+| [Wednesday 20 April 2011] [08:41:36] <pieterh>	a. pub to sub of all data
+| [Wednesday 20 April 2011] [08:41:46] <pieterh>	b. rules to subs of all rules, as they change
+| [Wednesday 20 April 2011] [08:41:58] <pieterh>	subs can then unsubcribe/resubscribe dynamically
+| [Wednesday 20 April 2011] [08:44:48] <pieter_hintjens>	sigh. my son turned the power off for the whole building
+| [Wednesday 20 April 2011] [08:45:01] <pieter_hintjens>	djc: did you get that?
+| [Wednesday 20 April 2011] [08:45:37] <guido_g>	pieter_hintjens: last was: <pieterh> subs can then...
+| [Wednesday 20 April 2011] [08:45:54] <pieter_hintjens>	ok, so one pubsub flow for data, one pubsub flow for rules
+| [Wednesday 20 April 2011] [08:46:22] <pieter_hintjens>	subscribers can then get the rules they want, apply them by subscribing/unsubscribing dynamically
+| [Wednesday 20 April 2011] [08:46:47] <djc>	pieter_hintjens: ok, so I basically code my own FORWARDER with the subscriber connecting to multiple publishers, so I get a single pub-stream?
+| [Wednesday 20 April 2011] [08:47:06] <djc>	and then use a smart header for those messages to subs can do useful filtering?
+| [Wednesday 20 April 2011] [08:47:29] 	 * pieter_hintjens doesn't see why you'd need any of this...
+| [Wednesday 20 April 2011] [08:47:38] <pieter_hintjens>	you have N subscribers?
+| [Wednesday 20 April 2011] [08:47:49] <djc>	yes
+| [Wednesday 20 April 2011] [08:47:58] <pieter_hintjens>	so cross connect them all, it's simplest
+| [Wednesday 20 April 2011] [08:48:05] <pieter_hintjens>	every subscriber to every publisher
+| [Wednesday 20 April 2011] [08:48:27] <djc>	hm
+| [Wednesday 20 April 2011] [08:48:30] <guido_g>	or use (e)pgm
+| [Wednesday 20 April 2011] [08:48:32] <pieter_hintjens>	then, separately, connect every subscriber to the rule broker
+| [Wednesday 20 April 2011] [08:48:41] <pieter_hintjens>	using the same SUB socket, for simplicity
+| [Wednesday 20 April 2011] [08:48:45] <pieter_hintjens>	now process incoming messages
+| [Wednesday 20 April 2011] [08:48:57] <pieter_hintjens>	make sure your rules have an identifiable key
+| [Wednesday 20 April 2011] [08:48:59] <djc>	I don't need the rule broker because each sub sets its own sub rules
+| [Wednesday 20 April 2011] [08:49:17] <pieter_hintjens>	you said "in the middle are some rules"
+| [Wednesday 20 April 2011] [08:49:27] <pieter_hintjens>	who produces rules at runtime?
+| [Wednesday 20 April 2011] [08:49:27] <djc>	that was just my mental model failing
+| [Wednesday 20 April 2011] [08:49:34] <djc>	the subs produce the rules
+| [Wednesday 20 April 2011] [08:49:40] <pieter_hintjens>	ah, so even simpler
+| [Wednesday 20 April 2011] [08:49:43] <djc>	yeah
+| [Wednesday 20 April 2011] [08:49:50] <pieter_hintjens>	just sub/unsub dynamically
+| [Wednesday 20 April 2011] [08:50:49] <pieter_hintjens>	are you trying to get a single consistent stream to all subscribers?
+| [Wednesday 20 April 2011] [08:51:24] <pieter_hintjens>	or is it OK for each subscriber to get messages in different orders
+| [Wednesday 20 April 2011] [08:51:42] <djc>	I don't think exact order matters here
+| [Wednesday 20 April 2011] [08:51:58] <djc>	certainly not order accross streams
+| [Wednesday 20 April 2011] [08:52:15] <djc>	why would the order be different on different subscribers?
+| [Wednesday 20 April 2011] [08:52:28] <pieter_hintjens>	publishers will unicast to each subscriber
+| [Wednesday 20 April 2011] [08:52:37] <pieter_hintjens>	arrival order at subscribers will vary
+| [Wednesday 20 April 2011] [08:52:53] <pieter_hintjens>	if you have >1 publisher, messages from each will arrive in varied order
+| [Wednesday 20 April 2011] [08:53:04] <pieter_hintjens>	sub 1 will get A1, B1, B2, A2
+| [Wednesday 20 April 2011] [08:53:05] <djc>	because of the interleaving, right?
+| [Wednesday 20 April 2011] [08:53:10] <pieter_hintjens>	sub 2 will get A1, A2, B1, B2
+| [Wednesday 20 April 2011] [08:53:11] <pieter_hintjens>	etc.
+| [Wednesday 20 April 2011] [08:53:18] <djc>	but A1 will always come before A2?
+| [Wednesday 20 April 2011] [08:53:21] <pieter_hintjens>	yes
+| [Wednesday 20 April 2011] [08:53:31] <djc>	yeah, I don't think that's a problem
+| [Wednesday 20 April 2011] [08:54:03] <pieter_hintjens>	so don't use a device, it'll add complexity for nothing
+| [Wednesday 20 April 2011] [08:54:19] <pieter_hintjens>	unless you want to make publishers invisible to subscribers, then it can help
+| [Wednesday 20 April 2011] [08:54:48] <djc>	well, everything is flowing through a single process
+| [Wednesday 20 April 2011] [08:55:08] <pieter_hintjens>	what does that mean?
+| [Wednesday 20 April 2011] [08:55:20] <pieter_hintjens>	you just said you have N publishers and N subscribers :)
+| [Wednesday 20 April 2011] [08:55:35] <djc>	yeah, but there's a single process handling the connection
+| [Wednesday 20 April 2011] [08:56:12] <djc>	it's a WebSockets server that clients can connect to, subscribe to ZeroMQ streams and get JSON messages
+| [Wednesday 20 April 2011] [08:56:29] <pieter_hintjens>	djc: your explanation isn't helping, you need to draw a picture
+| [Wednesday 20 April 2011] [08:56:35] <djc>	sorry :)
+| [Wednesday 20 April 2011] [08:57:16] <pieter_hintjens>	'flowing through' means, to me, 0MQ sockets talking to each other, but you're not explaining that
+| [Wednesday 20 April 2011] [08:57:22] <pieter_hintjens>	so, confusion
+| [Wednesday 20 April 2011] [08:57:42] <djc>	is there like a pastebin for drawing graphs? :P
+| [Wednesday 20 April 2011] [08:58:30] <pieter_hintjens>	hmm, that'd be a neat service... I use ditaa for graphs but there's no pastebin for that
+| [Wednesday 20 April 2011] [08:58:40] <headzone>	http://www.lucidchart.com/pages/
+| [Wednesday 20 April 2011] [08:59:13] <djc>	using gdocs for now...
+| [Wednesday 20 April 2011] [09:02:01] <djc>	https://docs.google.com/drawings/pub?id=1n2IFhfm-mO2mCAzwHLk4-tESDG9D9mCxbIaKAlKgckc&w=960&h=720
+| [Wednesday 20 April 2011] [09:02:08] <djc>	is what I'm thinking of
+| [Wednesday 20 April 2011] [09:03:48] <pieter_hintjens>	headzone: sweet god that's amazingly well done...
+| [Wednesday 20 April 2011] [09:04:19] <pieter_hintjens>	djc: where is the "single process"?
+| [Wednesday 20 April 2011] [09:04:26] <djc>	it's the big fat thing in the middle
+| [Wednesday 20 April 2011] [09:04:32] <pieter_hintjens>	multithreaded?
+| [Wednesday 20 April 2011] [09:04:39] <djc>	if needed, yes
+| [Wednesday 20 April 2011] [09:04:58] <pieter_hintjens>	well, if multithreaded, it's effectively N processes
+| [Wednesday 20 April 2011] [09:05:08] <pieter_hintjens>	not relevant to discussion, really
+| [Wednesday 20 April 2011] [09:05:18] <djc>	so that's why I said it was N processes :P
+| [Wednesday 20 April 2011] [09:05:47] <pieter_hintjens>	anyhow, yes, this'll work, you don't need any forwarder device afaics
+| [Wednesday 20 April 2011] [09:06:00] <djc>	I just said it was flowing through a single process to explain that I might use a forwarder to forward stuff from local to inproc, so I don't need three or four streams of the same over my LAN
+| [Wednesday 20 April 2011] [09:06:08] <djc>	(the left side)
+| [Wednesday 20 April 2011] [09:06:41] <pieter_hintjens>	what's the message size/rate you expect?
+| [Wednesday 20 April 2011] [09:08:10] <djc>	the sizes are not very impressive, but I expect a fairly rate
+| [Wednesday 20 April 2011] [09:08:17] <djc>	+high
+| [Wednesday 20 April 2011] [09:08:22] <djc>	not sure how high, exactly
+| [Wednesday 20 April 2011] [09:09:03] <djc>	zmq doesn't handle that for me, right? like, it doesn't multiplex for multiple subscribers subscribing to the same publisher within the same context?
+| [Wednesday 20 April 2011] [09:28:23] <djc>	would actually be cool if it could do that
+| [Wednesday 20 April 2011] [09:29:20] <th>	what does a "what():  Bad address" mean when doing recv()?  i could understand that for bind/connect
+| [Wednesday 20 April 2011] [09:29:47] <th>	this happens for me in c++ with 2.1.5 and it did not happen in 2.1.4
+| [Wednesday 20 April 2011] [09:34:49] <th>	hmmm #define EFAULT      14  /* Bad address */
+| [Wednesday 20 April 2011] [09:36:27] <th>	http://api.zeromq.org/2-1:zmq-recv    tells me EFAULT can mean invalid socket or message; and the changelog for 2.1.5 mentions "Checks zmq_msg_t validity at each operation"
+| [Wednesday 20 April 2011] [09:42:40] <mikko>	i'm back
+| [Wednesday 20 April 2011] [09:42:46] <mikko>	making moroccon lamb stew
+| [Wednesday 20 April 2011] [09:44:29] <mikko>	djc: which os?
+| [Wednesday 20 April 2011] [09:51:00] <djc>	mikko: gentoo linux
+| [Wednesday 20 April 2011] [09:52:17] <mikko>	ok, which version of OpenPGM?
+| [Wednesday 20 April 2011] [09:53:34] <mikko>	and can you run with ./configure --disable-silent-rules
+| [Wednesday 20 April 2011] [09:53:41] <mikko>	so that i can see the output of linking
+| [Wednesday 20 April 2011] [09:54:37] <djc>	5.1.115
+| [Wednesday 20 April 2011] [09:54:56] <djc>	I'll try that
+| [Wednesday 20 April 2011] [09:55:27] <mikko>	it sounds like pkg-config for openpgm might fail
+| [Wednesday 20 April 2011] [09:55:33] <mikko>	there is currently no check for that
+| [Wednesday 20 April 2011] [09:56:59] <pieter_hintjens>	djc: I'm back, sorry
+| [Wednesday 20 April 2011] [09:57:12] <pieter_hintjens>	currently zmq sub sockets will multiplex to all sub sockets
+| [Wednesday 20 April 2011] [09:57:25] <pieter_hintjens>	there's a work in progress to be smarter about this but it's not got a lot of traction
+| [Wednesday 20 April 2011] [09:58:01] <pieter_hintjens>	using an inprocess frontend device is an obvious optimization
+| [Wednesday 20 April 2011] [09:58:40] <pieter_hintjens>	http://zguide.zeromq.org/page:all#High-speed-Subscribers-Black-Box-Pattern
+| [Wednesday 20 April 2011] [09:59:17] <pieter_hintjens>	th: hi
+| [Wednesday 20 April 2011] [09:59:28] <pieter_hintjens>	I think we have a problem in the 2.1.5 release
+| [Wednesday 20 April 2011] [09:59:49] <pieter_hintjens>	but it's not clear yet
+| [Wednesday 20 April 2011] [10:00:36] <mikko>	what problem?
+| [Wednesday 20 April 2011] [10:00:54] <pieter_hintjens>	tests and other code are failing due to last commit which checks msg validity
+| [Wednesday 20 April 2011] [10:00:59] <pieter_hintjens>	make  check-TESTS
+| [Wednesday 20 April 2011] [10:01:00] <pieter_hintjens>	make[2]: Entering directory `/vol1/home/ph/work/zeromq2-1/tests'
+| [Wednesday 20 April 2011] [10:01:00] <pieter_hintjens>	terminate called after throwing an instance of 'zmq::error_t'
+| [Wednesday 20 April 2011] [10:01:00] <pieter_hintjens>	  what():  Bad address
+| [Wednesday 20 April 2011] [10:01:00] <pieter_hintjens>	/bin/bash: line 5:   883 Aborted                 (core dumped) ${dir}$tst
+| [Wednesday 20 April 2011] [10:01:00] <pieter_hintjens>	FAIL: test_pair_inproc
+| [Wednesday 20 April 2011] [10:01:16] 	 * pieter_hintjens mutters something about running tests *before* making a new release
+| [Wednesday 20 April 2011] [10:01:36] <mikko>	http://build.zero.mq/view/libzmq%202.1/ shows all ok
+| [Wednesday 20 April 2011] [10:01:39] <mikko>	strange
+| [Wednesday 20 April 2011] [10:01:45] <mikko>	is the commit after this morning build?
