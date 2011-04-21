@@ -4518,3 +4518,347 @@
 | [Wednesday 20 April 2011] [10:01:36] <mikko>	http://build.zero.mq/view/libzmq%202.1/ shows all ok
 | [Wednesday 20 April 2011] [10:01:39] <mikko>	strange
 | [Wednesday 20 April 2011] [10:01:45] <mikko>	is the commit after this morning build?
+| [Wednesday 20 April 2011] [10:02:45] <djc>	mikko: http://paste.pocoo.org/raw/375143/
+| [Wednesday 20 April 2011] [10:03:05] <pieter_hintjens>	mikko: I applied a patch from sustrik after this mornings' build
+| [Wednesday 20 April 2011] [10:03:08] <mikko>	djc: the whole output if you can
+| [Wednesday 20 April 2011] [10:04:37] <mikko>	djc: as that linking failure is for perf programs
+| [Wednesday 20 April 2011] [10:04:52] <mikko>	would be interesting if -lpgm is skipped for libzmq.la for some reason
+| [Wednesday 20 April 2011] [10:05:51] <djc>	http://dirkjan.ochtman.nl/files/build.log
+| [Wednesday 20 April 2011] [10:06:09] <pieter_hintjens>	sustrik: ping, are you around?
+| [Wednesday 20 April 2011] [10:09:14] <mikko>	djc: strange
+| [Wednesday 20 April 2011] [10:09:32] <mikko>	can you pastebin the output of 'nm' for openpgm.so
+| [Wednesday 20 April 2011] [10:14:23] <th>	a simple chain of new zmq::context_t(1); new zmq::socket_t(*context, ZMQ_XREP); bind("tcp://127.0.0.1:5555"); zsock->recv(&message);     results in "Bad address"
+| [Wednesday 20 April 2011] [10:14:31] <th>	this makes 2.1.5 somewhat unusable at least for me here
+| [Wednesday 20 April 2011] [10:14:57] <mikko>	Please do *not* use the 2.1.5 package released today, the zmq_msg_t
+| [Wednesday 20 April 2011] [10:14:57] <mikko>	validity checking appears to be reporting errors on valid code.
+| [Wednesday 20 April 2011] [10:15:06] <mikko>	peter's mail 8 minutes ago
+| [Wednesday 20 April 2011] [10:19:48] <th>	oh - i did not even notice that this release was from today
+| [Wednesday 20 April 2011] [10:20:14] <th>	i just checked the page, because someone told me a bug was fixed
+| [Wednesday 20 April 2011] [10:21:06] <djc>	mikko: nm finds no symbols in libpgm.so
+| [Wednesday 20 April 2011] [10:21:11] <djc>	..
+| [Wednesday 20 April 2011] [10:21:17] <pieter_hintjens>	th: so sorry, I've reverted the download page to point to 2.1.4
+| [Wednesday 20 April 2011] [10:21:27] <th>	pieter_hintjens: but not the changelog;)
+| [Wednesday 20 April 2011] [10:21:53] <pieter_hintjens>	th: I'll push a clean git history (aaagh) in a second
+| [Wednesday 20 April 2011] [10:22:38] <th>	pieter_hintjens: is there any recommended git revision > 2.1.4?
+| [Wednesday 20 April 2011] [10:22:43] <pieter_hintjens>	th: nope
+| [Wednesday 20 April 2011] [10:22:59] <pieter_hintjens>	take https://github.com/zeromq/zeromq2-1/commits/v2.1.4
+| [Wednesday 20 April 2011] [10:23:04] <pieter_hintjens>	or take the package
+| [Wednesday 20 April 2011] [10:23:08] <th>	pieter_hintjens: which is the same as ... ok
+| [Wednesday 20 April 2011] [10:23:22] <th>	pieter_hintjens: that still has the multipart intermixing issues
+| [Wednesday 20 April 2011] [10:23:28] <th>	under higher load
+| [Wednesday 20 April 2011] [10:23:54] <pieter_hintjens>	th: I'm not familiar with that bug, and do not think it's been downstreamed to 2.1.5 at all
+| [Wednesday 20 April 2011] [10:24:49] <djc>	pieter_hintjens: you shouldn't unpublish changes from a public repo
+| [Wednesday 20 April 2011] [10:25:13] <pieter_hintjens>	djc: well, I shouldn't allow buggy code to get into a stable distro
+| [Wednesday 20 April 2011] [10:25:15] <th>	pieter_hintjens: i'll see if i can make the test-case smaller and more readable. it's 100% reproducable already for me. but it needs a './server & ; while ./client ; do;done'
+| [Wednesday 20 April 2011] [10:25:56] <djc>	pieter_hintjens: so publish a new revision
+| [Wednesday 20 April 2011] [10:26:11] <djc>	or even a new tag
+| [Wednesday 20 April 2011] [10:26:14] <pieter_hintjens>	djc: ok, I'll respect the rules for once
+| [Wednesday 20 April 2011] [10:26:16] <pieter_hintjens>	question then
+| [Wednesday 20 April 2011] [10:26:23] <pieter_hintjens>	2.1.6 or 2.1.5 or 2.1.5.1?
+| [Wednesday 20 April 2011] [10:26:44] <djc>	if you're taking 2.1.5 and just removing on buggy cset, call it 2.1.5.1
+| [Wednesday 20 April 2011] [10:26:49] <djc>	s/on/one/
+| [Wednesday 20 April 2011] [10:27:02] <pieter_hintjens>	ok, that's what I'd done before sustrik asked me to pause
+| [Wednesday 20 April 2011] [10:40:38] <pieter_hintjens>	sustrik: ping, are you around?
+| [Wednesday 20 April 2011] [11:20:45] <mikko>	th: no symbols at all?
+| [Wednesday 20 April 2011] [12:30:56] <sustrik>	re
+| [Wednesday 20 April 2011] [12:31:35] <sustrik>	pieter_hintjens: sorry, the reply abnout the issue was accidentally sent only to artem
+| [Wednesday 20 April 2011] [12:31:40] <sustrik>	let me forward it to the list
+| [Wednesday 20 April 2011] [12:39:46] <pieterh>	sustrik: thx
+| [Wednesday 20 April 2011] [12:40:20] <pieterh>	sustrik: seems we have a problem with cherry-picking
+| [Wednesday 20 April 2011] [12:40:23] <pieterh>	it does not work reliably
+| [Wednesday 20 April 2011] [12:42:46] <sustrik>	np
+| [Wednesday 20 April 2011] [12:42:53] <pieterh>	what happened was this...
+| [Wednesday 20 April 2011] [12:43:04] <pieterh>	well, yes, we do have a problem somewhere... :-/
+| [Wednesday 20 April 2011] [12:43:11] <pieterh>	when I apply the commit, it gives a conflict
+| [Wednesday 20 April 2011] [12:43:27] <pieterh>	there should be no conflict
+| [Wednesday 20 April 2011] [12:43:37] <pieterh>	clearly I'm not modifying these files anywhere else
+| [Wednesday 20 April 2011] [12:43:53] <pieterh>	incorrect conflict resolution -> garbage
+| [Wednesday 20 April 2011] [12:44:15] <pieterh>	anyone with sufficient git fu to help figure this out?
+| [Wednesday 20 April 2011] [12:45:04] <pieterh>	the only way I can see now to fix this is to reset history to before the cherry-pick and do it again
+| [Wednesday 20 April 2011] [12:45:11] <pieterh>	this is really unpleasant
+| [Wednesday 20 April 2011] [12:46:16] <headzone>	what's the situation (in generic git terms)
+| [Wednesday 20 April 2011] [12:47:04] <pieterh>	headzone: ok, here's where I find myself...
+| [Wednesday 20 April 2011] [12:47:28] <pieterh>	working in github.com/zeromq/zeromq2-1, which fetches commits from github.com/zeromq/libzmq
+| [Wednesday 20 April 2011] [12:47:49] <pieterh>	'git fetch --no-tags libzmq' followed by cherry-picking of specific commits
+| [Wednesday 20 April 2011] [12:48:15] <pieterh>	one of these manages to fail, partially and silently, on zmq.cpp
+| [Wednesday 20 April 2011] [12:48:22] <sustrik>	the conflict is presumably between changes that were not backported and those that were backported
+| [Wednesday 20 April 2011] [12:49:11] <sustrik>	in one of the previous commits in libzmq i've moved message-related functions into a separate compilation unit
+| [Wednesday 20 April 2011] [12:49:17] <sustrik>	msg.hpp/cpp
+| [Wednesday 20 April 2011] [12:49:28] <sustrik>	that's what causing the conflict imo
+| [Wednesday 20 April 2011] [12:49:28] <pieterh>	sustrik: there wasn't even a conflict on this, in fact
+| [Wednesday 20 April 2011] [12:49:30] <pieterh>	http://pastebin.com/ddC7HfDH
+| [Wednesday 20 April 2011] [12:49:43] <pieterh>	yes, I got an error on msg.cpp
+| [Wednesday 20 April 2011] [12:49:55] <pieterh>	but the missing chunks were on zmq.cpp... 
+| [Wednesday 20 April 2011] [12:50:15] <pieterh>	anyhow, I now have a bit of a mess in my zeromq2-1 repository
+| [Wednesday 20 April 2011] [12:50:16] <sustrik>	which contains functions that are in zmq.cpp in 2.x
+| [Wednesday 20 April 2011] [12:50:25] <sustrik>	backporting i shard
+| [Wednesday 20 April 2011] [12:50:48] <pieterh>	ah... so the fix is in a file I don't actually have...
+| [Wednesday 20 April 2011] [12:50:58] <sustrik>	you may try to apply the parch that moved the functions to msg.cpp
+| [Wednesday 20 April 2011] [12:51:00] <sustrik>	first
+| [Wednesday 20 April 2011] [12:51:07] <sustrik>	ack
+| [Wednesday 20 April 2011] [12:52:00] <pieterh>	sustrik: I really don't want to be creative with the libzmq code...
+| [Wednesday 20 April 2011] [12:52:26] <pieterh>	the changes that are missing in zmq.cpp are presumably few
+| [Wednesday 20 April 2011] [12:52:38] <sustrik>	let me have a look
+| [Wednesday 20 April 2011] [12:53:01] <pieterh>	sustrik: can you clone git@github.com:zeromq/zeromq2-1.git?
+| [Wednesday 20 April 2011] [12:53:10] <sustrik>	i did
+| [Wednesday 20 April 2011] [12:53:13] <pieterh>	nice
+| [Wednesday 20 April 2011] [12:53:43] <pieterh>	headzone: with luck sustrik will be able to help me patch this up and we can go forwards...
+| [Wednesday 20 April 2011] [12:53:52] 	 * pieterh is happy to understand what went wrong
+| [Wednesday 20 April 2011] [12:54:10] <headzone>	it sounds like you're trying to cherry-pick something from a branch that's diverged from yours, which is usually not a great idea
+| [Wednesday 20 April 2011] [12:54:16] <pieterh>	yup
+| [Wednesday 20 April 2011] [12:54:49] <pieterh>	i should have caught this in testing, which will happen from now on
+| [Wednesday 20 April 2011] [12:54:52] <pieterh>	properly
+| [Wednesday 20 April 2011] [12:54:58] <sustrik>	ok, afaics the only thing you need to do is to apply the changes reported as been done to msg.cpp
+| [Wednesday 20 April 2011] [12:55:03] <sustrik>	to zmq.cpp instead
+| [Wednesday 20 April 2011] [12:55:23] <pieterh>	ok... let me review those
+| [Wednesday 20 April 2011] [12:56:08] <pieterh>	sustrik: I'll give that a shot, it should be doable
+| [Wednesday 20 April 2011] [12:56:31] <sustrik>	ok
+| [Wednesday 20 April 2011] [13:02:04] <headzone>	in future, you may also find it useful to use the -n option to cherry-pick or format-patch instead, to see and inspect how things will look first without messing up your tree
+| [Wednesday 20 April 2011] [13:04:17] <pieterh>	headzone: yes, will use -n option on cherry-pick
+| [Wednesday 20 April 2011] [13:05:25] <pieterh>	I assume after reviewing, one commits with 'git commit -c nnnnnn'?
+| [Wednesday 20 April 2011] [13:06:34] <headzone>	sure
+| [Wednesday 20 April 2011] [13:08:06] <pieterh>	thx, I'm keeping the idiot proof instructions here: http://www.zeromq.org/docs:distributions
+| [Wednesday 20 April 2011] [13:10:37] <headzone>	in the second part, "git pull source master; git fetch source" is better written "git fetch source; git merge source/master"
+| [Wednesday 20 April 2011] [13:13:39] <pieterh>	headzone: thanks, I'll fix it (you can also edit, it's a wiki)
+| [Wednesday 20 April 2011] [13:14:56] <pieterh>	sustrik: what code is producing this error...?
+| [Wednesday 20 April 2011] [13:15:05] <pieterh>	terminate called after throwing an instance of 'zmq::error_t'
+| [Wednesday 20 April 2011] [13:15:06] <pieterh>	  what():  Bad address
+| [Wednesday 20 April 2011] [13:15:06] <pieterh>	Aborted (core dumped)
+| [Wednesday 20 April 2011] [13:15:09] <pieterh>	in the test cases?
+| [Wednesday 20 April 2011] [13:15:27] <pieterh>	after patching zmq.cpp, it fails exactly the same way, I can't trace where
+| [Wednesday 20 April 2011] [13:17:18] <sustrik>	try to run the failing test case under dgb
+| [Wednesday 20 April 2011] [13:17:21] <sustrik>	gdb
+| [Wednesday 20 April 2011] [13:17:37] <sustrik>	there's should be a way to say 'stop at exception'
+| [Wednesday 20 April 2011] [13:17:53] <pieterh>	not executable format? wtf?
+| [Wednesday 20 April 2011] [13:18:02] 	 * pieterh is getting seriously frustrated at a lost day of work...
+| [Wednesday 20 April 2011] [13:18:18] <pieterh>	agh
+| [Wednesday 20 April 2011] [13:18:54] <sustrik>	aha, Bad address is EFAULT
+| [Wednesday 20 April 2011] [13:19:04] <sustrik>	ie. message validation fails
+| [Wednesday 20 April 2011] [13:19:10] <pieterh>	I can't even see where the test executables are...
+| [Wednesday 20 April 2011] [13:19:20] <sustrik>	tests subdir
+| [Wednesday 20 April 2011] [13:19:47] <pieterh>	all I see are scripts that magically run the test executables
+| [Wednesday 20 April 2011] [13:20:01] <th>	mikko: symbols? you meant me?
+| [Wednesday 20 April 2011] [13:20:04] <mikko>	yes
+| [Wednesday 20 April 2011] [13:20:07] <mikko>	no
+| [Wednesday 20 April 2011] [13:20:12] <mikko>	i meant djc 
+| [Wednesday 20 April 2011] [13:20:12] <sustrik>	i see, that's because it uses shared libs
+| [Wednesday 20 April 2011] [13:20:23] <sustrik>	so there's a script that changes paths
+| [Wednesday 20 April 2011] [13:20:28] <sustrik>	to load the right library
+| [Wednesday 20 April 2011] [13:20:44] <sustrik>	you can configure with --disable-shared
+| [Wednesday 20 April 2011] [13:20:52] <sustrik>	which will force the static linking
+| [Wednesday 20 April 2011] [13:21:01] <sustrik>	and thus remove the need for scripts
+| [Wednesday 20 April 2011] [13:21:05] <pieterh>	well, when I tried artem's fix, I didn't do any of that, and the fix seemed to work
+| [Wednesday 20 April 2011] [13:21:16] <pieterh>	now I can't get even a 'printf' to display
+| [Wednesday 20 April 2011] [13:21:23] <sustrik>	it will fail if the message is shared
+| [Wednesday 20 April 2011] [13:21:32] <pieterh>	sure, that's not my point
+| [Wednesday 20 April 2011] [13:21:48] <pieterh>	it's that I find myself stuck in a twisty maze of "am I running this version or not..."
+| [Wednesday 20 April 2011] [13:22:02] <pieterh>	I'll disable shared libraries
+| [Wednesday 20 April 2011] [13:22:08] <sustrik>	i do it that
+| [Wednesday 20 April 2011] [13:22:09] <sustrik>	way
+| [Wednesday 20 April 2011] [13:22:23] <sustrik>	you'll get executables with statically linked libzmq
+| [Wednesday 20 April 2011] [13:22:30] <sustrik>	directly in tests subdir
+| [Wednesday 20 April 2011] [13:23:18] <pieterh>	sure, makes sense but I never had to do that before
+| [Wednesday 20 April 2011] [13:25:00] <pieterh>	nah, this is just messed up
+| [Wednesday 20 April 2011] [13:25:06] <pieterh>	it aborts on zmq.hpp:278
+| [Wednesday 20 April 2011] [13:25:15] <pieterh>	the file only has 266 lines
+| [Wednesday 20 April 2011] [13:25:26] <pieterh>	somehow I'm getting versions totally mixed up :-(
+| [Wednesday 20 April 2011] [13:26:18] <pieterh>	mikko: if I run 'make' in zeromq2-1 root, it shouldn't be pulling in so's from elsewhere, should it...?
+| [Wednesday 20 April 2011] [13:27:51] <pieterh>	isn't this the day skynet takes control?
+| [Wednesday 20 April 2011] [13:28:22] <pieterh>	sustrik: for some godforsaken reason the tests won't build correctly for me
+| [Wednesday 20 April 2011] [13:30:35] 	 * pieterh stops complaining and digs back into the code
+| [Wednesday 20 April 2011] [13:36:41] <mikko>	pieterh: sorry?
+| [Wednesday 20 April 2011] [13:37:15] <pieterh>	mikko: sorry, skynet temporarily got past my cortical firewall, it's gone now... 
+| [Wednesday 20 April 2011] [13:38:08] <pieterh>	i found out what the problem was, and it seems much better now
+| [Wednesday 20 April 2011] [13:41:10] <pieterh>	mikko: djc reported earlier today that --with-system-pgm didn't work in 2.1.5
+| [Wednesday 20 April 2011] [13:41:33] <mikko>	yep
+| [Wednesday 20 April 2011] [13:41:48] <pieterh>	do you want me to hold off with 2.1.5.1?
+| [Wednesday 20 April 2011] [13:41:56] <mikko>	please
+| [Wednesday 20 April 2011] [13:42:07] <mikko>	i'll look into it tonight
+| [Wednesday 20 April 2011] [13:42:15] <pieterh>	ok, np
+| [Wednesday 20 April 2011] [13:42:28] <pieterh>	btw we can also get that redhat spec file into it if you have it
+| [Wednesday 20 April 2011] [13:42:34] <pieterh>	depends how long your nights are... :)
+| [Wednesday 20 April 2011] [13:55:30] <mikko>	that change is pretty trivial
+| [Wednesday 20 April 2011] [14:00:55] <pieterh>	everything is trivial to the right brain :-)
+| [Wednesday 20 April 2011] [14:05:51] <mikko>	i need to take a small break
+| [Wednesday 20 April 2011] [14:05:57] <mikko>	juggling million things at the moment
+| [Wednesday 20 April 2011] [14:05:59] <mikko>	bbl
+| [Wednesday 20 April 2011] [14:06:55] <pieterh>	cyl
+| [Wednesday 20 April 2011] [14:10:40] <guido_g>	pieterh: do you have an idea what a taxi ride from the airport to the meeting place might cost?
+| [Wednesday 20 April 2011] [14:11:03] <pieterh>	guido_g: I'll add a travel guide to the wiki page, taxis are extortionate
+| [Wednesday 20 April 2011] [14:11:06] <pieterh>	it'
+| [Wednesday 20 April 2011] [14:11:18] <pieterh>	it's easy to get to by public transport
+| [Wednesday 20 April 2011] [14:11:24] <guido_g>	ok
+| [Wednesday 20 April 2011] [14:12:19] <guido_g>	just wanted to know if i could do it the lazy way :)
+| [Wednesday 20 April 2011] [14:18:43] <jond>	pieterh: are master and 2.1 repo still bust with the message check bug?
+| [Wednesday 20 April 2011] [14:19:16] <pieterh>	jond: libzmq master was always working, 2.1 master is now in theory working again
+| [Wednesday 20 April 2011] [14:20:20] <jond>	pieterh : so how did the patch for libzmq -> 2.1 go wrong then? does it have to be applied and fixed manually?
+| [Wednesday 20 April 2011] [14:21:26] <pieterh>	libzmq had diverged and the patch was not usable as-such, and my resolution of that error was wrong
+| [Wednesday 20 April 2011] [14:22:54] <jond>	pieterh: ok understood, just wanted to be clear, so essentially patches to libzmq master now may have to be manually reworked for the backport.
+| [Wednesday 20 April 2011] [14:23:21] <pieterh>	jond: not until now, no
+| [Wednesday 20 April 2011] [14:23:39] <pieterh>	but this seems to be inevitable as 3.0 diverges
+| [Wednesday 20 April 2011] [14:23:58] <pieterh>	I guess we were kind of expecting it but missed it when it actually happened :-(
+| [Wednesday 20 April 2011] [14:25:08] <jond>	pieterh: yeah, looked bad on the list....but stuff happens
+| [Wednesday 20 April 2011] [14:25:30] <pieterh>	well, stuff happens... I don't mind looking bad, so long as we don't make the same mistakes twice
+| [Wednesday 20 April 2011] [14:26:17] <pieterh>	Its far worse to not make releases out of fear of getting it wrong
+| [Wednesday 20 April 2011] [14:40:26] <guido_g>	ohh... an irish pub, how pleasant
+| [Wednesday 20 April 2011] [14:47:48] <pieterh>	guido_g: an irish pub wandered into your office?
+| [Wednesday 20 April 2011] [14:48:02] <guido_g>	ah no
+| [Wednesday 20 April 2011] [14:48:09] <guido_g>	a) i'm at home
+| [Wednesday 20 April 2011] [14:48:24] <guido_g>	and b) was looking at brussels w/ google-earth
+| [Wednesday 20 April 2011] [14:48:47] <traviscline>	just pushed some further cython optimizations to gevent-zeromq's HEAD please report any issues if they occur
+| [Wednesday 20 April 2011] [15:07:54] <pieterh>	guido_g: :) irish pubs in brussels are crap (my word of the day)
+| [Wednesday 20 April 2011] [15:08:10] <pieterh>	the best pubs are the authentically ethnic ones
+| [Wednesday 20 April 2011] [15:08:36] <guido_g>	ok
+| [Wednesday 20 April 2011] [15:08:49] 	 * guido_g cancels the booking for brussels
+| [Wednesday 20 April 2011] [15:08:55] <pieterh>	hehehe
+| [Wednesday 20 April 2011] [15:09:07] 	 * guido_g is visiting friend in dublin instead
+| [Wednesday 20 April 2011] [15:09:07] <pieterh>	I meant, the Irish Pubs are fantastic!
+| [Wednesday 20 April 2011] [15:09:17] <pieterh>	brussels imports all its beer from dublin
+| [Wednesday 20 April 2011] [15:09:20] <pieterh>	srsly
+| [Wednesday 20 April 2011] [15:10:16] <guido_g>	you should be happy that i'm not the average german
+| [Wednesday 20 April 2011] [15:10:52] <guido_g>	you know how picky they are wrt beer
+| [Wednesday 20 April 2011] [15:18:13] <pieterh>	guido_g: I once had a GF from Bavaria... sigh... 
+| [Wednesday 20 April 2011] [15:18:33] <pieterh>	beautiful but beer crazy
+| [Wednesday 20 April 2011] [15:18:43] <pieterh>	this is very relevant to #zeromq somehow
+| [Wednesday 20 April 2011] [15:19:05] 	 * guido_g shuts up
+| [Wednesday 20 April 2011] [15:19:08] <pieterh>	btw I put up some transport tips on the unconf page
+| [Wednesday 20 April 2011] [15:19:19] <guido_g>	would be great!
+| [Wednesday 20 April 2011] [15:19:28] <pieterh>	see if they make even random sense
+| [Wednesday 20 April 2011] [15:19:37] <guido_g>	will do
+| [Wednesday 20 April 2011] [15:20:05] <pieterh>	guido_g: I was asserting that beer *is* relevant to zeromq
+| [Wednesday 20 April 2011] [15:20:42] <guido_g>	i can confirm that
+| [Wednesday 20 April 2011] [15:21:27] <jond>	pieterh: only if it passes certain purity and strength tests!
+| [Wednesday 20 April 2011] [15:21:46] <pieterh>	jond: purity and strength are the defining characteristics of 0MQ!
+| [Wednesday 20 April 2011] [15:22:00] 	 * pieterh ponders the lack of Orval in the fridge
+| [Wednesday 20 April 2011] [15:22:31] <pieterh>	maybe I can change the 0MQ website logo to "Purity and Strength!" ?
+| [Wednesday 20 April 2011] [15:22:43] <pieterh>	nah, people would think we're a cult of some kind
+| [Wednesday 20 April 2011] [15:22:51] <pieterh>	which is totally not the case
+| [Wednesday 20 April 2011] [15:24:04] <guido_g>	does sacrificial blood count as liquid when flying?
+| [Wednesday 20 April 2011] [15:25:15] <pieterh>	guido_g: only if it's not yours afaik
+| [Wednesday 20 April 2011] [15:25:56] <guido_g>	no problem, can collect some at the airport
+| [Wednesday 20 April 2011] [15:26:42] <pieterh>	they sell it in Brussels, np
+| [Wednesday 20 April 2011] [15:27:10] <guido_g>	what a town
+| [Wednesday 20 April 2011] [15:27:28] <pieterh>	not sure if it's entirely within the Reinheitsgebot
+| [Wednesday 20 April 2011] [15:27:38] <pieterh>	probably got added chocolate or somesuch
+| [Wednesday 20 April 2011] [15:27:57] <guido_g>	hehe
+| [Wednesday 20 April 2011] [15:53:27] <guido_g>	n8 all!
+| [Wednesday 20 April 2011] [15:54:12] <pieterh>	bye guido_g
+| [Wednesday 20 April 2011] [15:54:32] <phpcodemonkey>	hi all, am here looking for help with 0mq / php issue - I'm running 2.1.4 / PHP pecl zmq-beta 0.7.0 on PHP 5.3.6, x86_64 Fedora 14: I'm getting a segfault when running the basic hwclient.php from https://github.com/imatix/zguide/blob/master/examples/PHP/hwclient.php the related hwserver.php runs fine sits there waiting for client connections. I've posted a backtrace at: http://pastebin.com/ruEzjAdT anyone got any ide
+| [Wednesday 20 April 2011] [15:55:50] <pieterh>	phpcodemonkey: there seems to be an error on a uid generating function
+| [Wednesday 20 April 2011] [15:55:57] <pieterh>	you might need to install libuuid or similar
+| [Wednesday 20 April 2011] [15:56:15] <pieterh>	gen_uuid.c: No such file or directory.
+| [Wednesday 20 April 2011] [15:56:54] <phpcodemonkey>	k
+| [Wednesday 20 April 2011] [15:57:49] <phpcodemonkey>	already got: libuuid-devel-2.18-4.8.fc14.x86_64 rpm installed
+| [Wednesday 20 April 2011] [15:58:09] <pieterh>	that should be sufficient IMO
+| [Wednesday 20 April 2011] [15:59:05] <pieterh>	mikko should be able to help, he's the guy who wrote the PHP binding
+| [Wednesday 20 April 2011] [15:59:11] <pieterh>	he'll be around later on this evening normally
+| [Wednesday 20 April 2011] [15:59:14] <phpcodemonkey>	provides uuid.h in /usr/include so all seems to be correct
+| [Wednesday 20 April 2011] [15:59:28] <phpcodemonkey>	pieterh: he's already asked for a backtrace via twitter :)
+| [Wednesday 20 April 2011] [15:59:45] <pieterh>	phpcodemonkey: some of the uuid packages don't provide the right functions
+| [Wednesday 20 April 2011] [16:00:02] <phpcodemonkey>	nice
+| [Wednesday 20 April 2011] [16:01:08] <pieterh>	googling that error gives quite a lot of results
+| [Wednesday 20 April 2011] [16:01:19] <pieterh>	check if there are other uuid rpms
+| [Wednesday 20 April 2011] [16:01:24] <mikko>	here
+| [Wednesday 20 April 2011] [16:01:27] <pieterh>	:)
+| [Wednesday 20 April 2011] [16:01:43] <mikko>	enjoyed a bit of C++ dev on windows
+| [Wednesday 20 April 2011] [16:01:53] <mikko>	and when i say enjoy i mean sticking bamboo sticks under nails
+| [Wednesday 20 April 2011] [16:02:55] <mikko>	phpcodemonkey: have you got imagick / uuid pecl extension loaded?
+| [Wednesday 20 April 2011] [16:04:01] <phpcodemonkey>	imagick 3.0.1
+| [Wednesday 20 April 2011] [16:04:17] <mikko>	can you try loading zmq extension before imagick?
+| [Wednesday 20 April 2011] [16:04:36] <mikko>	this is a known unknown issue with imagemagick / uuid 
+| [Wednesday 20 April 2011] [16:04:40] <phpcodemonkey>	e.g. change zeromq.ini to 0mq.ini?
+| [Wednesday 20 April 2011] [16:04:45] <mikko>	yes
+| [Wednesday 20 April 2011] [16:04:48] <mikko>	that should do the trick
+| [Wednesday 20 April 2011] [16:05:06] <mikko>	http://usrportage.de/archives/922-PHP-segfaulting-with-pecluuid-and-peclimagick.html
+| [Wednesday 20 April 2011] [16:05:10] <mikko>	it looks like this issue
+| [Wednesday 20 April 2011] [16:05:16] <mikko>	i have no idea what is going on in there
+| [Wednesday 20 April 2011] [16:05:27] <mikko>	seems to be some global state inside uuid lib or so
+| [Wednesday 20 April 2011] [16:05:39] <phpcodemonkey>	mikko: you rock, that was it!
+| [Wednesday 20 April 2011] [16:05:51] <phpcodemonkey>	perhaps that out to be in the docs somewhere?
+| [Wednesday 20 April 2011] [16:06:11] <mikko>	sure, if you can add a git pull request ill merge it
+| [Wednesday 20 April 2011] [16:07:38] <phpcodemonkey>	git != svn ;)
+| [Wednesday 20 April 2011] [16:12:33] <mikko>	pieterh: --with-system-pgm works for me (tm)
+| [Wednesday 20 April 2011] [16:13:16] <pieterh>	mikko: did djc provide details of what "doesn't work" means for him?
+| [Wednesday 20 April 2011] [16:13:26] <mikko>	yes
+| [Wednesday 20 April 2011] [16:13:28] <mikko>	fails to link
+| [Wednesday 20 April 2011] [16:13:37] <mikko>	and nm on openpgm.so doesnt show _any_ symbols
+| [Wednesday 20 April 2011] [16:13:41] <pieterh>	ah
+| [Wednesday 20 April 2011] [16:13:41] <mikko>	djc: are you still here?
+| [Wednesday 20 April 2011] [16:13:52] <pieterh>	empty library or somesuch
+| [Wednesday 20 April 2011] [16:14:06] <pieterh>	mikko: nice catch on phpcodemonkey's problem there
+| [Wednesday 20 April 2011] [16:14:53] <mikko>	thanks
+| [Wednesday 20 April 2011] [16:15:05] <phpcodemonkey>	definitely, was frustrating the heck out of me!
+| [Wednesday 20 April 2011] [16:16:18] <phpcodemonkey>	though having read the blog post you referenced, it seems that 0mq and imagick on their own do the damage, don't have pecl/uuid installed
+| [Wednesday 20 April 2011] [16:37:40] <mikko>	phpcodemonkey: it's any extension using uuid functions + imagick
+| [Wednesday 20 April 2011] [16:38:04] <phpcodemonkey>	mikko: figured that, was just confirming :)
+| [Wednesday 20 April 2011] [16:47:31] <mikko>	pieterh: want me to push the spec file change directly?
+| [Wednesday 20 April 2011] [16:47:46] <pieterh>	mikko: sure, that'd be simplest
+| [Wednesday 20 April 2011] [16:49:12] <mikko>	ok, will push soon(ish)
+| [Wednesday 20 April 2011] [16:49:26] <mikko>	i'll make sure that the change makes it midnight's rpm builds
+| [Wednesday 20 April 2011] [16:58:21] <mikko>	pieterh: can you test 2.1?
+| [Wednesday 20 April 2011] [16:58:36] <pieterh>	you mean a normal make check?
+| [Wednesday 20 April 2011] [16:59:15] <pieterh>	ok, running a full build / test process
+| [Wednesday 20 April 2011] [17:00:15] <mikko>	if make dist works it should be fine
+| [Wednesday 20 April 2011] [17:00:25] <mikko>	i'll fix small bug in ztools and run rpm builds now
+| [Wednesday 20 April 2011] [17:02:17] <pieterh>	mikko: it all seems to work, with your changes
+| [Wednesday 20 April 2011] [17:06:21] <mikko>	build running
+| [Wednesday 20 April 2011] [17:06:22] <mikko>	bbr
+| [Wednesday 20 April 2011] [17:06:23] <mikko>	brb
+| [Wednesday 20 April 2011] [17:21:30] <mikko>	pieterh: seems to be ok
+| [Wednesday 20 April 2011] [18:53:49] <coopernurse>	hi zeromq folks.  anyone have a few minutes to chat with a zeromq newb?  I have some basic architectural questions.  I have read the whitepaper.  I'm coming from a traditional broker based background, so I'm trying to unlearn some concepts.
+| [Wednesday 20 April 2011] [19:04:18] <traviscline>	coopernurse: irc etiquette is "to ask, not to ask to ask"  
+| [Wednesday 20 April 2011] [19:04:40] <traviscline>	*cough cough* it's mostly so people don't accidentally get roped into questions they can't answer and look wrong :P
+| [Wednesday 20 April 2011] [19:05:01] <coopernurse>	ok, great
+| [Wednesday 20 April 2011] [19:06:32] <coopernurse>	I just read this: http://www.zeromq.org/whitepapers:brokerless
+| [Wednesday 20 April 2011] [19:07:13] <coopernurse>	and I want to make sure I understand the suggested approach
+| [Wednesday 20 April 2011] [19:07:39] <coopernurse>	is it correct to consider zeromq a toolkit for building your own message routers?
+| [Wednesday 20 April 2011] [19:07:59] <coopernurse>	for example, in the distributed broker diagram
+| [Wednesday 20 April 2011] [19:08:45] <coopernurse>	Q1, Q2, and Q3 are daemons that I would write correct?  that would encapsulate whatever routing topology was relevant
+| [Wednesday 20 April 2011] [19:21:35] <jond>	coopernurse: I think reading the guide will be better, some of the whitepapers are quite old ; http://zguide.zeromq.org/page:all
+| [Wednesday 20 April 2011] [19:22:15] <coopernurse>	jond: I've read through that as well (about a month ago).  Nothing I've read talks about suggested deployment architectures.
+| [Wednesday 20 April 2011] [19:23:33] <coopernurse>	For example, I want to have a conversation with some operations folks about this
+| [Wednesday 20 April 2011] [19:23:48] <coopernurse>	And they think in terms of redundancy and points of failure
+| [Wednesday 20 April 2011] [19:24:07] <jond>	coopernurse: well in that case , it would be better to be on here on CET timezone. Though yes with zeromq you could build custom routers
+| [Wednesday 20 April 2011] [19:25:11] <coopernurse>	The whitepaper was the closest thing I've seen so far to discussing deployment topologies
+| [Wednesday 20 April 2011] [19:25:34] <coopernurse>	I understood the suggestion to potentially use a directory service for components to locate queue endpoints
+| [Wednesday 20 April 2011] [19:26:05] <coopernurse>	But I was unclear whether the Q1, Q2, etc were provided out of the box by zeromq, or were daemons you write yourself
+| [Wednesday 20 April 2011] [19:26:17] <coopernurse>	I'm assuming it's something I would have to write
+| [Wednesday 20 April 2011] [19:26:23] <jond>	there also is some stuff in the later chapters of the guide which may have been added recently: It would be best to hook up with pieterh on here
+| [Wednesday 20 April 2011] [19:26:55] <coopernurse>	ok
+| [Wednesday 20 April 2011] [19:27:16] <coopernurse>	but in general is it correct to view zeromq as a toolkit for creating your own messaging topologies?
+| [Wednesday 20 April 2011] [19:27:37] <coopernurse>	or are there higher level turnkey solutions that I have missed that come with the distribution?
+| [Wednesday 20 April 2011] [19:29:14] <jond>	well I've just looked atb the whitepaper, if you look at the stuff below the distributed broker which clicks to a chat example which is now marked as deprecated, so the best place is gonna be the guide and then irc or the mailing list
+| [Wednesday 20 April 2011] [19:29:37] <headzone>	coopernurse: funnily enough, we have just been debating that question
+| [Wednesday 20 April 2011] [19:29:47] <coopernurse>	jond: ok thanks
+| [Wednesday 20 April 2011] [19:30:23] <coopernurse>	headzone: oh yeah?
+| [Wednesday 20 April 2011] [19:31:16] <headzone>	coopernurse: the current thinking appears to be that the goal of 0mq is to provide standard/pre-packaged known-good messaging patterns (topologies), rather than be a toolkit that users use to build their own custom ones
+| [Wednesday 20 April 2011] [19:32:15] <coopernurse>	ah, interesting.  and if that's the case, would those pre-packaged patterns take the form of daemons you can run out of the box?
+| [Wednesday 20 April 2011] [19:32:57] <headzone>	no, they take the form of the patterns supported by the sockets, e.g. req/rep, pub/sub
+| [Wednesday 20 April 2011] [19:33:22] <coopernurse>	ok, so this is where I really just don't get it
+| [Wednesday 20 April 2011] [19:33:27] <coopernurse>	perhaps I need to rtfm more carefully
+| [Wednesday 20 April 2011] [19:33:48] <headzone>	with maybe some "devices" on top at a higher layer (the things currently called queue/forwarder/streamer)
+| [Wednesday 20 April 2011] [19:33:55] <jond>	headzone: I think you can use it for both, but in some areas that is quite fluid. There was a concept of devices -> queue, forwarder, streamer but they are being moved out of the core
+| [Wednesday 20 April 2011] [19:34:42] <coopernurse>	ok, so "devices" is the term I probably need to be examining in the guide more closely
+| [Wednesday 20 April 2011] [19:34:59] <headzone>	coopernurse: the reason this is confusing at the moment is that the current state of 0mq is sort of stuck in the middle of "standard patterns" and "toolkit for building custom application-layer routing topologies", for historical reasons
+| [Wednesday 20 April 2011] [19:35:05] <coopernurse>	presumably the Q1, Q2, etc in the (perhaps deprecated?) whitepaper are potentially devices zeromq provides
+| [Wednesday 20 April 2011] [19:35:28] <coopernurse>	ok
+| [Wednesday 20 April 2011] [19:36:08] <jond>	coopernurse: the guide doesnt mention them much and it also uses this libzapi which sits atop 0mq; pieterh is the one behind all this
+| [Wednesday 20 April 2011] [19:36:44] <headzone>	coopernurse: i found this out by assuming the goal was to become a generic application-layer routing topology construction kit and suggesting a protocol stack that would accomplish this in a sane manner
+| [Wednesday 20 April 2011] [19:38:03] <coopernurse>	As someone who is coming from ActiveMQ/RabbitMQ/etc it's difficult to find analogs in zeromq
+| [Wednesday 20 April 2011] [19:38:08] <headzone>	coopernurse: but it is far from clear that that is a desirable goal to aim for, because it amounts to recapitulating what the IP network and transport layers already provide
+| [Wednesday 20 April 2011] [19:38:47] <coopernurse>	headzone: yes, I'm just trying to wrap my head around how an application developer could use zeromq to transition a monolithic web app into a set of more loosely coupled components
+| [Wednesday 20 April 2011] [19:39:21] <coopernurse>	I agree with the "broker is a single point of failure" stuff in the zeromq literature.  That got me interested.
+| [Wednesday 20 April 2011] [19:39:37] <coopernurse>	But I'm not sure how I avoid writing lots of little devices that are each single points of failure
+| [Wednesday 20 April 2011] [19:40:11] <headzone>	right, and basically you do that by combining the standard messaging patterns, the "device" functions (which are really just commonly used pieces of application logic), and application logic to handle anything else that's required
+| [Wednesday 20 April 2011] [19:41:20] <coopernurse>	headzone: ok, thanks.  I appreciate your time.
+| [Wednesday 20 April 2011] [19:41:25] <headzone>	regarding redundancy, i happen to think that solving that problem in a general way inexorably leads you to reinventing routing
+| [Wednesday 20 April 2011] [19:42:08] <coopernurse>	is there a recommended way to do it in zeromq?
+| [Wednesday 20 April 2011] [19:42:17] <coopernurse>	(redundancy that is)
+| [Wednesday 20 April 2011] [19:42:52] <headzone>	well, there are lots of examples in the guide
+| [Wednesday 20 April 2011] [19:43:14] <coopernurse>	ok
+| [Wednesday 20 April 2011] [19:43:41] <headzone>	a fair portion of it is about the hoops you have to jump through to get reliability
+| [Wednesday 20 April 2011] [19:44:05] <coopernurse>	all of it seems very point to point though
+| [Wednesday 20 April 2011] [19:44:25] <headzone>	it's also all very ad-hoc
+| [Wednesday 20 April 2011] [19:44:28] <coopernurse>	all the examples I've seen seem to assume the components know who to talk to
+| [Wednesday 20 April 2011] [19:45:19] <coopernurse>	I'm looking at the "Designing Reliability" section again now
+| [Wednesday 20 April 2011] [19:48:28] <coopernurse>	ok, well thanks headzone and jond.  I'll keep reading.  I'm off.
