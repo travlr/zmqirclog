@@ -4862,3 +4862,592 @@
 | [Wednesday 20 April 2011] [19:44:28] <coopernurse>	all the examples I've seen seem to assume the components know who to talk to
 | [Wednesday 20 April 2011] [19:45:19] <coopernurse>	I'm looking at the "Designing Reliability" section again now
 | [Wednesday 20 April 2011] [19:48:28] <coopernurse>	ok, well thanks headzone and jond.  I'll keep reading.  I'm off.
+| [Thursday 21 April 2011] [00:30:53] <MK_FG>	Hi. I'm trying to use dealer-to-dealer sockets to implement async event processing (events are emitted from one socket group, and replies are sent only when it's necessary to take action on it)
+| [Thursday 21 April 2011] [00:31:29] <MK_FG>	But I've hit a problem: if processing is slow, emitters start eating all the ram available
+| [Thursday 21 April 2011] [00:32:03] <MK_FG>	And setting HWM to, say 5, everywhere doesn't seem to have any effect
+| [Thursday 21 April 2011] [00:32:33] <MK_FG>	Yet docs seem to indicate that sending dealer sockets should block after not being able to dispose of 5 msg...
+| [Thursday 21 April 2011] [00:33:01] <MK_FG>	Where am I doing it wrong? ;)
+| [Thursday 21 April 2011] [01:01:59] <MK_FG>	Hm... my mistake it this case was setting hwm after connecting socket (doesn't seem to be documented), although setting it to 5 with a single emitter and single collector (on both sides) still allows the former to send 1k msgs when the latter blocks on the first one
+| [Thursday 21 April 2011] [01:10:36] <guido_g>	http://api.zeromq.org/2-1:zmq-setsockopt  <- see top of the page
+| [Thursday 21 April 2011] [01:11:30] <MK_FG>	Indeed, I seem to be ignoring stuff in fancy frames, thanks
+| [Thursday 21 April 2011] [01:12:14] <guido_g>	ok
+| [Thursday 21 April 2011] [01:12:57] <guido_g>	for the other problem just post a minimal example showing this behaviour to a pastebin
+| [Thursday 21 April 2011] [01:13:07] <MK_FG>	Sure, a moment...
+| [Thursday 21 April 2011] [01:13:33] <MK_FG>	http://paste.pocoo.org/raw/375603/ <-- emitter, http://paste.pocoo.org/raw/375604/ <-- collector
+| [Thursday 21 April 2011] [01:14:00] <MK_FG>	libzmq 2.1.0, pyzmq 2.1.4
+| [Thursday 21 April 2011] [01:14:05] <guido_g>	ahhh... a langauge i know... :)
+| [Thursday 21 April 2011] [01:14:18] <MK_FG>	Everyone knows python ;_)
+| [Thursday 21 April 2011] [01:14:43] <guido_g>	luckily this is not the case
+| [Thursday 21 April 2011] [01:15:26] <MK_FG>	Well, I've yet to see a person IRL who can't read it, at least ;)
+| [Thursday 21 April 2011] [01:16:47] <guido_g>	so true
+| [Thursday 21 April 2011] [01:16:50] <MK_FG>	Starting these two, emitter gets to "Sent: 1052" here before seeing the first reply
+| [Thursday 21 April 2011] [01:17:26] <MK_FG>	I'd have expected 10 or 5, but 1k...
+| [Thursday 21 April 2011] [01:18:59] <guido_g>	i think you got the socket types wrong
+| [Thursday 21 April 2011] [01:19:07] <guido_g>	did you read the guide?
+| [Thursday 21 April 2011] [01:19:25] <MK_FG>	Yes, I did
+| [Thursday 21 April 2011] [01:20:05] <guido_g>	http://zguide.zeromq.org/page:all#Chapter-Three-Advanced-Request-Reply-Patterns <- re-read carefully
+| [Thursday 21 April 2011] [01:23:36] <guido_g>	dealer sockets (xreq) are not ment to talks to each other
+| [Thursday 21 April 2011] [01:24:01] <MK_FG>	What about http://zguide.zeromq.org/page:all#Asynchronous-Client-Server then?
+| [Thursday 21 April 2011] [01:24:06] <guido_g>	and from the reference: "When a ZMQ_DEALER socket is connected to a ZMQ_REP socket each message sent must consist of an empty message part, the delimiter, followed by one or more body parts."
+| [Thursday 21 April 2011] [01:24:32] <MK_FG>	"is connected to a ZMQ_REP socket" is not true in my case!
+| [Thursday 21 April 2011] [01:25:28] <guido_g>	and?
+| [Thursday 21 April 2011] [01:25:54] <guido_g>	it's about the message format required
+| [Thursday 21 April 2011] [01:26:57] <MK_FG>	Hmm...
+| [Thursday 21 April 2011] [01:27:41] <guido_g>	you got the envelope wrong
+| [Thursday 21 April 2011] [01:27:57] <guido_g>	and btw, "fanout" is the term to use for a 1:1 link
+| [Thursday 21 April 2011] [01:28:04] <guido_g>	*is not the
+| [Thursday 21 April 2011] [01:28:10] <MK_FG>	Thanks, guess I'll re-read the envelope sections there
+| [Thursday 21 April 2011] [01:28:35] <MK_FG>	In my case it should be "few emitters" and "lots of collectors"
+| [Thursday 21 April 2011] [01:28:37] <guido_g>	or describe the use-case and hope for some help :)
+| [Thursday 21 April 2011] [01:28:51] <guido_g>	it's called pub-sub
+| [Thursday 21 April 2011] [01:29:14] <MK_FG>	"[10:30:35]<MK_FG> Hi. I'm trying to use dealer-to-dealer sockets to implement async event processing (events are emitted from one socket group, and replies are sent only when it's necessary to take action on it)"
+| [Thursday 21 April 2011] [01:29:33] <guido_g>	this is not a use-case
+| [Thursday 21 April 2011] [01:29:35] <MK_FG>	Not really, I don't need to send the same message to _all_ collectors, only to a single one
+| [Thursday 21 April 2011] [01:29:51] <guido_g>	then you build a router
+| [Thursday 21 April 2011] [01:30:13] <guido_g>	your naming really needs an upgrade
+| [Thursday 21 April 2011] [01:30:50] <MK_FG>	Guess so
+| [Thursday 21 April 2011] [01:32:22] <guido_g>	http://zguide.zeromq.org/page:all#Least-Recently-Used-Routing-LRU-Pattern  <- might be the thing you want
+| [Thursday 21 April 2011] [01:33:20] <MK_FG>	REQ is flip-flop afair, so if it'll get a request, it must send a reply
+| [Thursday 21 April 2011] [01:33:28] <MK_FG>	And I don't need a replies 99% of time
+| [Thursday 21 April 2011] [01:34:06] <MK_FG>	I thought about splitting replies into a separate channel, but dealer-to-dealer seemed to handle the case nicely...
+| [Thursday 21 April 2011] [01:34:35] <MK_FG>	Guess I'll test it a bit more and check envelopes, then re-evaluate that idea
+| [Thursday 21 April 2011] [01:36:50] <guido_g>	why not push socket to distribute the requests?
+| [Thursday 21 April 2011] [01:37:23] <guido_g>	the back channel could also be built w/ push, this time on the worker side
+| [Thursday 21 April 2011] [01:42:41] <MK_FG>	Yes, guess that's how I'll rebuild it, but I still can't quite see why dealer-to-dealer shouldn't work
+| [Thursday 21 April 2011] [03:18:28] <saurabh_>	hi
+| [Thursday 21 April 2011] [03:19:43] <saurabh_>	had a question regarding zeromq durable sockets ...
+| [Thursday 21 April 2011] [03:20:21] <saurabh_>	did the following:
+| [Thursday 21 April 2011] [03:20:41] <saurabh_>	1) created connection between xrep(bind) and xreq(connect) sockets
+| [Thursday 21 April 2011] [03:21:25] <saurabh_>	2) sent messages from xrep to xreq sockets ( this is working properly)
+| [Thursday 21 April 2011] [03:21:47] <saurabh_>	3) now I kill xrep socket ...
+| [Thursday 21 April 2011] [03:22:17] <saurabh_>	heres the problem ...
+| [Thursday 21 April 2011] [03:23:16] <saurabh_>	since I don't explicitly set identity on xrep. I am expecting xreq to start dropping messages to xrep. but xreq keeps adding those messages to its queue and caching them.
+| [Thursday 21 April 2011] [03:28:44] <saurabh_>	what I want is that all messages sent to xreq socket should either be dropped or sent to xrep if connected.
+| [Thursday 21 April 2011] [03:29:00] <saurabh_>	this queuing behaviour causes problems on 2 levels
+| [Thursday 21 April 2011] [03:29:21] <saurabh_>	1) consumes memory xreq side
+| [Thursday 21 April 2011] [03:30:02] <saurabh_>	2) blasts messages on xrep side when it comes back up
+| [Thursday 21 April 2011] [03:32:31] <MK_FG>	saurabh_, send with xreq should block upon reaching hwm, in my (quite limited yet) understanding
+| [Thursday 21 April 2011] [03:32:39] <sustrik>	saurabh_: how are you killing the xrep side?
+| [Thursday 21 April 2011] [03:33:04] <sustrik>	Ctrl+C? Power-downing the machine?
+| [Thursday 21 April 2011] [03:33:04] <saurabh_>	kill -9
+| [Thursday 21 April 2011] [03:33:08] <saurabh_>	yep
+| [Thursday 21 April 2011] [03:33:30] <sustrik>	hm, not sure whether TCP reports the connection disruption then
+| [Thursday 21 April 2011] [03:33:38] <sustrik>	have you tried with Ctrl+C?
+| [Thursday 21 April 2011] [03:34:19] <saurabh_>	i'll give it a try
+| [Thursday 21 April 2011] [03:36:05] <headzone>	tcp won't know until the far end comes back up and sends an RST in response to the next segment sent
+| [Thursday 21 April 2011] [03:38:26] <saurabh_>	tried something else ... received 10 msgs on xrep end & then explicitly called socket.close followed by context.term & ~2sec of wait before normal program termination
+| [Thursday 21 April 2011] [03:38:47] <saurabh_>	still xreq cached those messages
+| [Thursday 21 April 2011] [03:40:01] <sustrik>	saurabh_: ok, it looks like a bug then
+| [Thursday 21 April 2011] [03:40:02] <saurabh_>	seems ok 
+| [Thursday 21 April 2011] [03:40:15] <saurabh_>	1-30 i received that way
+| [Thursday 21 April 2011] [03:40:16] <sustrik>	can you report it in the bug tracker?
+| [Thursday 21 April 2011] [03:40:25] <saurabh_>	& then i received 90-
+| [Thursday 21 April 2011] [03:40:33] <saurabh_>	so its fine ...
+| [Thursday 21 April 2011] [03:40:47] 	 * sustrik is confused
+| [Thursday 21 April 2011] [03:40:59] <saurabh_>	ok ... explaing
+| [Thursday 21 April 2011] [03:41:12] <saurabh_>	req end was doing non stop sending after some sleep
+| [Thursday 21 April 2011] [03:41:24] <saurabh_>	jsut nos (1, 2, etc.)
+| [Thursday 21 April 2011] [03:41:24] <guido_g>	may i dare to ask for a minimal code example?
+| [Thursday 21 April 2011] [03:42:24] <saurabh_>	sure ... 
+| [Thursday 21 April 2011] [03:42:35] <sustrik>	guido_g: afaiu what saurabh_ is saying that it actually works as expected
+| [Thursday 21 April 2011] [03:42:37] <guido_g>	into a paste-bin, please
+| [Thursday 21 April 2011] [03:42:39] <sustrik>	right?
+| [Thursday 21 April 2011] [03:42:52] <guido_g>	sustrik: i'm not sure what he is saying
+| [Thursday 21 April 2011] [03:43:07] <saurabh_>	will paste the code link ... 2 mins
+| [Thursday 21 April 2011] [03:43:18] <sustrik>	thx
+| [Thursday 21 April 2011] [03:44:33] <saurabh_>	http://pastebin.com/1xXYn4x3
+| [Thursday 21 April 2011] [03:45:04] <saurabh_>	its java code ... it has some other oops stuff to create messages & all
+| [Thursday 21 April 2011] [03:45:27] <saurabh_>	to explain xreq was sending messages numbered 1, 2, 3, etc.
+| [Thursday 21 April 2011] [03:45:42] <saurabh_>	xrep used to read 10 messages & then shutdown
+| [Thursday 21 April 2011] [03:46:23] <saurabh_>	but still xrep read 1-10, <shutdown>, 11,20, <shutdown>, 21-30
+| [Thursday 21 April 2011] [03:46:36] <saurabh_>	after this xrep read msg no 96
+| [Thursday 21 April 2011] [03:48:20] <saurabh_>	so i think some messages added to queue were persisted even though xrep shutdown & restart cycles
+| [Thursday 21 April 2011] [03:48:22] <saurabh_>	ok?
+| [Thursday 21 April 2011] [03:49:32] <sustrik>	they may have been already passed to the peer when the shutdown happened
+| [Thursday 21 April 2011] [03:50:22] <saurabh_>	sry .. didn't get u
+| [Thursday 21 April 2011] [03:51:18] <sustrik>	forget it, the last line i wrote is nonsense
+| [Thursday 21 April 2011] [03:52:45] <sustrik>	ok, i see
+| [Thursday 21 April 2011] [03:53:09] <sustrik>	MK_FG was right
+| [Thursday 21 April 2011] [03:53:23] <sustrik>	xreq socket blocks when there's noone to send the message to
+| [Thursday 21 April 2011] [03:53:30] <sustrik>	so when xrep is killed
+| [Thursday 21 April 2011] [03:53:38] <sustrik>	the sending application just waits doing nothing
+| [Thursday 21 April 2011] [03:53:50] <saurabh_>	i hadn't set hwm
+| [Thursday 21 April 2011] [03:53:58] <saurabh_>	that happens only in case hwm is set
+| [Thursday 21 April 2011] [03:54:04] <sustrik>	hwm is per-peer
+| [Thursday 21 April 2011] [03:54:16] <sustrik>	if there's no peer, there's no queue to store messages in
+| [Thursday 21 April 2011] [03:54:23] <sustrik>	so it simply blocks
+| [Thursday 21 April 2011] [03:54:52] <sustrik>	this can be implemented better, but that's the way it is for now
+| [Thursday 21 April 2011] [03:55:06] <saurabh_>	the xreq sending code was running throught ... it didn't block
+| [Thursday 21 April 2011] [03:55:22] <saurabh_>	u see i sends one msg & then increments
+| [Thursday 21 April 2011] [03:55:26] <saurabh_>	*it
+| [Thursday 21 April 2011] [03:55:40] <sustrik>	and no message is dropped in the same test?
+| [Thursday 21 April 2011] [03:55:41] <saurabh_>	so the sending code reached 90s in terms of msg sent
+| [Thursday 21 April 2011] [03:56:04] <saurabh_>	messages were dropped - the ones in between 30 & 96
+| [Thursday 21 April 2011] [03:56:11] <saurabh_>	saurabh_> but still xrep read 1-10, <shutdown>, 11,20, <shutdown>, 21-30
+| [Thursday 21 April 2011] [03:56:17] <saurabh_>	<saurabh_> after this xrep read msg no 96
+| [Thursday 21 April 2011] [03:56:52] <sustrik>	sound strange
+| [Thursday 21 April 2011] [03:57:02] <sustrik>	please, create an issue in the bug tracker
+| [Thursday 21 April 2011] [03:57:09] <sustrik>	i'll have a look later on
+| [Thursday 21 April 2011] [03:57:14] <saurabh_>	ok
+| [Thursday 21 April 2011] [04:04:14] <mikko>	pieterh: 2-2 builds get stuck occasionally
+| [Thursday 21 April 2011] [04:04:25] <mikko>	/home/jenkins/build/jobs/libzmq2-2_clang-debian/workspace/tests/.libs/lt-test_pair_inproc
+| [Thursday 21 April 2011] [04:04:34] <mikko>	Process 4830 attached - interrupt to quit
+| [Thursday 21 April 2011] [04:04:35] <mikko>	recv(4, 
+| [Thursday 21 April 2011] [04:04:40] <mikko>	blocking on recv
+| [Thursday 21 April 2011] [04:14:16] <djc>	mikko: I'm back now, if you have time to investigate the --with-system-pgm issues
+| [Thursday 21 April 2011] [04:15:26] <cwb>	I'm trying a minimal test case using pyzmq and 0MQ 2.1.5 on Ubuntu 10.04 and am getting a "Bad address" on the socket.recv() command. I've opened my firewalls up fully so I don't think that is the problem. What does might "Bad address" mean?
+| [Thursday 21 April 2011] [04:18:16] <cwb>	I'm using pyzmq 2.1.4
+| [Thursday 21 April 2011] [04:19:56] <th>	cwb: that was a mistake in the 2.1.5 release - thats why it's no longer available for download
+| [Thursday 21 April 2011] [04:20:58] <cwb>	Aha, thanks! Am I better of using 2.1.4 or trunk?
+| [Thursday 21 April 2011] [04:21:28] <guido_g>	2.1.4
+| [Thursday 21 April 2011] [04:21:38] <th>	there is a fix in git already, but asking that question yesterday i got the answer that there is no recommended git revision in 21 branch > 2.1.4 meaning that i should use 2.1.4
+| [Thursday 21 April 2011] [04:22:46] <cwb>	Super, thanks for your help.
+| [Thursday 21 April 2011] [04:35:56] <benoitc>	hum not sure to understand,, reading the code of mongrel2 it seems to bind to a PUSH socket where i thought we could just connect
+| [Thursday 21 April 2011] [04:36:13] <benoitc>	in which case can you connect to PUSH or bind ?
+| [Thursday 21 April 2011] [04:37:27] <MK_FG>	benoitc, Why it can't be both? ;)
+| [Thursday 21 April 2011] [04:38:28] <benoitc>	well pyzmq tell me "unknown error Operation not supported by device
+| [Thursday 21 April 2011] [04:38:29] <benoitc>	"
+| [Thursday 21 April 2011] [04:38:42] <benoitc>	and i don't understand the bind here then
+| [Thursday 21 April 2011] [04:39:07] <benoitc>	how could I get connections on a PUSH ? if i cant recv
+| [Thursday 21 April 2011] [04:39:43] <MK_FG>	Same error for me
+| [Thursday 21 April 2011] [04:40:20] <MK_FG>	But I don't really understand the limitation - .connect() and socket operations seem to be orthogonal
+| [Thursday 21 April 2011] [04:41:00] <guido_g>	benoitc: huh? push is send only
+| [Thursday 21 April 2011] [04:41:06] <guido_g>	what do you do?
+| [Thursday 21 April 2011] [04:41:15] <benoitc>	if i read the doc it tells "zmq_bind - accept connections on a socket" (like a socket) , since you can't recv on PUSH it sound logical you can't recv
+| [Thursday 21 April 2011] [04:41:18] <guido_g>	minimal example -> pastebin
+| [Thursday 21 April 2011] [04:41:24] <benoitc>	guido_g: that what I say
+| [Thursday 21 April 2011] [04:41:25] <djc>	mikko: I used objdump -T instead of nm, that gives symbols
+| [Thursday 21 April 2011] [04:41:34] <djc>	(our way of building openpgm strips libraries)
+| [Thursday 21 April 2011] [04:41:35] <benoitc>	i don't understand how you could bind them
+| [Thursday 21 April 2011] [04:41:38] <benoitc>	then
+| [Thursday 21 April 2011] [04:41:50] <djc>	but pgm_send isn't in there (a bunch of other pgm_* functions are)
+| [Thursday 21 April 2011] [04:42:10] <MK_FG>	benoitc, You can bind XREQ socket and then .send() on it
+| [Thursday 21 April 2011] [04:42:29] <benoitc>	guido_g: in mongrel2 code I have void *handler_socket = mqsocket(ZMQ_PUSH);
+| [Thursday 21 April 2011] [04:42:36] <benoitc>	rc = zmq_bind(handler_socket, send_spec);
+| [Thursday 21 April 2011] [04:42:52] <benoitc>	not sure how you could bind on a PUSH here
+| [Thursday 21 April 2011] [04:42:56] <guido_g>	and?
+| [Thursday 21 April 2011] [04:43:04] <benoitc>	and I can't do it with pyzmq.
+| [Thursday 21 April 2011] [04:43:28] <benoitc>	binding on somthing you can't recv is illogical for me.
+| [Thursday 21 April 2011] [04:43:34] <MK_FG>	benoitc, Not that I advise to use XREQ, just want to point out that .connect doesn't seem to conflict with high-level queueing operations
+| [Thursday 21 April 2011] [04:43:36] <benoitc>	so pyzmq looks right
+| [Thursday 21 April 2011] [04:44:32] <benoitc>	MK_FG: II agree, you can obviously send on a binded socket, just trying to understand if normally you can bind on a PUSH and if in this case there isn't a bug in pyzmq
+| [Thursday 21 April 2011] [04:45:08] <guido_g>	benoitc: https://gist.github.com/933998 works here
+| [Thursday 21 April 2011] [04:45:38] <guido_g>	tcp        0      0 0.0.0.0:9998            0.0.0.0:*               LISTEN      15755/python
+| [Thursday 21 April 2011] [04:45:46] <guido_g>	netstat says
+| [Thursday 21 April 2011] [04:47:03] <MK_FG>	Erm... indeed it works, as I'd expect, and my "same error for me" before was yet another copy-pasting bug of mine, sorry
+| [Thursday 21 April 2011] [04:47:15] <guido_g>	tz tz tz
+| [Thursday 21 April 2011] [04:47:40] <MK_FG>	Just pasted push into code that does .recv() and seen the same error
+| [Thursday 21 April 2011] [04:47:52] <guido_g>	omg
+| [Thursday 21 April 2011] [04:48:08] <MK_FG>	...w/o looking at the line where the error actually happens
+| [Thursday 21 April 2011] [04:52:00] <benoitc>	hum definitly have something weird in my code then
+| [Thursday 21 April 2011] [04:52:53] <benoitc>	and now wondering how i can manage things simply on a multiprocess tcp->zeromq thing
+| [Thursday 21 April 2011] [04:53:19] <guido_g>	whatever that might be
+| [Thursday 21 April 2011] [04:53:53] <benoitc>	https://github.com/benoitc/tproxy/commit/b7a36aff16de593a16d27a5dbff444f9d9e8558c .
+| [Thursday 21 April 2011] [04:54:16] <benoitc>	but problem is that i can have only one handler behind. 
+| [Thursday 21 April 2011] [04:54:30] <benoitc>	so i should change the way I bind/connect to sockets
+| [Thursday 21 April 2011] [04:55:07] <benoitc>	since obviously i can only have one bind, 
+| [Thursday 21 April 2011] [04:57:49] <guido_g>	i _guess_ that you want to take on arbitrary tcp connections and forward the data via mq push socket, right?
+| [Thursday 21 April 2011] [04:58:47] <benoitc>	yup 
+| [Thursday 21 April 2011] [04:59:12] <guido_g>	ok
+| [Thursday 21 April 2011] [04:59:51] <guido_g>	next assumption would be that you have "worker" that fetch data from the mq push socket
+| [Thursday 21 April 2011] [05:00:13] <guido_g>	s/"worker"/a bunch of "workers"/
+| [Thursday 21 April 2011] [05:00:17] <benoitc>	well i have one tcp socket shared between workers on different cpus
+| [Thursday 21 April 2011] [05:00:38] <guido_g>	what you have is not necessarily what you need
+| [Thursday 21 April 2011] [05:00:41] <benoitc>	the tcp request is handle by one of the worker depending how the system loadbalanced it
+| [Thursday 21 April 2011] [05:01:06] <benoitc>	gand yes second operation is that
+| [Thursday 21 April 2011] [05:01:15] <benoitc>	guido_g: any idea ?
+| [Thursday 21 April 2011] [05:02:12] <guido_g>	you read the data from the tcp sockets and send them to the push socket
+| [Thursday 21 April 2011] [05:02:49] <guido_g>	on the worker side you fetch da data via a pull socket
+| [Thursday 21 April 2011] [05:02:52] <benoitc>	mmm no i read the data from tcp soccket and send them via the push socket
+| [Thursday 21 April 2011] [05:03:01] <guido_g>	what?
+| [Thursday 21 April 2011] [05:03:14] <benoitc>	and have a pull handler
+| [Thursday 21 April 2011] [05:03:19] <benoitc>	that what I have now
+| [Thursday 21 April 2011] [05:03:35] <benoitc>	the push socket is sending them to the pull socket
+| [Thursday 21 April 2011] [05:03:41] <guido_g>	of couse
+| [Thursday 21 April 2011] [05:03:43] <guido_g>	*course
+| [Thursday 21 April 2011] [05:03:56] <benoitc>	tehn i resend them to tcp using a PUB/SUB
+| [Thursday 21 April 2011] [05:04:21] <guido_g>	what?
+| [Thursday 21 April 2011] [05:04:40] <guido_g>	lets make clear, tcp means raw tcp sockets, os level
+| [Thursday 21 April 2011] [05:04:46] <guido_g>	pub/sub is mq
+| [Thursday 21 April 2011] [05:04:49] <benoitc>	yes
+| [Thursday 21 April 2011] [05:05:12] <guido_g>	then "<benoitc> tehn i resend them to tcp using a PUB/SUB" doesn't make sense
+| [Thursday 21 April 2011] [05:05:24] <benoitc>	the pull worker, publish the message, and the tcp worker suscribing to this message and resend it
+| [Thursday 21 April 2011] [05:05:31] <benoitc>	to the tcp
+| [Thursday 21 April 2011] [05:05:43] <guido_g>	ahhh... much better
+| [Thursday 21 April 2011] [05:06:39] <guido_g>	you're using mongrel2, right?
+| [Thursday 21 April 2011] [05:07:24] <guido_g>	so this push and pub/sub mixture is inevitable
+| [Thursday 21 April 2011] [05:08:18] <benoitc>	i have http://friendpaste.com/6DuX34KU54f0rs89epqOZY
+| [Thursday 21 April 2011] [05:08:34] <benoitc>	mongrel2 do differently and isn't multicore so that why it works
+| [Thursday 21 April 2011] [05:08:57] <benoitc>	mongrel2 bind to a PUSH socket where I connect
+| [Thursday 21 April 2011] [05:09:05] <benoitc>	and connect to a PULL where i bind
+| [Thursday 21 April 2011] [05:09:15] <benoitc>	the same is true for PUB/SUB
+| [Thursday 21 April 2011] [05:09:41] <benoitc>	the advantage for mongrel2 is that it can balance a worker to multiple handler, where I can have only one
+| [Thursday 21 April 2011] [05:10:01] <benoitc>	which is better imo
+| [Thursday 21 April 2011] [05:10:02] 	 * guido_g is confused
+| [Thursday 21 April 2011] [05:10:17] <benoitc>	balance a tcp request sorry
+| [Thursday 21 April 2011] [05:10:36] <guido_g>	i simply don't get what you want
+| [Thursday 21 April 2011] [05:10:58] <benoitc>	i can only have one zmq handler accepting forwarded tcp requests currently
+| [Thursday 21 April 2011] [05:11:43] <benoitc>	and I would like to have more than one to remove and add them dynamically
+| [Thursday 21 April 2011] [05:12:11] <guido_g>	you can add as much handlers as you want to a push socket
+| [Thursday 21 April 2011] [05:12:18] <benoitc>	the problem is that I can't do it right now in my schem
+| [Thursday 21 April 2011] [05:12:23] <benoitc>	only if i bind it
+| [Thursday 21 April 2011] [05:12:42] <guido_g>	??
+| [Thursday 21 April 2011] [05:15:34] <benoitc>	you need to bind the PUSH and connect to a PULL load balance PUSH to PULL
+| [Thursday 21 April 2011] [05:16:03] <guido_g>	you bind the push socket
+| [Thursday 21 April 2011] [05:16:24] <guido_g>	you connect the pulls from the workers to the bound address of the push
+| [Thursday 21 April 2011] [05:16:44] <guido_g>	where is the problem?
+| [Thursday 21 April 2011] [05:17:03] <benoitc>	yes so that something I can't in my design. since i'm multicore and read the route depending on the data (the conf is not loaded at first)
+| [Thursday 21 April 2011] [05:17:12] <mikko>	djc: i installed upstream openpgm
+| [Thursday 21 April 2011] [05:17:20] <mikko>	djc: and --with-system-pgm seems to link ok
+| [Thursday 21 April 2011] [05:17:31] <djc>	mikko: what version did you get?
+| [Thursday 21 April 2011] [05:17:34] <guido_g>	benoitc: what has multicore to do with that?
+| [Thursday 21 April 2011] [05:18:01] <guido_g>	benoitc: and if you don't have the config, then you should better make sure the config there when you need it
+| [Thursday 21 April 2011] [05:18:05] <mikko>	hmm, spotify just rickrolled me
+| [Thursday 21 April 2011] [05:18:10] <benoitc>	cause i'm know that I have to use a PUSH socket only in the worker.
+| [Thursday 21 April 2011] [05:18:12] <mikko>	random music playing
+| [Thursday 21 April 2011] [05:18:17] <mikko>	djc: 5.1.115
+| [Thursday 21 April 2011] [05:18:19] <djc>	did you see my messages before, about objdump?
+| [Thursday 21 April 2011] [05:18:23] <benoitc>	and I can't bind to a PUSH socket in each workers.
+| [Thursday 21 April 2011] [05:18:34] <mikko>	djc: yep
+| [Thursday 21 April 2011] [05:18:34] <guido_g>	benoitc: then don't do it
+| [Thursday 21 April 2011] [05:18:41] <mikko>	djc: not sure why the symbol isn't there
+| [Thursday 21 April 2011] [05:18:48] <mikko>	djc: does your build break it?
+| [Thursday 21 April 2011] [05:19:02] <mikko>	as in visibility flags foobarred or something
+| [Thursday 21 April 2011] [05:19:09] <djc>	mikko: so does your build of upstream openpgm show symbols for nm?
+| [Thursday 21 April 2011] [05:19:28] <djc>	and if you do objdump -T, does it show pgm_send?
+| [Thursday 21 April 2011] [05:19:46] <mikko>	djc: give me a second, just ran to swap starting a virtual machine
+| [Thursday 21 April 2011] [05:19:49] <benoitc>	jaja i like such answer. anyway thanks will try to revisit the way i can handle it. or just trash this support, thanks for the help
+| [Thursday 21 April 2011] [05:20:28] <guido_g>	benoitc: hey, don't blame me if you're not capable of explaining what you want
+| [Thursday 21 April 2011] [05:20:38] <mikko>	djc: # nm /usr/local/lib/libpgm.so | grep pgm_send
+| [Thursday 21 April 2011] [05:20:38] <mikko>	000000000002d555 T pgm_send
+| [Thursday 21 April 2011] [05:21:54] <djc>	right, and now with objdump -T?
+| [Thursday 21 April 2011] [05:22:16] <mikko>	000000000002d555 g    DF .text  0000000000000241  Base        pgm_send
+| [Thursday 21 April 2011] [05:22:29] <djc>	ugh
+| [Thursday 21 April 2011] [05:22:33] <djc>	that's pretty weird
+| [Thursday 21 April 2011] [05:22:53] <mikko>	try taking the upstream tarball and building to --prefix
+| [Thursday 21 April 2011] [05:23:07] <mikko>	is the gentoo .so built with scons or autotools?
+| [Thursday 21 April 2011] [05:23:27] <mikko>	can you build unstripped version?
+| [Thursday 21 April 2011] [05:23:29] <djc>	autotools, I think
+| [Thursday 21 April 2011] [05:23:46] <benoitc>	guido_g: i wouln't say that also didn't put any blame in my sentence.
+| [Thursday 21 April 2011] [05:24:38] <djc>	mikko: building without stripping now, let's see what happens
+| [Thursday 21 April 2011] [05:24:53] <guido_g>	benoitc: "<benoitc> jaja i like such answer..." <- reads like someone is unhappy
+| [Thursday 21 April 2011] [05:25:31] <guido_g>	benoitc: try to describe what you want to achieve, not what you have (and what obviously is not working)
+| [Thursday 21 April 2011] [05:26:28] <djc>	mikko: when building with "nostrip", I see pgm_send in nm but not in objdump -T
+| [Thursday 21 April 2011] [05:26:34] <djc>	so something is fishy there
+| [Thursday 21 April 2011] [05:27:51] <benoitc>	to decribe what i want to achieve i needed to decribe what I had and what i want to achieve, so i can make it perfectly clear that route is handled on the worker level and until this moment i don't know if Ihave to uforward to a zmq thing, or simply forwarding tcp. so i can not pre-bind
+| [Thursday 21 April 2011] [05:29:21] <mikko>	djc: can you try with upstream tarball?
+| [Thursday 21 April 2011] [05:29:37] <mikko>	do you apply weird patches on gentoo side?
+| [Thursday 21 April 2011] [05:29:38] <djc>	mikko: this is from the upstream tarball
+| [Thursday 21 April 2011] [05:29:42] <djc>	no openpgm patches
+| [Thursday 21 April 2011] [05:29:49] <mikko>	5.1.115?
+| [Thursday 21 April 2011] [05:30:00] <djc>	yup
+| [Thursday 21 April 2011] [05:30:00] <guido_g>	benoitc: sorry, can't parse that
+| [Thursday 21 April 2011] [05:34:16] <djc>	mikko: so are you building with autotools or cmake?
+| [Thursday 21 April 2011] [05:34:16] <mikko>	djc: interesting
+| [Thursday 21 April 2011] [05:34:22] <mikko>	djc: autotools
+| [Thursday 21 April 2011] [05:34:30] <mikko>	i've been using cmake lately
+| [Thursday 21 April 2011] [05:34:42] <mikko>	and it makes autotools look pretty cumbersome
+| [Thursday 21 April 2011] [05:35:00] <mikko>	off-topic
+| [Thursday 21 April 2011] [05:35:08] <djc>	so where is visibility controlled with autotools?
+| [Thursday 21 April 2011] [05:35:18] <djc>	or s/where/how/
+| [Thursday 21 April 2011] [05:35:18] <mikko>	djc: what do you mean?
+| [Thursday 21 April 2011] [05:35:24] <mikko>	-fvisibility to compiler
+| [Thursday 21 April 2011] [05:35:40] <mikko>	it's a compiler thing rather than autotools
+| [Thursday 21 April 2011] [05:35:52] <mikko>	although i don't see why the symbol isn't there at all
+| [Thursday 21 April 2011] [05:36:04] <mikko>	even if the symbol was hidden it should still be there (just hidden)
+| [Thursday 21 April 2011] [05:36:09] <djc>	for example, I'm passing -DCONFIG_HAVE_DSO_VISIBILITY
+| [Thursday 21 April 2011] [05:36:20] <djc>	could that have anything to do with it?
+| [Thursday 21 April 2011] [05:36:53] <mikko>	shouldn't
+| [Thursday 21 April 2011] [05:37:07] <mikko>	can you compile without optimizations as well?
+| [Thursday 21 April 2011] [05:37:10] <mikko>	-O0
+| [Thursday 21 April 2011] [05:37:26] <mikko>	just to be sure that the symbol doesn't accidentally get optimised out
+| [Thursday 21 April 2011] [05:38:07] <djc>	I'll give it a shot
+| [Thursday 21 April 2011] [05:39:44] <djc>	with -O0 it's the same
+| [Thursday 21 April 2011] [05:39:54] <benoitc>	guido_g: drawing a schema
+| [Thursday 21 April 2011] [05:40:38] <mikko>	djc: that is just strange
+| [Thursday 21 April 2011] [05:41:01] <djc>	this is the compiler invocation on source.c (which defines pgm_send, I think): http://paste.pocoo.org/show/375706/
+| [Thursday 21 April 2011] [05:41:32] <guido_g>	benoitc: good idea
+| [Thursday 21 April 2011] [05:42:52] <guido_g>	benoitc: you might want to try https://www.lucidchart.com 
+| [Thursday 21 April 2011] [05:43:54] <mikko>	djc: i just downloaded 5.1.116
+| [Thursday 21 April 2011] [05:44:04] <mikko>	and the symbol is there after fresh compile
+| [Thursday 21 April 2011] [05:44:10] <mikko>	what gcc version are you using?
+| [Thursday 21 April 2011] [05:44:20] <mikko>	# nm /opt/test-pgm/lib/libpgm.so  | grep pgm_send
+| [Thursday 21 April 2011] [05:44:21] <mikko>	00020910 T pgm_send
+| [Thursday 21 April 2011] [05:44:36] <mikko>	gcc version 4.4.5 (Debian 4.4.5-8) 
+| [Thursday 21 April 2011] [05:44:38] <benoitc>	guido_g: thanks
+| [Thursday 21 April 2011] [05:44:39] <mikko>	ia32
+| [Thursday 21 April 2011] [05:45:05] <djc>	gcc (Gentoo 4.4.5 p1.2, pie-0.4.5) 4.4.5
+| [Thursday 21 April 2011] [05:45:15] <djc>	let me try .116
+| [Thursday 21 April 2011] [05:45:59] <djc>	(on amd64)
+| [Thursday 21 April 2011] [05:46:08] <mikko>	just compiled on amd64 as well
+| [Thursday 21 April 2011] [05:46:11] <mikko>	the symbol is still there
+| [Thursday 21 April 2011] [05:46:40] <djc>	are you familiar with the openpgm community?
+| [Thursday 21 April 2011] [05:47:37] <mikko>	yes
+| [Thursday 21 April 2011] [05:47:40] <mikko>	well, steven
+| [Thursday 21 April 2011] [05:48:09] <djc>	ah! objdump -T on the libpgm-5.1.so.0.0.116 has pgm_send
+| [Thursday 21 April 2011] [05:48:40] <djc>	so would it be safe to use zeromq-2.1.5 (or .5.1 or whatever will be released soon) with openpgm-5.1.116?
+| [Thursday 21 April 2011] [05:50:09] <djc>	ah, it's probably this: http://code.google.com/p/openpgm/source/detail?r=1360
+| [Thursday 21 April 2011] [05:50:49] <djc>	and it looks like the changes between .115 and .116 are fairly minor
+| [Thursday 21 April 2011] [05:50:55] <djc>	(there's only one other change)
+| [Thursday 21 April 2011] [05:51:47] <mikko>	should be ok
+| [Thursday 21 April 2011] [05:52:16] <mikko>	can you comment on the ticket as well?
+| [Thursday 21 April 2011] [05:52:20] <mikko>	on the progress
+| [Thursday 21 April 2011] [05:52:27] <djc>	will do
+| [Thursday 21 April 2011] [05:52:35] <mikko>	so that other people possibly facing the same issue can benfit
+| [Thursday 21 April 2011] [05:52:45] <mikko>	pieterh: have you merged message fixes to 2.2 ?
+| [Thursday 21 April 2011] [05:54:41] <djc>	mikko: so we like to remove bundled libraries from the process to make sure they don't get built
+| [Thursday 21 April 2011] [05:54:55] <djc>	but that seems to fail
+| [Thursday 21 April 2011] [05:55:18] <djc>	ah wait, is pgm still optional with zeromq-2.1?
+| [Thursday 21 April 2011] [06:02:58] <mikko>	yes
+| [Thursday 21 April 2011] [06:03:17] <djc>	it would be nice if the foreign/openpgm/Makefile.in was optional
+| [Thursday 21 April 2011] [06:03:18] <mikko>	what do you mean "seems to fail" ?
+| [Thursday 21 April 2011] [06:03:28] <mikko>	autotools doesn't support that
+| [Thursday 21 April 2011] [06:03:38] <djc>	mm, ok
+| [Thursday 21 April 2011] [06:03:53] <mikko>	i had a long fight with autotools to get it even this flexible :)
+| [Thursday 21 April 2011] [06:04:11] <mikko>	http://www.gnu.org/software/hello/manual/automake/Conditional-Subdirectories.html
+| [Thursday 21 April 2011] [06:04:13] <djc>	ah, nice, I made it remove the libpgm tarball in there
+| [Thursday 21 April 2011] [06:04:21] <djc>	and leave the Makefile.in
+| [Thursday 21 April 2011] [06:04:26] <djc>	and that seems to work fine
+| [Thursday 21 April 2011] [06:04:36] <mikko>	it should
+| [Thursday 21 April 2011] [06:04:55] <mikko>	it would be nice to be able to make it fully conditional but that doesn't seem to be possible
+| [Thursday 21 April 2011] [06:05:04] <djc>	okay, so that was the without-pgm build, let's check the with-system-pgm build once more
+| [Thursday 21 April 2011] [06:05:49] <djc>	yup, works
+| [Thursday 21 April 2011] [06:05:52] <djc>	I think we're done here
+| [Thursday 21 April 2011] [06:05:57] <djc>	thanks a lot for the help!
+| [Thursday 21 April 2011] [06:06:27] <mikko>	no problem
+| [Thursday 21 April 2011] [06:06:48] <mikko>	hopefully debian and others follow soon
+| [Thursday 21 April 2011] [06:07:10] <mikko>	if debian packages zeromq 2.1 it should trickle down to ubuntu and kubuntu pretty soon(ish)
+| [Thursday 21 April 2011] [06:07:31] <djc>	so now that this is fixed, will 2.1.5.1 be released soon?
+| [Thursday 21 April 2011] [06:07:42] <djc>	i.e. has the other 2.1.5 problem been fixed?
+| [Thursday 21 April 2011] [06:07:55] <mikko>	yes, http://build.zero.mq/view/libzmq%202.1/
+| [Thursday 21 April 2011] [06:08:01] <mikko>	this is this morning's build
+| [Thursday 21 April 2011] [06:08:44] <mikko>	tests seem to pass at least
+| [Thursday 21 April 2011] [06:14:58] <benoitc>	guido_g: http://www.lucidchart.com/publicSegments/view/4db0036d-f058-4240-8613-59060ad6198e/image.png is what I'm trying to achieve
+| [Thursday 21 April 2011] [06:15:40] <guido_g>	ouch
+| [Thursday 21 April 2011] [06:15:47] <guido_g>	why accepts in multiple processes?
+| [Thursday 21 April 2011] [06:16:18] <benoitc>	to load balance the connection
+| [Thursday 21 April 2011] [06:16:30] <mikko>	you can accept and pass down the accepted handle
+| [Thursday 21 April 2011] [06:16:31] <guido_g>	accept in one process and send the fd of the accepted socket to a child
+| [Thursday 21 April 2011] [06:16:40] <mikko>	makes it easier architecturally to accept in one process
+| [Thursday 21 April 2011] [06:16:46] <mikko>	guido_g: >)
+| [Thursday 21 April 2011] [06:17:13] <benoitc>	well not really , here we let the os load balance the connection, he knows its job
+| [Thursday 21 April 2011] [06:17:19] <benoitc>	s/its/his
+| [Thursday 21 April 2011] [06:17:45] <guido_g>	ic
+| [Thursday 21 April 2011] [06:17:52] <mikko>	that's what i've been wondering 
+| [Thursday 21 April 2011] [06:18:05] <mikko>	do you get a race condition when you have multiple acceptors?
+| [Thursday 21 April 2011] [06:18:10] <mikko>	or does the os invoke just one?
+| [Thursday 21 April 2011] [06:18:19] <benoitc>	the os invoke just one
+| [Thursday 21 April 2011] [06:18:23] <guido_g>	it damn complicated to get right, see apache code
+| [Thursday 21 April 2011] [06:18:29] <guido_g>	*its
+| [Thursday 21 April 2011] [06:18:37] <benoitc>	you share the socket handle between all the workers
+| [Thursday 21 April 2011] [06:19:04] <guido_g>	why should one do that?
+| [Thursday 21 April 2011] [06:19:21] <guido_g>	what os is that?
+| [Thursday 21 April 2011] [06:19:42] <benoitc>	well this is designed for atchiecture where you can't spawn os threads
+| [Thursday 21 April 2011] [06:19:48] <benoitc>	between cpus
+| [Thursday 21 April 2011] [06:19:57] <benoitc>	eg any python programs.
+| [Thursday 21 April 2011] [06:20:13] <benoitc>	any UNIX/POSIX system is designed for that
+| [Thursday 21 April 2011] [06:20:16] <guido_g>	huh?
+| [Thursday 21 April 2011] [06:20:39] <benoitc>	1 python vm is locked to once CPU.
+| [Thursday 21 April 2011] [06:20:42] <benoitc>	one
+| [Thursday 21 April 2011] [06:20:51] <guido_g>	it'S not locked
+| [Thursday 21 April 2011] [06:20:57] <benoitc>	it is.
+| [Thursday 21 April 2011] [06:21:02] <benoitc>	gil and such
+| [Thursday 21 April 2011] [06:21:08] <guido_g>	threads are synchroniced by t eh gil
+| [Thursday 21 April 2011] [06:21:13] <guido_g>	which is something compeltely differnt
+| [Thursday 21 April 2011] [06:21:28] <guido_g>	but with processes it would work
+| [Thursday 21 April 2011] [06:21:50] <benoitc>	well by process you mean os forks ?
+| [Thursday 21 April 2011] [06:22:02] <guido_g>	and what i suggested was exactly that: one process accepts the tcp connection and forwards the socket fd to a child process
+| [Thursday 21 April 2011] [06:22:26] <benoitc>	and what is your policy to load balance ?
+| [Thursday 21 April 2011] [06:22:33] <benoitc>	also that exactly what does teh os here 
+| [Thursday 21 April 2011] [06:22:46] <benoitc>	you share the socket fd between forks
+| [Thursday 21 April 2011] [06:22:58] <benoitc>	and only one will accept
+| [Thursday 21 April 2011] [06:23:10] <guido_g>	no, between parent and child processes, for is system call
+| [Thursday 21 April 2011] [06:23:14] <guido_g>	*fork is a
+| [Thursday 21 April 2011] [06:24:05] <benoitc>	yes sure. so what are you calling process ?
+| [Thursday 21 April 2011] [06:24:06] <guido_g>	your diagrams states that you do the accept in the workers, which is -- as some of know -- a very very bad idea
+| [Thursday 21 April 2011] [06:24:20] <benoitc>	could be anything , os threads, threads or green threads or os processes
+| [Thursday 21 April 2011] [06:24:39] <benoitc>	not really that's unixish
+| [Thursday 21 April 2011] [06:24:43] <benoitc>	share a socket
+| [Thursday 21 April 2011] [06:24:46] <benoitc>	accept on it
+| [Thursday 21 April 2011] [06:24:51] <benoitc>	the os will load balance
+| [Thursday 21 April 2011] [06:25:00] <benoitc>	that what does nginx, gunicorn, unicorn and such
+| [Thursday 21 April 2011] [06:25:04] <guido_g>	benoitc: http://en.wikipedia.org/wiki/Process_(computing)
+| [Thursday 21 April 2011] [06:25:26] <guido_g>	benoitc: no, the os will not "loadbalance"
+| [Thursday 21 April 2011] [06:25:33] <benoitc>	yes it will.
+| [Thursday 21 April 2011] [06:25:53] <benoitc>	that what we use in gunicorn
+| [Thursday 21 April 2011] [06:25:56] <guido_g>	it will just allow the processes to run as they need according to the os's scheduling policy
+| [Thursday 21 April 2011] [06:26:19] <guido_g>	benoitc: ok, show me the load-balancing in the linux kernel, please
+| [Thursday 21 April 2011] [06:26:30] <benoitc>	and if it can.
+| [Thursday 21 April 2011] [06:27:37] <guido_g>	to distribute load is not load balancing
+| [Thursday 21 April 2011] [06:27:59] <benoitc>	if your cpu is busy or the process is it won't pass to it. that what we call load balancing
+| [Thursday 21 April 2011] [06:28:54] <benoitc>	that part works pefrfectly anyway. that not the part i'm trying to achieve.
+| [Thursday 21 April 2011] [06:29:00] <guido_g>	load balancing is a process where the load is sent to a specific processing unit according to some algorithm
+| [Thursday 21 April 2011] [06:29:13] <guido_g>	the kernel and your code don't do that
+| [Thursday 21 April 2011] [06:31:17] <benoitc>	oh dear. load balancing only mean that it will balance depeding on the load. ie if smth is busy or not . that could be just a try/fail system. which is done by the os.
+| [Thursday 21 April 2011] [06:31:59] <benoitc>	anyway you're just here saying a common pattern in unix doesn't work. 
+| [Thursday 21 April 2011] [06:32:17] <guido_g>	what?
+| [Thursday 21 April 2011] [06:57:52] <benoitc>	to be clear, all workers share the same listener and do a non blocking acccept. The kernel decide which worker process will get the socket and the other will sleeps if there is nothing to accept, this model works well. that's more the second part i'hev problem to achieve
+| [Thursday 21 April 2011] [08:17:10] <th>	anyone interested in looking into an c++ example where multipart messages get mixed?
+| [Thursday 21 April 2011] [08:21:39] <th>	i collected information here: http://thzn.de/0mq/   client (stress.cc) and server (server.cc) with output.txt
+| [Thursday 21 April 2011] [08:24:49] <th>	every part of the multipart message is prefixed when sending. and the receiving side checks that all parts of the received mp have the same prefix. which fails
+| [Thursday 21 April 2011] [08:25:05] <th>	it only fails under high load
+| [Thursday 21 April 2011] [08:25:17] <th>	(meaning: while ./stress.cc ; do ; done)
+| [Thursday 21 April 2011] [08:25:24] <th>	aehh.. not ".cc" of course
+| [Thursday 21 April 2011] [08:27:13] <th>	the server also prints the identity (XREP) received as first part in hex
+| [Thursday 21 April 2011] [08:33:11] <pieterh_>	th: can you post to the list?
+| [Thursday 21 April 2011] [08:33:47] <pieterh_>	I'm not at a pc now but will look at it later
+| [Thursday 21 April 2011] [08:48:52] <th>	pieterh_: done.
+| [Thursday 21 April 2011] [09:02:37] <Balistic>	How can one do proper message routing(Based on contents of a message) in zmq?
+| [Thursday 21 April 2011] [09:11:13] <guido_g>	from the channel topic: Before asking for advice here, Please Read the Guide - http://zero.mq/zg
+| [Thursday 21 April 2011] [09:12:30] <Balistic>	guido_g: i read that a few months ago, had nothing on routing
+| [Thursday 21 April 2011] [09:12:44] <guido_g>	yeah
+| [Thursday 21 April 2011] [09:13:25] <guido_g>	but now is now
+| [Thursday 21 April 2011] [09:14:50] <Balistic>	i see, the guide is more than double in length compared to what it was
+| [Thursday 21 April 2011] [09:18:15] <mpales>	Balistic: would you like to use zeromq for stateful services?
+| [Thursday 21 April 2011] [09:20:12] <Balistic>	mpales: yes
+| [Thursday 21 April 2011] [09:28:42] <mpales>	zeromq is not quite there yet
+| [Thursday 21 April 2011] [09:29:24] <mpales>	and it's not quite its job to do application level routing
+| [Thursday 21 April 2011] [09:30:08] <mpales>	it would really help if zeromq had an "email" type socket
+| [Thursday 21 April 2011] [09:31:40] <mpales>	atm you need to do the address mapping yourself
+| [Thursday 21 April 2011] [12:04:07] <coopernurse>	if you have a REQ connected to REP and doing a send/recv loop
+| [Thursday 21 April 2011] [12:04:29] <coopernurse>	will the REQ socket reconnect automatically if the REP endpoint dies and is restarted on the same port?
+| [Thursday 21 April 2011] [12:05:00] <coopernurse>	I'm using 2.1 with the Python bindings
+| [Thursday 21 April 2011] [12:06:08] <coopernurse>	the behavior I'm seeing is the REQ process is still running, but idle after I restarted the REP process
+| [Thursday 21 April 2011] [12:53:09] <Toba>	that depends on if you use a timeout or not on the recv portion. if you don't use pollitem_t and not recv() until you know there is a result, a "lost result" can hang a looping requestor.
+| [Thursday 21 April 2011] [12:53:48] <coopernurse>	Toba: ah, cool, thank you I'll read about that more
+| [Thursday 21 April 2011] [13:01:16] <Toba>	note to self: add timeout on the recv portion of my req/rep systems
+| [Thursday 21 April 2011] [13:01:48] <coopernurse>	:-)
+| [Thursday 21 April 2011] [15:20:51] <else->	hm, anyone knows why my libzapi git checkout fails during compilation of zsocket.c with "zsocket.c:116:28: error: ZMQ_XSUB undeclared"? i'm at commit 2c1bd38bfd1220226c04c03a39a28e62adf4c631
+| [Thursday 21 April 2011] [16:24:07] <Bwen>	I was looking thru the irc archive and I was wondering why there is 3 "2010-March" ? O.o
+| [Thursday 21 April 2011] [16:24:59] <lt_schmidt_jr>	3 subscribers consuming  a published event :)
+| [Thursday 21 April 2011] [17:28:10] <hardwire>	ahoy.
+| [Thursday 21 April 2011] [17:28:19] 	 * hardwire parts #0mq
+| [Thursday 21 April 2011] [17:29:29] <hardwire>	I don't suppose there is a way to subscribe to published data and filter if the publisher sends json is there.
+| [Thursday 21 April 2011] [17:30:31] <hardwire>	unless the json is ordered.
+| [Thursday 21 April 2011] [17:42:21] <lt_schmidt_jr>	hardwire, I don't understand the question
+| [Thursday 21 April 2011] [17:43:00] <hardwire>	subscription filters pass strings that start with the filter
+| [Thursday 21 April 2011] [17:43:27] <lt_schmidt_jr>	but I am using PUB/SUB with json with multipart with the first part of the message containing the data (bytes) used for routing
+| [Thursday 21 April 2011] [17:43:41] <hardwire>	since item order in json isn't static in most cases.. it's hard to filter unless you post process and subscribe to everything
+| [Thursday 21 April 2011] [17:44:27] <hardwire>	lt_schmidt_jr: so you're concatenating a json string and a routing string?
+| [Thursday 21 April 2011] [17:45:18] <lt_schmidt_jr>	no - ZMQ allows for multipart messages
+| [Thursday 21 April 2011] [17:45:28] <lt_schmidt_jr>	I use 2 parts 
+| [Thursday 21 April 2011] [17:46:06] <lt_schmidt_jr>	1st is the routing data
+| [Thursday 21 April 2011] [17:46:38] <lt_schmidt_jr>	2nd is the json
+| [Thursday 21 April 2011] [17:46:42] <lt_schmidt_jr>	string
+| [Thursday 21 April 2011] [17:48:17] <lt_schmidt_jr>	you can just use the 2nd part for whatever it is you intend to do with it
+| [Thursday 21 April 2011] [17:52:31] <hardwire>	what api are you using?
+| [Thursday 21 April 2011] [17:52:56] <lt_schmidt_jr>	i am using jzmq
+| [Thursday 21 April 2011] [17:53:29] <lt_schmidt_jr>	java, but its available in the c api as well, should be in other
+| [Thursday 21 April 2011] [17:53:31] <lt_schmidt_jr>	s
+| [Thursday 21 April 2011] [17:53:35] <hardwire>	<- python
+| [Thursday 21 April 2011] [17:56:56] <hardwire>	ah.. spiffers
+| [Thursday 21 April 2011] [17:56:57] <hardwire>	danke
+| [Thursday 21 April 2011] [17:57:10] <lt_schmidt_jr>	did you find it?
+| [Thursday 21 April 2011] [18:08:56] <hardwire>	your a genus.
+| [Thursday 21 April 2011] [18:09:15] <hardwire>	send + SNDMORE flag
+| [Thursday 21 April 2011] [18:09:18] <lt_schmidt_jr>	yes
+| [Thursday 21 April 2011] [18:09:21] <hardwire>	send_json w/o flag
+| [Thursday 21 April 2011] [18:09:25] <hardwire>	and recv_multipart
+| [Thursday 21 April 2011] [18:09:27] <lt_schmidt_jr>	correct
+| [Thursday 21 April 2011] [18:09:39] <hardwire>	works for me.
+| [Thursday 21 April 2011] [18:09:41] <lt_schmidt_jr>	I am also a specie
+| [Thursday 21 April 2011] [18:09:42] <lt_schmidt_jr>	:)
+| [Thursday 21 April 2011] [18:10:00] <hardwire>	I could do the json using the json module.. but I like the zmq module handing it for now :)
+| [Thursday 21 April 2011] [18:10:30] <else->	do you guys know whether there are prebuilt debian packages for libzmq and libzapi somewhere?
+| [Thursday 21 April 2011] [18:10:50] <lt_schmidt_jr>	not me
+| [Thursday 21 April 2011] [18:10:52] <hardwire>	I do
+| [Thursday 21 April 2011] [18:11:01] <hardwire>	else-: which debian?
+| [Thursday 21 April 2011] [18:11:04] <else->	squeeze
+| [Thursday 21 April 2011] [18:11:12] <hardwire>	you can install the experimental packages directly.
+| [Thursday 21 April 2011] [18:11:25] <hardwire>	I backported them from experimental
+| [Thursday 21 April 2011] [18:11:26] <else->	i didn't find libzapi though
+| [Thursday 21 April 2011] [18:11:37] <hardwire>	ah.. I'm not familiar with it.
+| [Thursday 21 April 2011] [18:12:18] <else->	well i heard about 0mq just recently and would like to try out the examples, and as far as i've understood they use libzapi
+| [Thursday 21 April 2011] [18:13:00] <hardwire>	else-: I don't see their existance.
+| [Thursday 21 April 2011] [18:13:17] <hardwire>	are you familiar with building libzapi yourself?
+| [Thursday 21 April 2011] [18:13:44] <else->	i tried, but it fails (see my msg at 09:20pm)
+| [Thursday 21 April 2011] [18:14:32] <hardwire>	I wasn't here then.. dunno if I could help either
+| [Thursday 21 April 2011] [18:14:38] <hardwire>	maybe.. however
+| [Thursday 21 April 2011] [18:14:47] <hardwire>	do you have build-essentials installed?
+| [Thursday 21 April 2011] [18:14:48] <else->	ok, wait
+| [Thursday 21 April 2011] [18:14:50] <else->	yes
+| [Thursday 21 April 2011] [18:15:04] <hardwire>	did you build libzmq from source?
+| [Thursday 21 April 2011] [18:15:16] <else->	my libzapi git checkout fails during compilation of zsocket.c with "zsocket.c:116:28: error: ZMQ_XSUB undeclared"
+| [Thursday 21 April 2011] [18:15:19] <else->	hardwire: yes
+| [Thursday 21 April 2011] [18:15:28] <hardwire>	what was the make error?
+| [Thursday 21 April 2011] [18:19:55] <else->	hardwire: http://piratepad.net/IbgeoMZWjv
+| [Thursday 21 April 2011] [18:20:07] <else->	and configure completes without any errors
+| [Thursday 21 April 2011] [18:20:56] <hardwire>	looks like your zmq build didn't install headers for some reason
+| [Thursday 21 April 2011] [18:21:18] <hardwire>	or there is a version problem.. I'm not sure
+| [Thursday 21 April 2011] [18:22:10] <else->	i have installed zmq 2.0.11
+| [Thursday 21 April 2011] [18:22:50] <lt_schmidt_jr>	else-: you should avoid using 2.0 - many issues resovled in 2,1
+| [Thursday 21 April 2011] [18:22:52] <lt_schmidt_jr>	2.1
+| [Thursday 21 April 2011] [18:23:03] <else->	ok, i'll try that
+| [Thursday 21 April 2011] [18:23:04] <else->	thanks
+| [Thursday 21 April 2011] [18:24:22] <hardwire>	else-: I'm guessing zapi wants 2.1
+| [Thursday 21 April 2011] [18:24:31] <else->	let's see :)
+| [Thursday 21 April 2011] [18:25:46] <hardwire>	I'm integrating zmq with some django apps... right now I just need message queueing per django thread so this is gonna be spiffers.
+| [Thursday 21 April 2011] [18:29:50] <else->	awesome, works now :) thanks guys
+| [Thursday 21 April 2011] [18:30:04] <lt_schmidt_jr>	NP
+| [Thursday 21 April 2011] [18:30:13] <lt_schmidt_jr>	the more the merrire
+| [Thursday 21 April 2011] [18:30:16] <lt_schmidt_jr>	merrier
+| [Thursday 21 April 2011] [20:37:47] <Toba>	hey, I'm getting an odd error trying to use zmq::poll from C++.  It claims I'm doing a socket operation on a non-socket, but I think that's not true at all.  Do I need to have a REQ client connected to the REP server before poll() is valid?
+| [Thursday 21 April 2011] [20:41:09] <Toba>	perhaps it's socket options. *digs*
+| [Thursday 21 April 2011] [20:56:49] <Toba>	oh well. that's a puzzle for tomorrow. anyone who knows what I speak of, please ping me :)
+| [Thursday 21 April 2011] [20:56:53] 	 * Toba goes home
+| [Friday 22 April 2011] [04:03:08] <pieterh>	Toba: typically, either you're passing another object (context?) by mistake, or you're polling on a closed socket
+| [Friday 22 April 2011] [04:04:40] <wewqewq>	ok
+| [Friday 22 April 2011] [04:04:51] <wewqewq>	pl
+| [Friday 22 April 2011] [04:06:24] <pieterh>	else-: I've fixed libzapi to complain if you're using libzmq/2.0, there's too much missing in that version
+| [Friday 22 April 2011] [04:39:22] <Guthur>	has anyone had issues using zeromq on windows server OS
+| [Friday 22 April 2011] [04:43:51] <mikko>	that's a broad question
+| [Friday 22 April 2011] [04:43:59] <mikko>	sustrik: are you there?
+| [Friday 22 April 2011] [04:44:18] <sustrik>	hi
+| [Friday 22 April 2011] [04:44:38] <mikko>	so, as you have serious trust issues with github?
+| [Friday 22 April 2011] [04:44:41] <mikko>	:)
+| [Friday 22 April 2011] [04:44:59] <sustrik>	dunno, they can go out of business in couple of years
+| [Friday 22 April 2011] [04:45:03] <mikko>	maybe i could synchronise the issues on daily basis and take a dump
+| [Friday 22 April 2011] [04:45:09] <sustrik>	and what we end up with is uncomprehensible change log
+| [Friday 22 April 2011] [04:45:17] <mikko>	that way we would always have the data
+| [Friday 22 April 2011] [04:45:25] <mikko>	their api allows pulling them out
+| [Friday 22 April 2011] [04:45:28] <mikko>	http://develop.github.com/p/issues.html
+| [Friday 22 April 2011] [04:45:56] <Guthur>	mikko: Well more wanting to know if it worked
+| [Friday 22 April 2011] [04:45:58] <Guthur>	at all
+| [Friday 22 April 2011] [04:46:01] <mikko>	that way github would need to go out of business and my backup in two locations would need to die
+| [Friday 22 April 2011] [04:46:02] <sustrik>	yeah, but what's the point anyway?
+| [Friday 22 April 2011] [04:46:13] <sustrik>	the changelog should be self-contained
+| [Friday 22 April 2011] [04:46:17] <Guthur>	I having headaches trying to deploy an app to win server
+| [Friday 22 April 2011] [04:46:22] <Guthur>	runs fine on XP
+| [Friday 22 April 2011] [04:46:30] <mikko>	sustrik: being able to refer to issue numbers from changelog for more information
+| [Friday 22 April 2011] [04:46:44] <mikko>	sustrik: there might be some background information in the issue 
+| [Friday 22 April 2011] [04:46:48] <Guthur>	tried both win server 2003 and 2008, on both the app fails to find the dll
+| [Friday 22 April 2011] [04:47:12] <Guthur>	but the same MSI works fine on win XP, doing my head in
+| [Friday 22 April 2011] [04:47:16] <mikko>	you could comming with message "Fixed XYZ pushing to ABC. Fixes issue #12345"
+| [Friday 22 April 2011] [04:47:25] <mikko>	and it automatically closes the issue
+| [Friday 22 April 2011] [04:48:00] <sustrik>	mikko: i am not sure it would be useful for anybody, but if you are happy archiving the issues, i can refer to issue numbers in the changelog
+| [Friday 22 April 2011] [04:49:11] <sustrik>	Guthur: have you check the dll is installed in the proper place?
+| [Friday 22 April 2011] [04:50:15] <Guthur>	sustrik: yep it's in the execution directory, the MSI drops in the dll
+| [Friday 22 April 2011] [04:51:31] <sustrik>	no idea then
+| [Friday 22 April 2011] [04:51:40] 	 * sustrik doesn't have win server to test
+| [Friday 22 April 2011] [04:53:08] <Guthur>	this is the first time I've tried win server as well
+| [Friday 22 April 2011] [04:53:45] <Guthur>	I suppose I should really try a simple C app for as a sanity check
+| [Friday 22 April 2011] [04:55:58] <sustrik>	presumably
+| [Friday 22 April 2011] [04:56:11] <sustrik>	you can use perf tests from libzmq
+| [Friday 22 April 2011] [05:12:20] <Guthur>	ah ha
+| [Friday 22 April 2011] [05:12:32] <Guthur>	I think I may have found the issue
+| [Friday 22 April 2011] [05:13:27] <Guthur>	msvcp.dll is not on the win server boxes
+| [Friday 22 April 2011] [05:14:18] <Guthur>	or msvcr.dll
+| [Friday 22 April 2011] [05:15:11] <Guthur>	probably due to visual studio c runtime stuff not being installed
+| [Friday 22 April 2011] [05:15:20] <Guthur>	c++*
+| [Friday 22 April 2011] [05:15:51] <Guthur>	these are not development boxes
+| [Friday 22 April 2011] [05:16:29] <mikko>	use dependency walker
+| [Friday 22 April 2011] [05:31:18] <Guthur>	ah success it was indeed the msvc dependency
+| [Friday 22 April 2011] [05:31:43] <Guthur>	this only became apparent when running the C example code 
+| [Friday 22 April 2011] [05:34:04] <sustrik>	doesn't msi check for dependencies?
+| [Friday 22 April 2011] [05:39:07] <Guthur>	You can probably build an MSI to do such
+| [Friday 22 April 2011] [05:39:13] <Guthur>	I just made a simple one
+| [Friday 22 April 2011] [05:40:01] <Guthur>	If only this error message was more informative when running the original app
+| [Friday 22 April 2011] [05:40:43] <Guthur>	the original app said it could not find libzmq.dll, but the real issue was the msvc dlls
+| [Friday 22 April 2011] [06:00:54] <Guthur>	just noticed that intel have opened up a parallel computing competition http://software.intel.com/en-us/blogs/2011/04/18/and-theyre-off-intel-threading-challenge-2011-started-today-bigger-prizes-this-year/
+| [Friday 22 April 2011] [06:01:11] <Guthur>	maybe a zmq app could fit the problem domains
+| [Friday 22 April 2011] [06:01:28] <Guthur>	not sure if the rules might exclude it's use though
