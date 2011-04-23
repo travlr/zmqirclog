@@ -5451,3 +5451,108 @@
 | [Friday 22 April 2011] [06:00:54] <Guthur>	just noticed that intel have opened up a parallel computing competition http://software.intel.com/en-us/blogs/2011/04/18/and-theyre-off-intel-threading-challenge-2011-started-today-bigger-prizes-this-year/
 | [Friday 22 April 2011] [06:01:11] <Guthur>	maybe a zmq app could fit the problem domains
 | [Friday 22 April 2011] [06:01:28] <Guthur>	not sure if the rules might exclude it's use though
+| [Friday 22 April 2011] [11:57:36] <else->	pieterh: cool. probably a good idea, thanks!
+| [Friday 22 April 2011] [12:40:25] <hardwire>	hmm.. anybody found a good way to zeromq ala inetd?
+| [Friday 22 April 2011] [13:06:35] <mikko>	hardwire: what do you mean?
+| [Friday 22 April 2011] [13:06:42] <mikko>	i didnt know anyone uses inetd nowadays
+| [Friday 22 April 2011] [13:12:10] <hardwire>	mikko: :)
+| [Friday 22 April 2011] [13:12:39] <hardwire>	it's a pretty quick and dirty process distribution system :)
+| [Friday 22 April 2011] [19:21:03] <Graaf>	Hi
+| [Friday 22 April 2011] [19:22:37] <Graaf>	I'm trying to install zeromq on a windows system, and install the php bindings. but i'm having trouble to get those php bindings loaded.. .dll file is not reccognized or gives error while loading..
+| [Friday 22 April 2011] [20:19:28] <ParadoxG>	Hi, is ZMQ_DELIMITER normally used as a char, or is it an int?
+| [Saturday 23 April 2011] [02:52:07] <rukubites>	How would I go about cross-compiling a 32 bit (linux) version of zeromq on 64 bit linux?
+| [Saturday 23 April 2011] [02:53:01] <rukubites>	The purpose is to interface with wine, to provide zeromq communication to an application run via wine.
+| [Saturday 23 April 2011] [02:53:37] <guido_g>	why?
+| [Saturday 23 April 2011] [02:54:00] <guido_g>	there is .net binding for the windows side
+| [Saturday 23 April 2011] [02:54:10] <guido_g>	just use the local network interface
+| [Saturday 23 April 2011] [02:55:37] <rukubites>	Well I am very unfamiliar with windows coding, and I don't know how to hook into .net from the target application - which has its own language.
+| [Saturday 23 April 2011] [02:55:49] <rukubites>	Essentially because this route taps into my knowledge base much easier.
+| [Saturday 23 April 2011] [02:56:11] <rukubites>	The target 'platform' is mt4, a trading platform.
+| [Saturday 23 April 2011] [02:56:40] <guido_g>	how would a 32 linux version help then?
+| [Saturday 23 April 2011] [02:56:45] <guido_g>	*32-bit
+| [Saturday 23 April 2011] [02:57:01] <rukubites>	Because wine requires an m32.
+| [Saturday 23 April 2011] [02:57:11] <guido_g>	and then?
+| [Saturday 23 April 2011] [02:57:21] <rukubites>	And so I can't link to 64bit libzmq.
+| [Saturday 23 April 2011] [02:57:30] <guido_g>	and?
+| [Saturday 23 April 2011] [02:57:34] <guido_g>	the app is still not useing it
+| [Saturday 23 April 2011] [02:58:21] <rukubites>	I have a bit of glue code between zeromq and the target app I am trying to build. There are instructions for wine, but it is failing on libzmq because I only have 64 bit libzmq as I am on 64 bit machine.
+| [Saturday 23 April 2011] [02:59:02] <guido_g>	this sounds very strange and fragile
+| [Saturday 23 April 2011] [02:59:33] <rukubites>	You are right, it is exotic. The target platform mt4 is known to make it very hard to communicate.
+| [Saturday 23 April 2011] [03:00:38] <rukubites>	I want to run on wine because having a virtual machine or dedicated box for one application is expensive in RAM, CPU and/or monetary cost.
+| [Saturday 23 April 2011] [03:01:32] <guido_g>	not as expensive as the time for development and maintenace
+| [Saturday 23 April 2011] [03:01:52] <guido_g>	and better hope speed is not an issue
+| [Saturday 23 April 2011] [03:02:10] <guido_g>	but i can't help you w/ the cross compiling thing
+| [Saturday 23 April 2011] [03:02:12] <rukubites>	Speed really isn't the issue. It is a pretty simple end-point.
+| [Saturday 23 April 2011] [03:02:24] <guido_g>	try a place where compiler geeks are
+| [Saturday 23 April 2011] [03:02:34] <rukubites>	e.g.?
+| [Saturday 23 April 2011] [03:02:59] <guido_g>	no clue, i don't do such things ,)
+| [Saturday 23 April 2011] [03:03:26] <rukubites>	Fair enough. Thanks for your time, anyway. :-)
+| [Saturday 23 April 2011] [03:04:12] <guido_g>	you might want to stay here and wait for mikko, is the build guy and might know a bit
+| [Saturday 23 April 2011] [03:05:02] <rukubites>	Okay I will lurk. And hopefully your message pinged him. :D
+| [Saturday 23 April 2011] [03:08:21] <pieterh>	rukubites: hi
+| [Saturday 23 April 2011] [03:09:23] <rukubites>	Hi pieterh.
+| [Saturday 23 April 2011] [03:09:37] <pieterh>	so, gcc lets you builds 32-bit on a 64-bit box
+| [Saturday 23 April 2011] [03:09:47] <pieterh>	pass -m32 option
+| [Saturday 23 April 2011] [03:10:18] <pieterh>	then, 'configure --help' to see what to do next
+| [Saturday 23 April 2011] [03:10:32] <pieterh>	set CFLAGS=-m32 
+| [Saturday 23 April 2011] [03:10:44] <pieterh>	./configure and make, and it should have worked
+| [Saturday 23 April 2011] [03:11:40] <rukubites>	I will try that next. I did a make just as normal because I need the 64-bit version for normal use. :-)
+| [Saturday 23 April 2011] [03:11:59] <rukubites>	Figured I would remove the ubuntu ppa version and compile it myself.
+| [Saturday 23 April 2011] [03:12:11] <pieterh>	sure, easy enough
+| [Saturday 23 April 2011] [03:15:16] <rukubites>	My first try I will do --build=i686-pc-linux-gnu
+| [Saturday 23 April 2011] [03:34:37] <rukubites>	I got through compilation by just compiling on a spare 32 bit instance I had around. I probably should have just downloaded the appropriate daily build from http://build.zero.mq/
+| [Saturday 23 April 2011] [03:37:35] <rukubites>	Using CFLAGS=-m32 did not work, I am sure mikko the build guy would know what I should have done. But that step seems solved, thank you for the help pieterh and guido_g.
+| [Saturday 23 April 2011] [05:16:55] <justinuza>	Hey all.  I have a problem that I'm trying to solve, and I feel like zeromq can do it, but I just keep reading docs and examples and whatever else I can find and can't seem to visualize how it would work - and what sockets I would need.  If anyone could provide some insight, I would greatly appreciate it...
+| [Saturday 23 April 2011] [05:17:08] <justinuza>	I would like to have a Job Manager that producers can submit jobs to, and then the producer should get a response when the job is complete.  The jobs should be picked up by consumers (1 job --> 1 consumer) where the consumer processes the job, returns the result to the Job Manager, which then returns the result to the producer.  For instance, lets say there are 4 types of tasks: Add, Subtract, Multiply, and Divide.  The Job Manager sho
+| [Saturday 23 April 2011] [05:17:08] <justinuza>	I'm more interested in the Job Manager <--> Worker communication than the Producer <--> Job Manager.  However, one caveat is that there should be able to be N types of tasks, and potentially new tasks added on the fly.
+| [Saturday 23 April 2011] [05:17:08] <justinuza>	Is something like what I'm describing possible to accomplish with zeromq?
+| [Saturday 23 April 2011] [05:18:12] <sustrik>	use REQ/REP with an interdediary device
+| [Saturday 23 April 2011] [05:19:33] <justinuza>	an intermediary device?  that being the "job manager"?
+| [Saturday 23 April 2011] [05:27:33] <justinuza>	does that mean i would need to maintain a worker pool for each task type?  when a 'multiply' job comes in, go to the 'multiply' pool and choose a REQ socket that isn't currently waiting for a REP from a worker, and send the job along?
+| [Saturday 23 April 2011] [05:28:06] <sustrik>	depends on who processes different job types
+| [Saturday 23 April 2011] [05:28:14] <sustrik>	same application doing all job types?
+| [Saturday 23 April 2011] [05:28:22] <sustrik>	or different applications doing different jobs?
+| [Saturday 23 April 2011] [05:28:38] <justinuza>	different applications doing different jobs
+| [Saturday 23 April 2011] [05:28:58] <sustrik>	then i would suggest using a different topology for each job type
+| [Saturday 23 April 2011] [05:29:41] <sustrik>	that way you have different functions clearly separated and manageable without affecting other functions in any way
+| [Saturday 23 April 2011] [05:31:37] <justinuza>	right, from my example lets say i have 4 python scripts: add.py, subtract.py, multiply.py, and divide.py.  each worker would be an instance of one of the scripts running on a box (separate processes), but i want to route to all of them from a single job manager
+| [Saturday 23 April 2011] [05:33:08] <sustrik>	ok, you then need 4 XREX and XREP sockets in the job manager
+| [Saturday 23 April 2011] [05:33:15] <sustrik>	poll on all of them
+| [Saturday 23 April 2011] [05:33:25] <sustrik>	pass messages to the corresponsing socket
+| [Saturday 23 April 2011] [05:33:28] <sustrik>	that's it
+| [Saturday 23 April 2011] [05:34:35] <justinuza>	XREQ sockets in the job manager and XREP sockets in the workers?  or vice versa?
+| [Saturday 23 April 2011] [05:34:41] <guido_g>	justinuza: http://zguide.zeromq.org/page:all#Service-Oriented-Reliable-Queuing-Majordomo-Pattern
+| [Saturday 23 April 2011] [05:35:23] <guido_g>	lots of questions are answered in The Guide
+| [Saturday 23 April 2011] [05:35:30] <sustrik>	guido_g: thanks
+| [Saturday 23 April 2011] [05:36:17] <justinuza>	Thanks guido_g.  I tried to read through it, but its a little bit gigantic :)
+| [Saturday 23 April 2011] [05:36:23] <guido_g>	sustrik: np, just a hot-key :)
+| [Saturday 23 April 2011] [05:37:19] <guido_g>	justinuza: what shall i say? i this this to much to read, how will you learn the principals of MQ and brokerless messaging in generall?
+| [Saturday 23 April 2011] [05:39:17] <justinuza>	guido:  I certainly don't disagree... I hope that I do have enough time to get through all of it, and I thank you for your help.
+| [Saturday 23 April 2011] [06:58:28] <jsimmons>	Anybody worked on a D binding for zmq?
+| [Saturday 23 April 2011] [06:59:18] <guido_g>	http://www.zeromq.org/bindings:d
+| [Saturday 23 April 2011] [07:00:27] <jsimmons>	oh that's not a full list I see
+| [Saturday 23 April 2011] [07:16:04] <pieter_hintjens>	jsimmons: I
+| [Saturday 23 April 2011] [07:16:09] <pieter_hintjens>	I've added D to the main page
+| [Saturday 23 April 2011] [07:16:16] <jsimmons>	:D
+| [Saturday 23 April 2011] [07:16:30] <pieter_hintjens>	it's not always clear which bindings are actively maintained & used
+| [Saturday 23 April 2011] [07:18:11] <th>	so zmq_recv and zmq_send will be more POSIX in 3.0, how is that supposed to be regarding multiparts? will a recv go over part-boundaries?
+| [Saturday 23 April 2011] [07:18:28] <th>	or is it like EOF for every part?
+| [Saturday 23 April 2011] [07:22:11] <headzone>	what makes you think multipart handling would change
+| [Saturday 23 April 2011] [07:22:24] <th>	i dont
+| [Saturday 23 April 2011] [07:22:48] <th>	i had a look at the 3.0 roadmap
+| [Saturday 23 April 2011] [07:23:22] <th>	which is talking about making the 2 functions more coherent with POSIX send/recv
+| [Saturday 23 April 2011] [07:23:45] <headzone>	...by renaming them
+| [Saturday 23 April 2011] [07:24:07] <th>	the current ones will become sendmsg and recvmsg, as i read it
+| [Saturday 23 April 2011] [07:24:43] <th>	later on in the roadmap there is some code showing those zmq_recv/zmq_send functions
+| [Saturday 23 April 2011] [07:25:11] <th>	my interpretation was that current functions become "msg" suffixed and zmq_recv/zmq_send will behave more like POSIX send/recv
+| [Saturday 23 April 2011] [07:25:27] <th>	thus resulting in 2 sets of the two functions
+| [Saturday 23 April 2011] [07:25:35] <th>	am i wrong?
+| [Saturday 23 April 2011] [07:26:29] <th>	i'm referring to "Proposal for send/recv API based on POSIX socket API:"
+| [Saturday 23 April 2011] [07:26:43] <th>	at http://www.zeromq.org/docs:3-0
+| [Saturday 23 April 2011] [08:00:37] <sustrik>	th: you are right
+| [Saturday 23 April 2011] [08:00:54] <sustrik>	the multipart will work in standard way
+| [Saturday 23 April 2011] [08:01:19] <sustrik>	actually, it already works in stadard way
+| [Saturday 23 April 2011] [08:01:35] <sustrik>	to check the new api give a try to libzmq master
+| [Saturday 23 April 2011] [08:10:50] <th>	sustrik: and with standard way you mean using the zmq_recvmsg?
+| [Saturday 23 April 2011] [08:16:11] <sustrik>	i mean using ZMQ_SNDMORE and ZMQ_RCVMORE
+| [Saturday 23 April 2011] [08:16:43] <sustrik>	it works with zmq_send, zmq_sendmsg, zmq_recv and zmq_recvmsg
