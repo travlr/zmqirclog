@@ -5556,3 +5556,4 @@
 | [Saturday 23 April 2011] [08:10:50] <th>	sustrik: and with standard way you mean using the zmq_recvmsg?
 | [Saturday 23 April 2011] [08:16:11] <sustrik>	i mean using ZMQ_SNDMORE and ZMQ_RCVMORE
 | [Saturday 23 April 2011] [08:16:43] <sustrik>	it works with zmq_send, zmq_sendmsg, zmq_recv and zmq_recvmsg
+| [Saturday 23 April 2011] [23:52:28] <siggimoo>	anyone ever have any trouble with zeromq inside of a mod_wsgi script?
