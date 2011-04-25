@@ -5602,6 +5602,103 @@
 <div class="line">[Saturday 23 April 2011] [08:16:11] &lt;sustrik&gt; i mean using ZMQ_SNDMORE and ZMQ_RCVMORE</div>
 <div class="line">[Saturday 23 April 2011] [08:16:43] &lt;sustrik&gt; it works with zmq_send, zmq_sendmsg, zmq_recv and zmq_recvmsg</div>
 <div class="line">[Saturday 23 April 2011] [23:52:28] &lt;siggimoo&gt;        anyone ever have any trouble with zeromq inside of a mod_wsgi script?</div>
+<div class="line">[Sunday 24 April 2011] [14:16:18] &lt;andrewvc&gt;  cremes: around?</div>
+<div class="line">[Sunday 24 April 2011] [17:10:07] &lt;nodie&gt;     hi</div>
+<div class="line">[Sunday 24 April 2011] [17:10:32] &lt;nodie&gt;     I suppose I can extract that information by reading the sources, but it&#8217;s sunday and nearly time to go to bed</div>
+<div class="line">[Sunday 24 April 2011] [17:10:47] &lt;nodie&gt;     when I configure a socket with SUBSCRIBE</div>
+<div class="line">[Sunday 24 April 2011] [17:11:14] &lt;nodie&gt;     does the filtering occur at client level or at server level in a PUB/SUB connection?</div>
+<div class="line">[Sunday 24 April 2011] [17:21:35] &lt;Guthur&gt;    nodie, client</div>
+<div class="line">[Sunday 24 April 2011] [17:22:05] &lt;Guthur&gt;    server side subscription is a oft requested feature and may appear in the futur</div>
+<div class="line">[Sunday 24 April 2011] [17:22:08] &lt;Guthur&gt;    future*</div>
+<div class="line">[Sunday 24 April 2011] [18:10:46] &lt;nodie&gt;     thank you Guthur</div>
+<div class="line">[Sunday 24 April 2011] [18:43:13] &lt;andrewvc&gt;  hi guys, I&#8217;ve got this bug where I get a &#8216;resource temporarily unavailable&#8217; error message when trying to send a message on xreq over TCP to a non-existant socket</div>
+<div class="line">[Sunday 24 April 2011] [18:43:19] &lt;andrewvc&gt;  if I start up the listening xrep first</div>
+<div class="line">[Sunday 24 April 2011] [18:43:21] &lt;andrewvc&gt;  no issues</div>
+<div class="line">[Sunday 24 April 2011] [18:43:30] &lt;andrewvc&gt;  this only happens if I send a delimiter string</div>
+<div class="line">[Sunday 24 April 2011] [18:47:48] &lt;andrewvc&gt;  so, it appears to happen only when I bind with the xreq</div>
+<div class="line">[Sunday 24 April 2011] [20:49:23] &lt;<a href="#id813"><span class="problematic" id="id814">phantomcircuit_</span></a>&gt;   hello, so reading the documentation it strikes me that the pull/push mechanism results in pull sockets having local queueing</div>
+<div class="line">[Sunday 24 April 2011] [20:49:54] &lt;<a href="#id815"><span class="problematic" id="id816">phantomcircuit_</span></a>&gt;   that seems like an odd decision</div>
+<div class="line">[Sunday 24 April 2011] [21:35:57] &lt;dublisk&gt;   Hi, zeromq will only work with itself right? I can&#8217;t use it to read from sockets that aren&#8217;t zeromq on the other end?</div>
+<div class="line">[Sunday 24 April 2011] [21:50:24] &lt;taotetek&gt;  dublisk: correct</div>
+<div class="line">[Sunday 24 April 2011] [21:50:38] &lt;dublisk&gt;   D&#8217;oh</div>
+<div class="line">[Sunday 24 April 2011] [21:50:52] &lt;taotetek&gt;  dublisk: you can of course write something to translate from a tcp socket to zeromq</div>
+<div class="line">[Sunday 24 April 2011] [21:51:09] &lt;taotetek&gt;  dublisk: but yeah, you can&#8217;t connect a zeromq socket and standard socket together without some glue in the middle.</div>
+<div class="line">[Sunday 24 April 2011] [21:52:11] &lt;dublisk&gt;   I was hoping I could just receive messages which would be of whatever length it captured</div>
+<div class="line">[Sunday 24 April 2011] [21:56:09] &lt;taotetek&gt;  dublisk: I do quite a bit of zeromq work with python - when I need to move data between a standard tcp connection and zeromq I usually write a little connecting piece w/ python and eventlet, works pretty well</div>
+<div class="line">[Sunday 24 April 2011] [21:56:17] &lt;taotetek&gt;  dublisk: don&#8217;t know what languages you&#8217;re working with though</div>
+<div class="line">[Sunday 24 April 2011] [21:56:31] &lt;dublisk&gt;   C++, but how do you listen to the socket?</div>
+<div class="line">[Sunday 24 April 2011] [21:57:24] &lt;taotetek&gt;  dublisk: I open a tcp port, anything that connects to that port and sends gets forwarded out a zeromq socket (breaking messages apart on n)</div>
+<div class="line">[Sunday 24 April 2011] [22:05:18] &lt;taotetek&gt;  dublisk: it&#8217;s worked as a decent stopgap while I wait for people above stream from me in our stack to convert over to zeromq</div>
+<div class="line">[Monday 25 April 2011] [00:37:00] &lt;<a href="#id817"><span class="problematic" id="id818">Taaz_</span></a>&gt;     hii iam new to it...i would love to contribute..how do i ??</div>
+<div class="line">[Monday 25 April 2011] [11:55:48] &lt;phantomcircuit&gt;    is there a binary build available for windows</div>
+<div class="line">[Monday 25 April 2011] [11:55:49] &lt;phantomcircuit&gt;    ?</div>
+<div class="line">[Monday 25 April 2011] [11:56:33] &lt;Guthur&gt;    phantomcircuit, not to my knowledge, but it&#8217;s pretty trivial to build</div>
+<div class="line">[Monday 25 April 2011] [11:56:54] &lt;Guthur&gt;    should be buildable with the express edition</div>
+<div class="line">[Monday 25 April 2011] [11:57:13] &lt;phantomcircuit&gt;    yeah i&#8217;ve gotten it built</div>
+<div class="line">[Monday 25 April 2011] [11:57:31] &lt;phantomcircuit&gt;    i cant get this to work it&#8217;ll just take some doing</div>
+<div class="line">[Monday 25 April 2011] [11:57:48] &lt;Guthur&gt;    what is the issue/</div>
+<div class="line">[Monday 25 April 2011] [11:57:49] &lt;Guthur&gt;    ?</div>
+<div class="line">[Monday 25 April 2011] [11:59:06] &lt;phantomcircuit&gt;    setup.py is trying to build a test program and is failing because it cant find a compiler</div>
+<div class="line">[Monday 25 April 2011] [11:59:13] &lt;jhawk28&gt;   phantomcircuit: they ship a windows binard as part of the pyzmq</div>
+<div class="line">[Monday 25 April 2011] [11:59:47] &lt;jhawk28&gt;   download the msi from <a class="reference external" href="https://github.com/zeromq/pyzmq/downloads">https://github.com/zeromq/pyzmq/downloads</a></div>
+<div class="line">[Monday 25 April 2011] [12:00:19] &lt;phantomcircuit&gt;    im gonna need to build php bindings also</div>
+<div class="line">[Monday 25 April 2011] [12:00:35] &lt;jhawk28&gt;   If you want to compile it yourself, download the Visual Studio 2008 Express</div>
+<div class="line">[Monday 25 April 2011] [12:01:47] &lt;jhawk28&gt;   <a class="reference external" href="http://www.microsoft.com/express/Downloads/#2008-Visual-CPP">http://www.microsoft.com/express/Downloads/#2008-Visual-CPP</a></div>
+<div class="line">[Monday 25 April 2011] [12:02:01] &lt;phantomcircuit&gt;    yeah i&#8217;ve got that and i&#8217;ve actually built libzmq.lib</div>
+<div class="line">[Monday 25 April 2011] [12:02:02] &lt;jhawk28&gt;   You can use 2010 too, but all the projects are already set up for 2008</div>
+<div class="line">[Monday 25 April 2011] [12:03:22] &lt;jhawk28&gt;   when you distribute your libraries out to the servers, you need to make sure you have the VC++ redistributables that match your compiler environment</div>
+<div class="line">[Monday 25 April 2011] [12:03:49] &lt;jhawk28&gt;   kinda like <a class="reference external" href="http://www.microsoft.com/downloads/en/details.aspx?FamilyID=9b2da534-3e03-4391-8a4d-074b9f2bc1bf&amp;displaylang=en">http://www.microsoft.com/downloads/en/details.aspx?FamilyID=9b2da534-3e03-4391-8a4d-074b9f2bc1bf&amp;displaylang=en</a></div>
+<div class="line">[Monday 25 April 2011] [12:04:03] &lt;jhawk28&gt;   there are about 3 or 4 version out there</div>
+<div class="line">[Monday 25 April 2011] [12:04:56] &lt;phantomcircuit&gt;    jhawk28, basically this is just a proof of concept, if this works i will not continue using windows servers</div>
+<div class="line">[Monday 25 April 2011] [12:05:06] &lt;phantomcircuit&gt;    this one just happens to be free</div>
+<div class="line">[Monday 25 April 2011] [12:06:45] &lt;Guthur&gt;    I did have a minor issue build the .lib file with 2010</div>
+<div class="line">[Monday 25 April 2011] [12:06:52] &lt;Guthur&gt;    the .dll was fine though</div>
+<div class="line">[Monday 25 April 2011] [12:07:03] &lt;Guthur&gt;    there is a website somewhere detailing the issue, 2 secs</div>
+<div class="line">[Monday 25 April 2011] [12:07:28] &lt;phantomcircuit&gt;    well both are built</div>
+<div class="line">[Monday 25 April 2011] [12:07:43] &lt;Guthur&gt;    <a class="reference external" href="http://www.mansysadmin.com/2011/03/using-zeromq-framework-with-visual-studio-2010-tutorial/">http://www.mansysadmin.com/2011/03/using-zeromq-framework-with-visual-studio-2010-tutorial/</a></div>
+<div class="line">[Monday 25 April 2011] [12:07:51] &lt;phantomcircuit&gt;    ah well im missing the python headers</div>
+<div class="line">[Monday 25 April 2011] [12:07:51] &lt;Guthur&gt;    possibly only a 2010 issue</div>
+<div class="line">[Monday 25 April 2011] [12:09:09] &lt;phantomcircuit&gt;    lol visual studio is so slow</div>
+<div class="line">[Monday 25 April 2011] [12:09:13] &lt;phantomcircuit&gt;    it&#8217;s like a bad joke</div>
+<div class="line">[Monday 25 April 2011] [12:09:55] &lt;Guthur&gt;    it gets even funnier when you start to ask what do you get for the slowness</div>
+<div class="line">[Monday 25 April 2011] [12:11:38] &lt;phantomcircuit&gt;    code completion</div>
+<div class="line">[Monday 25 April 2011] [12:11:39] &lt;phantomcircuit&gt;    and uh</div>
+<div class="line">[Monday 25 April 2011] [12:11:41] &lt;phantomcircuit&gt;    yeah that&#8217;s it</div>
+<div class="line">[Monday 25 April 2011] [12:12:36] &lt;jhawk28&gt;   even the code completion, people get resharper...</div>
+<div class="line">[Monday 25 April 2011] [12:13:15] &lt;Guthur&gt;    yep, it&#8217;s code completion pretty naff</div>
+<div class="line">[Monday 25 April 2011] [12:18:32] &lt;phantomcircuit&gt;    hmm ok so now how do i get php bindings</div>
+<div class="line">[Monday 25 April 2011] [12:30:35] &lt;phantomcircuit&gt;    hmm getting a php extension built is proving to be a challenge</div>
+<div class="line">[Monday 25 April 2011] [12:34:26] &lt;phantomcircuit&gt;    i take it that nobody cares</div>
+<div class="line">[Monday 25 April 2011] [12:35:39] &lt;Guthur&gt;    well now that you ask... I&#8217;ve never cared much for PHP</div>
+<div class="line">[Monday 25 April 2011] [12:37:02] &lt;phantomcircuit&gt;    i&#8217;ve got a giant application written in php, currently a long running computationally expensive part of it is run in the context of the web server with a bunch of hilarious hacks</div>
+<div class="line">[Monday 25 April 2011] [12:37:44] &lt;Guthur&gt;    there is a few PHPers about here on occasion</div>
+<div class="line">[Monday 25 April 2011] [12:38:00] &lt;phantomcircuit&gt;    i cant really rewrite the entire platform but i can use zmq to send the work requests to python daemons</div>
+<div class="line">[Monday 25 April 2011] [12:39:20] &lt;Guthur&gt;    phantomcircuit, you could try the mailing list</div>
+<div class="line">[Monday 25 April 2011] [12:39:45] &lt;Guthur&gt;    i know Ian Barber is a heavy PHP user but isn&#8217;t online at the moment</div>
+<div class="line">[Monday 25 April 2011] [12:39:53] &lt;Guthur&gt;    you might catch him on the ML</div>
+<div class="line">[Monday 25 April 2011] [12:41:38] &lt;phantomcircuit&gt;    k thanks</div>
+<div class="line">[Monday 25 April 2011] [13:31:36] &lt;mikko&gt;     phantomcircuit: what is the problem with php extension?</div>
+<div class="line">[Monday 25 April 2011] [13:32:32] &lt;phantomcircuit&gt;    i have no idea how to build it on windows</div>
+<div class="line">[Monday 25 April 2011] [13:32:40] &lt;phantomcircuit&gt;    and i dont see a prebuilt version</div>
+<div class="line">[Monday 25 April 2011] [13:33:14] &lt;mikko&gt;     have you built any other php extensions on windows?</div>
+<div class="line">[Monday 25 April 2011] [13:33:27] &lt;phantomcircuit&gt;    nope</div>
+<div class="line">[Monday 25 April 2011] [13:34:37] &lt;mikko&gt;     so i take it that you don&#8217;t have php development env setup?</div>
+<div class="line">[Monday 25 April 2011] [13:34:58] &lt;mikko&gt;     <a class="reference external" href="https://wiki.php.net/internals/windows/stepbystepbuild">https://wiki.php.net/internals/windows/stepbystepbuild</a></div>
+<div class="line">[Monday 25 April 2011] [13:36:58] &lt;phantomcircuit&gt;    mikko, even if i did i dont see any build instructions for zmq specifically</div>
+<div class="line">[Monday 25 April 2011] [13:37:35] &lt;mikko&gt;     you would build it just like any other pecl extension</div>
+<div class="line">[Monday 25 April 2011] [13:42:52] &lt;cremes&gt;    anyone working on getting 0mq to build on windows using mingw?</div>
+<div class="line">[Monday 25 April 2011] [13:45:02] &lt;mikko&gt;     cremes: it should build</div>
+<div class="line">[Monday 25 April 2011] [13:45:28] &lt;cremes&gt;    mikko: i&#8217;ll give it a try today and report any errors i see</div>
+<div class="line">[Monday 25 April 2011] [13:46:28] &lt;mikko&gt;     cremes: there is daily build on win7 using mingw32</div>
+<div class="line">[Monday 25 April 2011] [13:47:17] &lt;cremes&gt;    oh, excellent</div>
+<div class="line">[Monday 25 April 2011] [13:47:29] &lt;mikko&gt;     the windows build machine is a bit out of order atm though</div>
+<div class="line">[Monday 25 April 2011] [13:47:38] &lt;mikko&gt;     but overall mingw32 should build without problems</div>
+<div class="line">[Monday 25 April 2011] [13:47:43] &lt;mikko&gt;     pgm wont build</div>
+<div class="line">[Monday 25 April 2011] [13:47:46] &lt;mikko&gt;     openpgm*</div>
+<div class="line">[Monday 25 April 2011] [13:48:00] &lt;cremes&gt;    ok; i don&#8217;t need pgm so that isn&#8217;t a show stopper for me</div>
+<div class="line">[Monday 25 April 2011] [13:49:55] &lt;mikko&gt;     phantomcircuit: seems like my build environment still works for win</div>
+<div class="line">[Monday 25 April 2011] [13:50:06] &lt;mikko&gt;     might be able to get a build done</div>
+<div class="line">[Monday 25 April 2011] [13:52:23] &lt;mikko&gt;     phantomcircuit: <a class="reference external" href="http://valokuva.org/builds/ext/vc9/nts/zmq/2011-04-25_1849/php_zmq_nts.dll">http://valokuva.org/builds/ext/vc9/nts/zmq/2011-04-25_1849/php_zmq_nts.dll</a> / <a class="reference external" href="http://valokuva.org/builds/ext/vc9/ts/zmq/2011-04-25_1849/php_zmq_ts.dll">http://valokuva.org/builds/ext/vc9/ts/zmq/2011-04-25_1849/php_zmq_ts.dll</a></div>
 </div>
 </div>
 
