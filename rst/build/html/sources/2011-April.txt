@@ -5557,3 +5557,100 @@
 | [Saturday 23 April 2011] [08:16:11] <sustrik>	i mean using ZMQ_SNDMORE and ZMQ_RCVMORE
 | [Saturday 23 April 2011] [08:16:43] <sustrik>	it works with zmq_send, zmq_sendmsg, zmq_recv and zmq_recvmsg
 | [Saturday 23 April 2011] [23:52:28] <siggimoo>	anyone ever have any trouble with zeromq inside of a mod_wsgi script?
+| [Sunday 24 April 2011] [14:16:18] <andrewvc>	cremes: around?
+| [Sunday 24 April 2011] [17:10:07] <nodie>	hi
+| [Sunday 24 April 2011] [17:10:32] <nodie>	I suppose I can extract that information by reading the sources, but it's sunday and nearly time to go to bed
+| [Sunday 24 April 2011] [17:10:47] <nodie>	when I configure a socket with SUBSCRIBE
+| [Sunday 24 April 2011] [17:11:14] <nodie>	does the filtering occur at client level or at server level in a PUB/SUB connection?
+| [Sunday 24 April 2011] [17:21:35] <Guthur>	nodie, client
+| [Sunday 24 April 2011] [17:22:05] <Guthur>	server side subscription is a oft requested feature and may appear in the futur
+| [Sunday 24 April 2011] [17:22:08] <Guthur>	future*
+| [Sunday 24 April 2011] [18:10:46] <nodie>	thank you Guthur  
+| [Sunday 24 April 2011] [18:43:13] <andrewvc>	hi guys, I've got this bug where I get a 'resource temporarily unavailable' error message when trying to send a message on xreq over TCP to a non-existant socket
+| [Sunday 24 April 2011] [18:43:19] <andrewvc>	if I start up the listening xrep first
+| [Sunday 24 April 2011] [18:43:21] <andrewvc>	no issues
+| [Sunday 24 April 2011] [18:43:30] <andrewvc>	this only happens if I send a delimiter string
+| [Sunday 24 April 2011] [18:47:48] <andrewvc>	so, it appears to happen only when I bind with the xreq
+| [Sunday 24 April 2011] [20:49:23] <phantomcircuit_>	hello, so reading the documentation it strikes me that the pull/push mechanism results in pull sockets having local queueing
+| [Sunday 24 April 2011] [20:49:54] <phantomcircuit_>	that seems like an odd decision
+| [Sunday 24 April 2011] [21:35:57] <dublisk>	Hi, zeromq will only work with itself right? I can't use it to read from sockets that aren't zeromq on the other end?
+| [Sunday 24 April 2011] [21:50:24] <taotetek>	dublisk: correct
+| [Sunday 24 April 2011] [21:50:38] <dublisk>	D'oh
+| [Sunday 24 April 2011] [21:50:52] <taotetek>	dublisk: you can of course write something to translate from a tcp socket to zeromq
+| [Sunday 24 April 2011] [21:51:09] <taotetek>	dublisk: but yeah, you can't connect a zeromq socket and standard socket together without some glue in the middle.
+| [Sunday 24 April 2011] [21:52:11] <dublisk>	I was hoping I could just receive messages which would be of whatever length it captured
+| [Sunday 24 April 2011] [21:56:09] <taotetek>	dublisk: I do quite a bit of zeromq work with python - when I need to move data between a standard tcp connection and zeromq I usually write a little connecting piece w/ python and eventlet, works pretty well
+| [Sunday 24 April 2011] [21:56:17] <taotetek>	dublisk: don't know what languages you're working with though
+| [Sunday 24 April 2011] [21:56:31] <dublisk>	C++, but how do you listen to the socket?
+| [Sunday 24 April 2011] [21:57:24] <taotetek>	dublisk: I open a tcp port, anything that connects to that port and sends gets forwarded out a zeromq socket (breaking messages apart on \n)
+| [Sunday 24 April 2011] [22:05:18] <taotetek>	dublisk: it's worked as a decent stopgap while I wait for people above stream from me in our stack to convert over to zeromq
+| [Monday 25 April 2011] [00:37:00] <Taaz_>	hii iam new to it...i would love to contribute..how do i ??
+| [Monday 25 April 2011] [11:55:48] <phantomcircuit>	is there a binary build available for windows
+| [Monday 25 April 2011] [11:55:49] <phantomcircuit>	?
+| [Monday 25 April 2011] [11:56:33] <Guthur>	phantomcircuit, not to my knowledge, but it's pretty trivial to build
+| [Monday 25 April 2011] [11:56:54] <Guthur>	should be buildable with the express edition
+| [Monday 25 April 2011] [11:57:13] <phantomcircuit>	yeah i've gotten it built
+| [Monday 25 April 2011] [11:57:31] <phantomcircuit>	i cant get this to work it'll just take some doing
+| [Monday 25 April 2011] [11:57:48] <Guthur>	what is the issue/
+| [Monday 25 April 2011] [11:57:49] <Guthur>	?
+| [Monday 25 April 2011] [11:59:06] <phantomcircuit>	setup.py is trying to build a test program and is failing because it cant find a compiler
+| [Monday 25 April 2011] [11:59:13] <jhawk28>	phantomcircuit: they ship a windows binard as part of the pyzmq
+| [Monday 25 April 2011] [11:59:47] <jhawk28>	download the msi from https://github.com/zeromq/pyzmq/downloads
+| [Monday 25 April 2011] [12:00:19] <phantomcircuit>	im gonna need to build php bindings also
+| [Monday 25 April 2011] [12:00:35] <jhawk28>	If you want to compile it yourself, download the Visual Studio 2008 Express
+| [Monday 25 April 2011] [12:01:47] <jhawk28>	http://www.microsoft.com/express/Downloads/#2008-Visual-CPP
+| [Monday 25 April 2011] [12:02:01] <phantomcircuit>	yeah i've got that and i've actually built libzmq.lib
+| [Monday 25 April 2011] [12:02:02] <jhawk28>	You can use 2010 too, but all the projects are already set up for 2008
+| [Monday 25 April 2011] [12:03:22] <jhawk28>	when you distribute your libraries out to the servers, you need to make sure you have the VC++ redistributables that match your compiler environment
+| [Monday 25 April 2011] [12:03:49] <jhawk28>	kinda like http://www.microsoft.com/downloads/en/details.aspx?FamilyID=9b2da534-3e03-4391-8a4d-074b9f2bc1bf&displaylang=en
+| [Monday 25 April 2011] [12:04:03] <jhawk28>	there are about 3 or 4 version out there
+| [Monday 25 April 2011] [12:04:56] <phantomcircuit>	jhawk28, basically this is just a proof of concept, if this works i will not continue using windows servers
+| [Monday 25 April 2011] [12:05:06] <phantomcircuit>	this one just happens to be free
+| [Monday 25 April 2011] [12:06:45] <Guthur>	I did have a minor issue build the .lib file with 2010
+| [Monday 25 April 2011] [12:06:52] <Guthur>	the .dll was fine though
+| [Monday 25 April 2011] [12:07:03] <Guthur>	there is a website somewhere detailing the issue, 2 secs
+| [Monday 25 April 2011] [12:07:28] <phantomcircuit>	well both are built
+| [Monday 25 April 2011] [12:07:43] <Guthur>	http://www.mansysadmin.com/2011/03/using-zeromq-framework-with-visual-studio-2010-tutorial/
+| [Monday 25 April 2011] [12:07:51] <phantomcircuit>	ah well im missing the python headers
+| [Monday 25 April 2011] [12:07:51] <Guthur>	possibly only a 2010 issue
+| [Monday 25 April 2011] [12:09:09] <phantomcircuit>	lol visual studio is so slow
+| [Monday 25 April 2011] [12:09:13] <phantomcircuit>	it's like a bad joke
+| [Monday 25 April 2011] [12:09:55] <Guthur>	it gets even funnier when you start to ask what do you get for the slowness
+| [Monday 25 April 2011] [12:11:38] <phantomcircuit>	code completion 
+| [Monday 25 April 2011] [12:11:39] <phantomcircuit>	and uh
+| [Monday 25 April 2011] [12:11:41] <phantomcircuit>	yeah that's it
+| [Monday 25 April 2011] [12:12:36] <jhawk28>	even the code completion, people get resharper...
+| [Monday 25 April 2011] [12:13:15] <Guthur>	yep, it's code completion pretty naff
+| [Monday 25 April 2011] [12:18:32] <phantomcircuit>	hmm ok so now how do i get php bindings
+| [Monday 25 April 2011] [12:30:35] <phantomcircuit>	hmm getting a php extension built is proving to be a challenge
+| [Monday 25 April 2011] [12:34:26] <phantomcircuit>	i take it that nobody cares
+| [Monday 25 April 2011] [12:35:39] <Guthur>	well now that you ask... I've never cared much for PHP
+| [Monday 25 April 2011] [12:37:02] <phantomcircuit>	i've got a giant application written in php, currently a long running computationally expensive part of it is run in the context of the web server with a bunch of hilarious hacks
+| [Monday 25 April 2011] [12:37:44] <Guthur>	there is a few PHPers about here on occasion
+| [Monday 25 April 2011] [12:38:00] <phantomcircuit>	i cant really rewrite the entire platform but i can use zmq to send the work requests to python daemons
+| [Monday 25 April 2011] [12:39:20] <Guthur>	phantomcircuit, you could try the mailing list
+| [Monday 25 April 2011] [12:39:45] <Guthur>	i know Ian Barber is a heavy PHP user but isn't online at the moment
+| [Monday 25 April 2011] [12:39:53] <Guthur>	you might catch him on the ML
+| [Monday 25 April 2011] [12:41:38] <phantomcircuit>	k thanks
+| [Monday 25 April 2011] [13:31:36] <mikko>	phantomcircuit: what is the problem with php extension?
+| [Monday 25 April 2011] [13:32:32] <phantomcircuit>	i have no idea how to build it on windows
+| [Monday 25 April 2011] [13:32:40] <phantomcircuit>	and i dont see a prebuilt version
+| [Monday 25 April 2011] [13:33:14] <mikko>	have you built any other php extensions on windows?
+| [Monday 25 April 2011] [13:33:27] <phantomcircuit>	nope
+| [Monday 25 April 2011] [13:34:37] <mikko>	so i take it that you don't have php development env setup?
+| [Monday 25 April 2011] [13:34:58] <mikko>	https://wiki.php.net/internals/windows/stepbystepbuild
+| [Monday 25 April 2011] [13:36:58] <phantomcircuit>	mikko, even if i did i dont see any build instructions for zmq specifically
+| [Monday 25 April 2011] [13:37:35] <mikko>	you would build it just like any other pecl extension
+| [Monday 25 April 2011] [13:42:52] <cremes>	anyone working on getting 0mq to build on windows using mingw?
+| [Monday 25 April 2011] [13:45:02] <mikko>	cremes: it should build
+| [Monday 25 April 2011] [13:45:28] <cremes>	mikko: i'll give it a try today and report any errors i see
+| [Monday 25 April 2011] [13:46:28] <mikko>	cremes: there is daily build on win7 using mingw32
+| [Monday 25 April 2011] [13:47:17] <cremes>	oh, excellent
+| [Monday 25 April 2011] [13:47:29] <mikko>	the windows build machine is a bit out of order atm though
+| [Monday 25 April 2011] [13:47:38] <mikko>	but overall mingw32 should build without problems
+| [Monday 25 April 2011] [13:47:43] <mikko>	pgm wont build
+| [Monday 25 April 2011] [13:47:46] <mikko>	openpgm*
+| [Monday 25 April 2011] [13:48:00] <cremes>	ok; i don't need pgm so that isn't a show stopper for me
+| [Monday 25 April 2011] [13:49:55] <mikko>	phantomcircuit: seems like my build environment still works for win
+| [Monday 25 April 2011] [13:50:06] <mikko>	might be able to get a build done 
+| [Monday 25 April 2011] [13:52:23] <mikko>	phantomcircuit: http://valokuva.org/builds/ext/vc9/nts/zmq/2011-04-25_1849/php_zmq_nts.dll / http://valokuva.org/builds/ext/vc9/ts/zmq/2011-04-25_1849/php_zmq_ts.dll
