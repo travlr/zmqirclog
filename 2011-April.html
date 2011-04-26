@@ -5699,6 +5699,60 @@
 <div class="line">[Monday 25 April 2011] [13:49:55] &lt;mikko&gt;     phantomcircuit: seems like my build environment still works for win</div>
 <div class="line">[Monday 25 April 2011] [13:50:06] &lt;mikko&gt;     might be able to get a build done</div>
 <div class="line">[Monday 25 April 2011] [13:52:23] &lt;mikko&gt;     phantomcircuit: <a class="reference external" href="http://valokuva.org/builds/ext/vc9/nts/zmq/2011-04-25_1849/php_zmq_nts.dll">http://valokuva.org/builds/ext/vc9/nts/zmq/2011-04-25_1849/php_zmq_nts.dll</a> / <a class="reference external" href="http://valokuva.org/builds/ext/vc9/ts/zmq/2011-04-25_1849/php_zmq_ts.dll">http://valokuva.org/builds/ext/vc9/ts/zmq/2011-04-25_1849/php_zmq_ts.dll</a></div>
+<div class="line">[Monday 25 April 2011] [15:43:00] &lt;jhawk28&gt;   any iMatix people on?</div>
+<div class="line">[Monday 25 April 2011] [15:45:22] &lt;jhawk28&gt;   pieterh</div>
+<div class="line">[Monday 25 April 2011] [15:45:31] &lt;jhawk28&gt;   pieterh: are you there?</div>
+<div class="line">[Monday 25 April 2011] [15:50:22] &lt;jhawk28&gt;   mato: you there?</div>
+<div class="line">[Monday 25 April 2011] [15:53:32] &lt;cremes&gt;    jhawk28: if you have a general question about 0mq, go ahead and ask it</div>
+<div class="line">[Monday 25 April 2011] [15:53:40] &lt;cremes&gt;    there are a bunch of knowledgeable folks in the channel</div>
+<div class="line">[Monday 25 April 2011] [15:53:54] &lt;jhawk28&gt;   cremes: its releated to the OpenAMQ JMS client</div>
+<div class="line">[Monday 25 April 2011] [15:54:16] &lt;cremes&gt;    ask anyway; maybe a lurker has an answer for you</div>
+<div class="line">[Monday 25 April 2011] [15:58:36] &lt;jhawk28&gt;   my management has &#8220;dictated&#8221; that we must use JMS</div>
+<div class="line">[Monday 25 April 2011] [15:59:26] &lt;jhawk28&gt;   based on my research, it looks like the qpid amqp driver does not interoperate with RabbitMQ based on a &#8220;disagreement&#8221; in the spec</div>
+<div class="line">[Monday 25 April 2011] [15:59:39] &lt;jhawk28&gt;   the other option is the openamq-jms</div>
+<div class="line">[Monday 25 April 2011] [16:00:29] &lt;jhawk28&gt;   LShift looks to have got it running based on <a class="reference external" href="http://www.lshift.net/blog/2009/03/16/openamqs-jms-client-with-rabbitmq-server">http://www.lshift.net/blog/2009/03/16/openamqs-jms-client-with-rabbitmq-server</a></div>
+<div class="line">[Monday 25 April 2011] [16:01:18] &lt;jhawk28&gt;   no more chatter can be seen on the subject</div>
+<div class="line">[Monday 25 April 2011] [16:01:37] &lt;jhawk28&gt;   no more commits have been made to the project: <a class="reference external" href="https://github.com/imatix/openamq-jms">https://github.com/imatix/openamq-jms</a></div>
+<div class="line">[Monday 25 April 2011] [16:01:55] &lt;jhawk28&gt;   is it dead or just so stable it hasn&#8217;t needed updates?</div>
+<div class="line">[Monday 25 April 2011] [16:03:14] &lt;mato&gt;      jhawk28: yes?</div>
+<div class="line">[Monday 25 April 2011] [16:03:50] &lt;mato&gt;      jhawk28: ah, openamq-jms</div>
+<div class="line">[Monday 25 April 2011] [16:04:01] &lt;mato&gt;      jhawk28: it&#8217;s basically dead</div>
+<div class="line">[Monday 25 April 2011] [16:05:58] &lt;jhawk28&gt;   I hate enterprise products</div>
+<div class="line">[Monday 25 April 2011] [16:06:44] &lt;mato&gt;      :-)</div>
+<div class="line">[Monday 25 April 2011] [16:06:54] &lt;jhawk28&gt;   JMS is so verbose</div>
+<div class="line">[Monday 25 April 2011] [16:07:16] &lt;jhawk28&gt;   but yet doen&#8217;t really have good error messages on what actually went wrong</div>
+<div class="line">[Monday 25 April 2011] [16:10:13] &lt;mato&gt;      convince your management to use zeromq :-)</div>
+<div class="line">[Monday 25 April 2011] [16:11:00] &lt;jhawk28&gt;   we are</div>
+<div class="line">[Monday 25 April 2011] [16:11:13] &lt;jhawk28&gt;   need a durable queue for some more enterprisey things</div>
+<div class="line">[Monday 25 April 2011] [16:11:39] &lt;jhawk28&gt;   slower peformance, etc</div>
+<div class="line">[Monday 25 April 2011] [16:12:14] &lt;jhawk28&gt;   of course, I&#8217;m getting to the point where the JNA is biting us</div>
+<div class="line">[Monday 25 April 2011] [16:12:42] &lt;mato&gt;      well, you could always roll your own on top of 0mq</div>
+<div class="line">[Monday 25 April 2011] [16:12:57] &lt;jhawk28&gt;   thought about it</div>
+<div class="line">[Monday 25 April 2011] [16:13:27] &lt;jhawk28&gt;   thinking I&#8217;ll pursue writing a Java impl of 0mq first so that it can run in the &#8220;Enterprise Containers&#8221;</div>
+<div class="line">[Monday 25 April 2011] [16:15:33] &lt;jhawk28&gt;   I&#8217;m sure that it will be a pain since it doesn&#8217;t look like the wire format is documented well</div>
+<div class="line">[Monday 25 April 2011] [16:15:57] &lt;jhawk28&gt;   but, it would be really nice to just have a Java library</div>
+<div class="line">[Monday 25 April 2011] [16:20:53] &lt;mato&gt;      jhawk28: is there a particular reason why you can&#8217;t just use the 0mq Java API?</div>
+<div class="line">[Monday 25 April 2011] [16:21:48] &lt;mato&gt;      jhawk28: you really really don&#8217;t want to go writing your own implementation, the 0mq protocols (especially the underlying semantics) are still too raw and unstable</div>
+<div class="line">[Monday 25 April 2011] [16:23:21] &lt;jhawk28&gt;   mato: in many things, the 0mq Java API is fine. Once you try using it in crappy enterprise products like JBoss, the Threading model conflicts and things like EJB&#8217;s forbid using JNA</div>
+<div class="line">[Monday 25 April 2011] [16:23:40] &lt;mato&gt;      jhawk28: JNA? you mean JNI?</div>
+<div class="line">[Monday 25 April 2011] [16:23:51] &lt;jhawk28&gt;   oops, yes, JNI</div>
+<div class="line">[Monday 25 April 2011] [16:24:29] &lt;mato&gt;      jhawk28: is there anything that can be done on the jzmq side of things to help use in your conditions?</div>
+<div class="line">[Monday 25 April 2011] [16:26:05] &lt;jhawk28&gt;   2 approaches that I can think to fix the issue - write a remoting wrapper so the JNI can live outside the container, write a native Java impl of 0mq so that it can live inside the container</div>
+<div class="line">[Monday 25 April 2011] [16:26:58] &lt;mato&gt;      i would recommend the former if it&#8217;s not too hard</div>
+<div class="line">[Monday 25 April 2011] [16:27:16] &lt;jhawk28&gt;   that would be my quick and dirty first pass</div>
+<div class="line">[Monday 25 April 2011] [16:27:26] &lt;jhawk28&gt;   since it wouldnt take too long to get up and running</div>
+<div class="line">[Monday 25 April 2011] [16:28:42] &lt;jhawk28&gt;   I know there are some developments on the 0mq side that may fix the issue too like adding it to the posix spec</div>
+<div class="line">[Monday 25 April 2011] [16:29:07] &lt;mato&gt;      jhawk28: well, yes, a kernel-mode implementation of 0mq would make your problem go away</div>
+<div class="line">[Monday 25 April 2011] [16:29:15] &lt;mato&gt;      jhawk28: but that is still a long way away</div>
+<div class="line">[Monday 25 April 2011] [16:29:53] &lt;jhawk28&gt;   agreed, these things take time</div>
+<div class="line">[Monday 25 April 2011] [21:49:44] &lt;hhummel&gt;   I just wandered in.  I&#8217;m having trouble installing zeromq on fedora.  Is there a particular directory I should unpack into so that the linker can find the libraries?</div>
+<div class="line">[Monday 25 April 2011] [22:16:10] &lt;hhummel&gt;   I&#8217;m having trouble linking a simple c++ &#8220;hello world&#8221; app.  I know I&#8217;m supposed to be linking to .lib files, but I don&#8217;t see them.  Can anyone help?  I&#8217;m using C++ on Fedora 13.</div>
+<div class="line">[Monday 25 April 2011] [23:41:17] &lt;Dantman&gt;   Anyone got tips for solving an UnsatisfiedLinkError for the jzmq library... even though everything seams to be in order...</div>
+<div class="line">[Monday 25 April 2011] [23:42:41] &lt;Dantman&gt;   java.library.path is /usr/local/lib, double checked that... That dir contains libjzmq.{a,la,so,so.0,so.0.0.0}, libzmq.{a,la,so,so.1,so.1.0.0}</div>
+<div class="line">[Monday 25 April 2011] [23:50:55] &lt;Dantman&gt;   Anyone compiled jzmq on 64bit linux?</div>
+<div class="line">[Tuesday 26 April 2011] [00:51:43] &lt;phantomcircuit&gt;   Dantman, i&#8217;ve been trying to build php-zmq pretty much all day</div>
+<div class="line">[Tuesday 26 April 2011] [03:28:34] &lt;djc&gt;      pieterh: is there a reason 2.1.5.1 isn&#8217;t out yet?</div>
+<div class="line">[Tuesday 26 April 2011] [04:47:02] &lt;drbobbeaty&gt;       pieterh: any news on the revised 2.1.5.1 (2.1.6?) release? With all the nice fixes I&#8217;ve seen in the mailing list, it&#8217;d be nice to see them in a 2.1.x release. Along with the other fixes, of course. Just curious if you had an estimate yet.</div>
 </div>
 </div>
 
