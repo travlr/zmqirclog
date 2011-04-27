@@ -17,28 +17,6 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   2010-March
-   2010-April
-   2010-May
-   2010-June
-   2010-July
-   2010-August
-   2010-September
-   2010-October
-   2010-November
-   2010-September
-   2010-November
-   2011-December
-   2011-January
-   2011-February
-   2010-March
-   2011-August
-   2010-March
-   2011-December
-   2011-March
-   2011-April
-
-
 Indices and tables
 ==================
 
