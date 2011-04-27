@@ -172,7 +172,8 @@ void ZmqIrcLog::moveMonthlyToRstSrc()
             newRstFile.write(lines.join("\n").toLocal8Bit());
             newRstFile.close();
             // add new Rst file to toc list
-            m_newTocTitles.append(alteredFileName);
+            if (!m_newTocTitles.contains(alteredFileName))
+                m_newTocTitles.append(alteredFileName);
         }
         else {
             // append the new lines to the old rst file
