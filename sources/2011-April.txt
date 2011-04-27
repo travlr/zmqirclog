@@ -5708,3 +5708,557 @@
 | [Tuesday 26 April 2011] [00:51:43] <phantomcircuit>	Dantman, i've been trying to build php-zmq pretty much all day
 | [Tuesday 26 April 2011] [03:28:34] <djc>	pieterh: is there a reason 2.1.5.1 isn't out yet?
 | [Tuesday 26 April 2011] [04:47:02] <drbobbeaty>	pieterh: any news on the revised 2.1.5.1 (2.1.6?) release? With all the nice fixes I've seen in the mailing list, it'd be nice to see them in a 2.1.x release. Along with the other fixes, of course. Just curious if you had an estimate yet.
+| [Tuesday 26 April 2011] [07:55:41] <pieterh>	re
+| [Tuesday 26 April 2011] [07:56:00] <pieterh>	djc: no reason except it was lovely weather and holidays
+| [Tuesday 26 April 2011] [07:56:11] <pieterh>	... will make the 2.1.5.1 release later today
+| [Tuesday 26 April 2011] [07:57:11] <pieterh>	drbobbeaty: I've one patch to apply, but that will mean delaying the 2.1.5.1 release by a day or two
+| [Tuesday 26 April 2011] [07:57:45] <drbobbeaty>	pieterh: thanks for letting me know. Very much appreciated.
+| [Tuesday 26 April 2011] [08:41:57] <mato>	pieterh: why the extra .1 ?
+| [Tuesday 26 April 2011] [09:05:34] <toni>	hi there. I m using pyzmq. Theres a method socket.send_pyobj(obj) which serializes the object and a socket.recv_pyobj(). Is there also something like socket.send_pyobj_multipart when explicit addressing is required? or does sending/receiving of objects only target on socket which do not use envelopes?
+| [Tuesday 26 April 2011] [09:06:26] <guido_g>	simple message, no routing, no multipart
+| [Tuesday 26 April 2011] [09:07:11] <mato>	send_pyobj() is simple code though, so you could always reimplement it yourself if you want to do multipart
+| [Tuesday 26 April 2011] [09:08:33] <toni>	ok, thanks... 
+| [Tuesday 26 April 2011] [09:10:18] <toni>	mato: do you know where the code for send_pyobj lives?
+| [Tuesday 26 April 2011] [09:11:33] <mato>	toni: hang on, they've moved things around since i last looked
+| [Tuesday 26 April 2011] [09:11:47] <guido_g>	https://github.com/zeromq/pyzmq/blob/master/zmq/core/socket.pyx
+| [Tuesday 26 April 2011] [09:11:56] <toni>	thanks!
+| [Tuesday 26 April 2011] [09:12:11] <mato>	that's the one...
+| [Tuesday 26 April 2011] [09:26:05] <pieterh>	mato: hi
+| [Tuesday 26 April 2011] [09:26:21] <pieterh>	you missed something that passes for excitement in this little community
+| [Tuesday 26 April 2011] [09:30:36] <pieterh>	http://lists.zeromq.org/pipermail/zeromq-dev/2011-April/010638.html
+| [Tuesday 26 April 2011] [09:31:05] <pieterh>	if you have a better suggestion than sticking an extra '.1' at the end, let me know asap
+| [Tuesday 26 April 2011] [09:31:30] <pieterh>	this was kind of the consensus solution here on IRC
+| [Tuesday 26 April 2011] [09:32:54] <pieterh>	mato: ping
+| [Tuesday 26 April 2011] [09:42:18] <hhummel>	Hi folks.  Thanks for making this terrific product!  I know this is a newbie question, but I can't figure it out.  I'm trying to get started building a stripped down app, and am getting errors that indicate that I'm not linking in the library.  How do I do that using g++ on Fedora?  I'm trying:  [harry@mars zeromq]$ g++ -Wall -L /usr/include/zeromq-2.1.4/src/.libs client2.cpp  but it doesn't help.  Can anyone help?
+| [Tuesday 26 April 2011] [09:43:47] <NikolaVeber>	have you tried -lzmq ?
+| [Tuesday 26 April 2011] [09:45:07] <hhummel>	Wow, that worked!  What is -lzmq?
+| [Tuesday 26 April 2011] [09:45:55] <NikolaVeber>	parameter telling g++ to use the 0mq library installed systemwide
+| [Tuesday 26 April 2011] [09:46:25] <NikolaVeber>	you can probably remove the -L part completely
+| [Tuesday 26 April 2011] [09:46:38] <NikolaVeber>	gcc -lzmq source.cpp
+| [Tuesday 26 April 2011] [09:48:00] <hhummel>	That does the trick, thanks.  I assume -lzmp is somehow introduced as part of the build process?
+| [Tuesday 26 April 2011] [09:49:09] <NikolaVeber>	it links to the installed zmq libraries
+| [Tuesday 26 April 2011] [09:49:27] <hhummel>	I really appreciate the hand.  Thanks!
+| [Tuesday 26 April 2011] [09:50:54] <NikolaVeber>	np :)
+| [Tuesday 26 April 2011] [10:11:24] <mato>	pieterh: yes?
+| [Tuesday 26 April 2011] [10:11:41] <pieterh>	mato: reason for the extra .1...
+| [Tuesday 26 April 2011] [10:11:47] <mato>	pieterh: will look at it in a sec, thx for pointer
+| [Tuesday 26 April 2011] [10:12:01] <pieterh>	ok, no hurry... would like to release 2.1.5 today but we have time
+| [Tuesday 26 April 2011] [10:12:40] <pieterh>	btw czmq is a much nicer name, thanks for insisting
+| [Tuesday 26 April 2011] [10:12:46] <CIA-75>	jzmq: 03Gonzalo Diethelm 07master * rb5037aa 10/ (src/Socket.cpp src/org/zeromq/ZMQ.java): (log message trimmed)
+| [Tuesday 26 April 2011] [10:12:47] <CIA-75>	jzmq: Added support for 0MQ 3.0. Everything should still work with previous
+| [Tuesday 26 April 2011] [10:12:47] <CIA-75>	jzmq: versions of 0MQ. Changes were:
+| [Tuesday 26 April 2011] [10:12:47] <CIA-75>	jzmq: 1. Added all missing socket options.
+| [Tuesday 26 April 2011] [10:12:47] <CIA-75>	jzmq: 2. Use zmq_sendmsg() and zmq_recvmsg().
+| [Tuesday 26 April 2011] [10:12:47] <CIA-75>	jzmq: 3. Added DONTWAIT as synonym of NOBLOCK.
+| [Tuesday 26 April 2011] [10:12:48] <CIA-75>	jzmq: Could use a lot of testing with different versions of the 0MQ library,
+| [Tuesday 26 April 2011] [10:13:30] <mato>	pieterh: i'd just call it 2.1.6 and ignore 2.1.5
+| [Tuesday 26 April 2011] [10:13:42] <pieterh>	mato: if you're happy with that, it's much easier for me
+| [Tuesday 26 April 2011] [10:13:49] <mato>	pieterh: yes, i'm happy with that
+| [Tuesday 26 April 2011] [10:14:10] <mato>	normal procedure, i've seen it elsewhere
+| [Tuesday 26 April 2011] [10:14:12] <pieterh>	ok, so I can apply the patch martin sent today, and I'll mark 2.1.5 as "broken"
+| [Tuesday 26 April 2011] [10:14:21] <mato>	yes
+| [Tuesday 26 April 2011] [10:14:35] <pieterh>	nice to have you back
+| [Tuesday 26 April 2011] [10:14:55] <mato>	ja, looks like i'll be more active in zmq again
+| [Tuesday 26 April 2011] [10:15:19] <mato>	also time to do some work after lots of holidays
+| [Tuesday 26 April 2011] [10:15:29] <pieterh>	I will probably be less involved after the summer
+| [Tuesday 26 April 2011] [10:15:30] <mato>	btw saying that i arrive late to threads is a bit unfair :)
+| [Tuesday 26 April 2011] [10:15:38] <pieterh>	well, it's kind of a pattern... :)
+| [Tuesday 26 April 2011] [10:15:41] <mato>	it was only 5 days, *and* i was on a boat in the med
+| [Tuesday 26 April 2011] [10:15:47] <pieterh>	diaf
+| [Tuesday 26 April 2011] [10:15:52] <pieterh>	on a boat in the med... 
+| [Tuesday 26 April 2011] [10:16:07] <mato>	plus, referring to irc discussions is about the same as saying "we discussed it over beer last night, you weren't there" :-)
+| [Tuesday 26 April 2011] [10:16:33] <pieterh>	mato: sincerely, this is how it goes, we have an issue, we discuss on email and irc, and move quickly to a solution
+| [Tuesday 26 April 2011] [10:16:36] <mato>	yeah, did a circumnavigation of corsica
+| [Tuesday 26 April 2011] [10:16:49] <mato>	pieterh: there's no "hurry" :)
+| [Tuesday 26 April 2011] [10:16:59] <pieterh>	mato: IMO there is a hurry, yes
+| [Tuesday 26 April 2011] [10:17:08] <mato>	anyway, nice we came to a good conclusion
+| [Tuesday 26 April 2011] [10:17:13] <pieterh>	but mainly it's more efficient to make two, three fast cycles than one slow one
+| [Tuesday 26 April 2011] [10:17:38] <mato>	sure, but there is no hurry regarding ZAPI i mean
+| [Tuesday 26 April 2011] [10:17:56] <pieterh>	there is a hurry
+| [Tuesday 26 April 2011] [10:18:08] <pieterh>	I've been struggling with an undocumented ad-hoc API in the Guide for half a year
+| [Tuesday 26 April 2011] [10:18:19] <pieterh>	it's an unavoidable problem
+| [Tuesday 26 April 2011] [10:18:35] <pieterh>	and everyone who learns & translates zhelpers is getting trapped
+| [Tuesday 26 April 2011] [10:18:42] <mato>	well, C *is* a low-level language...
+| [Tuesday 26 April 2011] [10:18:46] <pieterh>	not really
+| [Tuesday 26 April 2011] [10:19:02] <pieterh>	i can write full *complex* apps in a few hundred lines of code
+| [Tuesday 26 April 2011] [10:19:14] <pieterh>	it's all about sensible abstractions
+| [Tuesday 26 April 2011] [10:19:19] <mato>	yes, but you invent your own object & type/container system on top of C
+| [Tuesday 26 April 2011] [10:19:23] <mato>	this is a common pattern
+| [Tuesday 26 April 2011] [10:19:30] <mato>	most substantial C project do that
+| [Tuesday 26 April 2011] [10:19:42] <pieterh>	so, if we don't offer a reusable set of classes, people will reinvent their own
+| [Tuesday 26 April 2011] [10:19:48] <mato>	which is *fine*
+| [Tuesday 26 April 2011] [10:19:50] <pieterh>	i'd like to see more consistency between bindings
+| [Tuesday 26 April 2011] [10:19:59] <pieterh>	it's important for human portabilty
+| [Tuesday 26 April 2011] [10:20:03] <pieterh>	*portability
+| [Tuesday 26 April 2011] [10:20:09] <pieterh>	e.g. how to set a socket option
+| [Tuesday 26 April 2011] [10:20:24] <mato>	this is exactly my point; we are not out here to give people a C object/type/portability API
+| [Tuesday 26 April 2011] [10:20:45] <pieterh>	well, the C API is just one of many but it is my gift, yes
+| [Tuesday 26 April 2011] [10:20:50] <mato>	yeah, but you see my point
+| [Tuesday 26 April 2011] [10:21:02] <pieterh>	let's say it gives me the authority to speak as a binding author
+| [Tuesday 26 April 2011] [10:21:12] <pieterh>	I know what my users (who happen to be me) need
+| [Tuesday 26 April 2011] [10:21:20] <pieterh>	(but not only me, even now)
+| [Tuesday 26 April 2011] [10:21:25] <mato>	sure
+| [Tuesday 26 April 2011] [10:21:39] <mato>	but you see the difference between what you're building and what the native API is there for
+| [Tuesday 26 April 2011] [10:21:42] <mato>	right?
+| [Tuesday 26 April 2011] [10:21:47] <pieterh>	have you seen the wiki page now?
+| [Tuesday 26 April 2011] [10:21:56] <pieterh>	I wanted your review of that, I think it's getting much better
+| [Tuesday 26 April 2011] [10:22:10] <mato>	hang on, doing multiple things at once
+| [Tuesday 26 April 2011] [10:22:26] <pieterh>	this layering is essential, subtle
+| [Tuesday 26 April 2011] [10:24:32] <mato>	well, i kind of see where you're going, libzmq + stuff = zeromq distribution
+| [Tuesday 26 April 2011] [10:24:37] <pieterh>	ja
+| [Tuesday 26 April 2011] [10:24:44] <pieterh>	this is what the user needs
+| [Tuesday 26 April 2011] [10:24:45] <mato>	however that's not the case right now
+| [Tuesday 26 April 2011] [10:24:56] <mato>	people equate libzmq with zeromq
+| [Tuesday 26 April 2011] [10:25:03] <pieterh>	one step at a time... it's enormously hard to get this kind of change
+| [Tuesday 26 April 2011] [10:25:04] <mato>	i'd be happier calling the distribution something else
+| [Tuesday 26 April 2011] [10:25:06] <mato>	in fact
+| [Tuesday 26 April 2011] [10:25:18] <mato>	that's a business opportunity hiding for you
+| [Tuesday 26 April 2011] [10:25:21] <mato>	standard stuff
+| [Tuesday 26 April 2011] [10:25:25] 	 * pieterh is not interested in that
+| [Tuesday 26 April 2011] [10:25:40] <pieterh>	the key is here is (1) community, (2) community, and (3) community
+| [Tuesday 26 April 2011] [10:25:56] <pieterh>	"zeromq = libzmq" is bad for the community
+| [Tuesday 26 April 2011] [10:26:13] <pieterh>	I think that's self-evident
+| [Tuesday 26 April 2011] [10:26:17] <mato>	why?
+| [Tuesday 26 April 2011] [10:26:38] <pieterh>	you really don't see?
+| [Tuesday 26 April 2011] [10:26:44] <mato>	i'd like your view
+| [Tuesday 26 April 2011] [10:26:56] <pieterh>	because it excludes about 90% of potential and actual contributors to what you call "zeromq"
+| [Tuesday 26 April 2011] [10:27:11] <pieterh>	whereas the value to a contributor is to be part of the "zeromq" project
+| [Tuesday 26 April 2011] [10:27:22] <pieterh>	not "the" but "a big part of the"
+| [Tuesday 26 April 2011] [10:27:51] <pieterh>	you effectively turn all projects except libzmq into 2nd class citizens
+| [Tuesday 26 April 2011] [10:28:05] <pieterh>	while at the same time making it *really* hard for people to contribute to libzmq
+| [Tuesday 26 April 2011] [10:28:09] <pieterh>	surely you are aware of this?
+| [Tuesday 26 April 2011] [10:28:22] <pieterh>	it is a toxic form of elitism that will backfire sooner or later
+| [Tuesday 26 April 2011] [10:28:50] <mato>	hey, i'm also learning
+| [Tuesday 26 April 2011] [10:29:09] <pieterh>	ok, don't mean to be critical, I've been down this road often before
+| [Tuesday 26 April 2011] [10:29:15] <CIA-75>	jzmq: 03Gonzalo Diethelm 07master * r623f6b9 10/ Makefile.am : 
+| [Tuesday 26 April 2011] [10:29:15] <CIA-75>	jzmq: Merged pull request #36 from MrEvil/master.
+| [Tuesday 26 April 2011] [10:29:15] <CIA-75>	jzmq: Added SHELL variable to Makefile.am. - http://bit.ly/fNmtRa
+| [Tuesday 26 April 2011] [10:29:25] <pieterh>	how come jzmq commits are appearing here?
+| [Tuesday 26 April 2011] [10:29:25] <mato>	and i am aware of these things, and hopefully they will change for the better
+| [Tuesday 26 April 2011] [10:29:31] <mato>	they always were
+| [Tuesday 26 April 2011] [10:29:43] <pieterh>	it's nice, we should expand this to more zmq projects
+| [Tuesday 26 April 2011] [10:29:46] <mato>	and libzmq commits should also but i forgot to update CIA for the name change
+| [Tuesday 26 April 2011] [10:29:49] <pieterh>	yeah
+| [Tuesday 26 April 2011] [10:30:06] <pieterh>	my vision, which is always populist and anti-elitist is that we have a community of projects
+| [Tuesday 26 April 2011] [10:30:12] <mato>	any project that has a VC repo can be monitored
+| [Tuesday 26 April 2011] [10:30:22] <pieterh>	obviously layered, and obviously with different (earned) statuses
+| [Tuesday 26 April 2011] [10:30:34] <pieterh>	anyone can join, anyone can compete, at any level
+| [Tuesday 26 April 2011] [10:30:48] <pieterh>	the ability to compete is essential
+| [Tuesday 26 April 2011] [10:31:03] <pieterh>	if I don't like implementation of X, I have the right (and information) to make X-prime
+| [Tuesday 26 April 2011] [10:31:17] <pieterh>	thus, GPL license, proper layered specs, etc.
+| [Tuesday 26 April 2011] [10:31:31] <pieterh>	any layer that escapes this competition will become corrupt over time
+| [Tuesday 26 April 2011] [10:31:31] <mato>	of course. if you don't like the core API, you can fork it and users (may) follow with their feet
+| [Tuesday 26 April 2011] [10:31:34] <pieterh>	yes
+| [Tuesday 26 April 2011] [10:31:36] <pieterh>	precisely
+| [Tuesday 26 April 2011] [10:31:43] <pieterh>	which is why we need proper WLP specs
+| [Tuesday 26 April 2011] [10:32:05] <Guthur>	GPL?
+| [Tuesday 26 April 2011] [10:32:09] <mato>	look, it's your modues operandi
+| [Tuesday 26 April 2011] [10:32:20] <pieterh>	mato: well, the zeromq community follows my design, yes
+| [Tuesday 26 April 2011] [10:32:36] <Guthur>	I thought libzmq was LGPL
+| [Tuesday 26 April 2011] [10:32:36] 	 * mato would argue that you force your design on the community
+| [Tuesday 26 April 2011] [10:32:38] <pieterh>	but I'm stating principles that are afaics scientifically provable
+| [Tuesday 26 April 2011] [10:32:40] <mato>	but that's irrelevant
+| [Tuesday 26 April 2011] [10:32:56] <pieterh>	Guthur: LGPL is GPL with an extra clause or two, same thing essentially
+| [Tuesday 26 April 2011] [10:33:12] <pieterh>	mato: discussing the design ideology of a thing is relevant
+| [Tuesday 26 April 2011] [10:33:17] <pieterh>	when we discuss that thing
+| [Tuesday 26 April 2011] [10:33:33] <pieterh>	do recall that the whole 0MQ community was a conscious design from day 1
+| [Tuesday 26 April 2011] [10:33:55] 	 * mato does not want to get into this discussion
+| [Tuesday 26 April 2011] [10:34:00] <mato>	over beer one day
+| [Tuesday 26 April 2011] [10:34:02] <pieterh>	ok, but bear with me...
+| [Tuesday 26 April 2011] [10:34:09] <Guthur>	GPL has a lot of stigma for some developers though
+| [Tuesday 26 April 2011] [10:34:09] <pieterh>	what it means in terms of definitions
+| [Tuesday 26 April 2011] [10:34:23] <pieterh>	is that "zeromq" is the community, not the core library
+| [Tuesday 26 April 2011] [10:34:33] <pieterh>	this is perhaps hard to see, from some perspectives
+| [Tuesday 26 April 2011] [10:34:59] <pieterh>	but it's my view, and it's based on experience of what will work and not work
+| [Tuesday 26 April 2011] [10:35:26] <pieterh>	let me... give you some other examples
+| [Tuesday 26 April 2011] [10:35:36] <pieterh>	of successful communities that have done this
+| [Tuesday 26 April 2011] [10:35:41] <pieterh>	apache
+| [Tuesday 26 April 2011] [10:35:43] <pieterh>	xmpp
+| [Tuesday 26 April 2011] [10:35:47] <pieterh>	linux
+| [Tuesday 26 April 2011] [10:35:50] <Guthur>	eek, just realised clrzmq2 seems to be published under GPL
+| [Tuesday 26 April 2011] [10:36:05] <pieterh>	Guthur: if you're the sole author you can relicense any time you like
+| [Tuesday 26 April 2011] [10:36:20] <pieterh>	bsd
+| [Tuesday 26 April 2011] [10:36:29] <Guthur>	well, it's slightly complicated I orginally based it of clrzmq
+| [Tuesday 26 April 2011] [10:36:47] <pieterh>	Guthur: and that was licensed as what?
+| [Tuesday 26 April 2011] [10:36:58] <Guthur>	but it bears very little resemblance to that now
+| [Tuesday 26 April 2011] [10:37:19] <Guthur>	pieterh: hehe I copied the license agreement from that
+| [Tuesday 26 April 2011] [10:37:21] <pieterh>	Guthur: irrelevant, unfortunately, unless you can explicitly remove all possible derived code
+| [Tuesday 26 April 2011] [10:37:31] <pieterh>	so clrzmq2 has to be GPL too...
+| [Tuesday 26 April 2011] [10:37:41] <mato>	pieterh: sure, i guess this is not clear
+| [Tuesday 26 April 2011] [10:37:49] <pieterh>	you can make a new clean-room implementation, presumably, quite straight-forward
+| [Tuesday 26 April 2011] [10:37:56] <Guthur>	pieterh: well that is the probably with software development, there is only one way to do somethings
+| [Tuesday 26 April 2011] [10:37:59] <mato>	pieterh: something to be discussed in brussels
+| [Tuesday 26 April 2011] [10:38:01] <Guthur>	I can't possibly remove it
+| [Tuesday 26 April 2011] [10:38:07] <pieterh>	mato: sure, much easier over beer... :)
+| [Tuesday 26 April 2011] [10:38:09] <Guthur>	probably/problem
+| [Tuesday 26 April 2011] [10:38:12] <mato>	pieterh: it's still more of a "beer" discussion than anything else
+| [Tuesday 26 April 2011] [10:38:21] <mato>	ideology as opposed to "here is code that does stuff"
+| [Tuesday 26 April 2011] [10:38:34] <mato>	it's fun to see the personalities at work
+| [Tuesday 26 April 2011] [10:38:40] <Guthur>	expecially foreign function calls
+| [Tuesday 26 April 2011] [10:38:42] <pieterh>	mato: put it like this, I'm responsible for the 0MQ community design and implementation, and I see it as "code that does stuff"
+| [Tuesday 26 April 2011] [10:38:50] <pieterh>	things like legal frameworks are social code
+| [Tuesday 26 April 2011] [10:38:56] <pieterh>	that's my lawyer hat
+| [Tuesday 26 April 2011] [10:39:38] <mato>	you just like doing all this stuff :)
+| [Tuesday 26 April 2011] [10:39:55] <pieterh>	mato: yes, that's true, and I also intensely dislike environments where it's badly done
+| [Tuesday 26 April 2011] [10:40:00] <pieterh>	well, you hate those too
+| [Tuesday 26 April 2011] [10:40:13] <Guthur>	the other authors where Martin and someone called Jeffrey Dik
+| [Tuesday 26 April 2011] [10:40:14] <pieterh>	I don't need to remind you of weekly wednesday phone conferences...
+| [Tuesday 26 April 2011] [10:40:21] <mato>	sure
+| [Tuesday 26 April 2011] [10:40:27] <pieterh>	Guthur: I'd contact them all and ask if you can relicense their work
+| [Tuesday 26 April 2011] [10:40:36] <pieterh>	they have to explicitly grant you a new license
+| [Tuesday 26 April 2011] [10:40:55] <mato>	anyhow, i guess my thing is that the zeromq != libzmq thing is not clear
+| [Tuesday 26 April 2011] [10:41:10] <pieterh>	mato: I know, but this should in theory become clearer over time
+| [Tuesday 26 April 2011] [10:41:21] <pieterh>	renaming the project to 'libzmq' was a large step
+| [Tuesday 26 April 2011] [10:41:24] <mato>	and when i see you discouraging use of the core API, i get annoyed since from my point of view (and users i have spoken to), the core API is *good*
+| [Tuesday 26 April 2011] [10:41:33] <mato>	i realise you don't like it
+| [Tuesday 26 April 2011] [10:41:38] <pieterh>	ah, mato... I didn't intend to discourage it
+| [Tuesday 26 April 2011] [10:41:45] <pieterh>	look, it has some real flaws
+| [Tuesday 26 April 2011] [10:41:47] <mato>	but you've been doing that quite persistently
+| [Tuesday 26 April 2011] [10:41:58] <pieterh>	no, I've been trying to improve it quite persistently
+| [Tuesday 26 April 2011] [10:42:07] <pieterh>	when  my suggestions are persistently discarded, what do I do?
+| [Tuesday 26 April 2011] [10:42:13] <mato>	make your own
+| [Tuesday 26 April 2011] [10:42:16] <pieterh>	exactly
+| [Tuesday 26 April 2011] [10:42:17] <mato>	which is fine
+| [Tuesday 26 April 2011] [10:42:32] <mato>	but please do not tread on other people who actually like the current API
+| [Tuesday 26 April 2011] [10:42:35] <mato>	that is not fair
+| [Tuesday 26 April 2011] [10:42:40] <pieterh>	over-sensitive, maybe
+| [Tuesday 26 April 2011] [10:42:45] <pieterh>	I don't think I treaded on anyone
+| [Tuesday 26 April 2011] [10:42:46] <mato>	and it's abusing your position somewhat IMO
+| [Tuesday 26 April 2011] [10:42:54] <pieterh>	if I did, apologies, sincerely...
+| [Tuesday 26 April 2011] [10:43:19] <pieterh>	IMO you may be seeing intent where there is none
+| [Tuesday 26 April 2011] [10:43:34] <mato>	possibly, but even sans the intent i see the resulting confusion
+| [Tuesday 26 April 2011] [10:43:42] <mato>	which is why i spoke up now
+| [Tuesday 26 April 2011] [10:43:43] <pieterh>	if I want to tread on the current API, trust me, I won't be subtle about it
+| [Tuesday 26 April 2011] [10:43:52] <pieterh>	am I a subtle person?
+| [Tuesday 26 April 2011] [10:43:52] <mato>	i would have earlier, but i would have got yelled at that there is no problem :)
+| [Tuesday 26 April 2011] [10:43:56] <pieterh>	srsly
+| [Tuesday 26 April 2011] [10:44:13] <pieterh>	I have a long list of things to improve with the current API
+| [Tuesday 26 April 2011] [10:44:24] <pieterh>	what would you like me to do with that list?
+| [Tuesday 26 April 2011] [10:44:39] <mato>	submit patches?
+| [Tuesday 26 April 2011] [10:44:47] <pieterh>	sorry, can't do that (not competent)
+| [Tuesday 26 April 2011] [10:44:47] <mato>	ask el sustrik, he is the boss on master
+| [Tuesday 26 April 2011] [10:44:49] <pieterh>	I'm a user
+| [Tuesday 26 April 2011] [10:44:53] <mato>	lol
+| [Tuesday 26 April 2011] [10:45:01] <mato>	then do what you're doing now
+| [Tuesday 26 April 2011] [10:45:04] <mato>	which is fine
+| [Tuesday 26 April 2011] [10:45:06] <Guthur>	pieterh, Sorry to drift a little OT, but would it be possible for me un-derive the work, not that I actually want to
+| [Tuesday 26 April 2011] [10:45:19] <pieterh>	Guthur: you need to make a clean room implementation
+| [Tuesday 26 April 2011] [10:45:25] <Guthur>	or by looking at the original code has be thought process been tainted
+| [Tuesday 26 April 2011] [10:45:31] <Guthur>	be/my
+| [Tuesday 26 April 2011] [10:45:35] <pieterh>	Guthur: you document what the binding does, in written form, as detailed as you can but without code
+| [Tuesday 26 April 2011] [10:45:47] <pieterh>	you give that to *someone else* and bribe them to make a new version
+| [Tuesday 26 April 2011] [10:45:52] <pieterh>	at least a skeleton
+| [Tuesday 26 April 2011] [10:45:54] <mato>	pieterh: you say you will be less involved after summer, why's that?
+| [Tuesday 26 April 2011] [10:45:55] <Guthur>	lol
+| [Tuesday 26 April 2011] [10:46:06] <pieterh>	mato: I'll explain over beer, not here
+| [Tuesday 26 April 2011] [10:46:12] <Guthur>	legal stuff is bonkers
+| [Tuesday 26 April 2011] [10:46:15] <mato>	incidentally, are you still planning on coming to bts before the brussels conf?
+| [Tuesday 26 April 2011] [10:46:25] <pieterh>	Guthur: well, when you reuse someone else's code, that's the cost
+| [Tuesday 26 April 2011] [10:46:32] <pieterh>	mato: no, after that
+| [Tuesday 26 April 2011] [10:46:38] <mato>	right...
+| [Tuesday 26 April 2011] [10:46:50] <mato>	btw how far is charleroi from brussels ?
+| [Tuesday 26 April 2011] [10:46:57] <pieterh>	1hour, it's a decent connection
+| [Tuesday 26 April 2011] [10:46:58] <mato>	ryanair seems to be the only sane cheap option
+| [Tuesday 26 April 2011] [10:47:02] <pieterh>	yes, it's sane and cheap
+| [Tuesday 26 April 2011] [10:47:13] <pieterh>	except the return flight is bonkers, it's at 7.30 am or so
+| [Tuesday 26 April 2011] [10:47:25] <mato>	it was showing me something during the day
+| [Tuesday 26 April 2011] [10:47:27] <mato>	maybe they've changed
+| [Tuesday 26 April 2011] [10:47:27] <pieterh>	I have a crazy idea... how about we drive back to BTS together?
+| [Tuesday 26 April 2011] [10:47:35] <pieterh>	maybe changed... 
+| [Tuesday 26 April 2011] [10:47:42] <pieterh>	ah, that was perhaps the winter schedule...
+| [Tuesday 26 April 2011] [10:47:46] 	 * mato is not a fan of long drives
+| [Tuesday 26 April 2011] [10:47:52] 	 * pieterh likes the long drives
+| [Tuesday 26 April 2011] [10:47:56] <mato>	:-)
+| [Tuesday 26 April 2011] [10:48:00] <pieterh>	12 hours of argument :)
+| [Tuesday 26 April 2011] [10:48:05] <pieterh>	fuuuuuuuuu.....
+| [Tuesday 26 April 2011] [10:48:11] <mato>	night train works too
+| [Tuesday 26 April 2011] [10:48:18] <mato>	13 hours of argument *and* beer
+| [Tuesday 26 April 2011] [10:48:19] <mato>	:-)
+| [Tuesday 26 April 2011] [10:48:27] 	 * pieterh has to drive, sadly, need to pick up some stuff in BTS
+| [Tuesday 26 April 2011] [10:48:38] <pieterh>	otherwise train sounds excellent
+| [Tuesday 26 April 2011] [10:48:49] <pieterh>	I'
+| [Tuesday 26 April 2011] [10:49:01] <pieterh>	I'll add a travel note for those coming via Charleroi
+| [Tuesday 26 April 2011] [10:49:08] <mato>	d'you have a floor i can sleep on in brussels? or is there a cheap-ish hotel in the vicinity?
+| [Tuesday 26 April 2011] [10:49:15] <pieterh>	mato: yes, you can stay with us
+| [Tuesday 26 April 2011] [10:49:25] <pieterh>	we have space, and beer
+| [Tuesday 26 April 2011] [10:49:37] <pieterh>	you know you're always welcome in my home
+| [Tuesday 26 April 2011] [10:49:54] <pieterh>	if you bring a sleeping bag that'd probably help
+| [Tuesday 26 April 2011] [10:50:00] <mato>	i can do that
+| [Tuesday 26 April 2011] [10:50:06] <mato>	i have one of those miniature summer ones
+| [Tuesday 26 April 2011] [10:50:18] <Guthur>	pieterh: what happens in the case where an author becomes unreadable
+| [Tuesday 26 April 2011] [10:50:23] <Guthur>	unreachable*
+| [Tuesday 26 April 2011] [10:50:32] <mato>	Guthur: someone else takes over
+| [Tuesday 26 April 2011] [10:50:35] <pieterh>	Guthur: you're unable to relicense, period
+| [Tuesday 26 April 2011] [10:50:45] <Guthur>	that's pants
+| [Tuesday 26 April 2011] [10:50:45] <mato>	oh, sorry, different discussion
+| [Tuesday 26 April 2011] [10:50:54] <pieterh>	this is why you need to be pretty sure about this before over-investing
+| [Tuesday 26 April 2011] [10:50:56] <Guthur>	what if he's dead
+| [Tuesday 26 April 2011] [10:51:12] <pieterh>	Guthur: wait 75 years, or just 50 in Europe
+| [Tuesday 26 April 2011] [10:51:12] <mato>	copyright goes to his inheritors
+| [Tuesday 26 April 2011] [10:51:15] <pieterh>	welcome to copyright law
+| [Tuesday 26 April 2011] [10:51:17] <mato>	doesn't it?
+| [Tuesday 26 April 2011] [10:51:20] <pieterh>	it's magical!
+| [Tuesday 26 April 2011] [10:51:40] <pieterh>	mato: yes, but 50+ 
+| [Tuesday 26 April 2011] [10:52:04] <mato>	pieterh: ah, so you wait 50 years only to be told by surviving family to bugger off anyway :)
+| [Tuesday 26 April 2011] [10:52:11] 	 * Guthur hopes the other guy is reachable
+| [Tuesday 26 April 2011] [10:52:18] <pieterh>	Guthur: you're welcome to lobby to change the law but in the meantime your options are (a) accept the license under which you got the code (b) get permission to relicense (c) rewrite, clean-room
+| [Tuesday 26 April 2011] [10:52:40] <pieterh>	mato: after 50 years the copyright on the original work used for the derivation has expired
+| [Tuesday 26 April 2011] [10:52:57] <pieterh>	this is of course a bad joke, in software terms
+| [Tuesday 26 April 2011] [10:53:25] <Guthur>	yep
+| [Tuesday 26 April 2011] [10:55:11] <pieterh>	mato: I've added travel instructions from Charleroi to Brussels on the http://www.zeromq.org/event:brussels-2011-05-10 page
+| [Tuesday 26 April 2011] [10:56:26] <mato>	pieterh: on the charleroi website it mentions some kind of direct shuttle to gare du midi for EUR 22 return
+| [Tuesday 26 April 2011] [10:56:43] <pieterh>	I've added the necessary link
+| [Tuesday 26 April 2011] [10:57:03] <pieterh>	the train is cheaper and more relaxing but takes longer
+| [Tuesday 26 April 2011] [10:57:17] <mato>	oh, I see, the last sentence should be "If you can't get on the shuttle bus" or something
+| [Tuesday 26 April 2011] [10:58:25] <mato>	pieterh: the return flight is now 12:20, much saner
+| [Tuesday 26 April 2011] [10:59:07] <mato>	how does ryanair work? i take it they are anal about baggage or something being a lowcost carrier?
+| [Tuesday 26 April 2011] [10:59:32] <pieterh>	mato: hmm, you're best taking only hand luggage and squeezing your clothes into that
+| [Tuesday 26 April 2011] [10:59:46] <pieterh>	also print your boarding passes out beforehand
+| [Tuesday 26 April 2011] [11:00:08] <pieterh>	and I tend to pay for the extra "early boarding", the best seats are in the very first row
+| [Tuesday 26 April 2011] [11:00:25] <pieterh>	hang luggage has to be within standard dimensions
+| [Tuesday 26 April 2011] [11:00:40] <pieterh>	that is I'm sure noted on the ryanair site
+| [Tuesday 26 April 2011] [11:00:59] <pieterh>	if you can survive the relative brutality of the experience, it is quite pleasant
+| [Tuesday 26 April 2011] [11:01:08] <pieterh>	extremely rapid boarding and deboarding
+| [Tuesday 26 April 2011] [11:01:22] <pieterh>	it's the zeromq of plane flights, in some respects
+| [Tuesday 26 April 2011] [11:01:37] <Guthur>	Ryanair are the carrier i detest the most
+| [Tuesday 26 April 2011] [11:01:41] <pieterh>	hehe
+| [Tuesday 26 April 2011] [11:01:58] <mato>	yes, well, but AUA want EUR 380 for a return flight to brussels, that's just insane :-)
+| [Tuesday 26 April 2011] [11:02:12] <mato>	Ryanair for 88 EUR is cheap
+| [Tuesday 26 April 2011] [11:02:28] <Guthur>	they are the only one that requires a passport of internal flights, let alone the charge for everything setup
+| [Tuesday 26 April 2011] [11:02:35] <Guthur>	of/for
+| [Tuesday 26 April 2011] [11:04:03] <jhawk28>	I suspect that the pain of blocking would be minimized if there were a timeout version of send
+| [Tuesday 26 April 2011] [11:05:40] <pieterh>	mato: yes, it's easily worth it IMO
+| [Tuesday 26 April 2011] [11:05:53] <pieterh>	Guthur: all airlines ask for ID, no exceptions, to prevent ticket fraud
+| [Tuesday 26 April 2011] [11:06:13] <Guthur>	pieterh: not a passport for travel on an internal flight
+| [Tuesday 26 April 2011] [11:06:28] <pieterh>	UK internal you mean?
+| [Tuesday 26 April 2011] [11:06:32] <Guthur>	yep
+| [Tuesday 26 April 2011] [11:06:39] <Guthur>	Ryanair are the only one
+| [Tuesday 26 April 2011] [11:06:46] <pieterh>	well, if the silly UKians had ID cards, that'd be easier
+| [Tuesday 26 April 2011] [11:06:56] <mato>	pieterh: ok it means i get in monday evening and leave wednesday AM, which is ideal
+| [Tuesday 26 April 2011] [11:06:56] <pieterh>	the point is to avoid ticket fraud
+| [Tuesday 26 April 2011] [11:06:56] <Guthur>	i have plenty
+| [Tuesday 26 April 2011] [11:07:09] <pieterh>	i.e. I buy a bunch of tickets at 1Euro and resell them for anonymous reuse
+| [Tuesday 26 April 2011] [11:07:18] <Guthur>	driving license, and passport
+| [Tuesday 26 April 2011] [11:07:21] <pieterh>	official ID cards, not driving license...
+| [Tuesday 26 April 2011] [11:07:24] <guido_g>	howdy
+| [Tuesday 26 April 2011] [11:07:24] <Guthur>	why would I need another
+| [Tuesday 26 April 2011] [11:07:36] <pieterh>	mato: yup, neat
+| [Tuesday 26 April 2011] [11:07:37] <Guthur>	driving license is quite official
+| [Tuesday 26 April 2011] [11:07:55] <Guthur>	it's got from a government agency
+| [Tuesday 26 April 2011] [11:08:26] <pieterh>	Guthur: you're right, I've no idea why I'm defending ryanair, they deserve your scorn, but however they're 1/4r the cost of alternatives, so... easy choice
+| [Tuesday 26 April 2011] [11:08:32] <pieterh>	guido_g: hi!
+| [Tuesday 26 April 2011] [11:08:53] <guido_g>	hi pieterh!
+| [Tuesday 26 April 2011] [11:09:05] <pieterh>	I see you upgraded jzmq to 3.0, nice
+| [Tuesday 26 April 2011] [11:09:23] <pieterh>	guido_g: sorry, I'm confusing my 'g's
+| [Tuesday 26 April 2011] [11:09:27] <guido_g>	:)
+| [Tuesday 26 April 2011] [11:09:40] <Guthur>	pieterh: it's quite alright, I fell foul of their passport requirement, and so I'm quite bitter
+| [Tuesday 26 April 2011] [11:09:59] <Guthur>	I know...of course I should have read the terms...
+| [Tuesday 26 April 2011] [11:10:04] <pieterh>	Guthur: see, if you lived in a civilized country you'd have an ID card and no stress
+| [Tuesday 26 April 2011] [11:10:27] <Guthur>	pieterh: would I also need a driving license and passport?
+| [Tuesday 26 April 2011] [11:10:32] <pieterh>	nope
+| [Tuesday 26 April 2011] [11:10:45] <pieterh>	not unless you want to drive and cross borders outside schengen
+| [Tuesday 26 April 2011] [11:10:51] <Guthur>	lol
+| [Tuesday 26 April 2011] [11:11:12] <pieterh>	i can travel to/from UK with only my id card, in fact
+| [Tuesday 26 April 2011] [11:11:14] <guido_g>	but these things you'll better do w/ a fake identity anyway ]:->
+| [Tuesday 26 April 2011] [11:11:17] <Guthur>	those options are nice to have
+| [Tuesday 26 April 2011] [11:11:18] <pieterh>	so it's valid across the whole EU afaics
+| [Tuesday 26 April 2011] [11:11:45] <Guthur>	hehe everyone trusts the belgians
+| [Tuesday 26 April 2011] [11:11:56] <Guthur>	never done nothing to no one, hehe
+| [Tuesday 26 April 2011] [11:12:09] <pieterh>	except large parts of Africa, but nevermind...
+| [Tuesday 26 April 2011] [11:12:15] <mato>	bah, they sure do add random bits to the fare
+| [Tuesday 26 April 2011] [11:12:22] <mato>	6 EUR "administration fee"
+| [Tuesday 26 April 2011] [11:12:23] <mato>	wtf
+| [Tuesday 26 April 2011] [11:12:47] <pieterh>	mato: yeah
+| [Tuesday 26 April 2011] [11:12:57] <pieterh>	it's still so cheap as to be stupid
+| [Tuesday 26 April 2011] [11:13:09] <pieterh>	I was buying tickets to BTS for 40 Euro all in at one point
+| [Tuesday 26 April 2011] [11:13:24] <guido_g>	pieterh tweets in dutch? nice...
+| [Tuesday 26 April 2011] [11:13:40] <mato>	yeah i checked the train, that would have been ~260 EUR return
+| [Tuesday 26 April 2011] [11:13:42] <pieterh>	well, 'tweeten' just sounds weird in Dutch... :)
+| [Tuesday 26 April 2011] [11:13:56] <mato>	so 108 EUR is still silly cheap
+| [Tuesday 26 April 2011] [11:14:18] <pieterh>	plus it's really a nice little flight
+| [Tuesday 26 April 2011] [11:14:29] <pieterh>	both small airports, little hassle
+| [Tuesday 26 April 2011] [11:17:32] <Guthur>	where is BTS
+| [Tuesday 26 April 2011] [11:18:09] <mato>	Bratislava, Slovakia
+| [Tuesday 26 April 2011] [11:18:45] <Guthur>	ah, i honestly would never have got that
+| [Tuesday 26 April 2011] [11:19:12] <mato>	pieterh: um, is there something vaguely like an invoice i can get off ryanair?
+| [Tuesday 26 April 2011] [11:19:39] <mato>	the email receipt does not have e.g. the card details
+| [Tuesday 26 April 2011] [11:19:40] <mato>	oh well
+| [Tuesday 26 April 2011] [11:19:58] <pieterh>	mato: I usually print the email receipt, that's sufficient along with the visa card statement, at least in Belgium
+| [Tuesday 26 April 2011] [11:20:06] <pieterh>	perhaps also a copy of the boarding passes
+| [Tuesday 26 April 2011] [11:21:11] <guido_g>	anything a nerd should see in brussels?
+| [Tuesday 26 April 2011] [11:21:20] <pieterh>	guido_g: how long will you have?
+| [Tuesday 26 April 2011] [11:21:22] 	 * guido_g arrives at 13:0 on monday
+| [Tuesday 26 April 2011] [11:21:27] <guido_g>	*12:30
+| [Tuesday 26 April 2011] [11:21:41] <pieterh>	hmm... we might organize a meetup on monday evening...
+| [Tuesday 26 April 2011] [11:21:55] <mato>	that's what tuesday evening is for, no?
+| [Tuesday 26 April 2011] [11:21:56] <guido_g>	cool... tweo meetups for the price of one!
+| [Tuesday 26 April 2011] [11:21:59] <mato>	:)
+| [Tuesday 26 April 2011] [11:22:02] <guido_g>	book nonw! limited offer! :)
+| [Tuesday 26 April 2011] [11:22:27] <pieterh>	there's like the 'official meetup' and the 'secret' one
+| [Tuesday 26 April 2011] [11:22:39] <guido_g>	ahhh...
+| [Tuesday 26 April 2011] [11:23:53] <pieterh>	well, if you have time in brussels... there is an original lambic brewery, cantillion
+| [Tuesday 26 April 2011] [11:24:10] <pieterh>	otherwise, just chilling in the old town with a laptop and wifi is fun
+| [Tuesday 26 April 2011] [11:24:19] <pieterh>	actually right where we have the conference
+| [Tuesday 26 April 2011] [11:24:55] <pieterh>	chilling = drinking orval and pretending to work while admiring the view
+| [Tuesday 26 April 2011] [12:12:25] <phantomcircuit>	ok this is just ridiculous
+| [Tuesday 26 April 2011] [12:12:33] <phantomcircuit>	i cant even get php-zmq to build on linux
+| [Tuesday 26 April 2011] [12:12:37] <phantomcircuit>	autotools version mismatch
+| [Tuesday 26 April 2011] [12:12:58] <Skaag>	built fine for me on Ubuntu 10.04
+| [Tuesday 26 April 2011] [12:13:09] <Skaag>	with the standard build-essentials
+| [Tuesday 26 April 2011] [12:19:31] <CIA-75>	libzmq: 03Martin Sustrik 07master * r5816976 10/ (10 files in 3 dirs): 
+| [Tuesday 26 April 2011] [12:19:31] <CIA-75>	libzmq: Message validity is checked in the runtime
+| [Tuesday 26 April 2011] [12:19:31] <CIA-75>	libzmq: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/eppUbE
+| [Tuesday 26 April 2011] [12:19:33] <CIA-75>	libzmq: 03Martin Sustrik 07master * re0246e3 10/ (55 files in 2 dirs): (log message trimmed)
+| [Tuesday 26 April 2011] [12:19:33] <CIA-75>	libzmq: Message-related functionality factored out into msg_t class.
+| [Tuesday 26 April 2011] [12:19:33] <CIA-75>	libzmq: This patch addresses serveral issues:
+| [Tuesday 26 April 2011] [12:19:33] <CIA-75>	libzmq: 1. It gathers message related functionality scattered over whole
+| [Tuesday 26 April 2011] [12:19:33] <CIA-75>	libzmq:  codebase into a single class.
+| [Tuesday 26 April 2011] [12:19:33] <CIA-75>	libzmq: 2. It makes zmq_msg_t an opaque datatype. Internals of the class
+| [Tuesday 26 April 2011] [12:19:34] <CIA-75>	libzmq:  don't pollute zmq.h header file.
+| [Tuesday 26 April 2011] [12:19:36] <mato>	ok, that fixes that
+| [Tuesday 26 April 2011] [12:19:37] <CIA-75>	libzmq: 03Martin Sustrik 07master * r10fbc78 10/ src/fq.cpp : 
+| [Tuesday 26 April 2011] [12:19:38] <CIA-75>	libzmq: Assert during SUB socket termination fixed.
+| [Tuesday 26 April 2011] [12:19:38] <CIA-75>	libzmq: Fair queueing algorithm was checking whether the current pipe
+| [Tuesday 26 April 2011] [12:19:38] <CIA-75>	libzmq: is not closed in the middle of reading a multipart message.
+| [Tuesday 26 April 2011] [12:19:38] <CIA-75>	libzmq: However, this is OK when the socket is closing down.
+| [Tuesday 26 April 2011] [12:19:38] <CIA-75>	libzmq: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/geke69
+| [Tuesday 26 April 2011] [12:20:10] <jhawk28>	mato: can you make it only do a single line per commit?
+| [Tuesday 26 April 2011] [12:20:59] <mato>	checking...
+| [Tuesday 26 April 2011] [12:21:08] <mato>	i've also enabled CIA on the pyzmq repo
+| [Tuesday 26 April 2011] [12:21:44] <th>	pieterh: did you have a chance to look into this mixed multipart messages bug (#199) is there anything i can provide to help fixing this.
+| [Tuesday 26 April 2011] [12:23:05] <phantomcircuit>	Skaag, yeah that's kind of the point actually, the WORKS FOR ME isn't a solution
+| [Tuesday 26 April 2011] [12:24:03] <Skaag>	phantomcircuit: what OS are you compiling on?
+| [Tuesday 26 April 2011] [12:24:09] <phantomcircuit>	gentoo
+| [Tuesday 26 April 2011] [12:24:12] <Skaag>	oh god
+| [Tuesday 26 April 2011] [12:24:27] <phantomcircuit>	yeah terrible
+| [Tuesday 26 April 2011] [12:24:30] <Skaag>	your tools are probably too new and too bleeding edge
+| [Tuesday 26 April 2011] [12:24:33] <phantomcircuit>	except everything else builds fine
+| [Tuesday 26 April 2011] [12:24:59] <Skaag>	can you pastebin the error you get?
+| [Tuesday 26 April 2011] [12:25:06] <phantomcircuit>	sure
+| [Tuesday 26 April 2011] [12:25:18] <Skaag>	I don't hate gentoo, don't get me wrong
+| [Tuesday 26 April 2011] [12:25:21] <Skaag>	please.
+| [Tuesday 26 April 2011] [12:25:26] <Skaag>	I actually like it.
+| [Tuesday 26 April 2011] [12:25:29] <phantomcircuit>	http://codepad.org/pck6IkFZ
+| [Tuesday 26 April 2011] [12:25:53] <Skaag>	However, if I had a dime for every time a gentoo guy complained about something not compiling right... I'd definitely be able to buy a very fancy meal for everybody in this channel.
+| [Tuesday 26 April 2011] [12:26:08] <Skaag>	I think it just stems from the fact very few developers test their build process on the latest gentoo.
+| [Tuesday 26 April 2011] [12:26:14] <Skaag>	looking at your paste. hold on
+| [Tuesday 26 April 2011] [12:26:27] <phantomcircuit>	it's definitely due to libtools version being too new
+| [Tuesday 26 April 2011] [12:26:55] <pouete>	Hi all, a little question about the C bindig of mq :) : why cant we reuse a msg that as already been initialized ? 
+| [Tuesday 26 April 2011] [12:27:00] <CIA-75>	pyzmq: 03MinRK 07master * r65812f5 10/ README.rst : readme updates re: building pyzmq - http://bit.ly/emga3H
+| [Tuesday 26 April 2011] [12:27:02] <CIA-75>	pyzmq: 03MinRK 07master * r80e975d 10/ setup.py : (log message trimmed)
+| [Tuesday 26 April 2011] [12:27:02] <CIA-75>	pyzmq: add -lpthread on freebsd
+| [Tuesday 26 April 2011] [12:27:02] <CIA-75>	pyzmq: closes gh-101
+| [Tuesday 26 April 2011] [12:27:03] <CIA-75>	pyzmq: 03MinRK 07master * r02cc78d 10/ (zmq/tests/test_device.py zmq/tests/test_socket.py): cleanup a few more test sockets. - http://bit.ly/i3YDgw
+| [Tuesday 26 April 2011] [12:27:23] <Skaag>	phantomcircuit: you tried to install the older libtools and get it to be used instead?
+| [Tuesday 26 April 2011] [12:27:48] <Skaag>	or how about indeed recreating aclocal?
+| [Tuesday 26 April 2011] [12:27:52] <CIA-75>	libzmq: 03Martin Sustrik 07master * r5816976 10/ (10 files in 3 dirs): 
+| [Tuesday 26 April 2011] [12:27:52] <CIA-75>	libzmq: Message validity is checked in the runtime
+| [Tuesday 26 April 2011] [12:27:52] <CIA-75>	libzmq: Signed-off-by: Martin Sustrik <sustrik@250bpm.com> - http://bit.ly/eppUbE
+| [Tuesday 26 April 2011] [12:27:52] <CIA-75>	libzmq: 03Martin Sustrik 07master * re0246e3 10/ (55 files in 2 dirs): (log message trimmed)
+| [Tuesday 26 April 2011] [12:27:52] <CIA-75>	libzmq: Message-related functionality factored out into msg_t class.
+| [Tuesday 26 April 2011] [12:27:52] <CIA-75>	libzmq: This patch addresses serveral issues:
+| [Tuesday 26 April 2011] [12:27:53] <CIA-75>	libzmq: 03Martin Sustrik 07master * r10fbc78 10/ src/fq.cpp : (log message trimmed)
+| [Tuesday 26 April 2011] [12:27:53] <CIA-75>	libzmq: Assert during SUB socket termination fixed.
+| [Tuesday 26 April 2011] [12:27:54] <CIA-75>	libzmq: Fair queueing algorithm was checking whether the current pipe
+| [Tuesday 26 April 2011] [12:28:05] <Skaag>	wow lots of activity ;) go martin
+| [Tuesday 26 April 2011] [12:28:11] <mato>	no, that's just me testing
+| [Tuesday 26 April 2011] [12:28:14] <mato>	sorry for the noise 
+| [Tuesday 26 April 2011] [12:28:21] <Skaag>	oh ok
+| [Tuesday 26 April 2011] [12:28:28] <Skaag>	I don't mind it
+| [Tuesday 26 April 2011] [12:28:37] <mato>	jhawk28: header + first line of log message?
+| [Tuesday 26 April 2011] [12:28:55] <CIA-75>	libzmq: 03Martin Sustrik 07master * r5816976 10/ (10 files in 3 dirs): Message validity is checked in the runtime ...
+| [Tuesday 26 April 2011] [12:28:58] <CIA-75>	libzmq: 03Martin Sustrik 07master * re0246e3 10/ (55 files in 2 dirs): Message-related functionality factored out into msg_t class. ...
+| [Tuesday 26 April 2011] [12:29:04] <CIA-75>	libzmq: 03Martin Sustrik 07master * r10fbc78 10/ src/fq.cpp : Assert during SUB socket termination fixed. ...
+| [Tuesday 26 April 2011] [12:29:12] <jhawk28>	pouete: I think its because zmq used zero copy
+| [Tuesday 26 April 2011] [12:29:16] <phantomcircuit>	Skaag, yeah let me see though
+| [Tuesday 26 April 2011] [12:29:21] <mato>	jhawk28: ok, done, seems to work
+| [Tuesday 26 April 2011] [12:29:29] <CIA-75>	jzmq: 03Gonzalo Diethelm 07master * r8755367 10/ src/Socket.cpp : Use send/sendmsg and recv/recvmsg depending on 0MQ's version. - http://bit.ly/eYbbIR
+| [Tuesday 26 April 2011] [12:30:07] <phantomcircuit>	Skaag, rebuilding aclocal.m4 didn't help
+| [Tuesday 26 April 2011] [12:30:09] <jhawk28>	mato: less noisy, better
+| [Tuesday 26 April 2011] [12:30:19] <mato>	it's watching libzmq, rbzmq, pyzmq, jzmq, clrzmq
+| [Tuesday 26 April 2011] [12:30:33] <Skaag>	phantomcircuit: I guess you need to install the older tools as well. They shouldn't interfere with the new ones, don't worry.
+| [Tuesday 26 April 2011] [12:30:34] <mato>	anyone else wants some repos watched, shout
+| [Tuesday 26 April 2011] [12:31:00] <phantomcircuit>	Skaag, yeah i guess
+| [Tuesday 26 April 2011] [12:31:06] <phantomcircuit>	i hate autotools :|
+| [Tuesday 26 April 2011] [12:31:33] <Skaag>	wish I could be more helpful... 
+| [Tuesday 26 April 2011] [12:31:48] <phantomcircuit>	Skaag, which version do you have
+| [Tuesday 26 April 2011] [12:31:52] <phantomcircuit>	might save me some time...
+| [Tuesday 26 April 2011] [12:32:02] <mato>	"only" 237 messages unread in zeromq-dev :-(
+| [Tuesday 26 April 2011] [12:32:14] <mato>	time to go, see you all later
+| [Tuesday 26 April 2011] [12:32:17] <jhawk28>	pouete: there was some talk on the mailing list about it
+| [Tuesday 26 April 2011] [12:33:25] <pouete>	jhawk28: kay, do you remember the approximate date ?
+| [Tuesday 26 April 2011] [12:33:31] <pouete>	i mean month ?
+| [Tuesday 26 April 2011] [12:33:34] <Skaag>	phantomcircuit: will tell you, sec.
+| [Tuesday 26 April 2011] [12:33:35] <jhawk28>	was just this month
+| [Tuesday 26 April 2011] [12:34:06] <Skaag>	ltmain.sh (GNU libtool) 2.2.6b
+| [Tuesday 26 April 2011] [12:34:12] <Skaag>	automake (GNU automake) 1.11.1
+| [Tuesday 26 April 2011] [12:34:22] <Skaag>	autoconf (GNU Autoconf) 2.65
+| [Tuesday 26 April 2011] [12:34:23] <phantomcircuit>	weird i've got 2.2.10
+| [Tuesday 26 April 2011] [12:34:35] <Skaag>	yah, too new I guess
+| [Tuesday 26 April 2011] [12:34:38] <phantomcircuit>	you'd think that minor minor versions would be compatible :|
+| [Tuesday 26 April 2011] [12:34:48] <phantomcircuit>	yay gnu :/
+| [Tuesday 26 April 2011] [12:34:50] <Skaag>	Agree with you 100% - definitely not proper!
+| [Tuesday 26 April 2011] [12:35:08] <Skaag>	you'd think any 2.2.x would play nice
+| [Tuesday 26 April 2011] [12:35:24] <pouete>	jhawk28: cheers :) http://www.zeromq.org/blog:zero-copy anyway, is this paper still right ?
+| [Tuesday 26 April 2011] [12:36:19] <jhawk28>	pouete: not sure, I haven't had much experience with C
+| [Tuesday 26 April 2011] [12:36:56] <phantomcircuit>	lol sadly this box is hilariously slow
+| [Tuesday 26 April 2011] [12:36:59] <phantomcircuit>	gogo pentium 4
+| [Tuesday 26 April 2011] [12:37:05] <phantomcircuit>	compile like the wind!
+| [Tuesday 26 April 2011] [12:37:19] <Skaag>	lol! pentium 4!!!
+| [Tuesday 26 April 2011] [12:37:21] <phantomcircuit>	sigh
+| [Tuesday 26 April 2011] [12:37:27] <Skaag>	:)
+| [Tuesday 26 April 2011] [12:37:47] <Skaag>	I'm all for recycling and stuff, but this is actually worse for the environment...
+| [Tuesday 26 April 2011] [12:37:50] <Skaag>	;-)
+| [Tuesday 26 April 2011] [12:39:27] <phantomcircuit>	sigh
+| [Tuesday 26 April 2011] [12:39:36] <phantomcircuit>	there isn't another libtools package
+| [Tuesday 26 April 2011] [12:39:48] <phantomcircuit>	there are higher versions but not lower
+| [Tuesday 26 April 2011] [12:39:51] <phantomcircuit>	facepalm
+| [Tuesday 26 April 2011] [12:42:12] <pouete>	jhawk28: who could give me the info ?
+| [Tuesday 26 April 2011] [12:42:33] <jhawk28>	pieterh or sustrik at least
+| [Tuesday 26 April 2011] [12:42:47] <pouete>	thank you very much :) 
+| [Tuesday 26 April 2011] [12:43:47] <jhawk28>	pouete: I think you need to clone the data before sending it
+| [Tuesday 26 April 2011] [12:44:01] <jhawk28>	in order to send it multiple times
+| [Tuesday 26 April 2011] [12:48:59] <phantomcircuit>	this is like a bad joke or something
+| [Tuesday 26 April 2011] [12:49:37] <pouete>	jhawk28: what i want to do is to loadbalance one pusher that receive data on different pullers that will process the data. 
+| [Tuesday 26 April 2011] [12:51:26] <jhawk28>	pouete: so, kind of the worker pattern?
+| [Tuesday 26 April 2011] [12:51:38] <pouete>	worker pattern ?
+| [Tuesday 26 April 2011] [12:52:08] <jhawk28>	http://www.rabbitmq.com/tutorials/tutorial-two-python.html
+| [Tuesday 26 April 2011] [12:52:21] <jhawk28>	see the picture
+| [Tuesday 26 April 2011] [12:52:37] <pouete>	yes, its this :)
+| [Tuesday 26 April 2011] [12:52:41] <jhawk28>	http://zguide.zeromq.org/page:all#Divide-and-Conquer
+| [Tuesday 26 April 2011] [12:53:03] <pouete>	yep thats it
+| [Tuesday 26 April 2011] [12:53:24] <jhawk28>	thats the ZMQ way
+| [Tuesday 26 April 2011] [12:54:00] <pouete>	okay, i take a look at that , thanks 
+| [Tuesday 26 April 2011] [13:00:10] <pieterh>	pouete: that zerocopy paper is accurate for libzmq/2.x
+| [Tuesday 26 April 2011] [13:35:52] <Seta00>	!setinfo <jhawk28> thats the ZMQ way
+| [Tuesday 26 April 2011] [13:35:53] <Seta00>	;)
+| [Tuesday 26 April 2011] [13:48:09] <pieterh>	jhawk28: pouete: actually http://zguide.zeromq.org/page:all#Service-Oriented-Reliable-Queuing-Majordomo-Pattern is closer to the Rabbit example
+| [Tuesday 26 April 2011] [13:48:44] <pieterh>	but if it's just load balancing to workers, one PUSH and multiple PULL sockets is enough
+| [Tuesday 26 April 2011] [13:48:48] <jhawk28>	he wasnt wanting reliable
+| [Tuesday 26 April 2011] [13:49:04] <pieterh>	jhawk28: yeah, wasn't sure
+| [Tuesday 26 April 2011] [13:49:11] <phantomcircuit>	hmm
+| [Tuesday 26 April 2011] [13:49:13] <jhawk28>	I just remembered the rabbit picture
+| [Tuesday 26 April 2011] [14:00:09] <pieterh>	guido_g: you around?
+| [Tuesday 26 April 2011] [14:08:06] <mikko>	pieterh: renamed
+| [Tuesday 26 April 2011] [14:37:22] <guido_g>	pieterh: yes
+| [Tuesday 26 April 2011] [14:37:28] <guido_g>	what's up?
+| [Tuesday 26 April 2011] [14:50:29] <pieterh>	mikko: thanks!
+| [Tuesday 26 April 2011] [14:50:51] <pieterh>	guido_g: sorry, and excuse this ignorance, but I was wondering what parts of 0MQ you contributed to
+| [Tuesday 26 April 2011] [14:56:42] <guido_g>	the first tests
+| [Tuesday 26 April 2011] [14:57:15] <guido_g>	and a patch
+| [Tuesday 26 April 2011] [14:57:20] <guido_g>	afair
+| [Tuesday 26 April 2011] [14:57:48] <guido_g>	is this of any importance?
+| [Tuesday 26 April 2011] [14:58:30] <guido_g>	do i get a better chair at the conf?
+| [Tuesday 26 April 2011] [15:20:29] <pieterh>	guido_g: (/me is distracted), do you consider yourself a core developer?
+| [Tuesday 26 April 2011] [15:20:54] <pieterh>	it's to add to the conference page, to indicate to visitors more or less who's who
+| [Tuesday 26 April 2011] [15:21:05] <pieterh>	you get the best chair even without asking
+| [Tuesday 26 April 2011] [15:24:30] <guido_g>	pieterh: no, i'm not a core dev
+| [Tuesday 26 April 2011] [15:25:13] <pieterh>	guido_g: ok
+| [Tuesday 26 April 2011] [17:32:39] <mikko>	pieterh: are people arriving on 9th ?
+| [Tuesday 26 April 2011] [17:32:44] <mikko>	MAy
+| [Tuesday 26 April 2011] [18:29:03] <iAmTheDave>	wait, there's a conference?
+| [Tuesday 26 April 2011] [18:29:09] 	 * iAmTheDave is totally not paying attention
+| [Tuesday 26 April 2011] [18:44:35] <th>	oh there was a patch for message atomicity for pub/sub? is that related to #199 which is about atomocity of xreq/xrep?
+| [Tuesday 26 April 2011] [19:05:58] <lt_schmidt_jr>	Where is the May 9 conference  going to be held?
+| [Tuesday 26 April 2011] [19:57:00] <zedas>	ok i got an odd question:  if I have an XREP socket, and I've got the idents from them, and those idents are the autogenerated ones, AND i store them to disk:  can i just read them back and then send replies after a crash?
+| [Tuesday 26 April 2011] [20:09:39] <zedas>	ah ok it works but you have to wait a bit for the clients to reconnect
