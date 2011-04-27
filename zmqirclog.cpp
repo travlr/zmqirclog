@@ -91,6 +91,8 @@ void ZmqIrcLog::moveZmqLogToMonthly()
             month = comparativeMonth;
             // see if there is alread a file for this year-month
             QString fileName = year + "-" + month + ".log";
+            if (m_alteredFileNames.contains(fileName.split(".").first()))
+                continue;
             m_alteredFileNames.append(fileName.split(".").first());
             QFile monthFile(m_zmqLogDirPath + "/" + fileName);
 
