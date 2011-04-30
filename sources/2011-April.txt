@@ -6420,3 +6420,938 @@
 | [Thursday 28 April 2011] [03:07:46] <Steve-o>	aren't there a few low latency events in NYC this week?
 | [Thursday 28 April 2011] [03:08:45] <Steve-o>	"The Business and Technology of Low-Latency Trading" at Crowne Plaza
 | [Thursday 28 April 2011] [03:09:14] <Steve-o>	looks like I miss everything by a week again
+| [Thursday 28 April 2011] [04:28:03] <mikko>	Steve-o: hi
+| [Thursday 28 April 2011] [04:28:10] <Steve-o>	yo
+| [Thursday 28 April 2011] [04:28:19] <mikko>	how was your travelling?
+| [Thursday 28 April 2011] [04:29:20] <Steve-o>	not stopped, back to nyc next monday
+| [Thursday 28 April 2011] [04:29:51] <mikko>	did i send you an email about mac os x build failure --with-pgm?
+| [Thursday 28 April 2011] [04:30:03] <mikko>	i think i was supposed to send but i dont know if i ever did
+| [Thursday 28 April 2011] [04:30:03] <Steve-o>	I have something, one moment
+| [Thursday 28 April 2011] [04:30:14] <mikko>	i was in lisbon for holidays
+| [Thursday 28 April 2011] [04:30:16] <mikko>	lovely city
+| [Thursday 28 April 2011] [04:30:26] <Steve-o>	https://github.com/zeromq/libzmq/issues/193 fixed already
+| [Thursday 28 April 2011] [04:30:43] <Steve-o>	Lisbon?  You like it?  It's bit of a dump
+| [Thursday 28 April 2011] [04:30:47] <mikko>	ah, nice
+| [Thursday 28 April 2011] [04:30:55] <mikko>	yeah, it's not nice and shiny
+| [Thursday 28 April 2011] [04:31:01] <mikko>	but a lot of character
+| [Thursday 28 April 2011] [04:31:12] <Steve-o>	Zurich is funny, everyone is so old
+| [Thursday 28 April 2011] [04:31:14] <mikko>	i shot five rolls of film there
+| [Thursday 28 April 2011] [04:31:40] <Steve-o>	we had a nice apartment over looking the lake though, v. nice
+| [Thursday 28 April 2011] [04:31:58] <mikko>	i've never been to zurich
+| [Thursday 28 April 2011] [04:32:10] <Steve-o>	nice chocolate :-)
+| [Thursday 28 April 2011] [04:32:24] <mikko>	i would love to go to south of france at some point
+| [Thursday 28 April 2011] [04:32:38] <Steve-o>	st tropez?
+| [Thursday 28 April 2011] [04:32:42] <Steve-o>	or just abouts
+| [Thursday 28 April 2011] [04:32:54] <mikko>	just anywhere there
+| [Thursday 28 April 2011] [04:33:30] <Steve-o>	I see a lot of Brits on HGTV moving to South of France
+| [Thursday 28 April 2011] [04:33:50] <Steve-o>	good weather and large residences
+| [Thursday 28 April 2011] [04:34:39] <Steve-o>	so I'll be NYC for near 3 months
+| [Thursday 28 April 2011] [04:34:48] <Steve-o>	waiting for Green Card interview
+| [Thursday 28 April 2011] [04:37:18] <Steve-o>	I've switched my lab off, so that might be entertaining for future updates.
+| [Thursday 28 April 2011] [04:38:00] <mikko>	hehe, where is the lab located at?
+| [Thursday 28 April 2011] [04:38:11] <Steve-o>	in my office in HK
+| [Thursday 28 April 2011] [04:38:26] <mikko>	if we wanted to add PGM testing to daily builds what would that need?
+| [Thursday 28 April 2011] [04:38:29] <Steve-o>	although there is a OS X server still running with the source tree on
+| [Thursday 28 April 2011] [04:38:30] <mikko>	what kind of gear?
+| [Thursday 28 April 2011] [04:39:28] <Steve-o>	bare minimum normally for anything but performance testing
+| [Thursday 28 April 2011] [04:39:37] <Steve-o>	you can get away with really crappy gear
+| [Thursday 28 April 2011] [04:40:08] <Steve-o>	after all White Barn made PGM in the days of Sparc 1 & 2's
+| [Thursday 28 April 2011] [04:40:09] <mikko>	i'm just looking for 'does it work' kind of testing
+| [Thursday 28 April 2011] [04:40:45] <mikko>	currently i got two HP DL380s running VMWare ESXi with some amount of virtual machines
+| [Thursday 28 April 2011] [04:43:39] <Steve-o>	the unit tests are trivial to run on the command line for any hardware
+| [Thursday 28 April 2011] [04:43:50] <Steve-o>	the network tests are not so straight forward
+| [Thursday 28 April 2011] [04:44:21] <Steve-o>	I ideally want to rewrite them in 0MQ + Python or something higher level
+| [Thursday 28 April 2011] [04:44:42] <Steve-o>	make a great GSoC project :/
+| [Thursday 28 April 2011] [04:47:14] <Steve-o>	Ideally you could say 0MQ should be able to mock the PGM socket interface
+| [Thursday 28 April 2011] [04:57:03] <mikko>	hmm
+| [Thursday 28 April 2011] [04:57:22] <mikko>	do the network tests work with vmware virtual networking?
+| [Thursday 28 April 2011] [04:59:44] <Steve-o>	with ESX or VirtualBox would work
+| [Thursday 28 April 2011] [05:00:10] <Steve-o>	the older VMware VM's don't support multicast NICs
+| [Thursday 28 April 2011] [05:01:45] <Steve-o>	just going to pop out to find an IP-KVM device, later
+| [Thursday 28 April 2011] [05:02:04] <mikko>	later
+| [Thursday 28 April 2011] [07:58:10] <th>	pieterh: could you give me a pointer where to find the "patch for 191" which applies to 2.1? i'm adapting my testcase to get more information then.
+| [Thursday 28 April 2011] [07:58:35] <pieterh>	th: hi
+| [Thursday 28 April 2011] [07:58:56] <pieterh>	sustrik posted the patch to the mailing list
+| [Thursday 28 April 2011] [07:59:15] <pieterh>	i've also attached it to the issue in github
+| [Thursday 28 April 2011] [07:59:37] <pieterh>	in this gist repo: https://gist.github.com/946025
+| [Thursday 28 April 2011] [08:00:06] <pieterh>	however... it doesn't apply to 2.1 cleanly...
+| [Thursday 28 April 2011] [08:00:24] <pieterh>	give me a second and I'll make a patch for 2.1 and include it in that gist
+| [Thursday 28 April 2011] [08:00:34] <th>	pieterh: great thanks!
+| [Thursday 28 April 2011] [08:01:14] <th>	pieterh: i did not reduce it to a C testcase (yet) because i could imagine that the issue is within the C++ "bindings"
+| [Thursday 28 April 2011] [08:01:27] <th>	some destructing done in incorrect order or something...
+| [Thursday 28 April 2011] [08:02:07] <pieterh>	th: could be, esp. since the error always hits the same place afaics
+| [Thursday 28 April 2011] [08:02:16] <pieterh>	i've added that patch to the gist repo
+| [Thursday 28 April 2011] [08:03:16] <th>	pieterh: the main difference with your patch is that the CLIENT dies while in my testcase the server dies
+| [Thursday 28 April 2011] [08:04:23] <th>	2-1/issue191.patch got it
+| [Thursday 28 April 2011] [08:05:01] <th>	pieterh: is it a good idea to use 2.1.6 for this?
+| [Thursday 28 April 2011] [08:05:12] <pieterh>	th: should not make any difference
+| [Thursday 28 April 2011] [08:05:16] <th>	ok
+| [Thursday 28 April 2011] [08:08:59] <th>	pieterh: i can not confirm any change with that patch. i dont get the error you get, it's still the server failing because of intermixed message.
+| [Thursday 28 April 2011] [08:09:25] <pieterh>	right...
+| [Thursday 28 April 2011] [08:09:40] <pieterh>	anyhow the patch didn't fix issue 191, it caused 0MQ to die nastily
+| [Thursday 28 April 2011] [08:09:42] <th>	pieterh: which 2.1 revision did you use?
+| [Thursday 28 April 2011] [08:10:06] <th>	pieterh: it does not die here
+| [Thursday 28 April 2011] [08:10:11] <th>	pieterh: at least not nastily
+| [Thursday 28 April 2011] [08:10:20] <pieterh>	indeed, neither with me, then it's probably a different issue than 191
+| [Thursday 28 April 2011] [08:10:27] <pieterh>	i'd suggest the best step is to make a C test case that reproduces the problem on 2.1
+| [Thursday 28 April 2011] [08:10:33] <th>	ok
+| [Thursday 28 April 2011] [08:10:37] <pieterh>	the revision is not going to be significant, anything recent
+| [Thursday 28 April 2011] [08:10:40] <th>	and testing 3.0 i assume
+| [Thursday 28 April 2011] [08:10:54] <pieterh>	and then, a second test case for 3.0 (it'll be very similar)
+| [Thursday 28 April 2011] [08:11:05] <pieterh>	don't use zmq_device, that's gone in 3.0...
+| [Thursday 28 April 2011] [08:11:30] <th>	pieterh: i didn't
+| [Thursday 28 April 2011] [08:11:41] <th>	pieterh: must be indirectly
+| [Thursday 28 April 2011] [08:12:54] <pieterh>	ah, perhaps a side effect of using the C++ binding
+| [Thursday 28 April 2011] [08:13:01] <pieterh>	it was a compile error, not a link error
+| [Thursday 28 April 2011] [08:13:20] <th>	pieterh: i only use {context,socket,message}_t and bind,connect,recv,send,{get,set}sockopt
+| [Thursday 28 April 2011] [08:13:36] <th>	ahh ok
+| [Thursday 28 April 2011] [08:14:01] <th>	removing C++ first then, i'd say. to know where it comes from.
+| [Thursday 28 April 2011] [08:15:03] <pieterh>	yes
+| [Thursday 28 April 2011] [08:50:17] <th>	reference manual says about zmq_msg_init_data: "MQ shall take ownership of the supplied buffer", is that only true when a deallocation function pointer is given?
+| [Thursday 28 April 2011] [08:51:00] <mato>	th: you mean "... is not given" ?
+| [Thursday 28 April 2011] [08:51:17] <pieterh>	mato: when give, I think...
+| [Thursday 28 April 2011] [08:51:20] <pieterh>	*given
+| [Thursday 28 April 2011] [08:51:21] <th>	there are examples in the guide passing a constant static string, and NULL,NULL for ffn,hint
+| [Thursday 28 April 2011] [08:51:34] <th>	it makes no sense to giveownership to a string like that
+| [Thursday 28 April 2011] [08:51:52] <mato>	it does what you think it does :-)
+| [Thursday 28 April 2011] [08:52:21] <th>	mato: so it does not call any free() unless i pass a function pointer to a free()?
+| [Thursday 28 April 2011] [08:52:36] <mato>	th: actually good question
+| [Thursday 28 April 2011] [08:52:36] <pieterh>	th: those examples should absolutely not be using the _data method, I'm changing that
+| [Thursday 28 April 2011] [08:52:47] <th>	????????zmq_msg_init_data?(&reply,?"World",?5,?NULL,?NULL);
+| [Thursday 28 April 2011] [08:52:51] <th>	talking od that code
+| [Thursday 28 April 2011] [08:52:58] <pieterh>	yes, hwserver & hwclient
+| [Thursday 28 April 2011] [08:52:59] <th>	sorry for the broken paste
+| [Thursday 28 April 2011] [08:53:23] <mato>	th: if no ffn is passed, none is called
+| [Thursday 28 April 2011] [08:53:40] <pieterh>	mato: problem is that statement in the man page, "shall take ownership..."
+| [Thursday 28 April 2011] [08:53:44] <th>	pieterh: i'm looking fo replacemtn of `zmq::message_t m(len); memcpy((void *) m.data(), buffer, len);`
+| [Thursday 28 April 2011] [08:53:50] <mato>	pieterh: yes, it's wrong
+| [Thursday 28 April 2011] [08:54:30] 	 * mato needs to give the manual some TLC
+| [Thursday 28 April 2011] [08:54:30] <th>	mato: then i think the reference manual should be changed to make that clear. it says "shall take ownership"
+| [Thursday 28 April 2011] [08:54:33] <pieterh>	th: in C, zmq_msg_init_size() and then memcpy into zmq_msg_data()
+| [Thursday 28 April 2011] [08:54:47] <th>	perhaps it should more hint to the user to keep that buffer valid until message's EOL
+| [Thursday 28 April 2011] [08:55:08] <mato>	yes
+| [Thursday 28 April 2011] [08:55:17] <mato>	if you don't supply a ffn then the buffer must stay around forever
+| [Thursday 28 April 2011] [08:55:23] <mato>	or at least until context deinit anyway
+| [Thursday 28 April 2011] [08:55:41] <th>	mato: _context_ deinit? not message deinit?
+| [Thursday 28 April 2011] [08:56:20] <mato>	th: technically message deinit, but due to internal refcounting that's probably not a 100% safe approach
+| [Thursday 28 April 2011] [08:56:20] <th>	(which should be msg_close, i assume)
+| [Thursday 28 April 2011] [08:56:24] <mato>	yes
+| [Thursday 28 April 2011] [08:56:57] <th>	pieterh: is it wrong in the examples because it is easily used incorrectly?
+| [Thursday 28 April 2011] [08:57:01] <th>	pieterh: or is there another reason?
+| [Thursday 28 April 2011] [08:57:39] <pieterh>	th: the init_data method is rather poorly named
+| [Thursday 28 April 2011] [08:57:57] <pieterh>	it should be called zmq_msg_zero_copy_do_not_use_unless_you_know_what_its_for()
+| [Thursday 28 April 2011] [08:58:06] <mato>	:-)
+| [Thursday 28 April 2011] [08:58:06] <th>	pieterh: should it be named something like zmq_msg_set_data_reference?
+| [Thursday 28 April 2011] [08:58:13] <pieterh>	and my error in using that in hello world methods
+| [Thursday 28 April 2011] [08:58:13] <th>	ahh ok
+| [Thursday 28 April 2011] [08:58:26] <pieterh>	highly misleading, but I also got caught by the name originally
+| [Thursday 28 April 2011] [09:10:59] <Steve-o>	pieterh: updated PGM github issues in libzmq/zeromq2-1, mainly appear to be cases resolved in newer versions.  One wishlist issue for improved logging.
+| [Thursday 28 April 2011] [09:11:21] <pieterh>	neat, thanks
+| [Thursday 28 April 2011] [09:12:37] <pieterh>	Steve-o: btw I put Miru on http://www.zeromq.org/intro:commercial-support
+| [Thursday 28 April 2011] [09:12:52] <pieterh>	can you take a look and see if the description is OK for you?
+| [Thursday 28 April 2011] [09:14:47] <Steve-o>	Cool, I have a Chinese site too:  http://./
+| [Thursday 28 April 2011] [09:15:52] <Steve-o>	Well, Traditional Chinese anyway.
+| [Thursday 28 April 2011] [09:16:37] <pieterh>	Steve-o: afaik zeromq.org isn't available in mainland China... :-/
+| [Thursday 28 April 2011] [09:18:27] <Steve-o>	Works in Hong Kong & Taiwan though
+| [Thursday 28 April 2011] [09:20:41] <pieterh>	It could be neat to make a Chinese zeromq.org site... but not using Wikidot then
+| [Thursday 28 April 2011] [09:21:08] <Steve-o>	is it just .org blocked?
+| [Thursday 28 April 2011] [09:21:16] <pieterh>	Steve-o: it's Wikidot that's blocked
+| [Thursday 28 April 2011] [09:21:28] <pieterh>	the IP address, afaik
+| [Thursday 28 April 2011] [09:21:29] <Steve-o>	oh, as a wiki, igi
+| [Thursday 28 April 2011] [09:21:47] <ezl>	having trouble installing zeromq on ubuntu 10.10
+| [Thursday 28 April 2011] [09:21:48] <ezl>	 uuid-dev : Depends: libuuid1 (= 2.17.2-0ubuntu1) but 2.17.2-0ubuntu1.10.10.2 is to be installed
+| [Thursday 28 April 2011] [09:21:48] <ezl>	E: Broken packages
+| [Thursday 28 April 2011] [09:21:50] <ezl>	But installing uuid-dev shows I have the most recent version
+| [Thursday 28 April 2011] [09:22:11] <Steve-o>	pieterh: all wikis are blocked, including similar bits of Google
+| [Thursday 28 April 2011] [09:22:46] <ezl>	any ideas?
+| [Thursday 28 April 2011] [09:23:03] <pieterh>	Steve-o: I assume the Chinese govt hates the Internet
+| [Thursday 28 April 2011] [09:23:23] <pieterh>	ezl: no ideas immediately, haven't hit this on Ubuntu 10.10 myself
+| [Thursday 28 April 2011] [09:23:54] <pieterh>	ezl: when do you get this error message?
+| [Thursday 28 April 2011] [09:24:13] <ezl>	.configure
+| [Thursday 28 April 2011] [09:24:24] <pieterh>	what 0MQ package did you download?
+| [Thursday 28 April 2011] [09:24:51] <ezl>	2.1.6 off the website this morning
+| [Thursday 28 April 2011] [09:25:03] <pieterh>	let me just try that for sanity's sake...
+| [Thursday 28 April 2011] [09:25:16] <ezl>	thanks pieterh
+| [Thursday 28 April 2011] [09:25:38] <ezl>	checking for uuid_generate in -luuid... no
+| [Thursday 28 April 2011] [09:25:38] <ezl>	configure: error: cannot link with -luuid, install uuid-dev.
+| [Thursday 28 April 2011] [09:25:50] <ezl>	was the 2 lines of output before configure quit
+| [Thursday 28 April 2011] [09:26:07] <pieterh>	ezl: so I have uuid-dev installed
+| [Thursday 28 April 2011] [09:26:16] <pieterh>	it sounds like you don't have it installed (or properly)
+| [Thursday 28 April 2011] [09:27:16] <ezl>	ah. right, i don't. when trying to install uuiddev, i get the error message above about Depending on libuuid1
+| [Thursday 28 April 2011] [09:27:31] <ezl>	"Depends: libuuid1 (= 2.17.2-0ubuntu1) but 2.17.2-0ubuntu1.10.10.2 is to be installed"
+| [Thursday 28 April 2011] [09:27:42] <ezl>	which when i try to install linuuid1, it says that i have the latest version
+| [Thursday 28 April 2011] [09:27:44] 	 * pieterh does a quick google...
+| [Thursday 28 April 2011] [09:28:07] <ezl>	libuuid1 is already the newest version.
+| [Thursday 28 April 2011] [09:28:10] <pieterh>	ezl: I know there was a Ubuntu update today
+| [Thursday 28 April 2011] [09:28:17] <pieterh>	maybe you're halfway through an update?
+| [Thursday 28 April 2011] [09:28:18] <ezl>	(sorry, I did google it too, just didn't get very far)
+| [Thursday 28 April 2011] [09:28:29] <ezl>	(also pretty new to ubuntu, so it could be just a newb problem)
+| [Thursday 28 April 2011] [09:29:02] <pieterh>	try sudo apt-get dist-upgrade
+| [Thursday 28 April 2011] [09:29:12] <pieterh>	all the way through, including restart if needed
+| [Thursday 28 April 2011] [09:29:33] <ezl>	ok thanks trying
+| [Thursday 28 April 2011] [09:29:34] <pieterh>	it's something aberrant because this normally /always/ works on Ubuntu
+| [Thursday 28 April 2011] [09:30:05] 	 * pieterh just triple-checked, 2.1.6 configures fine, have libuuid1 and uuid-dev installed
+| [Thursday 28 April 2011] [09:30:15] <ezl>	dist upgrade: 0 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.
+| [Thursday 28 April 2011] [09:30:21] <ezl>	yeah my problem seems to be libuuid1
+| [Thursday 28 April 2011] [09:30:39] <mikko>	ezl: can you put config.log to gist.github.com?
+| [Thursday 28 April 2011] [09:30:48] <pieterh>	hmm, try uninstalling that, and then installing uuid-dev
+| [Thursday 28 April 2011] [09:30:51] <ezl>	says its installed, but then when i try to install uuid-dev, it complains that i don't have libuuid1
+| [Thursday 28 April 2011] [09:30:53] <ezl>	ok
+| [Thursday 28 April 2011] [09:30:57] <ezl>	mikko ok also
+| [Thursday 28 April 2011] [09:32:09] <ezl>	mikko: pieterh: config.log >> https://gist.github.com/946344
+| [Thursday 28 April 2011] [09:32:54] <mikko>	ezl: can you do ldconfig -p | grep uuid
+| [Thursday 28 April 2011] [09:34:18] <ezl>	mikko: ok
+| [Thursday 28 April 2011] [09:34:59] <ezl>	mikko: libuuid.so.1 (libc6) => /lib/libuuid.so.1
+| [Thursday 28 April 2011] [09:35:14] 	 * ezl googles ldconfig as well
+| [Thursday 28 April 2011] [09:35:55] <ezl>	piterh: as per your recommendation also tried to uninstall, but didn't go smoothly
+| [Thursday 28 April 2011] [09:35:55] <ezl>	https://gist.github.com/946352
+| [Thursday 28 April 2011] [09:38:24] <mikko>	ezl: looks like you have it
+| [Thursday 28 April 2011] [09:39:47] <mikko>	interesting
+| [Thursday 28 April 2011] [09:39:52] <ezl>	mikko: yes, ubuntu thinks i have it, but then when i try to install uuid-dev, it says it can't because it needs libuuid1
+| [Thursday 28 April 2011] [09:39:59] <mikko>	you also need /usr/lib/libuuid.so
+| [Thursday 28 April 2011] [09:40:12] <ezl>	"Depends: libuuid1 (= 2.17.2-0ubuntu1) but 2.17.2-0ubuntu1.10.10.2 is to be installed"
+| [Thursday 28 April 2011] [09:40:17] <ezl>	sounds sort of like a version problem
+| [Thursday 28 April 2011] [09:40:27] <ezl>	but i can't decipher what that error means
+| [Thursday 28 April 2011] [09:42:55] <ezl>	what are ".so" and ".so.1" files?
+| [Thursday 28 April 2011] [09:43:00] <ezl>	(linux newb)
+| [Thursday 28 April 2011] [09:52:18] <mikko>	ezl: i think thats the so version
+| [Thursday 28 April 2011] [09:52:44] <mikko>	it sounds like ubuntu has messed up the dependencies
+| [Thursday 28 April 2011] [09:54:48] <ezl>	how can i force ubuntu to reinstall it?
+| [Thursday 28 April 2011] [09:55:02] <macson_g>	hi, I have problem with app crashing on SIGPIPE on exit in 2.1.6. Can anyone help?
+| [Thursday 28 April 2011] [09:56:30] <macson_g>	The backtrace is: zmq::mailbox_t::send, zmq::object_t::send_stop, zmq::ctx_t::terminate
+| [Thursday 28 April 2011] [09:59:23] <mikko>	ezl: i don't know
+| [Thursday 28 April 2011] [09:59:31] <pieterh>	ezl: remove it, reinstall it
+| [Thursday 28 April 2011] [09:59:48] <ezl>	https://gist.github.com/946352 -- not letting me remove it
+| [Thursday 28 April 2011] [09:59:53] <pieterh>	oh...
+| [Thursday 28 April 2011] [10:00:04] 	 * pieterh didn't read the history
+| [Thursday 28 April 2011] [10:00:20] <ezl>	I'm getting that E: broken packages thing on anyhting surrounding libuuid1
+| [Thursday 28 April 2011] [10:00:31] <ezl>	not sure what that means, but "broken" sounds suboptimal
+| [Thursday 28 April 2011] [10:00:33] <ezl>	=P
+| [Thursday 28 April 2011] [10:01:03] <pieterh>	ezl: try 'apt-get clean', 'purge', 'update'
+| [Thursday 28 April 2011] [10:02:06] <pieterh>	ezl: actually, looks like you have quite a mess
+| [Thursday 28 April 2011] [10:02:48] <ezl>	haha awesome.
+| [Thursday 28 April 2011] [10:03:00] <ezl>	i really haven't done much on my machine, not sure how i got into this
+| [Thursday 28 April 2011] [10:03:31] <ezl>	(i did clean, purge, update: libuuid1 is still installed, tried to uninstall, wouldn't allow again.)
+| [Thursday 28 April 2011] [10:06:33] <headzone>	this is why it pays to use debian
+| [Thursday 28 April 2011] [10:12:49] <pieterh>	ezl: if you haven't done much on the system, reinstall it...
+| [Thursday 28 April 2011] [10:13:36] <pieterh>	headzone: I thought Ubuntu was basically debian, especially its package management layers...
+| [Thursday 28 April 2011] [12:32:25] <ParadoxG>	#gitready
+| [Thursday 28 April 2011] [12:32:47] <ParadoxG>	sorry, wrong command
+| [Thursday 28 April 2011] [12:40:31] <mabes>	does anyone know if zdevice (https://github.com/imatix/zdevices/tree/master/c/generic) is available as binaries/in a deb package?
+| [Thursday 28 April 2011] [13:08:36] <pieterh>	mabes: nope, it's not
+| [Thursday 28 April 2011] [13:08:53] <pieterh>	it's a single C source file...
+| [Thursday 28 April 2011] [13:10:20] <mabes>	pieterh: I know, but my sysadmins like packages :)  I'll have to look into creating our own I suppose. thakns
+| [Thursday 28 April 2011] [13:10:42] <pieterh>	mabes: you're using zdevice?
+| [Thursday 28 April 2011] [13:13:24] <mabes>	pieterh: well, no, not yet... I'm investigating zeromq and I need to use ROUTER/DEALER (XREQ/XRES).  One process is in ruby and the other Java.  Anyways, I need to use the zmq_queue and it seemed like using zdevice was the easiest way to do that from a deployment standpoint.  I am new to zeromq so I may be wrong though- if so please clue me in...
+| [Thursday 28 April 2011] [13:14:30] <pieterh>	mabes: the simplest for you would be to rewrite zdevice in Java or Ruby IMO
+| [Thursday 28 April 2011] [13:14:43] <pieterh>	it's a very simple app, mostly concerned with reading configuration data
+| [Thursday 28 April 2011] [13:14:48] <pieterh>	that should be trivial in Ruby
+| [Thursday 28 April 2011] [13:15:00] <pieterh>	all the hard work is done by the zmq_device() call at the end
+| [Thursday 28 April 2011] [13:15:32] <pieterh>	before you do this you need to read the Guide and understand how devices work
+| [Thursday 28 April 2011] [13:16:00] <pieterh>	there is a detailed explanation of what zmq_device() actually does, and how to roll your own
+| [Thursday 28 April 2011] [13:16:13] <mabes>	pieterh: Yeah, I read the guide and I actually already translated the c msgqueu example that uses zmq_queue into ruby already.
+| [Thursday 28 April 2011] [13:16:25] <pieterh>	that's what you want to use then
+| [Thursday 28 April 2011] [13:17:19] <mabes>	pieterh: ok, thanks for the advice.  I'll go ahead with that approach then.
+| [Thursday 28 April 2011] [13:17:24] <pieterh>	np
+| [Thursday 28 April 2011] [14:52:50] <DanielFriesen>	I'm trying to figure out what type of ZMQ sockets I should use; Say I have 1 A and a number of B's. There are multiple requests A can send messages to B for. Individual requests can be sent to any B, but all subsequent messages related to that same request have to be sent to the same B as the first one, so push/pull is out. That sounds like req/rep but A needs to be able to send multiple messages to B and B needs to be able to make multiple replies,
+| [Thursday 28 April 2011] [14:52:50] <DanielFriesen>	 they can't wait for a message from the other before sending the next, so req/rep seams to be out.
+| [Thursday 28 April 2011] [14:57:33] <guido_g>	sounds like a job for xreq/xrep sockets
+| [Thursday 28 April 2011] [14:57:43] <mikko>	XREP/XREQ with multipart messages
+| [Thursday 28 April 2011] [14:57:55] <guido_g>	why multipart?
+| [Thursday 28 April 2011] [14:58:08] <guido_g>	multipart is just one message send in one go
+| [Thursday 28 April 2011] [14:58:24] <mikko>	depends on how far apart the messages are i guess
+| [Thursday 28 April 2011] [14:58:33] <guido_g>	see
+| [Thursday 28 April 2011] [14:59:20] <guido_g>	DanielFriesen: The Guide has a chapter on lru routing, just replace the lru algo with one that fits your need
+| [Thursday 28 April 2011] [14:59:40] <DanielFriesen>	Ok, I thought about XREP/XREQ but didn't know if it was usable as the primary pair
+| [Thursday 28 April 2011] [15:00:02] <guido_g>	first of all, check if you really need stateful routing
+| [Thursday 28 April 2011] [15:00:14] <guido_g>	most of the time it's not worth the trouble
+| [Thursday 28 April 2011] [15:02:14] <DanielFriesen>	I'm writing a NIO http server, sending requests to workers doing the request handling... request initiation/headers, and body are separate messages... naturally the body of a http request needs to go to the same worker as the headers went to...
+| [Thursday 28 April 2011] [15:02:51] <guido_g>	a request should be a single message
+| [Thursday 28 April 2011] [15:02:56] <mikko>	DanielFriesen: have you checked mongrel2 as well?
+| [Thursday 28 April 2011] [15:03:09] <DanielFriesen>	That would destroy streaming capability
+| [Thursday 28 April 2011] [15:03:13] <guido_g>	as mikko pointed out, you might use multipart messages
+| [Thursday 28 April 2011] [15:03:16] <mikko>	guido_g: not necessarily assuming request has large body
+| [Thursday 28 April 2011] [15:03:41] <DanielFriesen>	When I saw how mongrel2 was explained in that video I shuddered...
+| [Thursday 28 April 2011] [15:04:21] <guido_g>	some of us have the same feeling when seeing the average java software...
+| [Thursday 28 April 2011] [15:04:54] 	 * DanielFriesen is using Java and yet isn't using Java...
+| [Thursday 28 April 2011] [15:05:11] <guido_g>	which is the only way to use java :)
+| [Thursday 28 April 2011] [15:06:15] 	 * DanielFriesen is using Rhino... Using ES5/JS1.{7,8}...
+| [Thursday 28 April 2011] [15:06:38] <guido_g>	whatever that might be
+| [Thursday 28 April 2011] [15:06:43] <DanielFriesen>	JavaScript
+| [Thursday 28 April 2011] [15:06:58] <DanielFriesen>	;) cept much cleaner
+| [Thursday 28 April 2011] [15:07:21] <guido_g>	back to streaming
+| [Thursday 28 April 2011] [15:08:07] <guido_g>	if you have content to stream, why partiition it into discrete messages?
+| [Thursday 28 April 2011] [15:09:53] <DanielFriesen>	Open up a new socket for each connection?
+| [Thursday 28 April 2011] [15:10:22] <guido_g>	no, thinking about where to get the streams content and why
+| [Thursday 28 April 2011] [15:11:05] <guido_g>	streaming and request/reply are not different enough to treat them differently
+| [Thursday 28 April 2011] [15:11:34] <guido_g>	ups
+| [Thursday 28 April 2011] [15:11:43] <guido_g>	i ment: streaming and request/reply are different enough to treat them differently
+| [Thursday 28 April 2011] [17:23:56] <chuck>	hello
+| [Thursday 28 April 2011] [17:24:02] <chuck>	I'm reading through the guide, and I'm sort of confused
+| [Thursday 28 April 2011] [17:24:40] <chuck>	if I want to be able to start multiple "worker" processes for a backend service and I want to contact those processes from my web application server, which socket types should I be looking at?
+| [Thursday 28 April 2011] [17:31:02] <mikko>	chuck: what kind of communication are you looking at?
+| [Thursday 28 April 2011] [17:31:06] <mikko>	fire and forget ?
+| [Thursday 28 April 2011] [17:32:19] <chuck>	mikko, yeah
+| [Thursday 28 April 2011] [17:32:49] <mikko>	then you want PUSH on the web application server
+| [Thursday 28 April 2011] [17:32:53] <mikko>	and pull on backend
+| [Thursday 28 April 2011] [17:33:18] <chuck>	mikko, what would it be for a synchronous response?
+| [Thursday 28 April 2011] [17:36:28] <mikko>	XREP/XREQ
+| [Thursday 28 April 2011] [17:36:38] <chuck>	hrm
+| [Thursday 28 April 2011] [17:37:51] <chuck>	mikko, i'm just trying to think how I would set this up
+| [Thursday 28 April 2011] [17:38:40] <chuck>	mikko, so I would create a server that binds, and then multiple worker clients that would connect to that
+| [Thursday 28 April 2011] [17:38:49] <chuck>	and then somehow I would contact the server from my web application?
+| [Thursday 28 April 2011] [17:39:33] <mikko>	yes
+| [Thursday 28 April 2011] [17:42:56] <chuck>	mikko, is that the most straightforward way? it seems like the server middleman should be cut out somehow but I can't see how it would be
+| [Thursday 28 April 2011] [17:45:11] <mikko>	chuck: sorry, i don't follow
+| [Thursday 28 April 2011] [17:45:16] <mikko>	chuck: what server middleman?
+| [Thursday 28 April 2011] [17:46:13] <mikko>	you mean "Architecture of a Single Cluster" in guide?
+| [Thursday 28 April 2011] [17:48:53] <chuck>	mikko, well I mean, what I'm describing is this: web application -> backend server -> backend clients
+| [Thursday 28 April 2011] [17:49:19] <chuck>	is there any way to talk directly to the clients while retaining the ability to add and remove clients from the "cluster" easily?
+| [Thursday 28 April 2011] [17:49:23] <mikko>	the middleman is usually there to do routing
+| [Thursday 28 April 2011] [17:49:50] <chuck>	right, and if that's necessary that's fine, i'm just not familiar with the ins and outs of every socket type so i'm not sure if it's necessary or not
+| [Thursday 28 April 2011] [17:49:51] <mikko>	if there are multiple web application servers they have no idea of amount of work each backend server has
+| [Thursday 28 April 2011] [17:50:18] <mikko>	the backend server in your scenario would probably do the distribution of work
+| [Thursday 28 April 2011] [17:50:42] <mikko>	you can connect to backend clients directly from the web application as well
+| [Thursday 28 April 2011] [17:50:46] <chuck>	can't zeromq balance the messages it sends to each backend client?
+| [Thursday 28 April 2011] [17:51:24] <mikko>	it can, but if you have 10 web application servers they all balance differently
+| [Thursday 28 April 2011] [17:51:46] <mikko>	you can end end up into situation where 10 servers all send work to 1 worker
+| [Thursday 28 April 2011] [17:52:18] <mikko>	unless you syncronise the state across all web application servers
+| [Thursday 28 April 2011] [17:52:22] <chuck>	hmm
+| [Thursday 28 April 2011] [17:52:35] <mikko>	or implement a protocol where you ask each backend client how much work they have
+| [Thursday 28 April 2011] [17:53:02] <mikko>	the middleman in your case would maintain LRU list of work distribution
+| [Thursday 28 April 2011] [17:53:11] <mikko>	or any other algo suitable for the scenario
+| [Thursday 28 April 2011] [17:58:23] <mikko>	let's say in the simplest scenario you would connect the web application server directly to backend client
+| [Thursday 28 April 2011] [17:58:45] <mikko>	now when you add another backend client and connect to that as well zeromq will do round robin balancing between those backend clients
+| [Thursday 28 April 2011] [17:59:06] <mikko>	now when you add another web application server and connect to those backend workers it will do round-robin as well
+| [Thursday 28 April 2011] [17:59:23] <mikko>	so work goes to 1 then 2, 1, 2, 1, 2 etc
+| [Thursday 28 April 2011] [17:59:31] <chuck>	but the downside is that I can't just start backend clients and call it a day, i have to add their IP addresses to the code my web app server is running?
+| [Thursday 28 April 2011] [17:59:47] <mikko>	if you got two web application servers your work might go 1, 1, 2 ,2, 1,1, 2,2,
+| [Thursday 28 April 2011] [18:00:04] <mikko>	due to naive round-robin and no state between the two web application servers
+| [Thursday 28 April 2011] [18:00:12] <mikko>	so let's say you add third web application server
+| [Thursday 28 April 2011] [18:00:31] <mikko>	worst case is: 1,1,1,2,2,2,1,1,1,2,2,2
+| [Thursday 28 April 2011] [18:00:48] <chuck>	oh okay, i gotcha
+| [Thursday 28 April 2011] [18:01:07] <chuck>	mikko, so this is what i should be doing? https://github.com/imatix/zguide/raw/master/images/fig49.png
+| [Thursday 28 April 2011] [18:01:11] <chuck>	the single cluster architecture
+| [Thursday 28 April 2011] [18:01:11] <mikko>	the middleman allows you to do a bit more intellegient routing
+| [Thursday 28 April 2011] [18:01:45] <chuck>	right
+| [Thursday 28 April 2011] [18:01:51] <mikko>	chuck: it all depends on the application as well
+| [Thursday 28 April 2011] [18:03:11] <chuck>	mikko, so in that single cluster architecture, on the worker side, the broker would be PUSHing and the workers would be PULLing, right? how would the "clients" (in that diagram) contact the broker?
+| [Thursday 28 April 2011] [18:03:58] <mikko>	the broker would be XREP and clients would be XREQ
+| [Thursday 28 April 2011] [18:04:09] <mikko>	XREP = ROUTER
+| [Thursday 28 April 2011] [18:04:14] <mikko>	in that diagram
+| [Thursday 28 April 2011] [18:05:04] <chuck>	oh so that's not a PUSH/PULL thing?
+| [Thursday 28 April 2011] [18:07:10] <mikko>	nope
+| [Thursday 28 April 2011] [18:07:18] <mikko>	XREP/XREQ allow to do custom routing
+| [Thursday 28 April 2011] [18:07:33] <mikko>	take a look at "A Request-Reply Message Broker"
+| [Thursday 28 April 2011] [18:15:39] <chuck>	mikko, will do
+| [Thursday 28 April 2011] [18:15:55] <chuck>	i've got to go, thanks for the help though, I understand it much better now. not all the way, but I'm getting there ;)
+| [Thursday 28 April 2011] [18:17:17] <mikko>	cool
+| [Thursday 28 April 2011] [18:52:36] <Bartzy>	Hi
+| [Thursday 28 April 2011] [18:52:42] <Bartzy>	I currently have a PHP app that uses system sometimes to call executables that create images on-the-fly... I now need to separate the app to scale: one or more machines for PHP (FastCGI) only, and one ore more machines for running the executables.. 
+| [Thursday 28 April 2011] [18:52:51] <Bartzy>	I also want to be able to use multiple "executing" servers.
+| [Thursday 28 April 2011] [19:10:32] <DanielFriesen>	'Assertion failed: rc == 0 (zmq_connecter.cpp:48)' caused by accidentally using "tcp://localhost:localhost", should I report that as a bug somewhere?
+| [Thursday 28 April 2011] [19:51:09] <mikko>	Bartzy: what is the actual question?
+| [Thursday 28 April 2011] [19:51:22] <mikko>	DanielFriesen: yes, if you don't mind opening an issue
+| [Thursday 28 April 2011] [19:52:50] <Bartzy>	mikko: I was wondering if zeromq is suitable for that... I'll need to script some custom code for the 'server' part, right?
+| [Thursday 28 April 2011] [19:53:26] <mikko>	Bartzy: yes, that is correct
+| [Thursday 28 April 2011] [19:53:42] <Bartzy>	Also, if I do a script in PHP or python for example.. and it does a while (true) { ... } and receives data from ZMQ inside the while... What happens if this server-script dies for some reason ?  
+| [Thursday 28 April 2011] [19:53:51] <Bartzy>	I'm responsible to re-spawn it, right ?
+| [Thursday 28 April 2011] [19:53:56] <mikko>	Bartzy: yes
+| [Thursday 28 April 2011] [19:54:08] <Bartzy>	mikko: OK, what's considered a good way to do that ?
+| [Thursday 28 April 2011] [19:54:17] <mikko>	for respawning the scripts?
+| [Thursday 28 April 2011] [19:54:22] <Bartzy>	yes
+| [Thursday 28 April 2011] [19:54:32] <Bartzy>	inittab? monit?
+| [Thursday 28 April 2011] [19:54:43] <mikko>	if it's calling an external executable i would create a simple C or C++ daemon
+| [Thursday 28 April 2011] [19:55:07] <Bartzy>	and what will spawn that C daemon if it dies ? :)
+| [Thursday 28 April 2011] [19:55:27] <mikko>	http://dustin.github.com/2010/02/28/running-processes.html
+| [Thursday 28 April 2011] [19:55:33] <mikko>	that is a very good read on running processes
+| [Thursday 28 April 2011] [19:55:52] <Bartzy>	Thank you very much.
+| [Thursday 28 April 2011] [19:56:12] <Bartzy>	I'm viewing "ZeroMQ is the Answer" talk... I'm quite amazed how easy it is
+| [Thursday 28 April 2011] [19:56:27] <mikko>	it's a very good talk
+| [Thursday 28 April 2011] [19:56:30] <Bartzy>	But I'm wondering if Gearman would be more suitable because I wouldn't have to code the 'server' 
+| [Thursday 28 April 2011] [19:56:33] <mikko>	i saw it in london
+| [Thursday 28 April 2011] [19:56:48] <mikko>	with gearman you still need the script running
+| [Thursday 28 April 2011] [19:56:51] <Bartzy>	yes it's very straight-forward...
+| [Thursday 28 April 2011] [19:57:09] <Bartzy>	So what's different between gearman and zmq ?
+| [Thursday 28 April 2011] [19:57:33] <mikko>	zeromq is more oriented towards messaging
+| [Thursday 28 April 2011] [19:57:43] <mikko>	where as gearman is more strictly for distributing work
+| [Thursday 28 April 2011] [19:59:10] <Bartzy>	messaging, how ? What do you mean by messaging ?
+| [Thursday 28 April 2011] [19:59:25] <Bartzy>	Because most of the talk I'm viewing is about distributing work in zmq
+| [Thursday 28 April 2011] [19:59:55] <mikko>	with zeromq the core concept is sending a message using different patterns
+| [Thursday 28 April 2011] [20:00:15] <mikko>	the message is arbitrary binary blob, a string or a number or anything
+| [Thursday 28 April 2011] [20:00:28] <mikko>	but you are always guaranteed to receive the whole message on the other side
+| [Thursday 28 April 2011] [20:00:35] <mikko>	the message can be instruction to call a function
+| [Thursday 28 April 2011] [20:00:40] <mikko>	or execute a binary 
+| [Thursday 28 April 2011] [20:00:47] <mikko>	but this is something you need to implement
+| [Thursday 28 April 2011] [20:01:01] <mikko>	think about for example this chatroom
+| [Thursday 28 April 2011] [20:01:07] <mikko>	we send messages all the time
+| [Thursday 28 April 2011] [20:01:22] <mikko>	you might even say that we publish messages in topic #zeromq
+| [Thursday 28 April 2011] [20:01:35] <mikko>	another channel is would be another topic
+| [Thursday 28 April 2011] [20:01:40] <mikko>	(using pub-sub terms)
+| [Thursday 28 April 2011] [20:02:17] <Bartzy>	instruction to execute a binary = string that I need to check for and do something with it, right ?
+| [Thursday 28 April 2011] [20:02:35] <mikko>	yes
+| [Thursday 28 April 2011] [20:02:35] <Bartzy>	yes I understand the pub-sub thingie
+| [Thursday 28 April 2011] [20:02:46] <Bartzy>	OK.. and how can I send a file using zeromq ?
+| [Thursday 28 April 2011] [20:02:51] <Bartzy>	is that recommended ?
+| [Thursday 28 April 2011] [20:03:12] <Bartzy>	or there are better ways to store a file and send it (via NFS)? 
+| [Thursday 28 April 2011] [20:03:22] <mikko>	send it where?
+| [Thursday 28 April 2011] [20:05:45] <Bartzy>	I have a web server, a client sends a request to do an effect on a URL
+| [Thursday 28 April 2011] [20:05:50] <Guthur>	Bartzy, working through at least some of the Guide examples can be could to get things to 'click'
+| [Thursday 28 April 2011] [20:06:18] <Guthur>	could/good
+| [Thursday 28 April 2011] [20:07:25] <Bartzy>	PHP downloads that image from the URL, then it needs to store it some where the image-processing server(s) can access it. It then should send a message or a 'job' for one of the image-processing servers to do a specific effect on that image, and save the new image in a place where the web server can access (for the user to fetch)
+| [Thursday 28 April 2011] [20:08:12] <Bartzy>	So storing the original image and the result image - is that best done via NFS , or using ZMQ to get the original image to the image-processing server(s), and then the result image from the image-processing servers to the web server through ZMQ as well...
+| [Thursday 28 April 2011] [20:10:28] <DanielFriesen>	*sigh* I wish there was a nice api like ZMQ that also supported udp messages that could just be dropped, or would let you know what connections it still has alive...
+| [Thursday 28 April 2011] [21:43:52] <josh_>	hi
+| [Thursday 28 April 2011] [21:44:10] <josh_>	does anyone know how to do a rate limit on a pull socket
+| [Friday 29 April 2011] [01:21:35] <CIA-75>	libzmq: 03Martin Sustrik 07master * rb2eb84f 10/ (4 files): Substantial simplification of uuid_t ...
+| [Friday 29 April 2011] [01:30:07] <CIA-75>	libzmq: 03Martin Sustrik 07master * r96213d5 10/ src/tcp_connecter.cpp : WSAENETUNREACH is a valid networking error ...
+| [Friday 29 April 2011] [06:35:01] <travlr>	mikko: ping
+| [Friday 29 April 2011] [06:35:11] <mikko>	yes?
+| [Friday 29 April 2011] [06:35:54] <travlr>	hey, i'm just now working with the irc log you gave me.. what time zone are you in?
+| [Friday 29 April 2011] [06:36:09] <mikko>	BST at the moment
+| [Friday 29 April 2011] [06:36:19] <travlr>	the log is in bst then?
+| [Friday 29 April 2011] [06:36:31] <mikko>	well, it is during summer
+| [Friday 29 April 2011] [06:37:03] <travlr>	the dates are from march 2010 to i think it was november 2010
+| [Friday 29 April 2011] [06:38:08] <mikko>	London will stay on BST until Sunday, October 30, 2011 at 2:00 AM
+| [Friday 29 April 2011] [06:38:09] <mikko>	when clocks are moved to Sunday, October 30, 2011 at 01:00:00 GMT
+| [Friday 29 April 2011] [06:38:39] <travlr>	ok, i think i only need july anyway, so thank you.
+| [Friday 29 April 2011] [06:39:10] <mikko>	no problem
+| [Friday 29 April 2011] [10:16:44] <ianbarber>	pieterh: here?
+| [Friday 29 April 2011] [10:16:56] <pieterh>	ianbarber: aye
+| [Friday 29 April 2011] [10:16:58] <ianbarber>	jujst
+| [Friday 29 April 2011] [10:17:04] <ianbarber>	argh, typing fail :)
+| [Friday 29 April 2011] [10:17:06] <pieterh>	:)
+| [Friday 29 April 2011] [10:17:12] <ianbarber>	just looking at the titanic pattern
+| [Friday 29 April 2011] [10:17:21] <ianbarber>	titanic.c, titanic_request
+| [Friday 29 April 2011] [10:17:31] <ianbarber>	creates a zmsg reply, but doesn't seem to send it: 
+| [Friday 29 April 2011] [10:17:37] <ianbarber>	//NowsendUUIDbacktoclient
+| [Friday 29 April 2011] [10:17:38] <ianbarber>	reply=zmsg_new();
+| [Friday 29 April 2011] [10:17:38] <ianbarber>	zmsg_addstr(reply,"200");
+| [Friday 29 April 2011] [10:17:38] <ianbarber>	zmsg_addstr(reply,uuid);
+| [Friday 29 April 2011] [10:17:38] <ianbarber>	free(uuid);
+| [Friday 29 April 2011] [10:17:45] <pieterh>	let me check...
+| [Friday 29 April 2011] [10:18:38] <pieterh>	hmm, indeed... 
+| [Friday 29 April 2011] [10:19:03] <pieterh>	I must have chopped that out by mistake at some stage, thanks
+| [Friday 29 April 2011] [10:21:01] <ianbarber>	cool - i was about to go trawling through zmsg for some magic i was not previously aware of :)
+| [Friday 29 April 2011] [10:21:30] <pieterh>	I ported all the examples to libzapi/czmq and presumably didn't retest everything properly
+| [Friday 29 April 2011] [10:21:37] <pieterh>	I'll fix this right now
+| [Friday 29 April 2011] [10:21:57] <ianbarber>	yeah, easy to do. 
+| [Friday 29 April 2011] [10:22:06] <ianbarber>	when you have a tick as well, i sent a pull req for the MDP examples https://github.com/imatix/zguide/pull/53
+| [Friday 29 April 2011] [10:22:11] <ianbarber>	(in php)
+| [Friday 29 April 2011] [10:22:26] <pieterh>	nice!
+| [Friday 29 April 2011] [10:22:51] <pieterh>	the guide is like a kind of complex game, and as you catch up I have to go build new levels...
+| [Friday 29 April 2011] [10:23:21] <ianbarber>	hehe
+| [Friday 29 April 2011] [10:23:23] <pieterh>	while sustrik busily keeps shifting the foundations so the levels don't remain stable
+| [Friday 29 April 2011] [10:24:02] <ianbarber>	got to keep things interesting! :)
+| [Friday 29 April 2011] [10:24:08] <pieterh>	yeah
+| [Friday 29 April 2011] [10:24:19] <pieterh>	strangely the old code didn't send a reply back either
+| [Friday 29 April 2011] [10:24:36] <pieterh>	so this may in fact be wrong, I need to re-read how titanic works in detail
+| [Friday 29 April 2011] [10:25:45] <guido_g>	hehehe
+| [Friday 29 April 2011] [10:25:47] <guido_g>	sorry
+| [Friday 29 April 2011] [10:26:48] <ianbarber>	you know you've got a good spec when it's a better source than the reference implementation though. 
+| [Friday 29 April 2011] [10:27:00] <ianbarber>	too many are done the other way around
+| [Friday 29 April 2011] [10:27:01] <pieterh>	yeah, that's true
+| [Friday 29 April 2011] [10:27:19] 	 * pieterh intensely dislikes specs written off source code
+| [Friday 29 April 2011] [10:33:16] <pieterh>	ianbarber: ah, ok, the code was correct
+| [Friday 29 April 2011] [10:33:46] <pieterh>	it's my fault for being too clever with the mdwrk API
+| [Friday 29 April 2011] [10:34:18] <ianbarber>	ah, i see it's on the next loop
+| [Friday 29 April 2011] [10:34:34] <ianbarber>	yep, that makes sense, just missed it before
+| [Friday 29 April 2011] [10:34:52] <pieterh>	I wanted to get a single method for 'send-wait-recv' instead of two
+| [Friday 29 April 2011] [10:36:06] <pieterh>	I'll comment the code a little better, and maybe change the API later on
+| [Friday 29 April 2011] [10:40:10] <ianbarber>	i think a comment should do it, just to avoid confusion
+| [Friday 29 April 2011] [10:48:07] <pieterh>	yup, done
+| [Friday 29 April 2011] [10:48:12] <pieterh>	publishing a new version now
+| [Friday 29 April 2011] [11:02:08] <sustrik>	pieterh: hi
+| [Friday 29 April 2011] [11:02:25] <pieterh>	sustrik: hey! how was Moscow?
+| [Friday 29 April 2011] [11:02:30] <sustrik>	great
+| [Friday 29 April 2011] [11:02:41] <sustrik>	the meetup was in pub
+| [Friday 29 April 2011] [11:02:49] <pieterh>	well, no kidding?
+| [Friday 29 April 2011] [11:02:49] <sustrik>	so more a drinking event
+| [Friday 29 April 2011] [11:03:05] <mato>	when was a meetup *not* a drinking event? :)
+| [Friday 29 April 2011] [11:03:13] <sustrik>	true
+| [Friday 29 April 2011] [11:03:28] <sustrik>	anyway, want to have a look at issue 191 now?
+| [Friday 29 April 2011] [11:03:39] <sustrik>	the backport thing
+| [Friday 29 April 2011] [11:03:46] <pieterh>	sustrik: did you find anything?
+| [Friday 29 April 2011] [11:03:57] <sustrik>	haven't looked so far
+| [Friday 29 April 2011] [11:04:07] <sustrik>	afaiu the problem you've seen doesn't happen anymore
+| [Friday 29 April 2011] [11:04:24] <sustrik>	so what's left are the problems with backported version, right?
+| [Friday 29 April 2011] [11:04:32] <pieterh>	well, I found 2-3 different issues
+| [Friday 29 April 2011] [11:04:41] 	 * sustrik has to catch up
+| [Friday 29 April 2011] [11:04:52] <sustrik>	alllin issue 191
+| [Friday 29 April 2011] [11:04:56] <pieterh>	sustrik: I made a gist/repo with all the details
+| [Friday 29 April 2011] [11:04:56] <sustrik>	right?
+| [Friday 29 April 2011] [11:05:01] <pieterh>	yes, 191
+| [Friday 29 April 2011] [11:05:12] <sustrik>	all of them in 2.1
+| [Friday 29 April 2011] [11:05:18] <pieterh>	afaics 2-1 and 3-0 die with similar problems though in different places
+| [Friday 29 April 2011] [11:05:29] <pieterh>	3-0 definitely is not stable after the patch
+| [Friday 29 April 2011] [11:05:37] <sustrik>	do we have a test case?
+| [Friday 29 April 2011] [11:05:41] <pieterh>	yes yes and yes
+| [Friday 29 April 2011] [11:05:47] <sustrik>	great
+| [Friday 29 April 2011] [11:05:48] <pieterh>	could you please grab that gist and ready it?
+| [Friday 29 April 2011] [11:05:58] <pieterh>	I spent quite some time documenting this, making test cases
+| [Friday 29 April 2011] [11:06:03] <pieterh>	*read it
+| [Friday 29 April 2011] [11:06:05] <sustrik>	yup
+| [Friday 29 April 2011] [11:06:27] <pieterh>	I'm 80% sure if you fix the problem in 3-0 we'll be able to fix 2-1 similarly
+| [Friday 29 April 2011] [11:06:44] <pieterh>	for some reason 3-0 is easier to type than 3.0 today...
+| [Friday 29 April 2011] [11:08:07] <sustrik>	:)
+| [Friday 29 April 2011] [11:08:12] <sustrik>	ok, let me try to reproduce
+| [Friday 29 April 2011] [11:08:25] <sustrik>	mato: btw, have you heard of andrew hume?
+| [Friday 29 April 2011] [11:08:37] <sustrik>	he've offered to help with man pages
+| [Friday 29 April 2011] [11:08:39] <mato>	sustrik: what about him?
+| [Friday 29 April 2011] [11:08:44] <th>	pieterh: i have the feeling zmq_msg_data() does not return the pointer to the mp-part of the last zmq_recv, but the data-pointer of a msg that would be received by later calls to zmq_recv (which are already waiting)
+| [Friday 29 April 2011] [11:08:48] <mato>	sustrik: oh, yes, i heard from him
+| [Friday 29 April 2011] [11:08:51] <sustrik>	goodo
+| [Friday 29 April 2011] [11:09:06] <mato>	sustrik: exchanged a couple of emails but nothing concrete has come of it as yet
+| [Friday 29 April 2011] [11:09:16] <pieterh>	th: that's unpossible afaik
+| [Friday 29 April 2011] [11:09:40] <th>	pieterh: i converted the test case to pure c now. and it happens even with only a single call to ./stress
+| [Friday 29 April 2011] [11:10:00] <pieterh>	ok, push your test case somewhere, I'll give it a go
+| [Friday 29 April 2011] [11:13:00] <th>	pieterh: i could not make it much smaller, yet. it's only translated from c++: http://thzn.de/0mq-mp-mix-pure-c/
+| [Friday 29 April 2011] [11:14:55] <th>	pieterh: just added the output.txt
+| [Friday 29 April 2011] [11:15:50] <pieterh>	sustrik: just tried again with master+patch, both pub and sub die
+| [Friday 29 April 2011] [11:16:01] <sustrik>	ok
+| [Friday 29 April 2011] [11:16:09] <pieterh>	there is a memory corruption somewhere, because sub dies in weird ways that change when I try to add printfs
+| [Friday 29 April 2011] [11:17:05] <sustrik>	compiling it
+| [Friday 29 April 2011] [11:18:43] <pieterh>	sustrik: I'm getting a random EINVAL on rc = zmq_getsockopt (s, ZMQ_RCVMORE, &more, &moresz);
+| [Friday 29 April 2011] [11:18:47] <pieterh>	in the sub test
+| [Friday 29 April 2011] [11:19:05] <pieterh>	but I think it's caused by some memory corruption issues
+| [Friday 29 April 2011] [11:21:11] <sustrik>	looks like
+| [Friday 29 April 2011] [11:21:21] <pieterh>	sustrik: do you always run ldconfig after installing a new libzmq version?
+| [Friday 29 April 2011] [11:21:27] <sustrik>	no idea
+| [Friday 29 April 2011] [11:21:28] <sustrik>	mato?
+| [Friday 29 April 2011] [11:22:30] <pieterh>	anyhow, that changes nothing... the subscriber dies with EINVAL on a valid getsockopt, the pub segfaults in array.hpp as documented
+| [Friday 29 April 2011] [11:22:42] <pieterh>	code is hard :)
+| [Friday 29 April 2011] [11:25:35] <sustrik>	ok, reproduced
+| [Friday 29 April 2011] [11:25:40] <pieterh>	excellent!
+| [Friday 29 April 2011] [11:26:00] <sustrik>	digging in
+| [Friday 29 April 2011] [11:26:47] <pieterh>	I *think* there is a problem in the new zmq_recv() method
+| [Friday 29 April 2011] [11:27:05] <sustrik>	doesn't happen when you use zmq_recvmsg?
+| [Friday 29 April 2011] [11:27:26] <pieterh>	the bogus result on getsockopt only hits with zmq_recv, not zmq_recvmsg
+| [Friday 29 April 2011] [11:27:35] <pieterh>	I have two otherwise identical subs, one works, one fails
+| [Friday 29 April 2011] [11:27:38] <sustrik>	i se
+| [Friday 29 April 2011] [11:27:40] <sustrik>	see
+| [Friday 29 April 2011] [11:27:42] 	 * pieterh will do some more digging
+| [Friday 29 April 2011] [11:30:44] <pieterh>	sustrik: it was a bug in your C testcase... uninitialized 'size_t moresz'
+| [Friday 29 April 2011] [11:31:30] <sustrik>	aha
+| [Friday 29 April 2011] [11:31:45] <pieterh>	so, subscriber is stable, publisher does crash 
+| [Friday 29 April 2011] [11:31:48] <mato>	sustrik: what's up?
+| [Friday 29 April 2011] [11:32:02] <mato>	sustrik: sorry, am distracted, not paying attention here ...
+| [Friday 29 April 2011] [11:32:05] <pieterh>	mato: I was asking if one needs to run ldconfig when installing new version of libzmq
+| [Friday 29 April 2011] [11:32:26] <mato>	pieterh: you should always run ldconfig as root after doing make install
+| [Friday 29 April 2011] [11:32:35] <pieterh>	ah, good to know
+| [Friday 29 April 2011] [11:32:39] <sustrik>	hm, i never did that
+| [Friday 29 April 2011] [11:32:50] <mato>	pieterh: in some cases it's redundant but it won't hurt
+| [Friday 29 April 2011] [11:32:57] <sustrik>	even if the new version just overwrites the old one?
+| [Friday 29 April 2011] [11:33:06] <sustrik>	as in recompiling
+| [Friday 29 April 2011] [11:33:07] <mato>	sustrik: no, then you don't need to do that
+| [Friday 29 April 2011] [11:33:09] <sustrik>	ok
+| [Friday 29 April 2011] [11:33:28] <mato>	sustrik: but explaining to users that only run this if the ABI version is different is not worth the trouble
+| [Friday 29 April 2011] [11:33:35] <mato>	given that running it won't hurt anything
+| [Friday 29 April 2011] [11:33:42] <pieterh>	but between 2.1 and 3.0 for instance it's needed...
+| [Friday 29 April 2011] [11:34:04] <mato>	yes, because the soname changes
+| [Friday 29 April 2011] [11:34:45] <Guthur>	sustrik, would you have any issues with changing the clrzmq2 bindings license?
+| [Friday 29 April 2011] [11:35:31] <sustrik>	Guthur: it's your project
+| [Friday 29 April 2011] [11:35:41] <sustrik>	you choose the license
+| [Friday 29 April 2011] [11:36:05] <Guthur>	sustrik, well it contains a little code from the original bindng
+| [Friday 29 April 2011] [11:36:08] <Guthur>	binding*
+| [Friday 29 April 2011] [11:36:11] <sustrik>	ah
+| [Friday 29 April 2011] [11:36:15] <sustrik>	sure, go on
+| [Friday 29 April 2011] [11:36:23] <sustrik>	what license do you want to use?
+| [Friday 29 April 2011] [11:36:30] <Guthur>	i still need to contact Jeffery
+| [Friday 29 April 2011] [11:36:40] <Guthur>	may LGPL, or MIT
+| [Friday 29 April 2011] [11:37:03] <Guthur>	I don't really care too much, just that GPL turns some people off
+| [Friday 29 April 2011] [11:37:11] <sustrik>	it's GPL ???
+| [Friday 29 April 2011] [11:37:19] <Guthur>	it would appear so
+| [Friday 29 April 2011] [11:37:21] <sustrik>	how the hell that happened?
+| [Friday 29 April 2011] [11:37:26] <Guthur>	I only noticed this recently
+| [Friday 29 April 2011] [11:37:38] <Guthur>	oh doh
+| [Friday 29 April 2011] [11:37:43] <Guthur>	wait I'm blind
+| [Friday 29 April 2011] [11:37:50] <Guthur>	sorry false alarm
+| [Friday 29 April 2011] [11:38:02] <Guthur>	it's LGPL
+| [Friday 29 April 2011] [11:38:04] <sustrik>	:)
+| [Friday 29 April 2011] [11:38:08] <pieterh>	lol
+| [Friday 29 April 2011] [11:38:12] <pieterh>	LICENSE PANIC!!!
+| [Friday 29 April 2011] [11:38:38] <pieterh>	Guthur: good to hear there's no problem after all
+| [Friday 29 April 2011] [11:38:47] <Guthur>	hehe
+| [Friday 29 April 2011] [11:39:33] <Guthur>	I think it's because the Lesser comes before GNU General Public License
+| [Friday 29 April 2011] [11:39:42] <Guthur>	and I started reading at GNU
+| [Friday 29 April 2011] [11:40:11] <Guthur>	the real lesson here is that I should read license agreements alot more carefully
+| [Friday 29 April 2011] [11:40:25] <sustrik>	actually, the wording is incorrect
+| [Friday 29 April 2011] [11:40:46] <sustrik>	it should be "GNU Lesser GPL"
+| [Friday 29 April 2011] [11:40:52] <sustrik>	we've fixed that in the  core
+| [Friday 29 April 2011] [11:41:04] <sustrik>	but obviously it remained in clrzmq
+| [Friday 29 April 2011] [11:41:12] <sustrik>	feel free to fix ti
+| [Friday 29 April 2011] [11:41:13] <sustrik>	it
+| [Friday 29 April 2011] [11:50:49] <Guthur>	ah ok, cool
+| [Friday 29 April 2011] [11:51:02] <Guthur>	I did think it weird to have the GNU after Lesser
+| [Friday 29 April 2011] [12:05:57] <sustrik>	pieterh: can you check with this patch instead of the old one:
+| [Friday 29 April 2011] [12:05:58] <sustrik>	https://gist.github.com/948531
+| [Friday 29 April 2011] [12:09:31] <mikko>	sustrik: build failure
+| [Friday 29 April 2011] [12:10:04] <sustrik>	let me see
+| [Friday 29 April 2011] [12:10:56] <mikko>	http://build.zero.mq/view/libzmq/
+| [Friday 29 April 2011] [12:11:01] <mikko>	uuid related changes
+| [Friday 29 April 2011] [12:11:26] <sustrik>	ah, uuid + pgm interaction
+| [Friday 29 April 2011] [12:11:31] <sustrik>	i haven't tested that
+| [Friday 29 April 2011] [12:11:33] <sustrik>	me bad
+| [Friday 29 April 2011] [12:11:58] <mikko>	that's fine
+| [Friday 29 April 2011] [12:12:04] <sustrik>	wait a sec
+| [Friday 29 April 2011] [12:12:04] <mikko>	at least you get post-commit reviews :)
+| [Friday 29 April 2011] [12:12:14] <sustrik>	heh
+| [Friday 29 April 2011] [12:12:36] <mikko>	i'm unable to build debian packages though
+| [Friday 29 April 2011] [12:12:42] <mikko>	not sure how to use the debian/
+| [Friday 29 April 2011] [12:12:45] <mikko>	mato: there?
+| [Friday 29 April 2011] [12:12:53] <mato>	mikko: ja
+| [Friday 29 April 2011] [12:13:00] <mikko>	how do you build debian packages?
+| [Friday 29 April 2011] [12:13:22] <mato>	mikko: the debian/ stuff in git is kinda outdated
+| [Friday 29 April 2011] [12:13:31] <mikko>	i can add debian packages to daily builds (x86 and amd64) if it's somewhat easy
+| [Friday 29 April 2011] [12:13:49] <mikko>	http://snapshot.zero.mq/ already contains rpms
+| [Friday 29 April 2011] [12:14:06] <mato>	mikko: not right now ... the debian/ stuff currently doesn't deal with building snapshot packages
+| [Friday 29 April 2011] [12:14:51] <mikko>	can debian/ live under builds/?
+| [Friday 29 April 2011] [12:14:57] <mikko>	or does that complicate things?
+| [Friday 29 April 2011] [12:15:38] <mato>	mikko: that complicates things
+| [Friday 29 April 2011] [12:15:57] <mato>	currently debian/ can either go away altogether or needs to be updated to build snapshot packages
+| [Friday 29 April 2011] [12:16:04] <mato>	but i'm not sure of the value of those
+| [Friday 29 April 2011] [12:16:23] <mikko>	people can test more easily
+| [Friday 29 April 2011] [12:16:42] <mikko>	im planning to do yum repo for rpms later on
+| [Friday 29 April 2011] [12:16:53] <mato>	can we discuss this another time? /me is deep into trying to figure out how to get a chrome extension to talk to something else via zmq
+| [Friday 29 April 2011] [12:16:59] <mato>	(don't ask why)
+| [Friday 29 April 2011] [12:17:21] <mikko>	hehe, sure
+| [Friday 29 April 2011] [12:18:52] <sustrik>	oh my, chrome extension? you should have been on that webdev conf in moscow instead of me
+| [Friday 29 April 2011] [12:19:31] 	 * mato did not know anything about chrome extensions until about an hour ago :-)
+| [Friday 29 April 2011] [12:20:02] <mato>	i need to get a running instance of chrome to talk to a running instance of lynx (yes, the webbrowser from 1995) and vice versa
+| [Friday 29 April 2011] [12:20:51] <mikko>	ahmmmm
+| [Friday 29 April 2011] [12:20:55] <mikko>	i'm not gonna ask
+| [Friday 29 April 2011] [12:20:59] <mato>	:-)
+| [Friday 29 April 2011] [12:28:53] <staylor>	just throwing it out there, but have you guys ever considered cmake?  I've used it to build rpms/debs and saves the hassle of maintaining spec/debian configurations.
+| [Friday 29 April 2011] [12:33:09] <sustrik>	it've been discussed several times
+| [Friday 29 April 2011] [12:34:10] <sustrik>	mikko: i have a patch, but i need steven to approve
+| [Friday 29 April 2011] [12:34:11] <sustrik>	it
+| [Friday 29 April 2011] [12:34:33] <sustrik>	i guess i just post it to the ML and won't commit it straight away
+| [Friday 29 April 2011] [13:03:22] <pieterh>	re
+| [Friday 29 April 2011] [13:04:05] <pieterh>	sustrik: do you want me to test that patch then?
+| [Friday 29 April 2011] [13:04:30] <sustrik>	yes
+| [Friday 29 April 2011] [13:04:36] <pieterh>	ok
+| [Friday 29 April 2011] [13:04:38] <sustrik>	i've tried pub.c and sub.c
+| [Friday 29 April 2011] [13:04:44] <sustrik>	and it seems to fixed the issue
+| [Friday 29 April 2011] [13:04:56] <sustrik>	however, confirming it would be good
+| [Friday 29 April 2011] [13:08:04] <pieterh>	sustrik: it complains that the patch is corrupt at the last line
+| [Friday 29 April 2011] [13:08:07] <pieterh>	how did you make the patch?
+| [Friday 29 April 2011] [13:09:16] <pieterh>	staylor: if you can make cmake work in any way at all, send examples to the list
+| [Friday 29 April 2011] [13:09:27] <sustrik>	pieterh: git diff
+| [Friday 29 April 2011] [13:09:39] <sustrik>	want me to send the format-patch to the ML?
+| [Friday 29 April 2011] [13:10:01] <pieterh>	sustrik: or just send me the two files
+| [Friday 29 April 2011] [13:10:13] <pieterh>	i don't really care, just need a branch to test
+| [Friday 29 April 2011] [13:10:15] <sustrik>	wait a sec
+| [Friday 29 April 2011] [13:10:48] <sustrik>	snet
+| [Friday 29 April 2011] [13:10:50] <sustrik>	sent
+| [Friday 29 April 2011] [13:10:58] <pieterh>	sustrik: you could work with a fork of libzmq, then push branches to that easily
+| [Friday 29 April 2011] [13:11:19] <pieterh>	sustrik: ok, got the files, thanks
+| [Friday 29 April 2011] [13:14:57] <pieterh>	sustrik: afaic... it doesn't crash any longer but the subscriber gets the wrong chunk at some stage
+| [Friday 29 April 2011] [13:15:25] <pieterh>	gets 1000 bytes instead of 5
+| [Friday 29 April 2011] [13:15:29] <pieterh>	after some iterations
+| [Friday 29 April 2011] [13:15:40] <pieterh>	the publisher is stable now, however
+| [Friday 29 April 2011] [13:15:43] <sustrik>	ok
+| [Friday 29 April 2011] [13:16:12] <pieterh>	receiving
+| [Friday 29 April 2011] [13:16:12] <pieterh>	5
+| [Friday 29 April 2011] [13:16:12] <pieterh>	receiving
+| [Friday 29 April 2011] [13:16:12] <pieterh>	1000
+| [Friday 29 April 2011] [13:16:12] <pieterh>	sub: sub.c:26: main: Assertion `rc == 5' failed.
+| [Friday 29 April 2011] [13:16:28] <pieterh>	this is the kind of output, showing rc of first recv in loop
+| [Friday 29 April 2011] [13:17:26] <sustrik>	there are pub.c and sub.c from the gist, right?
+| [Friday 29 April 2011] [13:17:55] <sustrik>	these are
+| [Friday 29 April 2011] [13:22:06] <pieterh>	sustrik: yes
+| [Friday 29 April 2011] [13:22:24] <sustrik>	hm, i'm running it for 2 mins already
+| [Friday 29 April 2011] [13:22:32] <sustrik>	no assertions
+| [Friday 29 April 2011] [13:22:37] <sustrik>	version 3.0?
+| [Friday 29 April 2011] [13:22:41] <pieterh>	sustrik: what kind of box are you on?
+| [Friday 29 April 2011] [13:22:43] <pieterh>	I'll update the gist with the precise versions I'm using, they may have changed a little...
+| [Friday 29 April 2011] [13:23:00] <sustrik>	i'm using master head
+| [Friday 29 April 2011] [13:23:08] <sustrik>	+ the patch
+| [Friday 29 April 2011] [13:23:23] <sustrik>	the box is a dual core desktop
+| [Friday 29 April 2011] [13:23:27] <pieterh>	sure, I'm using master + the two files you sent
+| [Friday 29 April 2011] [13:23:31] <sustrik>	+ ubuntu
+| [Friday 29 April 2011] [13:23:38] <pieterh>	is it possible that the problem is related to threading concurrency?
+| [Friday 29 April 2011] [13:23:56] <sustrik>	i don't think so
+| [Friday 29 April 2011] [13:24:05] <sustrik>	looks like a pipe management problem
+| [Friday 29 April 2011] [13:24:14] <sustrik>	but anything is possible
+| [Friday 29 April 2011] [13:24:19] <sustrik>	what box you are on?
+| [Friday 29 April 2011] [13:24:29] <pieterh>	I'm on a 4-core desktop, Ubuntu
+| [Friday 29 April 2011] [13:24:49] <sustrik>	still no assertions here
+| [Friday 29 April 2011] [13:24:58] <sustrik>	let's wait couple of minutes more
+| [Friday 29 April 2011] [13:25:03] <pieterh>	well, it happens after 0.5 secs or so
+| [Friday 29 April 2011] [13:25:16] <sustrik>	hm
+| [Friday 29 April 2011] [13:25:29] <pieterh>	I've updated the gist (gists are full git repos, nice)... if you want to be 100% sure you're running the same test
+| [Friday 29 April 2011] [13:25:40] <sustrik>	\ok
+| [Friday 29 April 2011] [13:25:55] <pieterh>	oh... hang on...
+| [Friday 29 April 2011] [13:26:08] <pieterh>	sorry! i copied dist.cpp/hpp into the wrong directory
+| [Friday 29 April 2011] [13:26:14] <pieterh>	am running on plain master thus
+| [Friday 29 April 2011] [13:26:16] <pieterh>	duh....
+| [Friday 29 April 2011] [13:26:29] <sustrik>	interesting it didn't fail
+| [Friday 29 April 2011] [13:26:44] <pieterh>	it did fail, confused frames, as expected
+| [Friday 29 April 2011] [13:27:00] <sustrik>	ah, right
+| [Friday 29 April 2011] [13:27:59] <pieterh>	better now... no errors, no crashes...
+| [Friday 29 April 2011] [13:28:42] <pieterh>	fix confirmed on 3.0, thus
+| [Friday 29 April 2011] [13:28:46] <pieterh>	now to backport to 2.1...
+| [Friday 29 April 2011] [13:28:54] <pieterh>	were the changes to the patch significant?
+| [Friday 29 April 2011] [13:29:01] <sustrik>	wait a sec
+| [Friday 29 April 2011] [13:29:34] <sustrik>	there's one cosmetic change
+| [Friday 29 April 2011] [13:30:14] <sustrik>	removing a leftover function declaration from dist.hpp
+| [Friday 29 April 2011] [13:30:35] <pieterh>	ack
+| [Friday 29 April 2011] [13:30:51] <sustrik>	clear_new_pipes
+| [Friday 29 April 2011] [13:31:06] <sustrik>	and the real patch is in zmq::dist_t::write
+| [Friday 29 April 2011] [13:31:18] <sustrik>	these 4 lines:
+| [Friday 29 April 2011] [13:31:18] <sustrik>	        pipes.swap (pipes.index (pipe_), active - 1);
+| [Friday 29 April 2011] [13:31:19] <sustrik>	        active--;
+| [Friday 29 April 2011] [13:31:19] <sustrik>	        pipes.swap (active, eligible - 1);
+| [Friday 29 April 2011] [13:31:19] <sustrik>	        eligible--;
+| [Friday 29 April 2011] [13:31:25] <sustrik>	instead of original 2 lines
+| [Friday 29 April 2011] [13:31:31] <pieterh>	this is a patch on top of the patch, right?
+| [Friday 29 April 2011] [13:31:35] <sustrik>	yes
+| [Friday 29 April 2011] [13:31:38] <pieterh>	ack
+| [Friday 29 April 2011] [13:31:54] <sustrik>	pieterh: sorry, no
+| [Friday 29 April 2011] [13:32:02] <sustrik>	the patch i posted to gist
+| [Friday 29 April 2011] [13:32:06] <sustrik>	is the whole thing
+| [Friday 29 April 2011] [13:32:14] <sustrik>	the original patch + the patch of the patch
+| [Friday 29 April 2011] [13:32:46] <pieterh>	ok, since I applied the original patch manually I want to know if there's a shortcut
+| [Friday 29 April 2011] [13:32:56] <pieterh>	or if it's safer to redo that work
+| [Friday 29 April 2011] [13:33:02] <sustrik>	just use your existing codebase
+| [Friday 29 April 2011] [13:33:09] <sustrik>	and fix the 2 issues i've mentioned
+| [Friday 29 April 2011] [13:34:09] <pieterh>	ok
+| [Friday 29 April 2011] [13:34:30] <pieterh>	so if I do a diff of the two patches it will tell me what to actually change... :)
+| [Friday 29 April 2011] [13:35:23] <pieterh>	yeah, that does the trick
+| [Friday 29 April 2011] [13:35:30] <pieterh>	ok, will apply this, test, and let you know
+| [Friday 29 April 2011] [13:35:41] <pieterh>	am taking the kids for pizza now... bbl
+| [Friday 29 April 2011] [13:35:59] <sustrik>	cyl
+| [Friday 29 April 2011] [14:06:50] <staylor>	is it possible to both bind and connect with the same socket?
+| [Friday 29 April 2011] [14:09:01] <Guthur>	can't think why you would even want to do that
+| [Friday 29 April 2011] [14:09:47] <sustrik>	yes, it's possible
+| [Friday 29 April 2011] [14:10:02] <sustrik>	you can bind and connect as many times as you want
+| [Friday 29 April 2011] [14:14:18] <staylor>	okay, the reason I need to do that is I have many nodes that need to connect to each other to transfer session data.  but depending on which can open a port for nat one node needs to bind or connect to his peer.
+| [Friday 29 April 2011] [14:14:50] <staylor>	I'm using a client and host socket right now, but a single socket to both bind and connect would be a lot cleaner if that's valid.
+| [Friday 29 April 2011] [14:18:34] <staylor>	should I be concerned about connecting to the same host twice?  I could keep track of which I connected to but these connections are mostly few and far between.
+| [Friday 29 April 2011] [14:24:10] <Guthur>	oh, i miss understood, i read that as I bind and connect to the same address
+| [Friday 29 April 2011] [14:24:18] <Guthur>	with the same sockeet
+| [Friday 29 April 2011] [14:26:41] <taotetek>	anyone have a moment to help me find some clarity in regards to HWM options w/ PUSH / PULL socket types?
+| [Friday 29 April 2011] [14:27:12] <sustrik>	staylor: connecting twice means that the two connections will be treated as such
+| [Friday 29 April 2011] [14:27:41] <sustrik>	so for example you would get every message twice with a PUB/SUB sockets
+| [Friday 29 April 2011] [14:27:53] <sustrik>	taotetek: yes?
+| [Friday 29 April 2011] [14:28:34] <taotetek>	sustrik: so... (using pyzmq) .. if I set up a PUSH socket, and there are no PULL's connected, it blocks, which is what I expect
+| [Friday 29 April 2011] [14:29:07] <taotetek>	I'm looking at this passage in the documentation: "When a ZMQ_PUSH socket enters an exceptional state due to having reached the high water mark for all downstream nodes, or if there are no downstream nodes at all, then any zmq_send(3) operations on the socket shall block until the exceptional state ends"
+| [Friday 29 April 2011] [14:29:21] <sustrik>	yes
+| [Friday 29 April 2011] [14:29:31] <taotetek>	but I haven't been able to cause the PUSH socket to become blocked on a send 
+| [Friday 29 April 2011] [14:29:37] <taotetek>	(unless no PULL sockets are connected)
+| [Friday 29 April 2011] [14:29:51] <taotetek>	so I'm either setting something wrong or not understanding what I'm reading
+| [Friday 29 April 2011] [14:29:59] <sustrik>	that's because messages are sent to the PULL socket in parallel
+| [Friday 29 April 2011] [14:30:15] <sustrik>	so you never reach the HWM
+| [Friday 29 April 2011] [14:30:31] <sustrik>	you can set the HWM on PULL socket
+| [Friday 29 April 2011] [14:30:42] <sustrik>	if you won't read from it
+| [Friday 29 April 2011] [14:30:50] <sustrik>	the HWM on the PULL socket would be reached
+| [Friday 29 April 2011] [14:31:02] <sustrik>	then the recv-side TCP buffer will be filled
+| [Friday 29 April 2011] [14:31:12] <sustrik>	then send-side TCP buffer will be filled
+| [Friday 29 April 2011] [14:31:23] <sustrik>	then PUSH socket buffer will reach HWM
+| [Friday 29 April 2011] [14:31:23] <taotetek>	ok.. so if I.. 1. set up a PULL socket with a HWM of 1, 2. set up a PUSH socket, 3. send from the PUSH socket but don't recv on the PULL
+| [Friday 29 April 2011] [14:31:25] <sustrik>	and block
+| [Friday 29 April 2011] [14:31:41] <taotetek>	then it will block once the tcp buffer is full
+| [Friday 29 April 2011] [14:31:52] <taotetek>	(and the tcp buffer could conceivably be larger than a single message?)
+| [Friday 29 April 2011] [14:32:00] <sustrik>	sure
+| [Friday 29 April 2011] [14:32:06] <taotetek>	which would be why I'm not seeing an immediate block
+| [Friday 29 April 2011] [14:32:08] <sustrik>	the default on linux iirc is 128kB
+| [Friday 29 April 2011] [14:32:32] <taotetek>	aha! ok I'll whip up a quick test
+| [Friday 29 April 2011] [14:32:39] <taotetek>	thank you sustrik, that's enormously helpful information
+| [Friday 29 April 2011] [14:32:47] <sustrik>	you are welcome
+| [Friday 29 April 2011] [14:33:30] <staylor>	sustrik, okay so if I have two xrep sockets x1,x2 where x1 binds and x2 connects twice, any message would go to x2 twice?
+| [Friday 29 April 2011] [14:34:25] <taotetek>	sustrik: and that makes perfect sense. it's easy when working with zmq to forget that it's still TCP under the hood sometimes I think, because it makes it so ridiculously easy to be "message" oriented.
+| [Friday 29 April 2011] [14:34:49] <sustrik>	staylor: nope, req/rep pattern sends message to a single connection
+| [Friday 29 April 2011] [14:35:01] <sustrik>	what'll you see would be load-balancing between the connections
+| [Friday 29 April 2011] [14:35:21] <sustrik>	and thus possible re-ordering of messages
+| [Friday 29 April 2011] [14:35:36] <staylor>	then x2 being the same socket connected twice to the same host would just receive a single message then
+| [Friday 29 April 2011] [14:36:00] <sustrik>	yes
+| [Friday 29 April 2011] [14:36:06] <sustrik>	with possible reordering
+| [Friday 29 April 2011] [14:36:13] <staylor>	alright
+| [Friday 29 April 2011] [14:36:40] <staylor>	my worry was that I want to know if I should check before connecting if I'm already connected to that host or just go ahead and connect regardless
+| [Friday 29 April 2011] [14:37:27] <staylor>	my network is effectively a mesh of xrep sockets which all bind, and then will also connect to the host they need to message.
+| [Friday 29 April 2011] [14:40:13] <Guthur>	ian barbers PHP presentation is very good in regards stable/unstable parts of your arch
+| [Friday 29 April 2011] [14:40:46] <Guthur>	worth watching, though it is nearly an hour long
+| [Friday 29 April 2011] [14:42:39] <staylor>	"ZeroMQ is the answer" video on the website?
+| [Friday 29 April 2011] [14:43:01] <sustrik>	i would recomment watching it as well
+| [Friday 29 April 2011] [14:43:29] <sustrik>	connecting every component to every other component using XREP sockets doesn't sound like an ideal architecture
+| [Friday 29 April 2011] [14:44:51] <staylor>	my problem is I want to have a single bind per node since they require opening a port over upnp, there's only a few nodes that communicate to each other though.
+| [Friday 29 April 2011] [14:45:04] <Guthur>	staylor, yep
+| [Friday 29 April 2011] [14:45:37] <staylor>	this might be in the video so let me know if I'm asking something already answered, but what would a 'smarter' architecture be for dealing with this problem?
+| [Friday 29 April 2011] [14:46:22] <Guthur>	when you add a bind to a node it becomes a stable node
+| [Friday 29 April 2011] [14:46:37] <Guthur>	though I think static is a better term
+| [Friday 29 April 2011] [14:47:23] <Guthur>	whereas if a node only connects to other static nodes it is unstable, or dynamic, can come and go
+| [Friday 29 April 2011] [14:47:38] <Guthur>	Ian explains it way better than me though
+| [Friday 29 April 2011] [14:47:44] <staylor>	that's why I bind to nodes that are able to open upnp ports, other nodes connect, there's a server that acts as a sync to let two peers decide which will bind and which will connect
+| [Friday 29 April 2011] [14:47:45] <Guthur>	with pretty pictures and everything
+| [Friday 29 April 2011] [14:48:06] <staylor>	I consider a upnp enabled node to be static
+| [Friday 29 April 2011] [14:50:59] <th>	pieterh: what i said earlier - was not correct, the pure-c example is not failing earlier. the behaviour is the same as with c++
+| [Friday 29 April 2011] [14:51:19] <th>	pieterh: http://thzn.de/0mq-mp-mix-pure-c/  thats the latest testcase
+| [Friday 29 April 2011] [15:11:19] <th>	i switched from 2.1 to 3.0 now. i changed zmq_{send,recv} to zmq_{send,recv}msg and it compiles again. but i get a 'errno: 11 (Resource temporarily unavailable)' on sending
+| [Friday 29 April 2011] [15:15:30] <th>	which is EAGAIN - but i did not choose NONBLOCKING
+| [Friday 29 April 2011] [18:10:17] <Seta00>	I just watched the ZeroMQ is the Answer talk, and it really is worth watching
+| [Saturday 30 April 2011] [00:53:57] <CIA-75>	libzmq: 03Martin Sustrik 07master * rfe2e772 10/ src/pgm_socket.cpp : pgm_socket uses binary version of UUID ...
+| [Saturday 30 April 2011] [00:53:59] <CIA-75>	libzmq: 03Martin Sustrik 07master * reb9bc1b 10/ (src/dist.cpp src/dist.hpp): Message atomicity problem in PUB socket fixed. ...
+| [Saturday 30 April 2011] [01:39:12] <pieterh>	sustrik: issue 191 confirmed fixed on 2.1... :)
+| [Saturday 30 April 2011] [01:58:16] <sustrik>	great
+| [Saturday 30 April 2011] [02:22:04] <pieterh>	sustrik: IMO we need to become more pedantic about test cases for such things
+| [Saturday 30 April 2011] [02:22:15] <pieterh>	without a test case it'd have been impossible to get this working
+| [Saturday 30 April 2011] [02:22:25] <sustrik>	what do you propose
+| [Saturday 30 April 2011] [02:22:36] <sustrik>	?
+| [Saturday 30 April 2011] [02:22:53] <pieterh>	well... we need somewhere to hold test cases
+| [Saturday 30 April 2011] [02:23:03] <pieterh>	issue tracker isn't great for this
+| [Saturday 30 April 2011] [02:23:10] <pieterh>	I'd prefer a git
+| [Saturday 30 April 2011] [02:23:16] <sustrik>	 /tests?
+| [Saturday 30 April 2011] [02:23:37] <pieterh>	can't be in libzmq IMO, perhaps a separate git
+| [Saturday 30 April 2011] [02:23:51] <sustrik>	why so?
+| [Saturday 30 April 2011] [02:23:58] <sustrik>	if it's elsewhere it'll bit-rot
+| [Saturday 30 April 2011] [02:24:17] <pieterh>	they'll be historical anyhow, per issue
+| [Saturday 30 April 2011] [02:24:24] <pieterh>	now we have issue 199 with tests
+| [Saturday 30 April 2011] [02:24:38] <pieterh>	a. random contributors (usually person reporting the issue)
+| [Saturday 30 April 2011] [02:24:44] <pieterh>	b. random languages
+| [Saturday 30 April 2011] [02:24:52] <pieterh>	c. random versions of 0MQ (2.1, 3.0 at least)
+| [Saturday 30 April 2011] [02:25:08] <pieterh>	d. perhaps, testing other layers
+| [Saturday 30 April 2011] [02:25:37] <pieterh>	I don't see this as a regression test layer but just an aide for fixing issues as we go along
+| [Saturday 30 April 2011] [02:26:18] <pieterh>	see th's test cases for issue 199... random code on some random URL
+| [Saturday 30 April 2011] [02:26:38] <sustrik>	why do you need those to be persistent?
+| [Saturday 30 April 2011] [02:26:48] <pieterh>	i don't need persistence, I need consistency
+| [Saturday 30 April 2011] [02:26:51] <sustrik>	they'll be completely bit-rotten in 6 months
+| [Saturday 30 April 2011] [02:26:55] <pieterh>	that's fine
+| [Saturday 30 April 2011] [02:27:06] <pieterh>	I don't care about bitrot
+| [Saturday 30 April 2011] [02:27:20] <pieterh>	I care about 'where the heck are the test cases for issue 204 for 2.1?'
+| [Saturday 30 April 2011] [02:27:41] <pieterh>	searching email and irc and issue trackers is a waste of time
+| [Saturday 30 April 2011] [02:28:01] <pieterh>	also, not having a consistent approach means we often don't even have test cases
+| [Saturday 30 April 2011] [02:28:22] <pieterh>	clearly, without a test case for 191 we'd have allowed fairly major breakage
+| [Saturday 30 April 2011] [02:28:45] <sustrik>	hm, you have to look to issue tracker anyway, otherwise you won't have an idea what issue 204 is meant to be
+| [Saturday 30 April 2011] [02:28:49] <pieterh>	also, we need a way to share test code
+| [Saturday 30 April 2011] [02:29:06] <pieterh>	e.g. the gist repo I made for 191 but where anyone can write back to it
+| [Saturday 30 April 2011] [02:29:14] <pieterh>	so the issue tracker is fine for discussion
+| [Saturday 30 April 2011] [02:29:42] <pieterh>	e. multiple authors on repo
+| [Saturday 30 April 2011] [02:32:11] <sustrik>	feel free to try, but imo people will consider it too heavyweight and will use gist/bugtracker instead
+| [Saturday 30 April 2011] [02:32:39] <pieterh>	well, this would only work if we adopt it and enforce it
+| [Saturday 30 April 2011] [02:33:01] <pieterh>	people would like to just email the list saying "hey, 0mq crashes!"
+| [Saturday 30 April 2011] [02:34:03] <pieterh>	ok, I'll make an email to zeromq-dev, everyone will ignore it, then I'll start doing this anyhow, and after a month or two people will bitch at me for fragmenting the repos... 
+| [Saturday 30 April 2011] [02:34:04] <pieterh>	sigh
+| [Saturday 30 April 2011] [02:37:04] <sustrik>	hm
+| [Saturday 30 April 2011] [02:37:21] <sustrik>	so once again, what's the rationale?
+| [Saturday 30 April 2011] [02:37:26] 	 * sustrik haven't got it
+| [Saturday 30 April 2011] [02:37:48] <pieterh>	test-driven change, martin
+| [Saturday 30 April 2011] [02:38:06] 	 * pieterh waves arms around in air, frustratedly
+| [Saturday 30 April 2011] [02:38:31] <pieterh>	every bug has an issue, and test case, which is in C, and ported to 2.1 and 3.0
+| [Saturday 30 April 2011] [02:38:40] <pieterh>	every test case is in a 100% predictable location
+| [Saturday 30 April 2011] [02:38:56] <sustrik>	why not in bug tracker
+| [Saturday 30 April 2011] [02:38:57] <pieterh>	before a fix is applied to a master branch it can be 100% tested 
+| [Saturday 30 April 2011] [02:38:58] <sustrik>	or a gist
+| [Saturday 30 April 2011] [02:38:59] <sustrik>	?
+| [Saturday 30 April 2011] [02:39:05] <pieterh>	bug tracker has no attachments
+| [Saturday 30 April 2011] [02:39:09] <pieterh>	a gist has no name
+| [Saturday 30 April 2011] [02:39:21] <sustrik>	gist linked form bug tracker?
+| [Saturday 30 April 2011] [02:39:25] <pieterh>	you provided two C test cases
+| [Saturday 30 April 2011] [02:39:27] <pieterh>	they had bugs
+| [Saturday 30 April 2011] [02:39:30] <pieterh>	did not run on 2.1
+| [Saturday 30 April 2011] [02:39:45] <pieterh>	if I fix this, where do I put the improved versions?
+| [Saturday 30 April 2011] [02:39:55] <pieterh>	where do I put listings, stack dumps, etc.?
+| [Saturday 30 April 2011] [02:40:12] <pieterh>	how does someone download this bundle of stuff?
+| [Saturday 30 April 2011] [02:40:18] <pieterh>	click click click on dozens of links?
+| [Saturday 30 April 2011] [02:40:20] <pieterh>	srsly?
+| [Saturday 30 April 2011] [02:40:44] 	 * pieterh stops ranting and reads up
+| [Saturday 30 April 2011] [02:40:53] <pieterh>	gist linked from bug tracker... no predictable location
+| [Saturday 30 April 2011] [02:41:21] <pieterh>	dozens of messy gist repos in working directoruy
+| [Saturday 30 April 2011] [02:41:30] <pieterh>	no obvious naming of cloned repos
+| [Saturday 30 April 2011] [02:44:34] <sustrik>	well, i am not feeling the pain yet
+| [Saturday 30 April 2011] [02:44:44] <sustrik>	clicking on link works ok for me
+| [Saturday 30 April 2011] [02:45:06] <th>	did i do that wrong?
+| [Saturday 30 April 2011] [02:45:19] <pieterh>	th: no, you did exactly what we asked but we're asking for the wrong thing afaics
+| [Saturday 30 April 2011] [02:45:21] <th>	i thought it would be easiest to put all information in one place and link it
+| [Saturday 30 April 2011] [02:45:39] <th>	ahh i see - infrastructure discussion
+| [Saturday 30 April 2011] [02:45:41] <pieterh>	yes
+| [Saturday 30 April 2011] [02:45:54] <th>	i just noted github being slow ;)
+| [Saturday 30 April 2011] [02:46:06] <th>	did not grok all the gist yet
+| [Saturday 30 April 2011] [02:46:07] <pieterh>	sustrik: you don't feel the pain because you avoid a lot of the process
+| [Saturday 30 April 2011] [02:46:15] <pieterh>	that however just means the way you work can't scale
+| [Saturday 30 April 2011] [02:46:30] <pieterh>	e.g. we can't work like that and maintain stable versions
+| [Saturday 30 April 2011] [02:46:55] <sustrik>	ok, give it a try and we'll see how it works
+| [Saturday 30 April 2011] [02:47:10] <pieterh>	I'll make a demo and an email explaining it
+| [Saturday 30 April 2011] [02:47:29] <th>	pieterh: i replied to what i get via email from you via github, but thats not supposed to show up as comment?
+| [Saturday 30 April 2011] [02:47:37] <sustrik>	yes
+| [Saturday 30 April 2011] [02:47:47] <pieterh>	th: it should appear as a comment, yes
+| [Saturday 30 April 2011] [02:48:18] <th>	at least it did not (yet)
+| [Saturday 30 April 2011] [02:49:21] <th>	anyways - added it via the web
+| [Saturday 30 April 2011] [02:49:39] <th>	pieterh: the issue only happens under some load... so while ./stress;do;done
+| [Saturday 30 April 2011] [02:50:00] <pieterh>	th: we definitely need more infrastructure for issue tests
+| [Saturday 30 April 2011] [02:50:08] <th>	and i also tried to port this to 3.0, but i get EAGAIN on send although i dont use NOBLOCK
+| [Saturday 30 April 2011] [02:50:19] <pieterh>	hmm
+| [Saturday 30 April 2011] [02:50:44] <th>	pieterh: the only change i did to "port" was to use zmq_{send,recv}msg instead
+| [Saturday 30 April 2011] [02:51:03] <pieterh>	th: should be sufficient, you don't use a lot of the API
+| [Saturday 30 April 2011] [02:51:35] <sustrik>	th: note the change in the return value
+| [Saturday 30 April 2011] [02:51:49] <sustrik>	in 2.0 send/recv returned 0/-1
+| [Saturday 30 April 2011] [02:51:57] <sustrik>	in 3.0 it returns message size
+| [Saturday 30 April 2011] [02:52:01] <th>	dang
+| [Saturday 30 April 2011] [02:52:45] <th>	if (zmq_sendmsg()) { ... error ... }
+| [Saturday 30 April 2011] [02:52:48] <th>	ok - i'm on it
+| [Saturday 30 April 2011] [02:53:48] <th>	there is no manpage installed of zmq_sendmsg with libzmq (there is zmq_send.3 though)
+| [Saturday 30 April 2011] [02:54:06] <pieterh>	th: also, don't use asserts like that, if you compile in release mode the whole assert is removed
+| [Saturday 30 April 2011] [02:54:08] <sustrik>	th: yes, it's still missing
+| [Saturday 30 April 2011] [02:54:31] <th>	pieterh: yea - but this test case will never be compiled in release mode, right?
+| [Saturday 30 April 2011] [02:54:37] <pieterh>	th: sure
+| [Saturday 30 April 2011] [02:54:38] <sustrik>	should be: if (zmq_sendmsg() < 0) error;
+| [Saturday 30 April 2011] [02:54:46] <th>	sustrik: ok
+| [Saturday 30 April 2011] [02:55:07] <th>	sustrik: same for recv?
+| [Saturday 30 April 2011] [02:56:32] <sustrik>	yes
+| [Saturday 30 April 2011] [02:56:51] <th>	pieterh: i'll add some `assert(test=1);if (test!=1) exit(1);`
+| [Saturday 30 April 2011] [03:00:01] <pieterh>	th: can you clone https://github.com/zeromq/issues
+| [Saturday 30 April 2011] [03:00:09] <pieterh>	and then add your changes, and then make a pull request?
+| [Saturday 30 April 2011] [03:00:19] <th>	Unpacking objects: 100% (23/23), done.
+| [Saturday 30 April 2011] [03:00:27] <pieterh>	I've already create a space for issue 199 and added your current C test cases
+| [Saturday 30 April 2011] [03:00:31] <pieterh>	you can add everything there
+| [Saturday 30 April 2011] [03:00:55] <th>	pieterh: excluding any output.{txt,html} and Makefiles?
+| [Saturday 30 April 2011] [03:01:16] <pieterh>	anything other people need to run the tests, I'd say
+| [Saturday 30 April 2011] [03:01:45] <pieterh>	This is an experiment to see if we can use a git repo for communication instead of pastebins
+| [Saturday 30 April 2011] [03:02:10] <th>	pieterh: i'll do that.
+| [Saturday 30 April 2011] [03:02:16] <pieterh>	tgh: much appreciated
+| [Saturday 30 April 2011] [03:02:19] <th>	but first i'll fix this up for 3.0
+| [Saturday 30 April 2011] [03:02:46] <th>	sustrik: any change on return value of [gs]etsockopt?
+| [Saturday 30 April 2011] [03:02:46] <pieterh>	no hurry
+| [Saturday 30 April 2011] [03:02:57] <pieterh>	th: nope, but most arguments changed
+| [Saturday 30 April 2011] [03:03:04] <pieterh>	e.g. from uint64_t to int
+| [Saturday 30 April 2011] [03:03:20] <pieterh>	so if you use the old types you'll get an EINVAL error
+| [Saturday 30 April 2011] [03:03:44] <th>	well that direction (making it smaller) does not hurt in my case where i use ZMQ_XXXMORE
+| [Saturday 30 April 2011] [03:04:05] <th>	pieterh: i dont use type - i pass a pointer and a pointer to a size, right?
+| [Saturday 30 April 2011] [03:04:21] <pieterh>	th: in C?
+| [Saturday 30 April 2011] [03:04:40] <th>	ZMQ_EXPORT int zmq_getsockopt (void *s, int option, void *optval, size_t *optvallen);
+| [Saturday 30 April 2011] [03:04:57] <th>	wait you're talking about `int option`??
+| [Saturday 30 April 2011] [03:05:02] <pieterh>	see https://github.com/zeromq/czmq/blob/master/src/zsockopt.c
+| [Saturday 30 April 2011] [03:05:04] <th>	and not the value?
+| [Saturday 30 April 2011] [03:05:43] <th>	pieterh: i see that... zmq_getsockopt (socket, ZMQ_RCVMORE, &rcvmore, &type_size);
+| [Saturday 30 April 2011] [03:06:08] <th>	int64_t
+| [Saturday 30 April 2011] [03:06:10] <pieterh>	rcvmore changed from int64_t  to int
+| [Saturday 30 April 2011] [03:06:21] <pieterh>	see line 761
+| [Saturday 30 April 2011] [03:06:36] <th>	what about line 403?
+| [Saturday 30 April 2011] [03:06:46] <pieterh>	the zsockopt class (czmq) has both 2.1 and 3.0 support (two large conditional blocks)
+| [Saturday 30 April 2011] [03:07:12] <pieterh>	line 403 is 2.1, line 761 is 3.0...
+| [Saturday 30 April 2011] [03:07:14] <th>	ahhhhh
+| [Saturday 30 April 2011] [03:07:15] <th>	ok
+| [Saturday 30 April 2011] [03:08:06] <th>	pieterh: so i get EINVAL if last argument's value is 8 instead of 4?
+| [Saturday 30 April 2011] [03:08:16] <pieterh>	yes
+| [Saturday 30 April 2011] [03:08:44] <th>	although - only the pointer to type_size is passed.
+| [Saturday 30 April 2011] [03:09:00] <th>	but thats always of size_t?
+| [Saturday 30 April 2011] [03:09:06] <pieterh>	yes
+| [Saturday 30 April 2011] [03:09:07] <th>	ok
+| [Saturday 30 April 2011] [03:09:36] <th>	why a pointer at all? would i get the amount of bytes needed if i pass to small buffer?
+| [Saturday 30 April 2011] [03:09:45] <th>	s/to small/too small/
+| [Saturday 30 April 2011] [03:09:54] <pieterh>	th: this is the standard POSIX API for get/setsockopt
+| [Saturday 30 April 2011] [03:12:27] <th>	`and modified on return to  indicate the  actual  size  of  the value returned.`
+| [Saturday 30 April 2011] [03:12:29] <th>	okay
+| [Saturday 30 April 2011] [03:13:18] <th>	will a recv in 3.0 ever return 0 to indicate EOF or something like this?
+| [Saturday 30 April 2011] [03:14:28] 	 * pieterh doesn't know... :-/
+| [Saturday 30 April 2011] [03:14:55] <th>	pieterh: ok - same effect with 3.0
+| [Saturday 30 April 2011] [03:14:57] <pieterh>	well, hang on, there's no EOF in 0MQ
+| [Saturday 30 April 2011] [03:15:00] <pieterh>	:)
+| [Saturday 30 April 2011] [03:15:14] <th>	pieterh: thats why i said "or something like this?" ;)
+| [Saturday 30 April 2011] [03:16:50] <th>	i wonder if this issue would still be an issue if i would not be on the VSM side...
+| [Saturday 30 April 2011] [03:18:18] <pieterh>	th: I don't get the crash on my box
+| [Saturday 30 April 2011] [03:18:22] <pieterh>	what OS are you using?
+| [Saturday 30 April 2011] [03:19:25] <pieterh>	I'll let it run for a while...
+| [Saturday 30 April 2011] [03:21:55] <th>	pieterh: you also dont get the "STUPID RECV (JUST FOR SHOWING WHATS WAITING)"?
+| [Saturday 30 April 2011] [03:22:15] <th>	pieterh: i replaced some assert(0) with an endless loop of juse receiving and printing, to see the order of messages
+| [Saturday 30 April 2011] [03:22:38] <th>	pieterh: Ubuntu 10.04.2 LTS on 64bit
+| [Saturday 30 April 2011] [03:23:21] <th>	pieterh: i run it |& tee log   and cancel the client-while-loop when i see the "STUPID RECV"
