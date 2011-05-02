@@ -1,0 +1,656 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>2011-May &mdash; ZeroMq IRC Log v0.1 documentation</title>
+    <link rel="stylesheet" href="static/default.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <link rel="top" title="ZeroMq IRC Log v0.1 documentation" href="index.html" />
+    <link rel="prev" title="2011-April" href="2011-April.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="2011-April.html" title="2011-April"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">ZeroMq IRC Log v0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="may">
+<h1>2011-May<a class="headerlink" href="#may" title="Permalink to this headline">¶</a></h1>
+<div class="line-block">
+<div class="line">[Sunday 01 May 2011] [02:59:12] &lt;ASY&gt; wondering what can be the cause of this...</div>
+<div class="line">[Sunday 01 May 2011] [03:01:09] &lt;ASY&gt; I am sending messages from different threads as follows:</div>
+<div class="line">[Sunday 01 May 2011] [03:01:17] &lt;ASY&gt; zmq::message_t request(e,e-&gt;size(),&amp;event_queue::free_callback);</div>
+<div class="line">[Sunday 01 May 2011] [03:01:17] &lt;ASY&gt; <a href="#id11"><span class="problematic" id="id12">socket_req_</span></a>.send(request,ZMQ_NOBLOCK);</div>
+<div class="line">[Sunday 01 May 2011] [03:02:07] &lt;ASY&gt; in the main thread I do:  id = zmq_poll (&amp;poll_items[0], (int)poll_items.size(), 1000 * 1000);</div>
+<div class="line">[Sunday 01 May 2011] [03:03:03] &lt;ASY&gt; wondering if this is thread related.</div>
+<div class="line">[Sunday 01 May 2011] [03:03:24] &lt;ASY&gt; if anyone has any thoughts, please let me know.  thanks.</div>
+<div class="line">[Sunday 01 May 2011] [03:16:37] &lt;ASY&gt; hm... upgraded to 2.1.6, can&#8217;t seem to reproduce yet...</div>
+<div class="line">[Sunday 01 May 2011] [03:56:36] &lt;pieterh&gt;     ASY: what version were you using before you upgraded?</div>
+<div class="line">[Sunday 01 May 2011] [03:59:34] &lt;ASY&gt; 2.1.3</div>
+<div class="line">[Sunday 01 May 2011] [04:59:40] &lt;pieterh&gt;     ASY: are you using the same sockets from multiple threads?</div>
+<div class="line">[Sunday 01 May 2011] [05:00:09] &lt;pieterh&gt;     if you poll in one thread and send/recv in another, it&#8217;ll crash under load</div>
+<div class="line">[Sunday 01 May 2011] [05:00:52] &lt;pieterh&gt;     (if you&#8217;re working with the same sockets in multiple threads, that is)</div>
+<div class="line">[Sunday 01 May 2011] [05:11:59] &lt;ASY&gt; hm... you know what... I think this is it!</div>
+<div class="line">[Sunday 01 May 2011] [05:12:15] &lt;ASY&gt; i use two sockets, however the sending socket is not protected</div>
+<div class="line">[Sunday 01 May 2011] [05:13:14] &lt;ASY&gt; yup.  that gotta be it.  gotta place a mutex on the sending function</div>
+<div class="line">[Sunday 01 May 2011] [05:17:02] &lt;ASY&gt; i was perfectly aware of this problem.  it is in the docs, but somehow i didn&#8217;t see it in the code until you said it.</div>
+<div class="line">[Sunday 01 May 2011] [05:17:04] &lt;ASY&gt; thanks.</div>
+<div class="line">[Sunday 01 May 2011] [06:06:43] &lt;pieterh&gt;     ASY: if you&#8217;re using the same socket from two threads, your design is wrong, usually</div>
+<div class="line">[Sunday 01 May 2011] [06:11:46] &lt;ASY&gt; correct, but not in this case I don&#8217;t think.  i have a central function that gets invoked from different async callbacks of different 3rd party libraries. i don&#8217;t even know which threads this function gets invoked from.  this is special circumstances.  if these are my threads, however, they will establish a dedicated socket.</div>
+<div class="line">[Sunday 01 May 2011] [06:19:16] &lt;pieterh&gt;     what language are you working in?</div>
+<div class="line">[Sunday 01 May 2011] [06:19:56] &lt;ASY&gt; C++</div>
+<div class="line">[Sunday 01 May 2011] [06:20:45] &lt;pieterh&gt;     well, I&#8217;m no expert in weird async callbacks but IMO if you end up using mutexes to share 0MQ sockets, your design is probably not ideal</div>
+<div class="line">[Sunday 01 May 2011] [06:21:00] &lt;pieterh&gt;     I&#8217;d try to get all callbacks to a single thread and then use 0MQ inproc sockets between that and other threads</div>
+<div class="line">[Sunday 01 May 2011] [06:21:23] &lt;pieterh&gt;     sorry to just offer generalities... anyhow, glad we found the cause of the crashes</div>
+<div class="line">[Sunday 01 May 2011] [06:23:47] &lt;ASY&gt; the reason I have a central (now mutexed) function is that it relays events to a central event queue using one inproc socket.  this is my way of getting all callbacks to a single thread... :)</div>
+<div class="line">[Sunday 01 May 2011] [06:25:33] &lt;guido_g&gt;     pieterh: this kind of _design_ is tought all over the place, will be hard to negate the included brainwashing</div>
+<div class="line">[Sunday 01 May 2011] [06:26:18] &lt;pieterh&gt;     ASY: have you studied the asyncsrv example in the Guide?</div>
+<div class="line">[Sunday 01 May 2011] [06:26:23] &lt;pieterh&gt;     guido_g: seems so...</div>
+<div class="line">[Sunday 01 May 2011] [06:26:30] &lt;guido_g&gt;     but hey, that&#8217;s the price to pay to be in an elitist community  ]:-&gt;</div>
+<div class="line">[Sunday 01 May 2011] [06:26:54] &lt;pieterh&gt;     guido_g: we&#8217;</div>
+<div class="line">[Sunday 01 May 2011] [06:26:58] &lt;pieterh&gt;     we&#8217;re elitist?</div>
+<div class="line">[Sunday 01 May 2011] [06:27:06] &lt;pieterh&gt;     I thought we were cryptoanarchists</div>
+<div class="line">[Sunday 01 May 2011] [06:27:46] &lt;guido_g&gt;     sure, we&#8217;re everything we want to be</div>
+<div class="line">[Sunday 01 May 2011] [06:27:56] &lt;guido_g&gt;     oh, shit, this would be punk...  ,)</div>
+<div class="line">[Sunday 01 May 2011] [06:28:44] &lt;pieterh&gt;     :)</div>
+<div class="line">[Sunday 01 May 2011] [06:29:23] &lt;ASY&gt; async callbacks come from multiple unrelated existing subsystems, so there is really nothing I can do other then making my own custom event queue, which is pointless since I have zmq.  the advantage of using zmq with this is that I do also have multiple processes and multiple threads that push data through individually established sockets to the same queue.  so really it is only a segment of</div>
+<div class="line">[Sunday 01 May 2011] [06:29:23] &lt;ASY&gt; the application that suffers from this due to 3rd party callbacks.</div>
+<div class="line">[Sunday 01 May 2011] [06:30:34] &lt;pieterh&gt;     ASY: I&#8217;m sure you&#8217;re right, it&#8217;s hard to tell from where I&#8217;m sitting</div>
+<div class="line">[Sunday 01 May 2011] [06:35:03] &lt;ASY&gt; i have another question if you don&#8217;t mind.  I have an application that does broadcast UDP discovery of it&#8217;s siblings on the network...  every system broadcasts on a known port and learns about the presense of the others.  I am wondering if there is anything in zmq that can be used to acheive something like that.</div>
+<div class="line">[Sunday 01 May 2011] [06:36:00] &lt;guido_g&gt;     pub/sub using a common channel for discovery</div>
+<div class="line">[Sunday 01 May 2011] [06:36:10] &lt;guido_g&gt;     you might want to use (e)pgm for that</div>
+<div class="line">[Sunday 01 May 2011] [06:37:33] &lt;ASY&gt; ok, i will read up on that and try to figure it out.</div>
+<div class="line">[Sunday 01 May 2011] [06:38:17] &lt;guido_g&gt;     basically you use a well known multicast group instead of the subnets broadcast address</div>
+<div class="line">[Sunday 01 May 2011] [06:40:35] &lt;ASY&gt; ok, i will start working on that in about a week probably, will probably be back with questions :)</div>
+<div class="line">[Sunday 01 May 2011] [06:40:59] &lt;guido_g&gt;     np</div>
+<div class="line">[Sunday 01 May 2011] [06:41:12] &lt;ASY&gt; 6:40am :/  gotta crash</div>
+<div class="line">[Sunday 01 May 2011] [06:41:30] &lt;guido_g&gt;     :)</div>
+<div class="line">[Sunday 01 May 2011] [06:41:36] &lt;ASY&gt; where are you guys located?</div>
+<div class="line">[Sunday 01 May 2011] [06:41:50] &lt;guido_g&gt;     europe</div>
+<div class="line">[Sunday 01 May 2011] [06:41:59] &lt;guido_g&gt;     so it&#8217;s time for lunch</div>
+<div class="line">[Sunday 01 May 2011] [06:42:17] &lt;ASY&gt; :)</div>
+<div class="line">[Sunday 01 May 2011] [06:42:37] &lt;ASY&gt; ok, thanks for everyones help.  bbl. cheers.</div>
+<div class="line">[Sunday 01 May 2011] [06:42:45] &lt;guido_g&gt;     good night!</div>
+<div class="line">[Sunday 01 May 2011] [07:02:32] &lt;Guthur&gt;      did someone finally get 0MQ on android</div>
+<div class="line">[Sunday 01 May 2011] [07:03:17] &lt;pieterh&gt;     Guthur: well, I&#8217;ve written up the protocol so it&#8217;s possible to make it in Javascript now, I guess</div>
+<div class="line">[Sunday 01 May 2011] [07:03:25] &lt;pieterh&gt;     I&#8217;m doing some Android development but not in C</div>
+<div class="line">[Sunday 01 May 2011] [07:03:37] &lt;pieterh&gt;     Also, I&#8217;d probably not use 0MQ across an open internet in any case</div>
+<div class="line">[Sunday 01 May 2011] [07:04:00] &lt;Guthur&gt;      I just got an android phone yesterday and development some development for it is on my todo list</div>
+<div class="line">[Sunday 01 May 2011] [07:04:32] &lt;pieterh&gt;     tbh I&#8217;d make a http bridge that maps req/rep and pub/sub to simple HTTP methods</div>
+<div class="line">[Sunday 01 May 2011] [07:04:33] &lt;Guthur&gt;      ah yes, internet...</div>
+<div class="line">[Sunday 01 May 2011] [07:04:46]        * pieterh is going to have to spend a couple of hours making this one day</div>
+<div class="line">[Sunday 01 May 2011] [07:05:02] &lt;pieterh&gt;     get URI -&gt; long poll to receive next sub message</div>
+<div class="line">[Sunday 01 May 2011] [07:05:08] &lt;pieterh&gt;     post URI -&gt; publish</div>
+<div class="line">[Sunday 01 May 2011] [07:05:12] &lt;pieterh&gt;     etc.</div>
+<div class="line">[Sunday 01 May 2011] [07:05:23] &lt;Guthur&gt;      have you looked at websockets</div>
+<div class="line">[Sunday 01 May 2011] [07:05:45] &lt;pieterh&gt;     yes yes but it&#8217;s not stable</div>
+<div class="line">[Sunday 01 May 2011] [07:06:01] &lt;pieterh&gt;     there are several versions and its still in evolution</div>
+<div class="line">[Sunday 01 May 2011] [07:06:25] &lt;pieterh&gt;     it would be the right solution if/when it emerges from its IEFT party</div>
+<div class="line">[Sunday 01 May 2011] [07:06:54] &lt;Guthur&gt;      yeah, I actually mistakenly assumed it had become stable by now</div>
+<div class="line">[Sunday 01 May 2011] [07:08:02] &lt;pieterh&gt;     subscribe to the IEFT HyBi list for great merriment</div>
+<div class="line">[Sunday 01 May 2011] [07:11:48] &lt;Guthur&gt;      pieterh, do you know if android allows raw TCP connections, so that 0MQ could work over the internet if a secure connection wasn&#8217;t a requirement</div>
+<div class="line">[Sunday 01 May 2011] [07:12:05] &lt;pieterh&gt;     Guthur: afaik yes, it does</div>
+<div class="line">[Sunday 01 May 2011] [07:12:25] &lt;pieterh&gt;     in fact it&#8217;s 100% certain that it does</div>
+<div class="line">[Sunday 01 May 2011] [07:13:18] &lt;djc&gt; longpolling is kind of an ugly hack</div>
+<div class="line">[Sunday 01 May 2011] [07:13:28] &lt;djc&gt; but mapping req/rep to HTTP does make sense</div>
+<div class="line">[Sunday 01 May 2011] [07:13:34] &lt;djc&gt; do the pyzmq guys hang out here?</div>
+<div class="line">[Sunday 01 May 2011] [07:13:50] &lt;pieterh&gt;     longpolling is a hack but not any different than waiting on a TCP socket, really</div>
+<div class="line">[Sunday 01 May 2011] [07:14:05] &lt;pieterh&gt;     especially if you return a stream rather than just one message</div>
+<div class="line">[Sunday 01 May 2011] [07:34:32] &lt;guido_g&gt;     djc: the wrapper devs are here often, if you need them better use the mailinglist</div>
+<div class="line">[Sunday 01 May 2011] [07:34:36] &lt;guido_g&gt;     <a href="#id1"><span class="problematic" id="id2">*</span></a>are not</div>
+<div class="line">[Sunday 01 May 2011] [07:34:46] &lt;djc&gt; I filed an issue</div>
+<div class="line">[Sunday 01 May 2011] [07:35:49] &lt;guido_g&gt;     nothing serious</div>
+<div class="line">[Sunday 01 May 2011] [07:38:39] &lt;guido_g&gt;     here it works</div>
+<div class="line">[Sunday 01 May 2011] [07:38:53] &lt;guido_g&gt;     did you try a specific version?</div>
+<div class="line">[Sunday 01 May 2011] [07:39:07] &lt;guido_g&gt;     or just the head of master?</div>
+<div class="line">[Sunday 01 May 2011] [07:39:32] &lt;djc&gt; 2.1.4</div>
+<div class="line">[Sunday 01 May 2011] [07:39:58] &lt;guido_g&gt;     ah ok</div>
+<div class="line">[Sunday 01 May 2011] [07:40:08] &lt;guido_g&gt;     2.1dev works</div>
+<div class="line">[Sunday 01 May 2011] [07:41:20] &lt;guido_g&gt;     aka latest master</div>
+<div class="line">[Sunday 01 May 2011] [07:44:06] &lt;djc&gt; did you reproduce my issue with 2.1.4?</div>
+<div class="line">[Sunday 01 May 2011] [07:44:25] &lt;guido_g&gt;     not yet</div>
+<div class="line">[Sunday 01 May 2011] [07:47:11] &lt;guido_g&gt;     nope, works fine here</div>
+<div class="line">[Sunday 01 May 2011] [07:47:29] &lt;guido_g&gt;     -&gt; Ran 73 tests in 8.164s</div>
+<div class="line">[Sunday 01 May 2011] [07:48:07] &lt;guido_g&gt;     so it might be something blocking the network address and/or port</div>
+<div class="line">[Sunday 01 May 2011] [07:48:13] &lt;guido_g&gt;     did you check that?</div>
+<div class="line">[Sunday 01 May 2011] [21:00:35] &lt;neopallium&gt;  iFire: I am here.</div>
+<div class="line">[Sunday 01 May 2011] [21:01:58] &lt;neopallium&gt;  iFire: yes, build it like any C Lua module.  Make sure to link it against libzmq (-lzmq).</div>
+<div class="line">[Sunday 01 May 2011] [21:10:43] &lt;iFire&gt;       neopallium</div>
+<div class="line">[Sunday 01 May 2011] [21:10:44] &lt;iFire&gt;       &gt; require &#8220;lua-zmq&#8221;</div>
+<div class="line">[Sunday 01 May 2011] [21:10:44] &lt;iFire&gt;       error loading module &#8216;lua-zmq&#8217; from file &#8216;.lua-zmq.dll&#8217;:</div>
+<div class="line">[Sunday 01 May 2011] [21:10:44] &lt;iFire&gt;               The specified procedure could not be found.</div>
+<div class="line">[Sunday 01 May 2011] [21:10:46] &lt;iFire&gt;       I get that</div>
+<div class="line">[Sunday 01 May 2011] [21:10:59] &lt;iFire&gt;       where  pre_generated-zmq.nobj.c is compiled into lua-zmq.dll</div>
+<div class="line">[Sunday 01 May 2011] [21:11:44] &lt;iFire&gt;       on windows</div>
+<div class="line">[Sunday 01 May 2011] [21:11:48] &lt;iFire&gt;       using lua-jit</div>
+<div class="line">[Sunday 01 May 2011] [22:12:56] &lt;iFire&gt;       neopallium how was dinner :P</div>
+<div class="line">[Sunday 01 May 2011] [22:58:08] &lt;iFire&gt;       neopallium I can&#8217;t seem to load the library from a lua interpreter</div>
+<div class="line">[Sunday 01 May 2011] [22:58:21] &lt;iFire&gt;       what&#8217;s a short lua thing to test if it works</div>
+<div class="line">[Sunday 01 May 2011] [23:02:30] &lt;private_meta&gt;         AH GODDAMMIT!</div>
+<div class="line">[Sunday 01 May 2011] [23:06:28]        * iFire calls first aid to private_meta</div>
+<div class="line">[Sunday 01 May 2011] [23:07:07] &lt;private_meta&gt;        I spent so much time to implement our communications library with ZeroMQ and now it seems like it&#8217;s got the same problem as ASIO</div>
+<div class="line">[Sunday 01 May 2011] [23:07:19] &lt;private_meta&gt;        OMG this pisses me off so much</div>
+<div class="line">[Sunday 01 May 2011] [23:07:29]        * iFire listens</div>
+<div class="line">[Sunday 01 May 2011] [23:08:09] &lt;iFire&gt;       private_meta same problem?</div>
+<div class="line">[Sunday 01 May 2011] [23:08:18] &lt;private_meta&gt;        Messages are lost/garbled</div>
+<div class="line">[Sunday 01 May 2011] [23:08:30] &lt;private_meta&gt;        when I compile it with OpenMPI</div>
+<div class="line">[Sunday 01 May 2011] [23:10:01] &lt;iFire&gt;       I thought you weren&#8217;t supposed to use zeromq with locks and stuff</div>
+<div class="line">[Sunday 01 May 2011] [23:10:12] &lt;iFire&gt;       each thread is supposed to be its own unit</div>
+<div class="line">[Sunday 01 May 2011] [23:10:27] &lt;iFire&gt;       and you communicate through inproc/ipc/tcp/etc.</div>
+<div class="line">[Sunday 01 May 2011] [23:11:14] &lt;private_meta&gt;        I don&#8217;t know what you get at with that</div>
+<div class="line">[Sunday 01 May 2011] [23:13:09] &lt;private_meta&gt;        iFire: not sure what that has to do with my problem</div>
+<div class="line">[Sunday 01 May 2011] [23:13:40] &lt;iFire&gt;       hmm</div>
+<div class="line">[Sunday 01 May 2011] [23:13:43] &lt;iFire&gt;       sorry</div>
+<div class="line">[Sunday 01 May 2011] [23:13:55] &lt;iFire&gt;       well mpi and zeromq do the same things</div>
+<div class="line">[Sunday 01 May 2011] [23:14:09] &lt;iFire&gt;       unless you&#8217;re using it to connect two systems</div>
+<div class="line">[Sunday 01 May 2011] [23:14:42] &lt;iFire&gt;       <a class="reference external" href="http://zguide.zeromq.org/page:all#Multithreading-with-MQ">http://zguide.zeromq.org/page:all#Multithreading-with-MQ</a></div>
+<div class="line">[Sunday 01 May 2011] [23:16:13] &lt;private_meta&gt;        I&#8217;m using MPI to create parallel processes and to control them, I wanted to use zeromq for backend communication</div>
+<div class="line">[Sunday 01 May 2011] [23:16:29] &lt;private_meta&gt;        each process being a client</div>
+<div class="line">[Sunday 01 May 2011] [23:16:34] &lt;private_meta&gt;        these two are independent</div>
+<div class="line">[Sunday 01 May 2011] [23:16:55] &lt;jer&gt; why use MPI for that and not zeromq for both?</div>
+<div class="line">[Sunday 01 May 2011] [23:18:00] &lt;private_meta&gt;        Because zmq doesn&#8217;t supply most of the mpi functions like scattering, gathering, ... out of the box like mpi</div>
+<div class="line">[Sunday 01 May 2011] [23:29:08] &lt;neopallium&gt;  iFire: back, you need to use: require&#8221;zmq&#8221;</div>
+<div class="line">[Sunday 01 May 2011] [23:30:00] &lt;iFire&gt;       hmm</div>
+<div class="line">[Sunday 01 May 2011] [23:30:06] &lt;iFire&gt;       what about the dll</div>
+<div class="line">[Sunday 01 May 2011] [23:30:26] &lt;iFire&gt;       I&#8217;m doing a custom packaging</div>
+<div class="line">[Sunday 01 May 2011] [23:30:33] &lt;iFire&gt;       so everything is in the wrong place</div>
+<div class="line">[Sunday 01 May 2011] [23:30:44] &lt;neopallium&gt;  the dll, I think you will need to call: zmq.dll</div>
+<div class="line">[Sunday 01 May 2011] [23:31:07] &lt;iFire&gt;       &gt; require &#8220;zmq&#8221;</div>
+<div class="line">[Sunday 01 May 2011] [23:31:07] &lt;iFire&gt;       error loading module &#8216;zmq&#8217; from file &#8216;.zmq.dll&#8217;:</div>
+<div class="line">[Sunday 01 May 2011] [23:31:07] &lt;iFire&gt;               The specified procedure could not be found.</div>
+<div class="line">[Sunday 01 May 2011] [23:31:15] &lt;iFire&gt;       I renamed lua-zmq.dll to zmq.dll</div>
+<div class="line">[Sunday 01 May 2011] [23:31:20] &lt;iFire&gt;       hmm</div>
+<div class="line">[Sunday 01 May 2011] [23:31:42] &lt;iFire&gt;       I don&#8217;t actually NEED poller.lua [for testing if the dll loads right?]</div>
+<div class="line">[Sunday 01 May 2011] [23:31:50] &lt;neopallium&gt;  can you check that luaopen_zmq() is a public/exported symbol in the .dll?</div>
+<div class="line">[Sunday 01 May 2011] [23:32:08] &lt;neopallium&gt;  for testing, no, you don&#8217;t need poller.lua or threads.lua</div>
+<div class="line">[Sunday 01 May 2011] [23:32:59] &lt;neopallium&gt;  this page has instructions on compiling a Lua module on Windows: <a class="reference external" href="http://lua-users.org/wiki/BuildingModules">http://lua-users.org/wiki/BuildingModules</a></div>
+<div class="line">[Sunday 01 May 2011] [23:33:36] &lt;iFire&gt;       neopallium will depdency walk in windows show me it</div>
+<div class="line">[Sunday 01 May 2011] [23:33:43] &lt;iFire&gt;       dependency walker</div>
+<div class="line">[Sunday 01 May 2011] [23:34:03] &lt;neopallium&gt;  I am not a windows dev., so I am not sure.</div>
+<div class="line">[Sunday 01 May 2011] [23:35:03] &lt;iFire&gt;       int __declspec(dllexport) MyModuleName (lua_State* L) { ... } ?</div>
+<div class="line">[Sunday 01 May 2011] [23:35:08] &lt;iFire&gt;       note : make sure your main init function is exported with __declspec(dllexport) like this :</div>
+<div class="line">[Sunday 01 May 2011] [23:35:09] &lt;iFire&gt;       int __declspec(dllexport) MyModuleName (lua_State* L) { ... }</div>
+<div class="line">[Sunday 01 May 2011] [23:35:53] &lt;iFire&gt;       neopallium is that needeD?</div>
+<div class="line">[Sunday 01 May 2011] [23:36:24] &lt;neopallium&gt;  no, the symbol that needs to be exported for this module is: int luaopen_zmq(lua_State <a href="#id3"><span class="problematic" id="id4">*</span></a>L);</div>
+<div class="line">[Sunday 01 May 2011] [23:37:51] &lt;neopallium&gt;  in the pre_generated-zmq.nobj.c file you will see it as: LUALIB_API int luaopen_zmq(lua_State <a href="#id5"><span class="problematic" id="id6">*</span></a>L) {</div>
+<div class="line">[Sunday 01 May 2011] [23:38:07] &lt;neopallium&gt;  very close to the end of the .c file</div>
+<div class="line">[Sunday 01 May 2011] [23:38:12] &lt;iFire&gt;       yes</div>
+<div class="line">[Sunday 01 May 2011] [23:38:33] &lt;iFire&gt;       hmm</div>
+<div class="line">[Sunday 01 May 2011] [23:38:39] &lt;iFire&gt;       somehow add int __declspec(dllexport) &lt;-?</div>
+<div class="line">[Sunday 01 May 2011] [23:39:10] &lt;neopallium&gt;  LUALIB_API will do that on windows.</div>
+<div class="line">[Sunday 01 May 2011] [23:39:46] &lt;iFire&gt;       it doesn&#8217;t :/</div>
+<div class="line">[Sunday 01 May 2011] [23:40:55] &lt;iFire&gt;       neopallium ok I did  __declspec(dllexport) LUALIB_API int luaopen_zmq(lua_State <a href="#id7"><span class="problematic" id="id8">*</span></a>L) {</div>
+<div class="line">[Sunday 01 May 2011] [23:40:58] &lt;iFire&gt;       and it seems to work</div>
+<div class="line">[Sunday 01 May 2011] [23:41:11] &lt;iFire&gt;       what&#8217;s a way of printing the zmq table</div>
+<div class="line">[Sunday 01 May 2011] [23:41:19] &lt;neopallium&gt;  look in your luaconf.h file, that is where LUALIB_API &amp; LUA_API are defined.</div>
+<div class="line">[Sunday 01 May 2011] [23:41:26] &lt;iFire&gt;       using luajit</div>
+<div class="line">[Sunday 01 May 2011] [23:41:56] &lt;neopallium&gt;  for k,v in pairs(zmq) do print(k,v) end</div>
+<div class="line">[Sunday 01 May 2011] [23:43:06] &lt;neopallium&gt;  ah, you need to define LUA_BUILD_AS_DLL on windows when compiling a Lua C module.</div>
+<div class="line">[Sunday 01 May 2011] [23:43:35] &lt;iFire&gt;       <a class="reference external" href="http://pastebin.ca/2052715">http://pastebin.ca/2052715</a> &lt;- this is a working table print right?</div>
+<div class="line">[Sunday 01 May 2011] [23:43:56] &lt;neopallium&gt;  yup, that looks right.</div>
+<div class="line">[Sunday 01 May 2011] [23:45:46] &lt;iFire&gt;       ha</div>
+<div class="line">[Sunday 01 May 2011] [23:45:52] &lt;iFire&gt;       well using that define makes the build fail</div>
+<div class="line">[Sunday 01 May 2011] [23:46:08] &lt;iFire&gt;       &gt;......depslua-zmqsrcpre_generated-zmq.nobj.c(3121): error C2491: &#8216;luaopen_zmq&#8217; : definition of dllimport function not allowed</div>
+<div class="line">[Sunday 01 May 2011] [23:46:45] &lt;iFire&gt;       neopallium you probably mean LUA_LIB</div>
+<div class="line">[Sunday 01 May 2011] [23:47:20] &lt;iFire&gt;       #if defined(LUA_CORE) || defined(LUA_LIB)</div>
+<div class="line">[Sunday 01 May 2011] [23:47:20] &lt;iFire&gt;       #define LUA_API         __declspec(dllexport)</div>
+<div class="line">[Sunday 01 May 2011] [23:47:20] &lt;iFire&gt;       #else</div>
+<div class="line">[Sunday 01 May 2011] [23:47:20] &lt;iFire&gt;       #define LUA_API         __declspec(dllimport)</div>
+<div class="line">[Sunday 01 May 2011] [23:47:20] &lt;iFire&gt;       #endif</div>
+<div class="line">[Sunday 01 May 2011] [23:47:30] &lt;iFire&gt;       actually both</div>
+<div class="line">[Sunday 01 May 2011] [23:47:35] &lt;neopallium&gt;  hmm, maybe I shouldn&#8217;t be using LUALIB_API or LUA_API for exporting the module&#8217;s luaopen_*() function.</div>
+<div class="line">[Sunday 01 May 2011] [23:47:59] &lt;iFire&gt;       <a class="reference external" href="http://www.lua.org/source/5.1/luaconf.h.html">http://www.lua.org/source/5.1/luaconf.h.html</a> [search for LUA_LIB]</div>
+<div class="line">[Sunday 01 May 2011] [23:48:10] &lt;neopallium&gt;  I will look for a better solution, but for now just replace LUALIB_API with __declspec(dllexport)</div>
+<div class="line">[Sunday 01 May 2011] [23:48:37] &lt;neopallium&gt;  yeah, I think those defines are more for the Lua core not modules.</div>
+<div class="line">[Sunday 01 May 2011] [23:49:20] &lt;neopallium&gt;  ok, I need to go now, I will be back in about an hour or two.</div>
+<div class="line">[Sunday 01 May 2011] [23:49:51] &lt;neopallium&gt;  but, I will take a closer look at the problem later tonight.</div>
+<div class="line">[Sunday 01 May 2011] [23:50:00] &lt;iFire&gt;       neopallium pm</div>
+<div class="line">[Sunday 01 May 2011] [23:55:21] &lt;iFire&gt;       I added  two defines and it worked &#8220;LUA_BUILD_AS_DLL&#8221;, &#8220;LUA_LIB&#8221;</div>
+<div class="line">[Monday 02 May 2011] [02:03:59] &lt;neopallium&gt;  iFire: I committed a fix to lua-zmq that should make it easier to compile on windows.  You don&#8217;t need to define LUA_BUILD_AS_DLL, LUA_LIB, or LUALIB_API.</div>
+<div class="line">[Monday 02 May 2011] [02:48:31] &lt;staylor&gt;     is there a way to get the connection status of a socket to a given endpoint?</div>
+<div class="line">[Monday 02 May 2011] [02:49:21] &lt;guido_g&gt;     no</div>
+<div class="line">[Monday 02 May 2011] [03:06:58] &lt;jer&gt; i&#8217;ve got a couple of workers creating push sockets sending some results out to a single node binding a pull socket. communication works fine, as i&#8217;d expect. however, after i send a first message off, my workers cpu usage goes up over 30% and none of the workers are processing any jobs, sockets are idle. not sure wtf is going on. anyone have any suggestions on what i might look for first?</div>
+<div class="line">[Monday 02 May 2011] [03:09:03] &lt;staylor&gt;     guido_g so would the best way to know if a connection can be made to open a separate standard connection to the host, but not exchange any data?</div>
+<div class="line">[Monday 02 May 2011] [03:09:43] &lt;guido_g&gt;     you still don&#8217;t know if the mq endpoint is connected and alive</div>
+<div class="line">[Monday 02 May 2011] [03:09:54] &lt;guido_g&gt;     only mq could tell you that</div>
+<div class="line">[Monday 02 May 2011] [03:10:02] &lt;guido_g&gt;     and it doesn&#8217;t</div>
+<div class="line">[Monday 02 May 2011] [03:11:16] &lt;staylor&gt;     well ideally it would, but I guess at least a standard socket would tell me that at least that much works.  I&#8217;d like to know if a connection is refused basically, as it tells me most likely the other end failed to map a upnp port or the service isn&#8217;t running.</div>
+<div class="line">[Monday 02 May 2011] [05:43:09] &lt;edwin&gt;       hi, the helloworld zeromq example is not working properly for me with 0MQ 2.1.6 on Debian x86-64, and here&#8217;s a testcase: <a class="reference external" href="https://gist.github.com/951368">https://gist.github.com/951368</a></div>
+<div class="line">[Monday 02 May 2011] [05:43:09] &lt;edwin&gt;       output from testcase( zmq_send fails with Bad address): <a class="reference external" href="https://gist.github.com/951369">https://gist.github.com/951369</a></div>
+<div class="line">[Monday 02 May 2011] [05:43:43] &lt;edwin&gt;       the server keeps giving those errors, and the client hangs</div>
+<div class="line">[Monday 02 May 2011] [05:43:49] &lt;edwin&gt;       same with hwserver/hwclient</div>
+<div class="line">[Monday 02 May 2011] [05:46:15] &lt;pieterh&gt;     edwin: could you run hwserver &amp; hwclient (not your test case, which is rather more code) and post the messages that gives? thanks</div>
+<div class="line">[Monday 02 May 2011] [05:47:48] &lt;edwin&gt;       <a class="reference external" href="https://gist.github.com/951374">https://gist.github.com/951374</a></div>
+<div class="line">[Monday 02 May 2011] [05:47:55] &lt;edwin&gt;       pieterh: the client hangs after the first send</div>
+<div class="line">[Monday 02 May 2011] [05:48:04] &lt;edwin&gt;       sometimes it receives too, but doesn&#8217;t do a 2nd send</div>
+<div class="line">[Monday 02 May 2011] [05:48:29] &lt;pieterh&gt;     so it hangs, presumably the server isn&#8217;t sending a reply?</div>
+<div class="line">[Monday 02 May 2011] [05:48:38] &lt;edwin&gt;       interesting thing is that it worked better yesterday</div>
+<div class="line">[Monday 02 May 2011] [05:48:49] &lt;edwin&gt;       yes the server gives an error on zmq_send</div>
+<div class="line">[Monday 02 May 2011] [05:48:59] &lt;edwin&gt;       see output from my code: <a class="reference external" href="https://gist.github.com/951369">https://gist.github.com/951369</a></div>
+<div class="line">[Monday 02 May 2011] [05:49:04] &lt;edwin&gt;       ZMQ error: Bad address</div>
+<div class="line">[Monday 02 May 2011] [05:49:10] &lt;pieterh&gt;     what does the server say on zmq_send (the hwserver, not yours)</div>
+<div class="line">[Monday 02 May 2011] [05:49:19] &lt;edwin&gt;       let me add a printf hold on</div>
+<div class="line">[Monday 02 May 2011] [05:50:15] &lt;edwin&gt;       hwserver zmq_send failed: Bad address</div>
+<div class="line">[Monday 02 May 2011] [05:50:41] &lt;edwin&gt;       <a class="reference external" href="https://gist.github.com/951380">https://gist.github.com/951380</a></div>
+<div class="line">[Monday 02 May 2011] [05:50:44] &lt;edwin&gt;       that is the change I made</div>
+<div class="line">[Monday 02 May 2011] [05:50:50] &lt;edwin&gt;       to print the error</div>
+<div class="line">[Monday 02 May 2011] [05:51:21] &lt;pieterh&gt;     ok, let me just retest that</div>
+<div class="line">[Monday 02 May 2011] [05:52:36] &lt;pieterh&gt;     it works for me, but that&#8217;s not helpful...</div>
+<div class="line">[Monday 02 May 2011] [05:52:47] &lt;pieterh&gt;     I&#8217;m not sure what &#8216;bad address&#8217; means for 0MQ, let me dig a little</div>
+<div class="line">[Monday 02 May 2011] [05:53:54] &lt;pieterh&gt;     EFAULT = invalid memory access, I&#8217;d assume</div>
+<div class="line">[Monday 02 May 2011] [05:54:45] &lt;pieterh&gt;     ah, edwin....</div>
+<div class="line">[Monday 02 May 2011] [05:54:46] &lt;edwin&gt;       ah yes version 2.0.x crashes with SIGSEGV with invalid access</div>
+<div class="line">[Monday 02 May 2011] [05:54:55] &lt;pieterh&gt;     can you please take the actual current version of hwserver</div>
+<div class="line">[Monday 02 May 2011] [05:55:05] &lt;pieterh&gt;     I&#8217;d posted a version with a bug in it, that&#8217;s what&#8217;s hitting you</div>
+<div class="line">[Monday 02 May 2011] [05:55:35] &lt;pieterh&gt;     you can see it&#8217;s putting &#8220;World&#8221; into the request, not the reply... :-/</div>
+<div class="line">[Monday 02 May 2011] [05:55:38] &lt;edwin&gt;       yeah that works</div>
+<div class="line">[Monday 02 May 2011] [05:56:13] &lt;edwin&gt;       ok let me fix my latency measurement tool then :)</div>
+<div class="line">[Monday 02 May 2011] [05:56:44] &lt;pieterh&gt;     sorry about that, someone caught it but it was there for a day or two</div>
+<div class="line">[Monday 02 May 2011] [05:57:39] &lt;edwin&gt;       Time: 1.521894s, 6570.759856 Req/s, Latency: 152.189400 us</div>
+<div class="line">[Monday 02 May 2011] [05:57:40] &lt;edwin&gt;       yep works now</div>
+<div class="line">[Monday 02 May 2011] [05:57:42] &lt;edwin&gt;       thanks :)</div>
+<div class="line">[Monday 02 May 2011] [05:58:13] &lt;edwin&gt;       I was going to try and improve the latency by using a pipe instead of socketpair for the mailbox</div>
+<div class="line">[Monday 02 May 2011] [05:58:22] &lt;edwin&gt;       but then the helloworld started failing...</div>
+<div class="line">[Monday 02 May 2011] [06:00:50] &lt;edwin&gt;       (unix socket latency is ~28us, and pipe is 3-4x faster than the socket according to hackbench)</div>
+<div class="line">[Monday 02 May 2011] [06:03:40] &lt;mikko&gt;       good morning</div>
+<div class="line">[Monday 02 May 2011] [06:04:05] &lt;pieterh&gt;     mikko: hi, how&#8217;re you doing?</div>
+<div class="line">[Monday 02 May 2011] [06:04:19] &lt;mikko&gt;       i am excellent</div>
+<div class="line">[Monday 02 May 2011] [06:04:24] &lt;mikko&gt;       extra bank holiday today</div>
+<div class="line">[Monday 02 May 2011] [06:04:31] &lt;pieterh&gt;     :) yeah</div>
+<div class="line">[Monday 02 May 2011] [06:04:49] &lt;mikko&gt;       very bad time for freelancers</div>
+<div class="line">[Monday 02 May 2011] [06:04:58] &lt;mikko&gt;       :)</div>
+<div class="line">[Monday 02 May 2011] [06:05:00] &lt;mikko&gt;       you?</div>
+<div class="line">[Monday 02 May 2011] [06:06:00] &lt;pieterh&gt;     working on a new android app</div>
+<div class="line">[Monday 02 May 2011] [06:06:02] &lt;pieterh&gt;     quite fun</div>
+<div class="line">[Monday 02 May 2011] [06:07:09] &lt;mikko&gt;       are you using zeromq?</div>
+<div class="line">[Monday 02 May 2011] [06:07:11] &lt;pieterh&gt;     it&#8217;s fun to see that stuff I was designing in 1999 is still better than web frameworks today</div>
+<div class="line">[Monday 02 May 2011] [06:07:19] &lt;pieterh&gt;     nope, this is a different project</div>
+<div class="line">[Monday 02 May 2011] [06:07:41] &lt;pieterh&gt;     well, the web frameworks are pretty, and easy to use</div>
+<div class="line">[Monday 02 May 2011] [06:08:23] &lt;pieterh&gt;     I&#8217;d not use 0MQ across the Internet anyhow</div>
+<div class="line">[Monday 02 May 2011] [06:08:41] &lt;pieterh&gt;     we&#8217;re making connectivity for this app across RestTL, and we&#8217;ll use 0MQ in the backend</div>
+<div class="line">[Monday 02 May 2011] [06:15:33] &lt;edwin&gt;       hmm, latency with pipes for mailbox is 43 - 44us (vs 49-50 us with unix socket for mailbox). If I turn on CPU freq scaling then latency is 135 - 150 us</div>
+<div class="line">[Monday 02 May 2011] [06:16:08] &lt;edwin&gt;       however using just a unix socketpair (without zeromq) latency is 10us</div>
+<div class="line">[Monday 02 May 2011] [06:18:05] &lt;edwin&gt;       why is a socket used for zeromq&#8217;s mailbox, instead of lets say a ypipe and a pthread condition?</div>
+<div class="line">[Monday 02 May 2011] [06:27:14] &lt;sustrik&gt;     edwin: even with ypipe you have to synchronise the two sides of the pipe somehow</div>
+<div class="line">[Monday 02 May 2011] [06:27:37] &lt;sustrik&gt;     but yes, ypipe + using socketpair just for signaling would be superior solution</div>
+<div class="line">[Monday 02 May 2011] [06:27:54] &lt;mikko&gt;       sustrik: did you notice that several compilers fail now with master?</div>
+<div class="line">[Monday 02 May 2011] [06:27:54] &lt;edwin&gt;       not sure if socketpair is faster than a pthread condition for signaling</div>
+<div class="line">[Monday 02 May 2011] [06:28:06] &lt;edwin&gt;       will have to test</div>
+<div class="line">[Monday 02 May 2011] [06:28:18] &lt;mikko&gt;       well, ICC and sun studio</div>
+<div class="line">[Monday 02 May 2011] [06:28:28] &lt;sustrik&gt;     the problem is that the signal has to interrupt a polling loop</div>
+<div class="line">[Monday 02 May 2011] [06:28:39] &lt;sustrik&gt;     you can&#8217;t do that with condition variable afaik</div>
+<div class="line">[Monday 02 May 2011] [06:29:06] &lt;edwin&gt;       ah because you also use it to poll network sockets</div>
+<div class="line">[Monday 02 May 2011] [06:29:14] &lt;sustrik&gt;     exactly</div>
+<div class="line">[Monday 02 May 2011] [06:29:38] &lt;edwin&gt;       won&#8217;t a signal() interrupt poll with EINTR?</div>
+<div class="line">[Monday 02 May 2011] [06:30:15] &lt;sustrik&gt;     it&#8217;s a nightmare to combine signals with threads</div>
+<div class="line">[Monday 02 May 2011] [06:30:50] &lt;edwin&gt;       the signal handler doesn&#8217;t have to actually do anything, just wake the poller</div>
+<div class="line">[Monday 02 May 2011] [06:31:05] &lt;edwin&gt;       of course there is a problem which signal to use</div>
+<div class="line">[Monday 02 May 2011] [06:31:11] &lt;edwin&gt;       since libzmq is a library..</div>
+<div class="line">[Monday 02 May 2011] [06:31:31] &lt;sustrik&gt;     there&#8217;s a problem which thread the signal will be delivered to</div>
+<div class="line">[Monday 02 May 2011] [06:32:23] &lt;edwin&gt;       yeah that too, ok bad idea. using pipe to wake poll() sounds fine, we can avoid a recv() on the mailbox</div>
+<div class="line">[Monday 02 May 2011] [06:32:46] &lt;sustrik&gt;     you&#8217;ve just said it&#8217;s slower</div>
+<div class="line">[Monday 02 May 2011] [06:32:57] &lt;edwin&gt;       its slower than pthread, but pipe is faster than unix sockets</div>
+<div class="line">[Monday 02 May 2011] [06:33:00] &lt;edwin&gt;       (which is used now)</div>
+<div class="line">[Monday 02 May 2011] [06:33:08] &lt;sustrik&gt;     ok, we can do that</div>
+<div class="line">[Monday 02 May 2011] [06:33:21] &lt;sustrik&gt;     if you have a patch, send it to the mailing list</div>
+<div class="line">[Monday 02 May 2011] [06:33:34] &lt;edwin&gt;       sure, I&#8217;ll be testing some variants</div>
+<div class="line">[Monday 02 May 2011] [06:33:38] &lt;sustrik&gt;     ok</div>
+<div class="line">[Monday 02 May 2011] [06:33:46] &lt;edwin&gt;       patch aganist 2.1.6 is fine?</div>
+<div class="line">[Monday 02 May 2011] [06:33:51] &lt;edwin&gt;       or the 3.0 master?</div>
+<div class="line">[Monday 02 May 2011] [06:33:58] &lt;sustrik&gt;     master is better</div>
+<div class="line">[Monday 02 May 2011] [06:34:10] &lt;sustrik&gt;     but the mailbox code haven&#8217;t changed iirc</div>
+<div class="line">[Monday 02 May 2011] [06:34:16] &lt;sustrik&gt;     so, it&#8217;ll be the same anyway</div>
+<div class="line">[Monday 02 May 2011] [06:34:20] &lt;edwin&gt;       ok</div>
+<div class="line">[Monday 02 May 2011] [06:34:41] &lt;sustrik&gt;     btw, if you want to implement ypipe+pipe thing</div>
+<div class="line">[Monday 02 May 2011] [06:34:54] &lt;sustrik&gt;     that would solve one serious problem 0mq is experiencing</div>
+<div class="line">[Monday 02 May 2011] [06:35:13] &lt;sustrik&gt;     namely that the mailbox can overflow in some special cases</div>
+<div class="line">[Monday 02 May 2011] [06:35:39] &lt;sustrik&gt;     ypipe+pipe would solve that as there&#8217;s no limit on number of items in yqueue</div>
+<div class="line">[Monday 02 May 2011] [06:36:04] &lt;edwin&gt;       won&#8217;t send() block if mailbox is full?</div>
+<div class="line">[Monday 02 May 2011] [06:36:21] &lt;edwin&gt;       or zeromq spins on send with errno=EAGAIN?</div>
+<div class="line">[Monday 02 May 2011] [06:37:04] &lt;sustrik&gt;     it have blocked originally, but that leads to deadlocks</div>
+<div class="line">[Monday 02 May 2011] [06:37:26] &lt;sustrik&gt;     so now it tries to increase the mailbox size</div>
+<div class="line">[Monday 02 May 2011] [06:37:36] &lt;sustrik&gt;     which doesn&#8217;t work well on different OSes</div>
+<div class="line">[Monday 02 May 2011] [06:38:14] &lt;sustrik&gt;     btw, note that if pipe is used only for signaling</div>
+<div class="line">[Monday 02 May 2011] [06:38:22] &lt;sustrik&gt;     it can be optimised on some OSes</div>
+<div class="line">[Monday 02 May 2011] [06:38:49] &lt;sustrik&gt;     eg. on Linux we can use eventfd which is much faster than socketpair or pipe</div>
+<div class="line">[Monday 02 May 2011] [06:42:01] &lt;edwin&gt;       eventfd looks cool, I should use that in clamd as well (I use a pipe with 1 byte write for signaling)</div>
+<div class="line">[Monday 02 May 2011] [07:20:51] &lt;th&gt;  sustrik: did you have a look at #199 yet? thats a 3-0 master issue..</div>
+<div class="line">[Monday 02 May 2011] [07:22:34] &lt;sustrik&gt;     th: yes, i&#8217;ve reproduced it this morning</div>
+<div class="line">[Monday 02 May 2011] [07:22:51] &lt;th&gt;  sustrik: thats a great start :)</div>
+<div class="line">[Monday 02 May 2011] [08:22:35] &lt;djc&gt; guido_g: turned out my test box had something else listening on a port pyzmq was using for testing...</div>
+<div class="line">[Monday 02 May 2011] [09:05:02] &lt;private_meta&gt;        pieterh: eh... remember that I went to zeromq to fix a problem I had with asio? got the same problem now with zeromq</div>
+<div class="line">[Monday 02 May 2011] [09:05:17] &lt;pieterh&gt;     private_meta: lol...</div>
+<div class="line">[Monday 02 May 2011] [09:05:23] &lt;pieterh&gt;     what is happening?</div>
+<div class="line">[Monday 02 May 2011] [09:06:19] &lt;private_meta&gt;        I send normal strings with the messaging library, all is ok, I send (boost)serialized classes, all is ok. Once I send boost serialized classes when the stuff is compiled and used with MPI, some of these messages are garbled beyond recognicion</div>
+<div class="line">[Monday 02 May 2011] [09:06:31] &lt;private_meta&gt;        <a href="#id9"><span class="problematic" id="id10">*</span></a>recognition</div>
+<div class="line">[Monday 02 May 2011] [09:07:26] &lt;pieterh&gt;     hmm, so it&#8217;s a problem in your app, not in the transport</div>
+<div class="line">[Monday 02 May 2011] [09:07:29] &lt;private_meta&gt;        Figured that out last night, but not sure if it&#8217;s really the fault of boost serialization in combination with mpi</div>
+<div class="line">[Monday 02 May 2011] [09:07:36] &lt;private_meta&gt;        well, yes and no</div>
+<div class="line">[Monday 02 May 2011] [09:07:43] &lt;pieterh&gt;     sounds like a memory management issue</div>
+<div class="line">[Monday 02 May 2011] [09:07:44] &lt;private_meta&gt;        the message i send, and the serialize looks ok</div>
+<div class="line">[Monday 02 May 2011] [09:07:52] &lt;private_meta&gt;        but it&#8217;s broken when it arriveso n the other side</div>
+<div class="line">[Monday 02 May 2011] [09:08:05] &lt;pieterh&gt;     you sure you&#8217;re not deallocating the memory before the message is really sent?</div>
+<div class="line">[Monday 02 May 2011] [09:08:05] &lt;private_meta&gt;        but only when i compile it with mpi</div>
+<div class="line">[Monday 02 May 2011] [09:08:14] &lt;private_meta&gt;        pretty sure</div>
+<div class="line">[Monday 02 May 2011] [09:08:50] &lt;pieterh&gt;     and of course a minimal test case requires MPI... so I can&#8217;t really help much... :/</div>
+<div class="line">[Monday 02 May 2011] [09:09:19] &lt;private_meta&gt;        That was one of the problems. It seems the minimal test case is quite complex</div>
+<div class="line">[Monday 02 May 2011] [09:09:43] &lt;private_meta&gt;        Well, I need to write a paper now, but as soon as I&#8217;m finished, I&#8217;m going back to the matter, in a couple of days I hope</div>
+<div class="line">[Monday 02 May 2011] [09:09:46] &lt;pieterh&gt;     well, try sending the data via a device, log it there and see if it&#8217;s ok or corrupt</div>
+<div class="line">[Monday 02 May 2011] [09:09:57] &lt;private_meta&gt;        I DID log it</div>
+<div class="line">[Monday 02 May 2011] [09:10:02] &lt;pieterh&gt;     and it was corrupt?</div>
+<div class="line">[Monday 02 May 2011] [09:10:09] &lt;private_meta&gt;        Yes</div>
+<div class="line">[Monday 02 May 2011] [09:10:11] &lt;pieterh&gt;     so the sender is getting it wrong...</div>
+<div class="line">[Monday 02 May 2011] [09:10:23] &lt;pieterh&gt;     and you&#8217;re logging at the zmq_send() call?</div>
+<div class="line">[Monday 02 May 2011] [09:10:33] &lt;private_meta&gt;        in one case, out of a 300-symbol long string I got a 4-digit number, in another case I got a 2-byte-garbled string</div>
+<div class="line">[Monday 02 May 2011] [09:10:56] &lt;pieterh&gt;     did you log at the zmq_send() call?</div>
+<div class="line">[Monday 02 May 2011] [09:12:09] &lt;private_meta&gt;        I logged at the zmq method I think. I wanted to pry into it deeper, but I&#8217;m out of time right now, I&#8217;ll get to the deepest send part and log there once I&#8217;m finished with the matter at hand</div>
+<div class="line">[Monday 02 May 2011] [09:12:21] &lt;pieterh&gt;     ack</div>
+<div class="line">[Monday 02 May 2011] [09:12:38] &lt;pieterh&gt;     I&#8217;m not always on IRC so if you get useful output, send to zeromq-dev...</div>
+<div class="line">[Monday 02 May 2011] [09:50:35] &lt;martin_____&gt; Trying to build 0MQ with python bindings on OS X 10.6 - 0MQ installed into /usr/local/ no problems, building python extension gives me an exception at zmq/core/constants.c:2574: fatal error: error writing to -: Broken pipe</div>
+<div class="line">[Monday 02 May 2011] [09:50:56] &lt;martin_____&gt; Any ideas?</div>
+<div class="line">[Monday 02 May 2011] [10:00:48] &lt;pieterh&gt;     martin_____: I&#8217;d check disk full, permissions on directory you&#8217;re writing to</div>
+<div class="line">[Monday 02 May 2011] [10:02:44] &lt;martin_____&gt; pieterh: Definitely not disk full, and I&#8217;m running the install as root (it&#8217;s my own laptop)</div>
+<div class="line">[Monday 02 May 2011] [10:06:20] &lt;martin_____&gt; here&#8217;s the compilation command: gcc-4.2 -fno-strict-aliasing -fno-common -dynamic -DNDEBUG -g -fwrapv -Os -Wall -Wstrict-prototypes -DENABLE_DTRACE -arch i386 -arch ppc -arch x86_64 -pipe -I/usr/local/include -Izmq/utils -Izmq/core -Izmq/devices -I/System/Library/Frameworks/Python.framework/Versions/2.6/include/python2.6 -c zmq/core/constants.c -o build/temp.macosx-10.6-universal-2.6/zmq/core/constants.o -Wno-unused-function -Wn</div>
+<div class="line">[Monday 02 May 2011] [11:37:16] &lt;jhawk28&gt;     pieterh: was looking at the specs, does the GPL license for the spec means that any impl of the specs need to be GPL?</div>
+<div class="line">[Monday 02 May 2011] [11:37:32] &lt;pieterh&gt;     jhawk28: nope</div>
+<div class="line">[Monday 02 May 2011] [11:37:40] &lt;pieterh&gt;     since you ask, I&#8217;ll clarify this in the text</div>
+<div class="line">[Monday 02 May 2011] [11:37:53] &lt;jhawk28&gt;     it just means the spec itself</div>
+<div class="line">[Monday 02 May 2011] [11:38:38] &lt;pieterh&gt;     indeed</div>
+<div class="line">[Monday 02 May 2011] [11:38:59] &lt;jhawk28&gt;     good, I was hoping to use them to create a native Java impl</div>
+<div class="line">[Monday 02 May 2011] [11:39:17] &lt;jhawk28&gt;     in the future</div>
+<div class="line">[Monday 02 May 2011] [11:39:47] &lt;jhawk28&gt;     and I prefer BSD/MIT/Apache 2.0</div>
+<div class="line">[Monday 02 May 2011] [11:41:08] &lt;pieterh&gt;     jhawk28: can you check <a class="reference external" href="http://rfc.zeromq.org/spec:13">http://rfc.zeromq.org/spec:13</a> and tell me if it&#8217;s clear?</div>
+<div class="line">[Monday 02 May 2011] [11:41:13] &lt;pieterh&gt;     see right hand panel...</div>
+<div class="line">[Monday 02 May 2011] [11:43:05] &lt;jhawk28&gt;     yes, that is clear. wasn&#8217;t expecting it to be on the right hand panel, but ok</div>
+<div class="line">[Monday 02 May 2011] [11:44:02] &lt;pieterh&gt;     well, that makes it easier to apply to all specs, otherwise I have to edit each one individually</div>
+<div class="line">[Monday 02 May 2011] [11:44:15] &lt;pieterh&gt;     also, it&#8217;s not really part of the spec but an explanatory note</div>
+<div class="line">[Monday 02 May 2011] [11:46:33] &lt;jhawk28&gt;     yes, thank you for the clarification</div>
+<div class="line">[Monday 02 May 2011] [11:51:06] &lt;pieterh&gt;     jhawk28: I&#8217;d be really interested in your experiences making a native implementation</div>
+<div class="line">[Monday 02 May 2011] [11:55:17] &lt;sustrik&gt;     th, pieterh: patch for issue 199 is at the ML</div>
+<div class="line">[Monday 02 May 2011] [11:55:37] &lt;pieterh&gt;     sustrik: great! I&#8217;ll test that immediately</div>
+<div class="line">[Monday 02 May 2011] [11:58:03] &lt;pieterh&gt;     sustrik: it works, confirmed on 3.0</div>
+<div class="line">[Monday 02 May 2011] [11:58:20]        * pieterh loves having test cases in a separate repo...</div>
+<div class="line">[Monday 02 May 2011] [11:58:56] &lt;sustrik&gt;     :)</div>
+<div class="line">[Monday 02 May 2011] [12:30:42] &lt;th&gt;  sustrik: oh really? fantastic!</div>
+<div class="line">[Monday 02 May 2011] [12:36:00] &lt;pieterh&gt;     sustrik: should I try to backport this to 2.1?</div>
+<div class="line">[Monday 02 May 2011] [12:36:34] &lt;sustrik&gt;     pieterh: yes</div>
+<div class="line">[Monday 02 May 2011] [12:36:41] &lt;pieterh&gt;     ok</div>
+<div class="line">[Monday 02 May 2011] [12:38:26] &lt;NikolaVeber&gt; does anyone else have problems by copy/paste from the guide?</div>
+<div class="line">[Monday 02 May 2011] [12:38:47] &lt;__alex&gt;      erm, yes with the python-snippets</div>
+<div class="line">[Monday 02 May 2011] [12:39:01] &lt;NikolaVeber&gt; I had the same with php and c...</div>
+<div class="line">[Monday 02 May 2011] [12:39:44] &lt;__alex&gt;      chars like &#8221;...&#8221; where one thing, but there&#8217;s more which i couldn&#8217;t figure out</div>
+<div class="line">[Monday 02 May 2011] [12:39:55] &lt;NikolaVeber&gt; I guess it&#8217;s the sodify&#8217;s fault, or whatever this code formatting thing is calles</div>
+<div class="line">[Monday 02 May 2011] [12:40:07] &lt;NikolaVeber&gt; codify*</div>
+<div class="line">[Monday 02 May 2011] [12:40:30] &lt;NikolaVeber&gt; seen it in gedit and eclipse...</div>
+<div class="line">[Monday 02 May 2011] [12:41:46] &lt;__alex&gt;      was strange, took it to vim with utf8 encoding(also the file) and a valid python-encoding header</div>
+<div class="line">[Monday 02 May 2011] [12:41:52] &lt;__alex&gt;      it did boom</div>
+<div class="line">[Monday 02 May 2011] [12:44:52] &lt;th&gt;  sustrik: yea - confirmed again for 3-0</div>
+<div class="line">[Monday 02 May 2011] [12:44:53] &lt;pieterh&gt;     NikolaVeber: copy/paste from the Guide may do strange things...</div>
+<div class="line">[Monday 02 May 2011] [12:45:56] &lt;NikolaVeber&gt; could be the formatting library for the code...</div>
+<div class="line">[Monday 02 May 2011] [12:46:05] &lt;pieterh&gt;     it should work but a &#8216;smart&#8217; editor may trip over the formatting</div>
+<div class="line">[Monday 02 May 2011] [12:46:16] &lt;pieterh&gt;     I&#8217;m using Kate and can copy/paste without trouble</div>
+<div class="line">[Monday 02 May 2011] [12:46:23] &lt;pieterh&gt;     do you have a specific example that&#8217;s failing?</div>
+<div class="line">[Monday 02 May 2011] [12:46:45] &lt;NikolaVeber&gt; hm, my colleague just went home</div>
+<div class="line">[Monday 02 May 2011] [12:46:56] &lt;NikolaVeber&gt; it was the php binding code</div>
+<div class="line">[Monday 02 May 2011] [12:47:00] &lt;pieterh&gt;     ok, raise an issue on the guide tracker</div>
+<div class="line">[Monday 02 May 2011] [12:47:02] &lt;NikolaVeber&gt; req resp example</div>
+<div class="line">[Monday 02 May 2011] [12:47:21] &lt;pieterh&gt;     there are some characters that might need escaping</div>
+<div class="line">[Monday 02 May 2011] [12:47:43] &lt;NikolaVeber&gt; I&#8217;ll look at it tomorrow, with exact problem</div>
+<div class="line">[Monday 02 May 2011] [12:47:51] &lt;NikolaVeber&gt; I had the same in c++</div>
+<div class="line">[Monday 02 May 2011] [12:48:08] &lt;pieterh&gt;     ack</div>
+<div class="line">[Monday 02 May 2011] [12:48:37] &lt;NikolaVeber&gt; not a big deal, but spoils the fun sometimes :)</div>
+<div class="line">[Monday 02 May 2011] [12:48:57] &lt;pieterh&gt;     well, let me know the specific problem and we&#8217;ll fix it... &#8220;it doesn&#8217;t work&#8221; isn&#8217;t useful data :)</div>
+<div class="line">[Monday 02 May 2011] [12:49:30] &lt;NikolaVeber&gt; I know :)</div>
+<div class="line">[Monday 02 May 2011] [12:50:08] &lt;NikolaVeber&gt; I tracked it last time it failed with c++ examples to stack overflow describing the bug in some code-colouring plugin</div>
+<div class="line">[Monday 02 May 2011] [12:51:20] &lt;NikolaVeber&gt; ok, I have it</div>
+<div class="line">[Monday 02 May 2011] [12:51:21] &lt;NikolaVeber&gt; :)</div>
+<div class="line">[Monday 02 May 2011] [12:52:23] &lt;NikolaVeber&gt; I have copied the first c++ example in gedit</div>
+<div class="line">[Monday 02 May 2011] [12:52:25] &lt;NikolaVeber&gt; <a class="reference external" href="http://pastebin.com/zKhHBnr3">http://pastebin.com/zKhHBnr3</a></div>
+<div class="line">[Monday 02 May 2011] [12:52:39] &lt;pieterh&gt;     ok, let me try that</div>
+<div class="line">[Monday 02 May 2011] [12:52:49] &lt;pieterh&gt;     which is the &#8216;first c++ example&#8217;?</div>
+<div class="line">[Monday 02 May 2011] [12:52:55] &lt;pieterh&gt;     hwserver?</div>
+<div class="line">[Monday 02 May 2011] [12:53:08] &lt;NikolaVeber&gt; /HelloWorldserverinC++</div>
+<div class="line">[Monday 02 May 2011] [12:53:14] &lt;NikolaVeber&gt;   //HelloWorldserverinC++</div>
+<div class="line">[Monday 02 May 2011] [12:53:29] &lt;NikolaVeber&gt; right beneath figure one</div>
+<div class="line">[Monday 02 May 2011] [12:53:35] &lt;pieterh&gt;     I copied/pasted into gedit, it works fine</div>
+<div class="line">[Monday 02 May 2011] [12:54:14] &lt;NikolaVeber&gt; gives a bunch of crap in my case...</div>
+<div class="line">[Monday 02 May 2011] [12:54:17] &lt;pieterh&gt;     works fine in Kate too</div>
+<div class="line">[Monday 02 May 2011] [12:54:28] &lt;pieterh&gt;     vim shows nothing, I think because of pasteboard confusion</div>
+<div class="line">[Monday 02 May 2011] [12:54:31] &lt;NikolaVeber&gt; could be the firefox&#8217; fault</div>
+<div class="line">[Monday 02 May 2011] [12:54:43] &lt;pieterh&gt;     did you enable the &#8220;Paste as crap&#8221; option in gedit?</div>
+<div class="line">[Monday 02 May 2011] [12:54:54] &lt;NikolaVeber&gt; hm, not that I know</div>
+<div class="line">[Monday 02 May 2011] [12:54:58] &lt;pieterh&gt;     it needs to paste as plain text, not HTML</div>
+<div class="line">[Monday 02 May 2011] [12:56:01] &lt;pieterh&gt;     NikolaVeber: perhaps your default language setting affects it</div>
+<div class="line">[Monday 02 May 2011] [12:56:06] &lt;pieterh&gt;     I&#8217;m using US English</div>
+<div class="line">[Monday 02 May 2011] [12:56:32] &lt;NikolaVeber&gt; hm, my UI language is english</div>
+<div class="line">[Monday 02 May 2011] [12:56:49] &lt;pieterh&gt;     hmm, so the error isn&#8217;t in gedit</div>
+<div class="line">[Monday 02 May 2011] [12:56:54] &lt;pieterh&gt;     it&#8217;s in gcc when you save the file</div>
+<div class="line">[Monday 02 May 2011] [12:57:17] &lt;NikolaVeber&gt; whell, if I &#8220;clean up&#8221; the code</div>
+<div class="line">[Monday 02 May 2011] [12:57:30] &lt;NikolaVeber&gt; that is, do a bunch of backspace/enter moves</div>
+<div class="line">[Monday 02 May 2011] [12:57:33] &lt;NikolaVeber&gt; it works</div>
+<div class="line">[Monday 02 May 2011] [12:57:47] &lt;NikolaVeber&gt; so it has to be some invisible characters</div>
+<div class="line">[Monday 02 May 2011] [12:58:02] &lt;pieterh&gt;     can you save, put the source into a zip, send me that?</div>
+<div class="line">[Monday 02 May 2011] [12:58:21] &lt;NikolaVeber&gt; shure</div>
+<div class="line">[Monday 02 May 2011] [12:58:42] &lt;pieterh&gt;     ah, I know...</div>
+<div class="line">[Monday 02 May 2011] [12:58:46] &lt;pieterh&gt;     hehe :)</div>
+<div class="line">[Monday 02 May 2011] [12:59:16] &lt;NikolaVeber&gt; ?</div>
+<div class="line">[Monday 02 May 2011] [12:59:26] &lt;NikolaVeber&gt; are you getting the file?</div>
+<div class="line">[Monday 02 May 2011] [12:59:34] &lt;pieterh&gt;     yeah, but it&#8217;s not necessary any more</div>
+<div class="line">[Monday 02 May 2011] [12:59:38] &lt;NikolaVeber&gt; ok :)</div>
+<div class="line">[Monday 02 May 2011] [12:59:52] &lt;pieterh&gt;     I use unicode whitespace characters to force the layout to work</div>
+<div class="line">[Monday 02 May 2011] [13:00:00] &lt;th&gt;  Assertion failed: new_sndbuf &gt; old_sndbuf (mailbox.cpp:183)</div>
+<div class="line">[Monday 02 May 2011] [13:00:05] &lt;th&gt;  whats that?</div>
+<div class="line">[Monday 02 May 2011] [13:00:12] &lt;pieterh&gt;     it was... difficult to get the coloring to work otherwise</div>
+<div class="line">[Monday 02 May 2011] [13:00:18] &lt;NikolaVeber&gt; hehe, that could be it :)</div>
+<div class="line">[Monday 02 May 2011] [13:00:22] &lt;pieterh&gt;     th: looks like a resource issue</div>
+<div class="line">[Monday 02 May 2011] [13:00:45] &lt;th&gt;  pieterh: after running 199 testcase with 3-0 for a while</div>
+<div class="line">[Monday 02 May 2011] [13:00:47] &lt;pieterh&gt;     th: read <a class="reference external" href="http://zero.mq/tips">http://zero.mq/tips</a></div>
+<div class="line">[Monday 02 May 2011] [13:00:58] &lt;CIA-75&gt;      libzmq: 03Pieter Hintjens 07master * re78cc47 10/ (3 files): Moved tests off 5555 (conflict with Eclipse) ...</div>
+<div class="line">[Monday 02 May 2011] [13:01:06] &lt;pieterh&gt;     NikolaVeber: there is no way to fix this afaik, but I could be wrong</div>
+<div class="line">[Monday 02 May 2011] [13:01:25] &lt;NikolaVeber&gt; do you have the sources for all examples somewhere?</div>
+<div class="line">[Monday 02 May 2011] [13:01:30] &lt;pieterh&gt;     NikolaVeber: please log an issue in the tracker, I&#8217;ll think about it and find a solution</div>
+<div class="line">[Monday 02 May 2011] [13:01:48] &lt;NikolaVeber&gt; it might be a good idea to have plain-text files linked</div>
+<div class="line">[Monday 02 May 2011] [13:01:57] &lt;pieterh&gt;     if you click on the &#8220;GET THE EXAMPLES&#8221; button on the main guide page ...</div>
+<div class="line">[Monday 02 May 2011] [13:02:12] &lt;sustrik&gt;     th: it&#8217;s socketpair buffers filled up</div>
+<div class="line">[Monday 02 May 2011] [13:02:30] &lt;pieterh&gt;     NikolaVeber: there is also a section at <a class="reference external" href="http://zguide.zeromq.org/page:all#Getting-the-Examples">http://zguide.zeromq.org/page:all#Getting-the-Examples</a></div>
+<div class="line">[Monday 02 May 2011] [13:02:55] &lt;NikolaVeber&gt; lets see</div>
+<div class="line">[Monday 02 May 2011] [13:02:56] &lt;NikolaVeber&gt; :)</div>
+<div class="line">[Monday 02 May 2011] [13:03:49] &lt;th&gt;  sustrik: what resource would that be? vmsize?</div>
+<div class="line">[Monday 02 May 2011] [13:04:14] &lt;th&gt;  sustrik: ahh data segment probably.</div>
+<div class="line">[Monday 02 May 2011] [13:04:36] &lt;th&gt;  ah HWM would probably help</div>
+<div class="line">[Monday 02 May 2011] [13:04:37] &lt;NikolaVeber&gt; pieterh, maybe linking to sources in the guide? I don&#8217;t mind getting them all personally, just speculating on the general user experience :)</div>
+<div class="line">[Monday 02 May 2011] [13:05:05] &lt;sustrik&gt;     th: no, it&#8217;s socketpair buffer size limit</div>
+<div class="line">[Monday 02 May 2011] [13:05:16] &lt;pieterh&gt;     NikolaVeber: the Guide already links to the sources, I&#8217;m not sure what you mean</div>
+<div class="line">[Monday 02 May 2011] [13:05:27] &lt;pieterh&gt;     you mean a link in each example to the source code?</div>
+<div class="line">[Monday 02 May 2011] [13:05:28] &lt;sustrik&gt;     th: what OS are you on?</div>
+<div class="line">[Monday 02 May 2011] [13:05:53] &lt;NikolaVeber&gt; pieterh, I mean links to the plaintext-source</div>
+<div class="line">[Monday 02 May 2011] [13:06:21] &lt;pieterh&gt;     yes, that part I understood but since there are already two such links I am asking what more links you want, and where exactly</div>
+<div class="line">[Monday 02 May 2011] [13:06:25] &lt;NikolaVeber&gt; but if they are &#8220;pimped&#8221; with utf8 whitespaces, it&#8217;s not much of a help</div>
+<div class="line">[Monday 02 May 2011] [13:06:49] &lt;NikolaVeber&gt; under each example, a link to the appropriate plain-text version</div>
+<div class="line">[Monday 02 May 2011] [13:07:07] &lt;pieterh&gt;     it&#8217;s better just to make copy/paste work, no?</div>
+<div class="line">[Monday 02 May 2011] [13:07:15] &lt;NikolaVeber&gt; that would be optimal :)</div>
+<div class="line">[Monday 02 May 2011] [13:07:22] &lt;pieterh&gt;     please enter an issue in the tracker, I&#8217;ll get to it later</div>
+<div class="line">[Monday 02 May 2011] [13:07:23] &lt;pieterh&gt;     thanks</div>
+<div class="line">[Monday 02 May 2011] [13:07:37] &lt;NikolaVeber&gt; np, thank you :)</div>
+<div class="line">[Monday 02 May 2011] [13:09:06] &lt;NikolaVeber&gt; done</div>
+<div class="line">[Monday 02 May 2011] [13:09:32] &lt;th&gt;  sustrik: ubuntu10.04 64bit</div>
+<div class="line">[Monday 02 May 2011] [13:26:21] &lt;CIA-75&gt;      libzmq: 03Martin Sustrik 07master * re5d4cd3 10/ src/dist.cpp : Yet one more fix related to PUB socket and multipart messages ...</div>
+<div class="line">[Monday 02 May 2011] [13:28:50] &lt;CIA-75&gt;      libzmq: 03Martin Sustrik 07master * r6ecec9b 10/ src/xrep.cpp : Current inpipe remains unchaged in XREP when other pipe terminates ...</div>
+<div class="line">[Monday 02 May 2011] [13:38:47] &lt;iFire&gt;       neopallium hmm lthreads uses pthreads which is unix only [windows is lgpl] :/</div>
+<div class="line">[Monday 02 May 2011] [13:39:05] &lt;iFire&gt;       I wonder if it&#8217;s possible to rewrite it using tbb or boost threads</div>
+<div class="line">[Monday 02 May 2011] [13:41:39] &lt;pieterh&gt;     iFire: what&#8217;s lthreads?</div>
+<div class="line">[Monday 02 May 2011] [13:42:10] &lt;iFire&gt;       <a class="reference external" href="https://github.com/Neopallium/lua-llthreads">https://github.com/Neopallium/lua-llthreads</a></div>
+<div class="line">[Monday 02 May 2011] [13:42:18] &lt;iFire&gt;       apparently it&#8217;s a lua pthreads wrapper</div>
+<div class="line">[Monday 02 May 2011] [13:42:45] &lt;pieterh&gt;     I wrote a similar class for czmq, zthreads, which has the win32 code</div>
+<div class="line">[Monday 02 May 2011] [13:42:53] &lt;pieterh&gt;     doesn&#8217;t wrap all pthreads, just thread creation</div>
+<div class="line">[Monday 02 May 2011] [13:43:03] &lt;iFire&gt;       well I&#8217;m seeing how far I can go doing it in lua</div>
+<div class="line">[Monday 02 May 2011] [13:43:34] &lt;iFire&gt;       Using send_msg/recv_msg functions running under LuaJIT2 (git HEAD):</div>
+<div class="line">[Monday 02 May 2011] [13:43:35] &lt;iFire&gt;       mean throughput: 6160911 [msg/s]</div>
+<div class="line">[Monday 02 May 2011] [13:43:35] &lt;iFire&gt;       mean throughput: 1478.619 [Mb/s]</div>
+<div class="line">[Monday 02 May 2011] [13:43:35] &lt;iFire&gt;       C++ code:</div>
+<div class="line">[Monday 02 May 2011] [13:43:35] &lt;iFire&gt;       mean throughput: 6241452 [msg/s]</div>
+<div class="line">[Monday 02 May 2011] [13:43:36] &lt;iFire&gt;       mean throughput: 1497.948 [Mb/s]</div>
+<div class="line">[Monday 02 May 2011] [13:43:47] &lt;iFire&gt;       from the lua-zmq repo</div>
+<div class="line">[Monday 02 May 2011] [13:43:58] &lt;pieterh&gt;     that&#8217;s pretty nice</div>
+<div class="line">[Monday 02 May 2011] [13:44:39] &lt;iFire&gt;       apparently I have to compile lua sockets if I want to run those benchmarks though</div>
+<div class="line">[Monday 02 May 2011] [13:45:00] &lt;iFire&gt;       that&#8217;s what I&#8217;ve been trying to do</div>
+<div class="line">[Monday 02 May 2011] [14:02:48] &lt;th&gt;  pieterh: patch works for 2.1 as well. it even applies with a small offset</div>
+<div class="line">[Monday 02 May 2011] [14:03:04] &lt;pieterh&gt;     th: great! I&#8217;ve not had time to test it yet</div>
+<div class="line">[Monday 02 May 2011] [14:03:32] &lt;pieterh&gt;     I&#8217;ll do this right now</div>
+<div class="line">[Monday 02 May 2011] [14:10:19] &lt;pieterh&gt;     th: ack, confirmed on 2.1</div>
+<div class="line">[Monday 02 May 2011] [14:10:26] &lt;pieterh&gt;     it&#8217;ll go into 2.1.7</div>
+<div class="line">[Monday 02 May 2011] [14:12:26] &lt;pieterh&gt;     th: if you want to get the 2.1 master, it&#8217;s at git://github.com/zeromq/zeromq2-1</div>
+<div class="line">[Monday 02 May 2011] [14:41:16] &lt;iFire&gt;       pieterh ok that was weird</div>
+<div class="line">[Monday 02 May 2011] [14:41:26] &lt;iFire&gt;       first windows sucks</div>
+<div class="line">[Monday 02 May 2011] [14:41:34] &lt;iFire&gt;       and luajit has a higher performance than c O.o</div>
+<div class="line">[Monday 02 May 2011] [14:42:00] &lt;pieterh&gt;     performance figures are quite variable, +- 10% afaik</div>
+<div class="line">[Monday 02 May 2011] [14:42:12] &lt;pieterh&gt;     more, depending on your configuration</div>
+<div class="line">[Monday 02 May 2011] [14:42:42] &lt;iFire&gt;       pieterh what throughput do you usually get for windowS?</div>
+<div class="line">[Monday 02 May 2011] [14:42:53] &lt;pieterh&gt;     I don&#8217;t use Windows, personally</div>
+<div class="line">[Monday 02 May 2011] [14:43:03] &lt;pieterh&gt;     but reports are 50-20% of Linux</div>
+<div class="line">[Monday 02 May 2011] [14:43:18] &lt;iFire&gt;       <a class="reference external" href="http://pastebin.ca/2052970">http://pastebin.ca/2052970</a></div>
+<div class="line">[Monday 02 May 2011] [14:43:21] &lt;iFire&gt;       this is what I got</div>
+<div class="line">[Monday 02 May 2011] [14:43:34] &lt;iFire&gt;       for some reason c++ is slower than luajit</div>
+<div class="line">[Monday 02 May 2011] [14:44:05] &lt;pieterh&gt;     iFire: without specifying what setup you&#8217;re on, the figures are pretty meaningless, sorry</div>
+<div class="line">[Monday 02 May 2011] [14:44:12] &lt;iFire&gt;       ok</div>
+<div class="line">[Monday 02 May 2011] [14:44:32] &lt;iFire&gt;       well I&#8217;m trying to figure out what&#8217;s the difference between windows c++ and lua</div>
+<div class="line">[Monday 02 May 2011] [14:44:33] &lt;pieterh&gt;     also, you need to run the tests quite a few times</div>
+<div class="line">[Monday 02 May 2011] [14:44:36] &lt;iFire&gt;       hmm</div>
+<div class="line">[Monday 02 May 2011] [14:44:44] &lt;pieterh&gt;     and take the average of the N fastest runs</div>
+<div class="line">[Monday 02 May 2011] [14:44:46] &lt;iFire&gt;       it&#8217;s quite variable?</div>
+<div class="line">[Monday 02 May 2011] [14:44:51] &lt;pieterh&gt;     one run proves very little</div>
+<div class="line">[Monday 02 May 2011] [14:45:12] &lt;pieterh&gt;     well, we <em>know</em> that lua can&#8217;t be faster than the C api it&#8217;s <em>calling</em> :)</div>
+<div class="line">[Monday 02 May 2011] [14:45:18] &lt;pieterh&gt;     so you have at least the variance shown here</div>
+<div class="line">[Monday 02 May 2011] [14:48:57] &lt;sustrik&gt;     throughput is silly metric, it&#8217;s inherently unstable</div>
+<div class="line">[Monday 02 May 2011] [14:49:58] &lt;iFire&gt;       the question I want to answer is how much of a difference is between lua and c++</div>
+<div class="line">[Monday 02 May 2011] [14:50:25] &lt;sustrik&gt;     check latencies</div>
+<div class="line">[Monday 02 May 2011] [14:50:37] &lt;sustrik&gt;     latency is much better metric</div>
+<div class="line">[Monday 02 May 2011] [14:51:14] &lt;sustrik&gt;     it should be fairly stable and give you an sane idea what the difference between the two is</div>
+<div class="line">[Monday 02 May 2011] [14:59:03] &lt;iFire&gt;       something is wrong on my system</div>
+<div class="line">[Monday 02 May 2011] [15:00:35] &lt;iFire&gt;       <a class="reference external" href="http://pastebin.ca/2052978">http://pastebin.ca/2052978</a></div>
+<div class="line">[Monday 02 May 2011] [15:01:19] &lt;iFire&gt;       also missed a zero on the inproc. but I&#8217;m not comparing that</div>
+<div class="line">[Monday 02 May 2011] [15:03:20] &lt;iFire&gt;       bah</div>
+<div class="line">[Monday 02 May 2011] [15:03:26] &lt;iFire&gt;       I should do this correctly</div>
+<div class="line">[Monday 02 May 2011] [15:03:32] &lt;iFire&gt;       and have multiple tests</div>
+<div class="line">[Monday 02 May 2011] [15:13:28] &lt;sustrik&gt;     latency tests are stable, you&#8217;ll see similar figures all the time</div>
+<div class="line">[Monday 02 May 2011] [15:13:53] &lt;iFire&gt;       I wonder where the extra 10 us comes from</div>
+<div class="line">[Monday 02 May 2011] [15:14:11] &lt;iFire&gt;       sustrik actually it fluctuates too</div>
+<div class="line">[Monday 02 May 2011] [15:14:18] &lt;iFire&gt;       on a desktop</div>
+<div class="line">[Monday 02 May 2011] [15:14:18] &lt;sustrik&gt;     more than 2-3 us?</div>
+<div class="line">[Monday 02 May 2011] [15:14:59] &lt;sustrik&gt;     well, if there&#8217;s lot of stuff running on the box, it can blur the results</div>
+<div class="line">[Monday 02 May 2011] [15:16:41] &lt;pieterh&gt;     iFire: if you don&#8217;t have 4 cores, and a quiet box, any test will be quite flaky</div>
+<div class="line">[Monday 02 May 2011] [15:16:44] &lt;pieterh&gt;     flakey</div>
+<div class="line">[Monday 02 May 2011] [15:16:49] &lt;iFire&gt;       hmm</div>
+<div class="line">[Monday 02 May 2011] [15:17:05] &lt;iFire&gt;       I guess I can try doing the tests on a vps where it&#8217;s not a desktop</div>
+<div class="line">[Monday 02 May 2011] [15:17:13] &lt;pieterh&gt;     ideal is two boxes connected over a private network</div>
+<div class="line">[Monday 02 May 2011] [15:17:25] &lt;pieterh&gt;     how many cores on your desktop?</div>
+<div class="line">[Monday 02 May 2011] [15:17:30] &lt;iFire&gt;       4</div>
+<div class="line">[Monday 02 May 2011] [15:17:46] &lt;pieterh&gt;     and you&#8217;re running other software?</div>
+<div class="line">[Monday 02 May 2011] [15:17:51] &lt;iFire&gt;       yes</div>
+<div class="line">[Monday 02 May 2011] [15:18:06] &lt;iFire&gt;       windows says 3-5% CPU use though</div>
+<div class="line">[Monday 02 May 2011] [15:18:12] &lt;pieterh&gt;     you&#8217;re on Windows?</div>
+<div class="line">[Monday 02 May 2011] [15:18:31] &lt;iFire&gt;       windows is probably a terrible platform</div>
+<div class="line">[Monday 02 May 2011] [15:18:34] &lt;pieterh&gt;     forget it, you&#8217;re not going to get serious metrics</div>
+<div class="line">[Monday 02 May 2011] [15:19:00] &lt;pieterh&gt;     but if you really must use that, then kill anything you don&#8217;t absolutely need</div>
+<div class="line">[Monday 02 May 2011] [15:19:19] &lt;pieterh&gt;     and run the tests multiple times, taking average of the 3 lowest runs (run each 10-20 times)</div>
+<div class="line">[Monday 02 May 2011] [15:20:13] &lt;iFire&gt;       well it&#8217;s not serious but it&#8217;s just nagging me to see c++  how slower than lua on thr and lat</div>
+<div class="line">[Monday 02 May 2011] [15:20:13] &lt;pieterh&gt;     also, make sure you send/recv enough messages, e.g. 10M or 20M</div>
+<div class="line">[Monday 02 May 2011] [15:20:17] &lt;iFire&gt;       hmm</div>
+<div class="line">[Monday 02 May 2011] [15:20:38] &lt;iFire&gt;       ok I&#8217;ll try 10 million</div>
+<div class="line">[Monday 02 May 2011] [15:20:54] &lt;sustrik&gt;     don&#8217;t do that with latency tests, it&#8217;ll take forever</div>
+<div class="line">[Monday 02 May 2011] [15:21:01] &lt;sustrik&gt;     10 million for throughput</div>
+<div class="line">[Monday 02 May 2011] [15:21:07] &lt;sustrik&gt;     100,000 for latency</div>
+<div class="line">[Monday 02 May 2011] [15:23:37] &lt;sustrik&gt;     the lua being faster is kind of strange</div>
+<div class="line">[Monday 02 May 2011] [15:23:56] &lt;sustrik&gt;     how does it compute the result?</div>
+<div class="line">[Monday 02 May 2011] [15:24:21] &lt;iFire&gt;       <a class="reference external" href="https://github.com/Neopallium/lua-zmq/tree/master/perf">https://github.com/Neopallium/lua-zmq/tree/master/perf</a></div>
+<div class="line">[Monday 02 May 2011] [15:24:35] &lt;iFire&gt;       not sure how faithful are the ports</div>
+<div class="line">[Monday 02 May 2011] [15:25:20] &lt;iFire&gt;       bah</div>
+<div class="line">[Monday 02 May 2011] [15:25:24] &lt;iFire&gt;       that might be why</div>
+<div class="line">[Monday 02 May 2011] [15:26:29] &lt;sustrik&gt;     ah, it uses lua&#8217;s time function</div>
+<div class="line">[Monday 02 May 2011] [15:26:45] &lt;sustrik&gt;     if you want to have it consistent with C tests</div>
+<div class="line">[Monday 02 May 2011] [15:27:11] &lt;sustrik&gt;     you should use &#8220;stopwatch&#8221; provided with libzmq (see <a href="#id13"><span class="problematic" id="id14">zmq_utils.h_</span></a></div>
+<div class="line">[Monday 02 May 2011] [15:35:45] &lt;iFire&gt;       I guess it doesn&#8217;t really matter :) it&#8217;s fast enough. especially if I&#8217;m using inproc</div>
+<div class="line">[Monday 02 May 2011] [16:04:11] &lt;zerosanity&gt;  Is it possible to use epgm or pgm on EC2?</div>
+<div class="line">[Monday 02 May 2011] [16:29:11] &lt;jhawk28&gt;     zerosanity: it doesnt look like EC2 supports multicast</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="2011-April.html"
+                        title="previous chapter">2011-April</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="sources/2011-May.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" size="18" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="2011-April.html" title="2011-April"
+             >previous</a> |</li>
+        <li><a href="index.html">ZeroMq IRC Log v0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2010, Peter Alexander.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.0.7.
+    </div>
+  </body>
+</html>
