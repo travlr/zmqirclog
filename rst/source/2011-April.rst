@@ -7355,3 +7355,307 @@
 | [Saturday 30 April 2011] [03:22:15] <th>	pieterh: i replaced some assert(0) with an endless loop of juse receiving and printing, to see the order of messages
 | [Saturday 30 April 2011] [03:22:38] <th>	pieterh: Ubuntu 10.04.2 LTS on 64bit
 | [Saturday 30 April 2011] [03:23:21] <th>	pieterh: i run it |& tee log   and cancel the client-while-loop when i see the "STUPID RECV"
+| [Saturday 30 April 2011] [03:47:42] <rgl>	pieterh, I loved the intro on http://zguide.zeromq.org/page:all thx for putting it up!
+| [Saturday 30 April 2011] [03:51:35] <pieterh>	rgl: glad you liked it, some people seem to hate it...
+| [Saturday 30 April 2011] [03:51:54] <pieterh>	th: I eventually got a crash in the server: Assertion failed: fetched (xrep.cpp:248)
+| [Saturday 30 April 2011] [03:52:11] <th>	pieterh: i assume - that is just because you ran out of resources
+| [Saturday 30 April 2011] [03:52:48] <rgl>	pieterh, oh.. oh why?
+| [Saturday 30 April 2011] [03:52:51] <th>	pieterh: it fails for me within the first 3 seconds
+| [Saturday 30 April 2011] [03:53:08] <Toba>	pieterh: too bad sockets in pollitem are void*, makes it easy to mess that up
+| [Saturday 30 April 2011] [03:53:12] <th>	pieterh: although as said above - i dont let it crash when fail happens
+| [Saturday 30 April 2011] [03:53:20] <pieterh>	rgl: no idea...
+| [Saturday 30 April 2011] [03:53:25] <th>	pieterh: to document the order of the rest of the parts
+| [Saturday 30 April 2011] [03:54:46] <pieterh>	th: I think there's a bug in xrep, not sure...
+| [Saturday 30 April 2011] [03:55:05] <th>	pieterh: so did you get the "STUPID RECV..." messages as well
+| [Saturday 30 April 2011] [03:55:06] <th>	?
+| [Saturday 30 April 2011] [03:55:24] <pieterh>	sustrik: is it normal to do msg_->close () and then access msg_->flags ()?
+| [Saturday 30 April 2011] [03:55:27] <pieterh>	th: sure, loads of them
+| [Saturday 30 April 2011] [03:55:38] <th>	pieterh: then it was intermixing
+| [Saturday 30 April 2011] [03:56:19] <pieterh>	th: is that good or bad? I've no idea what I'm supposed to be seeing...
+| [Saturday 30 April 2011] [03:56:38] <th>	pieterh: it means that atomicity of multiparts was violated.
+| [Saturday 30 April 2011] [03:56:45] <pieterh>	it'd be useful to be explicit in any output you make, e.g. "YOU SHOULD NOT SEE THIS"
+| [Saturday 30 April 2011] [03:57:07] <th>	pieterh: ok - see the line above the first "STUPID"
+| [Saturday 30 April 2011] [03:57:11] <th>	pieterh: i'll make it clearer
+| [Saturday 30 April 2011] [03:57:23] <pieterh>	also, it should simply stop at the first error
+| [Saturday 30 April 2011] [03:57:26] <th>	pieterh: but i wanted to print the "in queue" messages as well to show if there was a duplicate
+| [Saturday 30 April 2011] [03:57:34] <pieterh>	so when I run it, I know immediately if it fails
+| [Saturday 30 April 2011] [04:44:00] <th>	pieterh: shall i use markdown in the README?
+| [Saturday 30 April 2011] [04:44:25] <pieterh>	th: as you like
+| [Saturday 30 April 2011] [04:44:34] <th>	then plain txt
+| [Saturday 30 April 2011] [04:44:39] <pieterh>	indeed... 
+| [Saturday 30 April 2011] [05:04:05] <th>	pieterh: git pull http://thzn.de/0mq_git/issues/ master
+| [Saturday 30 April 2011] [05:05:03] <pieterh>	th: cool, it works nicely
+| [Saturday 30 April 2011] [05:05:17] <pieterh>	merged into https://github.com/zeromq/issues
+| [Saturday 30 April 2011] [05:05:24] <th>	pieterh: because i just rebased, after your last 2 commits ;)
+| [Saturday 30 April 2011] [05:05:46] <pieterh>	does this seem workable for making / sharing test cases?
+| [Saturday 30 April 2011] [05:05:57] <th>	pieterh: for me - yes.
+| [Saturday 30 April 2011] [05:06:31] <th>	pieterh: not sure about the common php tinker
+| [Saturday 30 April 2011] [05:06:43] <pieterh>	what is that?
+| [Saturday 30 April 2011] [05:06:50] <pieterh>	ah, you mean for average folk
+| [Saturday 30 April 2011] [05:06:56] <th>	sort of
+| [Saturday 30 April 2011] [05:07:08] <pieterh>	well, in any case we need to be able to make C test cases for real work
+| [Saturday 30 April 2011] [05:07:34] <pieterh>	I'm usually able to make that if someone has a test case in another language
+| [Saturday 30 April 2011] [05:08:05] <pieterh>	let me try to test 199 again now that I know what to look for... :)
+| [Saturday 30 April 2011] [05:08:06] <th>	pieterh: in my case c, c++, 2-1, 3-0 - it's all the same, yes
+| [Saturday 30 April 2011] [05:08:10] <pieterh>	yup
+| [Saturday 30 April 2011] [05:08:23] <th>	although it's not as broken down, as i had liked.
+| [Saturday 30 April 2011] [05:10:04] <pieterh>	th: so I get the 'STUPID' stuff in the server but it doesn't assert
+| [Saturday 30 April 2011] [05:10:24] <th>	pieterh: there should be no more "STUPID" output
+| [Saturday 30 April 2011] [05:10:32] <th>	pieterh: recompile!
+| [Saturday 30 April 2011] [05:10:38] <th>	i changed the code
+| [Saturday 30 April 2011] [05:10:50] <pieterh>	hmm
+| [Saturday 30 April 2011] [05:10:58] <th>	199/3-0/
+| [Saturday 30 April 2011] [05:11:05] <th>	grep for STUPID
+| [Saturday 30 April 2011] [05:11:09] <th>	no stupidity in there
+| [Saturday 30 April 2011] [05:11:16] <pieterh>	th: ah, I'm using 2-1
+| [Saturday 30 April 2011] [05:11:32] <th>	pieterh: ignore that - let's care about backporting after it's fixed upstream
+| [Saturday 30 April 2011] [05:11:53] <pieterh>	well, I need the testcase on 2-1 in any case, otherwise I can't test downstreamed patches
+| [Saturday 30 April 2011] [05:12:01] <pieterh>	I'll port the test cases back to 2-1, hang on...
+| [Saturday 30 April 2011] [05:12:03] <rgl>	how does one authenticate the client of a connection like traditional sockets? we have to use some kind of message authentication?
+| [Saturday 30 April 2011] [05:12:05] <th>	pieterh: but could we do that after 3-0?
+| [Saturday 30 April 2011] [05:12:17] <pieterh>	rgl: it depends on the pattern you're using
+| [Saturday 30 April 2011] [05:12:38] <pieterh>	there's no authentication as such in 0MQ
+| [Saturday 30 April 2011] [05:13:00] <pieterh>	th: in fact we could make portable test cases if we used czmq
+| [Saturday 30 April 2011] [05:13:09] <th>	pieterh: it's a s/0 <= zmq_/0 == zmq_/ for the asserts and then the s/msg// for the name-change
+| [Saturday 30 April 2011] [05:13:33] <pieterh>	rgl: for an example of secure pubsub, see the Salt project (at http://www.zeromq.org/docs:labs)
+| [Saturday 30 April 2011] [05:13:35] <rgl>	pieterh, for instance, pub/sub, where not everyone can do pub
+| [Saturday 30 April 2011] [05:13:40] <th>	rgl: how about applying asymmetric cryptography?
+| [Saturday 30 April 2011] [05:13:40] <pieterh>	:)
+| [Saturday 30 April 2011] [05:13:51] 	 * pieterh likes answering a question 2 seconds before it's asked...
+| [Saturday 30 April 2011] [05:14:04] <rgl>	oh :)
+| [Saturday 30 April 2011] [05:14:30] <rgl>	will look at it. thx :)
+| [Saturday 30 April 2011] [05:19:11] <pieterh>	th: ok, failure reproduced on 2.1... excellent
+| [Saturday 30 April 2011] [05:19:20] <pieterh>	we can pass this to sustrik now, get a patch and downstream that to 2.1
+| [Saturday 30 April 2011] [05:19:26] 	 * pieterh likes this process
+| [Saturday 30 April 2011] [05:20:20] <th>	;-)
+| [Saturday 30 April 2011] [05:20:42] <th>	pieterh: and reproduced on 3-0 as well, i suppose?
+| [Saturday 30 April 2011] [05:21:26] <pieterh>	th: hang on... (I don't really care about 3-0 so much in this process)
+| [Saturday 30 April 2011] [05:22:15] <pieterh>	yes, it hits the same way on 3-0
+| [Saturday 30 April 2011] [05:22:31] <pieterh>	th: so I sent an email to zeromq-dev proposing we hold test cases in a single repo, you may want to comment on that thread
+| [Saturday 30 April 2011] [05:23:31] <th>	pieterh: ok - and you need to comment on your last mail in the #199 thread
+| [Saturday 30 April 2011] [05:27:08] <th>	pieterh: commented
+| [Saturday 30 April 2011] [05:30:52] <pieterh>	I've replied to the 199 thread now
+| [Saturday 30 April 2011] [05:46:23] <rgl>	can you point me to the document that describes the wire format of the several socket types?
+| [Saturday 30 April 2011] [05:46:46] <pieterh>	rgl: unfortunately, there's no single document
+| [Saturday 30 April 2011] [05:47:00] <pieterh>	there is some information in the zmq_tcp man page
+| [Saturday 30 April 2011] [05:48:39] <pieterh>	we really do need to make a proper documentation of the wire format, no real excuses
+| [Saturday 30 April 2011] [05:49:46] <rgl>	indeed :)
+| [Saturday 30 April 2011] [05:49:55] <rgl>	even after writting this "But really, Zookeeper should be using a generic messaging layer and an explicitly documented wire level protocol" hehe
+| [Saturday 30 April 2011] [05:50:28] <pieterh>	yes, absolutely true
+| [Saturday 30 April 2011] [05:51:01] <pieterh>	I did start on a wlp at http://rfc.zeromq.org/spec:2
+| [Saturday 30 April 2011] [05:51:19] <pieterh>	but I need to convince the core developers to actually commit to such a contract
+| [Saturday 30 April 2011] [05:51:22] <rgl>	the wire protcol described at http://api.zeromq.org/2-1:zmq-tcp is not the whole story?
+| [Saturday 30 April 2011] [05:51:45] <pieterh>	otherwise it's just documenting code behaviour, which isn't acceptable IMO
+| [Saturday 30 April 2011] [05:52:13] <pieterh>	there is a bunch of stuff missing from the zmq-tcp page
+| [Saturday 30 April 2011] [05:52:20] <pieterh>	sockets exchange identities when they connect
+| [Saturday 30 April 2011] [05:52:37] <pieterh>	it's on some tutorial somewhere but I don't remember which one
+| [Saturday 30 April 2011] [05:52:57] <pieterh>	don't get me started on the failure of this project to write decent specs in advance... :-)
+| [Saturday 30 April 2011] [05:53:11] <rgl>	I think I did heheh
+| [Saturday 30 April 2011] [05:53:31] <pieterh>	it's one of the topics we hope to nail down at the Brussels event later this month
+| [Saturday 30 April 2011] [05:54:08] <pieterh>	but basically until the development process uses contracts properly, it won't happen IMO
+| [Saturday 30 April 2011] [05:54:29] <rgl>	what do you mean  by "uses contracts"?
+| [Saturday 30 April 2011] [05:54:32] <pieterh>	otherwise it's one set of people changing code, a second set trying to document that
+| [Saturday 30 April 2011] [05:54:50] <pieterh>	contracts = upfront discussion & documentation of APIs and WLPs
+| [Saturday 30 April 2011] [05:55:03] <pieterh>	with running code to demo, as needed
+| [Saturday 30 April 2011] [05:55:16] <rgl>	WLP?  
+| [Saturday 30 April 2011] [05:55:19] <pieterh>	but not after-the-fact documentation of code
+| [Saturday 30 April 2011] [05:55:22] <pieterh>	wire level protocols
+| [Saturday 30 April 2011] [05:56:01] <th>	pieterh: http://rfc.zeromq.org/spec:2 shouldn't the 3rd occurance of "Message size" be actually "Message body"?
+| [Saturday 30 April 2011] [05:56:05] <rgl>	I see. it makes sense :)
+| [Saturday 30 April 2011] [05:56:18] <pieterh>	th: the text was copied as-is from the tcp man page
+| [Saturday 30 April 2011] [05:56:45] <pieterh>	it is message size, afaics
+| [Saturday 30 April 2011] [05:56:51] <pieterh>	it's a 64-bit size,
+| [Saturday 30 April 2011] [05:57:26] <th>	then i totally dont grok that sketch
+| [Saturday 30 April 2011] [05:57:41] <pieterh>	th: the sketch is pretty nasty
+| [Saturday 30 April 2011] [05:57:59] <pieterh>	what it says is, either a 1-byte length, or 0xff followed by an 8-byte length
+| [Saturday 30 April 2011] [05:58:03] <th>	pieterh: the upper part is the < 255octet case, right?
+| [Saturday 30 April 2011] [05:58:09] <pieterh>	yes
+| [Saturday 30 April 2011] [05:58:43] <th>	pieterh: yes- good. so i got the 0xff+message size.  but why is it followed by another message size?
+| [Saturday 30 April 2011] [05:58:56] <pieterh>	th: it's not, that last byte is the 8th byte
+| [Saturday 30 April 2011] [05:59:00] <pieterh>	the diagram is lousy
+| [Saturday 30 April 2011] [05:59:17] <pieterh>	god, let me fix it...
+| [Saturday 30 April 2011] [05:59:32] <th>	ahhh
+| [Saturday 30 April 2011] [05:59:41] <th>	the columns are for 32 bit
+| [Saturday 30 April 2011] [05:59:57] <th>	so it is three rows for the 64bit size, because the first octet is for the 0xff
+| [Saturday 30 April 2011] [06:00:16] <th>	gosh - got it now :)
+| [Saturday 30 April 2011] [06:00:38] <th>	perhaps you should add a "(cont.)" after the continuations of the "message size"
+| [Saturday 30 April 2011] [06:00:53] <th>	which would not fit in the 8 bit field ;)
+| [Saturday 30 April 2011] [06:02:13] <pieterh>	th: check it now
+| [Saturday 30 April 2011] [06:02:49] <pieterh>	this is still not how I'd draw it, but whatever
+| [Saturday 30 April 2011] [06:04:16] <rgl>	it would be nice to have some wireshark inspectors on the zeromq sockets, that is, somehow make wireshark interpret the data inside a 0mq socket.
+| [Saturday 30 April 2011] [06:04:45] <pieterh>	rgl: there's a whole bunch of nice things we could make if we had decent WLP specs
+| [Saturday 30 April 2011] [06:05:13] <pieterh>	there's about one request for these specs every two weeks
+| [Saturday 30 April 2011] [06:10:00] <th>	pieterh: at least it got less confusing in my opinion ;)
+| [Saturday 30 April 2011] [06:10:21] <pieterh>	I'm going to start on a new RFC, this annoys the heck out of me
+| [Saturday 30 April 2011] [06:10:32] <pieterh>	at least we can document the 2.1 format properly
+| [Saturday 30 April 2011] [06:10:40] <pieterh>	and then bug sustrik to do the same for 3.0
+| [Saturday 30 April 2011] [06:40:16] <mikko>	pieterh: hi
+| [Saturday 30 April 2011] [06:40:22] <pieterh>	hi mikko
+| [Saturday 30 April 2011] [06:40:25] <pieterh>	how's up?
+| [Saturday 30 April 2011] [06:40:31] <pieterh>	what's life?
+| [Saturday 30 April 2011] [06:40:48] <mikko>	it's something that happens when you don't work?
+| [Saturday 30 April 2011] [06:41:12] <pieterh>	dunno... sounds weird to me
+| [Saturday 30 April 2011] [06:41:20] <mikko>	anyway, you can use gists for simple test-cases as well
+| [Saturday 30 April 2011] [06:41:30] <pieterh>	yes, I tried that, but
+| [Saturday 30 April 2011] [06:41:31] <mikko>	they are stored as git repositories and can be forked, cloned etc
+| [Saturday 30 April 2011] [06:41:45] <pieterh>	a. you get weird names in your directories
+| [Saturday 30 April 2011] [06:42:01] <pieterh>	b. you can never remember what the gist is called so need to keep referring back to some random URI somewhere
+| [Saturday 30 April 2011] [06:42:15] <pieterh>	c. you can't have multiple people working on the same gist
+| [Saturday 30 April 2011] [06:43:21] <pieterh>	d. it's very hard to enforce consistency when every test case is a separate repo
+| [Saturday 30 April 2011] [06:43:55] <pieterh>	e. it's annoying when I have 20 test cases to have 20 random hash-encoded directories to work with
+| [Saturday 30 April 2011] [06:44:00] <pieterh>	f. /me can go on all day
+| [Saturday 30 April 2011] [06:51:11] <pieterh>	mikko: sorry for ranting :)
+| [Saturday 30 April 2011] [06:53:55] <mikko>	i'm getting worried by the amount of repos :)
+| [Saturday 30 April 2011] [06:53:58] <mikko>	ever growing
+| [Saturday 30 April 2011] [06:54:28] <pieterh>	mikko: we had a similar issue at wikidot
+| [Saturday 30 April 2011] [06:54:50] <pieterh>	originally, all the official stuff was on one site, maintained by a couple of people
+| [Saturday 30 April 2011] [06:55:04] <pieterh>	I slowly broke that into 20-30 sites, each with a distinct group of contributors
+| [Saturday 30 April 2011] [06:55:17] <pieterh>	it was quite interesting, the tension that caused
+| [Saturday 30 April 2011] [06:55:30] <pieterh>	OTOH people complained they couldn't navigate the results
+| [Saturday 30 April 2011] [06:55:44] <pieterh>	OTOH, the number of contributors overall increased by 50x or more
+| [Saturday 30 April 2011] [06:56:32] <pieterh>	since every gist is a repo, we already have massive numbers of repos, except they're unknown
+| [Saturday 30 April 2011] [06:57:32] <pieterh>	anyhow, I don't see how https://github.com/zeromq is any different from subdirectories within one repo
+| [Saturday 30 April 2011] [07:00:52] <mikko>	i think i was thinking a workflow like:
+| [Saturday 30 April 2011] [07:01:34] <mikko>	each bigger issue gets branched off to a separate branch, the test cases are added to branch and when everything works it gets merged back
+| [Saturday 30 April 2011] [07:01:49] <mikko>	so that also test cases get back to main repo
+| [Saturday 30 April 2011] [07:02:39] <pieterh>	mikko: that would work nicely except we have to work across multiple topic branches
+| [Saturday 30 April 2011] [07:02:45] <pieterh>	multiple main repos
+| [Saturday 30 April 2011] [07:03:04] <pieterh>	how do we handle an issue that affects both pyzmq and libzmq?
+| [Saturday 30 April 2011] [07:03:09] <pieterh>	or 3.0 and 2.1
+| [Saturday 30 April 2011] [07:03:29] <pieterh>	or erlzmq2 and erlzmq3
+| [Saturday 30 April 2011] [07:03:30] <pieterh>	etc.
+| [Saturday 30 April 2011] [07:03:49] <mikko>	when i've had such issues with php-zmq i've created a reproducible test-case in C or C++
+| [Saturday 30 April 2011] [07:04:16] <pieterh>	at the least, we need a way to maintain C/C++ test cases to work on both 2.1 and 3.0
+| [Saturday 30 April 2011] [07:04:30] <pieterh>	can't use a topic branch in 3.0 for that
+| [Saturday 30 April 2011] [07:04:47] <pieterh>	wouldn't work if 2.1 and 3.0 were branches in same repo, either
+| [Saturday 30 April 2011] [07:05:05] <pieterh>	it'd require one branch for each test case / version combination
+| [Saturday 30 April 2011] [07:05:08] <pieterh>	ugh
+| [Saturday 30 April 2011] [07:05:55] <pieterh>	also, as sustrik pointed out, we don't want test cases to go into the main repo because they rot really fast
+| [Saturday 30 April 2011] [07:06:29] <pieterh>	unless someone's actually maintaining them, which is a role no-one has volunteered for...
+| [Saturday 30 April 2011] [07:07:23] <pieterh>	ok, one of my hopes is that a separate issues repo can become the basis for an independent regression test suite
+| [Saturday 30 April 2011] [07:11:59] <mikko>	what do you mean they rot really fast?
+| [Saturday 30 April 2011] [07:12:10] <mikko>	we've been using the same set of tests through out 2.x
+| [Saturday 30 April 2011] [07:16:20] <pieterh>	mikko: old test cases don't keep working unless they're maintained
+| [Saturday 30 April 2011] [07:16:48] <pieterh>	I know they *should* keep working, for regression testing, but that demands effort
+| [Saturday 30 April 2011] [07:16:57] <mikko>	does that mean that old software doesnt keep working unless maintained all the time?
+| [Saturday 30 April 2011] [07:17:02] <pieterh>	indeed
+| [Saturday 30 April 2011] [07:17:16] <pieterh>	since today, test cases are transient and discarded, we don't see the cost
+| [Saturday 30 April 2011] [07:17:39] <pieterh>	e.g. there are test cases that apply to 2.0.4
+| [Saturday 30 April 2011] [07:18:04] <pieterh>	actually I'd be happy to maintain the regression tests, if the tests were all in one place and properly structured
+| [Saturday 30 April 2011] [07:18:13] <pieterh>	e.g. always started with a consistent command
+| [Saturday 30 April 2011] [07:18:25] <pieterh>	built using a consistent tooling
+| [Saturday 30 April 2011] [07:18:25] <pieterh>	etc.
+| [Saturday 30 April 2011] [07:18:48] <pieterh>	it is doable (and still, a lot of work) if they're in their own repo IMO
+| [Saturday 30 April 2011] [08:17:48] <pieterh>	ok, finished draft of full wire level protocol
+| [Saturday 30 April 2011] [08:18:00] <pieterh>	rgl: if you're still around: http://rfc.zeromq.org/spec:13
+| [Saturday 30 April 2011] [09:03:26] <xbmc_fan>	hi
+| [Saturday 30 April 2011] [09:04:23] <xbmc_fan>	any experts for the .net 0mq-binding available?
+| [Saturday 30 April 2011] [09:07:49] <iFire>	anyone made a pdf of zguide?
+| [Saturday 30 April 2011] [09:09:03] <iFire>	"only" a 105 pages
+| [Saturday 30 April 2011] [09:15:47] <mikko>	xbmc_fan: Guthur is i think
+| [Saturday 30 April 2011] [09:17:34] <mikko>	iFire: seems to print to pdf well
+| [Saturday 30 April 2011] [09:19:14] <mikko>	http://valokuva.org/~mikko/zguide.pdf
+| [Saturday 30 April 2011] [09:19:22] <mikko>	that's what i get out from print to pdf
+| [Saturday 30 April 2011] [09:20:37] <xbmc_fan>	thanks mikko.. Maybe Guthur, you are able to answer this Stackoverflow question: http://stackoverflow.com/questions/5841896/0mq-how-to-use-zeromq-in-a-threadsafe-manner ?
+| [Saturday 30 April 2011] [09:22:41] <mikko>	xbmc_fan: you cannot use sockets concurrently
+| [Saturday 30 April 2011] [09:22:53] <mikko>	xbmc_fan: but with zeromq 2.1 you can migrate socket from one thread to another
+| [Saturday 30 April 2011] [09:23:26] <xbmc_fan>	mikko, I understood that I must not use sockets from different threads
+| [Saturday 30 April 2011] [09:23:39] <mikko>	that was the case with 2.0
+| [Saturday 30 April 2011] [09:23:50] <mikko>	you cannot use a socket concurrently from multiple threads
+| [Saturday 30 April 2011] [09:24:08] <mikko>	you have to ensure a full memory barrier before accessing from another thread
+| [Saturday 30 April 2011] [09:24:42] <xbmc_fan>	i got that. In order to not use it concurrently, I have to use semapohores, locks- which the guide explicitly warns about
+| [Saturday 30 April 2011] [09:25:06] <mikko>	what does it say?
+| [Saturday 30 April 2011] [09:25:20] <xbmc_fan>	please read the question I aksed at stackoverflow
+| [Saturday 30 April 2011] [09:25:25] <Guthur>	xbmc_fan, just don't share them across threads would be the easy option
+| [Saturday 30 April 2011] [09:25:55] <mikko>	xbmc_fan: can you have socket per thread?
+| [Saturday 30 April 2011] [09:26:06] <mikko>	that is usually ideal if multiple threads need to communicate with same endpoint
+| [Saturday 30 April 2011] [09:26:42] <mikko>	mutexes / locks don't necessarily make your application slow and fragile. they are just very hard to get right
+| [Saturday 30 April 2011] [09:26:49] <iFire>	mikko just finished printing
+| [Saturday 30 April 2011] [09:26:59] <Guthur>	sometimes what I do is create the socket in one thread and give it to another to use within it's lifetime
+| [Saturday 30 April 2011] [09:26:59] <iFire>	ha 6 minutes
+| [Saturday 30 April 2011] [09:27:05] <xbmc_fan>	mikko, I could but is this really performant / the way to do things properly? e.g. I might get called from a different temporary-threadpool thread 
+| [Saturday 30 April 2011] [09:27:30] <xbmc_fan>	and I *think* there is overhead involved to create a 0mq-socket  each time my method gets called
+| [Saturday 30 April 2011] [09:27:48] <mikko>	xbmc_fan: is there going to be lock contention?
+| [Saturday 30 April 2011] [09:28:28] <mikko>	xbmc_fan: why do you have multiple threads handling events?
+| [Saturday 30 April 2011] [09:28:41] <mikko>	not sure if that is common in C#
+| [Saturday 30 April 2011] [09:29:47] <xbmc_fan>	mikko, it is quite common: the class registering for an event does not know which thread invokes the eventhandler
+| [Saturday 30 April 2011] [09:30:34] <xbmc_fan>	I have multiple threads throwing events. and the eventhandler gets called from those threads.
+| [Saturday 30 April 2011] [09:31:10] <Guthur>	I did create a socket pool once, never really used it though
+| [Saturday 30 April 2011] [09:31:33] <Guthur>	I was considering including it in clrzmq2, but I don't think I did in the end
+| [Saturday 30 April 2011] [09:34:09] <xbmc_fan>	http://pastebin.com/EdywPxWa <-- maybe this clearifies my problem
+| [Saturday 30 April 2011] [09:35:30] <Guthur>	xbmc_fan, if you are worried about the setup cost of sockets you could try the pool approach
+| [Saturday 30 April 2011] [09:38:01] <Guthur>	or I suppose just lock the socket
+| [Saturday 30 April 2011] [09:39:56] <xbmc_fan>	so I would have a number  of sockets in a pool. But since every socket has to be used from the same thread it was created on, this won't help much, or do I miss something? e.g.: If the eventhandler is invoked from temporary threads, I would create a socket for those calls because there isn't a socket for that thread in the pool yet. I can see that if there is a limited amount of (long running) threads calling, pooling of sockets might ma
+| [Saturday 30 April 2011] [09:39:56] <xbmc_fan>	But I think in my scenario, in the end it would leak ressources - so one had to implement something like "pool timeouts"... too much afford isn't it?!
+| [Saturday 30 April 2011] [09:39:59] <Guthur>	I have the socket pool code if you want me to post it
+| [Saturday 30 April 2011] [09:40:10] <xbmc_fan>	sure, maybe that helps
+| [Saturday 30 April 2011] [09:40:25] <Guthur>	xbmc_fan, in the new version of 0MQ it can be used from a different thread
+| [Saturday 30 April 2011] [09:40:33] <Guthur>	just not from 2 threads at the same time
+| [Saturday 30 April 2011] [09:40:43] <Guthur>	mikko, correct?
+| [Saturday 30 April 2011] [09:40:43] <xbmc_fan>	Guthur	or I suppose just lock the socket <-- I could do that, even though the guide says that evil.
+| [Saturday 30 April 2011] [09:40:58] <xbmc_fan>	Guthur	just not from 2 threads at the same time <-- ok, that would be nice.
+| [Saturday 30 April 2011] [09:41:10] <Guthur>	xbmc_fan, yeah, pool would be cooler than lock, hehe
+| [Saturday 30 April 2011] [09:42:43] <rgl>	pieterh, oh, you actually did it :)
+| [Saturday 30 April 2011] [09:42:52] <Guthur>	xbmc_fan, https://gist.github.com/949677
+| [Saturday 30 April 2011] [09:42:59] <pieterh>	rgl: yeah, it did take a whole two hours...
+| [Saturday 30 April 2011] [09:43:03] <Guthur>	that is very much as is, no warranty or anything
+| [Saturday 30 April 2011] [09:43:26] <Guthur>	I can't remember if I even completed it, but might serve as some inspiration
+| [Saturday 30 April 2011] [09:43:28] <rgl>	pieterh, humm "The principal issue with ZMTP/1.0 is the lack of content types in the wire format" bummer. so there is no easy way to create a wireshark interpreter.
+| [Saturday 30 April 2011] [09:43:44] <pieterh>	rgl: you can make it but it'll only work at the framing level
+| [Saturday 30 April 2011] [09:45:17] <rgl>	pieterh, I see. I'll have to read it with more attention :)
+| [Saturday 30 April 2011] [09:49:15] <xbmc_fan>	thanks Guthur. Well, the collection and handing out of sockets seems to be threadsafe, but the the pool might run empty eventually. Nevertheless, thanks for posting it! 
+| [Saturday 30 April 2011] [09:51:09] <xbmc_fan>	Guthur	sometimes what I do is create the socket in one thread and give it to another to use within it's lifetime <-- and that does work? So the author of the docs had .net in mind when he/she wrote: "The only place where it's remotely sane to share sockets between threads are in language bindings that need to do magic like garbage collection on sockets." ?!
+| [Saturday 30 April 2011] [09:53:12] <Guthur>	xbmc_fan, I think it's that some people might abuse the fact that it can be moved from one thread to another
+| [Saturday 30 April 2011] [09:53:35] <pieterh>	iFire: I've made a quick PDF conversion
+| [Saturday 30 April 2011] [09:53:35] <Guthur>	it still doesn't support shared access
+| [Saturday 30 April 2011] [09:53:44] <pieterh>	am uploading it now, 30 seconds...
+| [Saturday 30 April 2011] [09:54:36] <Guthur>	the .net binding does nothing extra to facilitate moving the socket from one thread to another
+| [Saturday 30 April 2011] [09:54:55] <Guthur>	it came with one of the later version of libzmq
+| [Saturday 30 April 2011] [09:55:53] <xbmc_fan>	ok, thanks for the clarifcation guthur. maybe this should be stated also in the docs.
+| [Saturday 30 April 2011] [09:57:10] <pieterh>	xbmc_fan: the reason for this text is that people often tried to share sockets between threads, and it crashes libzmq horribly
+| [Saturday 30 April 2011] [09:58:25] <pieterh>	you can create a socket in thread A and pass it to thread B if, and only if, you do a full memory barrier 
+| [Saturday 30 April 2011] [09:59:18] <xbmc_fan>	with "full memory barrier" you mean that I have to make sure that thread A doesn't access the socket at the same time as thread B?
+| [Saturday 30 April 2011] [10:01:59] <pieterh>	"full memory barrier" is a technical term meaning an instruction that causes all CPUs to synchronize and flush caches
+| [Saturday 30 April 2011] [10:02:17] <pieterh>	it's definitely not enough to "not use at the same time"
+| [Saturday 30 April 2011] [10:10:03] <xbmc_fan>	ok, I think I understood pieterh. Therefore it seems I have to use locks to synchronize acces to a single socket if I have no control about the caller's thread.
+| [Saturday 30 April 2011] [10:10:40] <pieterh>	something like that, I've never actually done that
+| [Saturday 30 April 2011] [10:11:29] <pieterh>	xbmc_fan: I'd probably look for an alternative design than that though...
+| [Saturday 30 April 2011] [10:13:10] <xbmc_fan>	pieterh: well, in my case, the architecture is inheritly multithreaded and thread-synchronization takes only place at the outer edges. Currently only for the GUI thread. 
+| [Saturday 30 April 2011] [10:13:40] <xbmc_fan>	however, the gui dispatches information which is to be send in a worker thread.
+| [Saturday 30 April 2011] [10:13:57] <xbmc_fan>	I would like to send this data via 0mq.
+| [Saturday 30 April 2011] [10:14:01] <pieterh>	xbmc_fan: have you already tried making multithreaded apps that communicate over inproc sockets?
+| [Saturday 30 April 2011] [10:14:30] <pieterh>	if you are using locks (and IMO if you're sharing sockets between threads) then your design is bogus somewhere
+| [Saturday 30 April 2011] [10:16:30] <xbmc_fan>	pieterh: I haven't used "inproc sockets" for that yet. But I am using a kind of serice bus / event driven architecture. I am sure that - under the hood - this can be implemented using inproc sockets. 
+| [Saturday 30 April 2011] [10:16:57] <pieterh>	xbmc_fan: when you discuss multithreading and 0MQ you have to know how inproc sockets work
+| [Saturday 30 April 2011] [10:17:06] <pieterh>	otherwise 100% certain you are looking at the wrong picture
+| [Saturday 30 April 2011] [10:17:40] <pieterh>	please look at the asynchronous server example
+| [Saturday 30 April 2011] [10:27:33] <xbmc_fan>	I think you mean that one: http://zguide.zeromq.org/cs:asyncsrv ?
+| [Saturday 30 April 2011] [10:30:41] <xbmc_fan>	If I understand both the example and your statement correctly, you wanted me to recognize that there is no locking/synchronization of threads involved when using inproc sockets
+| [Saturday 30 April 2011] [10:34:35] <xbmc_fan>	however, at the outer edge of that example, there is in fact synchronization, since the call to Console.Writelline  featrues a [MethodImpl(MethodImplOptions.Synchronized)] attribute under the hood. That's the same in my case: the Gui has to synchronize threads to the gui layer. And I have to synchronize non-0mq callers (events, not inproc sockets) if I want to use 0mq at another outer edge of the architecture. From that edge onwards, I c
+| [Saturday 30 April 2011] [10:34:35] <xbmc_fan>	inproc sockets and only have to synchronize again if there is another "edge"
+| [Saturday 30 April 2011] [10:36:30] <xbmc_fan>	I also understood that I could have used 0MQ-Socket throughout the software and would only need to synchronize for the GUI, if I used inproc sockets.
+| [Saturday 30 April 2011] [10:40:46] <xbmc_fan>	am I missing something?
+| [Saturday 30 April 2011] [10:46:29] <rgl>	pieterh, "Each side of the connection consists of an greeting message followed by zero or more content messages. An identity message consists of one frame containing the peer's identity" humm what is an "identity" message? is the "greeting" message?
+| [Saturday 30 April 2011] [10:46:48] <pieterh>	greeting = anonymous / identity
+| [Saturday 30 April 2011] [10:46:59] <pieterh>	let me fix that text
+| [Saturday 30 April 2011] [10:47:08] <pieterh>	I've gotten other review comments as well, new version coming RSN
+| [Saturday 30 April 2011] [10:47:11] <xbmc_fan>	anonynous   = %0x01 %x00  <-- isn't it anonyMous 
+| [Saturday 30 April 2011] [10:47:43] <xbmc_fan>	"Full ZMTP Grammar"
+| [Saturday 30 April 2011] [10:51:16] <xbmc_fan>	pieterh , did I miss something or did I missinterpreted something?
+| [Saturday 30 April 2011] [10:51:34] <pieterh>	xbmc_fan: fixed that, thanks
+| [Saturday 30 April 2011] [10:52:25] <xbmc_fan>	ah, yeah, np. I mean a few sentences back.. I tried to understand what you wanted me to learn when you were pointing to the asyncserver example
+| [Saturday 30 April 2011] [10:53:34] <pieterh>	xbmc_fan: ah, that's an example showing how to distribute work from one thread to others over inproc
+| [Saturday 30 April 2011] [10:53:44] 	 * pieterh re-reads the IRC log
+| [Saturday 30 April 2011] [10:54:04] <pieterh>	to be honest I'
+| [Saturday 30 April 2011] [10:54:10] <pieterh>	I've no idea how the C# code works
+| [Saturday 30 April 2011] [10:55:21] <xbmc_fan>	oh, ok.
+| [Saturday 30 April 2011] [10:55:38] <pieterh>	rgl: OK, I've updated rfc:13
+| [Saturday 30 April 2011] [11:37:31] <Seta00>	Guthur, I'm looking at the asyncserver example, and I must say clrzmq's syntax at https://github.com/imatix/zguide/blob/master/examples/C%23/asyncsrv.cs#L33 is very nice, does clrzmq2 offer similar functionality?
+| [Saturday 30 April 2011] [12:05:27] <rgl>	pieterh, nice. still, the second diagram octets 1-9 should read 1-8
+| [Saturday 30 April 2011] [12:05:49] <rgl>	pieterh, and the other, octet 9 and octets 10+
+| [Saturday 30 April 2011] [12:06:05] <pieterh>	rgl: thanks, fixed
+| [Saturday 30 April 2011] [12:07:00] <pieterh>	ok, bbl
+| [Saturday 30 April 2011] [12:07:22] <rgl>	bye
+| [Saturday 30 April 2011] [13:52:36] <Guthur>	Seta00, sorry was away there, that is clrzmq2, hehe
+| [Saturday 30 April 2011] [13:52:53] <Guthur>	I ported the example
+| [Saturday 30 April 2011] [13:53:15] <Guthur>	I made it more idiomatic to the clrzmq2 binding

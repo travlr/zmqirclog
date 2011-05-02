@@ -1,0 +1,559 @@
+===============
+2011-May
+===============
+
+| [Sunday 01 May 2011] [02:59:12] <ASY>	wondering what can be the cause of this...
+| [Sunday 01 May 2011] [03:01:09] <ASY>	I am sending messages from different threads as follows:
+| [Sunday 01 May 2011] [03:01:17] <ASY>	zmq::message_t request(e,e->size(),&event_queue::free_callback);
+| [Sunday 01 May 2011] [03:01:17] <ASY>	socket_req_.send(request,ZMQ_NOBLOCK);
+| [Sunday 01 May 2011] [03:02:07] <ASY>	in the main thread I do:  id = zmq_poll (&poll_items[0], (int)poll_items.size(), 1000 * 1000);
+| [Sunday 01 May 2011] [03:03:03] <ASY>	wondering if this is thread related.
+| [Sunday 01 May 2011] [03:03:24] <ASY>	if anyone has any thoughts, please let me know.  thanks.
+| [Sunday 01 May 2011] [03:16:37] <ASY>	hm... upgraded to 2.1.6, can't seem to reproduce yet...
+| [Sunday 01 May 2011] [03:56:36] <pieterh>	ASY: what version were you using before you upgraded?
+| [Sunday 01 May 2011] [03:59:34] <ASY>	2.1.3
+| [Sunday 01 May 2011] [04:59:40] <pieterh>	ASY: are you using the same sockets from multiple threads?
+| [Sunday 01 May 2011] [05:00:09] <pieterh>	if you poll in one thread and send/recv in another, it'll crash under load
+| [Sunday 01 May 2011] [05:00:52] <pieterh>	(if you're working with the same sockets in multiple threads, that is)
+| [Sunday 01 May 2011] [05:11:59] <ASY>	hm... you know what... I think this is it!
+| [Sunday 01 May 2011] [05:12:15] <ASY>	i use two sockets, however the sending socket is not protected
+| [Sunday 01 May 2011] [05:13:14] <ASY>	yup.  that gotta be it.  gotta place a mutex on the sending function
+| [Sunday 01 May 2011] [05:17:02] <ASY>	i was perfectly aware of this problem.  it is in the docs, but somehow i didn't see it in the code until you said it.
+| [Sunday 01 May 2011] [05:17:04] <ASY>	thanks.
+| [Sunday 01 May 2011] [06:06:43] <pieterh>	ASY: if you're using the same socket from two threads, your design is wrong, usually
+| [Sunday 01 May 2011] [06:11:46] <ASY>	correct, but not in this case I don't think.  i have a central function that gets invoked from different async callbacks of different 3rd party libraries. i don't even know which threads this function gets invoked from.  this is special circumstances.  if these are my threads, however, they will establish a dedicated socket.
+| [Sunday 01 May 2011] [06:19:16] <pieterh>	what language are you working in?
+| [Sunday 01 May 2011] [06:19:56] <ASY>	C++
+| [Sunday 01 May 2011] [06:20:45] <pieterh>	well, I'm no expert in weird async callbacks but IMO if you end up using mutexes to share 0MQ sockets, your design is probably not ideal
+| [Sunday 01 May 2011] [06:21:00] <pieterh>	I'd try to get all callbacks to a single thread and then use 0MQ inproc sockets between that and other threads
+| [Sunday 01 May 2011] [06:21:23] <pieterh>	sorry to just offer generalities... anyhow, glad we found the cause of the crashes
+| [Sunday 01 May 2011] [06:23:47] <ASY>	the reason I have a central (now mutexed) function is that it relays events to a central event queue using one inproc socket.  this is my way of getting all callbacks to a single thread... :)
+| [Sunday 01 May 2011] [06:25:33] <guido_g>	pieterh: this kind of _design_ is tought all over the place, will be hard to negate the included brainwashing
+| [Sunday 01 May 2011] [06:26:18] <pieterh>	ASY: have you studied the asyncsrv example in the Guide?
+| [Sunday 01 May 2011] [06:26:23] <pieterh>	guido_g: seems so...
+| [Sunday 01 May 2011] [06:26:30] <guido_g>	but hey, that's the price to pay to be in an elitist community  ]:->
+| [Sunday 01 May 2011] [06:26:54] <pieterh>	guido_g: we'
+| [Sunday 01 May 2011] [06:26:58] <pieterh>	we're elitist?
+| [Sunday 01 May 2011] [06:27:06] <pieterh>	I thought we were cryptoanarchists
+| [Sunday 01 May 2011] [06:27:46] <guido_g>	sure, we're everything we want to be
+| [Sunday 01 May 2011] [06:27:56] <guido_g>	oh, shit, this would be punk...  ,)
+| [Sunday 01 May 2011] [06:28:44] <pieterh>	:)
+| [Sunday 01 May 2011] [06:29:23] <ASY>	async callbacks come from multiple unrelated existing subsystems, so there is really nothing I can do other then making my own custom event queue, which is pointless since I have zmq.  the advantage of using zmq with this is that I do also have multiple processes and multiple threads that push data through individually established sockets to the same queue.  so really it is only a segment of 
+| [Sunday 01 May 2011] [06:29:23] <ASY>	the application that suffers from this due to 3rd party callbacks.
+| [Sunday 01 May 2011] [06:30:34] <pieterh>	ASY: I'm sure you're right, it's hard to tell from where I'm sitting
+| [Sunday 01 May 2011] [06:35:03] <ASY>	i have another question if you don't mind.  I have an application that does broadcast UDP discovery of it's siblings on the network...  every system broadcasts on a known port and learns about the presense of the others.  I am wondering if there is anything in zmq that can be used to acheive something like that.
+| [Sunday 01 May 2011] [06:36:00] <guido_g>	pub/sub using a common channel for discovery
+| [Sunday 01 May 2011] [06:36:10] <guido_g>	you might want to use (e)pgm for that
+| [Sunday 01 May 2011] [06:37:33] <ASY>	ok, i will read up on that and try to figure it out.
+| [Sunday 01 May 2011] [06:38:17] <guido_g>	basically you use a well known multicast group instead of the subnets broadcast address
+| [Sunday 01 May 2011] [06:40:35] <ASY>	ok, i will start working on that in about a week probably, will probably be back with questions :)
+| [Sunday 01 May 2011] [06:40:59] <guido_g>	np
+| [Sunday 01 May 2011] [06:41:12] <ASY>	6:40am :/  gotta crash
+| [Sunday 01 May 2011] [06:41:30] <guido_g>	:)
+| [Sunday 01 May 2011] [06:41:36] <ASY>	where are you guys located?
+| [Sunday 01 May 2011] [06:41:50] <guido_g>	europe
+| [Sunday 01 May 2011] [06:41:59] <guido_g>	so it's time for lunch
+| [Sunday 01 May 2011] [06:42:17] <ASY>	:)
+| [Sunday 01 May 2011] [06:42:37] <ASY>	ok, thanks for everyones help.  bbl. cheers.
+| [Sunday 01 May 2011] [06:42:45] <guido_g>	good night!
+| [Sunday 01 May 2011] [07:02:32] <Guthur>	did someone finally get 0MQ on android
+| [Sunday 01 May 2011] [07:03:17] <pieterh>	Guthur: well, I've written up the protocol so it's possible to make it in Javascript now, I guess
+| [Sunday 01 May 2011] [07:03:25] <pieterh>	I'm doing some Android development but not in C
+| [Sunday 01 May 2011] [07:03:37] <pieterh>	Also, I'd probably not use 0MQ across an open internet in any case
+| [Sunday 01 May 2011] [07:04:00] <Guthur>	I just got an android phone yesterday and development some development for it is on my todo list
+| [Sunday 01 May 2011] [07:04:32] <pieterh>	tbh I'd make a http bridge that maps req/rep and pub/sub to simple HTTP methods
+| [Sunday 01 May 2011] [07:04:33] <Guthur>	ah yes, internet...
+| [Sunday 01 May 2011] [07:04:46] 	 * pieterh is going to have to spend a couple of hours making this one day
+| [Sunday 01 May 2011] [07:05:02] <pieterh>	get URI -> long poll to receive next sub message
+| [Sunday 01 May 2011] [07:05:08] <pieterh>	post URI -> publish
+| [Sunday 01 May 2011] [07:05:12] <pieterh>	etc.
+| [Sunday 01 May 2011] [07:05:23] <Guthur>	have you looked at websockets
+| [Sunday 01 May 2011] [07:05:45] <pieterh>	yes yes but it's not stable
+| [Sunday 01 May 2011] [07:06:01] <pieterh>	there are several versions and its still in evolution
+| [Sunday 01 May 2011] [07:06:25] <pieterh>	it would be the right solution if/when it emerges from its IEFT party
+| [Sunday 01 May 2011] [07:06:54] <Guthur>	yeah, I actually mistakenly assumed it had become stable by now
+| [Sunday 01 May 2011] [07:08:02] <pieterh>	subscribe to the IEFT HyBi list for great merriment
+| [Sunday 01 May 2011] [07:11:48] <Guthur>	pieterh, do you know if android allows raw TCP connections, so that 0MQ could work over the internet if a secure connection wasn't a requirement
+| [Sunday 01 May 2011] [07:12:05] <pieterh>	Guthur: afaik yes, it does
+| [Sunday 01 May 2011] [07:12:25] <pieterh>	in fact it's 100% certain that it does
+| [Sunday 01 May 2011] [07:13:18] <djc>	longpolling is kind of an ugly hack
+| [Sunday 01 May 2011] [07:13:28] <djc>	but mapping req/rep to HTTP does make sense
+| [Sunday 01 May 2011] [07:13:34] <djc>	do the pyzmq guys hang out here?
+| [Sunday 01 May 2011] [07:13:50] <pieterh>	longpolling is a hack but not any different than waiting on a TCP socket, really
+| [Sunday 01 May 2011] [07:14:05] <pieterh>	especially if you return a stream rather than just one message
+| [Sunday 01 May 2011] [07:34:32] <guido_g>	djc: the wrapper devs are here often, if you need them better use the mailinglist
+| [Sunday 01 May 2011] [07:34:36] <guido_g>	*are not
+| [Sunday 01 May 2011] [07:34:46] <djc>	I filed an issue
+| [Sunday 01 May 2011] [07:35:49] <guido_g>	nothing serious
+| [Sunday 01 May 2011] [07:38:39] <guido_g>	here it works
+| [Sunday 01 May 2011] [07:38:53] <guido_g>	did you try a specific version?
+| [Sunday 01 May 2011] [07:39:07] <guido_g>	or just the head of master?
+| [Sunday 01 May 2011] [07:39:32] <djc>	2.1.4
+| [Sunday 01 May 2011] [07:39:58] <guido_g>	ah ok
+| [Sunday 01 May 2011] [07:40:08] <guido_g>	2.1dev works
+| [Sunday 01 May 2011] [07:41:20] <guido_g>	aka latest master
+| [Sunday 01 May 2011] [07:44:06] <djc>	did you reproduce my issue with 2.1.4?
+| [Sunday 01 May 2011] [07:44:25] <guido_g>	not yet
+| [Sunday 01 May 2011] [07:47:11] <guido_g>	nope, works fine here
+| [Sunday 01 May 2011] [07:47:29] <guido_g>	-> Ran 73 tests in 8.164s
+| [Sunday 01 May 2011] [07:48:07] <guido_g>	so it might be something blocking the network address and/or port
+| [Sunday 01 May 2011] [07:48:13] <guido_g>	did you check that?
+| [Sunday 01 May 2011] [21:00:35] <neopallium>	iFire: I am here.
+| [Sunday 01 May 2011] [21:01:58] <neopallium>	iFire: yes, build it like any C Lua module.  Make sure to link it against libzmq (-lzmq).
+| [Sunday 01 May 2011] [21:10:43] <iFire>	neopallium 
+| [Sunday 01 May 2011] [21:10:44] <iFire>	> require "lua-zmq"
+| [Sunday 01 May 2011] [21:10:44] <iFire>	error loading module 'lua-zmq' from file '.\lua-zmq.dll':
+| [Sunday 01 May 2011] [21:10:44] <iFire>	        The specified procedure could not be found.
+| [Sunday 01 May 2011] [21:10:46] <iFire>	I get that
+| [Sunday 01 May 2011] [21:10:59] <iFire>	where  pre_generated-zmq.nobj.c is compiled into lua-zmq.dll
+| [Sunday 01 May 2011] [21:11:44] <iFire>	on windows
+| [Sunday 01 May 2011] [21:11:48] <iFire>	using lua-jit
+| [Sunday 01 May 2011] [22:12:56] <iFire>	neopallium how was dinner :P
+| [Sunday 01 May 2011] [22:58:08] <iFire>	neopallium I can't seem to load the library from a lua interpreter
+| [Sunday 01 May 2011] [22:58:21] <iFire>	what's a short lua thing to test if it works
+| [Sunday 01 May 2011] [23:02:30] <private_meta>	 AH GODDAMMIT!
+| [Sunday 01 May 2011] [23:06:28] 	 * iFire calls first aid to private_meta
+| [Sunday 01 May 2011] [23:07:07] <private_meta>	I spent so much time to implement our communications library with ZeroMQ and now it seems like it's got the same problem as ASIO
+| [Sunday 01 May 2011] [23:07:19] <private_meta>	OMG this pisses me off so much
+| [Sunday 01 May 2011] [23:07:29] 	 * iFire listens
+| [Sunday 01 May 2011] [23:08:09] <iFire>	private_meta same problem?
+| [Sunday 01 May 2011] [23:08:18] <private_meta>	Messages are lost/garbled
+| [Sunday 01 May 2011] [23:08:30] <private_meta>	when I compile it with OpenMPI
+| [Sunday 01 May 2011] [23:10:01] <iFire>	I thought you weren't supposed to use zeromq with locks and stuff
+| [Sunday 01 May 2011] [23:10:12] <iFire>	each thread is supposed to be its own unit
+| [Sunday 01 May 2011] [23:10:27] <iFire>	and you communicate through inproc/ipc/tcp/etc.
+| [Sunday 01 May 2011] [23:11:14] <private_meta>	I don't know what you get at with that
+| [Sunday 01 May 2011] [23:13:09] <private_meta>	iFire: not sure what that has to do with my problem
+| [Sunday 01 May 2011] [23:13:40] <iFire>	hmm
+| [Sunday 01 May 2011] [23:13:43] <iFire>	sorry
+| [Sunday 01 May 2011] [23:13:55] <iFire>	well mpi and zeromq do the same things
+| [Sunday 01 May 2011] [23:14:09] <iFire>	unless you're using it to connect two systems
+| [Sunday 01 May 2011] [23:14:42] <iFire>	http://zguide.zeromq.org/page:all#Multithreading-with-MQ
+| [Sunday 01 May 2011] [23:16:13] <private_meta>	I'm using MPI to create parallel processes and to control them, I wanted to use zeromq for backend communication
+| [Sunday 01 May 2011] [23:16:29] <private_meta>	each process being a client
+| [Sunday 01 May 2011] [23:16:34] <private_meta>	these two are independent
+| [Sunday 01 May 2011] [23:16:55] <jer>	why use MPI for that and not zeromq for both?
+| [Sunday 01 May 2011] [23:18:00] <private_meta>	Because zmq doesn't supply most of the mpi functions like scattering, gathering, ... out of the box like mpi
+| [Sunday 01 May 2011] [23:29:08] <neopallium>	iFire: back, you need to use: require"zmq"
+| [Sunday 01 May 2011] [23:30:00] <iFire>	hmm
+| [Sunday 01 May 2011] [23:30:06] <iFire>	what about the dll
+| [Sunday 01 May 2011] [23:30:26] <iFire>	I'm doing a custom packaging
+| [Sunday 01 May 2011] [23:30:33] <iFire>	so everything is in the wrong place
+| [Sunday 01 May 2011] [23:30:44] <neopallium>	the dll, I think you will need to call: zmq.dll
+| [Sunday 01 May 2011] [23:31:07] <iFire>	> require "zmq"
+| [Sunday 01 May 2011] [23:31:07] <iFire>	error loading module 'zmq' from file '.\zmq.dll':
+| [Sunday 01 May 2011] [23:31:07] <iFire>	        The specified procedure could not be found.
+| [Sunday 01 May 2011] [23:31:15] <iFire>	I renamed lua-zmq.dll to zmq.dll
+| [Sunday 01 May 2011] [23:31:20] <iFire>	hmm
+| [Sunday 01 May 2011] [23:31:42] <iFire>	I don't actually NEED poller.lua [for testing if the dll loads right?]
+| [Sunday 01 May 2011] [23:31:50] <neopallium>	can you check that luaopen_zmq() is a public/exported symbol in the .dll?
+| [Sunday 01 May 2011] [23:32:08] <neopallium>	for testing, no, you don't need poller.lua or threads.lua
+| [Sunday 01 May 2011] [23:32:59] <neopallium>	this page has instructions on compiling a Lua module on Windows: http://lua-users.org/wiki/BuildingModules
+| [Sunday 01 May 2011] [23:33:36] <iFire>	neopallium will depdency walk in windows show me it
+| [Sunday 01 May 2011] [23:33:43] <iFire>	dependency walker
+| [Sunday 01 May 2011] [23:34:03] <neopallium>	I am not a windows dev., so I am not sure.
+| [Sunday 01 May 2011] [23:35:03] <iFire>	int __declspec(dllexport) MyModuleName (lua_State* L) { ... } ?
+| [Sunday 01 May 2011] [23:35:08] <iFire>	note : make sure your main init function is exported with __declspec(dllexport) like this :
+| [Sunday 01 May 2011] [23:35:09] <iFire>	int __declspec(dllexport) MyModuleName (lua_State* L) { ... }
+| [Sunday 01 May 2011] [23:35:53] <iFire>	neopallium is that needeD?
+| [Sunday 01 May 2011] [23:36:24] <neopallium>	no, the symbol that needs to be exported for this module is: int luaopen_zmq(lua_State *L);
+| [Sunday 01 May 2011] [23:37:51] <neopallium>	in the pre_generated-zmq.nobj.c file you will see it as: LUALIB_API int luaopen_zmq(lua_State *L) {
+| [Sunday 01 May 2011] [23:38:07] <neopallium>	very close to the end of the .c file
+| [Sunday 01 May 2011] [23:38:12] <iFire>	yes
+| [Sunday 01 May 2011] [23:38:33] <iFire>	hmm
+| [Sunday 01 May 2011] [23:38:39] <iFire>	somehow add int __declspec(dllexport) <-?
+| [Sunday 01 May 2011] [23:39:10] <neopallium>	LUALIB_API will do that on windows.
+| [Sunday 01 May 2011] [23:39:46] <iFire>	it doesn't :/
+| [Sunday 01 May 2011] [23:40:55] <iFire>	neopallium ok I did  __declspec(dllexport) LUALIB_API int luaopen_zmq(lua_State *L) {
+| [Sunday 01 May 2011] [23:40:58] <iFire>	and it seems to work
+| [Sunday 01 May 2011] [23:41:11] <iFire>	what's a way of printing the zmq table
+| [Sunday 01 May 2011] [23:41:19] <neopallium>	look in your luaconf.h file, that is where LUALIB_API & LUA_API are defined.
+| [Sunday 01 May 2011] [23:41:26] <iFire>	using luajit
+| [Sunday 01 May 2011] [23:41:56] <neopallium>	for k,v in pairs(zmq) do print(k,v) end
+| [Sunday 01 May 2011] [23:43:06] <neopallium>	ah, you need to define LUA_BUILD_AS_DLL on windows when compiling a Lua C module.
+| [Sunday 01 May 2011] [23:43:35] <iFire>	http://pastebin.ca/2052715 <- this is a working table print right?
+| [Sunday 01 May 2011] [23:43:56] <neopallium>	yup, that looks right.
+| [Sunday 01 May 2011] [23:45:46] <iFire>	ha
+| [Sunday 01 May 2011] [23:45:52] <iFire>	well using that define makes the build fail
+| [Sunday 01 May 2011] [23:46:08] <iFire>	>..\..\..\deps\lua-zmq\src\pre_generated-zmq.nobj.c(3121): error C2491: 'luaopen_zmq' : definition of dllimport function not allowed
+| [Sunday 01 May 2011] [23:46:45] <iFire>	neopallium you probably mean LUA_LIB
+| [Sunday 01 May 2011] [23:47:20] <iFire>	#if defined(LUA_CORE) || defined(LUA_LIB)
+| [Sunday 01 May 2011] [23:47:20] <iFire>	#define LUA_API		__declspec(dllexport)
+| [Sunday 01 May 2011] [23:47:20] <iFire>	#else
+| [Sunday 01 May 2011] [23:47:20] <iFire>	#define LUA_API		__declspec(dllimport)
+| [Sunday 01 May 2011] [23:47:20] <iFire>	#endif
+| [Sunday 01 May 2011] [23:47:30] <iFire>	actually both
+| [Sunday 01 May 2011] [23:47:35] <neopallium>	hmm, maybe I shouldn't be using LUALIB_API or LUA_API for exporting the module's luaopen_*() function.
+| [Sunday 01 May 2011] [23:47:59] <iFire>	http://www.lua.org/source/5.1/luaconf.h.html [search for LUA_LIB]
+| [Sunday 01 May 2011] [23:48:10] <neopallium>	I will look for a better solution, but for now just replace LUALIB_API with __declspec(dllexport)
+| [Sunday 01 May 2011] [23:48:37] <neopallium>	yeah, I think those defines are more for the Lua core not modules.
+| [Sunday 01 May 2011] [23:49:20] <neopallium>	ok, I need to go now, I will be back in about an hour or two.
+| [Sunday 01 May 2011] [23:49:51] <neopallium>	but, I will take a closer look at the problem later tonight.
+| [Sunday 01 May 2011] [23:50:00] <iFire>	neopallium pm
+| [Sunday 01 May 2011] [23:55:21] <iFire>	I added  two defines and it worked "LUA_BUILD_AS_DLL", "LUA_LIB" 
+| [Monday 02 May 2011] [02:03:59] <neopallium>	iFire: I committed a fix to lua-zmq that should make it easier to compile on windows.  You don't need to define LUA_BUILD_AS_DLL, LUA_LIB, or LUALIB_API.
+| [Monday 02 May 2011] [02:48:31] <staylor>	is there a way to get the connection status of a socket to a given endpoint?
+| [Monday 02 May 2011] [02:49:21] <guido_g>	no
+| [Monday 02 May 2011] [03:06:58] <jer>	i've got a couple of workers creating push sockets sending some results out to a single node binding a pull socket. communication works fine, as i'd expect. however, after i send a first message off, my workers cpu usage goes up over 30% and none of the workers are processing any jobs, sockets are idle. not sure wtf is going on. anyone have any suggestions on what i might look for first?
+| [Monday 02 May 2011] [03:09:03] <staylor>	guido_g so would the best way to know if a connection can be made to open a separate standard connection to the host, but not exchange any data?
+| [Monday 02 May 2011] [03:09:43] <guido_g>	you still don't know if the mq endpoint is connected and alive
+| [Monday 02 May 2011] [03:09:54] <guido_g>	only mq could tell you that
+| [Monday 02 May 2011] [03:10:02] <guido_g>	and it doesn't
+| [Monday 02 May 2011] [03:11:16] <staylor>	well ideally it would, but I guess at least a standard socket would tell me that at least that much works.  I'd like to know if a connection is refused basically, as it tells me most likely the other end failed to map a upnp port or the service isn't running.
+| [Monday 02 May 2011] [05:43:09] <edwin>	hi, the helloworld zeromq example is not working properly for me with 0MQ 2.1.6 on Debian x86-64, and here's a testcase: https://gist.github.com/951368
+| [Monday 02 May 2011] [05:43:09] <edwin>	output from testcase( zmq_send fails with Bad address): https://gist.github.com/951369
+| [Monday 02 May 2011] [05:43:43] <edwin>	the server keeps giving those errors, and the client hangs
+| [Monday 02 May 2011] [05:43:49] <edwin>	same with hwserver/hwclient
+| [Monday 02 May 2011] [05:46:15] <pieterh>	edwin: could you run hwserver & hwclient (not your test case, which is rather more code) and post the messages that gives? thanks
+| [Monday 02 May 2011] [05:47:48] <edwin>	https://gist.github.com/951374
+| [Monday 02 May 2011] [05:47:55] <edwin>	pieterh: the client hangs after the first send
+| [Monday 02 May 2011] [05:48:04] <edwin>	sometimes it receives too, but doesn't do a 2nd send
+| [Monday 02 May 2011] [05:48:29] <pieterh>	so it hangs, presumably the server isn't sending a reply?
+| [Monday 02 May 2011] [05:48:38] <edwin>	interesting thing is that it worked better yesterday
+| [Monday 02 May 2011] [05:48:49] <edwin>	yes the server gives an error on zmq_send
+| [Monday 02 May 2011] [05:48:59] <edwin>	see output from my code: https://gist.github.com/951369
+| [Monday 02 May 2011] [05:49:04] <edwin>	ZMQ error: Bad address
+| [Monday 02 May 2011] [05:49:10] <pieterh>	what does the server say on zmq_send (the hwserver, not yours)
+| [Monday 02 May 2011] [05:49:19] <edwin>	let me add a printf hold on
+| [Monday 02 May 2011] [05:50:15] <edwin>	hwserver zmq_send failed: Bad address
+| [Monday 02 May 2011] [05:50:41] <edwin>	https://gist.github.com/951380
+| [Monday 02 May 2011] [05:50:44] <edwin>	that is the change I made
+| [Monday 02 May 2011] [05:50:50] <edwin>	to print the error
+| [Monday 02 May 2011] [05:51:21] <pieterh>	ok, let me just retest that
+| [Monday 02 May 2011] [05:52:36] <pieterh>	it works for me, but that's not helpful...
+| [Monday 02 May 2011] [05:52:47] <pieterh>	I'm not sure what 'bad address' means for 0MQ, let me dig a little
+| [Monday 02 May 2011] [05:53:54] <pieterh>	EFAULT = invalid memory access, I'd assume
+| [Monday 02 May 2011] [05:54:45] <pieterh>	ah, edwin....
+| [Monday 02 May 2011] [05:54:46] <edwin>	ah yes version 2.0.x crashes with SIGSEGV with invalid access
+| [Monday 02 May 2011] [05:54:55] <pieterh>	can you please take the actual current version of hwserver
+| [Monday 02 May 2011] [05:55:05] <pieterh>	I'd posted a version with a bug in it, that's what's hitting you
+| [Monday 02 May 2011] [05:55:35] <pieterh>	you can see it's putting "World" into the request, not the reply... :-/
+| [Monday 02 May 2011] [05:55:38] <edwin>	yeah that works
+| [Monday 02 May 2011] [05:56:13] <edwin>	ok let me fix my latency measurement tool then :)
+| [Monday 02 May 2011] [05:56:44] <pieterh>	sorry about that, someone caught it but it was there for a day or two
+| [Monday 02 May 2011] [05:57:39] <edwin>	Time: 1.521894s, 6570.759856 Req/s, Latency: 152.189400 us
+| [Monday 02 May 2011] [05:57:40] <edwin>	yep works now
+| [Monday 02 May 2011] [05:57:42] <edwin>	thanks :)
+| [Monday 02 May 2011] [05:58:13] <edwin>	I was going to try and improve the latency by using a pipe instead of socketpair for the mailbox
+| [Monday 02 May 2011] [05:58:22] <edwin>	but then the helloworld started failing...
+| [Monday 02 May 2011] [06:00:50] <edwin>	(unix socket latency is ~28us, and pipe is 3-4x faster than the socket according to hackbench)
+| [Monday 02 May 2011] [06:03:40] <mikko>	good morning
+| [Monday 02 May 2011] [06:04:05] <pieterh>	mikko: hi, how're you doing?
+| [Monday 02 May 2011] [06:04:19] <mikko>	i am excellent
+| [Monday 02 May 2011] [06:04:24] <mikko>	extra bank holiday today
+| [Monday 02 May 2011] [06:04:31] <pieterh>	:) yeah
+| [Monday 02 May 2011] [06:04:49] <mikko>	very bad time for freelancers
+| [Monday 02 May 2011] [06:04:58] <mikko>	:)
+| [Monday 02 May 2011] [06:05:00] <mikko>	you?
+| [Monday 02 May 2011] [06:06:00] <pieterh>	working on a new android app
+| [Monday 02 May 2011] [06:06:02] <pieterh>	quite fun
+| [Monday 02 May 2011] [06:07:09] <mikko>	are you using zeromq?
+| [Monday 02 May 2011] [06:07:11] <pieterh>	it's fun to see that stuff I was designing in 1999 is still better than web frameworks today
+| [Monday 02 May 2011] [06:07:19] <pieterh>	nope, this is a different project
+| [Monday 02 May 2011] [06:07:41] <pieterh>	well, the web frameworks are pretty, and easy to use
+| [Monday 02 May 2011] [06:08:23] <pieterh>	I'd not use 0MQ across the Internet anyhow
+| [Monday 02 May 2011] [06:08:41] <pieterh>	we're making connectivity for this app across RestTL, and we'll use 0MQ in the backend
+| [Monday 02 May 2011] [06:15:33] <edwin>	hmm, latency with pipes for mailbox is 43 - 44us (vs 49-50 us with unix socket for mailbox). If I turn on CPU freq scaling then latency is 135 - 150 us
+| [Monday 02 May 2011] [06:16:08] <edwin>	however using just a unix socketpair (without zeromq) latency is 10us
+| [Monday 02 May 2011] [06:18:05] <edwin>	why is a socket used for zeromq's mailbox, instead of lets say a ypipe and a pthread condition?
+| [Monday 02 May 2011] [06:27:14] <sustrik>	edwin: even with ypipe you have to synchronise the two sides of the pipe somehow
+| [Monday 02 May 2011] [06:27:37] <sustrik>	but yes, ypipe + using socketpair just for signaling would be superior solution
+| [Monday 02 May 2011] [06:27:54] <mikko>	sustrik: did you notice that several compilers fail now with master?
+| [Monday 02 May 2011] [06:27:54] <edwin>	not sure if socketpair is faster than a pthread condition for signaling
+| [Monday 02 May 2011] [06:28:06] <edwin>	will have to test
+| [Monday 02 May 2011] [06:28:18] <mikko>	well, ICC and sun studio
+| [Monday 02 May 2011] [06:28:28] <sustrik>	the problem is that the signal has to interrupt a polling loop
+| [Monday 02 May 2011] [06:28:39] <sustrik>	you can't do that with condition variable afaik
+| [Monday 02 May 2011] [06:29:06] <edwin>	ah because you also use it to poll network sockets
+| [Monday 02 May 2011] [06:29:14] <sustrik>	exactly
+| [Monday 02 May 2011] [06:29:38] <edwin>	won't a signal() interrupt poll with EINTR?
+| [Monday 02 May 2011] [06:30:15] <sustrik>	it's a nightmare to combine signals with threads
+| [Monday 02 May 2011] [06:30:50] <edwin>	the signal handler doesn't have to actually do anything, just wake the poller
+| [Monday 02 May 2011] [06:31:05] <edwin>	of course there is a problem which signal to use
+| [Monday 02 May 2011] [06:31:11] <edwin>	since libzmq is a library..
+| [Monday 02 May 2011] [06:31:31] <sustrik>	there's a problem which thread the signal will be delivered to
+| [Monday 02 May 2011] [06:32:23] <edwin>	yeah that too, ok bad idea. using pipe to wake poll() sounds fine, we can avoid a recv() on the mailbox
+| [Monday 02 May 2011] [06:32:46] <sustrik>	you've just said it's slower
+| [Monday 02 May 2011] [06:32:57] <edwin>	its slower than pthread, but pipe is faster than unix sockets
+| [Monday 02 May 2011] [06:33:00] <edwin>	(which is used now)
+| [Monday 02 May 2011] [06:33:08] <sustrik>	ok, we can do that
+| [Monday 02 May 2011] [06:33:21] <sustrik>	if you have a patch, send it to the mailing list
+| [Monday 02 May 2011] [06:33:34] <edwin>	sure, I'll be testing some variants
+| [Monday 02 May 2011] [06:33:38] <sustrik>	ok
+| [Monday 02 May 2011] [06:33:46] <edwin>	patch aganist 2.1.6 is fine?
+| [Monday 02 May 2011] [06:33:51] <edwin>	or the 3.0 master?
+| [Monday 02 May 2011] [06:33:58] <sustrik>	master is better
+| [Monday 02 May 2011] [06:34:10] <sustrik>	but the mailbox code haven't changed iirc
+| [Monday 02 May 2011] [06:34:16] <sustrik>	so, it'll be the same anyway
+| [Monday 02 May 2011] [06:34:20] <edwin>	ok
+| [Monday 02 May 2011] [06:34:41] <sustrik>	btw, if you want to implement ypipe+pipe thing
+| [Monday 02 May 2011] [06:34:54] <sustrik>	that would solve one serious problem 0mq is experiencing
+| [Monday 02 May 2011] [06:35:13] <sustrik>	namely that the mailbox can overflow in some special cases
+| [Monday 02 May 2011] [06:35:39] <sustrik>	ypipe+pipe would solve that as there's no limit on number of items in yqueue
+| [Monday 02 May 2011] [06:36:04] <edwin>	won't send() block if mailbox is full?
+| [Monday 02 May 2011] [06:36:21] <edwin>	or zeromq spins on send with errno=EAGAIN?
+| [Monday 02 May 2011] [06:37:04] <sustrik>	it have blocked originally, but that leads to deadlocks
+| [Monday 02 May 2011] [06:37:26] <sustrik>	so now it tries to increase the mailbox size
+| [Monday 02 May 2011] [06:37:36] <sustrik>	which doesn't work well on different OSes
+| [Monday 02 May 2011] [06:38:14] <sustrik>	btw, note that if pipe is used only for signaling
+| [Monday 02 May 2011] [06:38:22] <sustrik>	it can be optimised on some OSes
+| [Monday 02 May 2011] [06:38:49] <sustrik>	eg. on Linux we can use eventfd which is much faster than socketpair or pipe
+| [Monday 02 May 2011] [06:42:01] <edwin>	eventfd looks cool, I should use that in clamd as well (I use a pipe with 1 byte write for signaling)
+| [Monday 02 May 2011] [07:20:51] <th>	sustrik: did you have a look at #199 yet? thats a 3-0 master issue..
+| [Monday 02 May 2011] [07:22:34] <sustrik>	th: yes, i've reproduced it this morning
+| [Monday 02 May 2011] [07:22:51] <th>	sustrik: thats a great start :)
+| [Monday 02 May 2011] [08:22:35] <djc>	guido_g: turned out my test box had something else listening on a port pyzmq was using for testing...
+| [Monday 02 May 2011] [09:05:02] <private_meta>	pieterh: eh... remember that I went to zeromq to fix a problem I had with asio? got the same problem now with zeromq
+| [Monday 02 May 2011] [09:05:17] <pieterh>	private_meta: lol...
+| [Monday 02 May 2011] [09:05:23] <pieterh>	what is happening?
+| [Monday 02 May 2011] [09:06:19] <private_meta>	I send normal strings with the messaging library, all is ok, I send (boost)serialized classes, all is ok. Once I send boost serialized classes when the stuff is compiled and used with MPI, some of these messages are garbled beyond recognicion
+| [Monday 02 May 2011] [09:06:31] <private_meta>	*recognition
+| [Monday 02 May 2011] [09:07:26] <pieterh>	hmm, so it's a problem in your app, not in the transport
+| [Monday 02 May 2011] [09:07:29] <private_meta>	Figured that out last night, but not sure if it's really the fault of boost serialization in combination with mpi
+| [Monday 02 May 2011] [09:07:36] <private_meta>	well, yes and no
+| [Monday 02 May 2011] [09:07:43] <pieterh>	sounds like a memory management issue
+| [Monday 02 May 2011] [09:07:44] <private_meta>	the message i send, and the serialize looks ok
+| [Monday 02 May 2011] [09:07:52] <private_meta>	but it's broken when it arriveso n the other side
+| [Monday 02 May 2011] [09:08:05] <pieterh>	you sure you're not deallocating the memory before the message is really sent?
+| [Monday 02 May 2011] [09:08:05] <private_meta>	but only when i compile it with mpi
+| [Monday 02 May 2011] [09:08:14] <private_meta>	pretty sure
+| [Monday 02 May 2011] [09:08:50] <pieterh>	and of course a minimal test case requires MPI... so I can't really help much... :/
+| [Monday 02 May 2011] [09:09:19] <private_meta>	That was one of the problems. It seems the minimal test case is quite complex
+| [Monday 02 May 2011] [09:09:43] <private_meta>	Well, I need to write a paper now, but as soon as I'm finished, I'm going back to the matter, in a couple of days I hope
+| [Monday 02 May 2011] [09:09:46] <pieterh>	well, try sending the data via a device, log it there and see if it's ok or corrupt
+| [Monday 02 May 2011] [09:09:57] <private_meta>	I DID log it
+| [Monday 02 May 2011] [09:10:02] <pieterh>	and it was corrupt?
+| [Monday 02 May 2011] [09:10:09] <private_meta>	Yes
+| [Monday 02 May 2011] [09:10:11] <pieterh>	so the sender is getting it wrong...
+| [Monday 02 May 2011] [09:10:23] <pieterh>	and you're logging at the zmq_send() call?
+| [Monday 02 May 2011] [09:10:33] <private_meta>	in one case, out of a 300-symbol long string I got a 4-digit number, in another case I got a 2-byte-garbled string
+| [Monday 02 May 2011] [09:10:56] <pieterh>	did you log at the zmq_send() call?
+| [Monday 02 May 2011] [09:12:09] <private_meta>	I logged at the zmq method I think. I wanted to pry into it deeper, but I'm out of time right now, I'll get to the deepest send part and log there once I'm finished with the matter at hand
+| [Monday 02 May 2011] [09:12:21] <pieterh>	ack
+| [Monday 02 May 2011] [09:12:38] <pieterh>	I'm not always on IRC so if you get useful output, send to zeromq-dev...
+| [Monday 02 May 2011] [09:50:35] <martin_____>	Trying to build 0MQ with python bindings on OS X 10.6 - 0MQ installed into /usr/local/ no problems, building python extension gives me an exception at zmq/core/constants.c:2574: fatal error: error writing to -: Broken pipe
+| [Monday 02 May 2011] [09:50:56] <martin_____>	Any ideas?
+| [Monday 02 May 2011] [10:00:48] <pieterh>	martin_____: I'd check disk full, permissions on directory you're writing to
+| [Monday 02 May 2011] [10:02:44] <martin_____>	pieterh: Definitely not disk full, and I'm running the install as root (it's my own laptop)
+| [Monday 02 May 2011] [10:06:20] <martin_____>	here's the compilation command: gcc-4.2 -fno-strict-aliasing -fno-common -dynamic -DNDEBUG -g -fwrapv -Os -Wall -Wstrict-prototypes -DENABLE_DTRACE -arch i386 -arch ppc -arch x86_64 -pipe -I/usr/local/include -Izmq/utils -Izmq/core -Izmq/devices -I/System/Library/Frameworks/Python.framework/Versions/2.6/include/python2.6 -c zmq/core/constants.c -o build/temp.macosx-10.6-universal-2.6/zmq/core/constants.o -Wno-unused-function -Wn
+| [Monday 02 May 2011] [11:37:16] <jhawk28>	pieterh: was looking at the specs, does the GPL license for the spec means that any impl of the specs need to be GPL?
+| [Monday 02 May 2011] [11:37:32] <pieterh>	jhawk28: nope
+| [Monday 02 May 2011] [11:37:40] <pieterh>	since you ask, I'll clarify this in the text
+| [Monday 02 May 2011] [11:37:53] <jhawk28>	it just means the spec itself
+| [Monday 02 May 2011] [11:38:38] <pieterh>	indeed
+| [Monday 02 May 2011] [11:38:59] <jhawk28>	good, I was hoping to use them to create a native Java impl
+| [Monday 02 May 2011] [11:39:17] <jhawk28>	in the future
+| [Monday 02 May 2011] [11:39:47] <jhawk28>	and I prefer BSD/MIT/Apache 2.0
+| [Monday 02 May 2011] [11:41:08] <pieterh>	jhawk28: can you check http://rfc.zeromq.org/spec:13 and tell me if it's clear?
+| [Monday 02 May 2011] [11:41:13] <pieterh>	see right hand panel...
+| [Monday 02 May 2011] [11:43:05] <jhawk28>	yes, that is clear. wasn't expecting it to be on the right hand panel, but ok
+| [Monday 02 May 2011] [11:44:02] <pieterh>	well, that makes it easier to apply to all specs, otherwise I have to edit each one individually
+| [Monday 02 May 2011] [11:44:15] <pieterh>	also, it's not really part of the spec but an explanatory note
+| [Monday 02 May 2011] [11:46:33] <jhawk28>	yes, thank you for the clarification
+| [Monday 02 May 2011] [11:51:06] <pieterh>	jhawk28: I'd be really interested in your experiences making a native implementation
+| [Monday 02 May 2011] [11:55:17] <sustrik>	th, pieterh: patch for issue 199 is at the ML
+| [Monday 02 May 2011] [11:55:37] <pieterh>	sustrik: great! I'll test that immediately
+| [Monday 02 May 2011] [11:58:03] <pieterh>	sustrik: it works, confirmed on 3.0
+| [Monday 02 May 2011] [11:58:20] 	 * pieterh loves having test cases in a separate repo...
+| [Monday 02 May 2011] [11:58:56] <sustrik>	:)
+| [Monday 02 May 2011] [12:30:42] <th>	sustrik: oh really? fantastic!
+| [Monday 02 May 2011] [12:36:00] <pieterh>	sustrik: should I try to backport this to 2.1?
+| [Monday 02 May 2011] [12:36:34] <sustrik>	pieterh: yes
+| [Monday 02 May 2011] [12:36:41] <pieterh>	ok
+| [Monday 02 May 2011] [12:38:26] <NikolaVeber>	does anyone else have problems by copy/paste from the guide?
+| [Monday 02 May 2011] [12:38:47] <__alex>	erm, yes with the python-snippets
+| [Monday 02 May 2011] [12:39:01] <NikolaVeber>	I had the same with php and c...
+| [Monday 02 May 2011] [12:39:44] <__alex>	chars like "..." where one thing, but there's more which i couldn't figure out
+| [Monday 02 May 2011] [12:39:55] <NikolaVeber>	I guess it's the sodify's fault, or whatever this code formatting thing is calles
+| [Monday 02 May 2011] [12:40:07] <NikolaVeber>	codify*
+| [Monday 02 May 2011] [12:40:30] <NikolaVeber>	seen it in gedit and eclipse...
+| [Monday 02 May 2011] [12:41:46] <__alex>	was strange, took it to vim with utf8 encoding(also the file) and a valid python-encoding header
+| [Monday 02 May 2011] [12:41:52] <__alex>	it did boom
+| [Monday 02 May 2011] [12:44:52] <th>	sustrik: yea - confirmed again for 3-0
+| [Monday 02 May 2011] [12:44:53] <pieterh>	NikolaVeber: copy/paste from the Guide may do strange things...
+| [Monday 02 May 2011] [12:45:56] <NikolaVeber>	could be the formatting library for the code...
+| [Monday 02 May 2011] [12:46:05] <pieterh>	it should work but a 'smart' editor may trip over the formatting
+| [Monday 02 May 2011] [12:46:16] <pieterh>	I'm using Kate and can copy/paste without trouble
+| [Monday 02 May 2011] [12:46:23] <pieterh>	do you have a specific example that's failing?
+| [Monday 02 May 2011] [12:46:45] <NikolaVeber>	hm, my colleague just went home
+| [Monday 02 May 2011] [12:46:56] <NikolaVeber>	it was the php binding code
+| [Monday 02 May 2011] [12:47:00] <pieterh>	ok, raise an issue on the guide tracker
+| [Monday 02 May 2011] [12:47:02] <NikolaVeber>	req resp example
+| [Monday 02 May 2011] [12:47:21] <pieterh>	there are some characters that might need escaping
+| [Monday 02 May 2011] [12:47:43] <NikolaVeber>	I'll look at it tomorrow, with exact problem
+| [Monday 02 May 2011] [12:47:51] <NikolaVeber>	I had the same in c++
+| [Monday 02 May 2011] [12:48:08] <pieterh>	ack
+| [Monday 02 May 2011] [12:48:37] <NikolaVeber>	not a big deal, but spoils the fun sometimes :)
+| [Monday 02 May 2011] [12:48:57] <pieterh>	well, let me know the specific problem and we'll fix it... "it doesn't work" isn't useful data :)
+| [Monday 02 May 2011] [12:49:30] <NikolaVeber>	I know :)
+| [Monday 02 May 2011] [12:50:08] <NikolaVeber>	I tracked it last time it failed with c++ examples to stack overflow describing the bug in some code-colouring plugin
+| [Monday 02 May 2011] [12:51:20] <NikolaVeber>	ok, I have it
+| [Monday 02 May 2011] [12:51:21] <NikolaVeber>	:)
+| [Monday 02 May 2011] [12:52:23] <NikolaVeber>	I have copied the first c++ example in gedit
+| [Monday 02 May 2011] [12:52:25] <NikolaVeber>	http://pastebin.com/zKhHBnr3
+| [Monday 02 May 2011] [12:52:39] <pieterh>	ok, let me try that
+| [Monday 02 May 2011] [12:52:49] <pieterh>	which is the 'first c++ example'?
+| [Monday 02 May 2011] [12:52:55] <pieterh>	hwserver?
+| [Monday 02 May 2011] [12:53:08] <NikolaVeber>	/HelloWorldserverinC++
+| [Monday 02 May 2011] [12:53:14] <NikolaVeber>	  //HelloWorldserverinC++
+| [Monday 02 May 2011] [12:53:29] <NikolaVeber>	right beneath figure one
+| [Monday 02 May 2011] [12:53:35] <pieterh>	I copied/pasted into gedit, it works fine
+| [Monday 02 May 2011] [12:54:14] <NikolaVeber>	gives a bunch of crap in my case...
+| [Monday 02 May 2011] [12:54:17] <pieterh>	works fine in Kate too
+| [Monday 02 May 2011] [12:54:28] <pieterh>	vim shows nothing, I think because of pasteboard confusion
+| [Monday 02 May 2011] [12:54:31] <NikolaVeber>	could be the firefox' fault
+| [Monday 02 May 2011] [12:54:43] <pieterh>	did you enable the "Paste as crap" option in gedit?
+| [Monday 02 May 2011] [12:54:54] <NikolaVeber>	hm, not that I know
+| [Monday 02 May 2011] [12:54:58] <pieterh>	it needs to paste as plain text, not HTML
+| [Monday 02 May 2011] [12:56:01] <pieterh>	NikolaVeber: perhaps your default language setting affects it
+| [Monday 02 May 2011] [12:56:06] <pieterh>	I'm using US English
+| [Monday 02 May 2011] [12:56:32] <NikolaVeber>	hm, my UI language is english
+| [Monday 02 May 2011] [12:56:49] <pieterh>	hmm, so the error isn't in gedit
+| [Monday 02 May 2011] [12:56:54] <pieterh>	it's in gcc when you save the file
+| [Monday 02 May 2011] [12:57:17] <NikolaVeber>	whell, if I "clean up" the code
+| [Monday 02 May 2011] [12:57:30] <NikolaVeber>	that is, do a bunch of backspace/enter moves
+| [Monday 02 May 2011] [12:57:33] <NikolaVeber>	it works
+| [Monday 02 May 2011] [12:57:47] <NikolaVeber>	so it has to be some invisible characters
+| [Monday 02 May 2011] [12:58:02] <pieterh>	can you save, put the source into a zip, send me that?
+| [Monday 02 May 2011] [12:58:21] <NikolaVeber>	shure
+| [Monday 02 May 2011] [12:58:42] <pieterh>	ah, I know...
+| [Monday 02 May 2011] [12:58:46] <pieterh>	hehe :)
+| [Monday 02 May 2011] [12:59:16] <NikolaVeber>	?
+| [Monday 02 May 2011] [12:59:26] <NikolaVeber>	are you getting the file?
+| [Monday 02 May 2011] [12:59:34] <pieterh>	yeah, but it's not necessary any more
+| [Monday 02 May 2011] [12:59:38] <NikolaVeber>	ok :)
+| [Monday 02 May 2011] [12:59:52] <pieterh>	I use unicode whitespace characters to force the layout to work
+| [Monday 02 May 2011] [13:00:00] <th>	Assertion failed: new_sndbuf > old_sndbuf (mailbox.cpp:183)
+| [Monday 02 May 2011] [13:00:05] <th>	whats that?
+| [Monday 02 May 2011] [13:00:12] <pieterh>	it was... difficult to get the coloring to work otherwise
+| [Monday 02 May 2011] [13:00:18] <NikolaVeber>	hehe, that could be it :)
+| [Monday 02 May 2011] [13:00:22] <pieterh>	th: looks like a resource issue
+| [Monday 02 May 2011] [13:00:45] <th>	pieterh: after running 199 testcase with 3-0 for a while
+| [Monday 02 May 2011] [13:00:47] <pieterh>	th: read http://zero.mq/tips
+| [Monday 02 May 2011] [13:00:58] <CIA-75>	libzmq: 03Pieter Hintjens 07master * re78cc47 10/ (3 files): Moved tests off 5555 (conflict with Eclipse) ...
+| [Monday 02 May 2011] [13:01:06] <pieterh>	NikolaVeber: there is no way to fix this afaik, but I could be wrong
+| [Monday 02 May 2011] [13:01:25] <NikolaVeber>	do you have the sources for all examples somewhere?
+| [Monday 02 May 2011] [13:01:30] <pieterh>	NikolaVeber: please log an issue in the tracker, I'll think about it and find a solution
+| [Monday 02 May 2011] [13:01:48] <NikolaVeber>	it might be a good idea to have plain-text files linked 
+| [Monday 02 May 2011] [13:01:57] <pieterh>	if you click on the "GET THE EXAMPLES" button on the main guide page ...
+| [Monday 02 May 2011] [13:02:12] <sustrik>	th: it's socketpair buffers filled up
+| [Monday 02 May 2011] [13:02:30] <pieterh>	NikolaVeber: there is also a section at http://zguide.zeromq.org/page:all#Getting-the-Examples
+| [Monday 02 May 2011] [13:02:55] <NikolaVeber>	lets see 
+| [Monday 02 May 2011] [13:02:56] <NikolaVeber>	:)
+| [Monday 02 May 2011] [13:03:49] <th>	sustrik: what resource would that be? vmsize?
+| [Monday 02 May 2011] [13:04:14] <th>	sustrik: ahh data segment probably.
+| [Monday 02 May 2011] [13:04:36] <th>	ah HWM would probably help
+| [Monday 02 May 2011] [13:04:37] <NikolaVeber>	pieterh, maybe linking to sources in the guide? I don't mind getting them all personally, just speculating on the general user experience :)
+| [Monday 02 May 2011] [13:05:05] <sustrik>	th: no, it's socketpair buffer size limit
+| [Monday 02 May 2011] [13:05:16] <pieterh>	NikolaVeber: the Guide already links to the sources, I'm not sure what you mean
+| [Monday 02 May 2011] [13:05:27] <pieterh>	you mean a link in each example to the source code?
+| [Monday 02 May 2011] [13:05:28] <sustrik>	th: what OS are you on?
+| [Monday 02 May 2011] [13:05:53] <NikolaVeber>	pieterh, I mean links to the plaintext-source
+| [Monday 02 May 2011] [13:06:21] <pieterh>	yes, that part I understood but since there are already two such links I am asking what more links you want, and where exactly
+| [Monday 02 May 2011] [13:06:25] <NikolaVeber>	but if they are "pimped" with utf8 whitespaces, it's not much of a help
+| [Monday 02 May 2011] [13:06:49] <NikolaVeber>	under each example, a link to the appropriate plain-text version
+| [Monday 02 May 2011] [13:07:07] <pieterh>	it's better just to make copy/paste work, no?
+| [Monday 02 May 2011] [13:07:15] <NikolaVeber>	that would be optimal :)
+| [Monday 02 May 2011] [13:07:22] <pieterh>	please enter an issue in the tracker, I'll get to it later
+| [Monday 02 May 2011] [13:07:23] <pieterh>	thanks
+| [Monday 02 May 2011] [13:07:37] <NikolaVeber>	np, thank you :)
+| [Monday 02 May 2011] [13:09:06] <NikolaVeber>	done
+| [Monday 02 May 2011] [13:09:32] <th>	sustrik: ubuntu10.04 64bit
+| [Monday 02 May 2011] [13:26:21] <CIA-75>	libzmq: 03Martin Sustrik 07master * re5d4cd3 10/ src/dist.cpp : Yet one more fix related to PUB socket and multipart messages ...
+| [Monday 02 May 2011] [13:28:50] <CIA-75>	libzmq: 03Martin Sustrik 07master * r6ecec9b 10/ src/xrep.cpp : Current inpipe remains unchaged in XREP when other pipe terminates ...
+| [Monday 02 May 2011] [13:38:47] <iFire>	neopallium hmm lthreads uses pthreads which is unix only [windows is lgpl] :/ 
+| [Monday 02 May 2011] [13:39:05] <iFire>	I wonder if it's possible to rewrite it using tbb or boost threads
+| [Monday 02 May 2011] [13:41:39] <pieterh>	iFire: what's lthreads?
+| [Monday 02 May 2011] [13:42:10] <iFire>	https://github.com/Neopallium/lua-llthreads
+| [Monday 02 May 2011] [13:42:18] <iFire>	apparently it's a lua pthreads wrapper
+| [Monday 02 May 2011] [13:42:45] <pieterh>	I wrote a similar class for czmq, zthreads, which has the win32 code
+| [Monday 02 May 2011] [13:42:53] <pieterh>	doesn't wrap all pthreads, just thread creation
+| [Monday 02 May 2011] [13:43:03] <iFire>	well I'm seeing how far I can go doing it in lua
+| [Monday 02 May 2011] [13:43:34] <iFire>	Using send_msg/recv_msg functions running under LuaJIT2 (git HEAD):
+| [Monday 02 May 2011] [13:43:35] <iFire>	mean throughput: 6160911 [msg/s]
+| [Monday 02 May 2011] [13:43:35] <iFire>	mean throughput: 1478.619 [Mb/s]
+| [Monday 02 May 2011] [13:43:35] <iFire>	C++ code:
+| [Monday 02 May 2011] [13:43:35] <iFire>	mean throughput: 6241452 [msg/s]
+| [Monday 02 May 2011] [13:43:36] <iFire>	mean throughput: 1497.948 [Mb/s]
+| [Monday 02 May 2011] [13:43:47] <iFire>	from the lua-zmq repo
+| [Monday 02 May 2011] [13:43:58] <pieterh>	that's pretty nice
+| [Monday 02 May 2011] [13:44:39] <iFire>	apparently I have to compile lua sockets if I want to run those benchmarks though
+| [Monday 02 May 2011] [13:45:00] <iFire>	that's what I've been trying to do
+| [Monday 02 May 2011] [14:02:48] <th>	pieterh: patch works for 2.1 as well. it even applies with a small offset
+| [Monday 02 May 2011] [14:03:04] <pieterh>	th: great! I've not had time to test it yet
+| [Monday 02 May 2011] [14:03:32] <pieterh>	I'll do this right now
+| [Monday 02 May 2011] [14:10:19] <pieterh>	th: ack, confirmed on 2.1
+| [Monday 02 May 2011] [14:10:26] <pieterh>	it'll go into 2.1.7
+| [Monday 02 May 2011] [14:12:26] <pieterh>	th: if you want to get the 2.1 master, it's at git://github.com/zeromq/zeromq2-1
+| [Monday 02 May 2011] [14:41:16] <iFire>	pieterh ok that was weird
+| [Monday 02 May 2011] [14:41:26] <iFire>	first windows sucks
+| [Monday 02 May 2011] [14:41:34] <iFire>	and luajit has a higher performance than c O.o
+| [Monday 02 May 2011] [14:42:00] <pieterh>	performance figures are quite variable, +- 10% afaik
+| [Monday 02 May 2011] [14:42:12] <pieterh>	more, depending on your configuration
+| [Monday 02 May 2011] [14:42:42] <iFire>	pieterh what throughput do you usually get for windowS?
+| [Monday 02 May 2011] [14:42:53] <pieterh>	I don't use Windows, personally
+| [Monday 02 May 2011] [14:43:03] <pieterh>	but reports are 50-20% of Linux
+| [Monday 02 May 2011] [14:43:18] <iFire>	http://pastebin.ca/2052970
+| [Monday 02 May 2011] [14:43:21] <iFire>	this is what I got
+| [Monday 02 May 2011] [14:43:34] <iFire>	for some reason c++ is slower than luajit
+| [Monday 02 May 2011] [14:44:05] <pieterh>	iFire: without specifying what setup you're on, the figures are pretty meaningless, sorry
+| [Monday 02 May 2011] [14:44:12] <iFire>	ok 
+| [Monday 02 May 2011] [14:44:32] <iFire>	well I'm trying to figure out what's the difference between windows c++ and lua
+| [Monday 02 May 2011] [14:44:33] <pieterh>	also, you need to run the tests quite a few times
+| [Monday 02 May 2011] [14:44:36] <iFire>	hmm
+| [Monday 02 May 2011] [14:44:44] <pieterh>	and take the average of the N fastest runs
+| [Monday 02 May 2011] [14:44:46] <iFire>	it's quite variable?
+| [Monday 02 May 2011] [14:44:51] <pieterh>	one run proves very little
+| [Monday 02 May 2011] [14:45:12] <pieterh>	well, we *know* that lua can't be faster than the C api it's *calling* :)
+| [Monday 02 May 2011] [14:45:18] <pieterh>	so you have at least the variance shown here
+| [Monday 02 May 2011] [14:48:57] <sustrik>	throughput is silly metric, it's inherently unstable
+| [Monday 02 May 2011] [14:49:58] <iFire>	the question I want to answer is how much of a difference is between lua and c++
+| [Monday 02 May 2011] [14:50:25] <sustrik>	check latencies
+| [Monday 02 May 2011] [14:50:37] <sustrik>	latency is much better metric
+| [Monday 02 May 2011] [14:51:14] <sustrik>	it should be fairly stable and give you an sane idea what the difference between the two is
+| [Monday 02 May 2011] [14:59:03] <iFire>	something is wrong on my system
+| [Monday 02 May 2011] [15:00:35] <iFire>	http://pastebin.ca/2052978
+| [Monday 02 May 2011] [15:01:19] <iFire>	also missed a zero on the inproc. but I'm not comparing that
+| [Monday 02 May 2011] [15:03:20] <iFire>	bah
+| [Monday 02 May 2011] [15:03:26] <iFire>	I should do this correctly
+| [Monday 02 May 2011] [15:03:32] <iFire>	and have multiple tests
+| [Monday 02 May 2011] [15:13:28] <sustrik>	latency tests are stable, you'll see similar figures all the time
+| [Monday 02 May 2011] [15:13:53] <iFire>	I wonder where the extra 10 us comes from
+| [Monday 02 May 2011] [15:14:11] <iFire>	sustrik actually it fluctuates too
+| [Monday 02 May 2011] [15:14:18] <iFire>	on a desktop
+| [Monday 02 May 2011] [15:14:18] <sustrik>	more than 2-3 us?
+| [Monday 02 May 2011] [15:14:59] <sustrik>	well, if there's lot of stuff running on the box, it can blur the results
+| [Monday 02 May 2011] [15:16:41] <pieterh>	iFire: if you don't have 4 cores, and a quiet box, any test will be quite flaky
+| [Monday 02 May 2011] [15:16:44] <pieterh>	flakey
+| [Monday 02 May 2011] [15:16:49] <iFire>	hmm
+| [Monday 02 May 2011] [15:17:05] <iFire>	I guess I can try doing the tests on a vps where it's not a desktop
+| [Monday 02 May 2011] [15:17:13] <pieterh>	ideal is two boxes connected over a private network
+| [Monday 02 May 2011] [15:17:25] <pieterh>	how many cores on your desktop?
+| [Monday 02 May 2011] [15:17:30] <iFire>	4
+| [Monday 02 May 2011] [15:17:46] <pieterh>	and you're running other software?
+| [Monday 02 May 2011] [15:17:51] <iFire>	yes
+| [Monday 02 May 2011] [15:18:06] <iFire>	windows says 3-5% CPU use though
+| [Monday 02 May 2011] [15:18:12] <pieterh>	you're on Windows?
+| [Monday 02 May 2011] [15:18:31] <iFire>	windows is probably a terrible platform
+| [Monday 02 May 2011] [15:18:34] <pieterh>	forget it, you're not going to get serious metrics
+| [Monday 02 May 2011] [15:19:00] <pieterh>	but if you really must use that, then kill anything you don't absolutely need
+| [Monday 02 May 2011] [15:19:19] <pieterh>	and run the tests multiple times, taking average of the 3 lowest runs (run each 10-20 times)
+| [Monday 02 May 2011] [15:20:13] <iFire>	well it's not serious but it's just nagging me to see c++  how slower than lua on thr and lat
+| [Monday 02 May 2011] [15:20:13] <pieterh>	also, make sure you send/recv enough messages, e.g. 10M or 20M
+| [Monday 02 May 2011] [15:20:17] <iFire>	hmm
+| [Monday 02 May 2011] [15:20:38] <iFire>	ok I'll try 10 million
+| [Monday 02 May 2011] [15:20:54] <sustrik>	don't do that with latency tests, it'll take forever
+| [Monday 02 May 2011] [15:21:01] <sustrik>	10 million for throughput
+| [Monday 02 May 2011] [15:21:07] <sustrik>	100,000 for latency
+| [Monday 02 May 2011] [15:23:37] <sustrik>	the lua being faster is kind of strange
+| [Monday 02 May 2011] [15:23:56] <sustrik>	how does it compute the result?
+| [Monday 02 May 2011] [15:24:21] <iFire>	https://github.com/Neopallium/lua-zmq/tree/master/perf
+| [Monday 02 May 2011] [15:24:35] <iFire>	not sure how faithful are the ports
+| [Monday 02 May 2011] [15:25:20] <iFire>	bah
+| [Monday 02 May 2011] [15:25:24] <iFire>	that might be why
+| [Monday 02 May 2011] [15:26:29] <sustrik>	ah, it uses lua's time function
+| [Monday 02 May 2011] [15:26:45] <sustrik>	if you want to have it consistent with C tests
+| [Monday 02 May 2011] [15:27:11] <sustrik>	you should use "stopwatch" provided with libzmq (see zmq_utils.h_
+| [Monday 02 May 2011] [15:35:45] <iFire>	I guess it doesn't really matter :) it's fast enough. especially if I'm using inproc
+| [Monday 02 May 2011] [16:04:11] <zerosanity>	Is it possible to use epgm or pgm on EC2?
+| [Monday 02 May 2011] [16:29:11] <jhawk28>	zerosanity: it doesnt look like EC2 supports multicast

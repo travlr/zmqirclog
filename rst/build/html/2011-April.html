@@ -23,6 +23,7 @@
     <script type="text/javascript" src="static/underscore.js"></script>
     <script type="text/javascript" src="static/doctools.js"></script>
     <link rel="top" title="ZeroMq IRC Log v0.1 documentation" href="index.html" />
+    <link rel="next" title="2011-May" href="2011-May.html" />
     <link rel="prev" title="2011-March" href="2011-March.html" /> 
   </head>
   <body>
@@ -32,6 +33,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="2011-May.html" title="2011-May"
+             accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="2011-March.html" title="2011-March"
              accesskey="P">previous</a> |</li>
@@ -7400,6 +7404,310 @@
 <div class="line">[Saturday 30 April 2011] [03:22:15] &lt;th&gt;      pieterh: i replaced some assert(0) with an endless loop of juse receiving and printing, to see the order of messages</div>
 <div class="line">[Saturday 30 April 2011] [03:22:38] &lt;th&gt;      pieterh: Ubuntu 10.04.2 LTS on 64bit</div>
 <div class="line">[Saturday 30 April 2011] [03:23:21] &lt;th&gt;      pieterh: i run it <a href="#id63"><span class="problematic" id="id64">|</span></a>&amp; tee log   and cancel the client-while-loop when i see the &#8220;STUPID RECV&#8221;</div>
+<div class="line">[Saturday 30 April 2011] [03:47:42] &lt;rgl&gt;     pieterh, I loved the intro on <a class="reference external" href="http://zguide.zeromq.org/page:all">http://zguide.zeromq.org/page:all</a> thx for putting it up!</div>
+<div class="line">[Saturday 30 April 2011] [03:51:35] &lt;pieterh&gt; rgl: glad you liked it, some people seem to hate it...</div>
+<div class="line">[Saturday 30 April 2011] [03:51:54] &lt;pieterh&gt; th: I eventually got a crash in the server: Assertion failed: fetched (xrep.cpp:248)</div>
+<div class="line">[Saturday 30 April 2011] [03:52:11] &lt;th&gt;      pieterh: i assume - that is just because you ran out of resources</div>
+<div class="line">[Saturday 30 April 2011] [03:52:48] &lt;rgl&gt;     pieterh, oh.. oh why?</div>
+<div class="line">[Saturday 30 April 2011] [03:52:51] &lt;th&gt;      pieterh: it fails for me within the first 3 seconds</div>
+<div class="line">[Saturday 30 April 2011] [03:53:08] &lt;Toba&gt;    pieterh: too bad sockets in pollitem are void*, makes it easy to mess that up</div>
+<div class="line">[Saturday 30 April 2011] [03:53:12] &lt;th&gt;      pieterh: although as said above - i dont let it crash when fail happens</div>
+<div class="line">[Saturday 30 April 2011] [03:53:20] &lt;pieterh&gt; rgl: no idea...</div>
+<div class="line">[Saturday 30 April 2011] [03:53:25] &lt;th&gt;      pieterh: to document the order of the rest of the parts</div>
+<div class="line">[Saturday 30 April 2011] [03:54:46] &lt;pieterh&gt; th: I think there&#8217;s a bug in xrep, not sure...</div>
+<div class="line">[Saturday 30 April 2011] [03:55:05] &lt;th&gt;      pieterh: so did you get the &#8220;STUPID RECV...&#8221; messages as well</div>
+<div class="line">[Saturday 30 April 2011] [03:55:06] &lt;th&gt;      ?</div>
+<div class="line">[Saturday 30 April 2011] [03:55:24] &lt;pieterh&gt; sustrik: is it normal to do <a href="#id843"><span class="problematic" id="id844">msg_</span></a>-&gt;close () and then access <a href="#id845"><span class="problematic" id="id846">msg_</span></a>-&gt;flags ()?</div>
+<div class="line">[Saturday 30 April 2011] [03:55:27] &lt;pieterh&gt; th: sure, loads of them</div>
+<div class="line">[Saturday 30 April 2011] [03:55:38] &lt;th&gt;      pieterh: then it was intermixing</div>
+<div class="line">[Saturday 30 April 2011] [03:56:19] &lt;pieterh&gt; th: is that good or bad? I&#8217;ve no idea what I&#8217;m supposed to be seeing...</div>
+<div class="line">[Saturday 30 April 2011] [03:56:38] &lt;th&gt;      pieterh: it means that atomicity of multiparts was violated.</div>
+<div class="line">[Saturday 30 April 2011] [03:56:45] &lt;pieterh&gt; it&#8217;d be useful to be explicit in any output you make, e.g. &#8220;YOU SHOULD NOT SEE THIS&#8221;</div>
+<div class="line">[Saturday 30 April 2011] [03:57:07] &lt;th&gt;      pieterh: ok - see the line above the first &#8220;STUPID&#8221;</div>
+<div class="line">[Saturday 30 April 2011] [03:57:11] &lt;th&gt;      pieterh: i&#8217;ll make it clearer</div>
+<div class="line">[Saturday 30 April 2011] [03:57:23] &lt;pieterh&gt; also, it should simply stop at the first error</div>
+<div class="line">[Saturday 30 April 2011] [03:57:26] &lt;th&gt;      pieterh: but i wanted to print the &#8220;in queue&#8221; messages as well to show if there was a duplicate</div>
+<div class="line">[Saturday 30 April 2011] [03:57:34] &lt;pieterh&gt; so when I run it, I know immediately if it fails</div>
+<div class="line">[Saturday 30 April 2011] [04:44:00] &lt;th&gt;      pieterh: shall i use markdown in the README?</div>
+<div class="line">[Saturday 30 April 2011] [04:44:25] &lt;pieterh&gt; th: as you like</div>
+<div class="line">[Saturday 30 April 2011] [04:44:34] &lt;th&gt;      then plain txt</div>
+<div class="line">[Saturday 30 April 2011] [04:44:39] &lt;pieterh&gt; indeed...</div>
+<div class="line">[Saturday 30 April 2011] [05:04:05] &lt;th&gt;      pieterh: git pull <a class="reference external" href="http://thzn.de/0mq_git/issues/">http://thzn.de/0mq_git/issues/</a> master</div>
+<div class="line">[Saturday 30 April 2011] [05:05:03] &lt;pieterh&gt; th: cool, it works nicely</div>
+<div class="line">[Saturday 30 April 2011] [05:05:17] &lt;pieterh&gt; merged into <a class="reference external" href="https://github.com/zeromq/issues">https://github.com/zeromq/issues</a></div>
+<div class="line">[Saturday 30 April 2011] [05:05:24] &lt;th&gt;      pieterh: because i just rebased, after your last 2 commits ;)</div>
+<div class="line">[Saturday 30 April 2011] [05:05:46] &lt;pieterh&gt; does this seem workable for making / sharing test cases?</div>
+<div class="line">[Saturday 30 April 2011] [05:05:57] &lt;th&gt;      pieterh: for me - yes.</div>
+<div class="line">[Saturday 30 April 2011] [05:06:31] &lt;th&gt;      pieterh: not sure about the common php tinker</div>
+<div class="line">[Saturday 30 April 2011] [05:06:43] &lt;pieterh&gt; what is that?</div>
+<div class="line">[Saturday 30 April 2011] [05:06:50] &lt;pieterh&gt; ah, you mean for average folk</div>
+<div class="line">[Saturday 30 April 2011] [05:06:56] &lt;th&gt;      sort of</div>
+<div class="line">[Saturday 30 April 2011] [05:07:08] &lt;pieterh&gt; well, in any case we need to be able to make C test cases for real work</div>
+<div class="line">[Saturday 30 April 2011] [05:07:34] &lt;pieterh&gt; I&#8217;m usually able to make that if someone has a test case in another language</div>
+<div class="line">[Saturday 30 April 2011] [05:08:05] &lt;pieterh&gt; let me try to test 199 again now that I know what to look for... :)</div>
+<div class="line">[Saturday 30 April 2011] [05:08:06] &lt;th&gt;      pieterh: in my case c, c++, 2-1, 3-0 - it&#8217;s all the same, yes</div>
+<div class="line">[Saturday 30 April 2011] [05:08:10] &lt;pieterh&gt; yup</div>
+<div class="line">[Saturday 30 April 2011] [05:08:23] &lt;th&gt;      although it&#8217;s not as broken down, as i had liked.</div>
+<div class="line">[Saturday 30 April 2011] [05:10:04] &lt;pieterh&gt; th: so I get the &#8216;STUPID&#8217; stuff in the server but it doesn&#8217;t assert</div>
+<div class="line">[Saturday 30 April 2011] [05:10:24] &lt;th&gt;      pieterh: there should be no more &#8220;STUPID&#8221; output</div>
+<div class="line">[Saturday 30 April 2011] [05:10:32] &lt;th&gt;      pieterh: recompile!</div>
+<div class="line">[Saturday 30 April 2011] [05:10:38] &lt;th&gt;      i changed the code</div>
+<div class="line">[Saturday 30 April 2011] [05:10:50] &lt;pieterh&gt; hmm</div>
+<div class="line">[Saturday 30 April 2011] [05:10:58] &lt;th&gt;      199/3-0/</div>
+<div class="line">[Saturday 30 April 2011] [05:11:05] &lt;th&gt;      grep for STUPID</div>
+<div class="line">[Saturday 30 April 2011] [05:11:09] &lt;th&gt;      no stupidity in there</div>
+<div class="line">[Saturday 30 April 2011] [05:11:16] &lt;pieterh&gt; th: ah, I&#8217;m using 2-1</div>
+<div class="line">[Saturday 30 April 2011] [05:11:32] &lt;th&gt;      pieterh: ignore that - let&#8217;s care about backporting after it&#8217;s fixed upstream</div>
+<div class="line">[Saturday 30 April 2011] [05:11:53] &lt;pieterh&gt; well, I need the testcase on 2-1 in any case, otherwise I can&#8217;t test downstreamed patches</div>
+<div class="line">[Saturday 30 April 2011] [05:12:01] &lt;pieterh&gt; I&#8217;ll port the test cases back to 2-1, hang on...</div>
+<div class="line">[Saturday 30 April 2011] [05:12:03] &lt;rgl&gt;     how does one authenticate the client of a connection like traditional sockets? we have to use some kind of message authentication?</div>
+<div class="line">[Saturday 30 April 2011] [05:12:05] &lt;th&gt;      pieterh: but could we do that after 3-0?</div>
+<div class="line">[Saturday 30 April 2011] [05:12:17] &lt;pieterh&gt; rgl: it depends on the pattern you&#8217;re using</div>
+<div class="line">[Saturday 30 April 2011] [05:12:38] &lt;pieterh&gt; there&#8217;s no authentication as such in 0MQ</div>
+<div class="line">[Saturday 30 April 2011] [05:13:00] &lt;pieterh&gt; th: in fact we could make portable test cases if we used czmq</div>
+<div class="line">[Saturday 30 April 2011] [05:13:09] &lt;th&gt;      pieterh: it&#8217;s a s/0 &lt;= <a href="#id847"><span class="problematic" id="id848">zmq_</span></a>/0 == <a href="#id849"><span class="problematic" id="id850">zmq_</span></a>/ for the asserts and then the s/msg// for the name-change</div>
+<div class="line">[Saturday 30 April 2011] [05:13:33] &lt;pieterh&gt; rgl: for an example of secure pubsub, see the Salt project (at <a class="reference external" href="http://www.zeromq.org/docs:labs">http://www.zeromq.org/docs:labs</a>)</div>
+<div class="line">[Saturday 30 April 2011] [05:13:35] &lt;rgl&gt;     pieterh, for instance, pub/sub, where not everyone can do pub</div>
+<div class="line">[Saturday 30 April 2011] [05:13:40] &lt;th&gt;      rgl: how about applying asymmetric cryptography?</div>
+<div class="line">[Saturday 30 April 2011] [05:13:40] &lt;pieterh&gt; :)</div>
+<div class="line">[Saturday 30 April 2011] [05:13:51]    * pieterh likes answering a question 2 seconds before it&#8217;s asked...</div>
+<div class="line">[Saturday 30 April 2011] [05:14:04] &lt;rgl&gt;     oh :)</div>
+<div class="line">[Saturday 30 April 2011] [05:14:30] &lt;rgl&gt;     will look at it. thx :)</div>
+<div class="line">[Saturday 30 April 2011] [05:19:11] &lt;pieterh&gt; th: ok, failure reproduced on 2.1... excellent</div>
+<div class="line">[Saturday 30 April 2011] [05:19:20] &lt;pieterh&gt; we can pass this to sustrik now, get a patch and downstream that to 2.1</div>
+<div class="line">[Saturday 30 April 2011] [05:19:26]    * pieterh likes this process</div>
+<div class="line">[Saturday 30 April 2011] [05:20:20] &lt;th&gt;      ;-)</div>
+<div class="line">[Saturday 30 April 2011] [05:20:42] &lt;th&gt;      pieterh: and reproduced on 3-0 as well, i suppose?</div>
+<div class="line">[Saturday 30 April 2011] [05:21:26] &lt;pieterh&gt; th: hang on... (I don&#8217;t really care about 3-0 so much in this process)</div>
+<div class="line">[Saturday 30 April 2011] [05:22:15] &lt;pieterh&gt; yes, it hits the same way on 3-0</div>
+<div class="line">[Saturday 30 April 2011] [05:22:31] &lt;pieterh&gt; th: so I sent an email to zeromq-dev proposing we hold test cases in a single repo, you may want to comment on that thread</div>
+<div class="line">[Saturday 30 April 2011] [05:23:31] &lt;th&gt;      pieterh: ok - and you need to comment on your last mail in the #199 thread</div>
+<div class="line">[Saturday 30 April 2011] [05:27:08] &lt;th&gt;      pieterh: commented</div>
+<div class="line">[Saturday 30 April 2011] [05:30:52] &lt;pieterh&gt; I&#8217;ve replied to the 199 thread now</div>
+<div class="line">[Saturday 30 April 2011] [05:46:23] &lt;rgl&gt;     can you point me to the document that describes the wire format of the several socket types?</div>
+<div class="line">[Saturday 30 April 2011] [05:46:46] &lt;pieterh&gt; rgl: unfortunately, there&#8217;s no single document</div>
+<div class="line">[Saturday 30 April 2011] [05:47:00] &lt;pieterh&gt; there is some information in the zmq_tcp man page</div>
+<div class="line">[Saturday 30 April 2011] [05:48:39] &lt;pieterh&gt; we really do need to make a proper documentation of the wire format, no real excuses</div>
+<div class="line">[Saturday 30 April 2011] [05:49:46] &lt;rgl&gt;     indeed :)</div>
+<div class="line">[Saturday 30 April 2011] [05:49:55] &lt;rgl&gt;     even after writting this &#8220;But really, Zookeeper should be using a generic messaging layer and an explicitly documented wire level protocol&#8221; hehe</div>
+<div class="line">[Saturday 30 April 2011] [05:50:28] &lt;pieterh&gt; yes, absolutely true</div>
+<div class="line">[Saturday 30 April 2011] [05:51:01] &lt;pieterh&gt; I did start on a wlp at <a class="reference external" href="http://rfc.zeromq.org/spec:2">http://rfc.zeromq.org/spec:2</a></div>
+<div class="line">[Saturday 30 April 2011] [05:51:19] &lt;pieterh&gt; but I need to convince the core developers to actually commit to such a contract</div>
+<div class="line">[Saturday 30 April 2011] [05:51:22] &lt;rgl&gt;     the wire protcol described at <a class="reference external" href="http://api.zeromq.org/2-1:zmq-tcp">http://api.zeromq.org/2-1:zmq-tcp</a> is not the whole story?</div>
+<div class="line">[Saturday 30 April 2011] [05:51:45] &lt;pieterh&gt; otherwise it&#8217;s just documenting code behaviour, which isn&#8217;t acceptable IMO</div>
+<div class="line">[Saturday 30 April 2011] [05:52:13] &lt;pieterh&gt; there is a bunch of stuff missing from the zmq-tcp page</div>
+<div class="line">[Saturday 30 April 2011] [05:52:20] &lt;pieterh&gt; sockets exchange identities when they connect</div>
+<div class="line">[Saturday 30 April 2011] [05:52:37] &lt;pieterh&gt; it&#8217;s on some tutorial somewhere but I don&#8217;t remember which one</div>
+<div class="line">[Saturday 30 April 2011] [05:52:57] &lt;pieterh&gt; don&#8217;t get me started on the failure of this project to write decent specs in advance... :-)</div>
+<div class="line">[Saturday 30 April 2011] [05:53:11] &lt;rgl&gt;     I think I did heheh</div>
+<div class="line">[Saturday 30 April 2011] [05:53:31] &lt;pieterh&gt; it&#8217;s one of the topics we hope to nail down at the Brussels event later this month</div>
+<div class="line">[Saturday 30 April 2011] [05:54:08] &lt;pieterh&gt; but basically until the development process uses contracts properly, it won&#8217;t happen IMO</div>
+<div class="line">[Saturday 30 April 2011] [05:54:29] &lt;rgl&gt;     what do you mean  by &#8220;uses contracts&#8221;?</div>
+<div class="line">[Saturday 30 April 2011] [05:54:32] &lt;pieterh&gt; otherwise it&#8217;s one set of people changing code, a second set trying to document that</div>
+<div class="line">[Saturday 30 April 2011] [05:54:50] &lt;pieterh&gt; contracts = upfront discussion &amp; documentation of APIs and WLPs</div>
+<div class="line">[Saturday 30 April 2011] [05:55:03] &lt;pieterh&gt; with running code to demo, as needed</div>
+<div class="line">[Saturday 30 April 2011] [05:55:16] &lt;rgl&gt;     WLP?</div>
+<div class="line">[Saturday 30 April 2011] [05:55:19] &lt;pieterh&gt; but not after-the-fact documentation of code</div>
+<div class="line">[Saturday 30 April 2011] [05:55:22] &lt;pieterh&gt; wire level protocols</div>
+<div class="line">[Saturday 30 April 2011] [05:56:01] &lt;th&gt;      pieterh: <a class="reference external" href="http://rfc.zeromq.org/spec:2">http://rfc.zeromq.org/spec:2</a> shouldn&#8217;t the 3rd occurance of &#8220;Message size&#8221; be actually &#8220;Message body&#8221;?</div>
+<div class="line">[Saturday 30 April 2011] [05:56:05] &lt;rgl&gt;     I see. it makes sense :)</div>
+<div class="line">[Saturday 30 April 2011] [05:56:18] &lt;pieterh&gt; th: the text was copied as-is from the tcp man page</div>
+<div class="line">[Saturday 30 April 2011] [05:56:45] &lt;pieterh&gt; it is message size, afaics</div>
+<div class="line">[Saturday 30 April 2011] [05:56:51] &lt;pieterh&gt; it&#8217;s a 64-bit size,</div>
+<div class="line">[Saturday 30 April 2011] [05:57:26] &lt;th&gt;      then i totally dont grok that sketch</div>
+<div class="line">[Saturday 30 April 2011] [05:57:41] &lt;pieterh&gt; th: the sketch is pretty nasty</div>
+<div class="line">[Saturday 30 April 2011] [05:57:59] &lt;pieterh&gt; what it says is, either a 1-byte length, or 0xff followed by an 8-byte length</div>
+<div class="line">[Saturday 30 April 2011] [05:58:03] &lt;th&gt;      pieterh: the upper part is the &lt; 255octet case, right?</div>
+<div class="line">[Saturday 30 April 2011] [05:58:09] &lt;pieterh&gt; yes</div>
+<div class="line">[Saturday 30 April 2011] [05:58:43] &lt;th&gt;      pieterh: yes- good. so i got the 0xff+message size.  but why is it followed by another message size?</div>
+<div class="line">[Saturday 30 April 2011] [05:58:56] &lt;pieterh&gt; th: it&#8217;s not, that last byte is the 8th byte</div>
+<div class="line">[Saturday 30 April 2011] [05:59:00] &lt;pieterh&gt; the diagram is lousy</div>
+<div class="line">[Saturday 30 April 2011] [05:59:17] &lt;pieterh&gt; god, let me fix it...</div>
+<div class="line">[Saturday 30 April 2011] [05:59:32] &lt;th&gt;      ahhh</div>
+<div class="line">[Saturday 30 April 2011] [05:59:41] &lt;th&gt;      the columns are for 32 bit</div>
+<div class="line">[Saturday 30 April 2011] [05:59:57] &lt;th&gt;      so it is three rows for the 64bit size, because the first octet is for the 0xff</div>
+<div class="line">[Saturday 30 April 2011] [06:00:16] &lt;th&gt;      gosh - got it now :)</div>
+<div class="line">[Saturday 30 April 2011] [06:00:38] &lt;th&gt;      perhaps you should add a &#8220;(cont.)&#8221; after the continuations of the &#8220;message size&#8221;</div>
+<div class="line">[Saturday 30 April 2011] [06:00:53] &lt;th&gt;      which would not fit in the 8 bit field ;)</div>
+<div class="line">[Saturday 30 April 2011] [06:02:13] &lt;pieterh&gt; th: check it now</div>
+<div class="line">[Saturday 30 April 2011] [06:02:49] &lt;pieterh&gt; this is still not how I&#8217;d draw it, but whatever</div>
+<div class="line">[Saturday 30 April 2011] [06:04:16] &lt;rgl&gt;     it would be nice to have some wireshark inspectors on the zeromq sockets, that is, somehow make wireshark interpret the data inside a 0mq socket.</div>
+<div class="line">[Saturday 30 April 2011] [06:04:45] &lt;pieterh&gt; rgl: there&#8217;s a whole bunch of nice things we could make if we had decent WLP specs</div>
+<div class="line">[Saturday 30 April 2011] [06:05:13] &lt;pieterh&gt; there&#8217;s about one request for these specs every two weeks</div>
+<div class="line">[Saturday 30 April 2011] [06:10:00] &lt;th&gt;      pieterh: at least it got less confusing in my opinion ;)</div>
+<div class="line">[Saturday 30 April 2011] [06:10:21] &lt;pieterh&gt; I&#8217;m going to start on a new RFC, this annoys the heck out of me</div>
+<div class="line">[Saturday 30 April 2011] [06:10:32] &lt;pieterh&gt; at least we can document the 2.1 format properly</div>
+<div class="line">[Saturday 30 April 2011] [06:10:40] &lt;pieterh&gt; and then bug sustrik to do the same for 3.0</div>
+<div class="line">[Saturday 30 April 2011] [06:40:16] &lt;mikko&gt;   pieterh: hi</div>
+<div class="line">[Saturday 30 April 2011] [06:40:22] &lt;pieterh&gt; hi mikko</div>
+<div class="line">[Saturday 30 April 2011] [06:40:25] &lt;pieterh&gt; how&#8217;s up?</div>
+<div class="line">[Saturday 30 April 2011] [06:40:31] &lt;pieterh&gt; what&#8217;s life?</div>
+<div class="line">[Saturday 30 April 2011] [06:40:48] &lt;mikko&gt;   it&#8217;s something that happens when you don&#8217;t work?</div>
+<div class="line">[Saturday 30 April 2011] [06:41:12] &lt;pieterh&gt; dunno... sounds weird to me</div>
+<div class="line">[Saturday 30 April 2011] [06:41:20] &lt;mikko&gt;   anyway, you can use gists for simple test-cases as well</div>
+<div class="line">[Saturday 30 April 2011] [06:41:30] &lt;pieterh&gt; yes, I tried that, but</div>
+<div class="line">[Saturday 30 April 2011] [06:41:31] &lt;mikko&gt;   they are stored as git repositories and can be forked, cloned etc</div>
+<div class="line">[Saturday 30 April 2011] [06:41:45] &lt;pieterh&gt; a. you get weird names in your directories</div>
+<div class="line">[Saturday 30 April 2011] [06:42:01] &lt;pieterh&gt; b. you can never remember what the gist is called so need to keep referring back to some random URI somewhere</div>
+<div class="line">[Saturday 30 April 2011] [06:42:15] &lt;pieterh&gt; c. you can&#8217;t have multiple people working on the same gist</div>
+<div class="line">[Saturday 30 April 2011] [06:43:21] &lt;pieterh&gt; d. it&#8217;s very hard to enforce consistency when every test case is a separate repo</div>
+<div class="line">[Saturday 30 April 2011] [06:43:55] &lt;pieterh&gt; e. it&#8217;s annoying when I have 20 test cases to have 20 random hash-encoded directories to work with</div>
+<div class="line">[Saturday 30 April 2011] [06:44:00] &lt;pieterh&gt; f. /me can go on all day</div>
+<div class="line">[Saturday 30 April 2011] [06:51:11] &lt;pieterh&gt; mikko: sorry for ranting :)</div>
+<div class="line">[Saturday 30 April 2011] [06:53:55] &lt;mikko&gt;   i&#8217;m getting worried by the amount of repos :)</div>
+<div class="line">[Saturday 30 April 2011] [06:53:58] &lt;mikko&gt;   ever growing</div>
+<div class="line">[Saturday 30 April 2011] [06:54:28] &lt;pieterh&gt; mikko: we had a similar issue at wikidot</div>
+<div class="line">[Saturday 30 April 2011] [06:54:50] &lt;pieterh&gt; originally, all the official stuff was on one site, maintained by a couple of people</div>
+<div class="line">[Saturday 30 April 2011] [06:55:04] &lt;pieterh&gt; I slowly broke that into 20-30 sites, each with a distinct group of contributors</div>
+<div class="line">[Saturday 30 April 2011] [06:55:17] &lt;pieterh&gt; it was quite interesting, the tension that caused</div>
+<div class="line">[Saturday 30 April 2011] [06:55:30] &lt;pieterh&gt; OTOH people complained they couldn&#8217;t navigate the results</div>
+<div class="line">[Saturday 30 April 2011] [06:55:44] &lt;pieterh&gt; OTOH, the number of contributors overall increased by 50x or more</div>
+<div class="line">[Saturday 30 April 2011] [06:56:32] &lt;pieterh&gt; since every gist is a repo, we already have massive numbers of repos, except they&#8217;re unknown</div>
+<div class="line">[Saturday 30 April 2011] [06:57:32] &lt;pieterh&gt; anyhow, I don&#8217;t see how <a class="reference external" href="https://github.com/zeromq">https://github.com/zeromq</a> is any different from subdirectories within one repo</div>
+<div class="line">[Saturday 30 April 2011] [07:00:52] &lt;mikko&gt;   i think i was thinking a workflow like:</div>
+<div class="line">[Saturday 30 April 2011] [07:01:34] &lt;mikko&gt;   each bigger issue gets branched off to a separate branch, the test cases are added to branch and when everything works it gets merged back</div>
+<div class="line">[Saturday 30 April 2011] [07:01:49] &lt;mikko&gt;   so that also test cases get back to main repo</div>
+<div class="line">[Saturday 30 April 2011] [07:02:39] &lt;pieterh&gt; mikko: that would work nicely except we have to work across multiple topic branches</div>
+<div class="line">[Saturday 30 April 2011] [07:02:45] &lt;pieterh&gt; multiple main repos</div>
+<div class="line">[Saturday 30 April 2011] [07:03:04] &lt;pieterh&gt; how do we handle an issue that affects both pyzmq and libzmq?</div>
+<div class="line">[Saturday 30 April 2011] [07:03:09] &lt;pieterh&gt; or 3.0 and 2.1</div>
+<div class="line">[Saturday 30 April 2011] [07:03:29] &lt;pieterh&gt; or erlzmq2 and erlzmq3</div>
+<div class="line">[Saturday 30 April 2011] [07:03:30] &lt;pieterh&gt; etc.</div>
+<div class="line">[Saturday 30 April 2011] [07:03:49] &lt;mikko&gt;   when i&#8217;ve had such issues with php-zmq i&#8217;ve created a reproducible test-case in C or C++</div>
+<div class="line">[Saturday 30 April 2011] [07:04:16] &lt;pieterh&gt; at the least, we need a way to maintain C/C++ test cases to work on both 2.1 and 3.0</div>
+<div class="line">[Saturday 30 April 2011] [07:04:30] &lt;pieterh&gt; can&#8217;t use a topic branch in 3.0 for that</div>
+<div class="line">[Saturday 30 April 2011] [07:04:47] &lt;pieterh&gt; wouldn&#8217;t work if 2.1 and 3.0 were branches in same repo, either</div>
+<div class="line">[Saturday 30 April 2011] [07:05:05] &lt;pieterh&gt; it&#8217;d require one branch for each test case / version combination</div>
+<div class="line">[Saturday 30 April 2011] [07:05:08] &lt;pieterh&gt; ugh</div>
+<div class="line">[Saturday 30 April 2011] [07:05:55] &lt;pieterh&gt; also, as sustrik pointed out, we don&#8217;t want test cases to go into the main repo because they rot really fast</div>
+<div class="line">[Saturday 30 April 2011] [07:06:29] &lt;pieterh&gt; unless someone&#8217;s actually maintaining them, which is a role no-one has volunteered for...</div>
+<div class="line">[Saturday 30 April 2011] [07:07:23] &lt;pieterh&gt; ok, one of my hopes is that a separate issues repo can become the basis for an independent regression test suite</div>
+<div class="line">[Saturday 30 April 2011] [07:11:59] &lt;mikko&gt;   what do you mean they rot really fast?</div>
+<div class="line">[Saturday 30 April 2011] [07:12:10] &lt;mikko&gt;   we&#8217;ve been using the same set of tests through out 2.x</div>
+<div class="line">[Saturday 30 April 2011] [07:16:20] &lt;pieterh&gt; mikko: old test cases don&#8217;t keep working unless they&#8217;re maintained</div>
+<div class="line">[Saturday 30 April 2011] [07:16:48] &lt;pieterh&gt; I know they <em>should</em> keep working, for regression testing, but that demands effort</div>
+<div class="line">[Saturday 30 April 2011] [07:16:57] &lt;mikko&gt;   does that mean that old software doesnt keep working unless maintained all the time?</div>
+<div class="line">[Saturday 30 April 2011] [07:17:02] &lt;pieterh&gt; indeed</div>
+<div class="line">[Saturday 30 April 2011] [07:17:16] &lt;pieterh&gt; since today, test cases are transient and discarded, we don&#8217;t see the cost</div>
+<div class="line">[Saturday 30 April 2011] [07:17:39] &lt;pieterh&gt; e.g. there are test cases that apply to 2.0.4</div>
+<div class="line">[Saturday 30 April 2011] [07:18:04] &lt;pieterh&gt; actually I&#8217;d be happy to maintain the regression tests, if the tests were all in one place and properly structured</div>
+<div class="line">[Saturday 30 April 2011] [07:18:13] &lt;pieterh&gt; e.g. always started with a consistent command</div>
+<div class="line">[Saturday 30 April 2011] [07:18:25] &lt;pieterh&gt; built using a consistent tooling</div>
+<div class="line">[Saturday 30 April 2011] [07:18:25] &lt;pieterh&gt; etc.</div>
+<div class="line">[Saturday 30 April 2011] [07:18:48] &lt;pieterh&gt; it is doable (and still, a lot of work) if they&#8217;re in their own repo IMO</div>
+<div class="line">[Saturday 30 April 2011] [08:17:48] &lt;pieterh&gt; ok, finished draft of full wire level protocol</div>
+<div class="line">[Saturday 30 April 2011] [08:18:00] &lt;pieterh&gt; rgl: if you&#8217;re still around: <a class="reference external" href="http://rfc.zeromq.org/spec:13">http://rfc.zeromq.org/spec:13</a></div>
+<div class="line">[Saturday 30 April 2011] [09:03:26] &lt;xbmc_fan&gt;        hi</div>
+<div class="line">[Saturday 30 April 2011] [09:04:23] &lt;xbmc_fan&gt;        any experts for the .net 0mq-binding available?</div>
+<div class="line">[Saturday 30 April 2011] [09:07:49] &lt;iFire&gt;   anyone made a pdf of zguide?</div>
+<div class="line">[Saturday 30 April 2011] [09:09:03] &lt;iFire&gt;   &#8220;only&#8221; a 105 pages</div>
+<div class="line">[Saturday 30 April 2011] [09:15:47] &lt;mikko&gt;   xbmc_fan: Guthur is i think</div>
+<div class="line">[Saturday 30 April 2011] [09:17:34] &lt;mikko&gt;   iFire: seems to print to pdf well</div>
+<div class="line">[Saturday 30 April 2011] [09:19:14] &lt;mikko&gt;   <a class="reference external" href="http://valokuva.org/~mikko/zguide.pdf">http://valokuva.org/~mikko/zguide.pdf</a></div>
+<div class="line">[Saturday 30 April 2011] [09:19:22] &lt;mikko&gt;   that&#8217;s what i get out from print to pdf</div>
+<div class="line">[Saturday 30 April 2011] [09:20:37] &lt;xbmc_fan&gt;        thanks mikko.. Maybe Guthur, you are able to answer this Stackoverflow question: <a class="reference external" href="http://stackoverflow.com/questions/5841896/0mq-how-to-use-zeromq-in-a-threadsafe-manner">http://stackoverflow.com/questions/5841896/0mq-how-to-use-zeromq-in-a-threadsafe-manner</a> ?</div>
+<div class="line">[Saturday 30 April 2011] [09:22:41] &lt;mikko&gt;   xbmc_fan: you cannot use sockets concurrently</div>
+<div class="line">[Saturday 30 April 2011] [09:22:53] &lt;mikko&gt;   xbmc_fan: but with zeromq 2.1 you can migrate socket from one thread to another</div>
+<div class="line">[Saturday 30 April 2011] [09:23:26] &lt;xbmc_fan&gt;        mikko, I understood that I must not use sockets from different threads</div>
+<div class="line">[Saturday 30 April 2011] [09:23:39] &lt;mikko&gt;   that was the case with 2.0</div>
+<div class="line">[Saturday 30 April 2011] [09:23:50] &lt;mikko&gt;   you cannot use a socket concurrently from multiple threads</div>
+<div class="line">[Saturday 30 April 2011] [09:24:08] &lt;mikko&gt;   you have to ensure a full memory barrier before accessing from another thread</div>
+<div class="line">[Saturday 30 April 2011] [09:24:42] &lt;xbmc_fan&gt;        i got that. In order to not use it concurrently, I have to use semapohores, locks- which the guide explicitly warns about</div>
+<div class="line">[Saturday 30 April 2011] [09:25:06] &lt;mikko&gt;   what does it say?</div>
+<div class="line">[Saturday 30 April 2011] [09:25:20] &lt;xbmc_fan&gt;        please read the question I aksed at stackoverflow</div>
+<div class="line">[Saturday 30 April 2011] [09:25:25] &lt;Guthur&gt;  xbmc_fan, just don&#8217;t share them across threads would be the easy option</div>
+<div class="line">[Saturday 30 April 2011] [09:25:55] &lt;mikko&gt;   xbmc_fan: can you have socket per thread?</div>
+<div class="line">[Saturday 30 April 2011] [09:26:06] &lt;mikko&gt;   that is usually ideal if multiple threads need to communicate with same endpoint</div>
+<div class="line">[Saturday 30 April 2011] [09:26:42] &lt;mikko&gt;   mutexes / locks don&#8217;t necessarily make your application slow and fragile. they are just very hard to get right</div>
+<div class="line">[Saturday 30 April 2011] [09:26:49] &lt;iFire&gt;   mikko just finished printing</div>
+<div class="line">[Saturday 30 April 2011] [09:26:59] &lt;Guthur&gt;  sometimes what I do is create the socket in one thread and give it to another to use within it&#8217;s lifetime</div>
+<div class="line">[Saturday 30 April 2011] [09:26:59] &lt;iFire&gt;   ha 6 minutes</div>
+<div class="line">[Saturday 30 April 2011] [09:27:05] &lt;xbmc_fan&gt;        mikko, I could but is this really performant / the way to do things properly? e.g. I might get called from a different temporary-threadpool thread</div>
+<div class="line">[Saturday 30 April 2011] [09:27:30] &lt;xbmc_fan&gt;        and I <em>think</em> there is overhead involved to create a 0mq-socket  each time my method gets called</div>
+<div class="line">[Saturday 30 April 2011] [09:27:48] &lt;mikko&gt;   xbmc_fan: is there going to be lock contention?</div>
+<div class="line">[Saturday 30 April 2011] [09:28:28] &lt;mikko&gt;   xbmc_fan: why do you have multiple threads handling events?</div>
+<div class="line">[Saturday 30 April 2011] [09:28:41] &lt;mikko&gt;   not sure if that is common in C#</div>
+<div class="line">[Saturday 30 April 2011] [09:29:47] &lt;xbmc_fan&gt;        mikko, it is quite common: the class registering for an event does not know which thread invokes the eventhandler</div>
+<div class="line">[Saturday 30 April 2011] [09:30:34] &lt;xbmc_fan&gt;        I have multiple threads throwing events. and the eventhandler gets called from those threads.</div>
+<div class="line">[Saturday 30 April 2011] [09:31:10] &lt;Guthur&gt;  I did create a socket pool once, never really used it though</div>
+<div class="line">[Saturday 30 April 2011] [09:31:33] &lt;Guthur&gt;  I was considering including it in clrzmq2, but I don&#8217;t think I did in the end</div>
+<div class="line">[Saturday 30 April 2011] [09:34:09] &lt;xbmc_fan&gt;        <a class="reference external" href="http://pastebin.com/EdywPxWa">http://pastebin.com/EdywPxWa</a> &lt;&#8211; maybe this clearifies my problem</div>
+<div class="line">[Saturday 30 April 2011] [09:35:30] &lt;Guthur&gt;  xbmc_fan, if you are worried about the setup cost of sockets you could try the pool approach</div>
+<div class="line">[Saturday 30 April 2011] [09:38:01] &lt;Guthur&gt;  or I suppose just lock the socket</div>
+<div class="line">[Saturday 30 April 2011] [09:39:56] &lt;xbmc_fan&gt;        so I would have a number  of sockets in a pool. But since every socket has to be used from the same thread it was created on, this won&#8217;t help much, or do I miss something? e.g.: If the eventhandler is invoked from temporary threads, I would create a socket for those calls because there isn&#8217;t a socket for that thread in the pool yet. I can see that if there is a limited amount of (long running) threads calling, pooling of sockets might ma</div>
+<div class="line">[Saturday 30 April 2011] [09:39:56] &lt;xbmc_fan&gt;        But I think in my scenario, in the end it would leak ressources - so one had to implement something like &#8220;pool timeouts&#8221;... too much afford isn&#8217;t it?!</div>
+<div class="line">[Saturday 30 April 2011] [09:39:59] &lt;Guthur&gt;  I have the socket pool code if you want me to post it</div>
+<div class="line">[Saturday 30 April 2011] [09:40:10] &lt;xbmc_fan&gt;        sure, maybe that helps</div>
+<div class="line">[Saturday 30 April 2011] [09:40:25] &lt;Guthur&gt;  xbmc_fan, in the new version of 0MQ it can be used from a different thread</div>
+<div class="line">[Saturday 30 April 2011] [09:40:33] &lt;Guthur&gt;  just not from 2 threads at the same time</div>
+<div class="line">[Saturday 30 April 2011] [09:40:43] &lt;Guthur&gt;  mikko, correct?</div>
+<div class="line">[Saturday 30 April 2011] [09:40:43] &lt;xbmc_fan&gt;        Guthur  or I suppose just lock the socket &lt;&#8211; I could do that, even though the guide says that evil.</div>
+<div class="line">[Saturday 30 April 2011] [09:40:58] &lt;xbmc_fan&gt;        Guthur  just not from 2 threads at the same time &lt;&#8211; ok, that would be nice.</div>
+<div class="line">[Saturday 30 April 2011] [09:41:10] &lt;Guthur&gt;  xbmc_fan, yeah, pool would be cooler than lock, hehe</div>
+<div class="line">[Saturday 30 April 2011] [09:42:43] &lt;rgl&gt;     pieterh, oh, you actually did it :)</div>
+<div class="line">[Saturday 30 April 2011] [09:42:52] &lt;Guthur&gt;  xbmc_fan, <a class="reference external" href="https://gist.github.com/949677">https://gist.github.com/949677</a></div>
+<div class="line">[Saturday 30 April 2011] [09:42:59] &lt;pieterh&gt; rgl: yeah, it did take a whole two hours...</div>
+<div class="line">[Saturday 30 April 2011] [09:43:03] &lt;Guthur&gt;  that is very much as is, no warranty or anything</div>
+<div class="line">[Saturday 30 April 2011] [09:43:26] &lt;Guthur&gt;  I can&#8217;t remember if I even completed it, but might serve as some inspiration</div>
+<div class="line">[Saturday 30 April 2011] [09:43:28] &lt;rgl&gt;     pieterh, humm &#8220;The principal issue with ZMTP/1.0 is the lack of content types in the wire format&#8221; bummer. so there is no easy way to create a wireshark interpreter.</div>
+<div class="line">[Saturday 30 April 2011] [09:43:44] &lt;pieterh&gt; rgl: you can make it but it&#8217;ll only work at the framing level</div>
+<div class="line">[Saturday 30 April 2011] [09:45:17] &lt;rgl&gt;     pieterh, I see. I&#8217;ll have to read it with more attention :)</div>
+<div class="line">[Saturday 30 April 2011] [09:49:15] &lt;xbmc_fan&gt;        thanks Guthur. Well, the collection and handing out of sockets seems to be threadsafe, but the the pool might run empty eventually. Nevertheless, thanks for posting it!</div>
+<div class="line">[Saturday 30 April 2011] [09:51:09] &lt;xbmc_fan&gt;        Guthur  sometimes what I do is create the socket in one thread and give it to another to use within it&#8217;s lifetime &lt;&#8211; and that does work? So the author of the docs had .net in mind when he/she wrote: &#8220;The only place where it&#8217;s remotely sane to share sockets between threads are in language bindings that need to do magic like garbage collection on sockets.&#8221; ?!</div>
+<div class="line">[Saturday 30 April 2011] [09:53:12] &lt;Guthur&gt;  xbmc_fan, I think it&#8217;s that some people might abuse the fact that it can be moved from one thread to another</div>
+<div class="line">[Saturday 30 April 2011] [09:53:35] &lt;pieterh&gt; iFire: I&#8217;ve made a quick PDF conversion</div>
+<div class="line">[Saturday 30 April 2011] [09:53:35] &lt;Guthur&gt;  it still doesn&#8217;t support shared access</div>
+<div class="line">[Saturday 30 April 2011] [09:53:44] &lt;pieterh&gt; am uploading it now, 30 seconds...</div>
+<div class="line">[Saturday 30 April 2011] [09:54:36] &lt;Guthur&gt;  the .net binding does nothing extra to facilitate moving the socket from one thread to another</div>
+<div class="line">[Saturday 30 April 2011] [09:54:55] &lt;Guthur&gt;  it came with one of the later version of libzmq</div>
+<div class="line">[Saturday 30 April 2011] [09:55:53] &lt;xbmc_fan&gt;        ok, thanks for the clarifcation guthur. maybe this should be stated also in the docs.</div>
+<div class="line">[Saturday 30 April 2011] [09:57:10] &lt;pieterh&gt; xbmc_fan: the reason for this text is that people often tried to share sockets between threads, and it crashes libzmq horribly</div>
+<div class="line">[Saturday 30 April 2011] [09:58:25] &lt;pieterh&gt; you can create a socket in thread A and pass it to thread B if, and only if, you do a full memory barrier</div>
+<div class="line">[Saturday 30 April 2011] [09:59:18] &lt;xbmc_fan&gt;        with &#8220;full memory barrier&#8221; you mean that I have to make sure that thread A doesn&#8217;t access the socket at the same time as thread B?</div>
+<div class="line">[Saturday 30 April 2011] [10:01:59] &lt;pieterh&gt; &#8220;full memory barrier&#8221; is a technical term meaning an instruction that causes all CPUs to synchronize and flush caches</div>
+<div class="line">[Saturday 30 April 2011] [10:02:17] &lt;pieterh&gt; it&#8217;s definitely not enough to &#8220;not use at the same time&#8221;</div>
+<div class="line">[Saturday 30 April 2011] [10:10:03] &lt;xbmc_fan&gt;        ok, I think I understood pieterh. Therefore it seems I have to use locks to synchronize acces to a single socket if I have no control about the caller&#8217;s thread.</div>
+<div class="line">[Saturday 30 April 2011] [10:10:40] &lt;pieterh&gt; something like that, I&#8217;ve never actually done that</div>
+<div class="line">[Saturday 30 April 2011] [10:11:29] &lt;pieterh&gt; xbmc_fan: I&#8217;d probably look for an alternative design than that though...</div>
+<div class="line">[Saturday 30 April 2011] [10:13:10] &lt;xbmc_fan&gt;        pieterh: well, in my case, the architecture is inheritly multithreaded and thread-synchronization takes only place at the outer edges. Currently only for the GUI thread.</div>
+<div class="line">[Saturday 30 April 2011] [10:13:40] &lt;xbmc_fan&gt;        however, the gui dispatches information which is to be send in a worker thread.</div>
+<div class="line">[Saturday 30 April 2011] [10:13:57] &lt;xbmc_fan&gt;        I would like to send this data via 0mq.</div>
+<div class="line">[Saturday 30 April 2011] [10:14:01] &lt;pieterh&gt; xbmc_fan: have you already tried making multithreaded apps that communicate over inproc sockets?</div>
+<div class="line">[Saturday 30 April 2011] [10:14:30] &lt;pieterh&gt; if you are using locks (and IMO if you&#8217;re sharing sockets between threads) then your design is bogus somewhere</div>
+<div class="line">[Saturday 30 April 2011] [10:16:30] &lt;xbmc_fan&gt;        pieterh: I haven&#8217;t used &#8220;inproc sockets&#8221; for that yet. But I am using a kind of serice bus / event driven architecture. I am sure that - under the hood - this can be implemented using inproc sockets.</div>
+<div class="line">[Saturday 30 April 2011] [10:16:57] &lt;pieterh&gt; xbmc_fan: when you discuss multithreading and 0MQ you have to know how inproc sockets work</div>
+<div class="line">[Saturday 30 April 2011] [10:17:06] &lt;pieterh&gt; otherwise 100% certain you are looking at the wrong picture</div>
+<div class="line">[Saturday 30 April 2011] [10:17:40] &lt;pieterh&gt; please look at the asynchronous server example</div>
+<div class="line">[Saturday 30 April 2011] [10:27:33] &lt;xbmc_fan&gt;        I think you mean that one: <a class="reference external" href="http://zguide.zeromq.org/cs:asyncsrv">http://zguide.zeromq.org/cs:asyncsrv</a> ?</div>
+<div class="line">[Saturday 30 April 2011] [10:30:41] &lt;xbmc_fan&gt;        If I understand both the example and your statement correctly, you wanted me to recognize that there is no locking/synchronization of threads involved when using inproc sockets</div>
+<div class="line">[Saturday 30 April 2011] [10:34:35] &lt;xbmc_fan&gt;        however, at the outer edge of that example, there is in fact synchronization, since the call to Console.Writelline  featrues a [MethodImpl(MethodImplOptions.Synchronized)] attribute under the hood. That&#8217;s the same in my case: the Gui has to synchronize threads to the gui layer. And I have to synchronize non-0mq callers (events, not inproc sockets) if I want to use 0mq at another outer edge of the architecture. From that edge onwards, I c</div>
+<div class="line">[Saturday 30 April 2011] [10:34:35] &lt;xbmc_fan&gt;        inproc sockets and only have to synchronize again if there is another &#8220;edge&#8221;</div>
+<div class="line">[Saturday 30 April 2011] [10:36:30] &lt;xbmc_fan&gt;        I also understood that I could have used 0MQ-Socket throughout the software and would only need to synchronize for the GUI, if I used inproc sockets.</div>
+<div class="line">[Saturday 30 April 2011] [10:40:46] &lt;xbmc_fan&gt;        am I missing something?</div>
+<div class="line">[Saturday 30 April 2011] [10:46:29] &lt;rgl&gt;     pieterh, &#8220;Each side of the connection consists of an greeting message followed by zero or more content messages. An identity message consists of one frame containing the peer&#8217;s identity&#8221; humm what is an &#8220;identity&#8221; message? is the &#8220;greeting&#8221; message?</div>
+<div class="line">[Saturday 30 April 2011] [10:46:48] &lt;pieterh&gt; greeting = anonymous / identity</div>
+<div class="line">[Saturday 30 April 2011] [10:46:59] &lt;pieterh&gt; let me fix that text</div>
+<div class="line">[Saturday 30 April 2011] [10:47:08] &lt;pieterh&gt; I&#8217;ve gotten other review comments as well, new version coming RSN</div>
+<div class="line">[Saturday 30 April 2011] [10:47:11] &lt;xbmc_fan&gt;        anonynous   = %0x01 %x00  &lt;&#8211; isn&#8217;t it anonyMous</div>
+<div class="line">[Saturday 30 April 2011] [10:47:43] &lt;xbmc_fan&gt;        &#8220;Full ZMTP Grammar&#8221;</div>
+<div class="line">[Saturday 30 April 2011] [10:51:16] &lt;xbmc_fan&gt;        pieterh , did I miss something or did I missinterpreted something?</div>
+<div class="line">[Saturday 30 April 2011] [10:51:34] &lt;pieterh&gt; xbmc_fan: fixed that, thanks</div>
+<div class="line">[Saturday 30 April 2011] [10:52:25] &lt;xbmc_fan&gt;        ah, yeah, np. I mean a few sentences back.. I tried to understand what you wanted me to learn when you were pointing to the asyncserver example</div>
+<div class="line">[Saturday 30 April 2011] [10:53:34] &lt;pieterh&gt; xbmc_fan: ah, that&#8217;s an example showing how to distribute work from one thread to others over inproc</div>
+<div class="line">[Saturday 30 April 2011] [10:53:44]    * pieterh re-reads the IRC log</div>
+<div class="line">[Saturday 30 April 2011] [10:54:04] &lt;pieterh&gt; to be honest I&#8217;</div>
+<div class="line">[Saturday 30 April 2011] [10:54:10] &lt;pieterh&gt; I&#8217;ve no idea how the C# code works</div>
+<div class="line">[Saturday 30 April 2011] [10:55:21] &lt;xbmc_fan&gt;        oh, ok.</div>
+<div class="line">[Saturday 30 April 2011] [10:55:38] &lt;pieterh&gt; rgl: OK, I&#8217;ve updated rfc:13</div>
+<div class="line">[Saturday 30 April 2011] [11:37:31] &lt;Seta00&gt;  Guthur, I&#8217;m looking at the asyncserver example, and I must say clrzmq&#8217;s syntax at <a class="reference external" href="https://github.com/imatix/zguide/blob/master/examples/C%23/asyncsrv.cs#L33">https://github.com/imatix/zguide/blob/master/examples/C%23/asyncsrv.cs#L33</a> is very nice, does clrzmq2 offer similar functionality?</div>
+<div class="line">[Saturday 30 April 2011] [12:05:27] &lt;rgl&gt;     pieterh, nice. still, the second diagram octets 1-9 should read 1-8</div>
+<div class="line">[Saturday 30 April 2011] [12:05:49] &lt;rgl&gt;     pieterh, and the other, octet 9 and octets 10+</div>
+<div class="line">[Saturday 30 April 2011] [12:06:05] &lt;pieterh&gt; rgl: thanks, fixed</div>
+<div class="line">[Saturday 30 April 2011] [12:07:00] &lt;pieterh&gt; ok, bbl</div>
+<div class="line">[Saturday 30 April 2011] [12:07:22] &lt;rgl&gt;     bye</div>
+<div class="line">[Saturday 30 April 2011] [13:52:36] &lt;Guthur&gt;  Seta00, sorry was away there, that is clrzmq2, hehe</div>
+<div class="line">[Saturday 30 April 2011] [13:52:53] &lt;Guthur&gt;  I ported the example</div>
+<div class="line">[Saturday 30 April 2011] [13:53:15] &lt;Guthur&gt;  I made it more idiomatic to the clrzmq2 binding</div>
 </div>
 </div>
 
@@ -7412,6 +7720,9 @@
   <h4>Previous topic</h4>
   <p class="topless"><a href="2011-March.html"
                         title="previous chapter">2011-March</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="2011-May.html"
+                        title="next chapter">2011-May</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="sources/2011-April.txt"
@@ -7440,6 +7751,9 @@
         <li class="right" style="margin-right: 10px">
           <a href="genindex.html" title="General Index"
              >index</a></li>
+        <li class="right" >
+          <a href="2011-May.html" title="2011-May"
+             >next</a> |</li>
         <li class="right" >
           <a href="2011-March.html" title="2011-March"
              >previous</a> |</li>
