@@ -50,7 +50,7 @@
 <div class="line">[Sunday 01 May 2011] [02:59:12] &lt;ASY&gt; wondering what can be the cause of this...</div>
 <div class="line">[Sunday 01 May 2011] [03:01:09] &lt;ASY&gt; I am sending messages from different threads as follows:</div>
 <div class="line">[Sunday 01 May 2011] [03:01:17] &lt;ASY&gt; zmq::message_t request(e,e-&gt;size(),&amp;event_queue::free_callback);</div>
-<div class="line">[Sunday 01 May 2011] [03:01:17] &lt;ASY&gt; <a href="#id11"><span class="problematic" id="id12">socket_req_</span></a>.send(request,ZMQ_NOBLOCK);</div>
+<div class="line">[Sunday 01 May 2011] [03:01:17] &lt;ASY&gt; <a href="#id18"><span class="problematic" id="id19">socket_req_</span></a>.send(request,ZMQ_NOBLOCK);</div>
 <div class="line">[Sunday 01 May 2011] [03:02:07] &lt;ASY&gt; in the main thread I do:  id = zmq_poll (&amp;poll_items[0], (int)poll_items.size(), 1000 * 1000);</div>
 <div class="line">[Sunday 01 May 2011] [03:03:03] &lt;ASY&gt; wondering if this is thread related.</div>
 <div class="line">[Sunday 01 May 2011] [03:03:24] &lt;ASY&gt; if anyone has any thoughts, please let me know.  thanks.</div>
@@ -598,10 +598,69 @@
 <div class="line">[Monday 02 May 2011] [15:25:24] &lt;iFire&gt;       that might be why</div>
 <div class="line">[Monday 02 May 2011] [15:26:29] &lt;sustrik&gt;     ah, it uses lua&#8217;s time function</div>
 <div class="line">[Monday 02 May 2011] [15:26:45] &lt;sustrik&gt;     if you want to have it consistent with C tests</div>
-<div class="line">[Monday 02 May 2011] [15:27:11] &lt;sustrik&gt;     you should use &#8220;stopwatch&#8221; provided with libzmq (see <a href="#id13"><span class="problematic" id="id14">zmq_utils.h_</span></a></div>
+<div class="line">[Monday 02 May 2011] [15:27:11] &lt;sustrik&gt;     you should use &#8220;stopwatch&#8221; provided with libzmq (see <a href="#id20"><span class="problematic" id="id21">zmq_utils.h_</span></a></div>
 <div class="line">[Monday 02 May 2011] [15:35:45] &lt;iFire&gt;       I guess it doesn&#8217;t really matter :) it&#8217;s fast enough. especially if I&#8217;m using inproc</div>
 <div class="line">[Monday 02 May 2011] [16:04:11] &lt;zerosanity&gt;  Is it possible to use epgm or pgm on EC2?</div>
 <div class="line">[Monday 02 May 2011] [16:29:11] &lt;jhawk28&gt;     zerosanity: it doesnt look like EC2 supports multicast</div>
+<div class="line">[Monday 02 May 2011] [17:44:35] &lt;<a href="#id13"><span class="problematic" id="id14">dan__</span></a>&gt;       I have a really basic forwarder question...  I&#8217;m using pubsub and when I connect directly, it seems to work just fine.  When I put a forwarder in the middle, I don&#8217;t get any messages.  I suspect I&#8217;m doing something wrong, but can&#8217;t figure it out.</div>
+<div class="line">[Monday 02 May 2011] [17:46:20] &lt;<a href="#id13"><span class="problematic" id="id15">dan__</span></a>&gt;       My minimal code looks like: publishers = context.socket(zmq.SUB) publishers.bind(&#8220;<a class="reference external" href="tcp://127.0.0.1:5555">tcp://127.0.0.1:5555</a>&#8221;); subscribers = context.socket(zmq.PUB) subscribers.bind(&#8216;<a class="reference external" href="tcp://127.0.0.1:5556')zmq.device(zmq.FORWARDER">tcp://127.0.0.1:5556&#8217;)zmq.device(zmq.FORWARDER</a>, publishers, subscribers)</div>
+<div class="line">[Monday 02 May 2011] [18:12:53] &lt;jhawk28&gt;     <a href="#id13"><span class="problematic" id="id16">dan__</span></a>: are you subscribing to all?</div>
+<div class="line">[Monday 02 May 2011] [18:16:54] &lt;jhawk28&gt;     <a href="#id13"><span class="problematic" id="id17">dan__</span></a>: you need to call publishers.subscribe(&#8220;&#8221;.getBytes, 0);</div>
+<div class="line">[Monday 02 May 2011] [18:19:32] &lt;neopallium&gt;  what version of zeromq was the zmq_stopwatch_*() functions introduced?</div>
+<div class="line">[Monday 02 May 2011] [18:25:06] &lt;jhawk28&gt;     neopallium: <a class="reference external" href="https://github.com/zeromq/libzmq/commit/3b636d7d185cd1a1fa300b4d9ca78d2587cb4bf5#diff-1">https://github.com/zeromq/libzmq/commit/3b636d7d185cd1a1fa300b4d9ca78d2587cb4bf5#diff-1</a></div>
+<div class="line">[Monday 02 May 2011] [18:25:14] &lt;jhawk28&gt;     thats when it was moved to zmq_utils.cpp</div>
+<div class="line">[Monday 02 May 2011] [18:27:10] &lt;neopallium&gt;  jhawk28: thanks, I am going to add support for those functions to my lua bindings and wanted to make sure it wasn&#8217;t a new feature.</div>
+<div class="line">[Monday 02 May 2011] [18:28:34] &lt;jhawk28&gt;     I&#8217;m seeing them at least back to Aug 7</div>
+<div class="line">[Monday 02 May 2011] [18:28:37] &lt;jhawk28&gt;     2010</div>
+<div class="line">[Monday 02 May 2011] [18:30:36] &lt;jhawk28&gt;     ah, found when it was added: 7f01e9970d211235fc8057de6dc41ba8ceafe795</div>
+<div class="line">[Monday 02 May 2011] [18:30:50] &lt;jhawk28&gt;     Jun 17, 2010</div>
+<div class="line">[Monday 02 May 2011] [18:32:40] &lt;neopallium&gt;  looks like that is zeromq 2.0.7</div>
+<div class="line">[Monday 02 May 2011] [18:33:59] &lt;jhawk28&gt;     based on the comment, it looks like it was removed then added</div>
+<div class="line">[Monday 02 May 2011] [18:34:14] &lt;neopallium&gt;  that is old enough, also those functions are not documented.</div>
+<div class="line">[Monday 02 May 2011] [18:34:14] &lt;jhawk28&gt;     and then moved on Apr 11, 2011</div>
+<div class="line">[Monday 02 May 2011] [18:35:01] &lt;neopallium&gt;  only the source was moved not the header prototypes.</div>
+<div class="line">[Monday 02 May 2011] [18:35:12] &lt;neopallium&gt;  so that is not a problem for bindings.</div>
+<div class="line">[Monday 02 May 2011] [18:36:34] &lt;neopallium&gt;  jhawk28: thanks for helping me track that down.  I didn&#8217;t think to use git blame to find out the answer.</div>
+<div class="line">[Monday 02 May 2011] [18:38:02] &lt;jhawk28&gt;     np</div>
+<div class="line">[Monday 02 May 2011] [20:06:24] &lt;neopallium&gt;  iFire: lua-zmq now has support for zmq_stopwatch_*() functions and the perf/<a href="#id11"><span class="problematic" id="id12">*</span></a>.lua benchmarks have been updated to use that instead of socket.gettime().</div>
+<div class="line">[Tuesday 03 May 2011] [01:21:02] &lt;Steve____&gt;  newbie question here - I just downloaded the windows version of zeromq, and opened up the project in visual studio 2008</div>
+<div class="line">[Tuesday 03 May 2011] [01:22:00] &lt;Steve____&gt;  two projects - inproc_lat, and inproc_thr show as unavailable.  were they removed?  or what do i do to get them in place?</div>
+<div class="line">[Tuesday 03 May 2011] [01:22:19] &lt;Steve____&gt;  (so far all I&#8217;ve done is downloaded the zip file from the &#8220;Grab the Software&#8221; page)</div>
+<div class="line">[Tuesday 03 May 2011] [01:53:44] &lt;iFire&gt;      bah</div>
+<div class="line">[Tuesday 03 May 2011] [02:52:29] Notice       -ChanServ- [#qt-labs] Welcome to the Qt developers public hideout. Qt Development Frameworks personnel will have Voice status, so they should be easy to pinpoint in the crowd. Please do not paste large blocks of code in the channel, but rather use a pastebin site.</div>
+<div class="line">[Tuesday 03 May 2011] [03:59:56] &lt;kryptom&gt;    hi there, i&#8217;m using zeromq 2.1.6 and trying out the ruby samples (hwclient and hwserver). In the zguide it says you can start the client (REQ), then start the server or restart the server (REP) with a running client. But when I try the samples &#8220;hang&#8221;, is this normal behaviour?</div>
+<div class="line">[Tuesday 03 May 2011] [04:06:56] &lt;pieterh&gt;    kryptom: it should work</div>
+<div class="line">[Tuesday 03 May 2011] [04:25:44] &lt;kryptom&gt;    sorry, got distracted</div>
+<div class="line">[Tuesday 03 May 2011] [04:26:05] &lt;kryptom&gt;    i would agree it should work ...</div>
+<div class="line">[Tuesday 03 May 2011] [04:28:15] &lt;kryptom&gt;    so, I start the client, start the server, then quit the server and start the server again - then the client hangs</div>
+<div class="line">[Tuesday 03 May 2011] [04:32:58] &lt;sustrik&gt;    the request may be lost</div>
+<div class="line">[Tuesday 03 May 2011] [04:33:10] &lt;sustrik&gt;    if it was processed by the server when it was shut down</div>
+<div class="line">[Tuesday 03 May 2011] [04:35:05] &lt;kryptom&gt;    checking the examples again ...</div>
+<div class="line">[Tuesday 03 May 2011] [05:19:33] &lt;steve_k&gt;    I&#8217;m having a problem.  I&#8217;m trying to test HelloWorld cross/platform cross/language.  I have the HelloWorldServer built in Java on Fedora 14, and two clients on Windows XP - One Java and One Python.</div>
+<div class="line">[Tuesday 03 May 2011] [05:20:08] &lt;steve_k&gt;    The Java client talks to the Java server just fine, but if I run the Python Client, the Java Server crashes with: Assertion failed: (<a href="#id22"><span class="problematic" id="id23">msg_</span></a>-&gt;flags | ZMQ_MSG_MASK) == 0xff (zmq.cpp:223)</div>
+<div class="line">[Tuesday 03 May 2011] [05:20:57] &lt;Guthur&gt;     steve_k: are you setting idenitities</div>
+<div class="line">[Tuesday 03 May 2011] [05:21:12] &lt;Guthur&gt;     identities*</div>
+<div class="line">[Tuesday 03 May 2011] [05:32:42] &lt;sustrik&gt;    steve_k: looks like you (or java binding) are using invalid zmq_msg_t</div>
+<div class="line">[Tuesday 03 May 2011] [05:33:21] &lt;sustrik&gt;    can you produce a minimal test case and fill a bug for jzmq project</div>
+<div class="line">[Tuesday 03 May 2011] [05:33:24] &lt;sustrik&gt;    ?</div>
+<div class="line">[Tuesday 03 May 2011] [05:39:16] &lt;steve_k&gt;    sorry - got disconnected.</div>
+<div class="line">[Tuesday 03 May 2011] [05:39:54] &lt;steve_k&gt;    where should I submit the bug?</div>
+<div class="line">[Tuesday 03 May 2011] [05:40:07] &lt;steve_k&gt;    the jzmq git repository?</div>
+<div class="line">[Tuesday 03 May 2011] [05:48:07] &lt;djc&gt;        2.0 and 2.1 should be over-the-network compatible, right?</div>
+<div class="line">[Tuesday 03 May 2011] [05:48:51] &lt;guido_g&gt;    yes</div>
+<div class="line">[Tuesday 03 May 2011] [05:52:03] &lt;djc&gt;        k, thanks</div>
+<div class="line">[Tuesday 03 May 2011] [05:52:24] &lt;djc&gt;        are there any good docs on the compatibility of major, minor and micro releases?</div>
+<div class="line">[Tuesday 03 May 2011] [05:52:42] &lt;djc&gt;        in terms of API, ABI and network framing</div>
+<div class="line">[Tuesday 03 May 2011] [06:00:47] &lt;pieterh&gt;    djc: <a class="reference external" href="http://www.zeromq.org/docs:policies">http://www.zeromq.org/docs:policies</a></div>
+<div class="line">[Tuesday 03 May 2011] [06:01:12] &lt;steve_k2&gt;   hmph... I went about building a test case and I ran the same script from linux instead of windows and it worked fine.</div>
+<div class="line">[Tuesday 03 May 2011] [06:01:32] &lt;pieterh&gt;    but it&#8217;s not complete, e.g. I&#8217;d like a policy on backwards compatibility of wire level protocols</div>
+<div class="line">[Tuesday 03 May 2011] [06:02:05] &lt;steve_k2&gt;   I&#8217;m going to try it from an external machine to see if that makes a difference. Otherwise, it must be a problem with my windows install of the python module.</div>
+<div class="line">[Tuesday 03 May 2011] [06:04:01] &lt;steve_k2&gt;   still - it&#8217;s a bit scary that a client can crash the server so easily.</div>
+<div class="line">[Tuesday 03 May 2011] [06:06:01] &lt;guido_g&gt;    trade-off between speed and angst</div>
+<div class="line">[Tuesday 03 May 2011] [06:11:14] &lt;Soleo&gt;      Hi, does anyone know about something about Queue Device? Should I add lock for each thread queued ?</div>
+<div class="line">[Tuesday 03 May 2011] [06:11:56] &lt;sustrik&gt;    steve_k2: <a class="reference external" href="https://github.com/zeromq/jzmq/issues">https://github.com/zeromq/jzmq/issues</a></div>
+<div class="line">[Tuesday 03 May 2011] [06:12:26] &lt;sustrik&gt;    Soleo: no</div>
+<div class="line">[Tuesday 03 May 2011] [06:14:29] &lt;Soleo&gt;      what if I am writing the same file in each thread?</div>
 </div>
 </div>
 

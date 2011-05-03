@@ -557,3 +557,62 @@
 | [Monday 02 May 2011] [15:35:45] <iFire>	I guess it doesn't really matter :) it's fast enough. especially if I'm using inproc
 | [Monday 02 May 2011] [16:04:11] <zerosanity>	Is it possible to use epgm or pgm on EC2?
 | [Monday 02 May 2011] [16:29:11] <jhawk28>	zerosanity: it doesnt look like EC2 supports multicast
+| [Monday 02 May 2011] [17:44:35] <dan__>	I have a really basic forwarder question...  I'm using pubsub and when I connect directly, it seems to work just fine.  When I put a forwarder in the middle, I don't get any messages.  I suspect I'm doing something wrong, but can't figure it out.
+| [Monday 02 May 2011] [17:46:20] <dan__>	My minimal code looks like: publishers = context.socket(zmq.SUB) publishers.bind("tcp://127.0.0.1:5555"); subscribers = context.socket(zmq.PUB) subscribers.bind('tcp://127.0.0.1:5556')zmq.device(zmq.FORWARDER, publishers, subscribers)
+| [Monday 02 May 2011] [18:12:53] <jhawk28>	dan__: are you subscribing to all?
+| [Monday 02 May 2011] [18:16:54] <jhawk28>	dan__: you need to call publishers.subscribe("".getBytes, 0);
+| [Monday 02 May 2011] [18:19:32] <neopallium>	what version of zeromq was the zmq_stopwatch_*() functions introduced?
+| [Monday 02 May 2011] [18:25:06] <jhawk28>	neopallium: https://github.com/zeromq/libzmq/commit/3b636d7d185cd1a1fa300b4d9ca78d2587cb4bf5#diff-1
+| [Monday 02 May 2011] [18:25:14] <jhawk28>	thats when it was moved to zmq_utils.cpp
+| [Monday 02 May 2011] [18:27:10] <neopallium>	jhawk28: thanks, I am going to add support for those functions to my lua bindings and wanted to make sure it wasn't a new feature.
+| [Monday 02 May 2011] [18:28:34] <jhawk28>	I'm seeing them at least back to Aug 7
+| [Monday 02 May 2011] [18:28:37] <jhawk28>	2010
+| [Monday 02 May 2011] [18:30:36] <jhawk28>	ah, found when it was added: 7f01e9970d211235fc8057de6dc41ba8ceafe795
+| [Monday 02 May 2011] [18:30:50] <jhawk28>	Jun 17, 2010
+| [Monday 02 May 2011] [18:32:40] <neopallium>	looks like that is zeromq 2.0.7
+| [Monday 02 May 2011] [18:33:59] <jhawk28>	based on the comment, it looks like it was removed then added
+| [Monday 02 May 2011] [18:34:14] <neopallium>	that is old enough, also those functions are not documented.
+| [Monday 02 May 2011] [18:34:14] <jhawk28>	and then moved on Apr 11, 2011
+| [Monday 02 May 2011] [18:35:01] <neopallium>	only the source was moved not the header prototypes.
+| [Monday 02 May 2011] [18:35:12] <neopallium>	so that is not a problem for bindings.
+| [Monday 02 May 2011] [18:36:34] <neopallium>	jhawk28: thanks for helping me track that down.  I didn't think to use git blame to find out the answer.
+| [Monday 02 May 2011] [18:38:02] <jhawk28>	np
+| [Monday 02 May 2011] [20:06:24] <neopallium>	iFire: lua-zmq now has support for zmq_stopwatch_*() functions and the perf/*.lua benchmarks have been updated to use that instead of socket.gettime().
+| [Tuesday 03 May 2011] [01:21:02] <Steve____>	newbie question here - I just downloaded the windows version of zeromq, and opened up the project in visual studio 2008
+| [Tuesday 03 May 2011] [01:22:00] <Steve____>	two projects - inproc_lat, and inproc_thr show as unavailable.  were they removed?  or what do i do to get them in place?
+| [Tuesday 03 May 2011] [01:22:19] <Steve____>	(so far all I've done is downloaded the zip file from the "Grab the Software" page)
+| [Tuesday 03 May 2011] [01:53:44] <iFire>	bah
+| [Tuesday 03 May 2011] [02:52:29] Notice	-ChanServ- [#qt-labs] Welcome to the Qt developers public hideout. Qt Development Frameworks personnel will have Voice status, so they should be easy to pinpoint in the crowd. Please do not paste large blocks of code in the channel, but rather use a pastebin site.
+| [Tuesday 03 May 2011] [03:59:56] <kryptom>	hi there, i'm using zeromq 2.1.6 and trying out the ruby samples (hwclient and hwserver). In the zguide it says you can start the client (REQ), then start the server or restart the server (REP) with a running client. But when I try the samples "hang", is this normal behaviour?
+| [Tuesday 03 May 2011] [04:06:56] <pieterh>	kryptom: it should work
+| [Tuesday 03 May 2011] [04:25:44] <kryptom>	sorry, got distracted
+| [Tuesday 03 May 2011] [04:26:05] <kryptom>	i would agree it should work ...
+| [Tuesday 03 May 2011] [04:28:15] <kryptom>	so, I start the client, start the server, then quit the server and start the server again - then the client hangs
+| [Tuesday 03 May 2011] [04:32:58] <sustrik>	the request may be lost
+| [Tuesday 03 May 2011] [04:33:10] <sustrik>	if it was processed by the server when it was shut down
+| [Tuesday 03 May 2011] [04:35:05] <kryptom>	checking the examples again ...
+| [Tuesday 03 May 2011] [05:19:33] <steve_k>	I'm having a problem.  I'm trying to test HelloWorld cross/platform cross/language.  I have the HelloWorldServer built in Java on Fedora 14, and two clients on Windows XP - One Java and One Python.
+| [Tuesday 03 May 2011] [05:20:08] <steve_k>	The Java client talks to the Java server just fine, but if I run the Python Client, the Java Server crashes with: Assertion failed: (msg_->flags | ZMQ_MSG_MASK) == 0xff (zmq.cpp:223)
+| [Tuesday 03 May 2011] [05:20:57] <Guthur>	steve_k: are you setting idenitities
+| [Tuesday 03 May 2011] [05:21:12] <Guthur>	identities*
+| [Tuesday 03 May 2011] [05:32:42] <sustrik>	steve_k: looks like you (or java binding) are using invalid zmq_msg_t
+| [Tuesday 03 May 2011] [05:33:21] <sustrik>	can you produce a minimal test case and fill a bug for jzmq project
+| [Tuesday 03 May 2011] [05:33:24] <sustrik>	?
+| [Tuesday 03 May 2011] [05:39:16] <steve_k>	sorry - got disconnected.
+| [Tuesday 03 May 2011] [05:39:54] <steve_k>	where should I submit the bug?
+| [Tuesday 03 May 2011] [05:40:07] <steve_k>	the jzmq git repository?
+| [Tuesday 03 May 2011] [05:48:07] <djc>	2.0 and 2.1 should be over-the-network compatible, right?
+| [Tuesday 03 May 2011] [05:48:51] <guido_g>	yes
+| [Tuesday 03 May 2011] [05:52:03] <djc>	k, thanks
+| [Tuesday 03 May 2011] [05:52:24] <djc>	are there any good docs on the compatibility of major, minor and micro releases?
+| [Tuesday 03 May 2011] [05:52:42] <djc>	in terms of API, ABI and network framing
+| [Tuesday 03 May 2011] [06:00:47] <pieterh>	djc: http://www.zeromq.org/docs:policies
+| [Tuesday 03 May 2011] [06:01:12] <steve_k2>	hmph... I went about building a test case and I ran the same script from linux instead of windows and it worked fine.
+| [Tuesday 03 May 2011] [06:01:32] <pieterh>	but it's not complete, e.g. I'd like a policy on backwards compatibility of wire level protocols
+| [Tuesday 03 May 2011] [06:02:05] <steve_k2>	I'm going to try it from an external machine to see if that makes a difference. Otherwise, it must be a problem with my windows install of the python module.
+| [Tuesday 03 May 2011] [06:04:01] <steve_k2>	still - it's a bit scary that a client can crash the server so easily.
+| [Tuesday 03 May 2011] [06:06:01] <guido_g>	trade-off between speed and angst
+| [Tuesday 03 May 2011] [06:11:14] <Soleo>	Hi, does anyone know about something about Queue Device? Should I add lock for each thread queued ?
+| [Tuesday 03 May 2011] [06:11:56] <sustrik>	steve_k2: https://github.com/zeromq/jzmq/issues
+| [Tuesday 03 May 2011] [06:12:26] <sustrik>	Soleo: no
+| [Tuesday 03 May 2011] [06:14:29] <Soleo>	what if I am writing the same file in each thread?
