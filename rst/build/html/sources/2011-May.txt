@@ -616,3 +616,791 @@
 | [Tuesday 03 May 2011] [06:11:56] <sustrik>	steve_k2: https://github.com/zeromq/jzmq/issues
 | [Tuesday 03 May 2011] [06:12:26] <sustrik>	Soleo: no
 | [Tuesday 03 May 2011] [06:14:29] <Soleo>	what if I am writing the same file in each thread?
+| [Tuesday 03 May 2011] [06:21:54] <Guthur>	that issue is really orthogonal to the queue device
+| [Tuesday 03 May 2011] [06:24:04] <Guthur>	possibly you want something like this: <fan out> Process stuff <fan in> write file
+| [Tuesday 03 May 2011] [06:38:08] <djc>	pieterh: can you add something there about network protocol/framing compat?
+| [Tuesday 03 May 2011] [06:39:15] <pieterh>	djc: what would you like me to add?
+| [Tuesday 03 May 2011] [06:39:36] <djc>	ah, nm, read your statement about protocol
+| [Tuesday 03 May 2011] [06:39:48] <djc>	if there is no policy, would be hard to describe it
+| [Tuesday 03 May 2011] [06:40:33] <djc>	if the network protocol doesn't change that often, perhaps it would suffice to have an exhaustive list of actual versions that changed it
+| [Tuesday 03 May 2011] [06:40:55] <pieterh>	you mean for the future?
+| [Tuesday 03 May 2011] [06:41:03] <pieterh>	the protocol will definitely change for 3.x
+| [Tuesday 03 May 2011] [06:41:07] <djc>	yeah, or even for the current versions
+| [Tuesday 03 May 2011] [06:41:17] <pieterh>	there's only one current stable version, 2.1.x
+| [Tuesday 03 May 2011] [06:41:21] <djc>	i.e. 2.0 and 2.1, which I bet a lot of people with production stuff will be upgrading soon
+| [Tuesday 03 May 2011] [06:41:46] <pieterh>	all 2.x versions use the same protocol
+| [Tuesday 03 May 2011] [06:41:49] <djc>	and I've also noticed a 2.2 repo, not sure what that's about? all the talk seems to be about 3.x
+| [Tuesday 03 May 2011] [06:42:01] <djc>	okay, well, that would be useful info for that wiki page
+| [Tuesday 03 May 2011] [06:42:16] <pieterh>	well, 2.2 is for ongoing evolution of the 2.1 packaging
+| [Tuesday 03 May 2011] [06:42:33] <djc>	what do you mean by "packaging" exactly?
+| [Tuesday 03 May 2011] [06:42:47] <pieterh>	well, 2.2 is for two things
+| [Tuesday 03 May 2011] [06:43:02] <pieterh>	a. new functionality that can't go into 2.1 because that's for bug fixes only
+| [Tuesday 03 May 2011] [06:43:14] <pieterh>	b. new functionality packaged with libzmq, e.g. czmq
+| [Tuesday 03 May 2011] [06:43:35] <djc>	so what's the difference between 2.2 and 3.x?
+| [Tuesday 03 May 2011] [06:43:49] <pieterh>	3.x breaks the API and wire protocol totally...
+| [Tuesday 03 May 2011] [06:44:06] <pieterh>	whereas 2.2 is ... hey, this is explained by the wiki page :)
+| [Tuesday 03 May 2011] [06:44:29] <pieterh>	2.2 is meant to be a *compatible* evolution of 2.1
+| [Tuesday 03 May 2011] [06:44:38] <pieterh>	whereas 3.0 is incompatible in several major ways
+| [Tuesday 03 May 2011] [06:45:10] <pieterh>	I'm not 100% sure we'll need the 2.2 branch but it's there and I maintain it
+| [Tuesday 03 May 2011] [06:45:18] <djc>	okay, sounds good
+| [Tuesday 03 May 2011] [06:45:30] <djc>	yeah, I guess the wiki page is actually quite comprehensive
+| [Tuesday 03 May 2011] [06:46:02] <pieterh>	there needs to be a page describing present/future versions, maybe I'll add that as a section to this page...
+| [Tuesday 03 May 2011] [06:53:57] <pieterh>	djc: OK, I've summarized the current release situation on that wiki page
+| [Tuesday 03 May 2011] [06:54:06] <pieterh>	will you review that and let me know if it's ok?
+| [Tuesday 03 May 2011] [06:55:16] <djc>	it seems mostly fine
+| [Tuesday 03 May 2011] [06:56:04] <djc>	it might be useful to bring up ZMTP sooner
+| [Tuesday 03 May 2011] [06:56:18] <djc>	since it seems to provide useful vocabulary
+| [Tuesday 03 May 2011] [06:56:20] <pieterh>	Indeed... hang on...
+| [Tuesday 03 May 2011] [06:58:02] <pieterh>	done
+| [Tuesday 03 May 2011] [07:00:02] <djc>	better, thanks
+| [Tuesday 03 May 2011] [07:04:19] <pieterh>	thanks to you... this is good stuff
+| [Tuesday 03 May 2011] [07:47:19] <pieterh>	https://github.com/zeromq/libzmq/issues/209
+| [Tuesday 03 May 2011] [08:32:50] <sustrik>	pieterh: fix to blast:
+| [Tuesday 03 May 2011] [08:33:01] <pieterh>	ja?
+| [Tuesday 03 May 2011] [08:33:03] <sustrik>	line 56 should be: int rc = connect (handle, (struct sockaddr*) &sin, sizeof (sin));
+| [Tuesday 03 May 2011] [08:33:52] <pieterh>	ok, done and pushed
+| [Tuesday 03 May 2011] [08:47:19] <sustrik>	pieterh: the problem doesn't seem to happen with 3.0
+| [Tuesday 03 May 2011] [08:47:53] <pieterh>	sustrik: interesting, does it run for 1M iterations?
+| [Tuesday 03 May 2011] [08:48:10] <sustrik>	dunno
+| [Tuesday 03 May 2011] [08:48:18] <sustrik>	the server just keeps printing
+| [Tuesday 03 May 2011] [08:48:30] <sustrik>	"Received Hello"
+| [Tuesday 03 May 2011] [08:48:39] <pieterh>	lol
+| [Tuesday 03 May 2011] [08:48:47] <pieterh>	well, that's a good sign
+| [Tuesday 03 May 2011] [08:48:59] <pieterh>	the blast program sends 1GB of random data
+| [Tuesday 03 May 2011] [08:49:05] <sustrik>	heh
+| [Tuesday 03 May 2011] [08:49:12] <sustrik>	the blast seems to fail:
+| [Tuesday 03 May 2011] [08:49:13] <sustrik>	sustrik@istvan:~/libzmq/src$ ./blast 
+| [Tuesday 03 May 2011] [08:49:13] <sustrik>	Test failed at count 47
+| [Tuesday 03 May 2011] [08:54:15] <djc>	I just upgraded a C++ server thingy from 2.0 to 2.1
+| [Tuesday 03 May 2011] [08:54:18] <djc>	and now it keeps asserting
+| [Tuesday 03 May 2011] [08:54:42] <sustrik>	pieterh: ok, the blast failure is expected
+| [Tuesday 03 May 2011] [08:54:42] <djc>	from zmq.cpp:223
+| [Tuesday 03 May 2011] [08:54:53] <sustrik>	it's "connection refused by peer"
+| [Tuesday 03 May 2011] [08:55:11] <sustrik>	djc: yes, that's what we are talking about now
+| [Tuesday 03 May 2011] [08:55:38] <sustrik>	djc: any chance to get a minimal test case?
+| [Tuesday 03 May 2011] [08:56:16] <djc>	doesn't seem to be a whole lot I need to do
+| [Tuesday 03 May 2011] [08:57:05] <sustrik>	what do you do?
+| [Tuesday 03 May 2011] [08:57:33] <djc>	hmm, there might be threads involved
+| [Tuesday 03 May 2011] [08:58:06] <sustrik>	ok, forget about it them
+| [Tuesday 03 May 2011] [08:58:08] <sustrik>	then
+| [Tuesday 03 May 2011] [08:58:26] <djc>	well, not sure, this should all happen on the main thread
+| [Tuesday 03 May 2011] [08:58:29] <djc>	but the output is weird
+| [Tuesday 03 May 2011] [08:58:30] <sustrik>	the blast client pieter wrote just now is allegedly reporting the same error
+| [Tuesday 03 May 2011] [08:58:32] <djc>	http://paste.pocoo.org/show/382144/
+| [Tuesday 03 May 2011] [08:59:50] <sustrik>	djc: does that happen when the peer starts sending messages?
+| [Tuesday 03 May 2011] [08:59:54] <sustrik>	or even before that?
+| [Tuesday 03 May 2011] [09:00:14] <djc>	the req/rep doesn't have a peer at this point
+| [Tuesday 03 May 2011] [09:00:21] <djc>	I'm testing with the PUB now
+| [Tuesday 03 May 2011] [09:00:42] <sustrik>	so the PUB fails even before there's a SUB connected?
+| [Tuesday 03 May 2011] [09:01:04] <djc>	oh yeah, there's no SUB or REQ involved here
+| [Tuesday 03 May 2011] [09:01:20] <sustrik>	ok
+| [Tuesday 03 May 2011] [09:03:52] <djc>	sustrik: here's something more elaborate:
+| [Tuesday 03 May 2011] [09:03:53] <djc>	http://paste.pocoo.org/show/382147/
+| [Tuesday 03 May 2011] [09:04:25] <djc>	where nothing should be coming in on this->side, and nothing's listening on this->pub
+| [Tuesday 03 May 2011] [09:04:32] <djc>	(no one is connected to this->side, even)
+| [Tuesday 03 May 2011] [09:04:55] <djc>	mmm
+| [Tuesday 03 May 2011] [09:05:23] <sustrik>	djc: let it be for now
+| [Tuesday 03 May 2011] [09:05:30] <sustrik>	we have to sort this out with pieterh
+| [Tuesday 03 May 2011] [09:05:30] <djc>	that's wrong, it only fails if something is connected to this->side, but not sending requests
+| [Tuesday 03 May 2011] [09:05:43] <sustrik>	probably a problem with backporting
+| [Tuesday 03 May 2011] [09:06:47] <djc>	it looks like it somehow tries to process a connection event on the REP socket as a message
+| [Tuesday 03 May 2011] [09:12:42] <djc>	ah, more info: it triggers when I try to connect using 2.0.9, but works correctly when trying to connect using 2.1.6
+| [Tuesday 03 May 2011] [09:15:27] <sustrik>	yeah, the relevant code was added to 2.0.6
+| [Tuesday 03 May 2011] [09:15:39] <sustrik>	2.1.6 i mean
+| [Tuesday 03 May 2011] [09:16:05] <djc>	you mean, the assert?
+| [Tuesday 03 May 2011] [09:16:39] <sustrik>	yes
+| [Tuesday 03 May 2011] [09:16:47] <sustrik>	checking for validity of zmq_msg_t objects
+| [Tuesday 03 May 2011] [09:19:25] <djc>	so is the check too tight or should that function not be getting that message?
+| [Tuesday 03 May 2011] [09:21:34] <sustrik>	several possibilities
+| [Tuesday 03 May 2011] [09:21:57] 	 * sustrik is investigating
+| [Tuesday 03 May 2011] [09:34:00] <sustrik>	djc: still there?
+| [Tuesday 03 May 2011] [09:34:07] <djc>	yup
+| [Tuesday 03 May 2011] [09:34:21] <sustrik>	can you try a patch for me?
+| [Tuesday 03 May 2011] [09:34:29] <djc>	sure
+| [Tuesday 03 May 2011] [09:34:38] <sustrik>	open src/decoder.cpp
+| [Tuesday 03 May 2011] [09:34:47] <sustrik>	line 112
+| [Tuesday 03 May 2011] [09:34:54] <sustrik>	replace it by this:
+| [Tuesday 03 May 2011] [09:34:55] <sustrik>	in_progress.flags = tmpbuf [0] | ~ZMQ_MSG_MASK;
+| [Tuesday 03 May 2011] [09:35:04] <sustrik>	and try whether it helps
+| [Tuesday 03 May 2011] [09:36:03] <djc>	okay, give me a moment
+| [Tuesday 03 May 2011] [09:38:03] <pieterh>	sustrik: re, was out
+| [Tuesday 03 May 2011] [09:38:35] <sustrik>	see the above fix
+| [Tuesday 03 May 2011] [09:38:38] <sustrik>	it should help
+| [Tuesday 03 May 2011] [09:38:44] <sustrik>	doesn't apply to 3.0 though
+| [Tuesday 03 May 2011] [09:39:00] <sustrik>	the code there have already changed
+| [Tuesday 03 May 2011] [09:39:00] <djc>	sustrik: seems to work just fine
+| [Tuesday 03 May 2011] [09:39:04] <sustrik>	ok
+| [Tuesday 03 May 2011] [09:39:12] <djc>	at least I can't reproduce as before
+| [Tuesday 03 May 2011] [09:39:20] <sustrik>	pieterh: can you apply the fix?
+| [Tuesday 03 May 2011] [09:39:21] <pieterh>	sustrik: should I try that patch wrt blast too?
+| [Tuesday 03 May 2011] [09:39:26] <pieterh>	:) ok
+| [Tuesday 03 May 2011] [09:39:44] <sustrik>	blast is ok
+| [Tuesday 03 May 2011] [09:39:54] <sustrik>	ah
+| [Tuesday 03 May 2011] [09:39:57] <sustrik>	i did
+| [Tuesday 03 May 2011] [09:40:01] <sustrik>	it fails elsewhere
+| [Tuesday 03 May 2011] [09:41:35] <pieterh>	sustrik: it's going to fail in lots of places before it's fully robust :)
+| [Tuesday 03 May 2011] [09:41:36] <pieterh>	Assertion failed: msg_->flags & ZMQ_MSG_MORE (rep.cpp:81)
+| [Tuesday 03 May 2011] [09:41:56] <pieterh>	I've created a branch, we can fix these one by one
+| [Tuesday 03 May 2011] [09:48:28] <sustrik>	yup, same in 3.0
+| [Tuesday 03 May 2011] [09:48:37] <sustrik>	not that easy to fix though
+| [Tuesday 03 May 2011] [09:53:42] <pieterh>	do you think we can fix these in 2.1?
+| [Tuesday 03 May 2011] [09:54:06] <pieterh>	it's mostly to be on malformed messages, of course
+| [Tuesday 03 May 2011] [09:54:55] <pieterh>	actually I need to make a test case with all socket types
+| [Tuesday 03 May 2011] [10:00:14] <sustrik>	malformed frames can be solved easily
+| [Tuesday 03 May 2011] [10:00:39] <sustrik>	malformed messages as such is a problem
+| [Tuesday 03 May 2011] [10:01:06] <sustrik>	as the I/O thread currently has no idea of what socket type it is handling
+| [Tuesday 03 May 2011] [10:01:22] <sustrik>	and thus can't check the validity of socket-type-specific protocol
+| [Tuesday 03 May 2011] [10:03:08] <pieterh>	indeed
+| [Tuesday 03 May 2011] [10:03:18] <pieterh>	however it shouldn't assert when it gets confused...
+| [Tuesday 03 May 2011] [10:04:24] <pieterh>	So I've replaced line 81 in rep.cpp:             zmq_assert (msg_->flags & ZMQ_MSG_MORE);
+| [Tuesday 03 May 2011] [10:04:30] <pieterh>	with 
+| [Tuesday 03 May 2011] [10:04:30] <pieterh>	            if (!msg_->flags & ZMQ_MSG_MORE) {
+| [Tuesday 03 May 2011] [10:04:30] <pieterh>	                errno = EFAULT;
+| [Tuesday 03 May 2011] [10:04:31] <pieterh>	                return -1;
+| [Tuesday 03 May 2011] [10:04:31] <pieterh>	            }
+| [Tuesday 03 May 2011] [10:04:35] <pieterh>	and it no longer asserts
+| [Tuesday 03 May 2011] [10:04:44] <pieterh>	at least on a rep socket test
+| [Tuesday 03 May 2011] [10:05:20] <pieterh>	eventually runs out of resources: Assertion failed: new_sndbuf > old_sndbuf (mailbox.cpp:183)
+| [Tuesday 03 May 2011] [10:21:00] <sustrik>	hm, that's hiding on a problem
+| [Tuesday 03 May 2011] [10:21:03] <sustrik>	of*
+| [Tuesday 03 May 2011] [10:21:17] <pieterh>	you mean returning -1?
+| [Tuesday 03 May 2011] [10:21:21] <sustrik>	yes
+| [Tuesday 03 May 2011] [10:21:34] <sustrik>	it won't assert but it'll leave state machine in an inconsistent state
+| [Tuesday 03 May 2011] [10:22:35] <pieterh>	hmm, let me check if that's the case...
+| [Tuesday 03 May 2011] [10:24:13] <pieterh>	it appears the FSM remains in a consistent state
+| [Tuesday 03 May 2011] [10:25:39] <sustrik>	there's a lot of state there
+| [Tuesday 03 May 2011] [10:25:52] <sustrik>	the current pipe
+| [Tuesday 03 May 2011] [10:26:05] <sustrik>	the "more" flag
+| [Tuesday 03 May 2011] [10:26:08] <pieterh>	what is weird is that it no longer asserts but I don't get an error rc either
+| [Tuesday 03 May 2011] [10:26:09] <sustrik>	and so on
+| [Tuesday 03 May 2011] [10:26:21] <sustrik>	strange
+| [Tuesday 03 May 2011] [10:26:59] <pieterh>	could be my test is wrong, let me add some brackets
+| [Tuesday 03 May 2011] [10:27:15] <pieterh>	ah, better
+| [Tuesday 03 May 2011] [10:29:10] <pieterh>	Ok, so I'm getting the error return properly
+| [Tuesday 03 May 2011] [10:29:18] <pieterh>	it does not get into FSM confusion
+| [Tuesday 03 May 2011] [10:29:47] <pieterh>	but I'd need a more sophisticated test case to know if it recovers properly
+| [Tuesday 03 May 2011] [10:30:05] <pieterh>	also what it should do is close the socket when it gets garbage, not continue reading off it
+| [Tuesday 03 May 2011] [10:30:17] <sustrik>	that's the point
+| [Tuesday 03 May 2011] [10:35:58] <Guthur>	<pieterh> could be my test is wrong, let me add some brackets ... Does this work for all testing
+| [Tuesday 03 May 2011] [10:36:38] <pieterh>	Guthur: the code had to be "if (!(msg_->flags & ZMQ_MSG_MORE)) {"
+| [Tuesday 03 May 2011] [10:36:40] <Guthur>	though as a lisper I would always say there is never enough parenthesis
+| [Tuesday 03 May 2011] [10:37:21] <Guthur>	...and that's not even Lisp, hehe
+| [Tuesday 03 May 2011] [10:44:38] <djc>	so, if I have a connected REQ socket, and the REP server restarts
+| [Tuesday 03 May 2011] [10:44:51] <djc>	it looks like the REQ will reconnect and send new messages fine
+| [Tuesday 03 May 2011] [10:45:04] <djc>	but the response from the REP doesn't make it to the client
+| [Tuesday 03 May 2011] [10:45:09] <djc>	does that make sense?
+| [Tuesday 03 May 2011] [10:50:49] <sustrik>	not really
+| [Tuesday 03 May 2011] [10:50:59] <sustrik>	do you have a test case?
+| [Tuesday 03 May 2011] [10:51:24] <djc>	I saw it a few times, doesn't seem to be very reproducible
+| [Tuesday 03 May 2011] [10:51:57] <sustrik>	what can happen is that the server is killed while it processes the request
+| [Tuesday 03 May 2011] [10:52:02] <sustrik>	in such case the request is lost
+| [Tuesday 03 May 2011] [10:52:38] <djc>	no, that's not the case here
+| [Tuesday 03 May 2011] [10:54:14] <sustrik>	the strange thing about it is that from server's PoV, the reconnect is simply a new client
+| [Tuesday 03 May 2011] [10:54:21] <sustrik>	so it should behave in standard way
+| [Tuesday 03 May 2011] [10:54:34] <djc>	yeah
+| [Tuesday 03 May 2011] [10:58:15] <pieterh>	djc: are you using explicit identities?
+| [Tuesday 03 May 2011] [10:58:28] <djc>	pieterh: nope
+| [Tuesday 03 May 2011] [10:58:35] <pieterh>	ok
+| [Tuesday 03 May 2011] [10:59:23] <pieterh>	djc: is it possible you're not checking the return code from zmq_recv or zmq_send?
+| [Tuesday 03 May 2011] [10:59:52] <djc>	I was checking it
+| [Tuesday 03 May 2011] [11:00:05] <djc>	but actually it seemed like the zmq_send() on the server was blocking
+| [Tuesday 03 May 2011] [11:01:56] <pieterh>	djc: I guess the point is without a concrete test case it's practically impossible to investigate
+| [Tuesday 03 May 2011] [11:02:03] <djc>	yeah
+| [Tuesday 03 May 2011] [11:22:43] <djc>	will that assert fix (with the msg decoder) appear in a release soon?
+| [Tuesday 03 May 2011] [11:22:54] <djc>	or would it be valuable to put the patch in our distribution
+| [Tuesday 03 May 2011] [11:23:43] <sustrik>	that's up to pieterh
+| [Tuesday 03 May 2011] [11:24:02] <pieterh>	djc: that fix will go into 2.1.7, yes
+| [Tuesday 03 May 2011] [11:24:43] <pieterh>	sustrik: do we have an issue number for that decoder fix?
+| [Tuesday 03 May 2011] [11:24:55] <djc>	pieterh: do you have an intended ETA for that? sorry to be nagging all the time, I'm trying to use zmq-2.1 in our production setup but if there's issues it's kind of scary
+| [Tuesday 03 May 2011] [11:25:04] <sustrik>	nope
+| [Tuesday 03 May 2011] [11:25:14] <sustrik>	it's bug on 2-1
+| [Tuesday 03 May 2011] [11:25:23] <pieterh>	sustrik:  no open issues for it?
+| [Tuesday 03 May 2011] [11:25:28] <djc>	btw, I just tried to start working with ZMQ_FD, which is what I was actually upgrading for, but so far I haven't gotten it to work
+| [Tuesday 03 May 2011] [11:25:38] <sustrik>	it doesn't exist in libzmq
+| [Tuesday 03 May 2011] [11:25:56] <sustrik>	so, i guess, the issue should be in zeromq2-1 repo
+| [Tuesday 03 May 2011] [11:26:16] <sustrik>	djc: what's the problem?
+| [Tuesday 03 May 2011] [11:26:31] <djc>	poll doesn't seem to fire
+| [Tuesday 03 May 2011] [11:26:31] <pieterh>	sustrik: well, the libzmq repo has all the issues ever reported...
+| [Tuesday 03 May 2011] [11:27:09] <sustrik>	djc: ibeware! it's edge-triggered
+| [Tuesday 03 May 2011] [11:27:22] <sustrik>	pieterh: well, why not use issue 209 then?
+| [Tuesday 03 May 2011] [11:27:23] <pieterh>	I see issue 206
+| [Tuesday 03 May 2011] [11:28:07] <djc>	sustrik: right, I read that in the docs
+| [Tuesday 03 May 2011] [11:28:14] <djc>	does that mean it will only work with epoll, or something?
+| [Tuesday 03 May 2011] [11:28:20] <sustrik>	yes, 206 seems to be the same thing
+| [Tuesday 03 May 2011] [11:28:25] <pieterh>	sustrik: can you verify whether that 1-line fix actually solves 206?
+| [Tuesday 03 May 2011] [11:28:37] <pieterh>	that does not look like futzing, but a real bug in zmq
+| [Tuesday 03 May 2011] [11:28:54] <pieterh>	no test case, so I mean "verify" as in "give an opinion"
+| [Tuesday 03 May 2011] [11:29:03] <sustrik>	nope, there's no test case in 206
+| [Tuesday 03 May 2011] [11:29:10] <sustrik>	ah
+| [Tuesday 03 May 2011] [11:29:18] <sustrik>	i gues it's related
+| [Tuesday 03 May 2011] [11:29:22] <pieterh>	OK, I'll push the fix to 2.1 master and people can test it from github
+| [Tuesday 03 May 2011] [11:29:39] <sustrik>	djc: it means it fires only on state change
+| [Tuesday 03 May 2011] [11:30:08] <sustrik>	have a look at epoll docs for explanation of edge-triggering
+| [Tuesday 03 May 2011] [11:31:41] <djc>	sustrik: well, for me it doesn't even trigger the first time I send something to it
+| [Tuesday 03 May 2011] [11:32:16] <sustrik>	presumably there was no state change
+| [Tuesday 03 May 2011] [11:32:33] <joelr>	folks, what os specifies pathnames like this?
+| [Tuesday 03 May 2011] [11:32:34] <sustrik>	what you should do is:
+| [Tuesday 03 May 2011] [11:32:34] <joelr>	rc = zmq_bind(socket, "ipc:\/\@@//@@tmp/feeds/0"); assert (rc == 0);
+| [Tuesday 03 May 2011] [11:32:40] <djc>	pieterh: I had a real issue with 2.0.9 client (REQ) connecting to 2.1.6 server (REP), which was fixed by sustrik's patch
+| [Tuesday 03 May 2011] [11:32:49] <pieterh>	djc: you can help push the 2.1.7 release by testing the fix for 206, see my last comment on https://github.com/zeromq/libzmq/issues/206
+| [Tuesday 03 May 2011] [11:33:01] <joelr>	this is for /* Assign the pathname "/tmp/feeds/0" */
+| [Tuesday 03 May 2011] [11:33:08] <sustrik>	1. check ZMQ_EVENTS
+| [Tuesday 03 May 2011] [11:33:10] <pieterh>	djc: ... hmm, can you confirm that's the same as 206 (we assume it is)
+| [Tuesday 03 May 2011] [11:33:20] <sustrik>	2. if POLLIN is set read the message
+| [Tuesday 03 May 2011] [11:33:35] <sustrik>	3. if it's not, poll on ZMQ_FD
+| [Tuesday 03 May 2011] [11:33:44] <pieterh>	joelr: don't copy/paste code from the Guide
+| [Tuesday 03 May 2011] [11:33:47] <pieterh>	it'll come out weird
+| [Tuesday 03 May 2011] [11:33:48] <sustrik>	4. when ZMQ_FD triggers goto 1
+| [Tuesday 03 May 2011] [11:33:55] <pieterh>	please grab the github sources and use that
+| [Tuesday 03 May 2011] [11:34:11] <joelr>	pieterh: that's what's in the guide, take a look http://api.zeromq.org/2-1:zmq-ipc
+| [Tuesday 03 May 2011] [11:34:31] <djc>	sustrik: can I start at 3 if I assure no one is connected to it at start time?
+| [Tuesday 03 May 2011] [11:34:32] <pieterh>	joelr: this is a bug in the formatting
+| [Tuesday 03 May 2011] [11:34:56] <joelr>	pieterh: what's the correct format then?
+| [Tuesday 03 May 2011] [11:35:15] <sustrik>	joelr: a valid path + filename
+| [Tuesday 03 May 2011] [11:35:30] <sustrik>	djc: no
+| [Tuesday 03 May 2011] [11:35:36] <pieterh>	I've patched it manually now
+| [Tuesday 03 May 2011] [11:35:45] <pieterh>	ipc:// followed by path name, so ipc:///tmp/etc
+| [Tuesday 03 May 2011] [11:35:58] <joelr>	pieterh: thanks
+| [Tuesday 03 May 2011] [11:36:21] <pieterh>	joelr: I'll fix the API doc generation tool, this is a bug... sorry about that
+| [Tuesday 03 May 2011] [11:36:31] <joelr>	np
+| [Tuesday 03 May 2011] [11:41:03] <djc>	sustrik: still doesn't work
+| [Tuesday 03 May 2011] [11:41:29] <sustrik>	what happens?
+| [Tuesday 03 May 2011] [11:41:52] <djc>	there's no POLLIN on the ZMQ_EVENTS before the poll()
+| [Tuesday 03 May 2011] [11:42:03] <djc>	and poll() doesn't fire on the ZMQ_FD after
+| [Tuesday 03 May 2011] [11:42:22] <sustrik>	even though there's a message, right?
+| [Tuesday 03 May 2011] [11:42:28] <djc>	yeah
+| [Tuesday 03 May 2011] [11:42:33] <sustrik>	then it's a bug
+| [Tuesday 03 May 2011] [11:42:46] <sustrik>	do you have a test case?
+| [Tuesday 03 May 2011] [11:43:07] <djc>	I can reproduce this, it's not exactly minimal
+| [Tuesday 03 May 2011] [11:43:15] <sustrik>	goodo
+| [Tuesday 03 May 2011] [11:43:21] <sustrik>	open an issue for it then
+| [Tuesday 03 May 2011] [11:43:29] <djc>	let me try something first
+| [Tuesday 03 May 2011] [11:44:34] <djc>	nope, doesn't work, I'll file an issue
+| [Tuesday 03 May 2011] [11:57:56] <djc>	sustrik: okay, I was being stupid, sorry about that
+| [Tuesday 03 May 2011] [11:58:03] <djc>	ZMQ_FD works just fine
+| [Tuesday 03 May 2011] [11:58:50] <sustrik>	great :)
+| [Tuesday 03 May 2011] [12:25:26] <djc>	if you want to reuse a zmq_msg_t, do you have to init AND close every time?
+| [Tuesday 03 May 2011] [12:41:31] <pieterh>	djc: yes
+| [Tuesday 03 May 2011] [13:58:29] <CindyLinz>	hi ^^
+| [Tuesday 03 May 2011] [13:59:15] <CindyLinz>	I can use libev with ZMQ_FD for PULL / SUB / DEALER / ROUTER correctly
+| [Tuesday 03 May 2011] [13:59:29] <CindyLinz>	But it seems not work with REQ?
+| [Tuesday 03 May 2011] [13:59:49] <CindyLinz>	the ZMQ version is 2.1.6
+| [Tuesday 03 May 2011] [14:14:12] <sustrik>	are you using some kind of 0mq-libev glue project or are you doing it by hand?
+| [Tuesday 03 May 2011] [14:17:12] <CindyLinz>	sustrik: I think.. it's by hand... Here is my code http://paste.ideaslabs.com/show/Qz59tAylKZ
+| [Tuesday 03 May 2011] [14:18:02] <sustrik>	ok
+| [Tuesday 03 May 2011] [14:18:11] <sustrik>	what's the problem you are seeing?
+| [Tuesday 03 May 2011] [14:18:49] <CindyLinz>	the "!!" has never showed up
+| [Tuesday 03 May 2011] [14:20:24] <sustrik>	what happened instead?
+| [Tuesday 03 May 2011] [14:20:33] <CindyLinz>	the code of the other side: http://paste.ideaslabs.com/show/04PNUPdV
+| [Tuesday 03 May 2011] [14:21:12] <CindyLinz>	The other side will printed the request message from the REP
+| [Tuesday 03 May 2011] [14:21:20] <CindyLinz>	and response some messages
+| [Tuesday 03 May 2011] [14:21:34] <CindyLinz>	but the REP seems not notified
+| [Tuesday 03 May 2011] [14:21:44] <pblasucci>	Hello
+| [Tuesday 03 May 2011] [14:21:51] <sustrik>	sleeping in poll?
+| [Tuesday 03 May 2011] [14:22:01] <sustrik>	hi
+| [Tuesday 03 May 2011] [14:22:17] <CindyLinz>	But if i uncomment the code from 112 to 121, it will get the response
+| [Tuesday 03 May 2011] [14:22:35] <pblasucci>	I'm not sure if this is the right place to mention this, but I've just put an F# binding to 0MQ up on GitHub
+| [Tuesday 03 May 2011] [14:22:39] <CindyLinz>	no~ I can continue to send other requests.
+| [Tuesday 03 May 2011] [14:22:44] <CindyLinz>	But nothing back
+| [Tuesday 03 May 2011] [14:23:17] <sustrik>	pblasucci: great
+| [Tuesday 03 May 2011] [14:23:29] <sustrik>	have you linked it from zeromq.org?
+| [Tuesday 03 May 2011] [14:23:36] <pblasucci>	I tried
+| [Tuesday 03 May 2011] [14:23:54] <pblasucci>	but after logging in, it says I don't have permission
+| [Tuesday 03 May 2011] [14:24:02] <sustrik>	CindyLinz: hard to say, try to create a minimal test case
+| [Tuesday 03 May 2011] [14:24:05] <pblasucci>	perhaps I was on the wrong page
+| [Tuesday 03 May 2011] [14:24:26] <sustrik>	have you joined the wiki?
+| [Tuesday 03 May 2011] [14:24:30] <CindyLinz>	sustrik: wait~~
+| [Tuesday 03 May 2011] [14:24:58] <sustrik>	you have to be a member to have edit rights
+| [Tuesday 03 May 2011] [14:25:13] <pblasucci>	Ah, I think I must not be a member
+| [Tuesday 03 May 2011] [14:25:28] <pblasucci>	I thought having a Wiki account was enough
+| [Tuesday 03 May 2011] [14:25:35] <pblasucci>	I'll go join now
+| [Tuesday 03 May 2011] [14:31:32] <pblasucci>	Apologies but I can't figure out how to become a member
+| [Tuesday 03 May 2011] [14:31:39] <CindyLinz>	sustrik: This is the test case, thank you ^^ http://paste.ideaslabs.com/show/hf0HoBspWR
+| [Tuesday 03 May 2011] [14:36:59] <sustrik>	pblasucci: there used to be a "join wiki" button at zero.mq
+| [Tuesday 03 May 2011] [14:37:46] <sustrik>	CindyLinz: i meant a minimal C program I can check
+| [Tuesday 03 May 2011] [14:38:01] <sustrik>	presumably without libev as i have no idea of how that works
+| [Tuesday 03 May 2011] [14:40:04] <pblasucci>	sustrik: hmmm... I don't see anything like that
+| [Tuesday 03 May 2011] [14:40:32] <sustrik>	it must have changed
+| [Tuesday 03 May 2011] [14:40:35] <sustrik>	let me invite you
+| [Tuesday 03 May 2011] [14:40:46] <sustrik>	what's your name at wikidot?
+| [Tuesday 03 May 2011] [14:40:47] <pblasucci>	Great! Thanks.
+| [Tuesday 03 May 2011] [14:40:53] <pblasucci>	pblasucci
+| [Tuesday 03 May 2011] [14:41:03] <sustrik>	ok, wait a sec
+| [Tuesday 03 May 2011] [14:41:12] <CindyLinz>	sustrik: hmm.. how can i just remove the libev part, while the problem is not-notified libev?
+| [Tuesday 03 May 2011] [14:41:49] <sustrik>	dunno, the problem is either in 0mq or in libev
+| [Tuesday 03 May 2011] [14:41:59] <sustrik>	you should find out which one is it
+| [Tuesday 03 May 2011] [14:42:09] <sustrik>	if it's 0mq we'll fix it
+| [Tuesday 03 May 2011] [14:42:22] <sustrik>	if it's libev you should speak to libev devs
+| [Tuesday 03 May 2011] [14:42:54] <CindyLinz>	Is it help, if I also give a working dealer version?
+| [Tuesday 03 May 2011] [14:43:35] <CindyLinz>	(help or helpful.. my English is bad :( )
+| [Tuesday 03 May 2011] [14:43:39] <sustrik>	np
+| [Tuesday 03 May 2011] [14:43:45] <CindyLinz>	hmm..
+| [Tuesday 03 May 2011] [14:45:17] <sustrik>	pblasucci: you are invited
+| [Tuesday 03 May 2011] [14:45:46] <pblasucci>	Thanks!
+| [Tuesday 03 May 2011] [14:46:13] <pblasucci>	Yup... looks like I'm all set.
+| [Tuesday 03 May 2011] [14:46:24] <sustrik>	goodo
+| [Tuesday 03 May 2011] [14:46:47] <sustrik>	CindyLinz: you can remove libev from the test case by doing what libev does by hand
+| [Tuesday 03 May 2011] [14:46:55] <sustrik>	i assume its polling on the fd
+| [Tuesday 03 May 2011] [14:47:58] <CindyLinz>	sustrik: i'll try.. can i use select(2) ?
+| [Tuesday 03 May 2011] [14:48:35] <sustrik>	well, you should have a look what libev does
+| [Tuesday 03 May 2011] [14:49:11] <sustrik>	if you do something else the problem may not show up
+| [Tuesday 03 May 2011] [14:50:12] <CindyLinz>	Then i try first if the select(2) version work?
+| [Tuesday 03 May 2011] [14:50:57] <sustrik>	it's up to you
+| [Tuesday 03 May 2011] [14:51:24] <sustrik>	what i need is simplest possible program that shows the problem
+| [Tuesday 03 May 2011] [15:24:35] <jond>	sustrik: the subports idea as originally suggested can still work over multicast....
+| [Tuesday 03 May 2011] [15:31:15] <sustrik>	jond: how so
+| [Tuesday 03 May 2011] [15:31:38] <sustrik>	?
+| [Tuesday 03 May 2011] [15:32:32] <sustrik>	jond: btw, have you done any perf tests with the alignment patch?
+| [Tuesday 03 May 2011] [15:33:38] <jond>	well in some other software I'm aware of we express multicast addresses like x.x.x.x:5555@1,2,3
+| [Tuesday 03 May 2011] [15:34:25] <jond>	and 1,2,3 are the subports.
+| [Tuesday 03 May 2011] [15:35:12] <jond>	re: alignment, been busy 
+| [Tuesday 03 May 2011] [15:36:08] <jond>	what did you suggest as the test case throughput/latency?
+| [Tuesday 03 May 2011] [15:36:08] <sustrik>	ah, i see, presumably filtering on the receiver
+| [Tuesday 03 May 2011] [15:36:22] <sustrik>	latency is more relevant
+| [Tuesday 03 May 2011] [15:36:29] <sustrik>	the point is that i've tried it at home
+| [Tuesday 03 May 2011] [15:36:45] <sustrik>	and got no different between patched/unpatched versions
+| [Tuesday 03 May 2011] [15:36:57] <jond>	re: multicast, yes the subport goes in a header, and 0 is reserved for control
+| [Tuesday 03 May 2011] [15:37:02] <sustrik>	ack
+| [Tuesday 03 May 2011] [15:38:31] <jond>	did you try both mpales and my patches?? I have vtune @ work which might shed some light, if I knew exactly how to interpret the results
+| [Tuesday 03 May 2011] [15:39:51] <jond>	are you surprised or can explain why it makes no difference; it looks like it should?
+| [Tuesday 03 May 2011] [15:40:26] <sustrik>	i've tried just your patch
+| [Tuesday 03 May 2011] [15:40:37] <sustrik>	it's better, so i've tested just that one
+| [Tuesday 03 May 2011] [15:40:48] <sustrik>	and yes, i am surprised
+| [Tuesday 03 May 2011] [15:41:11] <sustrik>	but maybe the problem is that both threads were scheduled on the same CPU core
+| [Tuesday 03 May 2011] [15:41:25] <sustrik>	so that cacheline polution became irrelevant
+| [Tuesday 03 May 2011] [15:44:00] <jond>	well I did notice that the mpales patch didnt put an alignment on the struct because it used padding rather than gcc attributes. The sutter article on false sharing suggests we should be able to see something but I do not know what tools he was using
+| [Tuesday 03 May 2011] [15:44:54] <jond>	I didnt alter the yqueue so maybe that needs doing as well
+| [Tuesday 03 May 2011] [15:52:07] <sustrik>	yeah, yqueue may benefit from that kind of thing as well
+| [Tuesday 03 May 2011] [15:52:23] <sustrik>	we probably need a more controled test
+| [Tuesday 03 May 2011] [15:52:53] <sustrik>	using ypipe to pass data between two threads bound to different CPU cores (or even CPUs)
+| [Tuesday 03 May 2011] [15:56:27] <jond>	yes. I also noticed someone suggessting replacing socketpair with ypipe+pipe. 
+| [Tuesday 03 May 2011] [17:22:47] <CIA-75>	libzmq: 03Martin Sustrik 07master * r5e329ba 10/ src/msg.cpp : Minor patch to keep ICC compiler happy ...
+| [Tuesday 03 May 2011] [17:22:49] <CIA-75>	libzmq: 03Martin Sustrik 07master * rceb5e1a 10/ (src/msg.cpp src/msg.hpp): Deallocation functions in zmq.h and msg_t class are consistent. ...
+| [Wednesday 04 May 2011] [06:38:13] <Bartzy|work>	Hi, anyone here ?
+| [Wednesday 04 May 2011] [06:38:46] <pieterh>	Bartzy|work: depends...
+| [Wednesday 04 May 2011] [06:38:54] <pieterh>	what's up?
+| [Wednesday 04 May 2011] [06:38:56] <Bartzy|work>	I have a brief question
+| [Wednesday 04 May 2011] [06:39:05] <Bartzy|work>	a design question
+| [Wednesday 04 May 2011] [06:39:17] <pieterh>	go for it
+| [Wednesday 04 May 2011] [06:39:37] <Bartzy|work>	I have 4 processes in a server , that do image processing
+| [Wednesday 04 May 2011] [06:39:54] <Bartzy|work>	they are GIMPs actually, but nevermind.. they do image processing, one image at a time
+| [Wednesday 04 May 2011] [06:40:03] <pieterh>	ok
+| [Wednesday 04 May 2011] [06:41:05] <Bartzy|work>	currently, my web app and those 4 GIMP processes are using the same server, so it's easy. I want to scale out, putting the GIMP processes on different, multiple servers
+| [Wednesday 04 May 2011] [06:41:15] <pieterh>	have you read the Guide?
+| [Wednesday 04 May 2011] [06:41:20] <Bartzy|work>	yes.
+| [Wednesday 04 May 2011] [06:41:28] <CIA-75>	libzmq: 03Tore Halvorsen 07master * r1012021 10/ src/xrep.cpp : Accessing an iterator after it is accessed is not valid. ...
+| [Wednesday 04 May 2011] [06:41:31] <Bartzy|work>	briefly :p
+| [Wednesday 04 May 2011] [06:41:35] <Bartzy|work>	But my question is:
+| [Wednesday 04 May 2011] [06:42:39] <Bartzy|work>	The code that I'll write with zeromq, let's say in PHP, should it be 1 process for each "image processing" server (which has 4 GIMP processes in it), or 4 PHP processes that each one control a different server?
+| [Wednesday 04 May 2011] [06:43:04] <pieterh>	it doesn't really matter
+| [Wednesday 04 May 2011] [06:43:18] <Bartzy|work>	Cause I need a response, so the PHP process controlling everything on the image processing server will be busy with only one request at a time ? 
+| [Wednesday 04 May 2011] [06:43:29] <CIA-75>	libzmq: 03Martin Sustrik 07master * r3ef7c74 10/ AUTHORS : Tore Halvorsen added to the AUTHORS file ...
+| [Wednesday 04 May 2011] [06:43:29] <pieterh>	whatever is easier for you
+| [Wednesday 04 May 2011] [06:43:31] <Bartzy|work>	I want all 4 GIMPs in each server to work in parallel
+| [Wednesday 04 May 2011] [06:43:43] <pieterh>	obviously, yes
+| [Wednesday 04 May 2011] [06:43:55] <pieterh>	there are a number of patterns you can use for this
+| [Wednesday 04 May 2011] [06:44:00] <Bartzy|work>	that means I need 4 processes that uses zeromq to 'listen' for work from the web app ?
+| [Wednesday 04 May 2011] [06:44:02] <pieterh>	check the LRU queue patterns, for a start
+| [Wednesday 04 May 2011] [06:44:15] <pieterh>	you can make the workers each a single process that is single threaded
+| [Wednesday 04 May 2011] [06:44:28] <pieterh>	you can make the workers threads in a single multithreaded process
+| [Wednesday 04 May 2011] [06:44:36] <Bartzy|work>	workers = the PHP code right ? not the GIMP processes ?
+| [Wednesday 04 May 2011] [06:45:02] <pieterh>	read the LRU queue pattern & description, plz
+| [Wednesday 04 May 2011] [06:45:07] <Bartzy|work>	PHP/python/C/whatever I chose to use with zeromq
+| [Wednesday 04 May 2011] [06:45:12] <pieterh>	search for lruqueue if in doubt
+| [Wednesday 04 May 2011] [06:45:21] <Bartzy|work>	ok, thanks
+| [Wednesday 04 May 2011] [06:45:21] <mikko>	Bartzy|work: why do you use gimp?
+| [Wednesday 04 May 2011] [06:45:26] <mikko>	just out of curiosity
+| [Wednesday 04 May 2011] [06:45:28] <Bartzy|work>	mikko: Why not ?
+| [Wednesday 04 May 2011] [06:45:35] <Bartzy|work>	mikko: It's like using photoshop in a script
+| [Wednesday 04 May 2011] [06:45:42] <mikko>	Bartzy|work: imagemagick tends to be more geared towards headless processing
+| [Wednesday 04 May 2011] [06:45:52] <pieterh>	Bartzy|work: most people would probably use imagemagick except it's harder to spell
+| [Wednesday 04 May 2011] [06:45:53] <Bartzy|work>	mikko: ImageMagick is very nice, but limited
+| [Wednesday 04 May 2011] [06:46:02] <mikko>	Bartzy|work: limited how?
+| [Wednesday 04 May 2011] [06:46:03] <mato>	ImageMagick is also sloooow
+| [Wednesday 04 May 2011] [06:46:19] <mikko>	mato: graphicsmagick then
+| [Wednesday 04 May 2011] [06:46:37] <Bartzy|work>	mikko: you can do anything you do in Photoshop in ImageMagick ?
+| [Wednesday 04 May 2011] [06:46:54] <mikko>	Bartzy|work: pretty much
+| [Wednesday 04 May 2011] [06:47:12] <Bartzy|work>	well then it's much harder
+| [Wednesday 04 May 2011] [06:47:22] <mikko>	and probably more than in gimp
+| [Wednesday 04 May 2011] [06:47:39] <mikko>	last time my trial with gimp ended to not having proper CMYK support
+| [Wednesday 04 May 2011] [06:47:57] <mikko>	Bartzy|work: what do you do in the gimp scripts?
+| [Wednesday 04 May 2011] [06:48:09] <Bartzy|work>	mikko: Photo effects
+| [Wednesday 04 May 2011] [06:48:26] <mikko>	what kind of effects?
+| [Wednesday 04 May 2011] [06:48:38] <Bartzy|work>	sketching, painting etc
+| [Wednesday 04 May 2011] [06:48:52] <mikko>	programmatically?
+| [Wednesday 04 May 2011] [06:48:58] <pieterh>	Bartzy|work: I'd suggest initially making one process per gimp server, single threaded, and use an lruqueue device to connect workers to clients
+| [Wednesday 04 May 2011] [06:49:10] <Bartzy|work>	mikko: Yes
+| [Wednesday 04 May 2011] [06:49:17] <mikko>	cool
+| [Wednesday 04 May 2011] [06:50:09] <sustrik>	hi mikko
+| [Wednesday 04 May 2011] [06:50:13] <mikko>	hi
+| [Wednesday 04 May 2011] [06:50:28] <Bartzy|work>	pieterh: Do you think gearman is more suitable for this job than zeromq ?
+| [Wednesday 04 May 2011] [06:50:31] <sustrik>	any chance to check patches at the build system?
+| [Wednesday 04 May 2011] [06:50:34] <Bartzy|work>	pieterh: I know they're different.
+| [Wednesday 04 May 2011] [06:50:41] <mikko>	sustrik: sure
+| [Wednesday 04 May 2011] [06:50:44] <mikko>	sustrik: which ones?
+| [Wednesday 04 May 2011] [06:50:45] <pieterh>	Bartzy|work: nope, all messaging is just 0MQ done poorly
+| [Wednesday 04 May 2011] [06:50:45] <sustrik>	i've tried to fix the issues by giess
+| [Wednesday 04 May 2011] [06:50:48] <sustrik>	guess
+| [Wednesday 04 May 2011] [06:50:56] <Bartzy|work>	pieterh: What do you mean ?
+| [Wednesday 04 May 2011] [06:51:00] <sustrik>	but obviously that does not work :)
+| [Wednesday 04 May 2011] [06:51:06] <pieterh>	Bartzy|work: well, I'm assuming you haven't actually tried 0MQ
+| [Wednesday 04 May 2011] [06:51:09] <sustrik>	mikko: well, the sun studio and icc
+| [Wednesday 04 May 2011] [06:51:35] <Bartzy|work>	pieterh: I read the guide a bit and saw the vidoes
+| [Wednesday 04 May 2011] [06:51:37] <Bartzy|work>	videos...
+| [Wednesday 04 May 2011] [06:51:57] <Bartzy|work>	pieterh: It's indeed VERY cool, but I wonder if for that specific job, gearman is more suitable and less complex.
+| [Wednesday 04 May 2011] [06:53:00] <pieterh>	Bartzy|work: it's not about coolness, if you haven't actually written a couple of 0MQ apps, you can't understand it
+| [Wednesday 04 May 2011] [06:53:22] <pieterh>	so my advice is to go off, make a simple workload distribution architecture, in PHP
+| [Wednesday 04 May 2011] [06:53:28] <pieterh>	it'll take you a day, maybe
+| [Wednesday 04 May 2011] [06:53:35] <pieterh>	if you have questions, of course ask for help
+| [Wednesday 04 May 2011] [06:53:43] <pieterh>	but there are full, complete PHP examples for this
+| [Wednesday 04 May 2011] [06:54:05] <Bartzy|work>	pieterh: PHP is even suited for that stuff ? I mean it's processes that need to run forever.. it won't leak or anything ?
+| [Wednesday 04 May 2011] [06:54:17] <pieterh>	sigh
+| [Wednesday 04 May 2011] [06:54:27] <pieterh>	:)
+| [Wednesday 04 May 2011] [06:54:28] <Bartzy|work>	:\
+| [Wednesday 04 May 2011] [06:54:39] <Bartzy|work>	explain yourself :p
+| [Wednesday 04 May 2011] [06:54:51] <pieterh>	start by learning 0MQ, then when you know what you want to make, and how, decide how to really make it
+| [Wednesday 04 May 2011] [06:55:02] <pieterh>	it's pointless to debate "what language" when you don't even know what architecture
+| [Wednesday 04 May 2011] [06:55:19] <pieterh>	"ah, but do you think I should use vim or emacs?"
+| [Wednesday 04 May 2011] [06:55:23] <pieterh>	not relevant
+| [Wednesday 04 May 2011] [06:55:45] <pieterh>	first learn some basic messaging patterns, then decide how to make them work for you
+| [Wednesday 04 May 2011] [06:56:03] <pieterh>	it's wise to make a proof of concept *as rapidly as possible* and then throw it away and start again
+| [Wednesday 04 May 2011] [06:56:15] <pieterh>	does this help?
+| [Wednesday 04 May 2011] [06:56:43] <Bartzy|work>	yeah, I just don't want to waste a week in learning something I won't eventually use....
+| [Wednesday 04 May 2011] [06:56:47] <Bartzy|work>	so I want to research a bit
+| [Wednesday 04 May 2011] [06:57:07] <djc>	Bartzy|work: the point is that ZMQ is very good at having something built in a day
+| [Wednesday 04 May 2011] [06:57:10] <djc>	instead of in a week
+| [Wednesday 04 May 2011] [06:57:32] <djc>	so researching it is less valuable than for some other technologies
+| [Wednesday 04 May 2011] [06:57:32] <Bartzy|work>	Just to make this clear in my head - The process per gimp server - it/they should be monitored by god/monit/init ?
+| [Wednesday 04 May 2011] [06:59:01] <djc>	the same as what you do now
+| [Wednesday 04 May 2011] [06:59:06] <pieterh>	Bartzy|work: the only research that counts is actually programming
+| [Wednesday 04 May 2011] [06:59:23] <pieterh>	asking others to make your technical choices for you isn't profitable
+| [Wednesday 04 May 2011] [06:59:40] <pieterh>	0MQ makes it *really easy* to go off and learn by doing, so please do so...
+| [Wednesday 04 May 2011] [06:59:49] <Bartzy|work>	OK, thanks!
+| [Wednesday 04 May 2011] [07:00:04] <Bartzy|work>	pieterh: http://zguide.zeromq.org/php:lruqueue this is what you meant , I presume ?
+| [Wednesday 04 May 2011] [07:00:13] <mikko>	Bartzy|work: i've been talking with ian barber about php job distribution system before
+| [Wednesday 04 May 2011] [07:00:23] <mikko>	making use of php-fpm for process management
+| [Wednesday 04 May 2011] [07:00:50] <Bartzy|work>	mikko: That's nice, any conclusions ?
+| [Wednesday 04 May 2011] [07:01:57] <mikko>	Bartzy|work: would not be very hard
+| [Wednesday 04 May 2011] [07:02:02] <mikko>	but lack of time 
+| [Wednesday 04 May 2011] [07:02:38] <ianbarber>	it's a decent model, works fine. The tricky thing with whatever you use is maintaining the worker processes existence, the basic messaging is straightforward, and FPM simplifies that. 
+| [Wednesday 04 May 2011] [07:03:15] <ianbarber>	otherwise that kind of work distribution is just basic push messaging
+| [Wednesday 04 May 2011] [07:04:16] <Bartzy|work>	FPM should also be monitored...
+| [Wednesday 04 May 2011] [07:05:24] <djc>	Bartzy|work: read more of the guide, then just spend a day writing a proof of concept
+| [Wednesday 04 May 2011] [07:06:04] <sustrik>	mikko: i mean, can i log on the build box
+| [Wednesday 04 May 2011] [07:06:14] <sustrik>	and try to fix the sun studio and icc problems there?
+| [Wednesday 04 May 2011] [07:06:21] <Bartzy|work>	djc: OK..
+| [Wednesday 04 May 2011] [07:06:49] <Bartzy|work>	thanks all
+| [Wednesday 04 May 2011] [07:08:01] <mikko>	sustrik: it's behind a nat at the moment without public ip address
+| [Wednesday 04 May 2011] [07:08:09] <mikko>	sustrik: i can add you user to a jump host
+| [Wednesday 04 May 2011] [07:08:25] <sustrik>	hm, alternatively, can i send you patches to test?
+| [Wednesday 04 May 2011] [07:08:31] <mikko>	i think i got a box connected to the internet with sun studio
+| [Wednesday 04 May 2011] [07:08:46] <mikko>	if you want i can take a look in a minute 
+| [Wednesday 04 May 2011] [07:08:56] <sustrik>	great, thanks
+| [Wednesday 04 May 2011] [07:10:44] <mikko>	https://build.zero.mq/view/libzmq/
+| [Wednesday 04 May 2011] [07:10:52] <mikko>	the builds succeed at the moment
+| [Wednesday 04 May 2011] [07:11:08] <mikko>	apart from clang which seems to be a compiler thing on amd64 box
+| [Wednesday 04 May 2011] [07:11:08] <sustrik>	hm, strange
+| [Wednesday 04 May 2011] [07:11:25] <sustrik>	yesterday evening there were errors
+| [Wednesday 04 May 2011] [07:11:50] <sustrik>	anyway, if everything works no, no need to panic
+| [Wednesday 04 May 2011] [07:11:58] <sustrik>	now*
+| [Wednesday 04 May 2011] [07:13:02] <mikko>	Minor patch to keep ICC compiler happy (commit: 5e329ba7cac8a52fbbd2c347064c2d9355009022) (detail)
+| [Wednesday 04 May 2011] [07:13:06] <mikko>	Deallocation functions in zmq.h and msg_t class are consistent. (commit: ceb5e1a0734b0c73bd7f74ec5094ae6ad4f9dfc4) (detail)
+| [Wednesday 04 May 2011] [07:13:11] <mikko>	these are the changes in latest build
+| [Wednesday 04 May 2011] [07:15:03] <sustrik>	yep, those are my guess patches
+| [Wednesday 04 May 2011] [07:15:17] <sustrik>	i thought they were already used in the previous build
+| [Wednesday 04 May 2011] [07:15:31] <sustrik>	it seems they weren't
+| [Wednesday 04 May 2011] [07:15:36] <sustrik>	so everyting is ok now
+| [Wednesday 04 May 2011] [07:20:52] <mikko>	cool
+| [Wednesday 04 May 2011] [09:58:17] <Bartzy|work>	pieterh: still here ?
+| [Wednesday 04 May 2011] [09:58:24] <pieterh>	Bartzy|work: yup
+| [Wednesday 04 May 2011] [09:58:32] <pieterh>	so you finished your prototype?
+| [Wednesday 04 May 2011] [09:58:44] <Bartzy|work>	pieterh: No, I'm still at my (other) work :)
+| [Wednesday 04 May 2011] [09:58:47] <pieterh>	:)
+| [Wednesday 04 May 2011] [09:59:03] <Bartzy|work>	pieterh: You said earlier that you'd start with a single threaded worker for each GIMP
+| [Wednesday 04 May 2011] [09:59:08] <Bartzy|work>	4 total
+| [Wednesday 04 May 2011] [09:59:20] <pieterh>	I'd start with the very simplest architecture that I could make to test my concept
+| [Wednesday 04 May 2011] [09:59:28] <Bartzy|work>	there's nothing to test
+| [Wednesday 04 May 2011] [09:59:51] <pieterh>	in that case it should take you only an hour or two
+| [Wednesday 04 May 2011] [10:00:16] <pieterh>	if you are asking my advice on how to make something, don't argue with the advice I give you :)
+| [Wednesday 04 May 2011] [10:00:34] <pieterh>	make a minimal working model
+| [Wednesday 04 May 2011] [10:00:44] <pieterh>	then improve it to solve specific problems you see with it
+| [Wednesday 04 May 2011] [10:00:58] <pieterh>	otherwise, you will spend time solving problems that may be irrelevant
+| [Wednesday 04 May 2011] [10:01:04] <pieterh>	such as... 1 process vs. N processes
+| [Wednesday 04 May 2011] [10:01:10] <Bartzy|work>	pieterh: Since I need to get a response, what if I'll have a single process, each time it gets a command to run in GIMPs ("work") it will fork and continue listening for jobs.... and then execute the command on the forked process ?
+| [Wednesday 04 May 2011] [10:01:30] <pieterh>	ok, so this is what you want to build...
+| [Wednesday 04 May 2011] [10:01:38] <Bartzy|work>	In my opinion, it's stupid to start programming without thinking through what you're trying to accomplish.
+| [Wednesday 04 May 2011] [10:01:43] <pieterh>	well...
+| [Wednesday 04 May 2011] [10:01:57] <Bartzy|work>	no, it's not what I want to build. It's a solution to a problem I have
+| [Wednesday 04 May 2011] [10:02:03] <Bartzy|work>	one of probably many
+| [Wednesday 04 May 2011] [10:02:11] <Bartzy|work>	I want the best solution I can create :)
+| [Wednesday 04 May 2011] [10:02:31] <pieterh>	sigh... if you ask and try to answer too many questions at once, you won't get anywhere quickly
+| [Wednesday 04 May 2011] [10:02:56] <pieterh>	please do the following:
+| [Wednesday 04 May 2011] [10:03:06] <pieterh>	- take the lruqueue example
+| [Wednesday 04 May 2011] [10:03:20] <pieterh>	- make a PHP worker that executes request by request, starting GIMP in a shell each time
+| [Wednesday 04 May 2011] [10:03:28] <pieterh>	- make a test client, in PHP that can drive this worker
+| [Wednesday 04 May 2011] [10:03:36] <pieterh>	- start multiple workers in parallel
+| [Wednesday 04 May 2011] [10:03:39] <pieterh>	- see how it works
+| [Wednesday 04 May 2011] [10:03:42] <pieterh>	... OK?
+| [Wednesday 04 May 2011] [10:03:54] <pieterh>	when you have that working, let's continue the discussion
+| [Wednesday 04 May 2011] [10:03:54] <Bartzy|work>	no, because this is really not what I'm trying to accomplish
+| [Wednesday 04 May 2011] [10:03:58] <Bartzy|work>	I don't want to start GIMP each time
+| [Wednesday 04 May 2011] [10:04:22] <pieterh>	it is not relevant, to this discussion, how you talk to GIMOP
+| [Wednesday 04 May 2011] [10:04:24] <pieterh>	GIMP
+| [Wednesday 04 May 2011] [10:04:25] <Bartzy|work>	I want to start it once when I start the entire machine. GIMP is like MySQL to me - I ask it something and in responds.
+| [Wednesday 04 May 2011] [10:04:36] <pieterh>	not at least until GIMP has 0MQ built into it
+| [Wednesday 04 May 2011] [10:04:46] <Bartzy|work>	OK. So you just want me to experiment a bit with ZeroMQ? 
+| [Wednesday 04 May 2011] [10:04:50] <pieterh>	yes
+| [Wednesday 04 May 2011] [10:04:57] <Bartzy|work>	OK
+| [Wednesday 04 May 2011] [10:05:03] <pieterh>	it's pointless to ask me questions about how to use ZeroMQ when you have no experience actually using it
+| [Wednesday 04 May 2011] [10:05:14] <pieterh>	and when there  is a 150-page explanation with full examples...
+| [Wednesday 04 May 2011] [10:05:23] <Bartzy|work>	And I'm asking - So I'll make some nice program that does nothing I need. Then I'll come back and ask the exact same questions.
+| [Wednesday 04 May 2011] [10:05:34] <pieterh>	:) guaranteed you will ask different questions
+| [Wednesday 04 May 2011] [10:05:36] <guido_g>	omg
+| [Wednesday 04 May 2011] [10:05:42] <pieterh>	guido_g: help please
+| [Wednesday 04 May 2011] [10:05:46] <Bartzy|work>	pieterh: OK, I'll try
+| [Wednesday 04 May 2011] [10:05:58] <pieterh>	it's like asking about sex when you've never tried it
+| [Wednesday 04 May 2011] [10:05:59] <guido_g>	pieterh: there is nothing one can do
+| [Wednesday 04 May 2011] [10:06:14] <pieterh>	"is it true I need to get really drunk before hand?"
+| [Wednesday 04 May 2011] [10:06:23] <pieterh>	"or would it be better to have a long sauna?"
+| [Wednesday 04 May 2011] [10:07:00] <guido_g>	pieterh: people come here (or to other channels) and demand answers
+| [Wednesday 04 May 2011] [10:07:22] <pieterh>	Bartzy|work: I don't want to be critical, it's good that you think ahead, but don't over-think it
+| [Wednesday 04 May 2011] [10:07:32] <guido_g>	of course w/o even the smalles achievements on their side
+| [Wednesday 04 May 2011] [10:07:52] <pieterh>	guido_g: luckily we're a caring and helpful community
+| [Wednesday 04 May 2011] [10:08:25] <pieterh>	but indeed it could be worth raising the barrier a little...
+| [Wednesday 04 May 2011] [10:08:40] <guido_g>	yes, this does help
+| [Wednesday 04 May 2011] [10:09:06] <Bartzy|work>	pieterh: I like "best practices"
+| [Wednesday 04 May 2011] [10:09:16] <guido_g>	it helped back in use-net times and it did the last years in an irc channel
+| [Wednesday 04 May 2011] [10:09:36] <pieterh>	Bartzy|work: the best practice is, and I quote Zed Shaw on this, "programming, motherf***r"
+| [Wednesday 04 May 2011] [10:09:48] <Bartzy|work>	now I know there isn't one true best practice for everything... but there are do and don't do's...
+| [Wednesday 04 May 2011] [10:09:58] <Bartzy|work>	haha
+| [Wednesday 04 May 2011] [10:10:08] <pieterh>	if you come here with questions that actually refer to the context we all share, it's much easier
+| [Wednesday 04 May 2011] [10:10:21] <guido_g>	Bartzy|work: if you can't walk, don't even try to run
+| [Wednesday 04 May 2011] [10:11:48] <Bartzy|work>	pieterh, guido_g : I'll build the worker like we first said - one process for each GIMP. I'll come to complain in a few hours
+| [Wednesday 04 May 2011] [10:11:50] <Bartzy|work>	:)
+| [Wednesday 04 May 2011] [10:11:56] <pieterh>	good deal
+| [Wednesday 04 May 2011] [10:12:26] <pieterh>	If you still see the problem the same way after using 0MQ, you get your money back
+| [Wednesday 04 May 2011] [10:12:27] <guido_g>	oh pieterh while this case is close, there is another question wrt the brussels
+| [Wednesday 04 May 2011] [10:12:33] <pieterh>	tell me
+| [Wednesday 04 May 2011] [10:13:13] <guido_g>	did you made a decision on weather? going to select the clothes...
+| [Wednesday 04 May 2011] [10:13:28] <pieterh>	I've asked for excellent weather
+| [Wednesday 04 May 2011] [10:13:35] <guido_g>	great
+| [Wednesday 04 May 2011] [10:13:43] <pieterh>	but there's a long queue so my request might not get processed in time
+| [Wednesday 04 May 2011] [10:13:54] <pieterh>	it will be warm and sunny
+| [Wednesday 04 May 2011] [10:13:58] <pieterh>	but perhaps only in August or so...
+| [Wednesday 04 May 2011] [10:14:04] <guido_g>	hehe
+| [Wednesday 04 May 2011] [10:14:13] <pieterh>	they're not using 0MQ, obviously...
+| [Wednesday 04 May 2011] [10:14:21] <guido_g>	luckly it's a very short walk from and to the hotel
+| [Wednesday 04 May 2011] [10:14:49] <guido_g>	mq might have been made in heaven, but it's not used there
+| [Wednesday 04 May 2011] [10:14:54] <pieterh>	lol :)
+| [Wednesday 04 May 2011] [10:15:55] <guido_g>	is there an idea where the warm-up meeting on monday will be?
+| [Wednesday 04 May 2011] [10:16:15] <djc>	what kind of event is there?
+| [Wednesday 04 May 2011] [10:16:51] <guido_g>	http://www.zeromq.org/event:brussels-2011-05-10
+| [Wednesday 04 May 2011] [10:20:24] <djc>	nice
+| [Wednesday 04 May 2011] [10:20:42] <djc>	hmm, too bad, I probably won't be able to make it this time
+| [Wednesday 04 May 2011] [10:21:04] <mato>	pieterh: can you make a short url for the brussels conf page?
+| [Wednesday 04 May 2011] [10:21:18] <pieterh>	mato: it's been there for ages: http://zero.mq/bxl
+| [Wednesday 04 May 2011] [10:21:21] <mato>	ah
+| [Wednesday 04 May 2011] [10:21:23] <pieterh>	I put that in every email
+| [Wednesday 04 May 2011] [10:21:25] <pieterh>	:-(
+| [Wednesday 04 May 2011] [10:21:37] <pieterh>	let me put that on the page as well
+| [Wednesday 04 May 2011] [10:21:48] <guido_g>	it's too short :)
+| [Wednesday 04 May 2011] [10:21:49] <pieterh>	BTW anyone can make a short URL at zero.mq/go
+| [Wednesday 04 May 2011] [10:22:26] <pieterh>	djc: thanks :)
+| [Wednesday 04 May 2011] [10:22:49] <mato>	ok, that's better
+| [Wednesday 04 May 2011] [10:23:47] <mato>	pieterh: happy with that topic?
+| [Wednesday 04 May 2011] [10:24:00] <pieterh>	mato: you're the channel admin?
+| [Wednesday 04 May 2011] [10:24:05] <mato>	pieterh: one of them, yes
+| [Wednesday 04 May 2011] [10:24:10] <pieterh>	yes, very happy with this, was going to ask for it before but forgot
+| [Wednesday 04 May 2011] [10:24:11] <pieterh>	thanks!
+| [Wednesday 04 May 2011] [10:24:36] <mato>	np
+| [Wednesday 04 May 2011] [11:04:46] <cremes>	mikko: ping; question on compiling under mingw
+| [Wednesday 04 May 2011] [11:05:10] <cremes>	mikko: i run ./configure; make; make install and let it figure out the defaults
+| [Wednesday 04 May 2011] [11:05:30] <cremes>	mikko: the makefile produces libzmq.dll.a and libzmq.la but i do not see any libzmq.dll
+| [Wednesday 04 May 2011] [11:05:44] <cremes>	am i doing something wrong? do i need to pass another switch to configure?
+| [Wednesday 04 May 2011] [11:06:42] <mato>	cremes: look in src/.libs
+| [Wednesday 04 May 2011] [11:06:49] <mato>	libtool will hide the dll there
+| [Wednesday 04 May 2011] [11:07:23] <cremes>	ah ha!
+| [Wednesday 04 May 2011] [11:08:14] <cremes>	any particular reason 'make install' doesn't do the right thing here?
+| [Wednesday 04 May 2011] [11:08:30] <mato>	yes, what would you have it do on windows? :-)
+| [Wednesday 04 May 2011] [11:10:02] <cremes>	copy libzmq.dll to the same place it copies libzmq.dll.a and libzmq.la
+| [Wednesday 04 May 2011] [11:10:12] <mato>	there is no such place on win32
+| [Wednesday 04 May 2011] [11:11:26] <cremes>	well, under mingw it's pretty standard to install to /c/user/local/lib
+| [Wednesday 04 May 2011] [11:11:36] <cremes>	that's at least a good "known" place to copy it from to other locations
+| [Wednesday 04 May 2011] [11:11:43] <cremes>	as required by your windows apps
+| [Wednesday 04 May 2011] [11:11:57] <Seta00>	windows for /usr/lib is C:/Windows/System32 :P
+| [Wednesday 04 May 2011] [11:12:02] <cremes>	instead of hiding it in src/.libs (i swear i never would have found it there)
+| [Wednesday 04 May 2011] [11:12:23] <mato>	I guess it could create a 'bin' directory on mingw and stick things there
+| [Wednesday 04 May 2011] [11:12:33] <mato>	but AFAIK there is no real standard install path
+| [Wednesday 04 May 2011] [11:12:35] <cremes>	(i should have run 'find /c -name libzmq.dll"
+| [Wednesday 04 May 2011] [11:12:44] <mato>	other than %WINDIR%\system32 and you don't want that :-)
+| [Wednesday 04 May 2011] [11:14:02] <cremes>	got my first 0mq program running on windows! thanks for your help!
+| [Wednesday 04 May 2011] [11:36:01] <djc>	so, is there much of a difference between (a) using poll with a ZMQ_FD and a normal fd, or (b) zmq_poll with a zmq socket and a normal fd?
+| [Wednesday 04 May 2011] [11:39:06] <sustrik>	djc: no
+| [Wednesday 04 May 2011] [11:39:24] <djc>	basically equivalent?
+| [Wednesday 04 May 2011] [11:39:28] <sustrik>	just keep in mind that ZMQ_FD is edge triggered
+| [Wednesday 04 May 2011] [11:39:34] <djc>	yeah :)
+| [Wednesday 04 May 2011] [11:39:53] <djc>	and that's not an issue with zmq_poll because it does the extra ZMQ_EVENTS check, presumably?
+| [Wednesday 04 May 2011] [11:40:08] <djc>	or s/check/loop/
+| [Wednesday 04 May 2011] [11:42:09] <sustrik>	yes
+| [Wednesday 04 May 2011] [11:42:20] <sustrik>	see zmq_poll implementation in src/zmq.cpp
+| [Wednesday 04 May 2011] [11:42:28] <sustrik>	it uses ZMQ_EVENTS and ZMQ_FD
+| [Wednesday 04 May 2011] [11:42:28] <djc>	okay, so it's basically the same as what I'm doing
+| [Wednesday 04 May 2011] [11:42:35] <djc>	okay, nice to know :)
+| [Wednesday 04 May 2011] [11:42:56] <djc>	btw, zeromq 2.1 is a very nice improvement over 2.0
+| [Wednesday 04 May 2011] [11:43:34] <cremes>	what's the reasoning for ZMQ_RATE, ZMQ_HWM, etc using int64_t or uint64_t but ZMQ_LINGER (and 2 others) use int?
+| [Wednesday 04 May 2011] [11:44:17] <djc>	(oh yeah, and I'm also looking forward a lot to all the sockopts being int, so that the API can be simpler than the current thing)
+| [Wednesday 04 May 2011] [11:47:24] <pieterh>	cremes: zero-mq, zero-reasoning!
+| [Wednesday 04 May 2011] [11:48:06] <pieterh>	these were added ad-hoc
+| [Wednesday 04 May 2011] [11:48:16] <pieterh>	in 3.0 they're all int where they can be
+| [Wednesday 04 May 2011] [11:48:19] <cremes>	pieterh: i had opened a bug on that some time ago... i just remembered
+| [Wednesday 04 May 2011] [11:48:37] <pieterh>	anyhow, every language binding should wrap these IMO
+| [Wednesday 04 May 2011] [11:48:45] <cremes>	sustrik closed it because he wanted to go from int64 -> int and not int -> int64
+| [Wednesday 04 May 2011] [11:48:55] <pieterh>	so e.g. in czmq you have wrappers for all these
+| [Wednesday 04 May 2011] [11:49:17] <cremes>	right, i was trying to make them consistent for the ruby binding
+| [Wednesday 04 May 2011] [11:49:27] <cremes>	so that other folks wouldn't need to worry about it
+| [Wednesday 04 May 2011] [11:49:34] <pieterh>	yeah, in the czmq code I have two ifdef blocks
+| [Wednesday 04 May 2011] [11:49:42] <pieterh>	you're free to reuse that code if it helps
+| [Wednesday 04 May 2011] [11:50:08] <cremes>	nope, got my issue fixed already... i exposed a problem with the ruby binding on 32-bit windows
+| [Wednesday 04 May 2011] [11:50:17] <pieterh>	aight
+| [Wednesday 04 May 2011] [11:50:18] <cremes>	and it was related to this
+| [Wednesday 04 May 2011] [11:51:58] <pieterh>	sustrik: hey, I was kidding about the zero-reasoning bit... come back!
+| [Wednesday 04 May 2011] [11:52:18] <pieterh>	mato: you there?
+| [Wednesday 04 May 2011] [11:57:10] <mato>	pieterh: yes, but i need to go in like 5mins
+| [Wednesday 04 May 2011] [11:57:27] <pieterh>	I think ephemeral ports is a great idea
+| [Wednesday 04 May 2011] [11:57:35] <pieterh>	it should be easy to make, too
+| [Wednesday 04 May 2011] [11:58:01] <pieterh>	I assume Sustrik will accept a patch but won't make this himself
+| [Wednesday 04 May 2011] [11:58:23] <mato>	i can make a patch when i have time, it's not too hard
+| [Wednesday 04 May 2011] [11:58:43] <mato>	the tricky bit is actually the getsockname()/other API
+| [Wednesday 04 May 2011] [11:58:50] <mato>	since a socket can have many endpoints
+| [Wednesday 04 May 2011] [11:59:04] <pieterh>	right, it can be the last one or somesuch
+| [Wednesday 04 May 2011] [11:59:15] <pieterh>	it's just an int value, right?
+| [Wednesday 04 May 2011] [11:59:28] <mato>	pieterh: no it can't
+| [Wednesday 04 May 2011] [11:59:36] <mato>	if we make an API, we do it properly
+| [Wednesday 04 May 2011] [12:00:00] <pieterh>	indeed
+| [Wednesday 04 May 2011] [12:00:11] <pieterh>	so maybe it's worth just jotting down how the API should work first
+| [Wednesday 04 May 2011] [12:00:23] <Seta00>	looking forward to subports. my users already complain about copying libzmq.dll/so to a folder, I don't want to see their reactions when I tell them to open two ports
+| [Wednesday 04 May 2011] [12:00:30] <pieterh>	yeah
+| [Wednesday 04 May 2011] [12:00:39] <pieterh>	but that thread on subports was so *confused*
+| [Wednesday 04 May 2011] [12:01:12] <mato>	i gotta go, cyl
+| [Wednesday 04 May 2011] [12:01:24] <pieterh>	cyl mato
+| [Wednesday 04 May 2011] [12:01:27] <pieterh>	zmq_push() { m=$(cat) && echo -e $(printf '\\x01\\x00\\x%02x\\x00%s' $((1 + ${#m})) "$m") | nc -q1 $@; }
+| [Wednesday 04 May 2011] [12:01:47] <pieterh>	bash 1-liner from Daniel Lundin
+| [Wednesday 04 May 2011] [12:18:49] <Bar__>	"We'll generate random values, just like the real weather stations do."
+| [Wednesday 04 May 2011] [12:18:52] <Bar__>	lol
+| [Wednesday 04 May 2011] [12:23:42] <mikko>	aha!
+| [Wednesday 04 May 2011] [12:23:49] <mikko>	it got me again, setting HWM before connect
+| [Wednesday 04 May 2011] [12:27:49] <djc>	mikko: what does that do?
+| [Wednesday 04 May 2011] [12:28:03] <mikko>	the hwm has no effect unless you set it before connect/bind
+| [Wednesday 04 May 2011] [12:28:08] <mikko>	i keep tripping on that
+| [Wednesday 04 May 2011] [12:43:37] <pieterh>	mikko: if you keep tripping over it, it's bad design
+| [Wednesday 04 May 2011] [12:44:06] <pieterh>	raise an issue, the setsockopt should return -1 if you call it after connect/bind
+| [Wednesday 04 May 2011] [12:44:27] <pieterh>	(unless it does weird stuff like applying to some but not all connections... agh... )
+| [Wednesday 04 May 2011] [12:44:36] <sustrik>	exactly
+| [Wednesday 04 May 2011] [12:44:52] <pieterh>	bad design, if people keep getting it wrong
+| [Wednesday 04 May 2011] [12:45:10] <pieterh>	this is like a basic rule of design, it should not be surprising
+| [Wednesday 04 May 2011] [12:46:37] <sustrik>	what's the alternative?
+| [Wednesday 04 May 2011] [12:49:26] <mikko>	sustrik: have a method for setting the sockopt for specific connection
+| [Wednesday 04 May 2011] [12:49:31] <mikko>	not sure if that is too far from posix
+| [Wednesday 04 May 2011] [12:49:42] <sustrik>	quite far imo
+| [Wednesday 04 May 2011] [12:49:51] <sustrik>	it woudl require "connect IDs"
+| [Wednesday 04 May 2011] [12:49:56] <sustrik>	and "bind IDs"
+| [Wednesday 04 May 2011] [12:50:19] <mikko>	that is not all bad
+| [Wednesday 04 May 2011] [12:50:24] <mikko>	would allow removing connection as well
+| [Wednesday 04 May 2011] [12:50:35] <mikko>	currently you have to close socket and rebuild without one connection
+| [Wednesday 04 May 2011] [12:51:44] <pieterh>	sustrik: what would you expect to happen, as a user, if you set HWM on a socket that's already connected...?
+| [Wednesday 04 May 2011] [12:51:56] <sustrik>	no change
+| [Wednesday 04 May 2011] [12:52:14] <pieterh>	nope, that's as an implementor
+| [Wednesday 04 May 2011] [12:52:32] <pieterh>	since Mikko, a classic user, keeps tripping up on this, 'no change' is clearly not what he intends
+| [Wednesday 04 May 2011] [12:52:45] <sustrik>	change to running sockets don't work well
+| [Wednesday 04 May 2011] [12:52:53] <sustrik>	mailbox_t is nice example
+| [Wednesday 04 May 2011] [12:53:10] <pieterh>	you're telling me, as often, about implementation details
+| [Wednesday 04 May 2011] [12:53:17] <pieterh>	I'm talking about API design
+| [Wednesday 04 May 2011] [12:53:19] <sustrik>	(the probleb with resizing buffers on the run)
+| [Wednesday 04 May 2011] [12:53:41] <sustrik>	i am talking about how existing implementations work
+| [Wednesday 04 May 2011] [12:53:57] <pieterh>	we have this kind of discussion often
+| [Wednesday 04 May 2011] [12:53:59] <sustrik>	the rule of the thumb is "don't do that or you get burned"
+| [Wednesday 04 May 2011] [12:54:15] 	 * pieterh will go off and do this properly in czmq... 
+| [Wednesday 04 May 2011] [12:55:29] <pieterh>	allow me to suggest that APIs should not burn their users
+| [Wednesday 04 May 2011] [12:55:47] <pieterh>	and should properly report errors when users make mistakes
+| [Wednesday 04 May 2011] [12:56:10] <sustrik>	sure, but keep inside POSIX
+| [Wednesday 04 May 2011] [12:56:19] <pieterh>	what does that mean?
+| [Wednesday 04 May 2011] [12:56:30] <pieterh>	please send me the URL for the "POSIX API"
+| [Wednesday 04 May 2011] [12:56:32] <pieterh>	it is massive
+| [Wednesday 04 May 2011] [12:56:40] <sustrik>	use interfaces as defined at opengroup.org
+| [Wednesday 04 May 2011] [12:57:37] <pieterh>	I'd point out that the Open Group *develop* standards, meaning it's a process
+| [Wednesday 04 May 2011] [12:58:11] <pieterh>	however I'm interested in what specific API standards you're following in this case
+| [Wednesday 04 May 2011] [12:58:31] <pieterh>	since you often claim "POSIX" (which is a good goal IMO) it would be useful to be precise about what that means
+| [Wednesday 04 May 2011] [12:58:46] <pieterh>	"silent burning of users who get it wrong" isn't in there IMO
+| [Wednesday 04 May 2011] [12:59:08] <sustrik>	that's what happens in reality though
+| [Wednesday 04 May 2011] [12:59:18] <pieterh>	and you accept this as inevitable?
+| [Wednesday 04 May 2011] [12:59:39] <sustrik>	changing options on run-time is hard or maybe impossible to implement consistently
+| [Wednesday 04 May 2011] [12:59:43] <sustrik>	depends on the option
+| [Wednesday 04 May 2011] [13:00:32] <pieterh>	so with HWMs you can maintain different-sized queues for each active connection in a socket?
+| [Wednesday 04 May 2011] [13:00:42] <pieterh>	but you cannot resize a queue nor copy one queue to another
+| [Wednesday 04 May 2011] [13:01:56] <pieterh>	surely the HWM is just a number
+| [Wednesday 04 May 2011] [13:02:06] <sustrik>	yes, that's the case
+| [Wednesday 04 May 2011] [13:02:09] <pieterh>	if your queue is already larger than the HWM, setting it lower won't have immediate impact
+| [Wednesday 04 May 2011] [13:02:14] <pieterh>	only when the queue grows again
+| [Wednesday 04 May 2011] [13:02:25] <pieterh>	thus, setting the HWM on an empty queue can work trivially
+| [Wednesday 04 May 2011] [13:02:54] <sustrik>	there are synchronisation problems
+| [Wednesday 04 May 2011] [13:03:07] <sustrik>	you can never be sure that the queue is empty at the moment
+| [Wednesday 04 May 2011] [13:03:12] <pieterh>	does that matter?
+| [Wednesday 04 May 2011] [13:03:41] <pieterh>	further, it would be simpler than today
+| [Wednesday 04 May 2011] [13:03:42] <sustrik>	dunno, maybe it's possible to do it
+| [Wednesday 04 May 2011] [13:03:46] <sustrik>	but very complex
+| [Wednesday 04 May 2011] [13:03:49] <sustrik>	you can try
+| [Wednesday 04 May 2011] [13:03:49] <pieterh>	now you have to manage a separate HWM per queue
+| [Wednesday 04 May 2011] [13:04:03] <pieterh>	well, "send me a patch" is a good joke but it doesn't work on me
+| [Wednesday 04 May 2011] [13:04:28] <pieterh>	my role is limited here to challenging your (fairly frequent) assertions that painful APIs are inevitable due to implementation details :)
+| [Wednesday 04 May 2011] [13:05:16] <pieterh>	ok, I owe you a beer next week for being rather unkind
+| [Wednesday 04 May 2011] [13:06:06] <pieterh>	however it is always profitable to improve an area where people systematically make mistakes
+| [Wednesday 04 May 2011] [13:10:06] <sustrik>	well, it's
+| [Wednesday 04 May 2011] [13:10:09] <sustrik>	1. hard to do
+| [Wednesday 04 May 2011] [13:10:36] <sustrik>	OSes often get it wrong, which is a sign of a possible problem there
+| [Wednesday 04 May 2011] [13:10:53] <sustrik>	2. it's not clear how to expose it via POSIX api
+| [Wednesday 04 May 2011] [13:11:48] <sustrik>	3. the development of new features is severely hindered by the hacks in the codebase that cannot be removed because people are using them
+| [Wednesday 04 May 2011] [13:12:15] <sustrik>	thus, adding any more hacks can easily kill the project
+| [Wednesday 04 May 2011] [13:12:46] <sustrik>	what we need to do before doing this kind of thing is to grow the developer base
+| [Wednesday 04 May 2011] [13:13:36] <sustrik>	once there are 10-20 people hacking on the core
+| [Wednesday 04 May 2011] [13:14:03] <sustrik>	we can allow some more complexity in the codebase
+| [Wednesday 04 May 2011] [14:06:06] <CIA-75>	pyzmq: 03hugo shi 07master * ra8e6532 10/ examples/eventloop/web.py : added simple example that runs a tornado web server which can send zmq messages to echostream.py ...
+| [Wednesday 04 May 2011] [14:34:49] <CIA-75>	pyzmq: 03Min RK 07master * r3556e77 10/ (zmq/core/socket.pyx zmq/tests/test_device.py): Merge pull request #108 from minrk/testsockets. ...
+| [Wednesday 04 May 2011] [14:56:51] <Bartzy>	I was just told at ##php that PHP is totally unsuitable for daemons and servers and stuff
+| [Wednesday 04 May 2011] [14:56:52] <Bartzy>	;(
+| [Wednesday 04 May 2011] [14:58:55] <Bartzy>	Anyone here is using PHP as a 'server' ?
+| [Wednesday 04 May 2011] [14:59:08] <Bartzy>	with 0MQ, of course...
+| [Wednesday 04 May 2011] [17:02:48] <aspidites>	any best practices when trying to design a network architecture? or is it more of a trial and error thing?
+| [Wednesday 04 May 2011] [17:03:49] <mikko>	aspidites: same best practices apply as outside zeromq
+| [Wednesday 04 May 2011] [17:04:07] <mikko>	there are some zeromq specific established things as well
+| [Wednesday 04 May 2011] [17:04:16] <mikko>	but if you explain your situation a bit people can advise better
+| [Wednesday 04 May 2011] [17:06:16] <aspidites>	well i'm trying to write a server for a trading card game. i'm thinking about having deck objects created on the server and allowing those objects to be modified using a req/rep socket pair, simultaneously using pub/sub sockets to deliver/receive updates
+| [Wednesday 04 May 2011] [17:06:53] <aspidites>	eg, player client can request to draw cards and receive a reply with the cards that were drawn, but other players or spectators could subscribe to deck events such as 'player 1 drew a card'
+| [Wednesday 04 May 2011] [17:08:38] <mikko>	ok, is this over the internet?
+| [Wednesday 04 May 2011] [17:09:10] <aspidites>	desktop
+| [Wednesday 04 May 2011] [17:09:58] <aspidites>	server would be run as a daemon either on a remote machine, or on a 'host' machine, clients would be desktop applications that connected to said remote machines, more than likely locating them through a simple name server
+| [Wednesday 04 May 2011] [17:10:38] <aspidites>	initially i'll just key in the server address as a command line option, so i'm not so worried about the name server right now
+| [Wednesday 04 May 2011] [17:11:23] <mikko>	what i meant by over the internet is that are you exposing zeromq to internet?
+| [Wednesday 04 May 2011] [17:11:37] <mikko>	there are still occasional asserts on invalid messages
+| [Wednesday 04 May 2011] [17:11:50] <mikko>	but those usually get fixed pretty quickly as they are found
+| [Wednesday 04 May 2011] [17:12:20] <aspidites>	i guess i still don't follow. 
+| [Wednesday 04 May 2011] [17:13:13] <aspidites>	there won't be (initially) any web based clients if that's what you mean
+| [Wednesday 04 May 2011] [17:13:22] <mikko>	i mean public access
+| [Wednesday 04 May 2011] [17:13:26] <mikko>	over the internet
+| [Wednesday 04 May 2011] [17:13:45] <mikko>	are you exposing zeromq to public internet or is this lan application?
+| [Wednesday 04 May 2011] [17:14:22] <aspidites>	mostly lan
+| [Wednesday 04 May 2011] [17:14:48] <aspidites>	actually no. it would be public internet
+| [Wednesday 04 May 2011] [17:15:20] <aspidites>	sorry i'm being confusing. users will most likely be spread accross domains, in separate cities, states, and more likely countries, not on the same router
+| [Wednesday 04 May 2011] [17:17:06] <mikko>	yes
+| [Wednesday 04 May 2011] [17:17:09] <mikko>	thats what i meant
+| [Wednesday 04 May 2011] [17:18:07] <aspidites>	yeah. public internet. might need to slow down on drinking those energy drinks
+| [Wednesday 04 May 2011] [17:19:13] <aspidites>	perhaps i can ask a simpler question: should i prefer the req/rep pattern when i need to guarantee delivery of messages, and the pub/sub pattern when clients may come and go without carrying about what messages are received?
+| [Wednesday 04 May 2011] [17:19:46] <mikko>	yes, but most likely you want XREP/XREQ 
+| [Wednesday 04 May 2011] [17:22:59] <aspidites>	which is now router/dealer, right?
+| [Wednesday 04 May 2011] [17:23:07] <mikko>	yes
+| [Wednesday 04 May 2011] [17:23:25] <aspidites>	ok. so when would i use push/pull?
+| [Wednesday 04 May 2011] [17:23:51] <mikko>	fire and forget
+| [Wednesday 04 May 2011] [17:25:07] <aspidites>	ah ok
+| [Wednesday 04 May 2011] [17:26:05] <aspidites>	i see the multithreading example, is there a similar multiprocessing example?
+| [Wednesday 04 May 2011] [17:30:56] <aspidites>	nvm thanks though
+| [Wednesday 04 May 2011] [19:24:41] <Bartzy>	Can I use fork with zeromq ? 
+| [Wednesday 04 May 2011] [19:24:56] <Bartzy>	It won't crash or something cause file descriptors get shared between processes ?
