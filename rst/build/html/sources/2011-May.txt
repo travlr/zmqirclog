@@ -1404,3 +1404,581 @@
 | [Wednesday 04 May 2011] [17:30:56] <aspidites>	nvm thanks though
 | [Wednesday 04 May 2011] [19:24:41] <Bartzy>	Can I use fork with zeromq ? 
 | [Wednesday 04 May 2011] [19:24:56] <Bartzy>	It won't crash or something cause file descriptors get shared between processes ?
+| [Thursday 05 May 2011] [02:53:04] <djc>	Bartzy: IIRC you shouldn't share sockets across threads
+| [Thursday 05 May 2011] [02:53:13] <djc>	(zmq sockets)
+| [Thursday 05 May 2011] [02:54:19] <guido_g>	fork <- processes
+| [Thursday 05 May 2011] [02:54:31] <guido_g>	but the statement holds
+| [Thursday 05 May 2011] [02:54:34] <djc>	yeah
+| [Thursday 05 May 2011] [02:54:54] <djc>	hmmm, I'm using a device to forward a tcp publisher over inproc
+| [Thursday 05 May 2011] [02:55:05] <djc>	but it seems to leak like hell
+| [Thursday 05 May 2011] [02:55:13] <djc>	even though I set HWM on the inproc subs
+| [Thursday 05 May 2011] [02:55:31] <djc>	presumably if there are no inproc subs the device will just lose the messages, right?
+| [Thursday 05 May 2011] [02:57:50] <djc>	also is it possible somehow to inspect the size of the queue for a subscriber?
+| [Thursday 05 May 2011] [02:58:07] <djc>	I don't see anything in the getsockopt docs, so probably not...
+| [Thursday 05 May 2011] [02:58:35] <guido_g>	hwm should be set on both sides for inproc
+| [Thursday 05 May 2011] [02:58:57] <guido_g>	its then the sum of both sides, i've heard here
+| [Thursday 05 May 2011] [02:59:00] <djc>	why's that?
+| [Thursday 05 May 2011] [02:59:10] <guido_g>	i didn't implement it
+| [Thursday 05 May 2011] [02:59:28] <sustrik>	the reason is to make it work same for tcp and inproc
+| [Thursday 05 May 2011] [02:59:44] <sustrik>	so, in tcp you have a buffer on send side and buffer on recv side
+| [Thursday 05 May 2011] [02:59:55] <djc>	ah, ok
+| [Thursday 05 May 2011] [02:59:57] <djc>	that makes sense
+| [Thursday 05 May 2011] [03:00:15] <djc>	so for a forwarder device, if I only have HWM on the pub side, should that suffice?
+| [Thursday 05 May 2011] [03:00:23] <djc>	or does that just make it clog up on the sub side?
+| [Thursday 05 May 2011] [03:00:34] <sustrik>	the latter
+| [Thursday 05 May 2011] [03:00:57] <sustrik>	if you wan't to bound memory usage
+| [Thursday 05 May 2011] [03:01:07] <sustrik>	set hwm on every socket you are using
+| [Thursday 05 May 2011] [03:01:36] <djc>	I had a server completely fail last night because the OOM killer for some reason killed everything except the pyzmq-using process :(
+| [Thursday 05 May 2011] [03:02:13] <sustrik>	yes, you should use HWM consistently
+| [Thursday 05 May 2011] [03:02:24] <sustrik>	you can also have a look at MAXMSGSIZE option
+| [Thursday 05 May 2011] [03:02:28] <djc>	sustrik: if the forwarder device doesn't have any clients on the pub side, it will still throw messages away, right?
+| [Thursday 05 May 2011] [03:02:33] <djc>	like a normal publisher?
+| [Thursday 05 May 2011] [03:02:48] <sustrik>	yes, the same
+| [Thursday 05 May 2011] [03:03:10] <djc>	and would it be hard to add a sock opt to get the queue size?
+| [Thursday 05 May 2011] [03:03:40] <sustrik>	which queue?
+| [Thursday 05 May 2011] [03:03:47] <sustrik>	there are many queues beneath each socket
+| [Thursday 05 May 2011] [03:03:56] <sustrik>	one per connection basically
+| [Thursday 05 May 2011] [03:04:08] <djc>	yeah
+| [Thursday 05 May 2011] [03:04:21] <djc>	I suppose, on a sub socket, the total of all messages queued from each publisher
+| [Thursday 05 May 2011] [03:04:27] <sustrik>	also, you can't account for data stored in TCP buffers, in the NIC etc.
+| [Thursday 05 May 2011] [03:04:49] <sustrik>	what would you use that for?
+| [Thursday 05 May 2011] [03:05:02] <sustrik>	memory usage management?
+| [Thursday 05 May 2011] [03:25:17] <guido_g>	some information would be better than no information
+| [Thursday 05 May 2011] [03:25:48] <guido_g>	one could use the information to see trends and steer the components
+| [Thursday 05 May 2011] [03:26:27] <sustrik>	you mean in terms of memory management, right?
+| [Thursday 05 May 2011] [03:26:53] <sustrik>	like "this component is using too much memory so let's ask it to pause for a while"
+| [Thursday 05 May 2011] [03:26:54] <guido_g>	no, I mean in terms of overall management during system runtime
+| [Thursday 05 May 2011] [03:27:25] <sustrik>	management of what then, network bandwidth?
+| [Thursday 05 May 2011] [03:27:35] <guido_g>	the whole system
+| [Thursday 05 May 2011] [03:27:41] <sustrik>	CPU usage?
+| [Thursday 05 May 2011] [03:27:45] <guido_g>	the whole system
+| [Thursday 05 May 2011] [03:27:50] <sustrik>	what's that? :)
+| [Thursday 05 May 2011] [03:27:54] <guido_g>	omfg
+| [Thursday 05 May 2011] [03:28:07] <guido_g>	sometimes it's really hard
+| [Thursday 05 May 2011] [03:28:30] <sustrik>	well, you want to manage something, but you don't say what you want to manage
+| [Thursday 05 May 2011] [03:28:34] <sustrik>	hard to help you then
+| [Thursday 05 May 2011] [03:28:37] <guido_g>	the application
+| [Thursday 05 May 2011] [03:28:46] <sustrik>	can you give an example?
+| [Thursday 05 May 2011] [03:28:53] <guido_g>	i build an application and need to keep track what it does
+| [Thursday 05 May 2011] [03:29:01] <guido_g>	messaging is part of this
+| [Thursday 05 May 2011] [03:29:10] <guido_g>	i don't need exact numbers
+| [Thursday 05 May 2011] [03:29:34] <guido_g>	it's more important to have measurement-pointsd all over the app
+| [Thursday 05 May 2011] [03:29:48] <guido_g>	so there is evidence if something goes wrong
+| [Thursday 05 May 2011] [03:30:10] <mikko>	deja vu
+| [Thursday 05 May 2011] [03:30:14] <mikko>	good morning
+| [Thursday 05 May 2011] [03:30:15] <guido_g>	it modernd times, this information might even be used to allert ops if something looks fishy
+| [Thursday 05 May 2011] [03:30:20] <sustrik>	morning
+| [Thursday 05 May 2011] [03:30:25] <sustrik>	right
+| [Thursday 05 May 2011] [03:30:25] <guido_g>	hi mikko 
+| [Thursday 05 May 2011] [03:30:30] <sustrik>	do you monitor tcp buffers?
+| [Thursday 05 May 2011] [03:30:39] <guido_g>	i knew that would come
+| [Thursday 05 May 2011] [03:30:48] <guido_g>	if i have to, i'd do it
+| [Thursday 05 May 2011] [03:30:49] <sustrik>	there's actually a way to do that as i found out yesterday
+| [Thursday 05 May 2011] [03:31:08] <guido_g>	but messages are a way better overall indicator
+| [Thursday 05 May 2011] [03:31:21] <guido_g>	because these link directly to the applications actions
+| [Thursday 05 May 2011] [03:31:27] <mikko>	i think metric of how many messages in zeromq buffers is a useful metric
+| [Thursday 05 May 2011] [03:31:35] <guido_g>	and therefore produce a "value" for logging/monitoring
+| [Thursday 05 May 2011] [03:32:01] <guido_g>	mikko: thanks, i owe you a beer
+| [Thursday 05 May 2011] [03:32:14] <mikko>	guido_g: we've had this discussion before
+| [Thursday 05 May 2011] [03:32:25] <guido_g>	mikko: you too?  ,)
+| [Thursday 05 May 2011] [03:32:30] <sustrik>	let's maybe discuss it in bxl?
+| [Thursday 05 May 2011] [03:32:36] <guido_g>	YES!
+| [Thursday 05 May 2011] [03:32:37] <mikko>	i think the best you can do is to give real-world example how you use this metric
+| [Thursday 05 May 2011] [03:32:45] <sustrik>	yes, please
+| [Thursday 05 May 2011] [03:32:50] <mikko>	what do you gain out of this metric, not just "logging" as whole
+| [Thursday 05 May 2011] [03:32:59] <sustrik>	without the use cases the discussion is kind of pointless
+| [Thursday 05 May 2011] [03:33:04] <guido_g>	no
+| [Thursday 05 May 2011] [03:33:11] <mikko>	once there is a real-world example sustrik can relate to it
+| [Thursday 05 May 2011] [03:33:13] <guido_g>	it'S a service the library should provide
+| [Thursday 05 May 2011] [03:33:24] <djc>	mikko: for example, you might have found out sooner you erroneously set your HWM after the connect
+| [Thursday 05 May 2011] [03:33:27] <guido_g>	going to read the internets then...
+| [Thursday 05 May 2011] [03:33:46] <djc>	I would definitely have found out my single HWM was not enough
+| [Thursday 05 May 2011] [03:33:51] <mikko>	djc: i wouldn't, because it was the receiver side hwm
+| [Thursday 05 May 2011] [03:33:55] <djc>	even though I still don't fully understand why that is
+| [Thursday 05 May 2011] [03:33:59] <mikko>	i wouldve looked at sender side
+| [Thursday 05 May 2011] [03:34:09] <mikko>	djc: inproc?
+| [Thursday 05 May 2011] [03:34:16] <djc>	yeah, inproc
+| [Thursday 05 May 2011] [03:34:24] <mikko>	set sender and receiver hwm
+| [Thursday 05 May 2011] [03:34:33] <djc>	yeah, sure, WHY, though?
+| [Thursday 05 May 2011] [03:34:40] <mikko>	because the messages get queued
+| [Thursday 05 May 2011] [03:34:51] <djc>	the docs say for PUB and SUB sockets, both have action = Drop for HWM
+| [Thursday 05 May 2011] [03:34:54] <mikko>	in my case i publish frames from kinect
+| [Thursday 05 May 2011] [03:35:01] <mikko>	sensor gives 30fps
+| [Thursday 05 May 2011] [03:35:09] <mikko>	and my gui occasionally lags behind a bit
+| [Thursday 05 May 2011] [03:35:18] <djc>	so it seems like, if I set HWM on the sub, the sub should drop if it gets more stuff from the PUB
+| [Thursday 05 May 2011] [03:35:24] <mikko>	and then the memory usage starts to sky rocket as the frames get buffered
+| [Thursday 05 May 2011] [03:35:37] <mikko>	djc: yes
+| [Thursday 05 May 2011] [03:35:41] <mikko>	that's what i wanted in my case
+| [Thursday 05 May 2011] [03:35:50] <djc>	that's similar to what I have, I'm pushing JSON messages over a WebSocket and the browser has to update a web page
+| [Thursday 05 May 2011] [03:35:50] <mikko>	as the sensor feed is real-time
+| [Thursday 05 May 2011] [03:36:18] <mikko>	this is only problem if you publish faster than you consume
+| [Thursday 05 May 2011] [03:36:39] <mikko>	guido_g: there is no question in my mind that zeromq should provide this metric
+| [Thursday 05 May 2011] [03:36:51] <mikko>	sustrik: if you can monitor the size of tcp buffers why not zeromq as well?
+| [Thursday 05 May 2011] [03:37:12] <djc>	also, does someone here have experience tuning the Linux OOM killer? ;)
+| [Thursday 05 May 2011] [03:38:22] <djc>	mikko: but the thing is, I'm forwarding from tcp to inproc, and I think the inproc side of the forwarder had no clients at all
+| [Thursday 05 May 2011] [03:38:36] <djc>	so in that case I don't understand why I need a HWM set
+| [Thursday 05 May 2011] [03:38:47] <djc>	because the pub side of the forwarder should just drop everything
+| [Thursday 05 May 2011] [03:38:53] <mikko>	you don't necessarily
+| [Thursday 05 May 2011] [03:38:57] <mikko>	are you having issues?
+| [Thursday 05 May 2011] [03:39:26] <djc>	the OOM killer killed one of my servers last night
+| [Thursday 05 May 2011] [03:39:36] <djc>	because it didn't understand what process it had to kill
+| [Thursday 05 May 2011] [03:40:05] <sustrik>	mikko: my fear is that people would abuse it to drive application logic
+| [Thursday 05 May 2011] [03:40:18] <guido_g>	mikko: http://highscalability.com/log-everything-all-time  <- my statement in form of an article (note the date!)
+| [Thursday 05 May 2011] [03:40:20] <mikko>	terminate called after throwing an instance of 'zmq::error_t'
+| [Thursday 05 May 2011] [03:40:23] <sustrik>	i've had that discussion serveral times
+| [Thursday 05 May 2011] [03:40:26] <mikko>	shouldn't this be catchable?
+| [Thursday 05 May 2011] [03:40:35] <sustrik>	guy asks for monitoring the queue size
+| [Thursday 05 May 2011] [03:40:45] <sustrik>	says it's for "monitoring" purposes
+| [Thursday 05 May 2011] [03:40:55] <guido_g>	you can'T protect the world
+| [Thursday 05 May 2011] [03:41:09] <djc>	sustrik: the solution for that would be good docs
+| [Thursday 05 May 2011] [03:41:16] <sustrik>	further questioning reveals that he actually want's it to dirve the business logic
+| [Thursday 05 May 2011] [03:41:19] <djc>	which say DON'T USE THIS FOR APP LOGIC
+| [Thursday 05 May 2011] [03:41:31] <djc>	and then when they complain you can just point to the docs
+| [Thursday 05 May 2011] [03:41:38] <guido_g>	if mq should be used for real 24/7 distributed applications, it has to have a way to montior it's behaviour
+| [Thursday 05 May 2011] [03:41:44] <sustrik>	well, the REQ/REP is meant to do REQ/REP
+| [Thursday 05 May 2011] [03:41:49] <guido_g>	directly and related to the messages it processes
+| [Thursday 05 May 2011] [03:41:59] <sustrik>	what you see now is everyone using it to do custom routing
+| [Thursday 05 May 2011] [03:42:04] <guido_g>	for now it's a black box
+| [Thursday 05 May 2011] [03:42:10] <pieterh>	sustrik: you're not being fair here
+| [Thursday 05 May 2011] [03:42:16] <pieterh>	0MQ lacks any other way to do routing
+| [Thursday 05 May 2011] [03:42:19] <guido_g>	and ask ops guys what they think of those things
+| [Thursday 05 May 2011] [03:42:26] <guido_g>	hi pieterh 
+| [Thursday 05 May 2011] [03:42:29] <sustrik>	morning
+| [Thursday 05 May 2011] [03:42:33] <pieterh>	guido_g: hi
+| [Thursday 05 May 2011] [03:42:55] <pieterh>	sustrik: if you keep complaining that people 'misuse' your lovely designs
+| [Thursday 05 May 2011] [03:42:56] <guido_g>	welcome to the pre-warmup for brussels :)
+| [Thursday 05 May 2011] [03:43:04] <pieterh>	you really start to sound silly
+| [Thursday 05 May 2011] [03:43:14] <pieterh>	since you don't provide alternatives
+| [Thursday 05 May 2011] [03:43:21] <pieterh>	and you try to claim that the use cases are invalid
+| [Thursday 05 May 2011] [03:43:25] <pieterh>	or people are just too stupid
+| [Thursday 05 May 2011] [03:43:27] <pieterh>	or something
+| [Thursday 05 May 2011] [03:43:28] <sustrik>	well, if i added every possible feature to 0mq, we'll be back to AMQP style design by now
+| [Thursday 05 May 2011] [03:43:33] <pieterh>	it's really annoying to have this discussion
+| [Thursday 05 May 2011] [03:43:45] <pieterh>	no-one is asking for "every possible feature"
+| [Thursday 05 May 2011] [03:43:49] <pieterh>	that is a straw man
+| [Thursday 05 May 2011] [03:43:53] <guido_g>	sustrik: resistance is good, up to a certain amount
+| [Thursday 05 May 2011] [03:43:53] <djc>	sustrik: it's not even a feature, just exposing some more data you already have somehwere
+| [Thursday 05 May 2011] [03:43:55] <sustrik>	one at a time :)
+| [Thursday 05 May 2011] [03:44:06] <guido_g>	sustrik: if you refuse too much features, you fail to attract users
+| [Thursday 05 May 2011] [03:44:08] <pieterh>	stop telling your users they are stupid, it's really bad politics
+| [Thursday 05 May 2011] [03:44:17] <pieterh>	you don't actually use 0MQ
+| [Thursday 05 May 2011] [03:44:17] <sustrik>	ok
+| [Thursday 05 May 2011] [03:44:25] <pieterh>	you are actually incompetent when it comes to knowing about use cases
+| [Thursday 05 May 2011] [03:44:34] <pieterh>	if you don't trust your users, what do you have?
+| [Thursday 05 May 2011] [03:44:37] <guido_g>	ahhh
+| [Thursday 05 May 2011] [03:44:39] <djc>	pieterh: harsh words, man
+| [Thursday 05 May 2011] [03:44:44] <pieterh>	true words
+| [Thursday 05 May 2011] [03:44:56] <guido_g>	one-gear down would help more, i think
+| [Thursday 05 May 2011] [03:45:09] <sustrik>	i would love to hear the use case
+| [Thursday 05 May 2011] [03:45:13] <pieterh>	either we design 0MQ collectively, or it fails to work
+| [Thursday 05 May 2011] [03:45:24] <djc>	sustrik: the use case is actual monitoring
+| [Thursday 05 May 2011] [03:45:32] <sustrik>	what's that?
+| [Thursday 05 May 2011] [03:45:38] <sustrik>	what it is used for?
+| [Thursday 05 May 2011] [03:45:40] <sustrik>	etc.
+| [Thursday 05 May 2011] [03:45:42] <djc>	making sure the message queues don't balloon out because of my failing to set enough HWMs
+| [Thursday 05 May 2011] [03:45:54] <djc>	and displaying some values about this on a status page
+| [Thursday 05 May 2011] [03:46:03] <djc>	so I can correct my code by setting more HWMs
+| [Thursday 05 May 2011] [03:46:08] <sustrik>	ah, so it's for debugging, right?
+| [Thursday 05 May 2011] [03:46:15] <guido_g>	pieterh: is it ok to have a page on the wiki for such things? and if so, where?
+| [Thursday 05 May 2011] [03:46:24] <djc>	sustrik: debugging and monitoring go together
+| [Thursday 05 May 2011] [03:46:29] <pieterh>	guido_g: what such things?
+| [Thursday 05 May 2011] [03:46:38] <djc>	some code that worked fine may not work once I start to move more messages through the socket
+| [Thursday 05 May 2011] [03:46:39] <sustrik>	so what's the monitoring part about?
+| [Thursday 05 May 2011] [03:46:51] <guido_g>	pieterh: features to be beaten^W discussed over
+| [Thursday 05 May 2011] [03:47:10] <pieterh>	guido_g: for sure, yes... I sometimes make 'topic' pages for that stuff
+| [Thursday 05 May 2011] [03:47:27] <sustrik>	that would be goog
+| [Thursday 05 May 2011] [03:47:30] <sustrik>	good
+| [Thursday 05 May 2011] [03:47:41] <sustrik>	especially if people post use cases there
+| [Thursday 05 May 2011] [03:47:49] <djc>	sustrik: the monitoring part is just being able to ascertain that something is not going wrong... it's not just debugging
+| [Thursday 05 May 2011] [03:48:23] <guido_g>	pieterh: i want to present the monitoring use-case, lots of links and some meagre words from me
+| [Thursday 05 May 2011] [03:48:42] <djc>	for example I'd put it into SNMP and integrate it with my other diagnostics
+| [Thursday 05 May 2011] [03:48:45] <guido_g>	monitoring is much more, yes
+| [Thursday 05 May 2011] [03:48:56] <pieterh>	start a topic: page, write what you like, then post link to email list and discuss there
+| [Thursday 05 May 2011] [03:48:58] <djc>	(for example couchdb replication state, redis uptime, whatever)
+| [Thursday 05 May 2011] [03:49:06] <guido_g>	pieterh: ah ok
+| [Thursday 05 May 2011] [03:49:28] 	 * guido_g goes of to find out what a topic-page is
+| [Thursday 05 May 2011] [03:50:17] <pieterh>	guido_g: it's a wiki, you enter 'http://www.zeromq.org/topic:monitoring-something' in the URL, then click to create the page
+| [Thursday 05 May 2011] [03:50:35] <guido_g>	pieterh: thanks
+| [Thursday 05 May 2011] [03:50:38] <pieterh>	you can edit the community page to add to the list of topics already shown
+| [Thursday 05 May 2011] [03:51:29] <guido_g>	i'm not allowed to do that
+| [Thursday 05 May 2011] [03:51:57] <guido_g>	the story of my life
+| [Thursday 05 May 2011] [03:52:29] <djc>	sustrik: so in my pub-sub-forwarded-over-inproc scenario, how many HWMs do I need to set to be safe? in my mental model, if I set the HWM on the inproc subscriber (at the end of the chain), I'd be safe
+| [Thursday 05 May 2011] [03:52:38] <pieterh>	guido_g: join the wiki, there should be a button somewhere
+| [Thursday 05 May 2011] [03:52:41] <djc>	but obviously that's not the case, and I don't understand why, from the docs
+| [Thursday 05 May 2011] [03:52:43] 	 * pieterh will check the wiki permissions
+| [Thursday 05 May 2011] [03:52:48] <guido_g>	pieterh: i'm logged in
+| [Thursday 05 May 2011] [03:53:12] <sustrik>	djc: on every socket
+| [Thursday 05 May 2011] [03:53:31] <djc>	yeah, I really don't understand why that is
+| [Thursday 05 May 2011] [03:53:49] <pieterh>	guido_g: did you join the site? You have to be a member to edit pages on it
+| [Thursday 05 May 2011] [03:53:58] <sustrik>	actually, my feeling is that the whole monitoring discussion would be solved by setting the default HWM to 1000 or somesuch :)
+| [Thursday 05 May 2011] [03:54:11] <pieterh>	sustrik: yeah, or default in context
+| [Thursday 05 May 2011] [03:54:27] <djc>	ugh, that would be really bad
+| [Thursday 05 May 2011] [03:54:35] <guido_g>	pieterh: i could edit the brussels page, but i'm not allowed to create a page (url close the one you gave)
+| [Thursday 05 May 2011] [03:54:47] <sustrik>	djc: why so?
+| [Thursday 05 May 2011] [03:54:55] <sustrik>	infinity is a prety lousy default
+| [Thursday 05 May 2011] [03:55:02] <djc>	sustrik: because I don't want it to lose messages by default
+| [Thursday 05 May 2011] [03:55:05] <guido_g>	pieterh: i requested http://www.zeromq.org/topic:monitoring-support and clicked on create page
+| [Thursday 05 May 2011] [03:55:24] <pieterh>	guido_g: sorry, it's 'topics' not 'topic'...
+| [Thursday 05 May 2011] [03:55:45] <pieterh>	I can make a better interface for creating topics but you're pretty much user number 1 here
+| [Thursday 05 May 2011] [03:55:47] <guido_g>	pieterh: see, and it works :)
+| [Thursday 05 May 2011] [03:55:51] <guido_g>	pieterh: thanks again
+| [Thursday 05 May 2011] [03:55:53] <sustrik>	djc: you mean in pub/sub?
+| [Thursday 05 May 2011] [03:56:12] <djc>	sustrik: but explain this to me some more... in my mind, a message incoming over tcp gets to the forwarder sub, is then copied onto the inproc pub, then it immediately gets reference-copied to each inproc sub incoming queue, right?
+| [Thursday 05 May 2011] [03:56:22] <djc>	sustrik: yeah, pub/sub
+| [Thursday 05 May 2011] [03:56:58] <sustrik>	yes
+| [Thursday 05 May 2011] [03:57:26] <djc>	sustrik: so if I set HWM on the inproc sub, it should drop things that come in when it's full, so how is that not a good enough solution?
+| [Thursday 05 May 2011] [03:57:47] <djc>	there doesn't seem to be any opportunity for the other buffers to get clogged up
+| [Thursday 05 May 2011] [03:58:04] <sustrik>	but it's either/or problem; either you loose messages or run out of memory
+| [Thursday 05 May 2011] [03:58:16] <sustrik>	there's no way out of that
+| [Thursday 05 May 2011] [03:58:22] <djc>	sustrik: yes, and that's exactly the choice zeromq shouldn't make for me
+| [Thursday 05 May 2011] [03:58:32] <sustrik>	ah
+| [Thursday 05 May 2011] [03:58:50] <sustrik>	i was speaking about default behaviour
+| [Thursday 05 May 2011] [03:58:57] <sustrik>	not mandatory behaviour
+| [Thursday 05 May 2011] [03:59:43] <sustrik>	the point was that loosing messages is probably more acceptable than process being killed by OOM killer
+| [Thursday 05 May 2011] [04:00:07] <djc>	well, I prefer fail fast, and I'll notice the OOM killer sooner than I'll notice messages being dropped
+| [Thursday 05 May 2011] [04:00:39] <djc>	(actually before the OOM killer I noticed the memory use before it became really problematic and killed the right process myself, and then set the HWM)
+| [Thursday 05 May 2011] [04:00:44] <pieterh>	djc: if 0MQ told you when it was dropping messages, would that help?
+| [Thursday 05 May 2011] [04:00:55] <djc>	but you still haven't explained why my single HWM won't work
+| [Thursday 05 May 2011] [04:01:17] <djc>	pieterh: that might help some, but I'm not sure what the appropriate channel for that would be 
+| [Thursday 05 May 2011] [04:01:33] <pieterh>	well, there's already sys://log for such things
+| [Thursday 05 May 2011] [04:01:52] <pieterh>	it can be extraordinarily annoying to e.g. have messages dropped silently when they can't be routed
+| [Thursday 05 May 2011] [04:02:11] <pieterh>	sustrik: you realize that the only way to debug this is to add printfs to libzmq?
+| [Thursday 05 May 2011] [04:02:24] <sustrik>	yes
+| [Thursday 05 May 2011] [04:02:32] <pieterh>	i vaguely recall submitting a patch for this, which got rejected
+| [Thursday 05 May 2011] [04:02:45] <sustrik>	two problems
+| [Thursday 05 May 2011] [04:03:06] <sustrik>	1. if there are several publishers it's not clear which message sequence is broken
+| [Thursday 05 May 2011] [04:03:42] <sustrik>	2. there should be a way to propagate the "breaking points" down the pub/sub tree
+| [Thursday 05 May 2011] [04:04:07] <sustrik>	djc: if there's unbounded queue anywhere in the system it'll become the narrow point where the messages get accumulated
+| [Thursday 05 May 2011] [04:04:34] <djc>	sustrik: that doesn't make sense if the HWM behavior is to drop
+| [Thursday 05 May 2011] [04:04:37] <sustrik>	so, in congestion situation, that queue will grow and ultimately run out of memory
+| [Thursday 05 May 2011] [04:04:55] <sustrik>	what should it be instead?
+| [Thursday 05 May 2011] [04:04:59] <djc>	the docs say the subscriber drops messages, it doesn't say the subscriber blocks messages
+| [Thursday 05 May 2011] [04:05:12] <sustrik>	yes, for pub/sub it drops
+| [Thursday 05 May 2011] [04:05:21] <sustrik>	you would prefer blocking?
+| [Thursday 05 May 2011] [04:05:35] <djc>	no, I prefer dropping, but you'r saying that it actually blocks
+| [Thursday 05 May 2011] [04:05:58] <djc>	the unbounded queues can only grow if the the downstream queues block instead of drop
+| [Thursday 05 May 2011] [04:05:59] <sustrik>	did i said that?
+| [Thursday 05 May 2011] [04:06:10] <sustrik>	ah
+| [Thursday 05 May 2011] [04:06:21] <djc>	if the downstream queues dropped instead of blocked, the upstream queues wouldn't accumulate
+| [Thursday 05 May 2011] [04:06:25] <sustrik>	there are more queues there than you are seeing
+| [Thursday 05 May 2011] [04:06:38] <sustrik>	there's TCP involved which has a blocking behaviour
+| [Thursday 05 May 2011] [04:07:02] <sustrik>	so, if the network is not keeping up with the feed, it causes TCP to block
+| [Thursday 05 May 2011] [04:07:25] <djc>	but that would only be if the subscriber side doesn't get a chance to recv its messages and then drop them, right?
+| [Thursday 05 May 2011] [04:07:55] <sustrik>	if it doesn't catch up
+| [Thursday 05 May 2011] [04:08:07] <sustrik>	slow hardware, limited bandwidth or whatever
+| [Thursday 05 May 2011] [04:08:22] <djc>	yeah, we don't have slow hardware or limited bandwidth
+| [Thursday 05 May 2011] [04:09:10] <sustrik>	ok, so what's the problem once again?
+| [Thursday 05 May 2011] [04:09:25] <sustrik>	i understand the topology you have
+| [Thursday 05 May 2011] [04:09:42] <sustrik>	what's the thing you believe is broken?
+| [Thursday 05 May 2011] [04:10:25] <djc>	okay, the problem is, I set the HWM on the downstream inproc subscribers yesterday afternoon, and yesterday evening the process completely blew up, invoking the OOM killer until the server had to be restarted
+| [Thursday 05 May 2011] [04:10:55] <sustrik>	there's hwm missing somewhere i would guess
+| [Thursday 05 May 2011] [04:11:28] <djc>	yes, that's what you've been saying, but it still seems weird to me
+| [Thursday 05 May 2011] [04:11:46] <djc>	particularly because I *suspect* (but can't be sure at this point) that there were no inproc subscribers at all
+| [Thursday 05 May 2011] [04:11:59] <sustrik>	aha
+| [Thursday 05 May 2011] [04:12:12] <sustrik>	maybe there's a bug
+| [Thursday 05 May 2011] [04:12:15] <sustrik>	hard to say
+| [Thursday 05 May 2011] [04:12:31] <sustrik>	what was the message load?
+| [Thursday 05 May 2011] [04:12:34] <djc>	yeah, so for debugging it would help if I could inspect the queue size ;)
+| [Thursday 05 May 2011] [04:12:35] <sustrik>	very high?
+| [Thursday 05 May 2011] [04:13:04] <djc>	I don't have hard numbers about the message load yet, I'll make some today
+| [Thursday 05 May 2011] [04:13:23] <sustrik>	i mean, was it "publish as fast as possible" scenario?
+| [Thursday 05 May 2011] [04:13:47] <sustrik>	or rather something like "send a message each millisecond"
+| [Thursday 05 May 2011] [04:13:53] <djc>	the former
+| [Thursday 05 May 2011] [04:13:59] <sustrik>	ok
+| [Thursday 05 May 2011] [04:14:13] <djc>	it's tick data from stock exchanges all over the world
+| [Thursday 05 May 2011] [04:14:23] <djc>	for some 500 different markets
+| [Thursday 05 May 2011] [04:14:29] <sustrik>	in such cases you are basically testing congestion behaviour of the system
+| [Thursday 05 May 2011] [04:15:07] <sustrik>	the congestion happens at points where two "pipes" get connected
+| [Thursday 05 May 2011] [04:15:20] <sustrik>	and the downstream one is slower than upstream one
+| [Thursday 05 May 2011] [04:15:30] <sustrik>	for example a TCP and 0mq
+| [Thursday 05 May 2011] [04:15:55] <sustrik>	the only real solution is to set HWM everywhere
+| [Thursday 05 May 2011] [04:16:27] <sustrik>	that would guarantee that if the congestion happens at any point of the patch
+| [Thursday 05 May 2011] [04:16:28] <sustrik>	path
+| [Thursday 05 May 2011] [04:16:36] <djc>	yeah, I just think the docs don't make clear enough why in this kind of scenario dropping messages might not actually drop, but rather block
+| [Thursday 05 May 2011] [04:16:37] <sustrik>	it won't run out of memory
+| [Thursday 05 May 2011] [04:17:08] <sustrik>	hm, well, it's not really visible to the user
+| [Thursday 05 May 2011] [04:17:29] <djc>	it's visible because the server runs out of memory :P
+| [Thursday 05 May 2011] [04:17:40] <sustrik>	right
+| [Thursday 05 May 2011] [04:18:00] <sustrik>	feel free to submit a documentation patch
+| [Thursday 05 May 2011] [04:18:30] <sustrik>	hm
+| [Thursday 05 May 2011] [04:19:22] <sustrik>	"if the downstream is not able to keep with the message feed, you should expect the memory usage to grow"
+| [Thursday 05 May 2011] [04:19:50] <sustrik>	"if the HWMs are not set, this can eventually lead to memory exhaustion"
+| [Thursday 05 May 2011] [04:19:54] <sustrik>	would that do?
+| [Thursday 05 May 2011] [04:20:30] <djc>	you should emphasize that a single HWM at the downstream end might not suffice
+| [Thursday 05 May 2011] [04:21:56] <sustrik>	would you mind to word it yourself?
+| [Thursday 05 May 2011] [04:22:14] <sustrik>	for me it's kind of obvious so i am probably not a right person to write it down
+| [Thursday 05 May 2011] [04:24:18] <skm>	i have a question on using epgm
+| [Thursday 05 May 2011] [04:24:27] <skm>	i have two servers connected to 10.80.11.X
+| [Thursday 05 May 2011] [04:24:38] <skm>	and one broadcasts via epgm://eth0;239.192.1.1:8000
+| [Thursday 05 May 2011] [04:24:43] <skm>	the other receives on the same
+| [Thursday 05 May 2011] [04:24:52] <skm>	the messages arent getting through
+| [Thursday 05 May 2011] [04:25:05] <skm>	is it because of that address? is there another address i should be using?
+| [Thursday 05 May 2011] [04:26:05] <sustrik>	the address looks ok
+| [Thursday 05 May 2011] [04:26:19] <guido_g>	a) try the ip instead of the interface
+| [Thursday 05 May 2011] [04:26:30] <sustrik>	and do you have multicast traffic enabled on your network?
+| [Thursday 05 May 2011] [04:26:32] <guido_g>	b) check if multicast routes are working
+| [Thursday 05 May 2011] [04:27:21] <Bartzy|work>	Hey
+| [Thursday 05 May 2011] [04:27:33] <Bartzy|work>	Anyone here is using 0MQ with PHP ?
+| [Thursday 05 May 2011] [04:27:59] <skm>	multicast routes - how do i check that/what do i do? *goes to google*
+| [Thursday 05 May 2011] [04:31:30] <skm>	iptables
+| [Thursday 05 May 2011] [04:31:31] <skm>	sign
+| [Thursday 05 May 2011] [04:31:34] <skm>	sgh*
+| [Thursday 05 May 2011] [04:31:40] <skm>	sigh*
+| [Thursday 05 May 2011] [04:47:00] <mikko>	Bartzy|work: yes
+| [Thursday 05 May 2011] [04:47:50] <Bartzy|work>	mikko: I was chatting @ ##php, and asked about daemons and 'servers' written in PHP, and most of the people there told me PHP is just not built for that. That it leaks memory, and it's generally bad for your health to do stuff that are not web-based in PHP
+| [Thursday 05 May 2011] [04:48:25] <guido_g>	good advice :)
+| [Thursday 05 May 2011] [04:48:26] <Bartzy|work>	mikko: Is that your experience too (since using ZeroMQ with PHP probably means not using it from a web server exclusively) ?
+| [Thursday 05 May 2011] [04:49:11] <Bartzy|work>	I was thinking about learning python, but I need a solution now, and I know PHP fine... 
+| [Thursday 05 May 2011] [04:50:25] <Bartzy|work>	guido_g: What's your language of choice ? :)
+| [Thursday 05 May 2011] [04:50:31] <guido_g>	python is fine for these things
+| [Thursday 05 May 2011] [04:50:31] <mikko>	PHP should be good enough for that if you respawn the workers within certain intervals
+| [Thursday 05 May 2011] [04:50:40] <guido_g>	right
+| [Thursday 05 May 2011] [04:50:59] <guido_g>	Bartzy|work: i'm mostly a python guy (for ~10 years)
+| [Thursday 05 May 2011] [04:51:14] <guido_g>	but if you need something fast, use the things you know best
+| [Thursday 05 May 2011] [04:53:17] <Bartzy|work>	mikko: How do I do that ?
+| [Thursday 05 May 2011] [04:54:30] <guido_g>	Bartzy|work: just exit the process after a certain amount of requests
+| [Thursday 05 May 2011] [04:54:37] <Bartzy|work>	mikko: I want to do this: 1 PHP process listening for jobs on a 0MQ TCP socket. when it gets something, it forks itself, running the job at the forked child (because it's blocking), and the master process (parent) doesn't stop listening to other jobs...
+| [Thursday 05 May 2011] [04:54:48] <Bartzy|work>	guido_g: But what will start it back ?
+| [Thursday 05 May 2011] [04:54:59] <guido_g>	a so called watchdog
+| [Thursday 05 May 2011] [04:55:04] <Bartzy|work>	Monit ?
+| [Thursday 05 May 2011] [04:55:21] <Bartzy|work>	mikko: Is that reasonable in your experience ? Forking in PHP won't mess up 0MQ extension ?
+| [Thursday 05 May 2011] [04:59:10] <mikko>	no
+| [Thursday 05 May 2011] [04:59:15] <mikko>	just create the socket in the fork
+| [Thursday 05 May 2011] [04:59:32] <Bartzy|work>	in the fork ? But I fork only when I get a request
+| [Thursday 05 May 2011] [05:00:01] <Bartzy|work>	and then I thought about contacting the parent with IPC (when the forked process ends the job)
+| [Thursday 05 May 2011] [05:08:32] <mikko>	you have a process running somwhere in the background
+| [Thursday 05 May 2011] [05:08:38] <mikko>	and you just send from your web script
+| [Thursday 05 May 2011] [05:09:47] <Bartzy|work>	mikko? what ?
+| [Thursday 05 May 2011] [05:10:20] <Bartzy|work>	I have a web script. It uses 0MQ to push out a job to a PHP script that runs constantly in the background
+| [Thursday 05 May 2011] [05:10:49] <Bartzy|work>	that PHP script needs to continue listening for jobs, so it can't process the job itself
+| [Thursday 05 May 2011] [05:11:13] <Bartzy|work>	so it forks itself, running the job in the forked child, and continuing listening to jobs coming in, forking as needed 
+| [Thursday 05 May 2011] [05:11:25] <Bartzy|work>	mikko: That's what I want to do ^
+| [Thursday 05 May 2011] [05:11:34] <mikko>	yes
+| [Thursday 05 May 2011] [05:11:39] <Bartzy|work>	I just don't know if 0MQ will confuse when I fork
+| [Thursday 05 May 2011] [05:11:52] <Bartzy|work>	cause I fork AFTER I use 0MQ context and sockets (to get the jobs)
+| [Thursday 05 May 2011] [05:12:30] <Bartzy|work>	and I want to use 0MQ in the child processes to communicate with the parent process (child process saying it has completed the job).
+| [Thursday 05 May 2011] [05:39:48] <mikko>	create them after fork
+| [Thursday 05 May 2011] [05:40:00] <mikko>	i dont think they survive fork
+| [Thursday 05 May 2011] [06:09:56] <guido_g>	mikko: please see http://www.zeromq.org/topics:monitoring-support and contribute, if you like
+| [Thursday 05 May 2011] [06:19:05] <Bartzy|work>	mikko: I can't start it after the fork. I have to listen for incoming jobs before I fork.
+| [Thursday 05 May 2011] [06:19:24] <Bartzy|work>	sorry for the huge delay. went to eat :|
+| [Thursday 05 May 2011] [06:21:30] <mikko>	Bartzy|work: have you considered running a device?
+| [Thursday 05 May 2011] [06:21:37] <mikko>	run a device that listens for incoming jobs
+| [Thursday 05 May 2011] [06:21:44] <mikko>	and the php scripts connect to the device locally
+| [Thursday 05 May 2011] [06:22:07] <Bartzy|work>	how would that help with the blocking issue ?
+| [Thursday 05 May 2011] [06:22:30] <mikko>	your php scripts can be single threaded
+| [Thursday 05 May 2011] [06:22:34] <mikko>	no need to fork anything
+| [Thursday 05 May 2011] [06:22:46] <mikko>	if the script dies the device won't send anything to it anymore
+| [Thursday 05 May 2011] [06:24:15] <Bartzy|work>	but I want only 1 php script
+| [Thursday 05 May 2011] [06:24:22] <Bartzy|work>	Can you explain your suggestion further ?
+| [Thursday 05 May 2011] [06:24:46] <Bartzy|work>	device = a dummy php script that only forwards requests ?
+| [Thursday 05 May 2011] [06:26:38] <mikko>	have you read the zguide at all?
+| [Thursday 05 May 2011] [06:26:56] <mikko>	devices are small daemons that forward requests
+| [Thursday 05 May 2011] [06:27:20] <mikko>	the workers connect to the device
+| [Thursday 05 May 2011] [06:27:26] <mikko>	and clients connect to the device as well
+| [Thursday 05 May 2011] [06:27:37] <Bartzy|work>	Yes, but that will defeat the purpose of having only 1 worker than spawns sub-worker to do that actual jobs
+| [Thursday 05 May 2011] [06:27:40] <mikko>	the client doesnt know about individual workers, how many or so
+| [Thursday 05 May 2011] [06:27:54] <mikko>	Bartzy|work: why would you need only one worker?
+| [Thursday 05 May 2011] [06:28:00] <mikko>	isn't that exactly what you don't want?
+| [Thursday 05 May 2011] [06:28:20] <mikko>	if you have the workers as simple individual scripts you can respawn them periodically
+| [Thursday 05 May 2011] [06:28:27] <Bartzy|work>	mikko: Cause I don't want to keep many workers alive... Is that a stupid thing to be worried of ?
+| [Thursday 05 May 2011] [06:28:32] <Bartzy|work>	OK...
+| [Thursday 05 May 2011] [06:28:36] <Bartzy|work>	Maybe I'm afraid of a non-issue
+| [Thursday 05 May 2011] [06:28:45] <mikko>	what is the issue with multiple workers?
+| [Thursday 05 May 2011] [06:28:54] <mikko>	it simplifies your code hugely
+| [Thursday 05 May 2011] [06:29:02] <Bartzy|work>	I don't know.. I thought it would be a problem to respawn them
+| [Thursday 05 May 2011] [06:29:53] <mikko>	it would be without the device
+| [Thursday 05 May 2011] [06:30:05] <mikko>	but the device maintains the connections with your clients
+| [Thursday 05 May 2011] [06:30:10] <mikko>	workers can come and go in the background
+| [Thursday 05 May 2011] [06:30:37] <Bartzy|work>	But I guess if I kill them after a random number of requests (between the min and max request I want them to serve, so they won't all die together), and then monit/supervisord would respawn a worker after X seconds when it's dead... I assume it's fine?
+| [Thursday 05 May 2011] [06:30:51] <Bartzy|work>	Yeah, that's smart... Like a job server
+| [Thursday 05 May 2011] [06:31:42] <Bartzy|work>	and if I have 4 workers per machine. I have 2 machines. I want 1 request to go to 1 machine and the next to the 2nd machine.. I don't want 4 subsequent request to go to the same machine, and only after that going to the 2nd one...
+| [Thursday 05 May 2011] [06:32:18] <Bartzy|work>	How the device is dispatching work ? At the order that the workers connected to it, or in some random fashion ?
+| [Thursday 05 May 2011] [06:33:13] <sustrik>	round-robin
+| [Thursday 05 May 2011] [06:34:36] <Bartzy|work>	round-robin is a list (1st worker, 2nd worker, 3rd worker) and the counter just increments (1st job to 1st worker, 2nd to 2nd... etc)
+| [Thursday 05 May 2011] [06:34:39] <Bartzy|work>	But how the list is built ?
+| [Thursday 05 May 2011] [06:34:50] <Bartzy|work>	According to the time the 'workers' connected to the device ?
+| [Thursday 05 May 2011] [06:36:04] <sustrik>	it's unspecified
+| [Thursday 05 May 2011] [06:36:19] <sustrik>	in reality the order is established as peers connect
+| [Thursday 05 May 2011] [06:36:35] <sustrik>	however it changes as they disconnect or reach HWMs
+| [Thursday 05 May 2011] [06:38:07] <Bartzy|work>	so I shouldn't worry about it ?
+| [Thursday 05 May 2011] [06:38:37] <mikko>	the guide has examples for custom routing as well
+| [Thursday 05 May 2011] [06:38:47] <Bartzy|work>	Cause if I have 2 actual machines, each running 4 workers, I don't want 1 machine to fill up with 4 jobs and the other machine not doing anything. I would rather have it more load balanced... 1 job to the first machine, 2nd job to the 2nd machine...
+| [Thursday 05 May 2011] [06:38:51] <Bartzy|work>	mikko: thanks.
+| [Thursday 05 May 2011] [06:41:15] <sustrik>	so you have 8 connections to load-balance among
+| [Thursday 05 May 2011] [06:41:37] <sustrik>	what happens is that messages are sent in this way: 1,2,3,4,5,6,7,8,1,2,3...
+| [Thursday 05 May 2011] [06:42:02] <sustrik>	so you'll have the tasks fairly balanced between the two machines
+| [Thursday 05 May 2011] [06:42:15] <Bartzy|work>	yeah, but what if 1 2 3 4 connections are all in the same server ? That's not good. it's still load balancing but only if I have 8 jobs concurrently
+| [Thursday 05 May 2011] [06:42:25] <mikko>	between machines it's 1,2,1,2,1,2,1,2,
+| [Thursday 05 May 2011] [06:42:38] <mikko>	and between workers in a machine its 1,2,3,4,1,2,3,4
+| [Thursday 05 May 2011] [06:42:40] <Bartzy|work>	if I have only 4 jobs, and 1-4 connections are on the same machine, only 1 is loaded
+| [Thursday 05 May 2011] [06:43:03] <Bartzy|work>	so I should have 2 devices ? one for the machines only, and one for the workers @ each machine ?
+| [Thursday 05 May 2011] [06:43:04] <sustrik>	mikko: ah, there's a device on each box?
+| [Thursday 05 May 2011] [06:43:07] <mikko>	sustrik: yes
+| [Thursday 05 May 2011] [06:43:14] <sustrik>	then yes
+| [Thursday 05 May 2011] [06:43:19] <mikko>	Bartzy|work: each machine has a device
+| [Thursday 05 May 2011] [06:43:29] <mikko>	you web scripts balance between 1,2,1,2,1,2
+| [Thursday 05 May 2011] [06:43:45] <mikko>	and the devices round-robin between workers
+| [Thursday 05 May 2011] [06:44:21] <Bartzy|work>	so I need a device to handle the 2 devices ?
+| [Thursday 05 May 2011] [06:44:33] <Bartzy|work>	the web scripts need to connect to one device
+| [Thursday 05 May 2011] [06:45:12] <Bartzy|work>	right ?
+| [Thursday 05 May 2011] [06:46:33] <mikko>	sorry?
+| [Thursday 05 May 2011] [06:46:41] <mikko>	"so I need a device to handle the 2 devices ?"
+| [Thursday 05 May 2011] [06:46:50] <mikko>	you can start a device from php script
+| [Thursday 05 May 2011] [06:47:10] <mikko>	the php script is just used to start the device, all the processing happens inside C code
+| [Thursday 05 May 2011] [06:47:39] <mikko>	https://github.com/mkoppanen/php-zmq/blob/master/examples/forwarder-device.php
+| [Thursday 05 May 2011] [06:47:45] <mikko>	there is an example of running a device
+| [Thursday 05 May 2011] [06:52:57] <Bartzy|work>	mikko: OK. I understand that. My web scripts - They're connecting to who ?
+| [Thursday 05 May 2011] [06:54:57] <mikko>	Bartzy|work: to the device
+| [Thursday 05 May 2011] [06:55:11] <Bartzy|work>	mikko: But I have 1 at each machine. 
+| [Thursday 05 May 2011] [06:58:19] <Bartzy|work>	To which of them my web scripts connect to ?
+| [Thursday 05 May 2011] [07:05:33] <mikko>	both
+| [Thursday 05 May 2011] [07:05:50] <mikko>	you can connect zeromq socket to multiple endpoints
+| [Thursday 05 May 2011] [07:11:32] <Bartzy|work>	oh, that's nice. So if I add more machines, I must add them in my web code too . correct ?
+| [Thursday 05 May 2011] [07:15:19] <sustrik>	the web code is transient, right?
+| [Thursday 05 May 2011] [07:15:31] <sustrik>	it opens a socket, sends a message and closes the socket?
+| [Thursday 05 May 2011] [07:16:27] <Bartzy|work>	no, it needs to get a response back that the job has ended
+| [Thursday 05 May 2011] [07:16:42] <sustrik>	but then it exits, right?
+| [Thursday 05 May 2011] [07:16:47] <Bartzy|work>	yes
+| [Thursday 05 May 2011] [07:16:57] <sustrik>	ok, so, you can run one device on the same box as webserver and make all the webscripts connect to that device
+| [Thursday 05 May 2011] [07:17:10] <Bartzy|work>	but anyway , if it needs to connect to first_machine_ip:port and to second_machine_ip:port , if I add a 3rd and 4th and 20th machine, the web code needs to know about that...
+| [Thursday 05 May 2011] [07:17:26] <sustrik>	that device in turn would connect to all devices on the worker boxes
+| [Thursday 05 May 2011] [07:17:42] <Bartzy|work>	OK, and then when I add a machine, the script that opens the device on each web server needs to know about the IPs of each machine ?
+| [Thursday 05 May 2011] [07:17:55] <sustrik>	yes
+| [Thursday 05 May 2011] [07:18:04] <sustrik>	or, alternatively
+| [Thursday 05 May 2011] [07:18:10] <Bartzy|work>	No way around it with some other pattern ?
+| [Thursday 05 May 2011] [07:18:10] <sustrik>	you can do it other way round
+| [Thursday 05 May 2011] [07:18:22] <sustrik>	the devices on the worker boxes can connect to the central device
+| [Thursday 05 May 2011] [07:38:29] <Bartzy|work>	so I need a central device to sit somewhere
+| [Thursday 05 May 2011] [07:38:51] <Bartzy|work>	sustrik: I can't just send out to 1 of many, who ever is listening ?
+| [Thursday 05 May 2011] [09:26:08] <Guthur>	I'm planning to use a queue device to develop a 'test farm' where the workers are making a number of potential long running http requests, best case maybe ~7secs, I'm wondering is it reasonable to have a client socket per test case
+| [Thursday 05 May 2011] [09:26:13] <Guthur>	or is there a better approach
+| [Thursday 05 May 2011] [09:43:14] <djc>	pyzmq is segfaulting on me :(
+| [Thursday 05 May 2011] [09:51:06] <djc>	okay, I think this is a buglet: in 2.1, I can't connect a SUB to an inproc publisher before the publisher has bound to it
+| [Thursday 05 May 2011] [09:51:09] <djc>	this worked in 2.0
+| [Thursday 05 May 2011] [10:05:19] <pieterh>	djc: that didn't work in 2.0, pretty sure of it
+| [Thursday 05 May 2011] [10:05:39] <pieterh>	it's a known issue with inproc sockets, in all versions of zmq
+| [Thursday 05 May 2011] [10:07:12] <djc>	hmmm, it worked for me, although I guess some part of the timing setup could have changed between versions
+| [Thursday 05 May 2011] [10:08:15] <pieterh>	yes, it'll be timing related
+| [Thursday 05 May 2011] [10:17:38] <travlr>	it just happened again.. doesn't everbody already know that 0mq will make there  lives so much easier ;-}
+| [Thursday 05 May 2011] [10:18:21] <travlr>	i'm watching FLOSS Weekly (http://twit.tv/floss164) and he  should be usinig 0mq forsure!
+| [Thursday 05 May 2011] [10:25:35] <travlr>	ha! he just mention 0mq, go figure.
+| [Thursday 05 May 2011] [10:33:34] <guido_g>	http://www.infoq.com/presentations/Large-Scale-Integration-in-Financial-Services <- nice definition of guaranteed messaging and mentions a well known low-level open-source messaging product
+| [Thursday 05 May 2011] [10:36:56] <djc>	btw, I got some numbers from what we have running here
+| [Thursday 05 May 2011] [10:37:24] <djc>	apparently we push up to 8000 msg/s, with a msg on average being 150b
+| [Thursday 05 May 2011] [10:37:31] <djc>	so it's probably not that impressive
+| [Thursday 05 May 2011] [10:44:01] <Guthur>	guido, that MPI thing?
+| [Thursday 05 May 2011] [10:44:13] <Guthur>	AMQP
+| [Thursday 05 May 2011] [10:44:21] <guido_g>	below amqp
+| [Thursday 05 May 2011] [10:44:27] <guido_g>	on the chart 
+| [Thursday 05 May 2011] [10:44:37] <guido_g>	at minute 9 something
+| [Thursday 05 May 2011] [10:46:19] <Guthur>	guido_g: hehe, I was trying to be facetious
+| [Thursday 05 May 2011] [10:46:34] <Guthur>	it does have a question mark after it though, 0MQ?
+| [Thursday 05 May 2011] [10:47:41] <mile>	is it legal to bind to a SUB socket?
+| [Thursday 05 May 2011] [10:48:05] <mile>	I need a server listening on 2 sockets, one for each communication direction
+| [Thursday 05 May 2011] [10:48:10] <guido_g>	Guthur: at least it's mentioned
+| [Thursday 05 May 2011] [10:48:29] <mile>	but I get assertion failed 
+| [Thursday 05 May 2011] [10:49:06] <djc>	mile: that sounds confused
+| [Thursday 05 May 2011] [10:49:17] <djc>	listening on two sockets, for each direction?
+| [Thursday 05 May 2011] [10:49:35] <mile>	I am forwarding messages from a web socket to the backend
+| [Thursday 05 May 2011] [10:49:47] <djc>	generally in at least one of the possible directions you wouldn't bind, you'd connect
+| [Thursday 05 May 2011] [10:49:58] <mile>	so I need backend to connect to the gateway
+| [Thursday 05 May 2011] [10:50:20] <Guthur>	guido_g: I just got and email there 20 mins ago from a colleague wanting to investigate using 0MQ for real-time flow in FX processing
+| [Thursday 05 May 2011] [10:50:25] <Guthur>	Forex*
+| [Thursday 05 May 2011] [10:50:26] <mile>	so gateway is binding on a PUB and on a SUB sockets
+| [Thursday 05 May 2011] [10:50:37] <mile>	instead of SUB may be PULL
+| [Thursday 05 May 2011] [10:50:43] <mile>	there I'm confused
+| [Thursday 05 May 2011] [10:50:50] <Guthur>	I had placed on company wide cool tech page a couple of months ago
+| [Thursday 05 May 2011] [10:51:18] <djc>	mile: you don't "bind" on a SUB
+| [Thursday 05 May 2011] [10:51:22] <djc>	you "connect" on a SUB
+| [Thursday 05 May 2011] [10:51:27] <djc>	you "bind" on a PUB
+| [Thursday 05 May 2011] [10:51:41] <djc>	if it's the inverse thing of what you want to do, don't use PUB/SUB
+| [Thursday 05 May 2011] [10:51:46] <guido_g>	Guthur: would be nice to see something like that
+| [Thursday 05 May 2011] [10:51:57] <mile>	djc, I need exatly the inverse :)
+| [Thursday 05 May 2011] [10:52:11] <djc>	mile: so use PUSH/PULL
+| [Thursday 05 May 2011] [10:52:22] <mile>	ah, thanks! :)
+| [Thursday 05 May 2011] [10:57:42] <pieterh>	mile: you can bind a SUB and connect a PUB, it's useful in some cases
+| [Thursday 05 May 2011] [10:58:10] <pieterh>	imagine you have one stable subscriber and publishers that come and go
+| [Thursday 05 May 2011] [10:58:22] <pieterh>	djc: sorry to correct you here
+| [Thursday 05 May 2011] [10:58:24] <mile>	that is my scenario
+| [Thursday 05 May 2011] [10:58:45] <pieterh>	push-pull and pub-sub do have different semantics
+| [Thursday 05 May 2011] [10:58:58] <djc>	pieterh: that's fine, that way I get to learn something
+| [Thursday 05 May 2011] [10:58:58] <mile>	they do the load balancing?
+| [Thursday 05 May 2011] [10:59:01] <pieterh>	the main difference is if you (accidentally or on purpose) plug in a second subscriber
+| [Thursday 05 May 2011] [10:59:13] <pieterh>	with pubsub, each sub will still get each message
+| [Thursday 05 May 2011] [10:59:22] <pieterh>	with pushpull, messages will be load balanced
+| [Thursday 05 May 2011] [10:59:52] <mile>	so that is semantically the main difference between those two?
+| [Thursday 05 May 2011] [10:59:55] <pieterh>	the bind/connect direction is independent from the data flow and the pattern
+| [Thursday 05 May 2011] [11:00:01] <pieterh>	yes
+| [Thursday 05 May 2011] [11:00:14] <pieterh>	the semantic difference is loadbalancing with pushpull, fanout with pubsub
+| [Thursday 05 May 2011] [11:00:27] <pieterh>	there are *some* edge cases where the bind/connect direction makes a difference
+| [Thursday 05 May 2011] [11:00:29] <djc>	pieterh: so could I also bind REQ and connect REP, for example?
+| [Thursday 05 May 2011] [11:00:33] <pieterh>	djc: yes
+| [Thursday 05 May 2011] [11:00:38] <djc>	ah, edge cases
+| [Thursday 05 May 2011] [11:00:43] <mile>	:)
+| [Thursday 05 May 2011] [11:00:46] <pieterh>	the reason we generally don't do this is that it is confusing
+| [Thursday 05 May 2011] [11:00:46] <djc>	tell me more about the edge cases ;)
+| [Thursday 05 May 2011] [11:01:21] <pieterh>	djc: there was one issue reported on the list a while back, but I don't recall the details
+| [Thursday 05 May 2011] [11:01:28] <pieterh>	could have been HWM processing
+| [Thursday 05 May 2011] [11:01:46] <pieterh>	it worked differently depending on which sides did the bind & connect
+| [Thursday 05 May 2011] [11:02:07] <pieterh>	that seems to be a bug, IMO, since formally the bind/connect direction should be irrelevant to message flow
+| [Thursday 05 May 2011] [11:02:19] <Guthur>	guido_g: I'll certainly try to help this guy realise his proof of concept
+| [Thursday 05 May 2011] [11:04:54] <guido_g>	Guthur: good luck, i would be happy to have such a project :)
+| [Thursday 05 May 2011] [13:15:24] <cremes>	i have a non-0mq question for the channel
+| [Thursday 05 May 2011] [13:15:40] <cremes>	it seems like a lot of folks are using 0mq for market data dissemination for trading systems
+| [Thursday 05 May 2011] [13:16:13] <cremes>	how do you solve the issue of delivering market data (tick level details) to a web-browser client?
+| [Thursday 05 May 2011] [13:16:34] <cremes>	are you bridging 0mq to websockets, using flash, or something proprietary?
+| [Thursday 05 May 2011] [13:20:03] <guido_g>	seems noone delivers the accumulated data :)
+| [Thursday 05 May 2011] [13:22:30] <pieterh>	anyone want a PATCH socket? :-)
+| [Thursday 05 May 2011] [13:22:38] <pieterh>	Like a PUB and PULL combined. Grab it athttp://zero.mq/patch.
+| [Thursday 05 May 2011] [13:23:18] <pieterh>	cremes: the only sane way I know of (but no-one is contributing) is an HTTP bridge that turns 0MQ patterns into HTTP ones
+| [Thursday 05 May 2011] [13:23:26] <pieterh>	at some point I'll make the thing myself
+| [Thursday 05 May 2011] [13:23:40] <cremes>	pieterh: interesting...
+| [Thursday 05 May 2011] [13:23:40] <pieterh>	if you have a paying client who needs this, that'd be excellent of course
+| [Thursday 05 May 2011] [13:23:58] <cremes>	of course! if there were such a client, it would be me
+| [Thursday 05 May 2011] [13:24:10] <pieterh>	you can make HTTP patterns from the simple to the insanely complex
+| [Thursday 05 May 2011] [13:24:15] <cremes>	i'm just doing some research in advance... i'm not going to get to it for several months at least
+| [Thursday 05 May 2011] [13:24:23] <pieterh>	I'd do something RESTful with long polling, nothing more weird
+| [Thursday 05 May 2011] [13:24:29] <pieterh>	doesn't need websockets
+| [Thursday 05 May 2011] [13:24:45] <pieterh>	does need a reasonably well built web server
+| [Thursday 05 May 2011] [13:25:17] <cremes>	pieterh: updating FAQ now with steps for building 0mq on windows mingw
+| [Thursday 05 May 2011] [13:25:23] <cremes>	how do i make the 0 with a slash in it?
+| [Thursday 05 May 2011] [13:25:34] <cremes>	what's the key combo?
+| [Thursday 05 May 2011] [13:25:35] <pieterh>	cremes: you copy paste from somewhere else on the wiki :-)
+| [Thursday 05 May 2011] [13:25:43] <cremes>	cheater
+| [Thursday 05 May 2011] [13:25:56] <pieterh>	you can reprogram your keyboard if you're smart
+| [Thursday 05 May 2011] [13:26:22] <cremes>	clearly, i cannot do that ;)
+| [Thursday 05 May 2011] [13:28:49] <pieterh>	me neither, I just copy/paste all the time...
+| [Thursday 05 May 2011] [13:31:08] <cremes>	okay, FAQ updated with mingw instructions
+| [Thursday 05 May 2011] [13:32:29] <pieterh>	nice
+| [Thursday 05 May 2011] [13:32:44] <pieterh>	there're also pages per platform afair
+| [Thursday 05 May 2011] [13:36:51] <cremes>	pieterh: aren't those pages for "tuning"?
+| [Thursday 05 May 2011] [13:37:06] 	 * pieterh can't find the platform pages any more...
+| [Thursday 05 May 2011] [13:37:17] <pieterh>	there should be a page for Windows
+| [Thursday 05 May 2011] [13:37:54] <pieterh>	I guess it's this one: http://www.zeromq.org/docs:windows-installations
+| [Thursday 05 May 2011] [13:38:42] <pieterh>	anyhow, the Search function immediately returns the FAQ page, so it's all good...
+| [Thursday 05 May 2011] [13:38:50] 	 * pieterh needs lunch, bbl
+| [Thursday 05 May 2011] [15:27:52] <Guthur>	pieterh, the use of CLisp as the Common Lisp code link in the guide can cause a little confusion
+| [Thursday 05 May 2011] [15:28:34] <Guthur>	CLisp is an implementation of Common Lisp and so can sometimes seem like it might use specific features of that implementation
+| [Thursday 05 May 2011] [15:29:00] <Guthur>	it's only a minor point, but a CL user today was making that assumption
+| [Thursday 05 May 2011] [15:34:24] <pieterh>	Guthur: I didn't know that
+| [Thursday 05 May 2011] [15:35:02] <pieterh>	I shortened Common Lisp to CLisp for pragmatic reasons, didn't realize it was a specific implementation
+| [Thursday 05 May 2011] [15:35:48] <pieterh>	I'll abbreviate it to CL then
+| [Thursday 05 May 2011] [15:36:02] <Guthur>	pieterh, understandable
+| [Thursday 05 May 2011] [15:36:04] <Guthur>	CL would be fine
+| [Thursday 05 May 2011] [15:36:17] <Guthur>	clisp is the GNU implementation actually
+| [Thursday 05 May 2011] [15:36:22] <pieterh>	ok
+| [Thursday 05 May 2011] [15:38:24] <pieterh>	Guthur: ok, fixed, and new version published
+| [Thursday 05 May 2011] [15:38:31] <pieterh>	sorry for the delay... :)
+| [Thursday 05 May 2011] [15:43:37] <Guthur>	hehe, super service as usual
+| [Thursday 05 May 2011] [16:38:50] <QQ_Nick>	Hi, I'm fairly new to 0mq but I've encountered a problem when using a PUSH/PULL pattern when using pyzmq. 
+| [Thursday 05 May 2011] [16:40:53] <QQ_Nick>	I've set a HWM on the Push side, and when no client is running this seems to work OK.
+| [Thursday 05 May 2011] [16:42:14] <QQ_Nick>	But if I start a Pull client with a HWM (say set to 10), all messages from the server are immediately sent to the client
+| [Thursday 05 May 2011] [16:47:23] <djc>	yes, so?
+| [Thursday 05 May 2011] [16:54:00] <QQ_Nick>	The server sends 1000 messages to my client which has a HWM of 10 messages set. 
+| [Thursday 05 May 2011] [17:01:14] <djc>	yeah
+| [Thursday 05 May 2011] [17:01:29] <djc>	this is how it works, the client will try to receive messages as fast as possible
+| [Thursday 05 May 2011] [17:06:58] <QQ_Nick>	Does the HWM not limit the number of messages that the client queues? My client takes 1/20th second to process each message but still the server sends all 1000 messages to it immediately. 
+| [Thursday 05 May 2011] [17:27:55] <mikko>	sustrik: there?
+| [Thursday 05 May 2011] [21:03:59] <eyecue>	hai
+| [Thursday 05 May 2011] [21:12:54] <mikko>	hello
