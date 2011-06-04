@@ -1,0 +1,1470 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Thursday July 29, 2010</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [05:29]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    howdy
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [05:30]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how would you do an http protocol listener in zmq ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [05:37]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or how do you listen for (normal) sockets asynchronously in zmq ? is the library godd for that level of (low level) cross platform programming ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [05:46]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    What language are you working in?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [05:46]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i can shoose between java and c/c++
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [05:46]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but i would like to compare the java version against the c/c++ one
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [05:46]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    OK
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [05:47]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i need something that listens for incoming http connections
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [05:47]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    The general idea is that you would use zmq_poll which works for both zmq sockets and native file descriptor based sockets.  Then you can build an event loop that does both http and zmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [05:47]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    But there will be a lot of work to do I think.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [05:48]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i need something that works based on callbacks like the java nio
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [05:48]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    The Python bindings have an eventloop that already integrates zmq with the Tornado web server.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [05:49]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    But I don&#39;t work in Java, so I haven&#39;t followed that as much.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [05:50]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok .. i just read the zmq_poll which looks cool !
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [05:50]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    now one thread would be enough to do the zmq_poll ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [05:50]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [05:50]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    One application thread that is
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [05:51]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you have say 10000 (10k problem) connections coming in ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [05:51]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [05:51]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nice !
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [05:51]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    If your eventloop implementation is good enough.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [05:51]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and zmq_poll is cross platform ? i only care about linux and solaris
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [05:51]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I shouldn&#39;t promise that, but zmq_poll is just going epoll or kqueue undermeath
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [05:52]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Linux for sure, I am not sure about solaris
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [05:52]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    If zmq runs on solaris (which it should), then zmq_poll should work.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [05:53]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zmq_poll might add a small amount of overhead to epoll/kqueue though, and that might limit the number of connections you can handle.  But, it is fast C++, so you may be OK
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [05:53]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    where is the overhead coming from ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [05:54]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    because i dont want to do multiplexing or message checking at that level
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [05:54]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    In the fact that zmq_poll handles both native file descriptors and ZMQ sockets and has to do extra logic to manage all of that.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [05:54]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [05:55]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    So you want a single server that does both HTTP and OMQ sockets?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [05:55]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so the idea i have is to get something zmq_poll based listening for incoming connections ..
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [05:56]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bgranger, nop . i want something that listens for normall sockets in async way. but i dont want to use another lib if zmq already does  it.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [05:56]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Yes, you would pass the TCP socket that is bound and listening (in non-blocking mode) to the zmq_poll and it would tell you when the socket is ready for reading/writing/error
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [05:56]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    How are you wanting to use 0MQ sockets though?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [05:57]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    after connections arrives on the listener they are sent to a pub/sub and to handle messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [05:57]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sorry ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [05:57]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    OK, so traffic comes in over HTTP and then is sent out for processing using OMQ messages?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [05:57]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    So I think that oMQ should run on solaris...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [05:57]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    exactly !
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [05:58]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Yes, then you will register both TCP socket and OMQ sockets with zmq_poll and it will tel you which TCP socket are ready for send/recv of *bytes* and which 0MQ sockets are ready for send/recv of *messsages*
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [05:59]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    But you will have to write the eventloop and HTTP handler yourself.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [05:59]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    wait .. i dont want to mix both sockets on the incoming traffic
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [06:00]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i want to only poll for nor mal sockets ..
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [06:00]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Why not 0MQ sockets?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [06:00]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bgranger, i did that in java already
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [06:01]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I am not quite following you on this part of it.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [06:01]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http-traffic -&gt; listener send to zmq socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [06:01]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Also, this might be of interest to you:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [06:01]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://mongrel2.org/home
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [06:01]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    What type of ZMQ socket?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [06:01]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i briefly looked at that ..
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [06:02]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    on the right hand i have pub/subs so i can have many resources responding to http traffic
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [06:02]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bgranger, are you behing mongrel2 ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [06:02]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oops s/behing/behind ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [06:03]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    No, I develop the Python bindings to 0MQ (pyzmq) which are used in mongrel2
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [06:03]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Zed Shaw is behind it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [06:03]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but i am wondering why i would want to mix different traffic on the same socket .. there is so many ports available !
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [06:04]  sjampoo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dos000, firewall issues is one. But another reason is that for example FLASH (which can be used as a websocket fallback) needs a policy server which listens on port 80.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [06:05]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i am a speed freak .. so even the extra processing required to differentiate between the two should not be occured .. if there is no need to
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [06:05]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I think we are missing, I am not saying you would mix traffic on a single socket.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [06:05]  sjampoo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    So if you want to have the fallback and a regular server you will need 2 different IP adresses.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [06:05]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    You would have a TCP socket that would handle HTTP requests and replies
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [06:05]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok .. ok i get the firewall point
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [06:05]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    And then a separate 0MQ socket (or multiple of them) that would handle the talking to the other parts of your system.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [06:06]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes exactly
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [06:06]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    All of those sockets will be passed to zmq_poll
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [06:06]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http-traffic -&gt; listener -&gt; subscribers to zmq messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [06:07]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but i want to poll for the http traffic only on the left . the rest i am (candidly) suuming i dont have to poll for it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [06:08]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    s/suuming/assuming
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [06:08]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    But if you want your system to handle lots of connections, you should also poll for the OMQ sockets as well (both send/recv)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [06:09]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Otherwise, your 0MQ send/recv calls will block.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [06:09]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [06:09]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i did not notice that !
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [06:09]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mmmmmm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [06:10]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    maybe i want that afterall
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [06:10]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or maybe not. i mean the blocking calls on the right
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [06:10]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    You definitely don&#39;t want that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [06:11]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [06:11]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Also, I am not sure you can use the blocking 0MQ calls and zmq_poll at the same time.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [06:11]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    In general, it is usually one or the other
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [06:11]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the listener part will get very complicated with all the states machines it has to track
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [06:12]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Yes, definitely, that is why I keep saying you will have to write your own eventloop and that part is not trivial
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [06:12]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bgranger,  ok .. good to know ... where is the definite answer to that question ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [06:12]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I would email the list and ask  the core 0MQ devs
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [06:13]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i will
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [06:13]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks for your kind help !
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [06:13]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    No problem
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-89" class="rowLink" href="#msg-89">
+                    [06:14]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    one more question ...  i wanted to put some counters for 0mq messages. like how many incoming/ outgoing if i can do all of that using the zmq_poll then this would be cool
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-90" class="rowLink" href="#msg-90">
+                    [06:15]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    You just want to count incoming/outgoing messages?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-91" class="rowLink" href="#msg-91">
+                    [06:15]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i wanted to track the state of each message and put counters
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-92" class="rowLink" href="#msg-92">
+                    [06:15]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    per messages .. plus errors/timouts ..
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-93" class="rowLink" href="#msg-93">
+                    [06:15]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Yes, I think zmq_poll can do that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-94" class="rowLink" href="#msg-94">
+                    [06:16]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this is quite nice
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-95" class="rowLink" href="#msg-95">
+                    [06:59]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dos000_: mongrel2 does that.  i&#39;m behind it.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-96" class="rowLink" href="#msg-96">
+                    [07:00]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dos000_: there&#39;s no processing overhead in handling multiple protocols on the same port.  they&#39;re just different parts of the same parser, so the math makes them the same.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-97" class="rowLink" href="#msg-97">
+                    [07:00]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dos000_: if you wrote it by hand then it&#39;d be different, but with mongrel2 it&#39;s not any slower.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-98" class="rowLink" href="#msg-98">
+                    [07:01]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dos000_: otherwise, all the stuff you want to do is already done in mongrel2.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-99" class="rowLink" href="#msg-99">
+                    [07:01]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    at least look at how it&#39;s done to see how to solve lots of the questions you have, even if you don&#39;t use it.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-100" class="rowLink" href="#msg-100">
+                    [07:25]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure !
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-101" class="rowLink" href="#msg-101">
+                    [07:25]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i promess i will
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-102" class="rowLink" href="#msg-102">
+                    [07:57]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    can i ask which ide you guys use ? i am coming from eclipse after a long absence in c/c++
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-103" class="rowLink" href="#msg-103">
+                    [08:07]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zedas, what do you use to compile the state_machine files ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-104" class="rowLink" href="#msg-104">
+                    [08:07]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i checked the makefile but it is not there unless i missed it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-105" class="rowLink" href="#msg-105">
+                    [08:11]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    got it !
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-106" class="rowLink" href="#msg-106">
+                    [08:12]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i never heard of ragel until now
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-107" class="rowLink" href="#msg-107">
+                    [17:18]  Nwallins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how would zeromq overlap or integrate with something like BEEP (http://www.ibm.com/developerworks/webservices/library/x-beep/) ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-108" class="rowLink" href="#msg-108">
+                    [18:38]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyone did perf comparisons between solaris and linux or even *bsd yet ? i want to see the difference between epoll and devpoll
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-109" class="rowLink" href="#msg-109">
+                    [18:42]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i found some papers on the net. if you can share i would appreciate
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-110" class="rowLink" href="#msg-110">
+                    [18:47]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bgranger, hey
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-111" class="rowLink" href="#msg-111">
+                    [18:53]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dos000_: hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-112" class="rowLink" href="#msg-112">
+                    [18:56]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    have you seen anyone doing  comparisons between the solaris or linux implementations of zmq from performance prespective ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-113" class="rowLink" href="#msg-113">
+                    [18:56]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i am searching now the epoll and delpoll comparisions to get a better idea
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-114" class="rowLink" href="#msg-114">
+                    [18:59]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the first question is what would you use to drive the test . if there are tools out there to create 10000 simultaneous sockets then i dont have to write them
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-115" class="rowLink" href="#msg-115">
+                    [19:17]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I am sure there are HTTP testing programs, but I am not sure what they are...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-116" class="rowLink" href="#msg-116">
+                    [19:18]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://www.hpl.hp.com/research/linux/httperf/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-117" class="rowLink" href="#msg-117">
+                    [19:18]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I know of people who have used this...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-118" class="rowLink" href="#msg-118">
+                    [19:19]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i found this so far .. which i can use http://libev.schmorp.de/bench.html
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-119" class="rowLink" href="#msg-119">
+                    [19:20]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this will be nice if i can use the client against zmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-120" class="rowLink" href="#msg-120">
+                    [19:20]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I think httpperf will only test HTTP TCP sockets.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-121" class="rowLink" href="#msg-121">
+                    [19:20]  bgranger
+                    </a>
+                </td>
+                <td class="message-cell">
+                    But those could be managed by a zmq_poll loop
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-122" class="rowLink" href="#msg-122">
+                    [19:21]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but the above client can test any protocol i think
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-123" class="rowLink" href="#msg-123">
+                    [19:27]  Nwallins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dos000_: I wonder what was used for http://www.zeromq.org/results:ib-tests-v206
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-124" class="rowLink" href="#msg-124">
+                    [19:29]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Nwallins, i assume the perf stuff under zmq was used
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-125" class="rowLink" href="#msg-125">
+                    [19:30]  Nwallins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dos000_: can it be used for your purpose?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-126" class="rowLink" href="#msg-126">
+                    [19:30]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    those tests are not connections oreinted they are message and payload oriented
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-127" class="rowLink" href="#msg-127">
+                    [19:30]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i need something that tests 10k simultaneous connections
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-128" class="rowLink" href="#msg-128">
+                    [19:30]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    witha variable number of them active
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-129" class="rowLink" href="#msg-129">
+                    [19:33]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    these guys also cover timeouts which is very important from a client perspective
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-130" class="rowLink" href="#msg-130">
+                    [19:35]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this is the latest thread on this http://lists.schmorp.de/pipermail/libev/2010q2/001044.html
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

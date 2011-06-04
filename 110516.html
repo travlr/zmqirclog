@@ -1,0 +1,480 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Monday May 16, 2011</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [14:05]  fdb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m studing 0mq, and I need to know what happen when TCP connection is stopped (for my application mainly due to wireless network problems)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [14:06]  fdb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Should I manage the reconnection or is al transparent?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [14:08]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    transparent
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [14:08]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    evax, I have a problem with erlzmq2, when building a distro with rebar
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [14:08]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I don&#39;t know if it is an erlzmq issue
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [14:12]  evax
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mile_: what&#39;s happening?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [14:12]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the path to the c library is closely missed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [14:13]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I pack it with reltool, add the priv subdir to the ez archive, everything seems to be right
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [14:13]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and then "Failed to load NIF library: &#39;/home/user/myapp/rel/myapp/lib/erlzmq2.ez/erlzmq2/ebin/../priv/erlzmq_drv.so: cannot open shared object file: Not a directory&#39;"}}
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [14:14]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which is actually a valid path, but for some reason does not seem to work
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [14:18]  evax
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mile_: ok, let me try to reproduce this
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [14:18]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this is the part of my reltool.config that loads erlzmq2
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [14:18]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    {app, erlzmq2,   [
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [14:18]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    {incl_cond, include},
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [14:18]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    {incl_archive_filters,[".*"]},
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [14:18]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    {excl_archive_filters,["^include$"]}
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [14:18]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ]}
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [14:19]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oh... one possibility : line 22: ase code:priv_dir(erlzmq) of
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [14:19]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    should the app be called erlzmq instead of erlzmq2?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [14:24]  evax
+                    </a>
+                </td>
+                <td class="message-cell">
+                    good catch
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [14:24]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but still... I have changed that, remaned the directory of erlzmq2 to erlzmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [14:24]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    rebuilt
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [14:25]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    he on_load function for module erlzmq_nif returned {error,
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [14:25]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    {load_failed,
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [14:25]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    "Failed to load NIF library: &#39;/home/mile/kr3m_myapp/rel/kr3m_myapp/lib/erlzmq-2.0.ez/erlzmq-2.0/priv/erlzmq_drv.so: cannot open shared object file: Not a directory&#39;"}}
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [14:25]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the file is there
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [14:25]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but for some reason it is not loaded
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [14:41]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    are you able to reproduce it?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [14:42]  evax
+                    </a>
+                </td>
+                <td class="message-cell">
+                    looking at it now
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [16:14]  aspidites
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how do i get a list of connected clients with an XREP socket?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [16:14]  aspidites
+                    </a>
+                </td>
+                <td class="message-cell">
+                    curerntly i&#39;m just adding their identities to a list and checking against it, but i have a feeling this is already built in some how
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [16:23]  aspidites
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nvm found something in mailing list addressing it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [17:45]  aspidites
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is there a way to detect a disconnected client?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [17:45]  yorickpeterse
+                    </a>
+                </td>
+                <td class="message-cell">
+                    A PING/PONG command would do :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [17:45]  aspidites
+                    </a>
+                </td>
+                <td class="message-cell">
+                    doh!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [17:46]  aspidites
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just figured there would be a built in command. so would it make sense to have a separate socket that constantly sends ping/pong requests?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [17:46]  aspidites
+                    </a>
+                </td>
+                <td class="message-cell">
+                    actually. i&#39;ll check the guide
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [17:46]  aspidites
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thought i saw something similar
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [17:49]  yorickpeterse
+                    </a>
+                </td>
+                <td class="message-cell">
+                    You could do it every 30 seconds or so, depending on the importance
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [17:51]  aspidites
+                    </a>
+                </td>
+                <td class="message-cell">
+                    aha, paranoid pirate i think
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

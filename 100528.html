@@ -1,0 +1,1019 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Friday May 28, 2010</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [00:56]  jugg
+                    </a>
+                </td>
+                <td class="message-cell">
+                    are there any online logs of this channel?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [12:27]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi there, I saw the impressive throughput using tcp. On my mac I&#39;m getting over 1million messages per sec, 1 byte. Sounds nuts. What is the difference in terms of architecture between zeromq and something like Rabbit MQ which can only do a few thousands?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [12:31]  sjampoo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    0MQ is lighter, not only the protocol (binary instead fo AMQP) but it also has less machinery overhead.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [12:31]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sjampoo is right
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [12:32]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    however, the actual algorithm that allows this thing is called &#39;message batching&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [12:32]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah is it because the size of the payload is upfront
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [12:32]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it means that you send many messages using a single OS call
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [12:32]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    message batching is like socket nodelay = false on sockets?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [12:32]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    exactly
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [12:32]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so do the messages get released after a timeout?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [12:32]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I think sockets is 200ms
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [12:32]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what exactly do you mean by released?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [12:33]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if messages are batched, and a listener is waiting for a message
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [12:33]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    aha
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [12:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s answered in faq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [12:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but here you go:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [12:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    When sending messages in batches you have to wait for the last one to send the whole batch. This would make the latency of the first message in the batch much worse, wouldn&#39;t it?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [12:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ÃMQ batches messages in opportunistic manner. Rather than waiting for a predefined number of messages and/or predefined time interval, it sends all the messages available at the moment in one go. Imagine the network interface card is busy sending data. Once it is ready to send more data it asks ÃMQ for new messages. ÃMQ sends all the messages available at the moment. Does it harm the latency of the first message in the batch? No. The mes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [12:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sage won&#39;t be sent earlier anyway because the networking card was busy. On the contrary, latency of subsequent messages will be improved because sending single batch to the card is faster then sending lot of small messages. On the other hand, if network card isn&#39;t busy, the message is sent straight away without waiting for following messages. Thus it&#39;ll have the best possible latency.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [12:35]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah makes sense!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [12:35]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    its true that sending a each message asap is slow
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [12:35]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    batching makes sense
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [12:35]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nice
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [12:35]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [12:36]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    last question, I know you guys must be busy, do you use something like libevent? I quickly scanned the code and it looks like you may be using regular sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [12:37]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I was then thinking you might be using a thread per socket connection
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [12:37]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no libevent, 0mq has almost zero dependencies to make it as portable as possible
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [12:38]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    as for the threading, there&#39;s a thread pool
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [12:38]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can assign one thread to one connection
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [12:38]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but in default case the connections are simply load balanced evenly within the thread pool
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [12:39]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    were you able to benchmark number of possible connections, should I look in performance section?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [12:39]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    reason being I&#39;m an architect/engineer for a mobile application
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [12:39]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    we have an application that requires 30k concurrent connections
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [12:39]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    with a throughput of 10k messages per second
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [12:40]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    for each connection?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [12:40]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not for each connection
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [12:40]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    altogether
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [12:40]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [12:40]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [12:40]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it should work, but we haven&#39;t really tested with 10k&#39;s of connections
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [12:40]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what&#39;s done however, is:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [12:41]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks for being honest, I will have a look at doing this
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [12:41]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    1. underlying polling mechanism is epoll/devpoll/kqueue -- if available on the platform
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [12:41]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    at the moment we&#39;re playing with libevent, but getting a max throughput of 5k messages per second (non batched) over 1Gbps network for 9k connections
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [12:42]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    2. scheduling algorithms are O(1) with respect to numer of connections
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [12:42]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah cool using kqueue if available
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [12:42]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nice
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [12:42]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    are you guys the developers?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [12:43]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yup
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [12:43]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    neato
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [12:44]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Guest1_: if you do the test with 30k connections it would be great if you can shared the results
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [12:45]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    shall do
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [12:45]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    do you have a roadmap btw?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [12:46]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    for example are you planning to go towards being an ESB?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [12:46]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or being the best multi-platform &amp; language queuing platform?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [12:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it can be used in ESB way
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [12:47]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the functionality is somehow constrained when compared to enterprise solutions
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [12:47]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but that&#39;s by design
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [12:47]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just the queue management, orchestration and message mapping would be great
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [12:47]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    "get rid of bells and whistles"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [12:47]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yep
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [12:47]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just a thought for you, if you were bored
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [12:48]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    queue management = monitoring number of messages in queues?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [12:48]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [12:48]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and configuring such as security
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [12:49]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what about message mapping?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [12:49]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    also massive bonus if you built connectors to mobile phone stacks like J2ME and iPhone/ObjectiveC
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [12:49]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    message mapping is taking the raw message such as JSON/XML and mapping it to another structure which is JSON/XML
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [12:49]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah transformation
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [12:49]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    aye
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [12:49]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    can be built on top
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [12:49]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yep
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [12:49]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not my concern :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [12:50]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i am not a java developer, but shouldn&#39;t java binding work for j2me?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [12:50]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no, not J2SE standard
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [12:51]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you have to use the J2ME socket library
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [12:51]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    also, when you detect blackberry you have do a special switch
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [12:51]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the java binding is just a wrapper on top of c library
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [12:51]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    all you need from JDK is JNI
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [12:51]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no C library access on J2ME phone
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [12:51]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can&#39;t access it, sandboxed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [12:51]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    aha, then no luck
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [12:52]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so we have ported to 13 Nokia models and Blackberry. Luckily 99% the same socket code
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [12:52]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just a suggestion for you
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [12:52]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I will leave you in peace, thanks for talking to me
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [12:52]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no problem
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [12:52]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bye
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [12:52]  Guest1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cya
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-89" class="rowLink" href="#msg-89">
+                    [20:59]  truelyky1e
+                    </a>
+                </td>
+                <td class="message-cell">
+                    help
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,436 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Monday September 27, 2010</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [00:05]  Zao
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jhawk28: Several solutions.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [00:05]  Zao
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jhawk28: 1) deploy the runtime via installer.  2) deploy the runtime privately in a subdirectory of your application.  3) build your project against the static runtime, with all the downsides and pitfalls that has.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [00:06]  Zao
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Deploying privately with 2008 amounts to grabbing the Microsoft.VC90.CRT directory and putting it next to your executable.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [00:06]  Zao
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Deploying via installer can be done either via the standalone installer or via merge modules.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [00:06]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I don&#39;t mind installing the vs2008 redist
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [00:06]  Zao
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Building against static runtime places severe restrictions to multi-module programs.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [00:07]  Zao
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Then install the runtime(s) that your application and your dependencies are built against.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [00:07]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but, I can&#39;t figure out how to have zmq compile against the latest version
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [00:07]  Zao
+                    </a>
+                </td>
+                <td class="message-cell">
+                    If you&#39;re doing things right, that should be a single runtime version.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [00:08]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    btw, this is for the java bindings and the zmq library
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [00:10]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I tried to do this: http://stackoverflow.com/questions/59635/app-does-not-run-with-vs-2008-sp1-dlls-previous-version-works-with-rtm-versions
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [00:10]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but it didn&#39;t change the values in the manifest
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [00:10]  Zao
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I feel sorry for you. Building against and deploying the right 2008 runtime is great fun.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [00:10]  Zao
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Especially with the hotfixes.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [00:11]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [00:12]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :(
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [00:14]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    new to the whole Visual Studio world so its mostly painful right now
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [00:14]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mostly happy that ZMQ compiles out of the box
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [00:16]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zao: http://blog.kalmbach-software.de/2009/05/27/deployment-of-vc2008-apps-without-installing-anything/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [00:16]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    seems to cover your 3 options
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [00:20]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ha, the statically linking only works VS2003 and before based on the comments
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [00:21]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and the including the dlls in a sub directory doesn&#39;t work with VS2008-SP1
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [07:56]  CIA-20
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Martin Sustrik 07master * r30c1cba 10/ src/poller_base.cpp : latency optimisation for the case where there are no timers - http://bit.ly/d8hem9
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [07:56]  CIA-20
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Martin Sustrik 07master * re2f834d 10/ doc/zmq_getsockopt.txt : ZMQ_FD and ZMQ_EVENTS documentation added - http://bit.ly/9nWC7q
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [09:17]  CIA-20
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Martin Sustrik 07master * r16c3884 10/ (4 files in 2 dirs): MSVC build fixed - http://bit.ly/abDASN
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [15:56]  shawn42
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hello
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [15:57]  shawn42
+                    </a>
+                </td>
+                <td class="message-cell">
+                    has anyone here done any P2P stuff w/ zeromq?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [21:05]  kristianpaul
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hello
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [21:06]  kristianpaul
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://paste.pocoo.org/show/268234/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [21:06]  kristianpaul
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [22:08]  ipc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    howdy; does anyone know if you can run zmq &#39;threadless&#39;; i.e. one process use a TCP-bound zmq socket?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [22:08]  ipc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the context docs suggest you shouldn&#39;t init with zero threads unless you&#39;re only using in-process sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [22:45]  kristianpaul
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ahh solved
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [22:45]  kristianpaul
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i missed the lib
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [22:45]  kristianpaul
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bye
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [22:57]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hello
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

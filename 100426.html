@@ -1,0 +1,799 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Monday April 26, 2010</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [06:33]  sjampoo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hmm, i&#39;m looking at pub.cpp. Shouldn&#39;t the message flushing come before closing all the message objects? What if the ffn callback from zmq_msg_close clears the data?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [06:47]  sjampoo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Ah got it, please ignore that last question.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [07:28]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sjampoo: :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [07:44]  sjampoo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hmm if i just send my messages, i do not really need to close them right, as this gets done on a successful send anyway?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [08:03]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sjampoo: now you are speaking of internals of pub_t right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [08:03]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    consider this scenario:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [08:03]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    user sends message with refcount 1
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [08:04]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pub_t writes it to a pipe
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [08:04]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    leaves the refcount to be 1
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [08:04]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it ommits close thus not decreasing the refcount
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [08:05]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and inits user&#39;s copy of the message to be blank
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [08:05]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the refcount of the original message is still 1
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [08:06]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but nows it refers to the pointer in the pipe rather than pointer in user&#39;s zmq_msg_t object
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [08:12]  sjampoo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    a-ha!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [08:12]  sjampoo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [09:54]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sjampoo: btw, if you find places like this in the code, where it&#39;s not obvious what the code is doing feel free to write a comment explaining the behaviour and submit it as a patch
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [09:54]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;ll help improve overall quality of the codebase
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [14:51]  CIA-5
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Martin Sustrik 07master * rbeffee9 10/ (8 files in 3 dirs): P2P renamed to PAIR - http://bit.ly/dCMQhz
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [14:59]  CIA-5
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Martin Sustrik 07master * r1ad6ade 10/ builds/msvc/libzmq/libzmq.vcproj : MSVC build fixed - http://bit.ly/cLmsJP
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [15:42]  CIA-5
+                    </a>
+                </td>
+                <td class="message-cell">
+                    rbzmq: 03Martin Sustrik 07master * r9f1b337 10/ (perf/local_lat.rb rbzmq.cpp): P2P renamed to PAIR - http://bit.ly/bs1QwB
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [15:49]  CIA-5
+                    </a>
+                </td>
+                <td class="message-cell">
+                    clrzmq: 03Martin Sustrik 07master * r52a9158 10/ clrzmq/zmq.cs : P2P renamed to PAIR - http://bit.ly/9fOAUO
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [16:17]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: there?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [16:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nikko__: yes, hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [16:18]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://valokuva.org/~mikko/iothreads/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [16:18]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    might not be C++ish
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [16:18]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    noticed a TODO item
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [16:19]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah, i see
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [16:19]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the ugly thing about it is that is has to be done at 3 places
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [16:20]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [16:20]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jon dyte is working on merging all 3 devices into a single executable which would allow for having it at a single place
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [16:20]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i guess it would be easy to write a macro
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [16:20]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or something
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [16:20]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that works as well
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [16:21]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you may want to synchronise with him
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [16:21]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    he seems busy so we would surely appreciate patches like this one
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [16:21]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    im not sure how you are supposed to cast in C++
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [16:22]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ()
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [16:22]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (int) x
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [16:22]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    with const_cast, static_cast and reinterpret_cast
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [16:22]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, you mostly don&#39;t need those
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [16:22]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    was reading about casts last night in C++
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [16:22]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    seems a lot more confusing than C :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [16:22]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    they are useful only for casting types with virtual function tables
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [16:23]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah, not so for const_cast
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [16:23]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyway, I would stick to (int) x
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [16:24]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can cast const char * with (int) ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [16:24]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i mean (type) x
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [16:25]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    braces syntax
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [16:25]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    const char *foo = "123412423"; int x = (int) foo; ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [16:25]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you&#39;ll get numeric representation of the pointer to the string :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [16:26]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, that&#39;s what i expected
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [16:26]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    atoi is OK
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [16:26]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyway, to give you some context
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [16:27]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the xml files for devices should define a lot of properties
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [16:27]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    aside of io_threads, it&#39;s all the socket options
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [16:27]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so the code will be rather long
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [16:27]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thus having it 3x in the codebase seems to be a bad idea
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [16:28]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s why I would prefer to have devices merged first
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [16:28]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then add the property-managing code
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [17:01]  impl
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko__: you should use intptr_t for that though
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [17:04]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    impl: i think this is only a theoretical discussion, no need for that kind of thing in the code
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [17:05]  impl
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [17:09]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    impl: i&#39;m not storing a pointer
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [17:09]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just casting const char * to integer
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [17:09]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or i was wondering how do you cast that in C++
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [17:10]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if there was some magic
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [21:02]  ADruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Can zeromq serve as a job queue system?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [21:03]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not really without added application logic
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [21:04]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    take a look at gearman or citrine scheduler if you want job queue / scheduling functionality
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

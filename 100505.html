@@ -1,0 +1,568 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Wednesday May 5, 2010</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [05:57]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hi there... I finally managed to get back at my zmq php ext and I&#39;m adding persisten sockets in there... so what happens when, for a given socket, zmq_connect or zmq_bind is called more then once with the same parameters?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [05:58]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    my idea was to keep sockets around when wanted, but then the coerkct might be already connected/bound when those functions gets called (again...)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [06:10]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi sustrik
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [06:10]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I asked a question right before you came in...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [06:10]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    &lt;dermoth&gt; Hi there... I finally managed to get back at my zmq php ext and I&#39;m adding persisten sockets in there... so what happens when, for a given socket, zmq_connect or zmq_bind is called more then once with the same parameters?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [06:10]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    &lt;dermoth&gt; my idea was to keep sockets around when wanted, but then the socket might be already connected/bound when those functions gets called (again...)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [06:11]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [06:11]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    do you have any idea what happens in that case? it doesn&#39;T seem to be documented...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [06:11]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    depends on how the underlying transport handle such case
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [06:11]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    for TCP
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [06:12]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    rebinding the same nic/port result in EADDRINUSE
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [06:12]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so it&#39;s not handled at all by zeromq...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [06:12]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it just propagates the error to the user
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [06:12]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which means I will have to handle my own persistent connect/binds :(
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [06:12]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    as for connect, connecting twice means creating 2 TCP connections
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [06:12]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    probably
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [06:13]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    have you had a look at mikko&#39;s PHP binding?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [06:13]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how does he handle that case?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [06:13]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [06:13]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    humm I had a quick look.. is he supporting persistent sockets?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [06:14]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, as far as i know
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [06:17]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    as far as I can see his code cannot handle multiple persistent sockets though... I made the persistent "flag" a string as to allow multiple apps to run ans use sockets on the same web server without colliding...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [06:17]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    looks nice though... I wist I had the time to finish mine...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [06:17]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    wish
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [06:21]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nevermind thers seems to be an id,,, just passed differently...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [06:24]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so he use a hash for this too... like I would have to do. I can&#39;t really compare though as his module is OO asn mine is functionnal... I waven&#39;t read much about OO programming in PHP
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [06:25]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dermoth: i cannot help much here as I have no idea about PHP
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [06:26]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    however, try to get in touch with mikko, it may spare you some work
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [06:27]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i know... I&#39;ve speak with him... I didn&#39;t know he was writing one when I started, but it was entertaining anyway ;)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [06:43]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik, mikko, fwiw I just make my code available: http://solaris.beaubien.net/cgi-bin/gitweb.cgi/php_zmq.git - as I said I may keep working on it just for fun, but if mikko&#39;s modules is stable I might end up using this one (I probably won&#39;t finish mine in time if I even finish it...)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [06:44]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just made...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [06:47]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dermoth: i personally would like to see the both efforts joined somehow, if for nothing else a project with 2 contributors is less likely to die...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [06:50]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well I would personally prefer a functional interface but i&#39;m not really going yo use it anyway. I maintain a lot of PHP servers but I never coded much in php - I usually write scripts (and some rare CGIs) in perl or python.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [06:50]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I want to add zeromq to our architecture, but I&#39;m not going to write the code :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [06:52]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if my module can be useful it&#39;s nice... I have absolutely no experience with php extensions though (I read a book on it before writing it...) and it&#39;s far from complete
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [07:02]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [11:04]  CIA-15
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Martin Sustrik 07master * r44dd005 10/ (4 files): number of application threads to use 0MQ sockets is unlimited; app_threads parameter in zmq_init is unused and obsolete - http://bit.ly/acYoiN
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [11:04]  CIA-15
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Martin Sustrik 07master * r10f5334 10/ src/signaler.cpp : Merge branch &#39;master&#39; of git@github.com:sustrik/zeromq2 - http://bit.ly/cCXFzA
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [12:24]  CIA-15
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Martin Sustrik 07master * r835e893 10/ (14 files): dispatcher_t class renamed to ctx_t - http://bit.ly/cDh4Vw
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [12:33]  CIA-15
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Martin Sustrik 07master * r64c5866 10/ builds/msvc/libzmq/libzmq.vcproj : MSVC build fixed - http://bit.ly/9Mcv5W
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [12:35]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dermoth: your bsd license contains my name :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [12:35]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in the files
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [13:35]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko, really?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [13:36]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I though I changed it... did is at 3am though so I might have missed something!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [13:37]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    IN NO EVENT SHALL ... BE LIABLE FOR ANY - I didn&#39;t think the license itself contained your name :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [13:42]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Mikko, fixed ;)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [13:44]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dermoth: that is "&lt;ENTITY NAME&gt;" in the license
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [13:45]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Yes, I used the generic form instead: IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE ...
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

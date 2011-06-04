@@ -1,0 +1,788 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Sunday January 16, 2011</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [00:23]  mvolkov
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: I am interested in load balancing work to the different tcp: sockets and so far I understand that this is achievable with zmd.poll() function
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [00:24]  mvolkov
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the objective is basically send message to less busy device
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [00:24]  mvolkov
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or device which is doing nothing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [00:31]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Skaag: not as far as i know
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [00:31]  Skaag
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that is too bad
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [00:31]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mvolkov: load-balancing based on least busy is really not achievable using poll
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [00:31]  Skaag
+                    </a>
+                </td>
+                <td class="message-cell">
+                    a lot of very good answers here, to very good questions...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [00:31]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mvolkov: you would need additional logic on top of the polling
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [00:31]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mvolkov: as in the poll really doesn&#39;t know which one of the sockets is least busy
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [00:31]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mvolkov: the built-in algorithm uses round-robin for balancing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [00:32]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Skaag: i think i got logs since around last Feb
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [00:32]  Skaag
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s awesome. upload them somewhere.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [00:33]  mvolkov
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: oh, so zmd.poll() has by default round robin built in? do I understand this right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [00:36]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Skaag: sec
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [00:36]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mvolkov: nope
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [00:37]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mvolkov: zmq_poll just indicates which sockets are readable/writable depending on parameters passed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [00:37]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mvolkov: what i meant is that PUSH/PULL has round-robin balancing built in
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [00:38]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mvolkov: so if you zmq_connect PUSH socket multiple times the messages sent to the socket are balanced between the underlying transport sockets (tcp, ipc etc)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [00:38]  mvolkov
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: thank you I&#39;ll try that -- greatly appreciate your inp
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [00:39]  mvolkov
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ut
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [00:42]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Skaag: http://valokuva.org/~mikko/zeromq.log
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [00:42]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    since last march
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [00:43]  Skaag
+                    </a>
+                </td>
+                <td class="message-cell">
+                    awesome :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [00:43]  Skaag
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [02:01]  xchen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi, guys.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [02:01]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [02:02]  xchen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I have a question about zeromq, I want to use the zeromq in a cluster which is connected using infiniband
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [02:02]  xchen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi, mikko, thank you for your reply
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [02:03]  xchen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    How can I configure the zeromq to make sure it use the infiniband, not the ethenet
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [02:03]  xchen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    since the cluster is connected using both eth and ib
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [02:05]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i haven&#39;t really got experience with infiniband
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [02:05]  xchen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I googled and find nothing about the configuration of zeromq over infiniband, and it is not explained in the manual,
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [02:05]  xchen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [02:05]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you might want to ask your question tomorrow morning CET
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [02:05]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik_ would probably be able to answer it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [02:06]  xchen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, thanks very much. He will be online then?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [02:06]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    usually is
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [02:06]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    are you running tcp/ip over infiniband?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [02:07]  xchen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I didn&#39;t get you question. Zeromq is over tcp/ip than infiniband?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [02:07]  xchen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I didn&#39;t get you question. Zeromq is over tcp/ip then infiniband?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [02:08]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://www.zeromq.org/results:ib-tests-v031
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [02:09]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [02:09]  xchen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Yes, I saw this page. But I do not know how do they get this result.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [02:10]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    found an old mailing list entry about infiniband
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [02:10]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    xchen: http://lists.zeromq.org/pipermail/zeromq-dev/2009-December/001472.html
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [02:11]  xchen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Thank you very much. I have found this. But it seems do not answer my question
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [02:11]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    xchen: best wait for sustrik to be online in that case
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [02:12]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you could also try posting to the mailing-lists
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [02:12]  xchen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, thanks.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [02:12]  xchen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thank you for so much help.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [02:13]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no problem, i can&#39;t really be much more help as i haven&#39;t really used infiniband to any extent
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [02:13]  xchen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    A question about the basic concept of 0mq, is the source code I get built on tcpip?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [02:14]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there are different transports
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [02:14]  xchen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I get means download from the homepage
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [02:14]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ipc, inproc, tcp and pgm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [02:15]  xchen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, so , tcp can build on infiniband, am I right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [02:18]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what does &#39;can build on&#39; mean in this context?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [02:24]  xchen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sorry, I sould say tcp can be built on infiniband
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [02:24]  xchen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sorry, I should say tcp can be built on infiniband
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [02:25]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it looks like you should be able to LD_PRELOAD the SDP library and use zeromq over infiniband
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [02:25]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i would assume that if the SDP library is loaded it would use infiniband and not the eth interface
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [02:26]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you should be able to see this from throughput of messages as well i assume
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [02:29]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    looking at the following material http://pkg-ofed.alioth.debian.org/howto/infiniband-howto-7.html it would look so
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [02:35]  xchen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Yeah, I think I get it. Thanks a lot.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [02:35]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cool
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [02:35]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i need to sleep, it&#39;s 3am soon
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [02:35]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    good night
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [02:36]  xchen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thank
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

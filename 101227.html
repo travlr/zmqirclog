@@ -1,0 +1,590 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Monday December 27, 2010</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [02:49]  swills
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ping?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [02:49]  swills
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i was in here a while back asking about zeromq perl modules
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [02:49]  swills
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://travlr.github.com/zmqirclog/2010-November.html
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [02:52]  swills
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;me back to looking at that, but i think i&#39;ve decided the issue is that the perl zeromq module is written to expect a threaded perl and threaded zeromq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [13:29]  monokrome
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hey
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [13:30]  monokrome
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Does anyone know if I can use zeromq without using exceptions?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [13:31]  monokrome
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I guess that I could use the C libraries :/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [15:47]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: around?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [15:52]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    actually, anyone else around? sustrik?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [16:48]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Anyone know why if you monitor a ZMQ FD with select for a read, and the select gets triggered, subsequent calls to select will show the socket as readable until all messages have been read off the socket?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [17:30]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes, thanks for the email wrt to edge triggering
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [17:34]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you know if I after it gets triggered I should use a loop that checks ZMQ::EVENTS before reading each message, or just repeatedly calls recv(ZMQ::NOBLOCK) without checking ZMQ::EVENTS for reads. i&#39;m guessing that recv alone is probably fine for reads, but ZMQ::EVENTS is probably a good thing to check for before sending a message
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [17:49]  neopallium
+                    </a>
+                </td>
+                <td class="message-cell">
+                    andrewvc: I have used ZMQ::FD with the an event loop and the way I did it was to call recv()/send() until they return EAGAIN.  When recv() returns EAGAIN then wait for a read event before calling recv() again.  When send() returns EAGAIN then queue the data and wait for a write event.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [17:49]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cool
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [17:49]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so, ZMQ_EVENTS is there only if you&#39;re curious, but don&#39;t actually want to send/read
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [17:49]  neopallium
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can see how I did it in Lua code here: https://github.com/Neopallium/lua-handlers/blob/master/handler/nsocket.lua
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [17:50]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nice! thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [17:50]  neopallium
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I didn&#39;t use ZMQ_EVENTS
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [17:51]  neopallium
+                    </a>
+                </td>
+                <td class="message-cell">
+                    seems like event mongrel2 which uses zeromq with an eventloop doesn&#39;t use ZMQ_EVENTS
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [17:51]  neopallium
+                    </a>
+                </td>
+                <td class="message-cell">
+                    *even
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [17:51]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    interesting
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [17:51]  neopallium
+                    </a>
+                </td>
+                <td class="message-cell">
+                    basically that is how you should work with an edge-trigger socket.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [17:52]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cool, yeah, I don&#39;t know where I got it into my head that ZMQ_EVENTS should be checked first
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [17:52]  neopallium
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you only pause your sending/receiving when you get an EAGAIN from the socket.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [17:53]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cool, yeah I&#39;ve never really mucked around much with select/epoll before, I appreciate the pointers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [17:53]  neopallium
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I really don&#39;t know what ZMQ_EVENTS is good for.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [17:54]  neopallium
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oops that was the wrong file the one for zeromq socket is this one: https://github.com/Neopallium/lua-handlers/blob/master/handler/zsocket.lua
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [17:55]  neopallium
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the nsocket.lua file is for tcp/udp sockets which are level-triggered.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [17:57]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [17:57]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I recall someone saying
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [17:57]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    andrewvc: ZM_EVENTS is used to determine if there is a "whole" message ready on the FD
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [17:57]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [17:57]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    was about to say :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [17:57]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lol
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [17:57]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    otherwise you would try to read a partial which eoesn&#39;t work in 0mq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [17:58]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but you&#39;d get an EAGAIN right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [17:58]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i mean, I assume it&#39;d be a waste of cycles to call ZMQ_EVENTS before each recv
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [17:58]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    andrewvc: i don&#39;t know; i assume so but my assumptions are sometimes wildly wrong
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [17:58]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lol
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [17:58]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no, you wouldn&#39;t need to call it *each* time, just *once* after ZM_FD triggered
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [17:59]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    once ZM_FD and ZM_EVENTS agree, read until EAGAIN
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [18:03]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    gotcha
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [18:03]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how about for a writable handler.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [18:03]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s conceivable the writable state could change after any given message no?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [18:10]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    neopallium: i think ZMQ_EVENTS is new, and I just use zmq_poll directly instead.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [18:11]  neopallium
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah, yeah I forgot about that.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [20:20]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    andrewvc: what you said doesn&#39;t make sense from the write side
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [20:20]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oh?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [20:20]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just write until you get EAGAIN; no need to check ZM_EVENTS
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [20:20]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah, gotcha
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

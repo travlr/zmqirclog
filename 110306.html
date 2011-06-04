@@ -1,0 +1,2449 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Sunday March 6, 2011</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [06:55]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hello world!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [09:39]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi all, I just made the 2.1.2 rc2 release
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [09:40]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and lots of old tags on zeromq2-1
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [09:44]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, I was wondering about those... OK, will delete them...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [09:44]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieter_hintjens: can we change the woker side framing of the mdp? would like to have an empty frame before the version, so it&#39;s the same as for the client
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [09:45]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    makes the code much easier and would be more consistent
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [09:45]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guido_g: an extra frame for nothing...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [09:45]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;d thought of it but figured it was pointless
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [09:45]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s not
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [09:45]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, let me think about it a sec
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [09:46]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if all goes over one zmq socket, you need to figure out where the message came from
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [09:46]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if we could strip the return path with a generic function, the first part of the remaining message would be the sender
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [09:47]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    consistency? hmm, a novel idea...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [09:47]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    *sigh*
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [09:47]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ,)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [09:48]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so the reason there&#39;s an empty frame before the version is purely to emulate a REQ socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [09:49]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there&#39;s no consistent return path afaics
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [09:50]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    tell me precisely what commands you&#39;d want to change, guido_g
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [09:50]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ready, heartbeat, request, reply, disconnect?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [09:51]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it would change all of them
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [09:51]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it would not make these consistent with client commands
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [09:51]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    because the worker commands all have that frame with the command number
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [09:52]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;m unsure what you mean by &#39;return path&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [09:52]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    are you talking about the broker or the APIs?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [09:52]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it make the overall structure more consistent
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [09:52]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    overall structure of *what*?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [09:53]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i do talk about the sequence of message frames send to the broker
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [09:53]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, so there is a reason the client and worker protocols are quite different
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [09:53]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    *sigh*
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [09:54]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it makes the more complex, when using a shared socket in the broker
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [09:54]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so use two sockets, that&#39;s fine
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [09:54]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you&#39;ve not actually explained what you mean, except "more consistent" and "*sigh*"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [09:54]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [09:54]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    please be precise
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [09:54]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    to me it&#39;s obvious
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [09:54]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    obviously
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [09:55]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the client sends id followed by delimiter (the empty frame)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [09:55]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    wait, please
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [09:55]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the client does not send ID
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [09:55]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the worker send id and then immediately the 6 byte proto version
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [09:56]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the req does
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [09:56]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nope, the client does not send its id
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [09:56]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you believe it does, we have a communications issue
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [09:56]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the xrep socket prepends the ID of the originator
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [09:56]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok so that is what the app sees
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [09:57]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the client sends (if it&#39;s a REQ) the protocol version followed by the service name followed by the message
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [09:57]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, again
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [09:57]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the client sends (if it&#39;s an XREQ) this, prepended by an empty frame
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [09:57]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the &#39;app&#39; is *what*?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [09:57]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you need to be precise, we have three nodes here, each seeing different things
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [09:57]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the program getting the messages from the xreq sees a leading id
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [09:58]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    followed by an empty frame
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [09:58]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this was a recv gives
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [09:58]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [09:58]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this should be the same for both sides
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [09:58]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so one could use the same function for splitting this information and the following part reliably
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [09:58]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, it&#39;s 2 lines of code more or less in the broker
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [09:59]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and it&#39;s an extra frame for the worker protocol for absolutely no advantage
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [09:59]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i will not make the protocol more complex to create minimal advantage to implementations
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [09:59]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sorry
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [10:00]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the frames need to have a *functional* purpose
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [10:00]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    says the guy who needs six byte to distinguish 2 protocols and their versions
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [10:00]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    "I can reuse the same code" is not a functional purpose
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [10:00]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it does
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [10:00]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it delimits the routing part from the mdp protocol information
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [10:00]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    here is how my code does it:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [10:00]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    char *sender = zmsg_unwrap (msg);
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [10:00]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    char *header = zmsg_pop (msg);
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [10:01]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    totally generic, works for both client and worker messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [10:01]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if (strcmp (header, MDPC_CLIENT) == 0)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [10:01]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    s_client_process (self, sender, msg);
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [10:01]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    else
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [10:01]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if (strcmp (header, MDPW_WORKER) == 0)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [10:01]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    s_worker_process (self, sender, msg);
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [10:01]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m surprised it&#39;s easier in C than in Python
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [10:02]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i don&#39;t know what these function do
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [10:02]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    unwrap removes an address plus optional empty part
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [10:02]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but the client header start w/ an emty frame per spec, can&#39;t see that handled here
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [10:02]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ahhh
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [10:02]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    since this question of empty parts occurs in many places
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [10:03]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    only one address
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [10:03]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you want to manage an address stack?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [10:03]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there is nothing to manage
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [10:03]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there is no stack
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [10:03]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s just a list of ids followed by an empty frame
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [10:03]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there is no list
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [10:03]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s exactly one
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [10:04]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the only way you can get a list is to chain multiple brokers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-89" class="rowLink" href="#msg-89">
+                    [10:04]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and that won&#39;t work without other changes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-90" class="rowLink" href="#msg-90">
+                    [10:04]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this, at least, is the broker&#39;s view of the world
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-91" class="rowLink" href="#msg-91">
+                    [10:05]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    workers, as terminators, can manage a stack without trouble
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-92" class="rowLink" href="#msg-92">
+                    [10:05]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so the request command emulates a REP socket (stack of addresses + empty part + body)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-93" class="rowLink" href="#msg-93">
+                    [10:06]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guido_g: ok, here&#39;s a compromise
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-94" class="rowLink" href="#msg-94">
+                    [10:06]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    your point is noted, I had the same idea but it didn&#39;t stick
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-95" class="rowLink" href="#msg-95">
+                    [10:07]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    we&#39;ll probably want to make more radical changes to MDP anyhow, later
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-96" class="rowLink" href="#msg-96">
+                    [10:08]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and where&#39;s the compromise?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-97" class="rowLink" href="#msg-97">
+                    [10:09]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i mean we *might* do it later doesn&#39;t sound like one
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-98" class="rowLink" href="#msg-98">
+                    [10:09]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but, ok i&#39;ll implement the way it is
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-99" class="rowLink" href="#msg-99">
+                    [10:11]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Meaning, the issue remains open, it&#39;s not rejected, but needs more thought
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-100" class="rowLink" href="#msg-100">
+                    [10:11]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m not sure the &#39;many frames&#39; approach is ideal at all
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-101" class="rowLink" href="#msg-101">
+                    [10:12]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no, it&#39;s significantly slower, but ra performance isn&#39;t important here i was told
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-102" class="rowLink" href="#msg-102">
+                    [10:12]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    s/ra/raw/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-103" class="rowLink" href="#msg-103">
+                    [10:13]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieter_hintjens, was that second archive i sent yesterday ok?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-104" class="rowLink" href="#msg-104">
+                    [10:13]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Guthur: yup, I already pushed those translations, thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-105" class="rowLink" href="#msg-105">
+                    [10:14]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guido_g: indeed, I want the semantics of routing to be clear, this is educational
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-106" class="rowLink" href="#msg-106">
+                    [10:14]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieter_hintjens, cool, cheers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-107" class="rowLink" href="#msg-107">
+                    [10:14]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Guthur: only a dozen or so more, and you can get the Guide in C# :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-108" class="rowLink" href="#msg-108">
+                    [10:15]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I hope to have ch3 finished soon enough
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-109" class="rowLink" href="#msg-109">
+                    [10:15]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    1/2 half through peering2
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-110" class="rowLink" href="#msg-110">
+                    [10:16]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m going with some friends to airsoft today, so there&#39;s likely to little progress today
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-111" class="rowLink" href="#msg-111">
+                    [10:16]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that blasted hintjens guy keeps moving the goal posts...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-112" class="rowLink" href="#msg-112">
+                    [10:17]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is ch4 still in quite a bit of flux
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-113" class="rowLink" href="#msg-113">
+                    [10:17]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    What&#39;s there now is stable, it&#39;s coming to a close
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-114" class="rowLink" href="#msg-114">
+                    [10:18]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    two more large patterns and it&#39;s done
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-115" class="rowLink" href="#msg-115">
+                    [10:18]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nice
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-116" class="rowLink" href="#msg-116">
+                    [10:18]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is this the final chapter
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-117" class="rowLink" href="#msg-117">
+                    [10:18]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lol, no :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-118" class="rowLink" href="#msg-118">
+                    [10:18]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there&#39;ll be a few more chapters
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-119" class="rowLink" href="#msg-119">
+                    [10:23]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, got to go, later all
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-120" class="rowLink" href="#msg-120">
+                    [11:09]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    good morning
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-121" class="rowLink" href="#msg-121">
+                    [11:16]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi mikko!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-122" class="rowLink" href="#msg-122">
+                    [11:22]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    solaris isn&#39;t playing ball :/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-123" class="rowLink" href="#msg-123">
+                    [11:23]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i tried to catch up with you on friday i think
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-124" class="rowLink" href="#msg-124">
+                    [11:23]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i did some build refactoring and would&#39;ve warned that there might be some emails coming to your way
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-125" class="rowLink" href="#msg-125">
+                    [11:23]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i think you get failure emails at least for some builds
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-126" class="rowLink" href="#msg-126">
+                    [11:23]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I saw them, np
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-127" class="rowLink" href="#msg-127">
+                    [11:24]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I assumed you were changing something
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-128" class="rowLink" href="#msg-128">
+                    [11:25]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i am exploring using amazon ec2 to add some capacity
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-129" class="rowLink" href="#msg-129">
+                    [11:25]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    win64 / linux64
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-130" class="rowLink" href="#msg-130">
+                    [11:25]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    interesting...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-131" class="rowLink" href="#msg-131">
+                    [11:26]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    start build slaves on demand and shutdown after they are done
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-132" class="rowLink" href="#msg-132">
+                    [11:26]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jenkins has a plugin for this so it should be fairly easy
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-133" class="rowLink" href="#msg-133">
+                    [11:27]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and amazon charges only for what is actually used?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-134" class="rowLink" href="#msg-134">
+                    [11:27]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ve never tried ec2
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-135" class="rowLink" href="#msg-135">
+                    [11:29]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-136" class="rowLink" href="#msg-136">
+                    [11:30]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    linux is $0.025 per hour
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-137" class="rowLink" href="#msg-137">
+                    [11:30]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and windows is $0.035 per hour
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-138" class="rowLink" href="#msg-138">
+                    [11:30]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    for the smallest instances
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-139" class="rowLink" href="#msg-139">
+                    [11:56]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ha! python mdp broker just routed its first requests
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-140" class="rowLink" href="#msg-140">
+                    [11:58]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nice!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-141" class="rowLink" href="#msg-141">
+                    [12:01]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jepp, write it in ca. 4 hours :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-142" class="rowLink" href="#msg-142">
+                    [12:01]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    s/write/wrote/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-143" class="rowLink" href="#msg-143">
+                    [12:31]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieter_hintjens: error while compling https://gist.github.com/857252
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-144" class="rowLink" href="#msg-144">
+                    [12:55]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    tiem for a break
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-145" class="rowLink" href="#msg-145">
+                    [12:55]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    *time
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-146" class="rowLink" href="#msg-146">
+                    [15:35]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guido_g: 4 hours for a messaging broker, sweet
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-147" class="rowLink" href="#msg-147">
+                    [15:35]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I fixed that error in mdbroker and also added the empty frame as you wanted
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-148" class="rowLink" href="#msg-148">
+                    [15:38]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    great thanks!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-149" class="rowLink" href="#msg-149">
+                    [15:49]  apexi200sx
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hi,does this channel get logged to anywhere ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-150" class="rowLink" href="#msg-150">
+                    [16:30]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    apexi200sx: IRC log is located at http://travlr.github.com/zmqirclog/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-151" class="rowLink" href="#msg-151">
+                    [17:13]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieter_hintjens: mdbroker seems to be broken
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-152" class="rowLink" href="#msg-152">
+                    [17:14]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, probably, I didn&#39;t retest it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-153" class="rowLink" href="#msg-153">
+                    [17:14]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sigh
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-154" class="rowLink" href="#msg-154">
+                    [17:14]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    am distracted today, sorry
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-155" class="rowLink" href="#msg-155">
+                    [17:14]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    np
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-156" class="rowLink" href="#msg-156">
+                    [17:14]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    my broker works :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-157" class="rowLink" href="#msg-157">
+                    [17:14]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you win 9,000 internets, sir!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-158" class="rowLink" href="#msg-158">
+                    [17:14]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-159" class="rowLink" href="#msg-159">
+                    [17:15]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    shit, just bought a new one last week
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-160" class="rowLink" href="#msg-160">
+                    [17:15]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    np, keep them in reserve
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-161" class="rowLink" href="#msg-161">
+                    [17:15]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    right
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-162" class="rowLink" href="#msg-162">
+                    [17:15]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    as as i can tell from mdclient2, the broker should queue incomming client requests?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-163" class="rowLink" href="#msg-163">
+                    [17:16]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, it should
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-164" class="rowLink" href="#msg-164">
+                    [17:16]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-165" class="rowLink" href="#msg-165">
+                    [17:17]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    clearly if N clients send requests at once, the broker has to queue them until workers are available
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-166" class="rowLink" href="#msg-166">
+                    [17:18]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    "Workers will handle at most one request a time, and will issue exactly one reply for each successful request." &lt;- from the spec
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-167" class="rowLink" href="#msg-167">
+                    [17:18]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    workers, yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-168" class="rowLink" href="#msg-168">
+                    [17:18]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but clients no
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-169" class="rowLink" href="#msg-169">
+                    [17:18]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mdclient2 violates that restriction
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-170" class="rowLink" href="#msg-170">
+                    [17:18]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    clients != workers, right
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-171" class="rowLink" href="#msg-171">
+                    [17:18]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    note to self: read carefully
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-172" class="rowLink" href="#msg-172">
+                    [17:20]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what about requests for a service that was never registered?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-173" class="rowLink" href="#msg-173">
+                    [17:21]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    indeed, that is not covered by the spec
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-174" class="rowLink" href="#msg-174">
+                    [17:21]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I think the best semantics are that the broker accepts the client requests anyhow
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-175" class="rowLink" href="#msg-175">
+                    [17:21]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and tries to deliver them at some future time
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-176" class="rowLink" href="#msg-176">
+                    [17:22]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    on the risk of filling all memory with useless requests
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-177" class="rowLink" href="#msg-177">
+                    [17:22]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    however it&#39;s open... if the broker does this, it risks accumulating undeliverable messages for non-existent services
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-178" class="rowLink" href="#msg-178">
+                    [17:22]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and if it does not do this, it breaks the asynchronous model where nodes come and go randomly
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-179" class="rowLink" href="#msg-179">
+                    [17:23]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so there is room for a version 2 of the spec :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-180" class="rowLink" href="#msg-180">
+                    [17:23]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    for sure, like I said, this is a learning process...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-181" class="rowLink" href="#msg-181">
+                    [17:23]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;ll implement a queue per service now
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-182" class="rowLink" href="#msg-182">
+                    [17:23]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, that&#39;s what I&#39;ve done
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-183" class="rowLink" href="#msg-183">
+                    [17:24]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that lets you dispatch messages to services when workers appear
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-184" class="rowLink" href="#msg-184">
+                    [17:25]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    done in a few minutes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-185" class="rowLink" href="#msg-185">
+                    [17:30]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, fixed the mdworker api, it didn&#39;t add the empty part. broker seemed to be fine
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-186" class="rowLink" href="#msg-186">
+                    [17:30]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pushed to master
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-187" class="rowLink" href="#msg-187">
+                    [17:32]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    will check
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-188" class="rowLink" href="#msg-188">
+                    [17:33]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no output from mdworker or mdbroker
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-189" class="rowLink" href="#msg-189">
+                    [17:36]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    set VERBOSE to 1 in mdbroker head, rebuild...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-190" class="rowLink" href="#msg-190">
+                    [17:36]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ve fixed the spec to clarify how the broker should handle client requests for non-existent services
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-191" class="rowLink" href="#msg-191">
+                    [17:37]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    getting assertion in worker when using my broker:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-192" class="rowLink" href="#msg-192">
+                    [17:37]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mdworker: mdwrkapi.c:190: mdwrk_recv: Assertion `zmsg_parts (msg) &gt;= 3&#39; failed.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-193" class="rowLink" href="#msg-193">
+                    [17:37]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Aborted (core dumped)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-194" class="rowLink" href="#msg-194">
+                    [17:37]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, will do
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-195" class="rowLink" href="#msg-195">
+                    [17:37]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    did you add the empty part?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-196" class="rowLink" href="#msg-196">
+                    [17:37]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-197" class="rowLink" href="#msg-197">
+                    [17:37]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    empty + protocol + command = 3
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-198" class="rowLink" href="#msg-198">
+                    [17:38]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can also enable message debugging in mdworker, pass 1 instead of 0 to API constructor
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-199" class="rowLink" href="#msg-199">
+                    [17:39]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ahhh ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-200" class="rowLink" href="#msg-200">
+                    [17:46]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    found it, forgot to adapt the hb message
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-201" class="rowLink" href="#msg-201">
+                    [17:47]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you should use a single method to send to a particular peer, maybe
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-202" class="rowLink" href="#msg-202">
+                    [17:47]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    now the md* suite works fine
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-203" class="rowLink" href="#msg-203">
+                    [17:47]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nice...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-204" class="rowLink" href="#msg-204">
+                    [17:47]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    we have interoperability!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-205" class="rowLink" href="#msg-205">
+                    [17:47]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-206" class="rowLink" href="#msg-206">
+                    [17:48]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that was fast
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-207" class="rowLink" href="#msg-207">
+                    [17:49]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    where&#39;s your git?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-208" class="rowLink" href="#msg-208">
+                    [17:49]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    wait, still some glitches
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-209" class="rowLink" href="#msg-209">
+                    [17:50]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and i need to test the queuing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-210" class="rowLink" href="#msg-210">
+                    [17:51]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    where is the hb interval set in the broker?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-211" class="rowLink" href="#msg-211">
+                    [17:51]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    need to sync mine w/ the md* values
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-212" class="rowLink" href="#msg-212">
+                    [17:52]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ahh got it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-213" class="rowLink" href="#msg-213">
+                    [18:16]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    g&#39;night all...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-214" class="rowLink" href="#msg-214">
+                    [18:17]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oh
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-215" class="rowLink" href="#msg-215">
+                    [18:17]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    night
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-216" class="rowLink" href="#msg-216">
+                    [18:51]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    full interop betwenn c and python via mdp. goal achieved!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-217" class="rowLink" href="#msg-217">
+                    [22:22]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieter_hintjens, The C# link in the language list for new examples I sent is not currently bold
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-218" class="rowLink" href="#msg-218">
+                    [23:08]  Skaag
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I have an assertion while running the tests under /jzmq/perf
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-219" class="rowLink" href="#msg-219">
+                    [23:09]  Skaag
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Assertion failed: msg_-&gt;flags &amp; ZMQ_MSG_MORE (req.cpp:86)
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

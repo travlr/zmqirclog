@@ -1,0 +1,1338 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Sunday April 17, 2011</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [07:26]  rod
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hi, i&#39;m new to 0mq so forgive me if my question has an obvious answer.  What i&#39;m trying to do use use a REQ socket to receive a request, then dispatch a job to worker threads which call back when they&#39;re done.  But it seems with the REQ socket type you need to send a reply before you can receive another request, is this true?  if so is there another solution for my problem?  Thanks.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [07:27]  Toba
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you have to use REP socket for the server side (the one receiving requests) not a
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [07:27]  Toba
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you use REQ on the side making the requests.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [07:27]  Toba
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this may be your first problem :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [07:28]  rod
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah yes sorry that&#39;s what i meant :D
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [07:28]  rod
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (see, i am new to this!)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [07:28]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    rod_: it&#39;s explained in the Guide
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [07:28]  Toba
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I don&#39;t know a way to work around this, no.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [07:28]  Toba
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but, the Guide is all knowing, and eternal.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [07:28]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you want to handle multiple requests in parallel, use a ROUTER socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [07:29]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    aka xrep
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [07:29]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there is an example that does exactly what you want, asyncsrv
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [07:29]  rod
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah perfect.  ok i&#39;ll give that a go, thanks pieterh!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [07:30]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://zguide.zeromq.org/page:all#Asynchronous-Client-Server
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [07:30]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    however, before trying that, please do read &amp; understand chapters 1 and 2
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [07:32]  rod
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;ve made it to the end of chapter 2 so far, but i&#39;m trying to build some examples to help me learn (so might be jumping ahead too which is the problem here i think)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [08:26]  guyvdb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hi, I was listening to a video of Zed Shaw speaking from the zmq site. He stated something along the lines of do not use zmq over the internet. I.e. keep it within your lan for connecting server processes. Is this correct?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [08:26]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ahhh... salt already made it into the wiki
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [08:27]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guyvdb_: sure, and you can always use a vpn
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [08:28]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guyvdb_: 0MQ sockets tend to crash if you throw garbage at them
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [08:29]  guyvdb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm ... I have a bunch of embedded devices that connect via 3G that I want to keep track of. After Zeds comments my idea is asio between well known address (broker) and clients and then zmq in the back to worker processes. Does this make sense?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [08:31]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guyvdb_: asio isn&#39;t going to be more secure than 0MQ
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [08:32]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, perhaps it is... yes, this makes sense
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [08:32]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if I was doing it over public Internet I&#39;d use HTTP for the server
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [08:32]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    why?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [08:33]  guyvdb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm I thought of that... but I want allways connected... I.e. server push to client...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [08:33]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i mean http is ok, but not the answer to everything
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [08:33]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guido_g: several reasons, but mainly it&#39;s friendly for sysadmins (ports 80 and 443), has proven security (TLS), and has stacks in clients
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [08:33]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guyvdb_: you can quite easily do server push using long polling
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [08:34]  guyvdb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    would http long poll make sense? This seems like a bit of a hack when i could just use tcp with thrift or protocol buffer
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [08:34]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    long polling and mobiles devices isn&#39;t that clever, to get a reasonable reaction time you to wake up the device quite often
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [08:34]  guyvdb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    The clients are embedded bits of hardware... no user interface, etc
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [08:35]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guyvdb_: http long poll is nothing special, but you may need some intelligence in the server
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [08:35]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i.e. to not disconnect clients if they&#39;re silent
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [08:36]  guyvdb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but would an ASIO server maintaining say 5000 connections with the clients not be better than long polling
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [08:36]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guyvdb_: afaics it&#39;s precisely the same setup except that with HTTP you get a standard answer to parts of the problem
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [08:36]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and find someone who did that to ask him how the carriers behave in this case
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [08:36]  guyvdb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I also want to implement heartbeat ala AMQP or something like that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [08:37]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you would want a friendly http server
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [08:37]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and websockets :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [08:37]  guyvdb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    any suggestions? mongrel 2? ngnix
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [08:37]  guyvdb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    There is no web browser involved
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [08:37]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mongrel2 is of course the first choice if you want to use Ã¸mq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [08:38]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guyvdb_: I&#39;d suggest mongrel2, yes, mainly because you can probably tweak it if you need it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [08:38]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    also, take a look at restms.org
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [08:38]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guyvdb_: websockets is an hhtp protocol extension, no browser needed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [08:38]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guyvdb_: but is was more of a joke
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [08:38]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guyvdb_: do you have security requirements?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [08:39]  guyvdb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes.. i want a pki infrastructure where i am CA and all clients must have valid certs
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [08:39]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so using https gives you this basically for free
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [08:39]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then use a good http kit
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [08:39]  guyvdb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yea... does mongrel2 use openssl?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [08:39]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    after that you can use various techniques to switch to a bidirectional async protocol on top of http
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [08:40]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guyvdb_: i assume it does
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [08:40]  guyvdb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm any insight into a bidirectional async protocol on http... have you seen any implementations / papers / blogs on this?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [08:40]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guyvdb_: the very simplest is to open two connections per client, one for reading, one for writing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [08:41]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    reading uses long polling (see restms for some hints)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [08:41]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    writing just posts stuff
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [08:41]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    a more efficient approach is to use the http protocol upgrade method
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [08:41]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which lets you start a http session, then switch to your own binary async protocol afterwards
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [08:42]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that requires a cooperative http server, obviously
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [08:42]  guyvdb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that sounds promising
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [08:42]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i believe there are quite a few such stacks already built
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [08:43]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you could look at http://bwtp.wikidot.com/ for inspiration
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [08:43]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    websockets is meant to standardize this area but it&#39;s stuck in endless ietf discussions
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [08:44]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    an example implementation of bwtp: http://code.google.com/p/serf/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [08:45]  guyvdb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Ok... i think that is a lot for me to absorb right now... going to start with lots of reading :) Thanks pieterh you have been very helpful
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [08:45]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guyvdb_: my advice would be to start with a minimal proof of concept using something like restms&#39;s transport layer (resttl)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [08:45]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and if you find http works for you, look at more efficient designs
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [08:46]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    let us know how you get on :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [08:46]  guyvdb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    will do... thx
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [10:25]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i will not implement this!  https://twitter.com/#!/hintjens/status/59561500293083136
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [10:28]  headzone
+                    </a>
+                </td>
+                <td class="message-cell">
+                    good, we&#39;re relying on you to implement zeromq over BLOAT (RFC 3252)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [10:28]  headzone
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that clearly takes priority
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [10:37]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [11:34]  wayneeseguin
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Is there an example of using zeromq with a C program ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [11:34]  wayneeseguin
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I am reading the docs but
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [11:34]  wayneeseguin
+                    </a>
+                </td>
+                <td class="message-cell">
+                    would like a full example to look at
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [11:39]  wayneeseguin
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Perhaps I can glean this from mongrel2...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [11:43]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    wayneeseguin: see the guide
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [11:43]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    full of c it is
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [11:44]  wayneeseguin
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guido_g: I&#39;ve ben looking at http://libzapi.zeromq.org/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [11:45]  wayneeseguin
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guido_g: But I was looking for a simple example of usage, is there another page with that? or is that not the guidee
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [11:47]  headzone
+                    </a>
+                </td>
+                <td class="message-cell">
+                    wayneeseguin: http://zguide.zeromq.org/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [11:47]  headzone
+                    </a>
+                </td>
+                <td class="message-cell">
+                    every example is available in c
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [11:52]  wayneeseguin
+                    </a>
+                </td>
+                <td class="message-cell">
+                    *awesome*
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [11:52]  wayneeseguin
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thank you both
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [11:52]  wayneeseguin
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I was simply looing at the wrong pages :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-89" class="rowLink" href="#msg-89">
+                    [17:14]  seangrove
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hey all, what are unnamed sessions, and why would an assertion about them be failing?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-90" class="rowLink" href="#msg-90">
+                    [17:18]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    seangrove: what is the exact assertion?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-91" class="rowLink" href="#msg-91">
+                    [17:19]  seangrove
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Assertion failed: unnamed_sessions.empty () (socket_base.cpp:507)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-92" class="rowLink" href="#msg-92">
+                    [17:20]  seangrove
+                    </a>
+                </td>
+                <td class="message-cell">
+                    So, I&#39;m probably mixing up a few pieces here
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-93" class="rowLink" href="#msg-93">
+                    [17:20]  seangrove
+                    </a>
+                </td>
+                <td class="message-cell">
+                    But trying to get my head around some of the vocabulary
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-94" class="rowLink" href="#msg-94">
+                    [17:24]  seangrove
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-95" class="rowLink" href="#msg-95">
+                    [17:24]  seangrove
+                    </a>
+                </td>
+                <td class="message-cell">
+                    So this seems to happen right around forking
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-96" class="rowLink" href="#msg-96">
+                    [17:25]  seangrove
+                    </a>
+                </td>
+                <td class="message-cell">
+                    If I call ZMQ::Context.new(1) after forking, or don&#39;t call it at all, I get the assertion failure and a segfault
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-97" class="rowLink" href="#msg-97">
+                    [17:25]  seangrove
+                    </a>
+                </td>
+                <td class="message-cell">
+                    If I call ZMQ::Context.new(1) before forking, I only get the assertion failure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-98" class="rowLink" href="#msg-98">
+                    [17:28]  seangrove
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: Any suggestions on where to read up to understand this?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-99" class="rowLink" href="#msg-99">
+                    [17:31]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you should have one context per process
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-100" class="rowLink" href="#msg-100">
+                    [17:32]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i don&#39;t think context survices fork
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-101" class="rowLink" href="#msg-101">
+                    [17:32]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what language is this?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-102" class="rowLink" href="#msg-102">
+                    [17:32]  seangrove
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Ruby
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-103" class="rowLink" href="#msg-103">
+                    [17:33]  seangrove
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I know the one-context-per-process
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-104" class="rowLink" href="#msg-104">
+                    [17:33]  seangrove
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Should I create a new context in the parent pre-fork, the child-post-fork, or the parent-post-fork?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-105" class="rowLink" href="#msg-105">
+                    [17:33]  seangrove
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I believe the guide says in the parent pre-fork
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-106" class="rowLink" href="#msg-106">
+                    [17:35]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i think in each child after fork
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-107" class="rowLink" href="#msg-107">
+                    [17:35]  seangrove
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hmm, that gets me a segfault
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-108" class="rowLink" href="#msg-108">
+                    [17:36]  seangrove
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I wonder if it&#39;s a library version problem
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-109" class="rowLink" href="#msg-109">
+                    [17:36]  seangrove
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Certainly possible
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-110" class="rowLink" href="#msg-110">
+                    [17:37]  seangrove
+                    </a>
+                </td>
+                <td class="message-cell">
+                    And is that regardless of whether the child process uses anythign zmq-related?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-111" class="rowLink" href="#msg-111">
+                    [17:37]  seangrove
+                    </a>
+                </td>
+                <td class="message-cell">
+                    None of my child processes do anything with zmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-112" class="rowLink" href="#msg-112">
+                    [17:53]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    seangrove: if you create new context in the child if should work ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-113" class="rowLink" href="#msg-113">
+                    [17:53]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if it does not, it&#39;s a bug
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-114" class="rowLink" href="#msg-114">
+                    [17:53]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    please, do report it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-115" class="rowLink" href="#msg-115">
+                    [17:56]  seangrove
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: Ok, sounds good
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-116" class="rowLink" href="#msg-116">
+                    [17:56]  seangrove
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Thanks for the tip
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-117" class="rowLink" href="#msg-117">
+                    [17:56]  seangrove
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I need to refactor zmq out of the frontend of my app right now anyway
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-118" class="rowLink" href="#msg-118">
+                    [17:57]  seangrove
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Put it where it really belongs
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

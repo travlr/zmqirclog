@@ -1,0 +1,1360 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Thursday October 7, 2010</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [06:33]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: any idea how to reproduce the problem?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [06:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    keffo: can you report the problem with more diagnostics (short test program to reproduce, the stack trace)?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [06:52]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik, I doubt it was related to zmq to be honest, it looked very strange actually..
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [06:54]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    class with a thread, kept the context obj in the threadfunc.. if I moved it out as a class member instead, everything worked.. NO clue why
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [06:54]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (threadfuc did a while(true), so the obj should stick around)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [07:16]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: it happens within one of the PHP tests, i can try to isolate
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [07:23]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: that would be great
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [07:23]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;ve had a look at the code and i have no idea how it can happen
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [07:23]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i need a test program to find out
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [07:35]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik when is pieterh usually around?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [07:38]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    iFire: randomly :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [07:38]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    use mailing list presumably...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [08:09]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: http://github.com/mkoppanen/php-zmq/blob/master/tests/007-addremovepoll.phpt
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [08:10]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: thx
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [08:12]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: ill try to get c code out of that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [08:12]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or maybe a backtrace
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [08:12]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    let&#39;s see
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [08:13]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i posted a backtrace earlier?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [08:13]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, you did
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [08:14]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    been a bit distracted since yesterday
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [08:14]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i was supposed to move to a new flat on sunday and yesterday my agent called that the flat wont be available
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [08:17]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: no wait
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [08:17]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it might be if i connect to a bound libzmq socket with normal posix socket call
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [08:24]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: it shouldn&#39;t fail this way anyway
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [08:24]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you find out that to trigger the problem you need to connect by telnet of somesuch, let me know
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [08:34]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    doesnt come out with telnet
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [08:34]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    simple tc
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [08:48]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    iFire: hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [08:49]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    waves
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [08:49]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what&#39;s up?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [08:49]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh I guess I wanted to know about that authenticated pubsub thing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [08:50]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, i made a small prototype
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [08:50]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there are two ways, currently, with 0MQ
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [08:50]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    1. use pubsub sockets but encrypt messages, and do key exchange on a secure channel after authentication
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [08:51]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    2. use xrep sockets and explicitly route messages to authenticated subscribers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [08:51]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i tested design 2, and it&#39;s fairly straight-forward
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [08:52]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    don&#39;t you have to do authentication and encryption with #1 ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [08:52]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    of each message
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [08:52]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, that&#39;s what I meant to say
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [08:52]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    with 2 you don&#39;t need encryption unless you actually want to
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [08:53]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in short, with pub/sub sockets the security models are (a) open access and (b) encryption of each message
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [08:54]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well isn&#39;t there a bandwith problem with #1 ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [08:54]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not really
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [08:54]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    a CPU cost, for sure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [08:54]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and key exchange is far from simple
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [08:54]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I mean don&#39;t you get all the messages from #1
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [08:54]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ideally you want to be able to do both
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [08:55]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, pubsub would send all messages to all subscribers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [08:56]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so I guess #2 should be the first thing done, then you can layer #1 onto it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [08:56]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    they are different approaches
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [08:56]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but you could layer key exchange and encryption on #2, yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [08:57]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    #2 is not real pubsub any more, so no prefix matching etc.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [08:57]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you could however do that at the publisher side
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [08:57]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in your own code
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [08:58]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so the design is you open two sockets to the server, a REQ and an XREQ
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [08:58]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you set the same identity on both sockets, before connecting
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [08:58]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you authenticate on the REQ
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [08:58]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the server uses two XREP sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [08:58]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it knows your identity when you authenticate and it adds this to a list of authenticated subscribers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [08:59]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then on the second socket it sends updates to all authenticated subscribers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [08:59]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    finally the subscribers need to heartbeat the server every so often, on that second XREP
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [08:59]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    otherwise they are considered dead and taken off the list
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [09:00]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can use this design to do custom pubsub routing too
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [09:00]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i guess i&#39;ll cover this in Ch4
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [09:01]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh we can&#39;t change pubsub to send messages to everyone? and add a authentication envelope that is user defined
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [09:02]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    to don&#39;t send*
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [09:02]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure, send a patch :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [09:02]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s not that simple unfortunately
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [09:03]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    doing an efficient pubsub is a complex problem
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [09:03]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there is work in progress to upstream subscriptions, i.e. do the routing at the pub side
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [09:04]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    adding authentication to the socket layer would make it significantly more complex
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [09:04]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there is an option, perhaps to use TLS as a transport and then do authentication via certificates
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [09:05]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but these are non-trivial changes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [09:05]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so i assume your question was "how do we do authenticated pubsub with today&#39;s 0MQ"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [09:05]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I see
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [09:06]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    does this help?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [09:07]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I want to read the details of #2
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [09:08]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I mean a guide
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [09:08]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I get the concept
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [09:09]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    &gt;.&lt;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [09:10]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, it&#39;ll come in the guide, hopefully
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [12:27]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi, is there some logical explanation why my consumers would only receive some messages using pub/sub with hwm =1?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [12:32]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m sending 10000 messages but my consumer is only receiving 2-4000?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [12:43]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    because they&#39;re dropped?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [12:44]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but the listener is active at the time I start sending
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [12:44]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    why would they get dropped?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [12:44]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    did you read what hwm=1 means?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [12:44]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I took it to mean that messages that are sent when no one is listening would get dropped.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-89" class="rowLink" href="#msg-89">
+                    [12:45]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not that it would drop messages for active listeners
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-90" class="rowLink" href="#msg-90">
+                    [12:45]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    go read http://api.zeromq.org/zmq_socket.html
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-91" class="rowLink" href="#msg-91">
+                    [12:47]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what is the default hwm?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-92" class="rowLink" href="#msg-92">
+                    [12:47]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    0 aka none
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-93" class="rowLink" href="#msg-93">
+                    [12:48]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, so none will be dropped?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-94" class="rowLink" href="#msg-94">
+                    [12:49]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but filling your memory, as can be seen on the ml
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-95" class="rowLink" href="#msg-95">
+                    [12:50]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, I&#39;m now sending without setting hwm and out of a 1000 messages sent I&#39;m only receiving &gt;500
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-96" class="rowLink" href="#msg-96">
+                    [12:51]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it seems to be dropping about half of my messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-97" class="rowLink" href="#msg-97">
+                    [12:51]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    given the fact that you didn&#39;t tell what you&#39;re doing and hwo, it&#39;s hard to tell where the problem is
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-98" class="rowLink" href="#msg-98">
+                    [12:52]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pub/sub is not reliable in the way you might think
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-99" class="rowLink" href="#msg-99">
+                    [12:54]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I have a simple Erlang publisher that just sends out an incremented number in a loop.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-100" class="rowLink" href="#msg-100">
+                    [12:55]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I then have a python/.net listener that just prints out the messages as they arrive.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-101" class="rowLink" href="#msg-101">
+                    [12:56]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-102" class="rowLink" href="#msg-102">
+                    [12:56]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    &lt;guido_g&gt; pub/sub is not reliable in the way you might think
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-103" class="rowLink" href="#msg-103">
+                    [12:58]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    should I use rep/req instead?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-104" class="rowLink" href="#msg-104">
+                    [12:58]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i don&#39;t know?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-105" class="rowLink" href="#msg-105">
+                    [12:58]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what is the intention of the application you write?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-106" class="rowLink" href="#msg-106">
+                    [12:59]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I just want every message I send to be received
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-107" class="rowLink" href="#msg-107">
+                    [12:59]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    when there is someone connected, otherwise drop it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-108" class="rowLink" href="#msg-108">
+                    [12:59]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oh, while you&#39;re thinking... read the guide, it explains a lot of things    http://zguide.zeromq.org/chapter:all
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-109" class="rowLink" href="#msg-109">
+                    [13:45]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, I&#39;m checking the reply code of my sends and I&#39;m not getting ok&#39;s for all of them.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-110" class="rowLink" href="#msg-110">
+                    [13:47]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    see
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-111" class="rowLink" href="#msg-111">
+                    [13:47]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the other ones don&#39;t really tell me anything in the way of what&#39;s wrong.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-112" class="rowLink" href="#msg-112">
+                    [13:48]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    one of the darker sides of Ã¸mq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-113" class="rowLink" href="#msg-113">
+                    [13:50]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nisbus: in your scenario the subscriber might not consume the messages as fast as the publisher is sending
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-114" class="rowLink" href="#msg-114">
+                    [13:50]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that causes some messages to be dropped with hwm 1
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-115" class="rowLink" href="#msg-115">
+                    [13:50]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    for sure, it gets all messages when I send just 10 of them but starts failing when msgcount &gt; 100
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-116" class="rowLink" href="#msg-116">
+                    [13:50]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I removed the hwm setting
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-117" class="rowLink" href="#msg-117">
+                    [13:52]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s a tight loop where both sender and receiver are on the same box.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-118" class="rowLink" href="#msg-118">
+                    [14:03]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m printing out the replycode for messages and when I don&#39;t get ok I get "Sent 99 with repcode 98", where 98 is the previous message.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-119" class="rowLink" href="#msg-119">
+                    [14:28]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I tried sleeping for 1 sec between sending messages and still I&#39;m getting errors on send?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-120" class="rowLink" href="#msg-120">
+                    [14:29]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just trying to send more than 5 messages starts generating errors
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

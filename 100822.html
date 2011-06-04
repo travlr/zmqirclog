@@ -1,0 +1,898 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Sunday August 22, 2010</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [10:49]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Have defined a spec for device configuration: http://rfc.zeromq.org/spec:3
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [13:38]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if 0MQ added a silent null to the end of zmq_msg_t data, it&#39;d be automatically string safe in C
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [17:05]  theonewolf
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hey i have a question about the REQ-REP hello world example, i notice that if i kill the server prematurely, the client blocks indefinitely on zmq_recv, even if i later bring the server back up, is that expected?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [19:26]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hi. I"m going to ask a very n00b question here, and I apologize if this is dumb, but in the 0mq model, is there a 1:1 correlation between a socket and a queue?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [19:27]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    queue|channel|message bus
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [19:33]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no, each socket has a queue/buffer per peer
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [19:33]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik, maybe I&#39;m not being clear
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [19:34]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lemme look up the AMQP terminology so I&#39;m less unclear
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [19:35]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    okay, the word I want is stores? or exchanges... the thing to which a client subscribes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [19:35]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I think they call that an exchange
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [19:36]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah, you mean a central component, that all clients connect to?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [19:36]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so, let me explain what I mean rather than use the word
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [19:36]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [19:36]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if I send a message, and want it to fan out to multiple clients
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [19:37]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the way I address it in terms of AMQP exchange determines which queues it goes into
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [19:37]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ...I think that&#39;s right... it&#39;s been a while since I looked at AMQP
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [19:37]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    np, use your own words
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [19:38]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but essentially what I want is lots of "addresses" that a client can subscribe to
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [19:38]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and the messages get to the right clients
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [19:38]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but not to ones that the messages don&#39;t need to go to. If that makes any sense?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [19:38]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that is the fanning is selective
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [19:39]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, it&#39;s called subscriptions
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [19:39]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you are listining to a feed, however, you want only messages that match certain criteria
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [19:39]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    right
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [19:40]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [19:40]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what&#39;s the question?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [19:40]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Does 0mq support that, or is that at the application layer?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [19:40]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it does
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [19:40]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    use PUB socket on the publisher side
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [19:40]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    SUB socket on the subscriber side
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [19:41]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    okay... I&#39;m not sure I see this in the docs, though I see the word subscriptions :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [19:41]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    use zmq_setsockopt(ZMQ_SUBSCRIBE, "...");
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [19:41]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    to choose which messages to receive
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [19:41]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    check the guide
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [19:41]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    let me see...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [19:42]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://www.zeromq.org/docs:user-guide#toc5
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [19:42]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [19:44]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    okay, but (and this isn&#39;t a problem necessarily) the subscription seems fairly static
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [19:44]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that is the AMQP one is both very powerful and complete, yet somehwhat complex
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [19:44]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what do you mean by "static"/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [19:44]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [19:44]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the filter is a string
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [19:45]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or looks/acts like a string :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [19:45]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    can be binary
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [19:45]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so in the zipcode example, I couldn&#39;t ask for more than one zipcode
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [19:45]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I couldn&#39;t send to more than one, and I couldn&#39;t recieve to more than one
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [19:46]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (that&#39;s not a terrible thing on its own, I just want to be sure I understand)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [19:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can subscribe for as much topics as you wish
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [19:46]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is there a practical limit?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [19:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [19:46]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    16k subscriptions no problem for one server?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [19:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [19:46]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    works for me :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [19:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [19:47]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I have a potential use for this. It&#39;ll depend on other folks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [19:47]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    great
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [19:48]  emacsen
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks for your help
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [19:49]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you are welcome
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [20:23]  benoitc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi all
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [20:24]  benoitc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i get this comilation error on osx 10.6 : http://github.com/zeromq/erlzmq/issues#issue/2 any idea what it could be ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [20:26]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    benoitc: you are presumably using wrong repo
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [20:26]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    erlang binding works only with experimental branch sustrik/zeromq2
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [20:26]  benoitc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hum
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [20:27]  benoitc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    at which point it is experimental ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [20:28]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sockets can be migrated between OS threads
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [20:32]  benoitc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    using the branch I get "./configure: line 18331: syntax error near unexpected token `GLIB,&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [20:32]  benoitc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    "
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [20:33]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    are you using ./configure --with-pgm?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [20:33]  benoitc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [20:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    do you have glib installed?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [20:34]  benoitc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yup
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [20:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then it&#39;s some kin of autotools/OSX issue
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [20:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sorry, i have no OSX here
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [20:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cannot help
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [20:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    try asking at the mailing list
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [20:34]  benoitc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mok thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [20:37]  benoitc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    will do thx anyway
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [21:10]  benoitc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: pgmm is required for erlang stuff ?
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

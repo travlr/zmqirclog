@@ -1,0 +1,2680 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Friday August 6, 2010</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [00:50]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    when you push messages into a pub socket how can you make sure (only)  some them comeout of the queue as sequential ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [00:53]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so if i send a.1,b.1,a.2,c.1,a.3 on the socket i want a.1,b.1,c.1 processed first .. then a.2, then a.3
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [00:55]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i know it is not supported. just want to know how you would do it.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [00:59]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, if you can sort them before sending them, or after receiving them it should be a problem. of course this requires some sort of condition to buffer the packets up until
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [00:59]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    â¦ shouldn&#39;t be a problem i meant
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [01:06]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mmmmmmmmmm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [01:07]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i am trying to avoid sorting
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [01:07]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how else can you receive the packets in an other than what they were sent in if you don&#39;t sort?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [01:07]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    because sort means wait for a bunch of them eaither before or after sending
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [01:08]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, but there is no way to order the data unless you&#39;ve got multiple elements to compare
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [01:09]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok is i make them so that the topic is based on the id of the message ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [01:10]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so they will have top:a1,top:b1,top:a2,top:c1,top:a3
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [01:10]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and on the other end i am listening for "top"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [01:10]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you should receive them serially
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [01:10]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the index is a counter for incoming messages that is incremented by message type
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [01:12]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but if i have say 4 subscribers ? how can i make sure a1 is not processed  before a1 in distributed way ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [01:12]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you are expecting a specific sequence number and you receive an out of order message you should just store it until you get the required one, then process the rest if you have them buffered - or wait for the next one if not
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [01:12]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oops a2 before a1
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [01:13]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    one sec ... i will be right back
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [01:17]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    TheEffigy, sorry .. i have to take care of something important.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [01:18]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks for your help
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [04:10]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    howdy all
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [04:11]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [04:18]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hey TheEffigy
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [04:18]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok so i finally put out the familly pressing matter .
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [04:19]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    now .. onto zmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [04:19]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    &lt;TheEffigy&gt; if you are expecting a specific sequence number and you receive an out of order message you should just store it until you get the required one, then process the rest if you have them buffered - or wait for the next one if not
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [04:19]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    trying to digest this one still
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [04:21]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, say you have a message, and you know it&#39;s sequence number (index)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [04:22]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [04:22]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if it is higher than what you expected, you could store it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [04:22]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    wait i am assigning the seq number
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [04:22]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    as they came in
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [04:22]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [04:23]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the only diffrence between the messages is the id
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [04:23]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    based on the id i am getting a seq number
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [04:23]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [04:24]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well if that number isn&#39;t contiguous with the previous you could buffer it, and keep waiting until you do get the one you want
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [04:24]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    wait ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [04:25]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i have incoming messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [04:25]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    eahc one as an id
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [04:25]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    based on the id i am generating a uniq seq for each id
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [04:25]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    si if 5 messages come in with ids a,b,a,c,a
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [04:26]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i will tag them as a:1,b:1,a:2,c:1,a:3
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [04:27]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [04:27]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    now i need the msg with the same ids to be processed sequentially
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [04:27]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and the messages with different ids to be processed in parallel
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [04:28]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so all a then all b and so forth?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [04:28]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [04:28]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    a,b,c first
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [04:28]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then a2
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [04:28]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then a3
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [04:28]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ahh
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [04:28]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [04:41]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so how about buffering them in a structure like this: std::map&lt;int, std::vector&lt;msg&gt; &gt;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [04:42]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok ..
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [04:42]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you use a map::iterator you will be going over the messages in numerical order
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [04:43]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    because it is sorted
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [04:43]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [04:43]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it is then simply a matter of clearing the map before you next read messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [04:44]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    wait ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [04:45]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the int are the ids ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [04:45]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you have a:1, a:2 then the int is 1 and 2
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [04:45]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but a map will overwrite the previous message if you do a put no ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [04:45]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thtas the point of maps , they are unique
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [04:46]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you would do map[int].push_back(msg);
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [04:46]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i am coming from java sorry
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [04:46]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ahh
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [04:47]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm.. ok i don&#39;t really use java but you need something like Map&lt;int, ArrayList&lt;Msg&gt; &gt;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [04:47]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but how do you process the messages in parallel then ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [04:47]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    each msg in the array list can be passed off to a thread
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [04:48]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and how long do you wait till you go for the next bunch ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [04:49]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i guess once you have processed everythign
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [04:49]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    everything*
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [04:49]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i cant wait till the end
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [04:49]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [04:49]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i have to do this in online
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [04:49]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    real time
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [04:49]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [04:50]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thats the problem!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [04:51]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    isn&#39;t it possible to just have a concurrent queue for each type of message and then append the next one of that type from the socket directly onto it?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [04:51]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then threads can continuously process the data as it arrives
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [04:52]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    1) i cannot predict how many different type of messages will comein. it is unbunded
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [04:53]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    2) i have to make sure same messages are still done in sequence if the machine reading from the queue are more than the one producing them queue
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [04:54]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you could create a queue each time you see a new data type
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [04:56]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thats what i was saying regarding the message ids
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [04:57]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    now if the consumers (subscribers) of message queues are more than the producers (pub) then messages with same id will be processed in parallel
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [04:58]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    welcome mimcpher, i appreciate you taking the time for this
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-89" class="rowLink" href="#msg-89">
+                    [05:00]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so if i have a queue of a,a,a | b | c i want a,b,c in parallel then a,a in sequence
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-90" class="rowLink" href="#msg-90">
+                    [05:01]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but if i have more than 1 subscribers for the queue a,a will be processed in parallel
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-91" class="rowLink" href="#msg-91">
+                    [05:02]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    makes sense ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-92" class="rowLink" href="#msg-92">
+                    [05:16]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i see.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-93" class="rowLink" href="#msg-93">
+                    [05:16]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so, doing what i said would work just fine
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-94" class="rowLink" href="#msg-94">
+                    [05:17]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but if i had only items with the same id your method will not work
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-95" class="rowLink" href="#msg-95">
+                    [05:18]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    they will be processed in parallel
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-96" class="rowLink" href="#msg-96">
+                    [05:18]  mimcpher
+                    </a>
+                </td>
+                <td class="message-cell">
+                    TheEffigy: What was your solution? (dos000 asked a similar question in another channel and I&#39;m curious)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-97" class="rowLink" href="#msg-97">
+                    [05:18]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if the threads have a work queue, then you just need another thread that will look at the incoming message queues and delegate the messages to follow the method that you have described
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-98" class="rowLink" href="#msg-98">
+                    [05:19]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this is not happening on machine tho ..
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-99" class="rowLink" href="#msg-99">
+                    [05:19]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i have to distribute across many machines
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-100" class="rowLink" href="#msg-100">
+                    [05:19]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dont think a single machine
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-101" class="rowLink" href="#msg-101">
+                    [05:20]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure, well then the work queue becomes a socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-102" class="rowLink" href="#msg-102">
+                    [05:20]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which is connected to some machine
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-103" class="rowLink" href="#msg-103">
+                    [05:20]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok .. how many subscribers to the socket ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-104" class="rowLink" href="#msg-104">
+                    [05:20]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if i have more than one a,a,a will be processed in parallel
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-105" class="rowLink" href="#msg-105">
+                    [05:21]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, if you have multiple then you need to have some communication between the processes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-106" class="rowLink" href="#msg-106">
+                    [05:21]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    machines with no work can be added to the pool, and then delegated work - which may be one item or maybe be a list of several of the same type
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-107" class="rowLink" href="#msg-107">
+                    [05:22]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thats the problem i am trying to solve !
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-108" class="rowLink" href="#msg-108">
+                    [05:22]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s the same concept, just replace thread with a machine
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-109" class="rowLink" href="#msg-109">
+                    [05:22]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how do you say to everyone dont process messages with same ids
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-110" class="rowLink" href="#msg-110">
+                    [05:22]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    wait unti the first one is done
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-111" class="rowLink" href="#msg-111">
+                    [05:23]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    at any one time the process just that id
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-112" class="rowLink" href="#msg-112">
+                    [05:23]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but depending on what is available it may process a different id each time it has resources available
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-113" class="rowLink" href="#msg-113">
+                    [05:23]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok ..
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-114" class="rowLink" href="#msg-114">
+                    [05:24]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    where does it pickup the ids from ? and how does it make sure no one else is processing other messages in the queue with same ids
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-115" class="rowLink" href="#msg-115">
+                    [05:25]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if other messages are coming i want then to be processed as most parall as possible
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-116" class="rowLink" href="#msg-116">
+                    [05:25]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so in the delegator process, you need to receive the messages and keep them in queues for each type, but also maintain a list of free streams and assigned streams - assigned streams can be kept in a map
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-117" class="rowLink" href="#msg-117">
+                    [05:25]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-118" class="rowLink" href="#msg-118">
+                    [05:26]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this has to be one machine correct ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-119" class="rowLink" href="#msg-119">
+                    [05:26]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-120" class="rowLink" href="#msg-120">
+                    [05:26]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ouch
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-121" class="rowLink" href="#msg-121">
+                    [05:26]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s a simple process really, it will be very efficient
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-122" class="rowLink" href="#msg-122">
+                    [05:26]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it is just a router
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-123" class="rowLink" href="#msg-123">
+                    [05:26]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i know but it will be a spof (single point of failure)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-124" class="rowLink" href="#msg-124">
+                    [05:27]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the reason i am using zmq is to avoid spof
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-125" class="rowLink" href="#msg-125">
+                    [05:27]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-126" class="rowLink" href="#msg-126">
+                    [05:27]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-127" class="rowLink" href="#msg-127">
+                    [05:28]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can take the router out of the equation and then have each machine communicate with each other about what they have to process
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-128" class="rowLink" href="#msg-128">
+                    [05:28]  mimcpher
+                    </a>
+                </td>
+                <td class="message-cell">
+                    You could have two routers that communicate with each other
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-129" class="rowLink" href="#msg-129">
+                    [05:29]  mimcpher
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Well, N routers.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-130" class="rowLink" href="#msg-130">
+                    [05:29]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-131" class="rowLink" href="#msg-131">
+                    [05:29]  mimcpher
+                    </a>
+                </td>
+                <td class="message-cell">
+                    But that&#39;d be more involved to write.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-132" class="rowLink" href="#msg-132">
+                    [05:29]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if necessary you can have the machines send data to another process if if has already taken up processing of that message type
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-133" class="rowLink" href="#msg-133">
+                    [05:29]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    now they need to also sync when the pull off messages with same ids
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-134" class="rowLink" href="#msg-134">
+                    [05:29]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then given all available machines need to keep in sync with the ids yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-135" class="rowLink" href="#msg-135">
+                    [05:30]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-136" class="rowLink" href="#msg-136">
+                    [05:30]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so you should build a graph which can be kept in sync on each machine
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-137" class="rowLink" href="#msg-137">
+                    [05:30]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and then consult the graph as to where messages should go and what messages are being processed to keep it all running in sync
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-138" class="rowLink" href="#msg-138">
+                    [05:30]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so i get a message off the zmq stack .. then boadcast a msg to say who has the same ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-139" class="rowLink" href="#msg-139">
+                    [05:31]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-140" class="rowLink" href="#msg-140">
+                    [05:31]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-141" class="rowLink" href="#msg-141">
+                    [05:31]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or perhaps &#39;i have this message&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-142" class="rowLink" href="#msg-142">
+                    [05:31]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then if someone else has the same wait until they are done
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-143" class="rowLink" href="#msg-143">
+                    [05:32]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mmmm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-144" class="rowLink" href="#msg-144">
+                    [05:32]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if everyone is sending those messages you can maintain a graph of where everything is easily and then push messages to other streams or maintain them for processing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-145" class="rowLink" href="#msg-145">
+                    [05:32]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok that could work .. not withstanding error conditions
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-146" class="rowLink" href="#msg-146">
+                    [05:33]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s a bit trickier, but does avoid a single point of failure. though that being said if a machine goes down, the received data would be lost
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-147" class="rowLink" href="#msg-147">
+                    [05:33]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and everyone else will be waiting for the completion .. so these are the erro conditions i have to deal with
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-148" class="rowLink" href="#msg-148">
+                    [05:33]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nice man!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-149" class="rowLink" href="#msg-149">
+                    [05:34]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    to avoid that you&#39;d have to push the data to machines but maintain an owner machine identifier - if that machine is lost then message that haven&#39;t been notified as being processed then another machine could take over
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-150" class="rowLink" href="#msg-150">
+                    [05:34]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that means a bit more sync between machines but it provides data redundancy
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-151" class="rowLink" href="#msg-151">
+                    [05:34]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i have to keep the state of each message  then .. its better to drop
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-152" class="rowLink" href="#msg-152">
+                    [05:35]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if that isn&#39;t catastrophic then it makes things easier to just accept it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-153" class="rowLink" href="#msg-153">
+                    [05:35]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if a message is droped in the middle of the processing i have no way of knowing how far it went
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-154" class="rowLink" href="#msg-154">
+                    [05:35]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-155" class="rowLink" href="#msg-155">
+                    [05:37]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sounds like a fun project
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-156" class="rowLink" href="#msg-156">
+                    [05:37]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah .. it got mo feeling like those old days ..
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-157" class="rowLink" href="#msg-157">
+                    [05:38]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    all the cs stuff. i assumed this stuff was all well documented in one of the computer science papers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-158" class="rowLink" href="#msg-158">
+                    [05:38]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    maybe, i&#39;ve never read one
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-159" class="rowLink" href="#msg-159">
+                    [05:38]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    heh
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-160" class="rowLink" href="#msg-160">
+                    [05:41]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i bet you this has a nice and nifty paper in either hw or software somewhere
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-161" class="rowLink" href="#msg-161">
+                    [05:41]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    maybe one day i will find
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-162" class="rowLink" href="#msg-162">
+                    [05:41]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    most likely
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-163" class="rowLink" href="#msg-163">
+                    [05:42]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but my half assed implementation should take me until then
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-164" class="rowLink" href="#msg-164">
+                    [05:42]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    haha
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-165" class="rowLink" href="#msg-165">
+                    [05:42]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks a lot man
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-166" class="rowLink" href="#msg-166">
+                    [05:42]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no problems
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-167" class="rowLink" href="#msg-167">
+                    [05:48]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there is a nice algorithm the guys who implemented cassandra are using called gossip for clustering. this would be nice if zmq had it.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-168" class="rowLink" href="#msg-168">
+                    [05:49]  TheEffigy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, you could always build it :-p
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-169" class="rowLink" href="#msg-169">
+                    [05:49]  dos000
+                    </a>
+                </td>
+                <td class="message-cell">
+                    one day .. one day
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-170" class="rowLink" href="#msg-170">
+                    [09:05]  CIA-19
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Pieter Hintjens 07master * r2100a91 10/ src/signaler.cpp : Merge branch &#39;master&#39; of github.com:zeromq/zeromq2 - http://bit.ly/cg7gA3
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-171" class="rowLink" href="#msg-171">
+                    [10:01]  CIA-19
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Martin Lucina 07master * r6d35e82 10/ src/signaler.cpp : Fix uninitialized use of nbytes in signaler fix - http://bit.ly/aPlMBv
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-172" class="rowLink" href="#msg-172">
+                    [10:01]  CIA-19
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Martin Lucina 07master * rb579aa9 10/ builds/msvc/libzmq/libzmq.vcproj : Merge branch &#39;master&#39; of github.com:zeromq/zeromq2 - http://bit.ly/9hHQ0J
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-173" class="rowLink" href="#msg-173">
+                    [12:02]  aleator
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hi! Can anyone point me at an example using xrep/xreq?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-174" class="rowLink" href="#msg-174">
+                    [13:13]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    aleator: i recommend taking a look at the python or ruby-ffi bindings; both have small examples using xreq/xrep
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-175" class="rowLink" href="#msg-175">
+                    [13:23]  aleator
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: Thanks! I think I figured it out. Haskell interface was missing ZMQ_SNDMORE which was making things tad difficult with XREP. (I sent a patch)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-176" class="rowLink" href="#msg-176">
+                    [13:29]  aleator
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Does Xrep/Xreq preserve order of messages?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-177" class="rowLink" href="#msg-177">
+                    [13:30]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    xreq -&gt; xrep: the messages are delivered in the order sent
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-178" class="rowLink" href="#msg-178">
+                    [13:30]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the way back depends on you
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-179" class="rowLink" href="#msg-179">
+                    [15:57]  CIA-19
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Martin Sustrik 07wip-shutdown * r20411a7 10/ (47 files in 2 dirs): (log message trimmed)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-180" class="rowLink" href="#msg-180">
+                    [15:57]  CIA-19
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: WIP: Socket migration between threads, new zmq_close() semantics
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-181" class="rowLink" href="#msg-181">
+                    [15:57]  CIA-19
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: Sockets may now be migrated between OS threads; sockets may not be used by
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-182" class="rowLink" href="#msg-182">
+                    [15:57]  CIA-19
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: more than one thread at any time. To migrate a socket to another thread the
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-183" class="rowLink" href="#msg-183">
+                    [15:57]  CIA-19
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: caller must ensure that a full memory barrier is called before using the
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-184" class="rowLink" href="#msg-184">
+                    [15:57]  CIA-19
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: socket from the target thread.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-185" class="rowLink" href="#msg-185">
+                    [15:57]  CIA-19
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: The new zmq_close() semantics implement the behaviour discussed at:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-186" class="rowLink" href="#msg-186">
+                    [16:29]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi yall
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-187" class="rowLink" href="#msg-187">
+                    [16:30]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I added a twitter box to the main page
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-188" class="rowLink" href="#msg-188">
+                    [16:30]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    If this is annoying, please let me know
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-189" class="rowLink" href="#msg-189">
+                    [16:31]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not for me, my browser security policy just ignores it :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-190" class="rowLink" href="#msg-190">
+                    [16:34]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: you are missing out on such wisdom
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-191" class="rowLink" href="#msg-191">
+                    [16:34]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    "DEVOPS_BORAT Azamat is sick of whale fail, is write Twitter clone in modern technology: cloud, NoSQL, erlang, clojure, ZeroMQ. Is for Central Asia only."
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-192" class="rowLink" href="#msg-192">
+                    [16:37]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yay! i seem to have convinced HyBi to adopt the ZeroMQ framing standard...!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-193" class="rowLink" href="#msg-193">
+                    [16:37]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    for WebSockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-194" class="rowLink" href="#msg-194">
+                    [16:37]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    funny
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-195" class="rowLink" href="#msg-195">
+                    [16:38]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i though websockets is something that&#39;s more or less used already
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-196" class="rowLink" href="#msg-196">
+                    [16:38]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-197" class="rowLink" href="#msg-197">
+                    [16:38]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there are versions that browsers support
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-198" class="rowLink" href="#msg-198">
+                    [16:38]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and there is a new version emerging from IETF discussion
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-199" class="rowLink" href="#msg-199">
+                    [16:38]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    reminds me of something...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-200" class="rowLink" href="#msg-200">
+                    [16:39]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s not clear whether the IETF can win over WhatWG
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-201" class="rowLink" href="#msg-201">
+                    [16:39]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    implementors vs. consensus and quality
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-202" class="rowLink" href="#msg-202">
+                    [16:39]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, familiar
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-203" class="rowLink" href="#msg-203">
+                    [16:39]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yup
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-204" class="rowLink" href="#msg-204">
+                    [16:39]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    except IETF is kind of not a puppy dog
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-205" class="rowLink" href="#msg-205">
+                    [16:39]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    right
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-206" class="rowLink" href="#msg-206">
+                    [16:39]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyway, there&#39;s a deficiency in 0mq wire format
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-207" class="rowLink" href="#msg-207">
+                    [16:39]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    instead of continuation bit
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-208" class="rowLink" href="#msg-208">
+                    [16:40]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there should be two bits: begin and end
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-209" class="rowLink" href="#msg-209">
+                    [16:40]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    specific effects?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-210" class="rowLink" href="#msg-210">
+                    [16:40]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that makes it easier for late jointer
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-211" class="rowLink" href="#msg-211">
+                    [16:40]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    joiners
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-212" class="rowLink" href="#msg-212">
+                    [16:40]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    say you join a multicast group and get a message
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-213" class="rowLink" href="#msg-213">
+                    [16:40]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    saying &#39;not continued&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-214" class="rowLink" href="#msg-214">
+                    [16:41]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it can be either single-part message
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-215" class="rowLink" href="#msg-215">
+                    [16:41]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    right, you don&#39; t know what that means
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-216" class="rowLink" href="#msg-216">
+                    [16:41]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in which case you should pass it to the receiver
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-217" class="rowLink" href="#msg-217">
+                    [16:41]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or the last part of multi-part message in witch case you should drop it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-218" class="rowLink" href="#msg-218">
+                    [16:41]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    indeed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-219" class="rowLink" href="#msg-219">
+                    [16:41]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    we need to write spbv3
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-220" class="rowLink" href="#msg-220">
+                    [16:42]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sbpv3
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-221" class="rowLink" href="#msg-221">
+                    [16:42]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but there are no late joiners with websockets i assume
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-222" class="rowLink" href="#msg-222">
+                    [16:42]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    its tcp for now
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-223" class="rowLink" href="#msg-223">
+                    [16:42]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyhow the discussion is still about 10000 emails from being over
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-224" class="rowLink" href="#msg-224">
+                    [16:42]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ack
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-225" class="rowLink" href="#msg-225">
+                    [16:43]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    begin/end style is also good for packet capturing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-226" class="rowLink" href="#msg-226">
+                    [16:43]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    say inspecting the flow with wireshark
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-227" class="rowLink" href="#msg-227">
+                    [16:44]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    do you think we can unify all our different miniprotocols into a single new SPB?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-228" class="rowLink" href="#msg-228">
+                    [16:45]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;d like one document that defines "the" ZeroMQ wire format
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-229" class="rowLink" href="#msg-229">
+                    [16:45]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    including multipart, identities, etc.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-230" class="rowLink" href="#msg-230">
+                    [16:45]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    including subscription upstreaming, etc.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-231" class="rowLink" href="#msg-231">
+                    [16:46]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    right now it is impossible to know what the frames mean unless you know what the socket types are, at each end
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-232" class="rowLink" href="#msg-232">
+                    [16:46]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that makes true interop impossible
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-233" class="rowLink" href="#msg-233">
+                    [18:58]  CIA-19
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Martin Sustrik 07wip-shutdown * r89cd2ea 10/ (src/pipe.cpp src/pipe.hpp src/session.cpp): Destruction of session is delayed till both in &amp; out pipes are closed - http://bit.ly/9BrZmy
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-234" class="rowLink" href="#msg-234">
+                    [19:00]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: as for the zmq_poll implementation in the shutdown branch, can you check &amp; possibly apply this patch:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-235" class="rowLink" href="#msg-235">
+                    [19:00]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://github.com/joshcarter/zeromq2/commit/f3a5b66521dc43e04cc52b92c792be6887585287
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-236" class="rowLink" href="#msg-236">
+                    [21:10]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: what&#39;s the chance i can get a void *data added to zmq_pollitem_t ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-237" class="rowLink" href="#msg-237">
+                    [21:39]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: yeah, so if there was a void *data pointer in the zmq_pollitem_t then it&#39;d solve a problem with matching events to data.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-238" class="rowLink" href="#msg-238">
+                    [21:40]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: basically, because zmq_pollitem_t has an int fd, and a void *socket, it&#39;s difficult to put it in a data structure to match the socket.  i&#39;d need two, one for the int fd and one for the void *socket.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-239" class="rowLink" href="#msg-239">
+                    [21:40]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;m gonna change up with i&#39;m doing with this, but let me know if it&#39;s a thought and i&#39;ll put up a ticket somewhere
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-240" class="rowLink" href="#msg-240">
+                    [21:40]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oh and i did the change locally and tested it, works fine.
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

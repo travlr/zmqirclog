@@ -1,0 +1,381 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Tuesday May 4, 2010</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [08:22]  CIA-15
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Martin Sustrik 07master * r235ed3a 10/ (10 files): signaler transports commands per se rather than one-bit signals - http://bit.ly/aQglHI
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [08:37]  CIA-15
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Martin Sustrik 07master * r3f5465a 10/ src/signaler.cpp : Windows port fixed - http://bit.ly/aJDsub
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [19:27]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: do you understand what&#39;s Matt is actually asking for?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [19:29]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: i think so
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [19:29]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    can you give me some insight?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [19:29]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i think he wants to be able to attach callbacks for specific messages sent via a socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [19:29]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so let&#39;s say he has one PAIR socket open...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [19:30]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if he sends 3 messages over that socket, i *think* he wants to be able to associate different callbacks with each sent message
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [19:30]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmmm.. perhaps that works better with a REQ socket :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [19:30]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how would the library know which callback to use for a particular message?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [19:31]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it would probably need to be part of the body of the message, e.g. a reply_to field
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [19:31]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so that it can be matched
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [19:32]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    again, this is just my guess as to what he wants
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [19:32]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hm, that&#39;s what REQ/REP does under the cover
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [19:32]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyway
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [19:32]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks for a hint
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [19:32]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    REQ/REP does the message routing only at the socket level; he wants message-level routing would be my guess
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [19:33]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    s/routing/matching/g
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [19:33]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    something like subscriptions?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [19:33]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [19:34]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;m going to post to the blog again asking Matt for more details...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [19:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [19:42]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: having reread the thread, i was mistaken what he is looking for; i think he was asking for an alternate to zmq_send
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [19:42]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    something like:   zmq_async_send(socket, msg, flags, callback)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [19:42]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that variant would call zmq_poll (or similar) behind the scenes and invoke the callback when data arrived
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [19:43]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i think he wants to avoid the explicit zmq_poll operation in application code; let&#39;s see what he has to say on the blog assuming he responds
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [19:54]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah, that makes sense
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [19:55]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in other words: automatic pairing of requests and replies while retaining the possibility to have multiple requests on the fly at the same time
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [19:58]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: yes, i think so
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [19:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that would make a nice little project...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [19:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    few hours or so of coding i would say
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

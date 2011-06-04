@@ -1,0 +1,601 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Sunday January 23, 2011</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [02:27]  kan
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi guys, so I&#39;ve been looking at 0mq for a couple of days and I want to know if it&#39;s advisable to publish different types of messages (eg, ping message, some business object message) on the same socket, or would one create a different socket for every type of message? I&#39;m using the Java binding btw.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [02:37]  kan
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hang on, i guess you have one socket and bind multiple URIs to the socket, then clients can subscribe to the URI they want to listen to?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [10:04]  kanch
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hey guys if I want to have multiple publishers and have clients only listen to some of the publishers mesages, do I have a socket per publisher?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [10:20]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    kanch: you would normally use topics maybe
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [10:21]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so each subscriber would subscribe to the messages they are interested in
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [10:21]  kanch
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko, so your saying i should use multiple topics with one socket?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [10:21]  kanch
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ie bind multiple urls to a socket?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [10:23]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    kanch: not sure i follow, bind what urls?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [10:24]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    kanch: on the publisher side you would publish messages in for example "test.A", "test.B", "test.C" topics and each subscriber would subscribe to one or more topics
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [10:25]  kanch
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko, yes I understand the publish/subscribe model, but I&#39;m not sure how to apply it to zeromq. How do I create the topics? I thought they were URLs you bind to the sockets?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [10:26]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    kanch: you don&#39;t really need to create topics. topic is just prefix matching
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [10:26]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so you publish a message "test.A|hello there" and on subscriber side you subscribe to "test.A|"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [10:27]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    kanch: have you read the zguide?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [10:28]  kanch
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko, not in depth obviously :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [10:29]  kanch
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko, let me read the docs then. I couldn&#39;t find this information before
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [10:32]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://zguide.zeromq.org/chapter:all#toc7
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [10:32]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    examples/C/wuclient
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [10:38]  kanch
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [10:54]  kanch
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko, so in the case of sending Java objects over the wire, i could use reflection on the client side to determine what type of message i am receiving?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [10:55]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    kanch: i don&#39;t really code java so wouldn&#39;t know
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [10:55]  kanch
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko, no worries, thanks for help though. It&#39;s starting to make sense now
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [10:59]  kanch
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko, there is one thing that bothers me though. If the subscriber is filtering the messages, then they would be receiving messages that they don&#39;t need. Isn&#39;t that a waste?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [10:59]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    kanch: yes, subscription forwarding is currently being worked on
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [10:59]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in that scenario the publisher does the filtering
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [11:01]  kanch
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko, ok, and is there any draw backs to having multiple publisher sockets, that have different urls bound to them. Then subscribers could just connect to these URLs?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [11:03]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i guess not apart from more configuration
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [11:03]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and slightly more resource usage
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [11:06]  kanch
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, so on that note then it&#39;s better to use filtering because of less resource usage
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [11:06]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, not quite true either
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [11:07]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it depends on what is likely to be the bottleneck
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [11:07]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    with the current filtering system (before subscription forwarding is in place) there is more network usage as the messages are sent to all subscribers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [11:08]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but with multiple sockets you will have to create more physical connections on publisher and subscriber
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [11:08]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there is really no harm in having multiple different sockets if you find it easy to manage
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [11:09]  kanch
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko, is it not possible to have the subscriber socket connect to multiple publisher sockets?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [11:10]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it is
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [11:10]  kanch
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko, ok thanks for all the information. You&#39;ve been a real help
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [16:28]  codebeaker
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi all, what&#39;s the right way to deal with errors from zmq_init and zmq_term, is it zmq_strerror(errono) or zmq_strerror(zmq_errno) ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [16:32]  codebeaker
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I ask because out of an (apparently failing) zmq_term(*context) "no such file or directroy"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [16:47]  dbudworth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    What&#39;s the preferred mechanism to implement a bidirectional streaming connection?  ie: client1 -&gt; server1 where each can send a message asynchronously (similar to a regular socket between two points).
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [16:50]  dbudworth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    also, is there any means of using ephemeral ports?  Say I have ~50 services + a lookup server.  The alternative of assigning fixed service ports becomes a pain (especially with multiple instances on one box)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [16:52]  codebeaker
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dbudworth: aren&#39;t there kernel methods to get a random unused port ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [16:53]  codebeaker
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (I read sth. about it in TLPI, but I didn&#39;t read closely enough to tell you what function)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [16:55]  dbudworth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    codebeaker: yep, but it&#39;s always a race condition.  I could create a regular socket, close it then hope I can use it before someone else does.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [17:03]  codebeaker
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ach so, good point :) my bad
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [17:50]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    codebeaker: use zmq_strerror(zmq_errno()); the call to zmq_errno() is a wrapper of errno for unix systems so that a consistent api
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [17:50]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    can be used for windows too
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [17:50]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dbudworth: no, 0mq doesn&#39;t support ephemeral ports; you could build such a service using 0mq but it isn&#39;t support out of the box
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [17:50]  codebeaker
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah, thanks - cremes I&#39;m on a Mac, actually - but if all goes well, this code will go to Windows, I hope one day
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [17:51]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah... mac == unix
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [17:51]  codebeaker
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (right!)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [17:51]  codebeaker
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: does it make sense for zmq_strerror(zmq_errno())  to return "no such file or directory" ?
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

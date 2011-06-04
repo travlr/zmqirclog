@@ -1,0 +1,1228 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Tuesday February 1, 2011</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [07:22]  stockMQ
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hi.. I am using protobuf to PUB data.. at the SUB end i deserialize it to a protobuf message
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [07:23]  stockMQ
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but the i need to copy the protobuf message to a struct and write the struct to a file..
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [07:23]  stockMQ
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I need to do this because there are other applications consuming the file and they expect a struct
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [07:24]  stockMQ
+                    </a>
+                </td>
+                <td class="message-cell">
+                    right now i copy each field of the message to the corresponding field of the buffer
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [07:24]  stockMQ
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Is this the right way or is there any other optimized way to go about with it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [08:20]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    stockMQ: are the other applications expecting a binary struct?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [08:20]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    stockMQ: sounds odd
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [08:25]  stockMQ
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes.. they too are custom applications built in house but to change them is to be avoided
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [09:24]  CIA-21
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Martin Sustrik 07sub-forward * raddcc85 10/ devices/zmq_forwarder/zmq_forwarder.cpp :
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [09:24]  CIA-21
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: Forwarder device uses XPUB and XSUB sockets.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [09:24]  CIA-21
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: Signed-off-by: Martin Sustrik &lt;sustrik@250bpm.com&gt; - http://bit.ly/eoHfSJ
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [09:28]  jugg
+                    </a>
+                </td>
+                <td class="message-cell">
+                    having a publisher that connects to an endpoint, how would I prevent messages from being queued if the endpoint has not yet been bound?  Set the publisher HWM to zero, and call zmq_send(noblock)?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [09:32]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, use hwm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [09:33]  jugg
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm, I guess HWM = 1, as 0 is no limit...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [09:34]  jugg
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but that&#39;ll queue a single message, no?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [09:34]  jugg
+                    </a>
+                </td>
+                <td class="message-cell">
+                    So a stale message will be delivered when the listener binds the endpoint.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [09:57]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it that pub/sub?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [10:06]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    potentially silly bug: if I destroy then recreate a sub socket with an identity too quickly I get an assert "Assertion failed: new_sndbuf &gt; old_sndbuf (mailbox.cpp:182)" from the publisher
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [10:06]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this may not be something that is sensible to do, but i encountered it in a semi-real world usage (some prototype code)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [10:12]  CIA-21
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Martin Sustrik 07sub-forward * rca34d2a 10/ (5 files):
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [10:12]  CIA-21
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: Debug output for subscription forwarding.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [10:12]  CIA-21
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: Signed-off-by: Martin Sustrik &lt;sustrik@250bpm.com&gt; - http://bit.ly/fdwCNa
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [10:34]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah, it&#39;s because the publisher thinks it has two sockets with the same identity connected at the same time. It would be nice to have that cause a problem on the client side, rather than the server side, but I don&#39;t know if that&#39;s doable
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [10:37]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i dont think two identities should assert
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [10:41]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: i haven&#39;t made a testcase in C yet, but in PHP
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [10:42]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    https://gist.github.com/805688
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [10:43]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if anything was going to assert, i&#39;d much rather it be the client
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [10:43]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but i think the best behavior would be a failed connect()
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [10:44]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not sure how easy it is to compare a new identity against connected identities on connect though, from the pub side
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [10:47]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ooh, if this works in c, this is worth a point in the 0mq game :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [10:53]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    same thing in C: https://gist.github.com/805701
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [10:57]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yep, and if I split that into client server, it still happens
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [11:02]  CIA-21
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Martin Sustrik 07sub-forward * rcc7bed5 10/ (src/trie.cpp src/trie.hpp src/xsub.cpp):
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [11:02]  CIA-21
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: Duplicate subscriptions are not forwarded by XSUB socket.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [11:02]  CIA-21
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: Signed-off-by: Martin Sustrik &lt;sustrik@250bpm.com&gt; - http://bit.ly/hGPp1V
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [11:24]  suzan_shakya
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Is it possible to have mulitple publisher with PUB/SUB ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [11:39]  stockMQ
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hi..what would be the equivalent of  zmq_close (sender);     zmq_term (context);
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [11:39]  stockMQ
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in C++
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [11:40]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    stockMQ: object going out of scope
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [11:40]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    its called during destruction
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [11:41]  stockMQ
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok..So in order to say premptively stop the socket for some time can i just pause the thread for the duration
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [15:40]  stockMQ
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Is there a way we can exit out of the blocking zmq_recv
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [15:42]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    send it a message
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [15:44]  stockMQ
+                    </a>
+                </td>
+                <td class="message-cell">
+                    The issue is I have a thread with basic while(1){zmq_recv }..Now in the Main UI thread I have a Disconnect button,clicking on which an event message is sent to the socket thread asking it to quit gracefully.But due to the blocking message of the socket thread that message is never read
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [15:45]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you have to poll on both sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [15:45]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    instead of recv()ing on one of them
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [15:46]  stockMQ
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Ohk.. you mean i can have one tcp main socket and apart from that inprc sockets for communication between Main UI thread and child UI thread
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [15:48]  stockMQ
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is that right
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [15:50]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [15:51]  stockMQ
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok thanx
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [17:46]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    any ideas what broken pipe, nbytes != 1 errors are caused by?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [17:50]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what&#39;s the assertion?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [18:28]  CIA-21
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jzmq: 03robin.palotai 07master * r04c2900 10/ src/Poller.cpp : testing patch for jni crashes - http://bit.ly/hlc8vI
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [19:05]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: around?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [19:05]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I was wondering if you noticed issues with pub/sub and ZMQ::NOBLOCK in the past
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [19:05]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    andrewvc: yep
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [19:06]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nope, i have not noticed any specific issues with pub/sub
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [19:06]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmmmm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [19:06]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so in my work on em-zeromq, push/pull works well, pub/sub however
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [19:06]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what&#39;s it doing?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [19:06]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zmq_recv just doesn&#39;t pick anything up
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [19:06]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or not doing?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [19:06]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the FD gets triggered as readable
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [19:06]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    on the sub
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [19:06]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so pub works but sub is busted?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [19:06]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [19:06]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i straced it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [19:06]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i see the data getting written and read
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [19:06]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and ZMQ_EVENTS says POLLOUT is enabled
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [19:06]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    errr triggered
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [19:07]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but recv doesn&#39;t work
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [19:07]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which socket are you talking about here? sub sockets don&#39;t care about POLLOUT
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [19:07]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    errrm, I meant pollin
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [19:07]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    they need POLLIN
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [19:07]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sorry
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [19:07]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [19:07]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    wait, actually
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [19:07]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    damn, thought we had the fix right there...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [19:08]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i think they were triggering POLLOUT (according to ZMQ::EVENTS) on a ZMQSUB socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [19:08]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lemme double check that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [19:12]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmmm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [19:12]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    now I see no events on the socket, which is good and bad
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [19:13]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i mean, the same exact code works with pub/sub
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [19:13]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    errr push/pull
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [19:14]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    [pid 14619] sendto(22, "\10\0TMsg777", 9, 0, NULL, 0 &lt;unfinished ...&gt;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [19:14]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    [pid 14619] &lt;... recvfrom resumed&gt; "\10\0TMsg777", 8192, 0, NULL, NULL) = 9
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [19:14]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    from the strace
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [19:14]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so, internally, the message gets sent/received
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-89" class="rowLink" href="#msg-89">
+                    [19:14]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    by zeromq it looks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-90" class="rowLink" href="#msg-90">
+                    [19:15]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: any ideas on that? I can dig into ffi-rzmq tonight I guess
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-91" class="rowLink" href="#msg-91">
+                    [19:15]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    andrewvc: can you gist your test code for me; i&#39;d like to look at it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-92" class="rowLink" href="#msg-92">
+                    [19:17]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure, i mean, I&#39;m a bit short on time now, about to head into a meeting. I can write a minimal test later
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-93" class="rowLink" href="#msg-93">
+                    [19:17]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    however
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-94" class="rowLink" href="#msg-94">
+                    [19:17]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you want you can look at
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-95" class="rowLink" href="#msg-95">
+                    [19:17]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    however
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-96" class="rowLink" href="#msg-96">
+                    [19:17]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    https://github.com/andrewvc/em-zeromq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-97" class="rowLink" href="#msg-97">
+                    [19:17]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you run this spec https://github.com/andrewvc/em-zeromq/blob/master/spec/em-zeromq_spec.rb
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-98" class="rowLink" href="#msg-98">
+                    [19:17]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i just wonder if i&#39;ll see something that you don&#39;t... hopefully it&#39;s an easy fix
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-99" class="rowLink" href="#msg-99">
+                    [19:17]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and s/ZMQ::PUSH/ZMQ::PUB
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-100" class="rowLink" href="#msg-100">
+                    [19:17]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and s/ZMQ::PULL/ZMQ::PUB
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-101" class="rowLink" href="#msg-101">
+                    [19:17]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you&#39;ll see it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-102" class="rowLink" href="#msg-102">
+                    [19:18]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-103" class="rowLink" href="#msg-103">
+                    [19:18]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or I can send something later, I&#39;ll be expanding the test suite tonight
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-104" class="rowLink" href="#msg-104">
+                    [19:52]  CIA-21
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Martin Sustrik 07sub-forward * ra40436b 10/ (5 files):
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-105" class="rowLink" href="#msg-105">
+                    [19:52]  CIA-21
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: Couple of bug fixes to subscription forwarding mechanism.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-106" class="rowLink" href="#msg-106">
+                    [19:52]  CIA-21
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: Signed-off-by: Martin Sustrik &lt;sustrik@250bpm.com&gt; - http://bit.ly/eOAJxP
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-107" class="rowLink" href="#msg-107">
+                    [20:14]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    good evening
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-108" class="rowLink" href="#msg-108">
+                    [20:19]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    evening
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

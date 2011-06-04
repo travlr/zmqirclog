@@ -1,0 +1,469 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Friday July 23, 2010</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [13:52]  jared
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Can anyone tell me what guarantees 0MQ provides for its queues?  For example, with pub-sub, are all messages guaranteed to be delivered, and if so, will they be in order?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [13:52]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i can guarantee that there&#39;re none
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [13:52]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pub/sub is like radio broadcast
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [13:56]  jared
+                    </a>
+                </td>
+                <td class="message-cell">
+                    do any of the models provide a guarantee that once I hand the message to 0MQ that it will be delivered........eventually
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [13:56]  jared
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [13:57]  jared
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I am determining whether or not an additional &#39;message tracking&#39; layer would need to be built on top of 0MQ, should I decide to use it.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [13:58]  drbobbeaty
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I was under the impression that the pgm and epgm protocols were using reliable multicast from OpenPGM. If so, then you&#39;re going to have receipt, but not guaranteed delivery. If the listener isn&#39;t on when the message is sent, then it&#39;s going ot miss it.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [13:59]  drbobbeaty
+                    </a>
+                </td>
+                <td class="message-cell">
+                    If you need really "once-and-only-once" delivery, then you need to have a queue where it tracks persistent subscriptions and persistent publishers and that&#39;s a lot more work.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [14:00]  drbobbeaty
+                    </a>
+                </td>
+                <td class="message-cell">
+                    So, from the sounds of it, I&#39;d say the answer to your question is "Yes, you need to write that message tracking layer."
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [14:01]  drbobbeaty
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Then again, I&#39;ve only been in this codebase for about 3 days now, but having been around the block a few times with other messaging systems, the pieces become very familiar.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [14:01]  jared
+                    </a>
+                </td>
+                <td class="message-cell">
+                    What I really need is a layer that can guarantee that once the application hands it a message to this layer, destined for a given endpoint, that the other endpoint will see them in order, and eventually.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [14:01]  jared
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I figured this was a guarantee not provided, since its pretty specific, but just wanted to make sure.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [14:02]  drbobbeaty
+                    </a>
+                </td>
+                <td class="message-cell">
+                    OK, I&#39;m going to ask a few "thought experiment" questions that will help me understand your requirements.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [14:03]  jared
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, sure.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [14:03]  drbobbeaty
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Say you have a server and ten clients. When the server sends the first message, only five of those clients are up and listening. An hour later, the other five start up. When the second set start up, do they need to see that message that was sent an hour ago?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [14:04]  jared
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I am more interested in a pipe between two endpoints only, but the request-reply model seems like it has low performance.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [14:04]  drbobbeaty
+                    </a>
+                </td>
+                <td class="message-cell">
+                    OK, then let&#39;s look at a single server and a single client.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [14:05]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jared___: any numbers?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [14:05]  drbobbeaty
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Say the server is sending to the client. The client bounces, but while it&#39;s down, the server has sent three messages. Do you need those three messages to be read by the client when it comes up?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [14:05]  jared
+                    </a>
+                </td>
+                <td class="message-cell">
+                    But for your question, yes, I would expect the down servers to receive those messages.  But realistically in my case the connection would have been severed within 10 seconds.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [14:07]  jared
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Sorry, what I mean by that is that if the other end was truly disconnected, other mechanisms would have detected it, and this machine would then stop caring what messages made it through.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [14:07]  jared
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guido_g: what do you mean by numbers?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [14:07]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jared___: benchmarks for example
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [14:07]  drbobbeaty
+                    </a>
+                </td>
+                <td class="message-cell">
+                    OK, if you need to see messages "in the past" then you need a queue that&#39;s going to keep track of who has pulled off what message. Basically, a "message broker". These are in a lot of systems, and don&#39;t have to be a separate process. If you look at http://www.spread.org/ you&#39;ll see something that uses a messaging system that might be more what you&#39;re looking for.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [14:08]  drbobbeaty
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Spread has the delivery guarantee. It&#39;s also open source.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [14:09]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    whereas spread also is not a _traditional_ broker based queueing system
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [14:09]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but the process has to be member of the group when the message is sent, afair
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [14:09]  drbobbeaty
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Agreed. Totally. And there are limitations to Spread. Which is why I&#39;m here with ZeroMQ, but it does have the guaranteed delivery.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [14:10]  jared
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Great, I&#39;ll check that out right now.  Thanks for your help!  I&#39;ll stick around here in case I have more 0MQ questions.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [14:11]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there should be a book about brokerless messaging
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [14:12]  drbobbeaty
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ve wished many times that there were more docs (books, sites, etc.) on this stuff. It&#39;s hard to find all this stuff and see the pros and cons easily. I&#39;ll ask Santa... he&#39;s been good to me in the past.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [14:12]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    great idea :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [14:34]  jared
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Bummer, the overhead of spread seems pretty high.  I am need _very_ good performance so the group management overhead is probably more than I am willing to pay.  I&#39;ll keep probing around though.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [14:39]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    performance and delivery gurantees are contradictory in most cases
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [14:43]  drbobbeaty
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Agreed... if you need guarantees, then you need persistence of some kind. That costs time. Regardless of anything else. You&#39;re not going to find a fast, reliable persistence. Memory is fast, but doesn&#39;t survive reboots. Disk is reliable, but not fast. You have a fundamental issue, here. No easy solution. You&#39;re going to have to make some kind of trade-off.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [14:44]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well phrased
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [14:53]  drbobbeaty
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Thanks :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [14:54]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you&#39;re welcome
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [22:01]  tupshin
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;m trying to understand whether zeromq would be a good general purpose message bus for publish/subscribe type exchanges in an environment where there are 1000 publishers and 100 subscribers. any pointers to good info?
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

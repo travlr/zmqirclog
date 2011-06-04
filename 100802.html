@@ -1,0 +1,568 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Monday August 2, 2010</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [03:23]  indygreg
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I have a client-server model where a stateless server receives a request from a client. But instead of a single response message, I&#39;d like the server to send multiple response messages. I&#39;m seeking advice for the best way to do this in 0MQ.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [03:24]  indygreg
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I tried ZMQ_REP/ZMQ_REP sockets with sending a multipart response message, but it appears the message parts are being buffered
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [03:25]  indygreg
+                    </a>
+                </td>
+                <td class="message-cell">
+                    as far as I can tell, the only other solution is to open a new PUB socket on the server and instruct the client how to connect to it. is there a better way?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [05:43]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    indygreg: use XREQ/XREP sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [05:51]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    even better, use multi-part messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [05:53]  indygreg
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: I was using multi-part messages but it appears the entire message is being buffered. I&#39;m looking to send a long-running (over hours) stream of messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [05:53]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then use XREQ/XREP
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [05:55]  indygreg
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m relatively new to 0MQ - is there documentation on XREQ/XREP vs REQ/REP? I&#39;ve seen them mentioned here and there but can&#39;t find a concise description
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [05:56]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nope, the documentation is missing yet
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [05:56]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    xreq/xrep is similar to req/rep but doesn&#39;t require strictly alternate sequence of reqs and reps
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [05:57]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    otoh, you&#39;ll have to do a bit of routing by hand
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [05:57]  indygreg
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ahh - sounds just what I&#39;m looking for
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [05:57]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    REQ socket prepends an empty message part (bottom of the backtrace stack) to each message you send. It also removes the empty message part from the beginning of each message you receive.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [05:57]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    REP socket stores all the message parts up to the first empty message part when you receive and passes the rest to the user. When message is sent, it prepends the saved backtrace stack to the message.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [05:57]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    XREQ does basically nothing but load balances the sent messages and fair queues the received messages.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [05:57]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    XREP prepends a message part containing peer&#39;s identity to each received message. It also chops of the first message part from every sent message and uses that as a routing info to find out which peer the message should be sent to.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [05:58]  indygreg
+                    </a>
+                </td>
+                <td class="message-cell">
+                    interesting. I&#39;ll definitely take a look. thanks for the pointer
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [06:54]  indygreg
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, that was easy: just capture the first message part of a XREQ request and send it out as the first message part in the response
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [06:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [16:13]  Balistic
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Can one create a SUB socket, then bind it and have a PUB socket connect to it?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [16:26]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [16:27]  Balistic
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm, so far I cant get it to work. Having a SUB connecting to a PUB works fine, but not the other way round.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [16:27]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [16:27]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what&#39;s goign wrong?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [16:28]  Balistic
+                    </a>
+                </td>
+                <td class="message-cell">
+                    recv() on the SUB side never returns, even though I can see the packets of messages via wireshark
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [16:29]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is that on TCP?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [16:29]  Balistic
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yea
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [16:29]  Balistic
+                    </a>
+                </td>
+                <td class="message-cell">
+                    btw, this is with pyzmq also
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [16:29]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    have you subscribed btw?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [16:29]  Balistic
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yea, to &#39;&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [16:29]  Balistic
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ie emtpy string
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [16:30]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    strange
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [16:30]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    report it as a bug then
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [16:30]  Balistic
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ill try with the c lib and see if it does the same
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [16:30]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    please, do
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [16:30]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    when reporting the bug, attach your test prog
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [16:31]  Balistic
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anycase, what im trying todo is write a basic &#39;hub&#39; that will relay messages of clients to each other. there isnt anything like that atm?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [16:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    check the zmq_forwarder device
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [16:34]  Balistic
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i saw it, but there are little docs for it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [16:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://github.com/zeromq/zeromq-chat/blob/master/README
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [16:35]  Balistic
+                    </a>
+                </td>
+                <td class="message-cell">
+                    heh, i think ill go read the source also
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [16:36]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    have a look :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [16:36]  Balistic
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ta
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [16:36]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s ~5 lines long :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [17:27]  Balistic
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: found my problem. my sender would exit immediatly after doing .send(). adding a slight delay before exiting solved the problem
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [23:27]  zmqserverQ
+                    </a>
+                </td>
+                <td class="message-cell">
+                    HI
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [23:27]  zmqserverQ
+                    </a>
+                </td>
+                <td class="message-cell">
+                    where is zmq_server?i can find it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [23:27]  zmqserverQ
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thinks
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

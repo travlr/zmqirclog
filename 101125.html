@@ -1,0 +1,1371 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Thursday November 25, 2010</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [00:06]  quentusrex
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Is there a particular socket type that would be best for Request-reply type messages, but from one server to each of the many clients?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [00:12]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is there a working code example for ZMQ_FD ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [00:40]  mgc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi all.  apologies for a drive by question:  load testing the latest from zeromq2/master I am hitting "Assertion failed: inpipes [current_in].active (xrep.cpp:229)".  Any suggestions?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [00:40]  mgc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    looks like the pipe suddenly goes away while getting a multi part message?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [07:47]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lestrrat: look at implementation of zmq_poll in src/zmq.cpp
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [07:49]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mgc: looks like an bug. can you report it and provide a simple test program to reproduce it?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [07:49]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    quentusrex: hm, doesn&#39;t make much sense to me
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [07:51]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: nice support for the Ã¸mq :) http://swtch.com/~rsc/talks/threads07/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [07:51]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, it&#39;s from 2007, but we can ignore that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [07:53]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yep, i&#39;ve seen that presentation before
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [07:53]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or maybe a very similar one
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [07:54]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [08:04]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guido_g: if you believe it&#39;s interesting for general audience, just send a link to the mailing list
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [08:56]  quentusrex
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik, basically I have a single server that will accept event notifications from many clients,
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [08:57]  quentusrex
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and the server needs to respond to the client to let them know if the work was accepted.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [08:58]  quentusrex
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I don&#39;t see anything that mentions how to determine from which client connection each message came from.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [08:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how is that different from standard REQ/REP?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [08:59]  quentusrex
+                    </a>
+                </td>
+                <td class="message-cell">
+                    In my case the delay is ~30 seconds until we know if the results are accepted,
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [09:00]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you need something like, delayed replying, use XREQ/XREP
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [09:00]  quentusrex
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so I was looking in the documentation and examples for something that would allow me to send a response back to the client from which the message came from.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [09:01]  quentusrex
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ll dig into the XREP more.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [09:01]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, that&#39;ll help you
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [09:01]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    check the guide for examples
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [09:03]  quentusrex
+                    </a>
+                </td>
+                <td class="message-cell">
+                    aah, that is exactly what I was looking for.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [09:04]  quentusrex
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks sustrik
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [09:04]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    np
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [10:34]  CIA-20
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jzmq: 03Gonzalo Diethelm 07master * ra97e15a 10/ (src/Socket.cpp src/org/zeromq/ZMQ.java): (log message trimmed)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [10:34]  CIA-20
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jzmq: Changes to better handle poller timeouts and the C glue code.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [10:34]  CIA-20
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jzmq: The flags parameter to send / receive were assigned to a long
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [10:34]  CIA-20
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jzmq: variable, which was received in the C glue code as a jlong,
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [10:34]  CIA-20
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jzmq: which was finally cast to an int when being passed into
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [10:34]  CIA-20
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jzmq: zmq_send() and zmq_recv(). I changed them into int / jint and
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [10:34]  CIA-20
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jzmq: got rid of the cast.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [13:06]  CIA-20
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Sebastian Otaegui 07master * r92618fd 10/ builds/redhat/zeromq.spec :
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [13:06]  CIA-20
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: Small fix for the rhel6 spec
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [13:06]  CIA-20
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: Signed-off-by: Sebastian Otaegui &lt;feniix@gmail.com&gt; - http://bit.ly/eqVjjF
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [13:06]  CIA-20
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Martin Sustrik 07master * r734624b 10/ src/i_engine.hpp :
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [13:06]  CIA-20
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: Typo fixed in a comment.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [13:06]  CIA-20
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: Signed-off-by: Martin Sustrik &lt;sustrik@250bpm.com&gt; - http://bit.ly/h89opD
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [14:22]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: hi, are you around?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [16:13]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: could you add the individual test executables in tests/ to .gitignore at the top level please?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [16:13]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: (this is not worth making a patch to the ML...)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [16:13]  CIA-20
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Martin Lucina 07master * rc958409 10/ (5 files in 3 dirs):
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [16:13]  CIA-20
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: Control symbol exports using -fvisibility
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [16:13]  CIA-20
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: On systems using GCC 4.0 or newer which support symbol visibility in shared
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [16:13]  CIA-20
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: libraries, use -fvisibility=hidden and only export explict API functions
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [16:13]  CIA-20
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: defined in zmq.cpp. We do not enable -fvisibility on MinGW since this uses a
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [16:13]  CIA-20
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: separate mechanism (__declspec).
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [16:13]  CIA-20
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: Signed-off-by: Martin Lucina &lt;mato@kotelna.sk&gt; - http://bit.ly/i2lvb2
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [16:36]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: ping?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [16:55]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: yes]
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [16:55]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    am now
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [16:58]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: I wanted some advice on how to check for -fvisibility support, but have that solved now
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [16:58]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: (see my patch on the ml. sustrik has applied it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [16:59]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: how often do the autobuilders wake up?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [16:59]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: 5 am and 5 pm GMT
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [16:59]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in a minute is the next build
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [17:00]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oh, good, i can see hopefully that i&#39;ve not broken anything
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [17:00]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i got a couple of patches waiting as well
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [17:00]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    need to have some time to send them
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [17:00]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    --enable-debug switch and a couple others
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [17:01]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i had a question for you btw
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [17:01]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    for hp ux in configure.in: CPPFLAGS="-D_POSIX_C_SOURCE=200112L"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [17:01]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is there a reason why $CPPFLAGS is not appended to that?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [17:01]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: send them soonish if you want them in the 2.1.0 release, I think we&#39;ll get that out Monday
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [17:02]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: no reason, it&#39;s a typo
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [17:02]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [17:02]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    my patch fixes that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [17:02]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    after these patches user can override all build flags
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [17:02]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    good
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [17:03]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    daily build running now
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [17:15]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sent
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [17:15]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bbl -&gt;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [18:17]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: currently i get this from autoreconf
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [18:17]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    configure.in:9: warning: AC_INIT: not a literal: m4_esyscmd(./version.sh | tr -d &#39;\n&#39;)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [18:17]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i assume this is not an issue?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [18:17]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: dunno, I&#39;ve not seen it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [18:17]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: I got that incantation off the autoconf mailing list so it should be ok...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [18:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [18:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [18:21]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: hi, um, i was asking if you could update .gitignore to include tests/(the executables)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [18:21]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: so that "git status" is clean after a build
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [18:22]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: didn&#39;t seem worth mailing a patch for administrivia
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [18:22]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [18:22]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;ll do that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [18:22]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thx
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [18:22]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the annoying part it has to be done on file-by-file basis
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [18:22]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;ll amend the patches
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-89" class="rowLink" href="#msg-89">
+                    [18:22]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    as executables have no common extension
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-90" class="rowLink" href="#msg-90">
+                    [18:23]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so apart from DISABLE_SHARED they are OK?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-91" class="rowLink" href="#msg-91">
+                    [18:23]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: yeah, well, when you add a test, update .gitignore, no problem...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-92" class="rowLink" href="#msg-92">
+                    [18:23]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: yeah, i&#39;m happy, thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-93" class="rowLink" href="#msg-93">
+                    [18:26]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: one thing with --enable-debug...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-94" class="rowLink" href="#msg-94">
+                    [18:26]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: not sure if it&#39;s useful, but.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-95" class="rowLink" href="#msg-95">
+                    [18:26]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: at the moment default behaviour is to build with -O2 -g (say for GCC)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-96" class="rowLink" href="#msg-96">
+                    [18:27]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: --enable-debug changes that to -O0 -g
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-97" class="rowLink" href="#msg-97">
+                    [18:27]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: I&#39;m wondering whether or not there should also be a --disable-debug/--enable-release or something that disables -g entirely and/or in future adds more agressive optimizations
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-98" class="rowLink" href="#msg-98">
+                    [18:27]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: but that&#39;s just a thought, no need to deal with that now
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-99" class="rowLink" href="#msg-99">
+                    [18:30]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, i think that would make sense
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-100" class="rowLink" href="#msg-100">
+                    [18:30]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    do we not want -g on releases?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-101" class="rowLink" href="#msg-101">
+                    [18:30]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    makes backtraces quite useless
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-102" class="rowLink" href="#msg-102">
+                    [18:31]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i see your point
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-103" class="rowLink" href="#msg-103">
+                    [18:31]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    use can then build with --enable-debug and provide a backtrace if it comes to that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-104" class="rowLink" href="#msg-104">
+                    [18:32]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, i don&#39;t think the default should be w/o -g
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-105" class="rowLink" href="#msg-105">
+                    [18:32]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i managed to amend the patch without much hacking
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-106" class="rowLink" href="#msg-106">
+                    [18:32]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i think my git foo is getting stronger
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-107" class="rowLink" href="#msg-107">
+                    [18:32]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    since that will precisely cause newbiews to report problems with no backtrace at all
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-108" class="rowLink" href="#msg-108">
+                    [18:32]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i did git reset HEAD~4, git am for the two first patches, git apply for the third, edited the lines and committed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-109" class="rowLink" href="#msg-109">
+                    [18:32]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is that the best way to amend a patch?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-110" class="rowLink" href="#msg-110">
+                    [18:32]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    all i&#39;m saying is it might be useful in future to provide an "optimized, no debug" build
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-111" class="rowLink" href="#msg-111">
+                    [18:33]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, i think we can easily provide that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-112" class="rowLink" href="#msg-112">
+                    [18:33]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and it does make sense. if for example someone figures out a compiler flag for sun studio that speeds up things a lot we can easily share that to everyone
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-113" class="rowLink" href="#msg-113">
+                    [18:34]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, for example stuff like -xtarget=native on SPARC
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-114" class="rowLink" href="#msg-114">
+                    [18:34]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and/or -fast
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-115" class="rowLink" href="#msg-115">
+                    [18:35]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-116" class="rowLink" href="#msg-116">
+                    [18:35]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i might&#39;ve messed my local build
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-117" class="rowLink" href="#msg-117">
+                    [18:35]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ./configure: line 22683: syntax error near unexpected token `if&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-118" class="rowLink" href="#msg-118">
+                    [18:35]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ./configure: line 22683: `_LT_COMPILER_OPTION(if $compiler supports -fvisibility=hidden,&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-119" class="rowLink" href="#msg-119">
+                    [18:37]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, i have to go
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-120" class="rowLink" href="#msg-120">
+                    [18:37]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bbl maybe
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-121" class="rowLink" href="#msg-121">
+                    [21:29]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: did you come back?
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

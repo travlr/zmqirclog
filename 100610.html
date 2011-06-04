@@ -1,0 +1,1217 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Thursday June 10, 2010</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [04:43]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    travisbrady: ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [04:43]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    can you get a backtrace from the bus error?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [04:54]  travisbrady
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: I actually worked through the earlier issue, I&#39;m now working on zmq_msg_data
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [05:02]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, so everthing works ok as for now?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [05:02]  travisbrady
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, now I&#39;m getting "Assertion failed: !inpipe &amp;&amp; !outpipe (pair.cpp:47)"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [05:03]  travisbrady
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Looking at pair.cpp now
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [05:03]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    travisbrady: pair is unfinished
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [05:04]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    docs say:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [05:04]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Note
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [05:04]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ZMQ_PAIR sockets are experimental, and are currently missing several features such as auto-reconnection.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [05:04]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so rather try using different socket type
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [05:05]  travisbrady
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hmm, I was using type 4
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [05:05]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    REP?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [05:05]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that one is OK
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [05:07]  travisbrady
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: Yeah, I&#39;m basically trying to implement the simple client server app from http://www.zeromq.org/docs:cookbook in ocaml as a test
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [05:08]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure, that should work
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [05:08]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just avoid PAIR sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [05:11]  travisbrady
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hmm, yeah I&#39;m not touching them at all, I have no idea how I&#39;m reaching that assertion in pair.cpp
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [05:13]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    uninitialised socket type used (0 = pair)?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [05:15]  travisbrady
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Ahh, yep, you&#39;re right.  There was a problem in my wrap_zmq_socket function
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [05:21]  CIA-17
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Martin Sustrik 07master * rd329c55 10/ src/tcp_connecter.cpp : issue 31 - Assertion failed: err == ECONNREFUSED || err == ETIMEDOUT (tcp_connecter.cpp:296) - http://bit.ly/aOnmHR
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [05:21]  CIA-17
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Martin Sustrik 07master * r76e0153 10/ (4 files): issue 33 - missing virtual destructors - http://bit.ly/9Xaca8
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [05:34]  CIA-17
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Piotr Trojanek 07master * r8782b4d 10/ configure.in : -lcrypto added to linking flags for QNX - http://bit.ly/b35ZMj
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [10:37]  CIA-17
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Martin Sustrik 07master * r74a3907 10/ (src/encoder.hpp src/uuid.cpp): couple of ICC warnings fixed - http://bit.ly/9CRrH6
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [10:56]  alefka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [10:58]  CIA-17
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Piotr Trojanek 07master * rc818b14 10/ src/ctx.cpp : clearing thread info structure - http://bit.ly/bjl1Cr
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [10:58]  alefka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Has any possibility to point length of data to send?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [10:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    alefka: you don&#39;t know how much data you want to send?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [11:00]  alefka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    know. I have large buffer (64 K), but I want to send for example the first 20 bytes... Can I do it without recreation of array?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [11:01]  alefka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just point to send function a length parameter for example or something else
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [11:02]  alefka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    In the regular zeromq lib I have no found the one
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [11:02]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zmq::message_t msg  (20);
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [11:02]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    memcpy (msg.data (), buffer, 20);
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [11:02]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    s.send (msg);
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [11:07]  alefka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    aha... I use Java
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [11:08]  alefka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [11:23]  umesh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I am getting error while compiling python bindings of zeromq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [11:24]  umesh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zmq/_zmq.c: In function Ã¢init_zmqÃ¢:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [11:24]  umesh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zmq/_zmq.c:9723: error: Ã¢ZMQ_PAIRÃ¢ undeclared (first use in this function)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [11:24]  umesh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zmq/_zmq.c:9723: error: (Each undeclared identifier is reported only once
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [11:24]  umesh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zmq/_zmq.c:9723: error: for each function it appears in.)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [11:24]  umesh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    these are the errors i get
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [11:26]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    umesh: do you have latest pyzmq?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [11:26]  umesh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i version before latest ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [11:26]  umesh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    as i am using 2.0.6
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [11:27]  umesh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    1 version before latest ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [11:27]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the latest version updates to 2.0.7 API:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [11:27]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Updating to new 2.0.7 API changes.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [11:27]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    * Context only takes the number of io threads.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [11:27]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    * P2P -&gt; PAIR.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [11:27]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    * No stopwatch.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [11:27]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    * No LWM socket option.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [11:29]  umesh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thats the reason i am not using latest ... because i am using zmq c version  2.0.6
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [11:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then use P2P
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [11:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it was renamed to PAIR in 2.0.7
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [11:36]  alefka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: \I suppose java lib has no such oportunity... is it so?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [11:37]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    java lib works with java byte arrays
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [11:37]  alefka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [11:37]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is it a problem to take first 20 characters from a byte array?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [11:37]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    arr [0..19]
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [11:37]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or something
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [12:44]  umesh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    can i ask some git questions here .
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [12:44]  umesh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    basically how to go to i version back for a specific file in git respository if you are at head
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [15:33]  CIA-17
+                    </a>
+                </td>
+                <td class="message-cell">
+                    rbzmq: 03Brian Buchanan 07master * r12c3a9f 10/ rbzmq.cpp : whitespace cleanup for consistent coding style - http://bit.ly/9CGo7J
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [15:33]  CIA-17
+                    </a>
+                </td>
+                <td class="message-cell">
+                    rbzmq: 03Brian Buchanan 07master * r1f7c517 10/ rbzmq.cpp : fix crash on access of socket that has been closed - http://bit.ly/dfwZoH
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [16:16]  sbeaulois
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [16:19]  sbeaulois
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I tried to bind pyzmq on  rhel 5 but i got some error m=when finish binding
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [16:20]  sbeaulois
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i cannot import zmq module from comand
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [16:21]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    paste the error message to a paste-bin
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [16:21]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    w/o the messages we can&#39;t help
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [16:21]  sbeaulois
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cannot import name _zmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [16:21]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    -&gt; &lt;sbeaulois&gt; I tried to bind pyzmq on  rhel 5 but i got some error m=when finish binding
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [16:22]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what shall this line say?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [16:22]  sbeaulois
+                    </a>
+                </td>
+                <td class="message-cell">
+                    my english is not good
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [16:22]  sbeaulois
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [16:22]  sbeaulois
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i will like bind pyzmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [16:23]  sbeaulois
+                    </a>
+                </td>
+                <td class="message-cell">
+                    on RedHat Entriprise Linux 5
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [16:24]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what do you mean with "bind"?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [16:25]  sbeaulois
+                    </a>
+                </td>
+                <td class="message-cell">
+                    install
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [16:25]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ahhh
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [16:25]  sbeaulois
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i will compiled pyzmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [16:25]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [16:25]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    any errors there?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [16:25]  sbeaulois
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i compiled pyzmq fine
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [16:26]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [16:26]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how did you do that?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [16:26]  sbeaulois
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but when i tried to import zmq from python command line i got somes errors
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [16:26]  sbeaulois
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cannot import name _zmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-89" class="rowLink" href="#msg-89">
+                    [16:26]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how did you compile and install pyzmq?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-90" class="rowLink" href="#msg-90">
+                    [16:27]  versificateur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    look at here http://blog.boxedice.com/2010/05/23/building-zeromq-and-pyzmq-on-red-hat/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-91" class="rowLink" href="#msg-91">
+                    [16:27]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-92" class="rowLink" href="#msg-92">
+                    [16:27]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    did you follow all the mentioned steps?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-93" class="rowLink" href="#msg-93">
+                    [16:28]  sbeaulois
+                    </a>
+                </td>
+                <td class="message-cell">
+                    verficateur =&gt; ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-94" class="rowLink" href="#msg-94">
+                    [16:28]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    versificateur: ahhh, /me is silent then :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-95" class="rowLink" href="#msg-95">
+                    [16:29]  versificateur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :) what means /me ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-96" class="rowLink" href="#msg-96">
+                    [16:30]  sbeaulois
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;am going to trie it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-97" class="rowLink" href="#msg-97">
+                    [16:30]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    versificateur: myself, I, the one writing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-98" class="rowLink" href="#msg-98">
+                    [16:30]  versificateur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: are you here??
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-99" class="rowLink" href="#msg-99">
+                    [16:30]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    versificateur: most clients expand that to your nick, when given as first word
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-100" class="rowLink" href="#msg-100">
+                    [16:30]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    like:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-101" class="rowLink" href="#msg-101">
+                    [16:30]  versificateur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah okay
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-102" class="rowLink" href="#msg-102">
+                    [19:38]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i am here
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-103" class="rowLink" href="#msg-103">
+                    [19:38]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but i have no experience with pyzmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-104" class="rowLink" href="#msg-104">
+                    [19:38]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    brian should know
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-105" class="rowLink" href="#msg-105">
+                    [19:39]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    try asking on the mailing list
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-106" class="rowLink" href="#msg-106">
+                    [20:48]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Is kde-4.5 called kde-4.4.85, and if so Is kde-4.4.9999 the latest for kde-4.4 ???
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-107" class="rowLink" href="#msg-107">
+                    [20:49]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sorry wrong channel :P
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

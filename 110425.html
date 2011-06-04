@@ -1,0 +1,1459 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Monday April 25, 2011</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [00:49]  phantomcircuit
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hello, so reading the documentation it strikes me that the pull/push mechanism results in pull sockets having local queueing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [00:49]  phantomcircuit
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that seems like an odd decision
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [01:35]  dublisk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hi, zeromq will only work with itself right? I can&#39;t use it to read from sockets that aren&#39;t zeromq on the other end?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [01:50]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dublisk: correct
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [01:50]  dublisk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    D&#39;oh
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [01:50]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dublisk: you can of course write something to translate from a tcp socket to zeromq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [01:51]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dublisk: but yeah, you can&#39;t connect a zeromq socket and standard socket together without some glue in the middle.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [01:52]  dublisk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I was hoping I could just receive messages which would be of whatever length it captured
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [01:56]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dublisk: I do quite a bit of zeromq work with python - when I need to move data between a standard tcp connection and zeromq I usually write a little connecting piece w/ python and eventlet, works pretty well
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [01:56]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dublisk: don&#39;t know what languages you&#39;re working with though
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [01:56]  dublisk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    C++, but how do you listen to the socket?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [01:57]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dublisk: I open a tcp port, anything that connects to that port and sends gets forwarded out a zeromq socket (breaking messages apart on \n)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [02:05]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dublisk: it&#39;s worked as a decent stopgap while I wait for people above stream from me in our stack to convert over to zeromq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [04:37]  Taaz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hii iam new to it...i would love to contribute..how do i ??
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [15:55]  phantomcircuit
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is there a binary build available for windows
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [15:55]  phantomcircuit
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [15:56]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    phantomcircuit, not to my knowledge, but it&#39;s pretty trivial to build
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [15:56]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    should be buildable with the express edition
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [15:57]  phantomcircuit
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah i&#39;ve gotten it built
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [15:57]  phantomcircuit
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i cant get this to work it&#39;ll just take some doing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [15:57]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what is the issue/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [15:57]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [15:59]  phantomcircuit
+                    </a>
+                </td>
+                <td class="message-cell">
+                    setup.py is trying to build a test program and is failing because it cant find a compiler
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [15:59]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    phantomcircuit: they ship a windows binard as part of the pyzmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [15:59]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    download the msi from https://github.com/zeromq/pyzmq/downloads
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [16:00]  phantomcircuit
+                    </a>
+                </td>
+                <td class="message-cell">
+                    im gonna need to build php bindings also
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [16:00]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    If you want to compile it yourself, download the Visual Studio 2008 Express
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [16:01]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://www.microsoft.com/express/Downloads/#2008-Visual-CPP
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [16:02]  phantomcircuit
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah i&#39;ve got that and i&#39;ve actually built libzmq.lib
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [16:02]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    You can use 2010 too, but all the projects are already set up for 2008
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [16:03]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    when you distribute your libraries out to the servers, you need to make sure you have the VC++ redistributables that match your compiler environment
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [16:03]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    kinda like http://www.microsoft.com/downloads/en/details.aspx?FamilyID=9b2da534-3e03-4391-8a4d-074b9f2bc1bf&amp;displaylang=en
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [16:04]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there are about 3 or 4 version out there
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [16:04]  phantomcircuit
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jhawk28, basically this is just a proof of concept, if this works i will not continue using windows servers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [16:05]  phantomcircuit
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this one just happens to be free
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [16:06]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I did have a minor issue build the .lib file with 2010
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [16:06]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the .dll was fine though
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [16:07]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there is a website somewhere detailing the issue, 2 secs
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [16:07]  phantomcircuit
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well both are built
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [16:07]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://www.mansysadmin.com/2011/03/using-zeromq-framework-with-visual-studio-2010-tutorial/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [16:07]  phantomcircuit
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah well im missing the python headers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [16:07]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    possibly only a 2010 issue
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [16:09]  phantomcircuit
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lol visual studio is so slow
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [16:09]  phantomcircuit
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s like a bad joke
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [16:09]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it gets even funnier when you start to ask what do you get for the slowness
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [16:11]  phantomcircuit
+                    </a>
+                </td>
+                <td class="message-cell">
+                    code completion
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [16:11]  phantomcircuit
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and uh
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [16:11]  phantomcircuit
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah that&#39;s it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [16:12]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    even the code completion, people get resharper...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [16:13]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yep, it&#39;s code completion pretty naff
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [16:18]  phantomcircuit
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm ok so now how do i get php bindings
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [16:30]  phantomcircuit
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm getting a php extension built is proving to be a challenge
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [16:34]  phantomcircuit
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i take it that nobody cares
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [16:35]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well now that you ask... I&#39;ve never cared much for PHP
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [16:37]  phantomcircuit
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;ve got a giant application written in php, currently a long running computationally expensive part of it is run in the context of the web server with a bunch of hilarious hacks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [16:37]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there is a few PHPers about here on occasion
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [16:38]  phantomcircuit
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i cant really rewrite the entire platform but i can use zmq to send the work requests to python daemons
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [16:39]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    phantomcircuit, you could try the mailing list
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [16:39]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i know Ian Barber is a heavy PHP user but isn&#39;t online at the moment
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [16:39]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you might catch him on the ML
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [16:41]  phantomcircuit
+                    </a>
+                </td>
+                <td class="message-cell">
+                    k thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [17:31]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    phantomcircuit: what is the problem with php extension?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [17:32]  phantomcircuit
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i have no idea how to build it on windows
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [17:32]  phantomcircuit
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and i dont see a prebuilt version
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [17:33]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    have you built any other php extensions on windows?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [17:33]  phantomcircuit
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nope
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [17:34]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so i take it that you don&#39;t have php development env setup?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [17:34]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    https://wiki.php.net/internals/windows/stepbystepbuild
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [17:36]  phantomcircuit
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko, even if i did i dont see any build instructions for zmq specifically
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [17:37]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you would build it just like any other pecl extension
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [17:42]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyone working on getting 0mq to build on windows using mingw?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [17:45]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: it should build
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [17:45]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: i&#39;ll give it a try today and report any errors i see
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [17:46]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: there is daily build on win7 using mingw32
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [17:47]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oh, excellent
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [17:47]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the windows build machine is a bit out of order atm though
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [17:47]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but overall mingw32 should build without problems
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [17:47]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pgm wont build
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [17:47]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    openpgm*
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [17:48]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok; i don&#39;t need pgm so that isn&#39;t a show stopper for me
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [17:49]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    phantomcircuit: seems like my build environment still works for win
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [17:50]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    might be able to get a build done
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [17:52]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    phantomcircuit: http://valokuva.org/builds/ext/vc9/nts/zmq/2011-04-25_1849/php_zmq_nts.dll / http://valokuva.org/builds/ext/vc9/ts/zmq/2011-04-25_1849/php_zmq_ts.dll
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [19:43]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    any iMatix people on?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [19:45]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [19:45]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: are you there?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [19:50]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: you there?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [19:53]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jhawk28: if you have a general question about 0mq, go ahead and ask it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-89" class="rowLink" href="#msg-89">
+                    [19:53]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there are a bunch of knowledgeable folks in the channel
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-90" class="rowLink" href="#msg-90">
+                    [19:53]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: its releated to the OpenAMQ JMS client
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-91" class="rowLink" href="#msg-91">
+                    [19:54]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ask anyway; maybe a lurker has an answer for you
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-92" class="rowLink" href="#msg-92">
+                    [19:58]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    my management has "dictated" that we must use JMS
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-93" class="rowLink" href="#msg-93">
+                    [19:59]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    based on my research, it looks like the qpid amqp driver does not interoperate with RabbitMQ based on a "disagreement" in the spec
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-94" class="rowLink" href="#msg-94">
+                    [19:59]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the other option is the openamq-jms
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-95" class="rowLink" href="#msg-95">
+                    [20:00]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    LShift looks to have got it running based on http://www.lshift.net/blog/2009/03/16/openamqs-jms-client-with-rabbitmq-server
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-96" class="rowLink" href="#msg-96">
+                    [20:01]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no more chatter can be seen on the subject
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-97" class="rowLink" href="#msg-97">
+                    [20:01]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no more commits have been made to the project: https://github.com/imatix/openamq-jms
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-98" class="rowLink" href="#msg-98">
+                    [20:01]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is it dead or just so stable it hasn&#39;t needed updates?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-99" class="rowLink" href="#msg-99">
+                    [20:03]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jhawk28: yes?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-100" class="rowLink" href="#msg-100">
+                    [20:03]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jhawk28: ah, openamq-jms
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-101" class="rowLink" href="#msg-101">
+                    [20:04]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jhawk28: it&#39;s basically dead
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-102" class="rowLink" href="#msg-102">
+                    [20:05]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I hate enterprise products
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-103" class="rowLink" href="#msg-103">
+                    [20:06]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-104" class="rowLink" href="#msg-104">
+                    [20:06]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    JMS is so verbose
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-105" class="rowLink" href="#msg-105">
+                    [20:07]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but yet doen&#39;t really have good error messages on what actually went wrong
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-106" class="rowLink" href="#msg-106">
+                    [20:10]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    convince your management to use zeromq :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-107" class="rowLink" href="#msg-107">
+                    [20:11]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    we are
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-108" class="rowLink" href="#msg-108">
+                    [20:11]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    need a durable queue for some more enterprisey things
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-109" class="rowLink" href="#msg-109">
+                    [20:11]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    slower peformance, etc
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-110" class="rowLink" href="#msg-110">
+                    [20:12]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    of course, I&#39;m getting to the point where the JNA is biting us
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-111" class="rowLink" href="#msg-111">
+                    [20:12]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, you could always roll your own on top of 0mq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-112" class="rowLink" href="#msg-112">
+                    [20:12]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thought about it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-113" class="rowLink" href="#msg-113">
+                    [20:13]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thinking I&#39;ll pursue writing a Java impl of 0mq first so that it can run in the "Enterprise Containers"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-114" class="rowLink" href="#msg-114">
+                    [20:15]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m sure that it will be a pain since it doesn&#39;t look like the wire format is documented well
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-115" class="rowLink" href="#msg-115">
+                    [20:15]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but, it would be really nice to just have a Java library
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-116" class="rowLink" href="#msg-116">
+                    [20:20]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jhawk28: is there a particular reason why you can&#39;t just use the 0mq Java API?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-117" class="rowLink" href="#msg-117">
+                    [20:21]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jhawk28: you really really don&#39;t want to go writing your own implementation, the 0mq protocols (especially the underlying semantics) are still too raw and unstable
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-118" class="rowLink" href="#msg-118">
+                    [20:23]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: in many things, the 0mq Java API is fine. Once you try using it in crappy enterprise products like JBoss, the Threading model conflicts and things like EJB&#39;s forbid using JNA
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-119" class="rowLink" href="#msg-119">
+                    [20:23]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jhawk28: JNA? you mean JNI?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-120" class="rowLink" href="#msg-120">
+                    [20:23]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oops, yes, JNI
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-121" class="rowLink" href="#msg-121">
+                    [20:24]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jhawk28: is there anything that can be done on the jzmq side of things to help use in your conditions?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-122" class="rowLink" href="#msg-122">
+                    [20:26]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    2 approaches that I can think to fix the issue - write a remoting wrapper so the JNI can live outside the container, write a native Java impl of 0mq so that it can live inside the container
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-123" class="rowLink" href="#msg-123">
+                    [20:26]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i would recommend the former if it&#39;s not too hard
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-124" class="rowLink" href="#msg-124">
+                    [20:27]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that would be my quick and dirty first pass
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-125" class="rowLink" href="#msg-125">
+                    [20:27]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    since it wouldnt take too long to get up and running
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-126" class="rowLink" href="#msg-126">
+                    [20:28]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I know there are some developments on the 0mq side that may fix the issue too like adding it to the posix spec
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-127" class="rowLink" href="#msg-127">
+                    [20:29]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jhawk28: well, yes, a kernel-mode implementation of 0mq would make your problem go away
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-128" class="rowLink" href="#msg-128">
+                    [20:29]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jhawk28: but that is still a long way away
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-129" class="rowLink" href="#msg-129">
+                    [20:29]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    agreed, these things take time
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

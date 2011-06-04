@@ -1,0 +1,447 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Thursday April 14, 2011</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [13:09]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hey ho
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [13:58]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [13:58]  djc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ve setup a FORWARDER device with the publishing (outbound) socket bound to inproc://something and am trying to set up subscribers listening to it, but I get a connection refused error
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [13:58]  djc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyone got tips on debugging that?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [13:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    access rights?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [13:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [13:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    inproc
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [13:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sorry, i though it&#39;s ipc
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [13:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    are you using the same context?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [14:00]  djc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah, no
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [14:00]  djc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it should be, I guess?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [14:00]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the inproc endpoints are shared only within the same context
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [14:01]  djc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that makes sense
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [14:01]  djc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m using a small wrapper class for the subscriber, but of course it sets up its own context
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [14:01]  djc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there we go with the leaking abstraction!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [14:07]  djc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [14:08]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you are welcome
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [14:21]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yrashk: about?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [16:13]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hummm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [16:35]  joelr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    good day
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [16:35]  joelr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    &lt;- is rewriting the freelance pattern in ocaml
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [16:36]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    good stuff
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [16:41]  joelr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq is a strange beast
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [16:42]  joelr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    kind of like a performance engine on a frame.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [16:43]  joelr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s got wheels and it rolls but there&#39;s no suspension, hydraulic steering, seats or body
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [16:43]  joelr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i think even steering is some sort of a lever rather than a wheel
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [16:43]  yrashk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ianbarber: ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [16:43]  joelr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    point being that you&#39;ve got to add the rest
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [16:51]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    joelr: seems like that sometimes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [16:52]  joelr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it certainly does
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [21:18]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ZMQ and J2EE don&#39;t play well
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [21:19]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it looks like I&#39;m gonna need to create a native Java version of libzmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [21:19]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    EJB&#39;s forbid using JNI libraries
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [21:28]  eyeris
+                    </a>
+                </td>
+                <td class="message-cell">
+                    With the pyzmq bindings, calling recv_json() is returning a string form of the serialized json. type(sock.recv_json()) -&gt; unicode
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [21:28]  eyeris
+                    </a>
+                </td>
+                <td class="message-cell">
+                    The json-encoded string represents a json object, so I would expect type(sock.recv_json()) to return a dict
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [23:13]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so I&#39;m finally moving perl zmq to work with 3.x.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [23:14]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what&#39;s the status of zmq_device() ? I remember reading about it in a thread somewhere, but how should we binding authors deal with it?
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

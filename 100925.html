@@ -1,0 +1,337 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Saturday September 25, 2010</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [06:32]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Pe_Ell: 2.1 looks more or less stable already. Please, do use it. If any bug is found, let me know.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [06:50]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jond: it went well, i&#39;ll post my paper shortly
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [06:50]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    met a lot of linux kernel folks there
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [06:58]  Pe_Ell
+                    </a>
+                </td>
+                <td class="message-cell">
+                    wow...  chapter3 just doubled in size..
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [07:25]  Pe_Ell
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik, cool.  Mostly was interested in accessing the "socket" more directly so there could be some attempt of creting somelike like a Perl AnyEvent wrapper...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [07:26]  Pe_Ell
+                    </a>
+                </td>
+                <td class="message-cell">
+                    wow...  my english sucks...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [07:29]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Pe_Ell: yes, feel free to play with that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [07:30]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there&#39;s ZMQ_FD socket option that allows you to do that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [07:30]  Pe_Ell
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah I was looking over the code and currently reading the guide...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [07:30]  Pe_Ell
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pretty entertaining and useful
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [07:30]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    however, it&#39;s a bit more complex than using standard 0mq API
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [07:31]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you have to keep in mind that:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [07:31]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    1.  ZMQ_FD can signal even if there&#39;s no message available (on internal 0MQ events such as "connection established")
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [07:31]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    2. ZMQ_FD is edge triggered
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [07:32]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you don&#39;t care about that, it should work just fine
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [07:32]  Pe_Ell
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah I figured I&#39;d finish the guide before digging into the 2.1 code more...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [09:25]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Pe_Ell: I moved a lot of Ch3 into Ch2 as well
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [17:43]  Pe_Ell
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieter_hintjens: so I should start over? :)  I noticed that it had shifted some, I was going to go look at the earlier chapters to see if I&#39;d missed anything...  still got a lot of code to read...  :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [17:44]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Pe_Ell: well, most of the new stuff is at the end of Ch2 and then Ch3
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [17:47]  Pe_Ell
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah I figure I&#39;d like a pretty generic AnyEvent wrapper if it&#39;s reasonable to build...  I&#39;m still working out the application design for my project though...  I just got distracted with new and shiny.... :D
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [17:57]  Pe_Ell
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so to make sure I&#39;m not retarded...  for pubsub I can make one ZMQ_SUB socket and then just set multiple ZMQ_SUBSCRIPT options on it...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [17:58]  Pe_Ell
+                    </a>
+                </td>
+                <td class="message-cell">
+                    err, ZMQ_SUBSCRIBE
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [17:58]  Pe_Ell
+                    </a>
+                </td>
+                <td class="message-cell">
+                    man I don&#39;t even have a spell checker...  not sure why I keep writing out the wrong words...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [17:59]  Pe_Ell
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok man page confirmed what I was thinking...  and looks like the string is a prefix so that answered my next question about wildcarding...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [18:55]  lluad
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Anyone have any pointers for embedding 0mq into another systems event loop - I&#39;m looking at using it with Qt4.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [19:45]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lluad: take a look at the 2.1 branch specifically ZM_FD and ZM_EVENTS
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [19:45]  lluad
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Excellent, thanks.
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

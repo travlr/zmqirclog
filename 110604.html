@@ -1,0 +1,150 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Saturday June 4, 2011</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [00:42]  porc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    having shared library trouble installing mongrel2 with zeromq 2.17 on archlinux
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [00:42]  porc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ./tests/bstr_tests: error while loading shared libraries: libzmq.so.1: cannot open shared object file: No such file or directory
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [00:42]  porc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ve tried "sudo ldconfig", but seems to have no effect, /usr/local/lib/libzmq.so.1 exists
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [00:52]  Seta00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    porc_, sudo ln -s /usr/lib/libzmq.so.1 /usr/local/lib/libzmq.so.1
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [00:52]  Seta00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    /usr/local/lib is not on the library search path by default
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [00:54]  Seta00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there should be a way to contain a multi-part message in a single zmq_msg_t object :/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [00:55]  Seta00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I forgot that multi-part messages are actually multiple messages, and now I&#39;ll have to redesign my 0MQ abstraction layer
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [00:57]  porc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks Seta!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [00:58]  Seta00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    np
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [08:51]  cods
+                    </a>
+                </td>
+                <td class="message-cell">
+                    LazyBob: I think it is the case. Only tcp:// (or some other socket type) using an unreliable connection (ethernet, ..) can eventually loss messages, but that will not happen as long as everything happen on the same machine (so, even for tcp://)
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

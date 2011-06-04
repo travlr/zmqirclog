@@ -1,0 +1,4583 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Thursday May 12, 2011</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [06:05]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    good morning
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [06:15]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    morning all
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [10:24]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    a dealer socket (xreq) is exactly like a push socket merged with a pull socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [10:25]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    a router socket basically has a weird API for send/recv that includes an address
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [10:25]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    currently the address is passed as a fake message frame
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [10:26]  cods
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I think I undestand for router (&lt;ID&gt; + nul frame + &lt;payload&gt; -possible made of several frames itself-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [10:26]  cods
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I need to think again about dealer
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [10:26]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nope, that&#39;s a different aspect
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [10:26]  cods
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [10:26]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    rourter doesn&#39;t use an envelope at all
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [10:26]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s what  REQ and REP sockets do to talk to each other
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [10:27]  cods
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm, I thought it was just just renaming of XREQ/XREP.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [10:27]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it is
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [10:27]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    router === xrep, dealer === xreq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [10:28]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    your confusion is a frequently-seen consequence of the poor names and strange asymmetric behaviour
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [10:28]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the behaviour actually makes sense, but only if you use different names
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [10:28]  cods
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [10:28]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    a REQ socket creates an empty envelope (1 null part) + content
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [10:29]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    a REP socket takes an envelope + content, saves the envelope, gives the content to the application
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [10:29]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and on sending, does the reverse: takes a content, re-wraps it, and sends it back
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [10:29]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    a DEALER socket (aka XREQ) just forwards messages in and out, period
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [10:30]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    a ROUTER socket (aka XREP) passes entire messages (envelope + content) to/from an app, with the virtual address frame prepended
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [10:30]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    any envelope construction is done by an app
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [10:30]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which reads from a ROUTER and writes to a DEALER
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [10:30]  cods
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s interesting. I was confused from the beginning then. Good summary!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [10:31]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the design actually works really nicely except for the names
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [10:32]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh, you missed earlier, I was crying about the fact that if network connection breaks during REQ/REP exchange the requester hangs permanently.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [10:32]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yup
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [10:32]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ASY: if you read the Guide, ch4, there&#39;s a pattern to handle this
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [10:32]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the lazy pirate
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [10:33]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Rrr = reliable request reply
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [10:35]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://repo.zero.mq/rpm/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [10:35]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    rpm repository is up
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [10:35]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and 2.1.7 packaged
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [10:35]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: don&#39;t think so.  or am I missing something?  https://github.com/zeromq/libzmq/issues/215
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [10:36]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ASY: have you read that part of the Guide?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [10:36]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the REP disconnecting is a classic failure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [10:36]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s precisely what LP is meant to handle
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [10:36]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: nice!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [10:37]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ASY: I&#39;m not disagreeing that it&#39;d be nice to have the REQ socket do this automatically
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [10:37]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not when you already sent the message.  if you sent the message already and REP disconnects it results in the REQ permanently hanging.  unless you implement a manual timeout, which is unacceptable in my situation.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [10:40]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyhow.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [10:41]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    As implemented today, REQ sockets are not robust against typical failures in distributed apps
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [10:42]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;d not do a blocking recv on a REQ socket unless it was between threads
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [10:42]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    between peers, where one can crash, I&#39;d always use a Lazy Pirate pattern
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [10:45]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, 2.1.7 released
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [10:45]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i will get around it, but this is not how it should be.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [11:05]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ASY: you may want to look at the code and send a patch for this
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [11:27]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: i don&#39;t want to volounteer because it is 7:26 am again and I haven&#39;t slept again :(  and I expect it to be like this for at least 2-3 months, but if no one will get to it by then, I definately will.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [11:28]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ASY: yeah, I know how it goes...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [11:33]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: ping?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [11:36]  truemped
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: Hi! Are you also working on the deb repository?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [12:16]  cods
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Would it make sense to use PUSH/SUB ? (I mean technically, not necessary from a semantic point of view)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [12:17]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi all
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [12:21]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    short question on PUB/SUB
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [12:21]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    are the messages filtered on the publisher side, or when they reach the subscriber?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [12:21]  cods
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s filtered on the reader side
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [12:22]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so they get over the line anyway?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [12:22]  cods
+                    </a>
+                </td>
+                <td class="message-cell">
+                    indeed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [12:22]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    kind&#39;a sucks, but at least it&#39;s straightforward :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [12:46]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mile: there is publisher side filtering on a branch in the github. it&#39;s pretty complex :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [12:47]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, I thought about it a bit before asking, it is indeed a non-trivial thong
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [12:47]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [12:47]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I assume having a broker to do the filtering should be the way to go
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [12:50]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, that works well
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [12:50]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    having intermediate devices composing new variations of feeds is pretty common afaik
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [14:14]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so are you guys going to dictate how bindings should be named? that&#39;s silly.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [14:14]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lestrrat: nope
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [14:14]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    note the "discuss" part
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [14:14]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the wording on the trademark page looks extremely hostile
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [14:15]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: summon
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [14:15]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and a sudden issue-filing on github.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [14:15]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sorry?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [14:16]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    could&#39;ve at least given me a friendly poke.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [14:16]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what happened?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [14:17]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I had a issue filed against ZeroMQ.pm just a couple of hours ago. (granted, I know it wasn&#39;t meant to be mean or hostile)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [14:17]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but I thought I was doing a service to the product by working hard to make it work on another language,
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [14:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yuck, this should have been discussed first
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [14:18]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: oi! wake up!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [14:18]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    indeed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [14:18]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lestrrat: link please?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [14:18]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but it was so sudden and so ... I dunnowhat the wording is, but ugh.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [14:19]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lestrrat: for the record, can you please reply to pieter&#39;s email on the list asking for discussion on the policy?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [14:19]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lestrrat: IRC is all very transient
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [14:19]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    again: the github issue itself isn&#39;t mean/hostile.  https://github.com/lestrrat/ZeroMQ-Perl/issues/13
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [14:19]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but it was so sudden, you know?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [14:19]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the problem is that the trademark stuff has to be sorted out
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [14:20]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    otherwise it will bite us in the future
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-89" class="rowLink" href="#msg-89">
+                    [14:20]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can imagine different catastrophic scenarios
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-90" class="rowLink" href="#msg-90">
+                    [14:20]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lestrrat: ah, yes, pieter specifically brought up the Perl binding at the unconf
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-91" class="rowLink" href="#msg-91">
+                    [14:20]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lestrrat: with the complaint that he put in the issue
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-92" class="rowLink" href="#msg-92">
+                    [14:20]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s the perl traditional way of naming things.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-93" class="rowLink" href="#msg-93">
+                    [14:21]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, i pointed that out
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-94" class="rowLink" href="#msg-94">
+                    [14:21]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no module is ever named Perl::Foobar
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-95" class="rowLink" href="#msg-95">
+                    [14:21]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    please just tell pieter so and close the issue with "won&#39;t fix"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-96" class="rowLink" href="#msg-96">
+                    [14:21]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    as for the trademark policy itself, that does need to be discussed in depth
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-97" class="rowLink" href="#msg-97">
+                    [14:22]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yup, let&#39;s discuss it on the list
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-98" class="rowLink" href="#msg-98">
+                    [14:24]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    okay, I get the sense it&#39;s not like everybody&#39;s all worked up to change the name :/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-99" class="rowLink" href="#msg-99">
+                    [14:24]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not really
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-100" class="rowLink" href="#msg-100">
+                    [14:24]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it was just like "WTF?" you know.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-101" class="rowLink" href="#msg-101">
+                    [14:24]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    wll reply...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-102" class="rowLink" href="#msg-102">
+                    [14:25]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there are two aspects to it IMO
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-103" class="rowLink" href="#msg-103">
+                    [14:25]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    either the trademarks are to be used as a protection against hostile takeover of the name
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-104" class="rowLink" href="#msg-104">
+                    [14:26]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in which case the bindings *should* be named zeromq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-105" class="rowLink" href="#msg-105">
+                    [14:26]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    to give them trademark protection
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-106" class="rowLink" href="#msg-106">
+                    [14:26]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or it is meant to protect imatix&#39; bundling of the stuff as opposed to packages made by anyone else
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-107" class="rowLink" href="#msg-107">
+                    [14:27]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in which case binding should not be called zeromq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-108" class="rowLink" href="#msg-108">
+                    [14:27]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I understand the intent to be the former
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-109" class="rowLink" href="#msg-109">
+                    [14:27]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if it&#39;s the latter, then it&#39;s all wrong...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-110" class="rowLink" href="#msg-110">
+                    [14:27]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the page seems to mix the two
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-111" class="rowLink" href="#msg-111">
+                    [14:29]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Either way, I understand that this type of protection needs to be set. I guess I&#39;m more pissed the fact that 1. I feel like our (perl) culture is being raped, and 2. I feel like I&#39;m being told by some sort of gov&#39;t agency to cease-or-desist
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-112" class="rowLink" href="#msg-112">
+                    [14:29]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sorry, in a pissy mood today.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-113" class="rowLink" href="#msg-113">
+                    [14:30]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    np
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-114" class="rowLink" href="#msg-114">
+                    [14:31]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the only real solution would be to have a foundation-owned trademarks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-115" class="rowLink" href="#msg-115">
+                    [14:31]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but noone feels like setting a foundation so fat i would guess :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-116" class="rowLink" href="#msg-116">
+                    [14:31]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    far
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-117" class="rowLink" href="#msg-117">
+                    [14:31]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, the policy is separate from who "owns" it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-118" class="rowLink" href="#msg-118">
+                    [14:31]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s a matter of trust
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-119" class="rowLink" href="#msg-119">
+                    [14:32]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yep
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-120" class="rowLink" href="#msg-120">
+                    [14:32]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    see for example the Debian trademark policy here: http://www.debian.org/trademark
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-121" class="rowLink" href="#msg-121">
+                    [14:32]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    simple and straightforward
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-122" class="rowLink" href="#msg-122">
+                    [14:33]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    aha
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-123" class="rowLink" href="#msg-123">
+                    [14:33]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    looks to be an easy solution
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-124" class="rowLink" href="#msg-124">
+                    [15:12]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    all lowercase module names are by tradition reserved for pragmas, so perlzmq is not a valid option https://github.com/lestrrat/ZeroMQ-Perl/issues/13#issuecomment-1147039
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-125" class="rowLink" href="#msg-125">
+                    [15:13]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ... which, I forgot to mention in my email. oh well.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-126" class="rowLink" href="#msg-126">
+                    [15:13]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m open to a rename given enough prodding, but dictating how things should be name in a different culture is silly.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-127" class="rowLink" href="#msg-127">
+                    [15:14]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what about naming things like another thing in the same problem domain?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-128" class="rowLink" href="#msg-128">
+                    [15:15]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I believe my predecessor named it ZeroMQ because ZeroMQ is a unique domain. At least that&#39;s how I perceived it tobe.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-129" class="rowLink" href="#msg-129">
+                    [15:16]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I really don&#39;t have a better alternative.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-130" class="rowLink" href="#msg-130">
+                    [15:18]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    gosh, I think I&#39;m more pissed than I thought I was.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-131" class="rowLink" href="#msg-131">
+                    [15:18]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cause I know this problem in itself is silly.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-132" class="rowLink" href="#msg-132">
+                    [15:19]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but just.. argh.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-133" class="rowLink" href="#msg-133">
+                    [15:20]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    damnit, somebody just come up with a different name that matches the perl way.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-134" class="rowLink" href="#msg-134">
+                    [15:21]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I don&#39;t want to deal with this.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-135" class="rowLink" href="#msg-135">
+                    [15:21]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just change the repo name
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-136" class="rowLink" href="#msg-136">
+                    [15:21]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s now what I&#39;m being told.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-137" class="rowLink" href="#msg-137">
+                    [15:21]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I mean
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-138" class="rowLink" href="#msg-138">
+                    [15:21]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s NOT what I&#39;m being told.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-139" class="rowLink" href="#msg-139">
+                    [15:22]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, maybe should figure out what you&#39;ve been told first
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-140" class="rowLink" href="#msg-140">
+                    [15:22]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    to change the name completely
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-141" class="rowLink" href="#msg-141">
+                    [15:22]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ZMQ ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-142" class="rowLink" href="#msg-142">
+                    [15:23]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the repo name, so this is consistent with the other reqpos and can live in the same github org
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-143" class="rowLink" href="#msg-143">
+                    [15:23]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the library is libzmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-144" class="rowLink" href="#msg-144">
+                    [15:23]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    most users do have a problem finding out what is what
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-145" class="rowLink" href="#msg-145">
+                    [15:23]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the pyhton-bindings are pyzmq but the python module to import is named zmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-146" class="rowLink" href="#msg-146">
+                    [15:24]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    php module is called &#39;zmq&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-147" class="rowLink" href="#msg-147">
+                    [15:24]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but noone cares, except the python users and so far no complaints
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-148" class="rowLink" href="#msg-148">
+                    [15:24]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    id do have the impression that its more about the repo name
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-149" class="rowLink" href="#msg-149">
+                    [15:25]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but w/o pieterh explaining his intentions it&#39;s all guessing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-150" class="rowLink" href="#msg-150">
+                    [15:25]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no, I think it&#39;s the module name. he explicitly cited an automated tweet that said something along the lines of "ZeroMQ X.XX uploaded to CPAN"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-151" class="rowLink" href="#msg-151">
+                    [15:26]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and I understand the concerns.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-152" class="rowLink" href="#msg-152">
+                    [15:26]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m more pissed that there was no discussion  with me before hand.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-153" class="rowLink" href="#msg-153">
+                    [15:27]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lestrrat: hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-154" class="rowLink" href="#msg-154">
+                    [15:27]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ahhh... enlightment ahead :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-155" class="rowLink" href="#msg-155">
+                    [15:27]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    waiting.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-156" class="rowLink" href="#msg-156">
+                    [15:27]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sorry, I was away picking up the kids at school
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-157" class="rowLink" href="#msg-157">
+                    [15:28]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so, sustrik asked me, on Tuesday, for a written policy on the trademarks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-158" class="rowLink" href="#msg-158">
+                    [15:28]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this was at the conference, guido_g, mato, etc. were present
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-159" class="rowLink" href="#msg-159">
+                    [15:28]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    apparently, the text on the footer of every page wasn&#39;t sufficient
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-160" class="rowLink" href="#msg-160">
+                    [15:28]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so, I wrote a policy for trademarks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-161" class="rowLink" href="#msg-161">
+                    [15:29]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there was also some mention of the perl binding calling itself &#39;zeromq&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-162" class="rowLink" href="#msg-162">
+                    [15:29]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and so I raised an issue... sorry for not emailing you privately but I didn&#39;t realize an issue would be taken so... seriously
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-163" class="rowLink" href="#msg-163">
+                    [15:30]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, it&#39;s a naming issue so it&#39;s going to be taken seriously
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-164" class="rowLink" href="#msg-164">
+                    [15:30]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, indeed, there is no gentle way to discuss this, in fact
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-165" class="rowLink" href="#msg-165">
+                    [15:30]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s why i asked about the trademarks in the first place
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-166" class="rowLink" href="#msg-166">
+                    [15:30]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    indeed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-167" class="rowLink" href="#msg-167">
+                    [15:30]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yep, better now than later
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-168" class="rowLink" href="#msg-168">
+                    [15:30]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    we do need a policy
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-169" class="rowLink" href="#msg-169">
+                    [15:30]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ack
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-170" class="rowLink" href="#msg-170">
+                    [15:30]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    even if it&#39;s "do whatever you like, we&#39;re not going to enforce anything"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-171" class="rowLink" href="#msg-171">
+                    [15:31]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, there is technically a default policy
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-172" class="rowLink" href="#msg-172">
+                    [15:31]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you say "XYZ is my trademark" then that&#39;s normally like saying "(C) me"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-173" class="rowLink" href="#msg-173">
+                    [15:31]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there are default laws on these things
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-174" class="rowLink" href="#msg-174">
+                    [15:31]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    right
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-175" class="rowLink" href="#msg-175">
+                    [15:31]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    normally a policy is needed only to grant additional rights
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-176" class="rowLink" href="#msg-176">
+                    [15:32]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which is what I tried to write, but briefly, on that page
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-177" class="rowLink" href="#msg-177">
+                    [15:32]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the question is whether you want to use the trademarks yourself or whether you want to make them community owned
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-178" class="rowLink" href="#msg-178">
+                    [15:32]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lestrrat: I&#39;m really sorry to have spoilt your evening
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-179" class="rowLink" href="#msg-179">
+                    [15:32]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the page was a bit ambiguous about the goal
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-180" class="rowLink" href="#msg-180">
+                    [15:32]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: that&#39;s not a real question
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-181" class="rowLink" href="#msg-181">
+                    [15:32]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in the first place all the bindings should be names zmq-something
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-182" class="rowLink" href="#msg-182">
+                    [15:32]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you cannot own things collectively, in modern law
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-183" class="rowLink" href="#msg-183">
+                    [15:33]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    only individuals and legal entities can own things
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-184" class="rowLink" href="#msg-184">
+                    [15:33]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Let me just clarify a couple of things: How urgent/serious is the naming issue? is somebody going to be after my ass if I don&#39;t change it anytime soon ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-185" class="rowLink" href="#msg-185">
+                    [15:33]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lestrrat: it&#39;s not urgent, really
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-186" class="rowLink" href="#msg-186">
+                    [15:33]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nope
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-187" class="rowLink" href="#msg-187">
+                    [15:33]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s just about making the naming thing clear
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-188" class="rowLink" href="#msg-188">
+                    [15:33]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    k. that gives me a deprecation cycle. I feel better already.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-189" class="rowLink" href="#msg-189">
+                    [15:33]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lestrrat: I guess you always treat issues as urgent... this is not, it&#39;s just my naive way of trying to reach you transparently
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-190" class="rowLink" href="#msg-190">
+                    [15:34]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lestrrat: note that I did NOT invoke the trademark policy on my issue report
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-191" class="rowLink" href="#msg-191">
+                    [15:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i mean, the thing is that if we want to use the trademarks as a defensive tool against hostile takeover, the bindings *should* be named zeromq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-192" class="rowLink" href="#msg-192">
+                    [15:35]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well it was at the same time, you know.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-193" class="rowLink" href="#msg-193">
+                    [15:35]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or else we can extend the trademarks to cover zmq as well
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-194" class="rowLink" href="#msg-194">
+                    [15:35]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: was just going to say that...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-195" class="rowLink" href="#msg-195">
+                    [15:35]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lestrrat: yes, sorry for that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-196" class="rowLink" href="#msg-196">
+                    [15:35]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    unfortunately, there&#39;s a company called zmq iirc
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-197" class="rowLink" href="#msg-197">
+                    [15:36]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so the trademarks have to be owned by _someone_ and that entity has to express a policy if it&#39;s not the default "don&#39;t touch"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-198" class="rowLink" href="#msg-198">
+                    [15:36]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    one more thing: guido suggested "zmq" -- which very closely resembles "zeromq" -- but is it an accepted standard naming in this community?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-199" class="rowLink" href="#msg-199">
+                    [15:36]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://www.zmqsoft.com/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-200" class="rowLink" href="#msg-200">
+                    [15:36]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ve been thinking of handing the trademarks over to some foundation but that&#39;s not always simple
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-201" class="rowLink" href="#msg-201">
+                    [15:36]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lestrrat: yes, zmq is the real name of the project in many ways
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-202" class="rowLink" href="#msg-202">
+                    [15:36]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    libzmq, xxxzmq for bindings, etc.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-203" class="rowLink" href="#msg-203">
+                    [15:37]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what about the one that owns debian trademark?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-204" class="rowLink" href="#msg-204">
+                    [15:37]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    debian foundation
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-205" class="rowLink" href="#msg-205">
+                    [15:37]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, so what stops somebody else to come up with another trademark and tell me to change my module name again then?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-206" class="rowLink" href="#msg-206">
+                    [15:37]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (suppose I renamed it to ZMQ.pm, that is)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-207" class="rowLink" href="#msg-207">
+                    [15:37]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lestrrat: ok, here&#39;s the deal
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-208" class="rowLink" href="#msg-208">
+                    [15:37]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lestrrat: the trademark should
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-209" class="rowLink" href="#msg-209">
+                    [15:38]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in fact we ... the community ... control the trademarks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-210" class="rowLink" href="#msg-210">
+                    [15:38]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s why we are discussing it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-211" class="rowLink" href="#msg-211">
+                    [15:38]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m just trying to express the rules we all want to enforce
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-212" class="rowLink" href="#msg-212">
+                    [15:38]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    right right, I think I wasn&#39;t clear.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-213" class="rowLink" href="#msg-213">
+                    [15:38]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you can convince the community that &#39;zeromq&#39; is the name you want to use
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-214" class="rowLink" href="#msg-214">
+                    [15:38]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then we will find the right text that makes this possible
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-215" class="rowLink" href="#msg-215">
+                    [15:38]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I mean, if ZMQ is an acceptable binding name, then please note that somewhere, and make that the guideline for bindings.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-216" class="rowLink" href="#msg-216">
+                    [15:39]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, that&#39;s been done
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-217" class="rowLink" href="#msg-217">
+                    [15:39]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    "Guidelines for bindings authors"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-218" class="rowLink" href="#msg-218">
+                    [15:39]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I don&#39;t want to have some other next generation zmq guy to tell me to change the name because it&#39;s confusing.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-219" class="rowLink" href="#msg-219">
+                    [15:39]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sorry, "Writing a Binding",  http://www.zeromq.org/docs:bindings
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-220" class="rowLink" href="#msg-220">
+                    [15:39]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-221" class="rowLink" href="#msg-221">
+                    [15:39]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, then I blame my predecessor.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-222" class="rowLink" href="#msg-222">
+                    [15:39]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    when I got it handed down to me, it was already ZeroMQ
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-223" class="rowLink" href="#msg-223">
+                    [15:39]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no, because I only added that relevant text this morning...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-224" class="rowLink" href="#msg-224">
+                    [15:39]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-225" class="rowLink" href="#msg-225">
+                    [15:40]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    makes sense ;)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-226" class="rowLink" href="#msg-226">
+                    [15:40]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-227" class="rowLink" href="#msg-227">
+                    [15:40]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no blame here, just a growing community that needs consistent names to avoid confusion
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-228" class="rowLink" href="#msg-228">
+                    [15:40]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this is also why we renamed the zeromq core project to libzmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-229" class="rowLink" href="#msg-229">
+                    [15:40]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok. I have enough information then.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-230" class="rowLink" href="#msg-230">
+                    [15:41]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the distribution name will be changed to ZMQ (so tweets will show up as "new ZMQ uploaded to CPAN"),
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-231" class="rowLink" href="#msg-231">
+                    [15:41]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the module will be ZMQ.pm, but there will be an alias module named ZeroMQ.pm for a while.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-232" class="rowLink" href="#msg-232">
+                    [15:41]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    wait a sec
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-233" class="rowLink" href="#msg-233">
+                    [15:41]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this would be cool, and I&#39;d add "Perl" in there somewhere, for others, and #zeromq for those searching on that tag
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-234" class="rowLink" href="#msg-234">
+                    [15:41]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    maybe
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-235" class="rowLink" href="#msg-235">
+                    [15:41]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    let&#39;s sort out the extent of the trademark first
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-236" class="rowLink" href="#msg-236">
+                    [15:41]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and after a while I&#39;ll deprecated ZeroMQ.pm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-237" class="rowLink" href="#msg-237">
+                    [15:41]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: it&#39;s kind of orthogonal
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-238" class="rowLink" href="#msg-238">
+                    [15:42]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if ZMQ is a trademark of zmqsoft
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-239" class="rowLink" href="#msg-239">
+                    [15:42]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it can become a problem
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-240" class="rowLink" href="#msg-240">
+                    [15:42]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    only if there&#39;s risk of confusion
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-241" class="rowLink" href="#msg-241">
+                    [15:42]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    plus the trademark holder does actually have to police it to some extent
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-242" class="rowLink" href="#msg-242">
+                    [15:42]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    right
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-243" class="rowLink" href="#msg-243">
+                    [15:43]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    plus there is no mention of trademarks on the ZMQsoft.com site
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-244" class="rowLink" href="#msg-244">
+                    [15:43]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but still, don&#39;t rename anything till the discussion is sorted out
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-245" class="rowLink" href="#msg-245">
+                    [15:43]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the repo name can have the word perl, but the module nor the distribution will *never* have the word perl on it. is that an issue?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-246" class="rowLink" href="#msg-246">
+                    [15:43]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: right.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-247" class="rowLink" href="#msg-247">
+                    [15:43]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lestrrat: that&#39;s normal and fine, of course
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-248" class="rowLink" href="#msg-248">
+                    [15:44]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    people can refer to the "Perl zmq module" which is very close to perfect
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-249" class="rowLink" href="#msg-249">
+                    [15:44]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but before you make this change, please do ask zeromq-dev for feedback, others may have better suggestions
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-250" class="rowLink" href="#msg-250">
+                    [15:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    here&#39;s the Debian thing mato pointed out:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-251" class="rowLink" href="#msg-251">
+                    [15:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://www.spi-inc.org/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-252" class="rowLink" href="#msg-252">
+                    [15:46]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ll let it sit while you guys decide on the trademark stuff ;)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-253" class="rowLink" href="#msg-253">
+                    [15:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    projects:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-254" class="rowLink" href="#msg-254">
+                    [15:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://www.spi-inc.org/projects/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-255" class="rowLink" href="#msg-255">
+                    [15:47]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: I&#39;m happy to accept patches, obviously
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-256" class="rowLink" href="#msg-256">
+                    [15:47]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyone who accuses me of hidden intentions can go jump in a deep lake :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-257" class="rowLink" href="#msg-257">
+                    [15:48]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lestrrat: the naming conventions for bindings does not depend on the trademark policy but rather drives it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-258" class="rowLink" href="#msg-258">
+                    [15:49]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it looks like an good option; the presence of projects that were bitten by trademark stuff should suggest that the policies there are sound
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-259" class="rowLink" href="#msg-259">
+                    [15:49]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    LibreOffice, Jenkins
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-260" class="rowLink" href="#msg-260">
+                    [15:49]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: since zmqsoft doesn&#39;t claim zmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-261" class="rowLink" href="#msg-261">
+                    [15:49]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    goodo
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-262" class="rowLink" href="#msg-262">
+                    [15:49]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    we can add that to the list
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-263" class="rowLink" href="#msg-263">
+                    [15:49]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-264" class="rowLink" href="#msg-264">
+                    [15:49]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the problems with Jenkins is a good example why clear policy is valuable
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-265" class="rowLink" href="#msg-265">
+                    [15:50]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    however a real policy has to grant rights forever, at no cost, and globally, etc.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-266" class="rowLink" href="#msg-266">
+                    [15:50]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    back...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-267" class="rowLink" href="#msg-267">
+                    [15:50]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which allows for hostile takeover, obviously
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-268" class="rowLink" href="#msg-268">
+                    [15:50]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    investigating further...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-269" class="rowLink" href="#msg-269">
+                    [15:53]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no, doesn&#39;t allow for hostile takeover
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-270" class="rowLink" href="#msg-270">
+                    [15:53]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hm, if you grant rights for the name to everyone
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-271" class="rowLink" href="#msg-271">
+                    [15:53]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ll make this clearer in a real text, I have the templates but they&#39;re even more unfriendly
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-272" class="rowLink" href="#msg-272">
+                    [15:53]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what prevents microsoft to just use the name?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-273" class="rowLink" href="#msg-273">
+                    [15:53]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you grant rights to specific uses
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-274" class="rowLink" href="#msg-274">
+                    [15:53]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    did you read what I wrote?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-275" class="rowLink" href="#msg-275">
+                    [15:53]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i did
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-276" class="rowLink" href="#msg-276">
+                    [15:53]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I tried to define what those uses were
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-277" class="rowLink" href="#msg-277">
+                    [15:54]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, it&#39;s your software, so from my perspective you guys can do what you wish wrt trademarks and stuff, and I&#39;ll comply to my best of abilities. the only thing I really care are my users -- if you tell me to do something that pisses my users off, I&#39;ll have the same reaction again, that&#39;s all.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-278" class="rowLink" href="#msg-278">
+                    [15:54]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sorry, slow typing.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-279" class="rowLink" href="#msg-279">
+                    [15:54]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lestrrat: the reason for getting you into this thread is that your case is one that helps us define a workable policy
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-280" class="rowLink" href="#msg-280">
+                    [15:54]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so I&#39;m really happy you responded
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-281" class="rowLink" href="#msg-281">
+                    [15:55]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: so once rights are granted they can&#39;t be removed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-282" class="rowLink" href="#msg-282">
+                    [15:55]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    reading it again... yes, it seems that 2 and 3 are not in conflict
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-283" class="rowLink" href="#msg-283">
+                    [15:56]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    indeed, but (2) needs to be worldwide, transferable, fully-paid up, and irrevocable
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-284" class="rowLink" href="#msg-284">
+                    [15:56]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    kind of
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-285" class="rowLink" href="#msg-285">
+                    [15:56]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    literally, that&#39;s the terminology
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-286" class="rowLink" href="#msg-286">
+                    [15:56]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I tried to reduce the word count for this draft because it&#39;s hard enough already
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-287" class="rowLink" href="#msg-287">
+                    [15:56]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so if your project is hosted under zeromq organisation at github
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-288" class="rowLink" href="#msg-288">
+                    [15:57]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it has right to use zeromq name
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-289" class="rowLink" href="#msg-289">
+                    [15:57]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    meaning, if the community accepts it as a "zeromq" project
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-290" class="rowLink" href="#msg-290">
+                    [15:57]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-291" class="rowLink" href="#msg-291">
+                    [15:57]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, it can make a website using the zeromq logo, and call itself "zeromq something"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-292" class="rowLink" href="#msg-292">
+                    [15:57]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which is precisely what we do
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-293" class="rowLink" href="#msg-293">
+                    [15:57]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then 3 states that imatix has to approve that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-294" class="rowLink" href="#msg-294">
+                    [15:57]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no, iMatix has to approve other uses
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-295" class="rowLink" href="#msg-295">
+                    [15:58]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah, 3 is confusing, I&#39;ll have to fix that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-296" class="rowLink" href="#msg-296">
+                    [15:58]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, please
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-297" class="rowLink" href="#msg-297">
+                    [15:58]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in fact I don&#39;t want any software product calling itself "zeromq" except packages of projects from the community
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-298" class="rowLink" href="#msg-298">
+                    [15:58]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not imatix packages, note, anyone&#39;s packages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-299" class="rowLink" href="#msg-299">
+                    [15:58]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I have to go, bbl
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-300" class="rowLink" href="#msg-300">
+                    [15:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    see you
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-301" class="rowLink" href="#msg-301">
+                    [15:59]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    please email the list, I won&#39;t be back on irc for 3-4 hours
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-302" class="rowLink" href="#msg-302">
+                    [16:01]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I read (3) as "you need to ask iMatix to use zeromq-related name (anywhere)" (and went WTF?!) of course, I was skimming
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-303" class="rowLink" href="#msg-303">
+                    [16:01]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the wording should much more clear
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-304" class="rowLink" href="#msg-304">
+                    [16:02]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    also, it transfers the governance of the trademarks to the zeromq github organisation admins
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-305" class="rowLink" href="#msg-305">
+                    [16:02]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it would be nice if that whole trademark thing had a layman&#39;s version along with the actual legal mumbo-jumbo
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-306" class="rowLink" href="#msg-306">
+                    [16:02]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (of which you are one of iirc)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-307" class="rowLink" href="#msg-307">
+                    [16:03]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which in turn would mean making the zeromq github organisation process much more trasparent
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-308" class="rowLink" href="#msg-308">
+                    [16:03]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yuck
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-309" class="rowLink" href="#msg-309">
+                    [16:04]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    also, tying the legal stuff (trademarks) to 3rd party (github) doesn&#39;t seem to be a good idea
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-310" class="rowLink" href="#msg-310">
+                    [16:05]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    looks like zmq is in need of a real foundation/neutral org?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-311" class="rowLink" href="#msg-311">
+                    [16:06]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    maybe
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-312" class="rowLink" href="#msg-312">
+                    [16:06]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the problem is that whoever you pass the trademarks to
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-313" class="rowLink" href="#msg-313">
+                    [16:06]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you still have to have a process to manage them
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-314" class="rowLink" href="#msg-314">
+                    [16:09]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just as a reference: the perl trademark stuff http://www.perlfoundation.org/perl_trademark
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-315" class="rowLink" href="#msg-315">
+                    [16:10]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and as a trivia, some random asshole filed to have the Perl trademark in Japan last year, and my organization (JPA) and Perl Foundation are jointly filing to get it repealed.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-316" class="rowLink" href="#msg-316">
+                    [16:11]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nice
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-317" class="rowLink" href="#msg-317">
+                    [16:11]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so again, I understand the need for trademarks and stuff ;)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-318" class="rowLink" href="#msg-318">
+                    [16:12]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yep, but as you see it&#39;s complex :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-319" class="rowLink" href="#msg-319">
+                    [16:13]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    actually, come to think of it, have you guys already filed for the trademark yet? if so, where?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-320" class="rowLink" href="#msg-320">
+                    [16:13]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    where, as in what country?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-321" class="rowLink" href="#msg-321">
+                    [16:14]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nope, it&#39;s just trademark by acclamation
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-322" class="rowLink" href="#msg-322">
+                    [16:15]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which, afaiu, means that you say "i own this trademark"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-323" class="rowLink" href="#msg-323">
+                    [16:15]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    meaning that you claim the name
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-324" class="rowLink" href="#msg-324">
+                    [16:15]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but does that actually have an actual effect?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-325" class="rowLink" href="#msg-325">
+                    [16:15]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-326" class="rowLink" href="#msg-326">
+                    [16:15]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but obviously, others may claim the same name
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-327" class="rowLink" href="#msg-327">
+                    [16:16]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s why you have *registered* trademarks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-328" class="rowLink" href="#msg-328">
+                    [16:16]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I mean, can you go to court with it?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-329" class="rowLink" href="#msg-329">
+                    [16:16]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    aaah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-330" class="rowLink" href="#msg-330">
+                    [16:16]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i am not a lawyer though
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-331" class="rowLink" href="#msg-331">
+                    [16:18]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, when/if you&#39;re going to register it in Japan, call me up. I should be able to help
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-332" class="rowLink" href="#msg-332">
+                    [16:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-333" class="rowLink" href="#msg-333">
+                    [16:19]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    on that note. bed &amp;. thanks for putting up with my general pissiness
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-334" class="rowLink" href="#msg-334">
+                    [16:20]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-335" class="rowLink" href="#msg-335">
+                    [16:20]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    good night
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-336" class="rowLink" href="#msg-336">
+                    [17:58]  jond
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: you there
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-337" class="rowLink" href="#msg-337">
+                    [19:25]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    finally getting to hack on some zmq!  This is so awesome
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-338" class="rowLink" href="#msg-338">
+                    [20:02]  joelr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: did you say high water marking was a bad idea but you can&#39;t remove it for compatibility with prior versions?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-339" class="rowLink" href="#msg-339">
+                    [20:03]  joelr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or was that pieterh
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-340" class="rowLink" href="#msg-340">
+                    [20:17]  joelr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-341" class="rowLink" href="#msg-341">
+                    [21:24]  kdj
+                    </a>
+                </td>
+                <td class="message-cell">
+                    michelp: What are you doing with zmq?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-342" class="rowLink" href="#msg-342">
+                    [21:24]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    kdj, supercomputing :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-343" class="rowLink" href="#msg-343">
+                    [21:25]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    working on a pythonic version of the &#39;xector&#39; concept from The Connection Machine http://books.google.com/books?id=xg_yaoC6CNEC&amp;lpg=PA33&amp;ots=t_WvQyivrL&amp;dq=xector%20connection%20machine&amp;pg=PA34#v=onepage&amp;q=xector%20connection%20machine&amp;f=false
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-344" class="rowLink" href="#msg-344">
+                    [21:27]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    although what i&#39;m doing is more like a distributed hash table that looks like a dict or a set, than what the book there is talking about, but the differences are pretty minor
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-345" class="rowLink" href="#msg-345">
+                    [21:31]  kdj
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Awesome
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-346" class="rowLink" href="#msg-346">
+                    [21:37]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the zmq code is like 10 lines tops, and i have a fully distributed data set, i didn&#39;t think it would be *that* easy
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-347" class="rowLink" href="#msg-347">
+                    [21:43]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    michelp, you should do it in a Lisp
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-348" class="rowLink" href="#msg-348">
+                    [21:43]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just to be closer to spirit of CM
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-349" class="rowLink" href="#msg-349">
+                    [21:43]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    though also because Lisp is cool
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-350" class="rowLink" href="#msg-350">
+                    [21:44]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Guthur, it crossed my mind.  I have been dipping into the lisp more lately
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-351" class="rowLink" href="#msg-351">
+                    [21:44]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s been a while, i&#39;m rusty :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-352" class="rowLink" href="#msg-352">
+                    [21:44]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    michelp, Scheme or Common Lisp
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-353" class="rowLink" href="#msg-353">
+                    [21:46]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lisp would definitely make it easier to ship s-expressions to worker nodes to crunch in parallel, data and programs being the same thing in lisp
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-354" class="rowLink" href="#msg-354">
+                    [21:46]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    right now i&#39;m shipping literal python code strings and eval&#39;ing them :(
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-355" class="rowLink" href="#msg-355">
+                    [21:47]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    michelp, I implement something like this quite recently
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-356" class="rowLink" href="#msg-356">
+                    [21:47]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    to parallel a CL based testing framework
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-357" class="rowLink" href="#msg-357">
+                    [21:47]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s pretty amazing to think that all this map and reduce hotness everyone is abuzz about now was a core part of this architecture in 1984
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-358" class="rowLink" href="#msg-358">
+                    [21:48]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I defined a small DSL for my test cases, then send them to workers to process
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-359" class="rowLink" href="#msg-359">
+                    [21:48]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the test cases were reasonable long running as they involved a number HTTP request/responses to a server, and taking  ~25 secs each
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-360" class="rowLink" href="#msg-360">
+                    [21:49]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    whoa nice.  our functional tests take pretty long to
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-361" class="rowLink" href="#msg-361">
+                    [21:49]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    too
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-362" class="rowLink" href="#msg-362">
+                    [21:49]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    using that approach would probably save us some serious sitting around time
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-363" class="rowLink" href="#msg-363">
+                    [21:50]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    CL is brilliant for makings DSLs, and ZeroMQ is great for &#39;divide and conqueror&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-364" class="rowLink" href="#msg-364">
+                    [21:51]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well after a little more spiking i might go that route
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-365" class="rowLink" href="#msg-365">
+                    [21:52]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the api for this thing will eventually just be REST, so the language it&#39;s implemented in is irrelevant, and I might was well pick the one most suited for the job
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-366" class="rowLink" href="#msg-366">
+                    [22:17]  Seta00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    who&#39;s the maintainer of the C++ wrapper?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-367" class="rowLink" href="#msg-367">
+                    [22:21]  Gambit--
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hello people
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-368" class="rowLink" href="#msg-368">
+                    [22:22]  Gambit--
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m testing out some pub/sub behaviors, and I noted that using the stock test cases in python - and also in my C code - if a tcp socket gets closed between a publisher and a subscriber (that is, the subscribers connection gets reset), and the subscriber reconnects, then the subscriber at that point forward receives two copies of every message.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-369" class="rowLink" href="#msg-369">
+                    [22:23]  Gambit--
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://pastebin.com/JJ80vaUU has the sample code I&#39;m working from.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-370" class="rowLink" href="#msg-370">
+                    [22:24]  Gambit--
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ve also validated this behavior in both 2.0, and also 2.1.7
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-371" class="rowLink" href="#msg-371">
+                    [22:24]  Gambit--
+                    </a>
+                </td>
+                <td class="message-cell">
+                    My question is - is this expected and what can I do to prevent this from occurring?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-372" class="rowLink" href="#msg-372">
+                    [22:29]  Seta00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh, the description of libzfl on github links to http://libzfun.zeromq.org, which doesn&#39;t exist.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-373" class="rowLink" href="#msg-373">
+                    [22:29]  Seta00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh, same with http://libzfl.zeromq.org/manual:libzfl#toc7 linking to http://libzap.zeromq.org/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-374" class="rowLink" href="#msg-374">
+                    [22:38]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    joelr: nodoby said that as far as i am aware
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-375" class="rowLink" href="#msg-375">
+                    [22:39]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    maybe you&#39;ve meant explicit identities?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-376" class="rowLink" href="#msg-376">
+                    [22:39]  joelr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: so there&#39;s no conceptual problem with queuing up messages on the sending or receiving side?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-377" class="rowLink" href="#msg-377">
+                    [22:39]  joelr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: yes, maybe that was it. explicit identities. the two things are very closely related, though, no?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-378" class="rowLink" href="#msg-378">
+                    [22:39]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nope
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-379" class="rowLink" href="#msg-379">
+                    [22:39]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    they get queued on both sides
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-380" class="rowLink" href="#msg-380">
+                    [22:39]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    depending on the capacity of link in between
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-381" class="rowLink" href="#msg-381">
+                    [22:40]  joelr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so what is the problem with explicit identities then?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-382" class="rowLink" href="#msg-382">
+                    [22:41]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it kind of introduces "persistent" messaging into fully transient system
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-383" class="rowLink" href="#msg-383">
+                    [22:41]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it does so lousily of course
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-384" class="rowLink" href="#msg-384">
+                    [22:41]  joelr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm... i see
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-385" class="rowLink" href="#msg-385">
+                    [22:42]  joelr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: so how would you queue up messages for a particular disconnected subscriber without explicit identity?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-386" class="rowLink" href="#msg-386">
+                    [22:42]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you won&#39;t
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-387" class="rowLink" href="#msg-387">
+                    [22:42]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s why people don&#39;t want to have it dropped
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-388" class="rowLink" href="#msg-388">
+                    [22:42]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and that&#39;s why it&#39;s staying
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-389" class="rowLink" href="#msg-389">
+                    [22:43]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but in general, it&#39;s a bad idea
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-390" class="rowLink" href="#msg-390">
+                    [22:43]  joelr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: i don&#39;t understand why
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-391" class="rowLink" href="#msg-391">
+                    [22:43]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you are going to loose messages anyway
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-392" class="rowLink" href="#msg-392">
+                    [22:44]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and you put a burden on the peer to handle your resources forever
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-393" class="rowLink" href="#msg-393">
+                    [22:44]  joelr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: so are you are suggesting to fetch old messages using a timestamp or similar means, without relying on the system not to lose messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-394" class="rowLink" href="#msg-394">
+                    [22:45]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the reasoning is going like this:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-395" class="rowLink" href="#msg-395">
+                    [22:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you don&#39;t want the peer to fail bacause of OOM you have to set HWM
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-396" class="rowLink" href="#msg-396">
+                    [22:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    when you disconnect, the messages currently on fly are dropped
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-397" class="rowLink" href="#msg-397">
+                    [22:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    when the HWM is reached on the peer the messages are dropped as well
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-398" class="rowLink" href="#msg-398">
+                    [22:47]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so, when you reconnect, you&#39;ll get a random sequence of messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-399" class="rowLink" href="#msg-399">
+                    [22:47]  joelr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I see now
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-400" class="rowLink" href="#msg-400">
+                    [22:47]  joelr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: thanks for the explanation!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-401" class="rowLink" href="#msg-401">
+                    [22:47]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    np
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-402" class="rowLink" href="#msg-402">
+                    [22:49]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in short, explicit identities are not honest
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-403" class="rowLink" href="#msg-403">
+                    [22:49]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    as they kind of offer guaranteed messaging
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-404" class="rowLink" href="#msg-404">
+                    [22:49]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but in fact they don&#39;t
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-405" class="rowLink" href="#msg-405">
+                    [22:50]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bye
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-406" class="rowLink" href="#msg-406">
+                    [22:50]  Seta00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    .br :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-407" class="rowLink" href="#msg-407">
+                    [23:40]  Gambit--
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I have a pub/sub question.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-408" class="rowLink" href="#msg-408">
+                    [23:41]  Gambit--
+                    </a>
+                </td>
+                <td class="message-cell">
+                    If the publisher hasn&#39;t sent anything, the subscriber doesn&#39;t send anything either, correct?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-409" class="rowLink" href="#msg-409">
+                    [23:46]  Toba
+                    </a>
+                </td>
+                <td class="message-cell">
+                    subscribers don&#39;t send.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-410" class="rowLink" href="#msg-410">
+                    [23:47]  Gambit--
+                    </a>
+                </td>
+                <td class="message-cell">
+                    They send tcp acknowledgements.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-411" class="rowLink" href="#msg-411">
+                    [23:47]  Gambit--
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but I&#39;m guessing no 0mq frames acknowledging receipt?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-412" class="rowLink" href="#msg-412">
+                    [23:48]  Gambit--
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there&#39;s an interesting side effect of this - the subscriber has no way of knowing if the other box just goes away.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-413" class="rowLink" href="#msg-413">
+                    [23:58]  ncadou
+                    </a>
+                </td>
+                <td class="message-cell">
+                    regarding the pyzmq vs buildout and continuous integration problem of yesterday, i figured it out: http://nicolascadou.com/blog/2011/05/continuous-integration-on-a-zc-buildout-managed-project-with-pyzmq/
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

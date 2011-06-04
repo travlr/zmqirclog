@@ -1,0 +1,5243 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Wednesday June 2, 2010</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [08:00]  sjampoo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    morning, is the pollset and waitfd as discussed on the mailing list going to be part of 2.0.7 or is this something which will be implemented somewhere in the future? I would love to have an estimate on that, ie a month / a year.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [08:15]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jugg: yes, see zmq_tcp(7)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [08:21]  jugg
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [08:22]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sjampoo: i&#39;ll add it after 2.0.7 release
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [08:22]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    however, the API would still be unstable
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [08:23]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    presumably, it can be done in better way
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [08:23]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    everything depends on performance impact
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [11:43]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: are you there?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [12:03]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [12:03]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: you wrote that ZMQ_HWM is per-peer, what happens where there are no peers?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [12:04]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    exceptional behaviour is triggered
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [12:04]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    drop/block
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [12:04]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, but when?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [12:04]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    on send
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [12:05]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, but immediately, right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [12:05]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    right
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [12:53]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: the problem i&#39;m having is that it&#39;s impossible to explain flow control accurately without dealing with the *actual* peers connected on a socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [12:54]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: this is further complicated by the fact that the term "connect" is overloaded
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [12:55]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: for example, it&#39;s really hard to explain coherently the state when a socket "has no peers"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [12:56]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: which means that it has been connected with zmq_connect(), but no peers exist
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [13:05]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: don&#39;t even try to explain that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [13:05]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what has to be documented is
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [13:05]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    1. dealing with overloads (drop vs. block)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [13:06]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    2. HWM socket option - this is used to prevent out-of-memory rather than for flow control
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [13:07]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: it&#39;s impossible to explain accurately what HWM *means* without dealing with the existence of the individual message queues associated with a socket!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [13:07]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    same for drop/blocking behaviour
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [13:08]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [13:08]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [13:08]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    HWM is maximal number of messages destined for one peer that the socket may hold
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [13:09]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the connection doesn&#39;t have to exist
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [13:09]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    even the peer may not be running at the moment
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [13:10]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the problem is "the connection" != "the socket connection"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [13:10]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i prefer to say "there&#39;s no concept of connections in 0mq"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [13:11]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then we need to rename the concept of connections to something else :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [13:11]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what do you mean by connection?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [13:11]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sctp got around this by using the term "association" IIRC
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [13:12]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: what i mean by connection is the "something" created by zmq_connect() or zmq_bind() :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [13:13]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bind creates nothing, just an endpoint
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [13:13]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    a name
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [13:13]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    do you mean message pipe/queue?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [13:13]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and connect? does what? :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [13:13]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    attaches to endpoint + creates a queue
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [13:14]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bind just creates the endpoint, creation of associated queue is async
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [13:14]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    queues*
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [13:14]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but that&#39;s invisible to user
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [13:14]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and - imo - should not be mentioned in documentation
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [13:14]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what user needs to know is:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [13:15]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    1. socket may spak to multiple peers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [13:15]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    2. socket has a routing algorithm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [13:15]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (which decides which peer gets which message)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [13:15]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    3. HWM limits number of messages routed to particular peer
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [13:16]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    messages in memory*
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [13:22]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    see, with 1. the terminology problem kicks in again:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [13:22]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    current doc:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [13:22]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    A
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [13:22]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    &#39;ZMQ_REQ&#39; socket may be connected to multiple peers; each request sent is
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [13:22]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    load-balanced among all connected peers.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [13:24]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, what&#39;s the problem with that?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [13:24]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    "connected" word?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [13:24]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i think so
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [13:25]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just drop it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [13:25]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    "load-balanced among all peers."
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [13:25]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s more precise actually
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [13:37]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    crap, i still don&#39;t know how to explain the relationship between socket &lt;-&gt; endpoints &lt;-&gt; queues &lt;-&gt; peers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [13:40]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [13:40]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: let me try and put my problem another way
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [13:40]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you keep saying that "there are no connections", and that we should not talk about them in the documentation
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [13:41]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but the explanation of ZMQ_HWM is directly dependent on the individual connections to peers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [13:41]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or at least the queues created by those connections
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [13:42]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there&#39;s a peer
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [13:42]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there&#39;s a queue associated with the peer
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [13:43]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    actual connection to the peer is invisible to the user
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [13:43]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so i do need to talk about the queues associated with a socket&#39;s peers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [13:43]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what&#39;s wrong with the explanaition above:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [13:43]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik&gt; 1. socket may spak to multiple peers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [13:43]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    &lt;sustrik&gt; 2. socket has a routing algorithm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [13:43]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    &lt;sustrik&gt; (which decides which peer gets which message)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [13:43]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    &lt;sustrik&gt; 3. HWM limits number of messages routed to particular peer
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [13:44]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s not an explanation
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [13:44]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [13:45]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it needs to be uncompressed :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [13:47]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah, ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [13:47]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyway, i&#39;m trying
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [13:47]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    maybe it&#39;d help if you were sitting next to me ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [13:51]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [13:51]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    let&#39;s give it one more try
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [13:52]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    socket may speak to multiple peers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [13:52]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if we get it right you won&#39;t have to answer nearly as many emails :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-89" class="rowLink" href="#msg-89">
+                    [13:52]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, i know
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-90" class="rowLink" href="#msg-90">
+                    [13:52]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    actually, it&#39;s not even peers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-91" class="rowLink" href="#msg-91">
+                    [13:53]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    because the peer may not even be running at the moment
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-92" class="rowLink" href="#msg-92">
+                    [13:53]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    see, there is a concept missing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-93" class="rowLink" href="#msg-93">
+                    [13:53]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what about endpoint
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-94" class="rowLink" href="#msg-94">
+                    [13:53]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    we use that. no?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-95" class="rowLink" href="#msg-95">
+                    [13:53]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so, there are endpoints on the network
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-96" class="rowLink" href="#msg-96">
+                    [13:53]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, but at the moment we talk about connecting to endpoints, which overloads the word connect
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-97" class="rowLink" href="#msg-97">
+                    [13:54]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    they are pure virtual entities
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-98" class="rowLink" href="#msg-98">
+                    [13:54]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    such as multicast group
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-99" class="rowLink" href="#msg-99">
+                    [13:54]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there&#39;s no real thing corresponding to multicast group, right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-100" class="rowLink" href="#msg-100">
+                    [13:54]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not really
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-101" class="rowLink" href="#msg-101">
+                    [13:54]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s just a name
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-102" class="rowLink" href="#msg-102">
+                    [13:54]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ideal concept
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-103" class="rowLink" href="#msg-103">
+                    [13:55]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the 0MQ endpoint is the same kind of thing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-104" class="rowLink" href="#msg-104">
+                    [13:55]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    now, a socket can "implement" the endpoint
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-105" class="rowLink" href="#msg-105">
+                    [13:55]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    by binding to it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-106" class="rowLink" href="#msg-106">
+                    [13:56]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    another socket may announce it&#39;s desire to speak to a particular endpoint
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-107" class="rowLink" href="#msg-107">
+                    [13:56]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (same thing as joining a multicast group)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-108" class="rowLink" href="#msg-108">
+                    [13:56]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s "connect"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-109" class="rowLink" href="#msg-109">
+                    [13:57]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the whole point is that there may be no application associated with particular endpoint
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-110" class="rowLink" href="#msg-110">
+                    [13:57]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    endpoint = name
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-111" class="rowLink" href="#msg-111">
+                    [13:58]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    each socket is speaking to multiple peers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-112" class="rowLink" href="#msg-112">
+                    [13:58]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it does so either by binding to an endpoint or connecting to an endpoint
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-113" class="rowLink" href="#msg-113">
+                    [13:58]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    "speaking to" is not a technical term :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-114" class="rowLink" href="#msg-114">
+                    [13:58]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    communicating
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-115" class="rowLink" href="#msg-115">
+                    [14:00]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how does one refer to a peer a socket is communicating with?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-116" class="rowLink" href="#msg-116">
+                    [14:00]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    peer?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-117" class="rowLink" href="#msg-117">
+                    [14:01]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyway, the problem is that peers may not be alive, online and reading messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-118" class="rowLink" href="#msg-118">
+                    [14:01]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in such case we may limit number of messages in memory destined for a single peer by setting HWM
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-119" class="rowLink" href="#msg-119">
+                    [14:02]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i know, the whole explanation is creaky, but at least it gives some intuitive insight
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-120" class="rowLink" href="#msg-120">
+                    [14:03]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    creaky, yes :-(
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-121" class="rowLink" href="#msg-121">
+                    [14:07]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: so you don&#39;t want to talk about message queues associated with sockets at all?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-122" class="rowLink" href="#msg-122">
+                    [14:08]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    do we need to?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-123" class="rowLink" href="#msg-123">
+                    [14:08]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i am a fan of occam&#39;s razor
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-124" class="rowLink" href="#msg-124">
+                    [14:09]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, let me try and see if i can explain everything by removing all references to "message queue associated with socket ..." :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-125" class="rowLink" href="#msg-125">
+                    [14:09]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ;)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-126" class="rowLink" href="#msg-126">
+                    [14:29]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: ok, read this:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-127" class="rowLink" href="#msg-127">
+                    [14:30]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    The &#39;ZMQ_HWM&#39; option shall set the high water mark for the specified &#39;socket&#39;.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-128" class="rowLink" href="#msg-128">
+                    [14:30]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    The high water mark is a hard limit on the maximum number of outstanding
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-129" class="rowLink" href="#msg-129">
+                    [14:30]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    messages 0MQ shall queue in memory for any single peer that the specified
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-130" class="rowLink" href="#msg-130">
+                    [14:30]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    &#39;socket&#39; is communicating with.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-131" class="rowLink" href="#msg-131">
+                    [14:30]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    If this limit has been reached for all peers then the socket shall enter an
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-132" class="rowLink" href="#msg-132">
+                    [14:30]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    exceptional state, and depending on the socket type 0MQ shall take appropriate
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-133" class="rowLink" href="#msg-133">
+                    [14:30]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    action such as blocking or dropping newly sent messages; refer to
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-134" class="rowLink" href="#msg-134">
+                    [14:30]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    linkzmq:zmq_socket[3] for details. The exceptional state shall persist until
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-135" class="rowLink" href="#msg-135">
+                    [14:30]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the number of outstanding messages for at least one peer falls below the low
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-136" class="rowLink" href="#msg-136">
+                    [14:30]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    water mark; the low water mark shall be computed automatically by 0MQ.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-137" class="rowLink" href="#msg-137">
+                    [14:30]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    avoids using the term "connected to" anywhere
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-138" class="rowLink" href="#msg-138">
+                    [14:30]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or mentioning message queues
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-139" class="rowLink" href="#msg-139">
+                    [14:31]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i can even change "shall queue in memory" to "shall hold in memory" if queue is a no-no :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-140" class="rowLink" href="#msg-140">
+                    [14:31]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    doesn&#39;t matter
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-141" class="rowLink" href="#msg-141">
+                    [14:31]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: further, then related to this, the following paragraph for ZMQ_REQ:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-142" class="rowLink" href="#msg-142">
+                    [14:31]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in zmq_socket(3)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-143" class="rowLink" href="#msg-143">
+                    [14:31]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the problem is that it&#39;s not true
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-144" class="rowLink" href="#msg-144">
+                    [14:31]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what is not true?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-145" class="rowLink" href="#msg-145">
+                    [14:32]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the part about the exceptional state
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-146" class="rowLink" href="#msg-146">
+                    [14:32]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what you&#39;ve written applies to sat REQ/REP
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-147" class="rowLink" href="#msg-147">
+                    [14:32]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    doesn&#39;t apply to PUB/SUB
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-148" class="rowLink" href="#msg-148">
+                    [14:32]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm, crap, ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-149" class="rowLink" href="#msg-149">
+                    [14:32]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-150" class="rowLink" href="#msg-150">
+                    [14:32]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    try to express it in a simple manner
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-151" class="rowLink" href="#msg-151">
+                    [14:33]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so how about we keep the 1st paragraph only?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-152" class="rowLink" href="#msg-152">
+                    [14:33]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and then refer to the individual socket types?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-153" class="rowLink" href="#msg-153">
+                    [14:33]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-154" class="rowLink" href="#msg-154">
+                    [14:33]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    1st paragraph being this bit:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-155" class="rowLink" href="#msg-155">
+                    [14:33]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    The &#39;ZMQ_HWM&#39; option shall set the high water mark for the specified &#39;socket&#39;.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-156" class="rowLink" href="#msg-156">
+                    [14:33]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    The high water mark is a hard limit on the maximum number of outstanding
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-157" class="rowLink" href="#msg-157">
+                    [14:33]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    messages 0MQ shall queue in memory for any single peer that the specified
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-158" class="rowLink" href="#msg-158">
+                    [14:33]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    &#39;socket&#39; is communicating with.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-159" class="rowLink" href="#msg-159">
+                    [14:33]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-160" class="rowLink" href="#msg-160">
+                    [14:33]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, so then the relevant paragraph for REQ sockets:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-161" class="rowLink" href="#msg-161">
+                    [14:33]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    When a &#39;ZMQ_REQ&#39; socket enters an exceptional state due to having reached the
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-162" class="rowLink" href="#msg-162">
+                    [14:33]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    high water mark for all peers, or if there are no peers at all, then any
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-163" class="rowLink" href="#msg-163">
+                    [14:33]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    _zmq_send()_ operations on the socket shall block until the exceptional state
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-164" class="rowLink" href="#msg-164">
+                    [14:33]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ends or at least one peer is connected; messages are not discarded.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-165" class="rowLink" href="#msg-165">
+                    [14:33]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    makes sense?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-166" class="rowLink" href="#msg-166">
+                    [14:34]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i still have a problem there with "at least one peer is connected"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-167" class="rowLink" href="#msg-167">
+                    [14:34]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    note the careful absence of "connecting" anywhere else :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-168" class="rowLink" href="#msg-168">
+                    [14:35]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    "until at least one peer becomes available for sending"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-169" class="rowLink" href="#msg-169">
+                    [14:36]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    do i want to talk about when exactly the exceptional state ends?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-170" class="rowLink" href="#msg-170">
+                    [14:36]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or just be vague and mysterious?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-171" class="rowLink" href="#msg-171">
+                    [14:36]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    be vague
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-172" class="rowLink" href="#msg-172">
+                    [14:36]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it depends on lwm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-173" class="rowLink" href="#msg-173">
+                    [14:36]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which is invisible
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-174" class="rowLink" href="#msg-174">
+                    [14:36]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :-(
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-175" class="rowLink" href="#msg-175">
+                    [14:36]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what&#39;s wrong with that?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-176" class="rowLink" href="#msg-176">
+                    [14:36]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you have the same thing with TCP
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-177" class="rowLink" href="#msg-177">
+                    [14:37]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-178" class="rowLink" href="#msg-178">
+                    [14:37]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and you even don&#39;t realise it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-179" class="rowLink" href="#msg-179">
+                    [14:38]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: can i use the following summary table for sockets:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-180" class="rowLink" href="#msg-180">
+                    [14:38]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    .Summary of ZMQ_REQ characteristics
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-181" class="rowLink" href="#msg-181">
+                    [14:38]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Compatible peer sockets:: &#39;ZMQ_REP&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-182" class="rowLink" href="#msg-182">
+                    [14:38]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Direction:: Bidirectional
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-183" class="rowLink" href="#msg-183">
+                    [14:38]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Send/receive pattern:: Send, Receive, Send, Receive, ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-184" class="rowLink" href="#msg-184">
+                    [14:38]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Queuing strategy:: Load-balanced
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-185" class="rowLink" href="#msg-185">
+                    [14:39]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Flow control:: Block
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-186" class="rowLink" href="#msg-186">
+                    [14:39]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    maybe queueing strategy should be "Routing strategy" ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-187" class="rowLink" href="#msg-187">
+                    [14:40]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and Flow control should be called something else, "ZMQ_HWM behaviour" ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-188" class="rowLink" href="#msg-188">
+                    [14:41]  lvh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Is it just me, or did 0MQ involve a broker some time ago?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-189" class="rowLink" href="#msg-189">
+                    [14:41]  lvh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m seeing all this brokerless stuff and I don&#39;t get it.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-190" class="rowLink" href="#msg-190">
+                    [14:41]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lvh: no, it never did... there was a zmq_locator in 1.x but that did something else
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-191" class="rowLink" href="#msg-191">
+                    [14:42]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: halo?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-192" class="rowLink" href="#msg-192">
+                    [14:42]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: here i am
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-193" class="rowLink" href="#msg-193">
+                    [14:42]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: see above
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-194" class="rowLink" href="#msg-194">
+                    [14:42]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-195" class="rowLink" href="#msg-195">
+                    [14:42]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    send/receive patter is kind of funny
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-196" class="rowLink" href="#msg-196">
+                    [14:43]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but i don&#39;t care
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-197" class="rowLink" href="#msg-197">
+                    [14:43]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    brian suggested that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-198" class="rowLink" href="#msg-198">
+                    [14:43]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-199" class="rowLink" href="#msg-199">
+                    [14:43]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and the others?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-200" class="rowLink" href="#msg-200">
+                    [14:43]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there are actually two strategies
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-201" class="rowLink" href="#msg-201">
+                    [14:43]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    one for outgoing messages, one for incoming messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-202" class="rowLink" href="#msg-202">
+                    [14:44]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    say REQ load balances outgoing messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-203" class="rowLink" href="#msg-203">
+                    [14:44]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, that makes sense
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-204" class="rowLink" href="#msg-204">
+                    [14:44]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what it does with incoming messages you don&#39;t really care
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-205" class="rowLink" href="#msg-205">
+                    [14:44]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and receives only from the peer it sent the last request to
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-206" class="rowLink" href="#msg-206">
+                    [14:45]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm, how can I put that in one sentence...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-207" class="rowLink" href="#msg-207">
+                    [14:45]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, for say REP socket, the incoming stratege is fair queueing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-208" class="rowLink" href="#msg-208">
+                    [14:45]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    strategy*
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-209" class="rowLink" href="#msg-209">
+                    [14:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    wouldn&#39;t it be better to explain what the socket does in one sentence
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-210" class="rowLink" href="#msg-210">
+                    [14:46]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I do that already
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-211" class="rowLink" href="#msg-211">
+                    [14:46]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but I wanted a summary table in there
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-212" class="rowLink" href="#msg-212">
+                    [14:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    instead of splitting it into 4 different rows in a table
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-213" class="rowLink" href="#msg-213">
+                    [14:46]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: if you were here you would see what i have on my screen :-(
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-214" class="rowLink" href="#msg-214">
+                    [14:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, let&#39;s go through the table
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-215" class="rowLink" href="#msg-215">
+                    [14:47]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    comaptible sockets is OK
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-216" class="rowLink" href="#msg-216">
+                    [14:47]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    do we want a table or not?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-217" class="rowLink" href="#msg-217">
+                    [14:47]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I thought it would be good to explain in prose first, and then have a table at the end
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-218" class="rowLink" href="#msg-218">
+                    [14:47]  lvh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Okay. We have a bunch of entry points for mobile devices that speak JSON-over-HTTPS and Thrift-over-SSL. They send stuff to an AMQP broker (RabbitMQ): a queue for persisting, which roundrobins stuff to persisters that write to a database, and then a pubsub thing for a live web interface. I don&#39;t understand how you do the load balancing bit in ZMQ. How do persisters register? How do they know *where* to register if there is no central
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-219" class="rowLink" href="#msg-219">
+                    [14:47]  lvh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    broker?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-220" class="rowLink" href="#msg-220">
+                    [14:48]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: i would omit the strategies from the table, they are explained in the text already
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-221" class="rowLink" href="#msg-221">
+                    [14:49]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: well, the table is nice for a quick look
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-222" class="rowLink" href="#msg-222">
+                    [14:49]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: if it can be done for all sockets correctly
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-223" class="rowLink" href="#msg-223">
+                    [14:49]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lvh: so devices are sending messages to a central node (broker) which then load-balances them among persisters, right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-224" class="rowLink" href="#msg-224">
+                    [14:49]  lvh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: Yes, that&#39;s one part of the behavior
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-225" class="rowLink" href="#msg-225">
+                    [14:49]  lvh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: Let&#39;s focus on that now :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-226" class="rowLink" href="#msg-226">
+                    [14:50]  lvh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: That&#39;s a single AMQP queue.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-227" class="rowLink" href="#msg-227">
+                    [14:50]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: you can try but strategies need textual description anyway
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-228" class="rowLink" href="#msg-228">
+                    [14:50]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lvh: is that req/rep scenario?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-229" class="rowLink" href="#msg-229">
+                    [14:50]  lvh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    What does the failure mode look like? What happens to messages when a persister grabs a message and then blows up?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-230" class="rowLink" href="#msg-230">
+                    [14:50]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    are the persisters sending replies back to the devices?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-231" class="rowLink" href="#msg-231">
+                    [14:51]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lvh: unreliable
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-232" class="rowLink" href="#msg-232">
+                    [14:51]  lvh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: Ideally yes, to confirm "hey I wrote this thing and the db says its okay"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-233" class="rowLink" href="#msg-233">
+                    [14:51]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can run zmq_queue in the middle
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-234" class="rowLink" href="#msg-234">
+                    [14:51]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s lika an AMQP queue
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-235" class="rowLink" href="#msg-235">
+                    [14:52]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then both devices and persisters can connect to it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-236" class="rowLink" href="#msg-236">
+                    [14:52]  lvh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Okay, cool :-) I&#39;ll read up on that one.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-237" class="rowLink" href="#msg-237">
+                    [14:52]  lvh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: How about the pubsubbing? Is that with zmq_queue too?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-238" class="rowLink" href="#msg-238">
+                    [14:52]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no, that&#39;s zmq_forwarder
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-239" class="rowLink" href="#msg-239">
+                    [14:53]  lvh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Aha! Okay, I&#39;ll read the docs for those two and try to figure it out. Thanks! :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-240" class="rowLink" href="#msg-240">
+                    [14:54]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: so what&#39;s the incoming strategy for ZMQ_SUB?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-241" class="rowLink" href="#msg-241">
+                    [14:56]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    fair-queuing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-242" class="rowLink" href="#msg-242">
+                    [14:59]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    does this work:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-243" class="rowLink" href="#msg-243">
+                    [15:00]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    REQ:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-244" class="rowLink" href="#msg-244">
+                    [15:00]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Compatible peer sockets:: &#39;ZMQ_REP&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-245" class="rowLink" href="#msg-245">
+                    [15:00]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Direction:: Bidirectional
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-246" class="rowLink" href="#msg-246">
+                    [15:00]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Send/receive pattern:: Send, Receive, Send, Receive, ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-247" class="rowLink" href="#msg-247">
+                    [15:00]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Outgoing routing strategy:: Load-balanced
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-248" class="rowLink" href="#msg-248">
+                    [15:00]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Incoming routing strategy:: Last peer
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-249" class="rowLink" href="#msg-249">
+                    [15:00]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Flow control:: Block
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-250" class="rowLink" href="#msg-250">
+                    [15:00]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    REP:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-251" class="rowLink" href="#msg-251">
+                    [15:00]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Compatible peer sockets:: &#39;ZMQ_REQ&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-252" class="rowLink" href="#msg-252">
+                    [15:00]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Direction:: Bidirectional
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-253" class="rowLink" href="#msg-253">
+                    [15:00]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Send/receive pattern:: Receive, Send, Receive, Send, ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-254" class="rowLink" href="#msg-254">
+                    [15:00]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Incoming routing strategy:: Fair-queued
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-255" class="rowLink" href="#msg-255">
+                    [15:00]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Outgoing routing stratagy:: Last peer
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-256" class="rowLink" href="#msg-256">
+                    [15:00]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Flow control:: Drop
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-257" class="rowLink" href="#msg-257">
+                    [15:02]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you have it mixed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-258" class="rowLink" href="#msg-258">
+                    [15:02]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the upper is ZMQ_REQ
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-259" class="rowLink" href="#msg-259">
+                    [15:03]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the lower is ZMQ_REP
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-260" class="rowLink" href="#msg-260">
+                    [15:03]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s what i wrote
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-261" class="rowLink" href="#msg-261">
+                    [15:03]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: what i&#39;m asking is whether that kind of table makes sense
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-262" class="rowLink" href="#msg-262">
+                    [15:03]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oh, orry
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-263" class="rowLink" href="#msg-263">
+                    [15:04]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sorry
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-264" class="rowLink" href="#msg-264">
+                    [15:04]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, it makes sense
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-265" class="rowLink" href="#msg-265">
+                    [15:04]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the reason i want to put it in there beside the prose is brian wrote:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-266" class="rowLink" href="#msg-266">
+                    [15:04]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    In my understanding, 0MQ sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-267" class="rowLink" href="#msg-267">
+                    [15:04]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    can be described in a uniform manner by specifying things like:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-268" class="rowLink" href="#msg-268">
+                    [15:04]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    * Bidirectional or unidirectional
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-269" class="rowLink" href="#msg-269">
+                    [15:04]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    * send/recv pattern (ssssss, rrrrrrr, srsrsrsr, etc.)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-270" class="rowLink" href="#msg-270">
+                    [15:04]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    * Outbound/inbound message queuing pattern (load balanced, fair queued)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-271" class="rowLink" href="#msg-271">
+                    [15:04]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    * Number of allowed clients.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-272" class="rowLink" href="#msg-272">
+                    [15:05]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    * How multiple clients are handled.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-273" class="rowLink" href="#msg-273">
+                    [15:05]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    * Number of allowed in flight messages (synch, async)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-274" class="rowLink" href="#msg-274">
+                    [15:05]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    * Algorithm used when the queue fills.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-275" class="rowLink" href="#msg-275">
+                    [15:05]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    * Allowed peer socket types.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-276" class="rowLink" href="#msg-276">
+                    [15:05]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    * I may be missing certain things.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-277" class="rowLink" href="#msg-277">
+                    [15:05]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    * How identities are used in message routing.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-278" class="rowLink" href="#msg-278">
+                    [15:05]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    The main problem that I see right now is that some of these things are
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-279" class="rowLink" href="#msg-279">
+                    [15:05]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not clearly documented.  Making a list of all these things and
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-280" class="rowLink" href="#msg-280">
+                    [15:05]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    documenting them for each socket type would be immensely helpful and
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-281" class="rowLink" href="#msg-281">
+                    [15:05]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    clarify the abstraction of a 0MQ socket.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-282" class="rowLink" href="#msg-282">
+                    [15:05]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-283" class="rowLink" href="#msg-283">
+                    [15:05]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so it seems that a table would help
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-284" class="rowLink" href="#msg-284">
+                    [15:05]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, sure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-285" class="rowLink" href="#msg-285">
+                    [15:05]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: agree?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-286" class="rowLink" href="#msg-286">
+                    [15:05]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-287" class="rowLink" href="#msg-287">
+                    [15:05]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    let&#39;s use your current table
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-288" class="rowLink" href="#msg-288">
+                    [15:05]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if there are more things to specify
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-289" class="rowLink" href="#msg-289">
+                    [15:05]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    we can add it later
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-290" class="rowLink" href="#msg-290">
+                    [15:06]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, good
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-291" class="rowLink" href="#msg-291">
+                    [15:06]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it makes peer look scary:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-292" class="rowLink" href="#msg-292">
+                    [15:06]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Compatible peer sockets:: &#39;ZMQ_PAIR&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-293" class="rowLink" href="#msg-293">
+                    [15:06]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Direction:: Bidirectional
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-294" class="rowLink" href="#msg-294">
+                    [15:06]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Send/receive pattern:: Unrestricted
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-295" class="rowLink" href="#msg-295">
+                    [15:06]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Incoming routing strategy:: N/A
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-296" class="rowLink" href="#msg-296">
+                    [15:06]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Outgoing routing strategy:: N/A
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-297" class="rowLink" href="#msg-297">
+                    [15:06]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Flow control:: Block
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-298" class="rowLink" href="#msg-298">
+                    [15:06]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lots of N/A :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-299" class="rowLink" href="#msg-299">
+                    [15:07]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: one more thing needs  to go in that table
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-300" class="rowLink" href="#msg-300">
+                    [15:07]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-301" class="rowLink" href="#msg-301">
+                    [15:07]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: which is what brian calls "number of allowed clients", and what he means is whether a socket can be many-to-many/many-to-one/etc
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-302" class="rowLink" href="#msg-302">
+                    [15:07]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what is that "thing" called? :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-303" class="rowLink" href="#msg-303">
+                    [15:08]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    arity
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-304" class="rowLink" href="#msg-304">
+                    [15:08]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cardinality
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-305" class="rowLink" href="#msg-305">
+                    [15:08]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dunno
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-306" class="rowLink" href="#msg-306">
+                    [15:08]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm, neither of those really work
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-307" class="rowLink" href="#msg-307">
+                    [15:08]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    any normal 0mq socket allows many peers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-308" class="rowLink" href="#msg-308">
+                    [15:09]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pair is pathological case
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-309" class="rowLink" href="#msg-309">
+                    [15:09]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just note in the text
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-310" class="rowLink" href="#msg-310">
+                    [15:09]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    already noted
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-311" class="rowLink" href="#msg-311">
+                    [15:09]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    word &#39;pathological&#39; should be definitely present :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-312" class="rowLink" href="#msg-312">
+                    [15:18]  lvh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: So, in a typical setup, would these brokers and forwarders have dedicated machines? I&#39;m assuming that you *DO* actually need to know where your forwarder/queue is.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-313" class="rowLink" href="#msg-313">
+                    [15:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, you have to connect to it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-314" class="rowLink" href="#msg-314">
+                    [15:19]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    having a dedicated machine seems like an overkill
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-315" class="rowLink" href="#msg-315">
+                    [15:19]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    depends on what are you doing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-316" class="rowLink" href="#msg-316">
+                    [15:19]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you are NASDAQ, you probably want a dedicated machine...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-317" class="rowLink" href="#msg-317">
+                    [15:19]  lvh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, we&#39;re currently on EC2
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-318" class="rowLink" href="#msg-318">
+                    [15:20]  lvh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I suppose we could move to RC and use a tiny 256M box, and even that&#39;s overkill.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-319" class="rowLink" href="#msg-319">
+                    [15:20]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then use a single box :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-320" class="rowLink" href="#msg-320">
+                    [15:21]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    %^#$^
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-321" class="rowLink" href="#msg-321">
+                    [15:22]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: so how do i translate this without mentioning message queues/pipes:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-322" class="rowLink" href="#msg-322">
+                    [15:22]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    REP:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-323" class="rowLink" href="#msg-323">
+                    [15:22]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Ak je spojenie urcene na odoslanie odpovede preplnene, potom ZMQ
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-324" class="rowLink" href="#msg-324">
+                    [15:22]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    spravu zahodi a send skonci uspesne.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-325" class="rowLink" href="#msg-325">
+                    [15:23]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s the flow control bit?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-326" class="rowLink" href="#msg-326">
+                    [15:23]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-327" class="rowLink" href="#msg-327">
+                    [15:24]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if there&#39;s not enough space to store the message, it&#39;ll be dropped
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-328" class="rowLink" href="#msg-328">
+                    [15:25]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: it needs to be explained in the context of REP and HWM
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-329" class="rowLink" href="#msg-329">
+                    [15:25]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    help me out here
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-330" class="rowLink" href="#msg-330">
+                    [15:26]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if requester is not receiving replies and the number of outstanding replies reaches HWM any further replies will be dropped
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-331" class="rowLink" href="#msg-331">
+                    [15:30]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: hw about this?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-332" class="rowLink" href="#msg-332">
+                    [15:30]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    When a &#39;ZMQ_REP&#39; socket enters an exceptional state due to having reached the
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-333" class="rowLink" href="#msg-333">
+                    [15:30]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    high water mark for a _client_, then any replies sent to the _client_ in
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-334" class="rowLink" href="#msg-334">
+                    [15:30]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    question shall be dropped until the exceptional state ends.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-335" class="rowLink" href="#msg-335">
+                    [15:30]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, why not
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-336" class="rowLink" href="#msg-336">
+                    [16:05]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: are you still there?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-337" class="rowLink" href="#msg-337">
+                    [16:11]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-338" class="rowLink" href="#msg-338">
+                    [16:12]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: in a moment i will commit my changes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-339" class="rowLink" href="#msg-339">
+                    [16:12]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: i&#39;ve also added some general text to zmq_socket in an attempt to explain the interesting bits
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-340" class="rowLink" href="#msg-340">
+                    [16:12]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: once i commit it can you review this please?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-341" class="rowLink" href="#msg-341">
+                    [16:12]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure, i will
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-342" class="rowLink" href="#msg-342">
+                    [16:12]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    one more question, btw
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-343" class="rowLink" href="#msg-343">
+                    [16:12]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there&#39;s a "zmqd" thing in the trunk
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-344" class="rowLink" href="#msg-344">
+                    [16:13]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    should we drop the devices in favour of zmqd
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-345" class="rowLink" href="#msg-345">
+                    [16:13]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or keep both for the time being
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-346" class="rowLink" href="#msg-346">
+                    [16:13]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-347" class="rowLink" href="#msg-347">
+                    [16:13]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: oh, btw, since we&#39;re removing app_threads, zmq_socket will no longer return EMTHREAD ever?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-348" class="rowLink" href="#msg-348">
+                    [16:13]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: as for zmqd, i&#39;m not sure, i&#39;ve not had a chance to review it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-349" class="rowLink" href="#msg-349">
+                    [16:13]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    actually, it will
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-350" class="rowLink" href="#msg-350">
+                    [16:14]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    when it reaches max socket count
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-351" class="rowLink" href="#msg-351">
+                    [16:14]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    as with POSIX
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-352" class="rowLink" href="#msg-352">
+                    [16:14]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: for 2.0.7 i would ignore zmqd, and keep packaging the current devices
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-353" class="rowLink" href="#msg-353">
+                    [16:14]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-354" class="rowLink" href="#msg-354">
+                    [16:14]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: since the devices/zmqd really need a proper review
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-355" class="rowLink" href="#msg-355">
+                    [16:15]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    fine
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-356" class="rowLink" href="#msg-356">
+                    [16:15]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what about renaming EMTHREAD to EMFILE?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-357" class="rowLink" href="#msg-357">
+                    [16:15]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    probably not
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-358" class="rowLink" href="#msg-358">
+                    [16:15]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just an idea
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-359" class="rowLink" href="#msg-359">
+                    [16:15]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what does this value have to do with it?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-360" class="rowLink" href="#msg-360">
+                    [16:16]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Maximal number of OS threads that can own 0MQ sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-361" class="rowLink" href="#msg-361">
+                    [16:16]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    //  at the same time.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-362" class="rowLink" href="#msg-362">
+                    [16:16]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    max_app_threads = 512,
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-363" class="rowLink" href="#msg-363">
+                    [16:16]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    from config.hpp
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-364" class="rowLink" href="#msg-364">
+                    [16:16]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, that&#39;s max thread count
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-365" class="rowLink" href="#msg-365">
+                    [16:16]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    kind of like max socket count in POSIX OS
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-366" class="rowLink" href="#msg-366">
+                    [16:16]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    max fd count i meant
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-367" class="rowLink" href="#msg-367">
+                    [16:17]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-368" class="rowLink" href="#msg-368">
+                    [16:17]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in that case I&#39;ll change the error explanation to just say:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-369" class="rowLink" href="#msg-369">
+                    [16:18]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    *EMTHREAD*::
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-370" class="rowLink" href="#msg-370">
+                    [16:18]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    The number of application threads using sockets within this &#39;context&#39; has been
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-371" class="rowLink" href="#msg-371">
+                    [16:18]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    exceeded.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-372" class="rowLink" href="#msg-372">
+                    [16:18]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and nothing else
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-373" class="rowLink" href="#msg-373">
+                    [16:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there&#39;s no concept of application thread now
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-374" class="rowLink" href="#msg-374">
+                    [16:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i would just say
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-375" class="rowLink" href="#msg-375">
+                    [16:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    "maximal number of sockets exceeded"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-376" class="rowLink" href="#msg-376">
+                    [16:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s not precise
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-377" class="rowLink" href="#msg-377">
+                    [16:18]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sorry, yeah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-378" class="rowLink" href="#msg-378">
+                    [16:18]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Maximum btw
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-379" class="rowLink" href="#msg-379">
+                    [16:19]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I don&#39;t know where you keep getting maximal from :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-380" class="rowLink" href="#msg-380">
+                    [16:19]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but nobody going to experience the error
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-381" class="rowLink" href="#msg-381">
+                    [16:19]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    slovak language
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-382" class="rowLink" href="#msg-382">
+                    [16:19]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oh, you never know, there may be people using more than 512 threads
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-383" class="rowLink" href="#msg-383">
+                    [16:19]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    those are doomed anyway
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-384" class="rowLink" href="#msg-384">
+                    [16:19]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-385" class="rowLink" href="#msg-385">
+                    [16:19]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not if you imagine that they&#39;re running on some freaky 48-core box :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-386" class="rowLink" href="#msg-386">
+                    [16:20]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    supercomputing use cases
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-387" class="rowLink" href="#msg-387">
+                    [16:20]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guys on blue gene should be smart enough to figure it out
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-388" class="rowLink" href="#msg-388">
+                    [16:20]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: is zmq_init still taking a threads parameter? if so, does your latest doc update explain its meaning better?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-389" class="rowLink" href="#msg-389">
+                    [16:21]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: it is, but won&#39;t be for 2.0.7
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-390" class="rowLink" href="#msg-390">
+                    [16:21]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hence the doc update
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-391" class="rowLink" href="#msg-391">
+                    [16:21]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so in 2.0.7 the call to zmq_init will no longer take any arguments?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-392" class="rowLink" href="#msg-392">
+                    [16:21]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    correct
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-393" class="rowLink" href="#msg-393">
+                    [16:22]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    good
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-394" class="rowLink" href="#msg-394">
+                    [16:22]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not corrext
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-395" class="rowLink" href="#msg-395">
+                    [16:22]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oops
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-396" class="rowLink" href="#msg-396">
+                    [16:22]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there&#39;s still io_threads parameter
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-397" class="rowLink" href="#msg-397">
+                    [16:22]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, that&#39;s right, sorry
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-398" class="rowLink" href="#msg-398">
+                    [16:22]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    size of working thread pool
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-399" class="rowLink" href="#msg-399">
+                    [16:22]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    app_threads and flags is dropped
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-400" class="rowLink" href="#msg-400">
+                    [16:22]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah, ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-401" class="rowLink" href="#msg-401">
+                    [16:23]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i never understood what app threads were for...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-402" class="rowLink" href="#msg-402">
+                    [16:23]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but now it doesn&#39;t matter
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-403" class="rowLink" href="#msg-403">
+                    [16:23]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-404" class="rowLink" href="#msg-404">
+                    [16:23]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s why we removed them
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-405" class="rowLink" href="#msg-405">
+                    [16:23]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: anything else you don&#39;t know what its for?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-406" class="rowLink" href="#msg-406">
+                    [16:23]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: maybe we can remove that too :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-407" class="rowLink" href="#msg-407">
+                    [16:23]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ha!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-408" class="rowLink" href="#msg-408">
+                    [16:24]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    seriously
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-409" class="rowLink" href="#msg-409">
+                    [16:24]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    let me see... you may want to clarify that zmq_poll can return when *any* event occurs inside the library even if no sockets are readable/writable
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-410" class="rowLink" href="#msg-410">
+                    [16:25]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and the usec delay value is the maximum it may block and will likely return earlier
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-411" class="rowLink" href="#msg-411">
+                    [16:25]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, that&#39;s kind of confusing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-412" class="rowLink" href="#msg-412">
+                    [16:25]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i know :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-413" class="rowLink" href="#msg-413">
+                    [16:25]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i would like to block till timeout expires but people seem to be so much concerned about zmq_poll performance...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-414" class="rowLink" href="#msg-414">
+                    [16:27]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: that behavior as fine as long as it is documented
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-415" class="rowLink" href="#msg-415">
+                    [16:27]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    particularly the part that it&#39;s possible that no sockets are readable/writable
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-416" class="rowLink" href="#msg-416">
+                    [16:27]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: can you add one sentence explaining that?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-417" class="rowLink" href="#msg-417">
+                    [16:28]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;d like to keep 0mq as fast as possible so that my choice of a slow language (ruby) doesn&#39;t hurt as much
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-418" class="rowLink" href="#msg-418">
+                    [16:28]  lvh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you should probably measure your bottlenecks first
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-419" class="rowLink" href="#msg-419">
+                    [16:28]  lvh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    IO tends to be it but ZMQ is probably a tiny bit of that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-420" class="rowLink" href="#msg-420">
+                    [16:28]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: working on it now
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-421" class="rowLink" href="#msg-421">
+                    [16:29]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lvh: that&#39;s true wrt latency
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-422" class="rowLink" href="#msg-422">
+                    [16:29]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    as for throughput it should be as fast as possible
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-423" class="rowLink" href="#msg-423">
+                    [16:29]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    because network stack is called only once in a while
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-424" class="rowLink" href="#msg-424">
+                    [16:30]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so it most cases 0mq overhead is the only overhead there is
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-425" class="rowLink" href="#msg-425">
+                    [16:30]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    exact timeouts on zmq_poll require one call to gettimeofday per invocation
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-426" class="rowLink" href="#msg-426">
+                    [16:30]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that can slow the whole thing down
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-427" class="rowLink" href="#msg-427">
+                    [16:32]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: so poll returns any time, even if there are no events and timeout has not yet expired?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-428" class="rowLink" href="#msg-428">
+                    [16:33]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-429" class="rowLink" href="#msg-429">
+                    [16:33]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the only guarantee is that it won&#39;t return _after_ the timeout expired
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-430" class="rowLink" href="#msg-430">
+                    [16:34]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    IMPORTANT: The _zmq_poll()_ function may return *before* the &#39;timeout&#39; period
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-431" class="rowLink" href="#msg-431">
+                    [16:34]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    has expired even if no events have been signaled.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-432" class="rowLink" href="#msg-432">
+                    [16:34]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this should do?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-433" class="rowLink" href="#msg-433">
+                    [16:34]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    right after the RETURN value section
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-434" class="rowLink" href="#msg-434">
+                    [16:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-435" class="rowLink" href="#msg-435">
+                    [16:35]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    looks like he&#39;s away, i, for myself, am happy with the wording
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-436" class="rowLink" href="#msg-436">
+                    [16:35]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-437" class="rowLink" href="#msg-437">
+                    [16:36]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    poll is a hack anyway and needs to be redone :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-438" class="rowLink" href="#msg-438">
+                    [16:36]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, but the exact timeout would be a problem anyway :|
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-439" class="rowLink" href="#msg-439">
+                    [16:38]  CIA-17
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Martin Lucina 07master * r7c9b09b 10/ (7 files):
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-440" class="rowLink" href="#msg-440">
+                    [16:38]  CIA-17
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: Documentation: Flow control, zmq_socket(3)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-441" class="rowLink" href="#msg-441">
+                    [16:38]  CIA-17
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: Mostly Flow control and additions to zmq_socket(3)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-442" class="rowLink" href="#msg-442">
+                    [16:38]  CIA-17
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: Removed/changed lots of text regarding message queues
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-443" class="rowLink" href="#msg-443">
+                    [16:38]  CIA-17
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: More fixes for 2.0.7 changes - http://bit.ly/d24DAg
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-444" class="rowLink" href="#msg-444">
+                    [16:38]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: ok, committed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-445" class="rowLink" href="#msg-445">
+                    [16:38]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: please take a look at the beginning of zmq_socket(3) and tell me if the added text is correct and helpful or not
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-446" class="rowLink" href="#msg-446">
+                    [16:39]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lemme see
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-447" class="rowLink" href="#msg-447">
+                    [16:44]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    very nice
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-448" class="rowLink" href="#msg-448">
+                    [16:44]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-449" class="rowLink" href="#msg-449">
+                    [16:44]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i wanted to emphasize the many-to-many and multiple endpoints
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-450" class="rowLink" href="#msg-450">
+                    [16:44]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, that&#39;s good
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-451" class="rowLink" href="#msg-451">
+                    [16:44]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it should be pointed out explicitly
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-452" class="rowLink" href="#msg-452">
+                    [16:45]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    great, then this should help
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-453" class="rowLink" href="#msg-453">
+                    [16:45]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: beer &amp; pizza?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-454" class="rowLink" href="#msg-454">
+                    [16:45]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;ve just ate
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-455" class="rowLink" href="#msg-455">
+                    [16:45]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    beer?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-456" class="rowLink" href="#msg-456">
+                    [16:46]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    beer is good, but i need food too
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-457" class="rowLink" href="#msg-457">
+                    [16:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    where do you want to go?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-458" class="rowLink" href="#msg-458">
+                    [16:46]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    somewhere outside
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-459" class="rowLink" href="#msg-459">
+                    [16:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s *COLD*
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-460" class="rowLink" href="#msg-460">
+                    [16:46]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is it? i thought not really
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-461" class="rowLink" href="#msg-461">
+                    [16:47]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    14 degrees or something
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-462" class="rowLink" href="#msg-462">
+                    [16:47]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: ok how about randal? that has been and pizza
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-463" class="rowLink" href="#msg-463">
+                    [16:47]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: and no concert tonight, i just checked
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-464" class="rowLink" href="#msg-464">
+                    [16:47]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is it open now?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-465" class="rowLink" href="#msg-465">
+                    [16:47]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, every day
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-466" class="rowLink" href="#msg-466">
+                    [16:47]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok then
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-467" class="rowLink" href="#msg-467">
+                    [16:47]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    see you there at half past seven then?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-468" class="rowLink" href="#msg-468">
+                    [16:48]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    more or less
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-469" class="rowLink" href="#msg-469">
+                    [16:48]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i have few emails to answer still
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-470" class="rowLink" href="#msg-470">
+                    [16:48]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-471" class="rowLink" href="#msg-471">
+                    [16:55]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato, sustrik: the zmq_poll rewording is fine
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-472" class="rowLink" href="#msg-472">
+                    [16:55]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ack
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-473" class="rowLink" href="#msg-473">
+                    [19:03]  lvh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    What&#39;s the recommended thing for debian stable packages?
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

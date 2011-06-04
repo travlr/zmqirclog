@@ -1,0 +1,3318 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Saturday November 20, 2010</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [00:00]  doug
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the need for identity seeming to nullify the benefit i&#39;d otherwise realize via zmq.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [00:01]  doug
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i think my app is better modeled as a collection of pairs, instead of a pub/sub app.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [00:01]  doug
+                    </a>
+                </td>
+                <td class="message-cell">
+                    with more shared state than pub/sub generally implies.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [00:02]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you probably need multiple zmq channels.. each for their own purposes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [00:02]  doug
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, i&#39;m not sure how to abstract the purposes while still getting benefit out of zmq.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [00:03]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    abstraction of &#39;purpose&#39; is exactly what is fundamental to prodatalab
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [00:04]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just consider a buffer that has a description attached to it..
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [00:15]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    doug, i just your discussion with Guther, a couple of things to mention..
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [00:16]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zmq &#39;message&#39; is just a blob of binary data on top of tcp or other transport layer
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [00:16]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    each message can be any size you want it to be
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [00:16]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    also..
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [00:18]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zmq (in itself) is currently only designed for intranet purposes, there is no mechanism as of yet for internet boundries
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [00:18]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    here is where you might use zmq_poll() to interface with a normal BSD stlyle socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [00:19]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    on the edge... and use some other application layer for point to point on the internet
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [00:19]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or use zmq over the internet and provide your own security mechanism on top of it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [00:20]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this is what the recent discussions have been about.. as well as _maybe_ incorporating some security features into the zmq infrastructure.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [00:21]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    security == latency.. so careful consideration is being tossed about
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [00:31]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    huh. i thought i got my layers mixed up.. tcp-network and i meant transport not application over internet. sometimes i think/type to fase :P
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [00:32]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    see.. s/fast/fase/ .. lol
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [00:48]  nettok
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I can&#39;t connect to the zeromq log, the endpoint is "inproc://log" right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [00:49]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is there a &#39;log&#39; device? that&#39;s news to me.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [00:50]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    where&#39;s that hosted?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [00:51]  nettok
+                    </a>
+                </td>
+                <td class="message-cell">
+                    travlr: I read it in the mailing list, it&#39;s supposed to be in 2.1 trunk http://blog.gmane.org/gmane.network.zeromq.devel/month=20100901
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [00:52]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nice.. i&#39;ll check it out. thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [05:43]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hey guys; is PUSH ment to still block when I&#39;ve got a HWM set and used ZMQ::NOBLOCK when sending?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [06:16]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i think the answers no, and im doing summets wrong
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [08:08]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yup, something in a thread was causing the global vm lock (in ruby)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [10:06]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lestrrat: hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [10:06]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lestrrat: the perl builds are currently failing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [10:07]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    goodie
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [10:08]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I haven&#39;t changed a line of code :/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [10:08]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oh well
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [10:10]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lestrrat: it&#39;s been failing for a long time
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [10:10]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i got all the modules installed but it says that i don&#39;t have the needed modules
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [10:10]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    after the last fix?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [10:10]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and it says im missing &#39;&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [10:10]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oh.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [10:10]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://build.valokuva.org/job/ZeroMQPerl-master_ZeroMQ2-master_GCC/128/console
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [10:10]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    see the output
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [10:10]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    last success was Nov 8
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [10:11]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    The message is bad, but I think you&#39;r missing Module::Install::TestTarget
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [10:12]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you know what, why don&#39;t I write a build script
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [10:12]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ll do all the module installation there.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [10:12]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so you don&#39;t have to worry about it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [10:13]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    installed the module and rebuilding
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [10:14]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    succeeds
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [10:15]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how often do these tests run? is the trigger a new zmq commit?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [10:15]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    5am and 5pm on GMT
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [10:15]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    k.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [10:17]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    should i disable the build against zeromq maint for perl?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [10:17]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it seems that several tests are failing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [10:21]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    grr
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [10:21]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure go ahead
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [10:22]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I won&#39;t be able to get everything done for a few days
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [10:24]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    morning
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [10:25]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, people can use master instead of main if they need perl
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [11:04]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: no hurries, but could you try running autobuild/run.sh in hudson?  (use the proper ZMQ_H env et al when you run this script: i.e.  ZMQ_H=/path/to/zmq.h ./autobuild/run.sh)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [11:04]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this should solve the dependency issues in the future
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [11:04]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, ill give a go
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [11:07]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lestrrat: http://build.valokuva.org/job/ZeroMQPerl-master_ZeroMQ2-master_GCC/130/console
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [11:07]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    building there
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [11:10]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    seems like it worked :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [11:10]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    coolness
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [11:33]  clkao
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lestrrat!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [11:36]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    all the builds that are expected succeed are now succeeding
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [11:36]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thats a good thing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [11:37]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lestrrat: do you want emails for build failures in perl bindings?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [11:39]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi clkao :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [11:39]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, I think that would be good
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [11:39]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    &gt; re: emails
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [11:40]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lestrrat: can you give me an email in which to send them?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [11:41]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lestrrat@gmail.com
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [11:41]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    added
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [11:42]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [12:34]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    when does the logs get updated?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [12:42]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i can&#39;t figure out what the hell&#39;s going on here...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [12:43]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m forking some workers, 4 of them, when there doing something like sleep() they seem to get a message, then start sleeping. now when i swap the sleep() out with a http request, it only seems to send the request once I&#39;ve PUSH&#39;ed 4 messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [12:44]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    tried swapping out the http stuff a couple of times, so either they all have the same issue. or I&#39;m not doing somthing right with zmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [12:44]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    any ideas?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [13:09]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Guthur: hi. I haven&#39;t put the log updater app on a cron yet. I&#39;ll have that done in a day or two.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [13:11]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lantins: do you have a chunk of code you can post on gist or pastebin or something?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [13:13]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lantins: are you using zmq_poll() for the http stuff.. are interfacing with a bsd socket for the http stuff or is this all pure zmq?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [13:15]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    travlr: i can gist the code, its a total hack at the moment though mind =)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [13:16]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure..
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [13:16]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    travlr: not using zmq_poll. got ruby eventmachine dealing with sockets, that PUSH&#39; to a buffer, that does some things, then PUSH&#39; to the &#39;workers&#39;. there sending http requests out
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [13:16]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;ll stick it up in a sec
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [13:17]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well if your using ruby i&#39;m not familiar with it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [13:20]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Guthur: I just uploaded the changes. it&#39;ll take a few minutes (maybe) for github servers to host them.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-89" class="rowLink" href="#msg-89">
+                    [13:22]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    tried to remove some of the gruff. i started off trying to do this all in threads, but ended up pulling it out into seperate processes to test
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-90" class="rowLink" href="#msg-90">
+                    [13:22]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    travlr: https://gist.github.com/fff5bf54b84e784610a0
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-91" class="rowLink" href="#msg-91">
+                    [13:23]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    buffer_thread.rb, http_workers.rb and socket_server.rb would be the 3 &#39;components&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-92" class="rowLink" href="#msg-92">
+                    [13:24]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sorry i can&#39;t get a grip that easily on the ruby stuff. don&#39;t have time right now to dig into it deeper.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-93" class="rowLink" href="#msg-93">
+                    [13:25]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    travlr: no worries
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-94" class="rowLink" href="#msg-94">
+                    [13:25]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;ve a feeling its a threading issue or something other then zmq tbh
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-95" class="rowLink" href="#msg-95">
+                    [13:26]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah i doubt its zmq itself. it has a small learning curve but i don&#39;t know how it works at all with eventmachine.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-96" class="rowLink" href="#msg-96">
+                    [13:27]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-97" class="rowLink" href="#msg-97">
+                    [13:27]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how it is in the gist, the side im having issues with isn&#39;t running inside EM at all
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-98" class="rowLink" href="#msg-98">
+                    [13:28]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    im gonna fire up the workers as individual processes rather then threads, if the problem goes away... its threading problems
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-99" class="rowLink" href="#msg-99">
+                    [13:28]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah processes will probably easier from the start
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-100" class="rowLink" href="#msg-100">
+                    [13:28]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    are there ruby examples on the zmq website... use those to start with.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-101" class="rowLink" href="#msg-101">
+                    [13:37]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yup works perfect when im not threading
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-102" class="rowLink" href="#msg-102">
+                    [13:37]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cool
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-103" class="rowLink" href="#msg-103">
+                    [13:37]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    were you using the inproc protocol for the thread communication?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-104" class="rowLink" href="#msg-104">
+                    [13:37]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i was to begin with
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-105" class="rowLink" href="#msg-105">
+                    [13:38]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then moved to ipc
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-106" class="rowLink" href="#msg-106">
+                    [13:38]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ipc for process, inproc for threads right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-107" class="rowLink" href="#msg-107">
+                    [13:38]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-108" class="rowLink" href="#msg-108">
+                    [13:39]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    worked fine if i was just calling sleep() in the thread, must be something to do with Net::HTTP and threading
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-109" class="rowLink" href="#msg-109">
+                    [13:40]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    to be fair, at the moment I&#39;m forking for every &#39;message&#39;. so just forking once for however many workers I need would work much better i&#39;m hoping
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-110" class="rowLink" href="#msg-110">
+                    [13:40]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or just fire them up seperately
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-111" class="rowLink" href="#msg-111">
+                    [13:40]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah play around with your use case
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-112" class="rowLink" href="#msg-112">
+                    [13:41]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this is very much throw away code =)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-113" class="rowLink" href="#msg-113">
+                    [13:41]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ya
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-114" class="rowLink" href="#msg-114">
+                    [13:41]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    was lotta fun until i hit this threading issue, then atleast 4 hours of my time just seemed to go AWOL!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-115" class="rowLink" href="#msg-115">
+                    [13:41]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    have you worked with examples yet
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-116" class="rowLink" href="#msg-116">
+                    [13:41]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    on the website
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-117" class="rowLink" href="#msg-117">
+                    [13:42]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    spent the best part of a day going through the epic guide
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-118" class="rowLink" href="#msg-118">
+                    [13:42]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    still keep going back to it... like i said... EPIC!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-119" class="rowLink" href="#msg-119">
+                    [13:43]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah i&#39;m still working on intricacies.. but pieter did a really nice job
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-120" class="rowLink" href="#msg-120">
+                    [13:43]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    props to the people who wrote that, its been a good insight into this &#39;messaging&#39; lark =)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-121" class="rowLink" href="#msg-121">
+                    [13:43]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieter h
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-122" class="rowLink" href="#msg-122">
+                    [13:44]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hes good at that stuff. i&#39;m a good doc advocate, big time
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-123" class="rowLink" href="#msg-123">
+                    [13:44]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    think thats the guy who has epic long blog posts too heh
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-124" class="rowLink" href="#msg-124">
+                    [13:44]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    he is the man.. lol
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-125" class="rowLink" href="#msg-125">
+                    [13:44]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, i like how its got humour throughout, given there is so much content
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-126" class="rowLink" href="#msg-126">
+                    [13:45]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;m more of a just the facts kinda guy myself... give me a good succinct outline any time.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-127" class="rowLink" href="#msg-127">
+                    [13:46]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    with plenty of hyper cross-links
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-128" class="rowLink" href="#msg-128">
+                    [13:46]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not having played with messaging stuff before, its good for getting going
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-129" class="rowLink" href="#msg-129">
+                    [13:46]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ya
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-130" class="rowLink" href="#msg-130">
+                    [13:46]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ruby ffi code comments have been very useful to get the context moved over from C to Ruby
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-131" class="rowLink" href="#msg-131">
+                    [13:47]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zmq is a blessing imo, especially for what i&#39;m using it for.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-132" class="rowLink" href="#msg-132">
+                    [13:48]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, i haven&#39;t played with ruby at all yet
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-133" class="rowLink" href="#msg-133">
+                    [13:48]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i think its gonna be very useful for us, initial benchmarks with this toy code look much nicer then anything were currently getting
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-134" class="rowLink" href="#msg-134">
+                    [13:49]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yup
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-135" class="rowLink" href="#msg-135">
+                    [13:49]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what language you using zmq with mostely?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-136" class="rowLink" href="#msg-136">
+                    [13:49]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    c c++ and python
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-137" class="rowLink" href="#msg-137">
+                    [13:49]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    =)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-138" class="rowLink" href="#msg-138">
+                    [13:49]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    c++ through qt mostly... i like qt alot
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-139" class="rowLink" href="#msg-139">
+                    [13:50]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    especially now that someone recently mashed up zmq with qt
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-140" class="rowLink" href="#msg-140">
+                    [13:50]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromqt
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-141" class="rowLink" href="#msg-141">
+                    [13:50]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    im pondering down the line, if it all looks a good fit... about implementing some of this in C, the rest can stay ruby though
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-142" class="rowLink" href="#msg-142">
+                    [13:50]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-143" class="rowLink" href="#msg-143">
+                    [13:50]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah i seen that on the labs page
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-144" class="rowLink" href="#msg-144">
+                    [13:51]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;m playing with it right now... nice
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-145" class="rowLink" href="#msg-145">
+                    [13:51]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-146" class="rowLink" href="#msg-146">
+                    [13:52]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    obj-c I&#39;d like to get around to playing with at some point
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-147" class="rowLink" href="#msg-147">
+                    [13:52]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure, i&#39;m not a apple guy so i don&#39;t see where else it&#39;s used much
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-148" class="rowLink" href="#msg-148">
+                    [13:54]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what are you going to be using zmq for
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-149" class="rowLink" href="#msg-149">
+                    [13:54]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    although, right now I&#39;m pondering how to better &#39;route&#39; these PUSH/PULL messages, rather then fair-routing? but i guess this is where you start building &#39;device&#39; like stuff to wire that kinda thing up?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-150" class="rowLink" href="#msg-150">
+                    [13:54]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    at the moment, I&#39;ve got a couple bits of software that are part of a &#39;system&#39;. they talk to one another via json/http
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-151" class="rowLink" href="#msg-151">
+                    [13:54]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    we also push out lots of data to customers via json/http
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-152" class="rowLink" href="#msg-152">
+                    [13:55]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so, im looking to remove some of the http stuff in our backend
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-153" class="rowLink" href="#msg-153">
+                    [13:55]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    high speed data or just a "normal" system?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-154" class="rowLink" href="#msg-154">
+                    [13:55]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the current system does work, but it could be made simpler
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-155" class="rowLink" href="#msg-155">
+                    [13:56]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    we got seconds to play with =)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-156" class="rowLink" href="#msg-156">
+                    [13:56]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cool
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-157" class="rowLink" href="#msg-157">
+                    [13:56]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so your crossing internet boundries?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-158" class="rowLink" href="#msg-158">
+                    [13:57]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    a little bit of the system is, and the part where we talk to customer servers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-159" class="rowLink" href="#msg-159">
+                    [13:57]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but the rest is internal on the lan
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-160" class="rowLink" href="#msg-160">
+                    [13:57]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    were dealing with vehicle tracking/diagnostics data
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-161" class="rowLink" href="#msg-161">
+                    [13:58]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oh cool. that sounds very interesting
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-162" class="rowLink" href="#msg-162">
+                    [13:58]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    most vehicles update between 60sec and 5mins
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-163" class="rowLink" href="#msg-163">
+                    [13:58]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    very cool.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-164" class="rowLink" href="#msg-164">
+                    [13:58]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so if it takes 30sec to move through the system it doesn&#39;t really matter
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-165" class="rowLink" href="#msg-165">
+                    [13:58]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what kind of &#39;tracking/diagnostics&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-166" class="rowLink" href="#msg-166">
+                    [13:59]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oh all kinds =)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-167" class="rowLink" href="#msg-167">
+                    [13:59]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    we design/build the hardware our self
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-168" class="rowLink" href="#msg-168">
+                    [13:59]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    are you doing embeddable stuff too
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-169" class="rowLink" href="#msg-169">
+                    [13:59]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well that kills that quest
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-170" class="rowLink" href="#msg-170">
+                    [13:59]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ion
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-171" class="rowLink" href="#msg-171">
+                    [13:59]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;m learning that stuff too
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-172" class="rowLink" href="#msg-172">
+                    [13:59]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    we have gear with 4 CANBus channels on them, so anything you can get on the vehicle ECU&#39;s we can get in real time
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-173" class="rowLink" href="#msg-173">
+                    [14:00]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes yes....
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-174" class="rowLink" href="#msg-174">
+                    [14:00]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    heh
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-175" class="rowLink" href="#msg-175">
+                    [14:00]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    electronics is cool shit, imo
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-176" class="rowLink" href="#msg-176">
+                    [14:00]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i wish i more time to play with it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-177" class="rowLink" href="#msg-177">
+                    [14:00]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m _not_ smart enough to be one of the guys building the hardware, but it has given me the chance to learn about it all.. and ask questions from people much smarter then me
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-178" class="rowLink" href="#msg-178">
+                    [14:01]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    very cool
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-179" class="rowLink" href="#msg-179">
+                    [14:01]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i just shovel data and make web apps with it lol
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-180" class="rowLink" href="#msg-180">
+                    [14:01]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sensor systems are also really cool
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-181" class="rowLink" href="#msg-181">
+                    [14:01]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    AVR chips are very good to play around with
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-182" class="rowLink" href="#msg-182">
+                    [14:01]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    avr.... awesome!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-183" class="rowLink" href="#msg-183">
+                    [14:02]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    linux32 embedded
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-184" class="rowLink" href="#msg-184">
+                    [14:02]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i want to play with all that stuff real bad.. no time right now
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-185" class="rowLink" href="#msg-185">
+                    [14:02]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    was gifted a development AVR board that runs linux form work, with two ethernet&#39;s!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-186" class="rowLink" href="#msg-186">
+                    [14:02]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not got around to toying with that yet :/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-187" class="rowLink" href="#msg-187">
+                    [14:03]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    to start with, i want to build my programmer.. but that&#39;s a chicken and egg dilema.. huh.. lol
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-188" class="rowLink" href="#msg-188">
+                    [14:03]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ll be able to buzz people into the flat without leaving my computer once I get around to soldering my first &#39;official&#39; electronics project! via bluetooth!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-189" class="rowLink" href="#msg-189">
+                    [14:04]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what electronics supplier would you use?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-190" class="rowLink" href="#msg-190">
+                    [14:04]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not quite got the BT cracked yet, and I need to get work to mount it for me... when i seen the Â£9 price, i didn&#39;t pay any attention to the fact it was bloody surface mount!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-191" class="rowLink" href="#msg-191">
+                    [14:04]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not sure where you are? I&#39;m in the UK
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-192" class="rowLink" href="#msg-192">
+                    [14:05]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    surface mount is very tricky for a beginner i would imaging
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-193" class="rowLink" href="#msg-193">
+                    [14:05]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in usa
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-194" class="rowLink" href="#msg-194">
+                    [14:05]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    farnell.com is where I&#39;ve got all my stuff from
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-195" class="rowLink" href="#msg-195">
+                    [14:05]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s uk?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-196" class="rowLink" href="#msg-196">
+                    [14:05]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    US too
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-197" class="rowLink" href="#msg-197">
+                    [14:05]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    they have _Everything_ on that site
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-198" class="rowLink" href="#msg-198">
+                    [14:05]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;ll check it out..
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-199" class="rowLink" href="#msg-199">
+                    [14:05]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you got a part number, you can find it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-200" class="rowLink" href="#msg-200">
+                    [14:06]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is it more for hobbiests... are they fast on delivery?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-201" class="rowLink" href="#msg-201">
+                    [14:06]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    now, the problem is when you don&#39;t have a part number and have to go through everything to figure out if the component does what you want it to!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-202" class="rowLink" href="#msg-202">
+                    [14:07]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    they are a big company, not really aimed at hobbiests, you do kinda have to know what to start looking for
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-203" class="rowLink" href="#msg-203">
+                    [14:07]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    fast delivery?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-204" class="rowLink" href="#msg-204">
+                    [14:07]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not that I really do, but its the only place I&#39;ve found where I got options
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-205" class="rowLink" href="#msg-205">
+                    [14:07]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah super fast for me
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-206" class="rowLink" href="#msg-206">
+                    [14:07]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    can&#39;t comment about the states though
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-207" class="rowLink" href="#msg-207">
+                    [14:07]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thats good...  small orders ok?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-208" class="rowLink" href="#msg-208">
+                    [14:07]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    projects/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-209" class="rowLink" href="#msg-209">
+                    [14:08]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah have been for me
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-210" class="rowLink" href="#msg-210">
+                    [14:08]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    good
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-211" class="rowLink" href="#msg-211">
+                    [14:08]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what i did was this:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-212" class="rowLink" href="#msg-212">
+                    [14:08]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://cdn.shopify.com/s/files/1/0038/9582/files/RBBB_Instructions_06.pdf?1260749296
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-213" class="rowLink" href="#msg-213">
+                    [14:08]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s a real nice document about making an Arduino clone
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-214" class="rowLink" href="#msg-214">
+                    [14:09]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I looked at the components needed to build a handful, then prospected into some other &#39;usual&#39; sized components
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-215" class="rowLink" href="#msg-215">
+                    [14:10]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there&#39;s a lot of great info out on the web
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-216" class="rowLink" href="#msg-216">
+                    [14:10]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that proj looks great
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-217" class="rowLink" href="#msg-217">
+                    [14:10]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i wish i had the time
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-218" class="rowLink" href="#msg-218">
+                    [14:10]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i love teaching myself shit
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-219" class="rowLink" href="#msg-219">
+                    [14:10]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    they use a Resonator in that design, I opted for a crystal
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-220" class="rowLink" href="#msg-220">
+                    [14:10]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-221" class="rowLink" href="#msg-221">
+                    [14:10]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i know the feeling
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-222" class="rowLink" href="#msg-222">
+                    [14:11]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah crystal.. mmmm gooooood.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-223" class="rowLink" href="#msg-223">
+                    [14:11]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lol
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-224" class="rowLink" href="#msg-224">
+                    [14:11]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i have to say, i sunk a good week or so getting going with all this stuff, and I know I still know naff all about it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-225" class="rowLink" href="#msg-225">
+                    [14:11]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;ve studied a shit load
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-226" class="rowLink" href="#msg-226">
+                    [14:12]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i have four tv&#39;s opened up in my &#39;project&#39; room
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-227" class="rowLink" href="#msg-227">
+                    [14:12]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah crystal&#39;s smalled cooler then Resonators ;-) (crystal were the better option from what I descovered anyhow)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-228" class="rowLink" href="#msg-228">
+                    [14:12]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    need caps
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-229" class="rowLink" href="#msg-229">
+                    [14:12]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lol
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-230" class="rowLink" href="#msg-230">
+                    [14:12]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    radio shack sucks for parts
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-231" class="rowLink" href="#msg-231">
+                    [14:12]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i haven&#39;t ordered them yet
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-232" class="rowLink" href="#msg-232">
+                    [14:12]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    my problem is when I keep blowing shit up
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-233" class="rowLink" href="#msg-233">
+                    [14:12]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    _lol_
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-234" class="rowLink" href="#msg-234">
+                    [14:12]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    "ah fuck that cost Â£4 and I&#39;ve run out of them!!!!"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-235" class="rowLink" href="#msg-235">
+                    [14:13]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lol
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-236" class="rowLink" href="#msg-236">
+                    [14:13]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    damn, i want to play
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-237" class="rowLink" href="#msg-237">
+                    [14:13]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i think the smell of burning electronics is part of the learning process
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-238" class="rowLink" href="#msg-238">
+                    [14:13]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yup!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-239" class="rowLink" href="#msg-239">
+                    [14:13]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hell man i managed to keep that stuff at bay for ages and now you&#39;ve got me all thinking about it!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-240" class="rowLink" href="#msg-240">
+                    [14:13]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i repeat.. i want to play
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-241" class="rowLink" href="#msg-241">
+                    [14:13]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no time
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-242" class="rowLink" href="#msg-242">
+                    [14:13]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I got real work to be doing lol
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-243" class="rowLink" href="#msg-243">
+                    [14:14]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    speaking of which
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-244" class="rowLink" href="#msg-244">
+                    [14:14]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    gotta go
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-245" class="rowLink" href="#msg-245">
+                    [14:14]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    any free time has been spent with iOS/iPad development
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-246" class="rowLink" href="#msg-246">
+                    [14:14]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    take it easy travlr
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-247" class="rowLink" href="#msg-247">
+                    [14:14]  lantins
+                    </a>
+                </td>
+                <td class="message-cell">
+                    catch you later =)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-248" class="rowLink" href="#msg-248">
+                    [14:14]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    see ya
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-249" class="rowLink" href="#msg-249">
+                    [15:06]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    travlr, Cheers for the heads up on the logs
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-250" class="rowLink" href="#msg-250">
+                    [15:09]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-251" class="rowLink" href="#msg-251">
+                    [16:06]  bfrog
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is there a sane way to get queues to work with an existing "reactor" like libevent or whatever?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-252" class="rowLink" href="#msg-252">
+                    [16:07]  bfrog
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I mean, whats the point of sockets if you can&#39;t do event driven programming :-P
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-253" class="rowLink" href="#msg-253">
+                    [16:08]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bfrog, existing reactor... sure... libevent, i think i remember that that&#39;s been done. did you check the mail list and irc archives?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-254" class="rowLink" href="#msg-254">
+                    [16:09]  bfrog
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no, I looked on the website
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-255" class="rowLink" href="#msg-255">
+                    [16:09]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there&#39;s a nice mashup with qt signal and slots if you do qt
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-256" class="rowLink" href="#msg-256">
+                    [16:10]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the mail list is easily found on the website, here&#39;s the irc log: http://travlr.github.com/zmqirclog/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-257" class="rowLink" href="#msg-257">
+                    [16:14]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bfrog: https://github.com/zeromq/zeromq2/blob/master/doc/zmq_getsockopt.txt#L255
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-258" class="rowLink" href="#msg-258">
+                    [16:28]  bfrog
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I see it, thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-259" class="rowLink" href="#msg-259">
+                    [16:29]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bfrog: and zmq provides it own polling mechnism as well
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-260" class="rowLink" href="#msg-260">
+                    [16:29]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so you are not really enforced to use external event loop
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-261" class="rowLink" href="#msg-261">
+                    [16:30]  bfrog
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I get that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-262" class="rowLink" href="#msg-262">
+                    [16:31]  bfrog
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but thats again, really limiting
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-263" class="rowLink" href="#msg-263">
+                    [16:31]  bfrog
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well not again, but yeah, thats faily limiting if I can&#39;t use my own
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-264" class="rowLink" href="#msg-264">
+                    [16:42]  bfrog
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it doesn&#39;t look like I can just provide callbacks for when messages are available, call this function sort of thing?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-265" class="rowLink" href="#msg-265">
+                    [17:25]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bfrog you could easily build it ontop of polling
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-266" class="rowLink" href="#msg-266">
+                    [17:25]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    clrzmq2 uses event delegates for polling
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-267" class="rowLink" href="#msg-267">
+                    [17:27]  bfrog
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I don&#39;t want to poll, I like my callbacks and selects() :-(
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-268" class="rowLink" href="#msg-268">
+                    [17:31]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bfrog: the zmq_poll is an abstraction over different polling methods such as epoll and select
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-269" class="rowLink" href="#msg-269">
+                    [17:31]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    adding callbacks to that is a couple of lines of code
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-270" class="rowLink" href="#msg-270">
+                    [17:32]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but if you want to use an external event loop just use ZMQ_FD sockopt
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-271" class="rowLink" href="#msg-271">
+                    [17:32]  bfrog
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but I might not have the whole message in the queue then?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-272" class="rowLink" href="#msg-272">
+                    [17:32]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not necessarily
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-273" class="rowLink" href="#msg-273">
+                    [17:33]  bfrog
+                    </a>
+                </td>
+                <td class="message-cell">
+                    right, so the recv may still block
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-274" class="rowLink" href="#msg-274">
+                    [17:33]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can use ZMQ_EVENTS to check that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-275" class="rowLink" href="#msg-275">
+                    [17:33]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    https://github.com/zeromq/zeromq2/blob/master/doc/zmq_getsockopt.txt#L272
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-276" class="rowLink" href="#msg-276">
+                    [17:42]  bfrog
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what if I get a partial message, then I&#39;m constantly looping on ZMQ_EVENTS, how would I break that?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-277" class="rowLink" href="#msg-277">
+                    [17:42]  bfrog
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I can&#39;t touch the fd itself, can I tell zeromq to just give up somehow?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-278" class="rowLink" href="#msg-278">
+                    [17:46]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can just stop calling poll, and that&#39;s it surely
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-279" class="rowLink" href="#msg-279">
+                    [17:46]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    The example code just immediately timeouts, you might want something slightly different
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-280" class="rowLink" href="#msg-280">
+                    [18:14]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bfrog: you are *guaranteed* to have a whole message; there is no such thing in 0mq as a partial message
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-281" class="rowLink" href="#msg-281">
+                    [18:14]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    therefore, no worries about it blocking
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-282" class="rowLink" href="#msg-282">
+                    [18:14]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you are still concerned, pass the NO_BLOCK flag to your send or receive and go on your merry way
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-283" class="rowLink" href="#msg-283">
+                    [18:17]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lantins: you may also be interested in looking at zmqmachine which is essentially eventmachine for 0mq sockets; find it on github
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-284" class="rowLink" href="#msg-284">
+                    [18:22]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: if you poll on ZMQ_FD you could have false positives
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-285" class="rowLink" href="#msg-285">
+                    [18:22]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you need to check for ZMQ_EVENTS for the socket as well if you want to make sure that you dont block
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-286" class="rowLink" href="#msg-286">
+                    [18:23]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: right; so what&#39;s the problem? it&#39;s a pretty clear 2-step process
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-287" class="rowLink" href="#msg-287">
+                    [18:23]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    alternately, try to send/recv with NO_BLOCK and check for EAGAIN
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-288" class="rowLink" href="#msg-288">
+                    [18:23]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    either way, there is no concern about blocking
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-289" class="rowLink" href="#msg-289">
+                    [18:25]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no problem there
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-290" class="rowLink" href="#msg-290">
+                    [18:25]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just wanted to indicate that a &#39;positive&#39; on polling on ZMQ_FD doesn&#39;t mean that you can recv()
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-291" class="rowLink" href="#msg-291">
+                    [18:25]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah, i see
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-292" class="rowLink" href="#msg-292">
+                    [18:26]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i agree with that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-293" class="rowLink" href="#msg-293">
+                    [18:26]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hopefully bfrog reads through this at some point and this answers his/her question
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-294" class="rowLink" href="#msg-294">
+                    [18:26]  bfrog
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah it does
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-295" class="rowLink" href="#msg-295">
+                    [18:26]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    great
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-296" class="rowLink" href="#msg-296">
+                    [18:27]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bfrog: fyi, the FD &amp; EVENTS opts were added *specifically* to allow for 0mq socket integration with other event loops
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-297" class="rowLink" href="#msg-297">
+                    [18:27]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you find a case where they are inadequate, please speak up
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-298" class="rowLink" href="#msg-298">
+                    [19:26]  rgl
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

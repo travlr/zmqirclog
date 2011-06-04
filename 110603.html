@@ -1,0 +1,1019 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Friday June 3, 2011</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [04:29]  ferrouswheel
+                    </a>
+                </td>
+                <td class="message-cell">
+                    a dumb question: does zmq_poll work with inproc sockets?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [04:31]  ferrouswheel
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i get the error "not a socket" when I try...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [04:32]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it does
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [04:33]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the error is presumably because the socket was already closed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [07:12]  yukonbob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hello, #zeromq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [17:29]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is it possible to blend classic socket applications with zero mq?  As an example, say I have a datafeed from a market quote service that is done over classic sockets, and another zero mq service that&#39;s internal to my own application, is there some way I can have a select()/poll() be configured such that I can have both of them woken up?  I read the docs and wasn&#39;t clear how to blend things in
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [17:29]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    one thread.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [17:31]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I have some 3rd party data feed I need to multiplex along with zeromq for ipc, but would like either events to trigger a wakeup... other option is switching to polling, which is ok, but I would like tobe able to configure between straight up polling and a blocking implementation
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [17:32]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    LazyBob: did you check zmq_poll docs?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [17:32]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sec
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [17:33]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://api.zeromq.org/2-1:zmq-poll
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [17:33]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    see the "Example"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [17:33]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, next question:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [17:33]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    will this work in windows?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [17:34]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    as far as i know, yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [17:34]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but my knowledge of windows platform is very limited
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [17:35]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i tried zmq about a year ago and the windows implementation did not work for me, so I gave it some time and am ready to try it again.  Maybe this time.  Note, I have not tried to use this system yet, just have read the tutorials and have a general understanding.  Trying to decide if it is the right solution.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [17:35]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what is the problem?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [17:36]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;m forgetting, but back then, i tried something that wasn&#39;t supported on windows yet...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [17:36]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i guess we will find out again . :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [17:36]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ipc?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [17:36]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thats the only thing i know that doesnt work on win
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [17:36]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [17:37]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this time around I have less of an interest in IPC and just intra-thread communications, so as long as that works I will be satisfied for this particular problem.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [18:14]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I feel like this is a really common problem that I should know the answer to, but: if I ZMQ_SUB to a socket, and then later bind another process to the same socket as ZMQ_PUB and immediately start sending, my subscriber misses the first N messages. what&#39;s the idiom to solve this?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [18:14]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    wait or sync
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [18:15]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (I just found the section in the manual on this, so feel free ti disregard :|)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [18:15]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the connect is asynchronous, so if you start to send after the Ã¸mq connect there is no connection and so no messages sent
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [18:21]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [18:22]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    np
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [18:52]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so I am reading this document on the zeromq site and it says that i have to have threads created in separate threads and used in those threads
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [18:52]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the question i have is... I have an ActiveX object that gets called back in these arbitrary "RPC worker threads" in Windows... I never create those threads, I just know my methods are called in those threads
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [18:53]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    can I not use zmq sockets in this scenario, because the callback gets executed in random threads, is there no way to store a zmq socket member method and have it work, or am I just out of luck in this scenario
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [18:54]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in other words, am i screwed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [18:55]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you have to ensure full memory barrier in order to migrate socket to another thread
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [18:55]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so in this case you would need to use mutex or similar exclusion mechanism
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [18:56]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which kinda takes away majority of the benefits
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [18:57]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so a spinlock around the socket write would still work?  i.e. acquire(), zmq_send(), release() from the worker threads?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [19:02]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what is the problem you are solving?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [19:04]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so I have this trading application that listens toa  bunch of stock feeds and was originally written for Linux, however now I have to use the same application but with a different broker whose API is from an ActiveX object... this ActiveX object creates all kinds of strange underlying threads, but when events are delivered, they are delivered in such a manner that callback functions are called
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [19:04]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    from "RPC Worker Threads" ... I need to take the information from these callbacks, and have them "appear" to the main application as if they came over an ordinary socket.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [19:05]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I do not have source visibility, I just know that my function can be executed within the context of some random thread somewhere... and the idea was to take structures built in the callback and pass them via inproc zmq sockets to a main loop where i/o is typically multiplexed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [19:06]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the ActiveX object is the bane of my existence, the model is very non-standard and just flat out weird
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [19:14]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sounds painful
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [19:16]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s quite awful
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [19:29]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    LazyBob: i&#39;m in the same situation as you
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [19:29]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    very interesting
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [19:29]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    same problem?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [19:29]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i pull all of the data out of the COM object and enqueue it internally for my "main" thread to deal with the processing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [19:30]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    "sterling trader" happens to be the vendor, i am really hating this COM object
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [19:30]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in other words, i serialize all COM object access to my reactor loop (which is inherently single theaded)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [19:30]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, i&#39;m using CQG
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [19:30]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    they have the same problem??
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [19:30]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I couldn&#39;t maintain broker independence without this sort of single-threaded, event loop ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [19:30]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s not a problem, per se, it&#39;s just how COM delivers events
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [19:31]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not sure i follow
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [19:31]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    suppose I swapped out this broker for, say, Interactive Brokers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [19:31]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or Genesis, or some other broker
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [19:31]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [19:31]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    to have a unified model where all events are just seem in an natural state, you have to transform the events into some sort of event that works with what you call a reactor
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [19:32]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure, that&#39;s what i do
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [19:32]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it keeps it nice and generic
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [19:32]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    did you solve the problem I spoke of above with zmq?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [19:32]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [19:32]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    did you put synchronization around the zmq_send like Mikko suggested?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [19:32]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [19:33]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    can you explain the model you used, so I have some idea of how to proceed/begin
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [19:33]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i process the data out of the COM object on whatever thread and then enqueue it for
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [19:33]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    my reactor loop to send it out
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [19:33]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [19:33]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    slightly different than me
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [19:33]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the reactor loop is where all sockets are created and live permanently
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [20:15]  GothAlice
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m having all sorts of difficulty getting zmq installed on Mac OS X Lion.  The following is the result of the compile: http://pastie.textmate.org/private/eu7oceqttu5ppbawnghx0w
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [20:15]  GothAlice
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (Via brew.)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [20:15]  GothAlice
+                    </a>
+                </td>
+                <td class="message-cell">
+                    This is the first package I&#39;ve encountered with a problem.  (~30 others installed fine.)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [20:16]  GothAlice
+                    </a>
+                </td>
+                <td class="message-cell">
+                    If I disable PGM I have the same redeclaration failure in an io source file.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [20:31]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    GothAlice: very few people have access to Lion right now
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [20:31]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so it&#39;s hard for anyone to create a patch
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [20:31]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    however, *you* have access so perhaps you could investigate it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [20:32]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    also, i suggest cloning the official repository and trying to build it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [20:32]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    perhaps this problem is specific to brew
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [20:33]  GothAlice
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: I&#39;m in the process of doing so.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [20:33]  GothAlice
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I suspect is has to do with the use of LLVM exclusively in Lion.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [20:34]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah, that could be!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [20:37]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    GothAlice: seems to be pgm issue
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [20:38]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    most likely &lt; Lion doesn&#39;t define those structs
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [20:38]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and pgm assumes that they are not defined on darwin
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [20:38]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    should be easy to check from ./include/pgm/in.h
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-89" class="rowLink" href="#msg-89">
+                    [22:10]  LazyBob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is it safe to assume that in most scenarios where a high water mark isn&#39;t reached, that inproc and ipc are generally lossless (with correct design)?
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

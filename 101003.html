@@ -1,0 +1,1041 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Sunday October 3, 2010</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [00:19]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nisbus: yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [00:19]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    playing sc2 though
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [00:19]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but no, i havent used zmq with erlang
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [00:30]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [00:39]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    driver_select(0x000003fa, 146885980, ERL_DRV_READ, 1) by zmq_drv driver #Port&lt;0.2042&gt; failed: fd=146885980 is larger than the largest allowed fd=1023
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [00:39]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what does this mean?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [00:40]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    can I use some socket opts to fix it?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [00:43]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    It works, although when I start sending messages, memory goes up to 1 GB and then the process crashes.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [00:43]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    any ideas?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [00:44]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    are you using libzmq 2.0.9?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [00:45]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [00:45]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and erlzmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [00:45]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is this a known problem for older versions?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [00:46]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i don&#39;t know if this is related to the fact that in 2.0.x you can no migrate sockets between threads
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [00:46]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    worth testing with 2.1.0
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [00:47]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i don&#39;t really know much about erlang
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [00:50]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m using the one from github : http://github.com/zeromq/zeromq2.git
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [00:51]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which is 2.1.0 it seems
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [01:31]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    recompile got rid of the error but I run out  of memory in no time when publishing in a tight loop.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [01:34]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zmq:socket(rep,[{active , true},{hwm,1}])
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [01:36]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if I use pub  I get the following error: Assertion failed: nbytes == sizeof (command_t) (signaler.cpp:283)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [01:37]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zmq:socket(pub,[{active , true},{hwm,1}])
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [01:37]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    do you create the sockets in a loop?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [01:38]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no , I just create a  single socket and then create a loop to send messages to itt
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [01:40]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I had the same problem with the .net binding for zmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [05:22]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nisbus: this problem was already reported
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [05:23]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    can you check what the value of nbytes is?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [05:23]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [06:24]  Pupuser402
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [06:24]  Pupuser402
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ghjhgj
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [06:24]  Pupuser402
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jh
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [06:24]  Pupuser402
+                    </a>
+                </td>
+                <td class="message-cell">
+                    j
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [06:24]  Pupuser402
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dh
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [06:24]  Pupuser402
+                    </a>
+                </td>
+                <td class="message-cell">
+                    g
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [06:24]  Pupuser402
+                    </a>
+                </td>
+                <td class="message-cell">
+                    gh
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [06:24]  Pupuser402
+                    </a>
+                </td>
+                <td class="message-cell">
+                    fg
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [06:24]  Pupuser402
+                    </a>
+                </td>
+                <td class="message-cell">
+                    j
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [06:24]  Pupuser402
+                    </a>
+                </td>
+                <td class="message-cell">
+                    f
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [06:24]  Pupuser402
+                    </a>
+                </td>
+                <td class="message-cell">
+                    g
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [06:24]  Pupuser402
+                    </a>
+                </td>
+                <td class="message-cell">
+                    fghfg
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [06:24]  Pupuser402
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nc
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [06:24]  Pupuser402
+                    </a>
+                </td>
+                <td class="message-cell">
+                    vn
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [06:24]  Pupuser402
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bnk
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [06:24]  Pupuser402
+                    </a>
+                </td>
+                <td class="message-cell">
+                    gdh
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [06:24]  Pupuser402
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jgfz
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [06:24]  Pupuser402
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hg
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [06:24]  Pupuser402
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hg
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [06:24]  Pupuser402
+                    </a>
+                </td>
+                <td class="message-cell">
+                    k
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [06:24]  Pupuser402
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hlk
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [06:39]  sbahra
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Interesting.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [09:18]  manuel
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi,
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [09:40]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: i got 0mq master and maint now running daily builds
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [09:40]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: adding jzmq and php-zmq to daily builds soon as well
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [11:51]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sdfkl
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [11:51]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [11:53]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [11:57]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is no one else having problems with memory when publishing messages to zmq?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [12:20]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hard to tell
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [12:20]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    for myself, no
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [12:21]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (assuming you mean memory leaks)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [13:32]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not memory leaks per say, I start publishing and after about 30-60 seconds my machine runs out of memory (1GB).
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [13:34]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zmq:socket(pub,[{active , true},{hwm,1}]) and then zmq:send(somemessage), in a loop.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [13:35]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oh, and zmq:bind(S,"tcp://127.0.1.1:5555") in between       of those
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [13:37]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it then fails with either of the following :Assertion failed: nbytes == sizeof (command_t) (signaler.cpp:283)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [13:38]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or eheap_alloc: Cannot allocate 1140328500 bytes of memory (of type "heap")
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [13:39]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nisbus: does it happen if you try with slightly larger hwm?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [13:39]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    let&#39;s say 100
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [13:40]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the same thing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [13:40]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it might be erlang related (threads).
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [13:40]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    have you got a subscriber on the other side?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [13:41]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no subscriber
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [13:41]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I want zmq to throw away messages if no one&#39;s listening
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [13:46]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it seems it only sends something like 5-10 messages, then hangs on send an ultimately crashes.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [13:46]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nisbus: with PHP it works as expected
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [13:47]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    memory usage stays on same level
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [13:47]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I know, it works with python also. I just can&#39;t get it not to explode in Erlang :(
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [13:47]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it behaves the same way in .net
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [13:48]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    can you open a bug against the erlang driver?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [13:48]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I will
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [13:48]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://github.com/zeromq/erlzmq/issues
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [13:48]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    here
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [13:48]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i think
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [14:08]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ve opened a bug there
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [14:08]  nisbus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [14:40]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: excelent!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [14:42]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    &lt;sustrik&gt; nisbus: this problem was already reported
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [14:42]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    &lt;sustrik&gt; can you check what the value of nbytes is?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [14:42]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    &lt;sustrik&gt; thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-89" class="rowLink" href="#msg-89">
+                    [22:13]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyone able to get jzmq to build recently?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-90" class="rowLink" href="#msg-90">
+                    [22:14]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I get a few errors on build the same as -&gt; http://github.com/zeromq/jzmq/issues#issue/11
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-91" class="rowLink" href="#msg-91">
+                    [22:14]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and was wondering if anyone knew a fix
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

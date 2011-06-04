@@ -1,0 +1,1932 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Saturday September 11, 2010</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [11:44]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I can connect a socket to many endpoints, what is the reason for not allowing one to disconnect from an endpoint again?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [12:00]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    also why do I have to loop over *all* sockets to see which ones got events after a zmq_poll(), I can&#39;t see how this would scale
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [12:03]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s how poll works
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [12:08]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well that kinda nullifies a benefit that for example epoll() gives you
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [12:09]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    where you don&#39;t have to loop around searching
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [12:11]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    a) somewhere you have to go through the list of fds
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [12:12]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    b) Ã¸mq sockets aggregate os level sockets (one Ã¸mq socket -&gt; many os level sockets), so you have only a few Ã¸mq sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [12:12]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    c) Ã¸mq uses epoll or whatever is available on the given platform
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [12:12]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yea but due to not being able to disconnect from one endpoint, I might end up needing many zmq sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [12:13]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i don&#39;t dare to ask why...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [12:13]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it uses epoll but makes me loop over all sockets, epoll does not require me to do that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [12:13]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    epoll is not available on all platforms Ã¸mq is running on
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [12:13]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I know
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [12:13]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [12:14]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but many provide smarter facilities than poll()
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [12:14]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so you throw away a lot of benefits for a lowest common denominator
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [12:15]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so you think it would make sense to have Ã¸mq behave differently on differnt platforms?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [12:15]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that is not what I am saying
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [12:15]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it is
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [12:15]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nope
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [12:15]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    because if you use the _best_ way on a platform, you also have the platform specific semantics
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [12:16]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can still abstract it in a general way
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [12:16]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    see all event libraries like libev or libevent
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [12:16]  gebi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    icy: just for the record, epoll is NOT faster than poll in some situations, quite frankly it is 20% or more slower than poll in some situations
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [12:17]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I know, for small sets poll() is nice
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [12:17]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    may be these abstraction would cost a lot on some platforms, so why punish people not running you favorite platform?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [12:18]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    they do not cost any considerable amount
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [12:18]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    evidence by allegation?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [12:19]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what evidence do you provide?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [12:19]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Ã¸mq is built that way, and works
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [12:21]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well all I&#39;m saying is I cannot see how it can scale to many zmq sockets because of all the looping. so clearly there must be a reason for that and that would that you would not need many zqm sockets as each can connect to many transport endpoints
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [12:22]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which brings me to my initial question why you can&#39;t disconnect from one again
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [12:23]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I might be missing something in how you are supposed to handle many volatile connections and am ready for enlightenment :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [12:25]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what kind of connections?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [12:25]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you don&#39;t see connects at the Ã¸mq level
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [12:28]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hm I was thinking of a socket which connects to many IPs over tcp but I guess I just need to flip it around and make it the server and not client
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [12:29]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    even then you would have only one Ã¸mq socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [12:29]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    gebi: yes, i recall Zed Shaw&#39;s analysis, quite fun
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [12:30]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    icy: you&#39;re IMO trying to apply existing TCP patterns to 0MQ
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [12:30]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yea but if the IPs are dynamic, the zmq socket would just get more and more endpoints attached to it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [12:30]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieter_hintjens: quite possible, I am used to that :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [12:30]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you connect more and more sockets to a remote socket, then yes, the number of connections is growing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [12:30]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    icy: you need to think of 0MQ sockets as mini applications not just APIs
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [12:31]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    they are intelligent and do things for you
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [12:31]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    learning this is the key to using 0MQ right and getting it to scale and be useful for you
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [12:31]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there are some generic rules that apply to all 0MQ sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [12:32]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and then there are specifics to each type, how they behave
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [12:32]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    generically, client vs. server is important to get right
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [12:32]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    stable nodes act better as servers (doing the bind), dynamic nodes as clients (doing the connect)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [12:32]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yup makes sense, I think it will just take a bit of time to get the old patterns out of my head
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [12:32]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yup
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [12:32]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if it&#39;s any help, we all go through this
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [12:32]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    did you read the user guide and try the examples?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [12:33]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [12:33]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    did you just read it, or try the code?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [12:33]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I tried not all but some
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [12:33]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and read all
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [12:33]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, it takes time too
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [12:33]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    several days of slow reprogramming
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [12:34]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it *needs* time to sink in
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [12:34]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Ã¸mq can&#39;t be groked in a day, imho
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [12:34]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you never did networking programming you&#39;d have less trouble unlearning old patterns
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [12:34]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the things that makes it so good is what makes it so hard :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [12:34]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but you&#39;d still have to learn the new stuff
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [12:35]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but who would that be?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [12:35]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    icy: briefly, you trust 0MQ sockets to do a lot for you
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [12:35]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there is a lot less of the command-and-control you need with traditional sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [12:36]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well I understand how stuff works, not very complicated after all. I&#39;m trying now to understand why the api is how it is. e.g. normally event libs let you specify callbacks that get called upon events (hence I was so surprised by the looping needed after zmq_poll)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [12:36]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    icy: the api aims to look like plain boring sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [12:37]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the poll stuff is not very nice
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [12:37]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and we&#39;ll probably make it nicer for 3.0
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [12:37]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    fair enough
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [12:37]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there is a moral when you make new technology
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [12:37]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if it looks new, people won&#39;t adopt it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [12:38]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmmm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [12:38]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    people = except pioneers who have a fetish for new technology just on principle
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [12:38]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and who will abandon it for the next new thing without hesitation
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [12:39]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i hmmed because the last 30 years have seen a lot of new things
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [12:39]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I read a lovely quote from the inventor of liquid salt nuclear reactors
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [12:39]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure... i&#39;m making a horrid generalization
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [12:39]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ack
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [12:39]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m not so sure if this can be applied so easily
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [12:40]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    go on :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [12:40]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    "Perhaps the moral to be drawn is that a technology that differs too much from an existing technology has not one hurdle to overcome--to demostrate its feasibility--but another even greater one--to convince influential individuals and organizations who are intellectually and emotionally attached to a different technology that they should adopt the new path"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [12:40]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    icy: it&#39;s a trade-off between usability and speed, mostly
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [12:40]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if it was true, no radically things would have been adopted in the past but there have been plenty :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [12:40]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah, (a) there are always exceptions to a general rule and (b) there are ways to appear old yet introduce newness
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [12:40]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;ve seen a messaging lib w/ callbacks, and it wasn&#39;t fun at all
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-89" class="rowLink" href="#msg-89">
+                    [12:41]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in my opinion anything providing a considerable advantage over something else has good chances of getting adopted
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-90" class="rowLink" href="#msg-90">
+                    [12:41]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    provided it does not have disadvantages that outweight the advantages of course :P
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-91" class="rowLink" href="#msg-91">
+                    [12:41]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you remember the video-tape thingy?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-92" class="rowLink" href="#msg-92">
+                    [12:41]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this is the engineer point of view but it ignores people emotional attachment to stuff they know
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-93" class="rowLink" href="#msg-93">
+                    [12:41]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    *people&#39;s
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-94" class="rowLink" href="#msg-94">
+                    [12:41]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    *peoples&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-95" class="rowLink" href="#msg-95">
+                    [12:42]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sms text messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-96" class="rowLink" href="#msg-96">
+                    [12:42]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    email
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-97" class="rowLink" href="#msg-97">
+                    [12:42]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guido_g: what about fire, electricity etc? :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-98" class="rowLink" href="#msg-98">
+                    [12:42]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    icy: fire has callbacks?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-99" class="rowLink" href="#msg-99">
+                    [12:42]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there are examples for both sides
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-100" class="rowLink" href="#msg-100">
+                    [12:42]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieter_hintjens: uhm.. ;)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-101" class="rowLink" href="#msg-101">
+                    [12:42]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-102" class="rowLink" href="#msg-102">
+                    [12:43]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    icy: but it doesn&#39;t work that way
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-103" class="rowLink" href="#msg-103">
+                    [12:43]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyhow, this is why 0MQ very carefully emulates a poll function everyone hates but totally trusts and understands
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-104" class="rowLink" href="#msg-104">
+                    [12:44]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guido_g: just curious, why was that lib no fun?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-105" class="rowLink" href="#msg-105">
+                    [12:44]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    icy: wllm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-106" class="rowLink" href="#msg-106">
+                    [12:44]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieter_hintjens: I totally see your point
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-107" class="rowLink" href="#msg-107">
+                    [12:45]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    wllm?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-108" class="rowLink" href="#msg-108">
+                    [12:45]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    icy: once there is a significant weight behind 0MQ (and we&#39;re getting there) we can be more ambitious about our own abstractions
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-109" class="rowLink" href="#msg-109">
+                    [12:45]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    icy: from a small 3 letter company (HAL) :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-110" class="rowLink" href="#msg-110">
+                    [12:46]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    icy: http://publib.boulder.ibm.com/infocenter/wllm/v2r0/index.jsp
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-111" class="rowLink" href="#msg-111">
+                    [12:46]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieter_hintjens: wouldn&#39;t it be hard to make a radical api change once you got a considerable amount of applications using it? as a counter argument
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-112" class="rowLink" href="#msg-112">
+                    [12:46]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guido_g: will take a look, thx
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-113" class="rowLink" href="#msg-113">
+                    [12:46]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    icy: it&#39;s about layers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-114" class="rowLink" href="#msg-114">
+                    [12:46]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    icy: no need to, really :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-115" class="rowLink" href="#msg-115">
+                    [12:46]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    we&#39;d never make radical api changes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-116" class="rowLink" href="#msg-116">
+                    [12:46]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just add layers on top
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-117" class="rowLink" href="#msg-117">
+                    [12:47]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    e.g. event driven frameworks that actually call the poll API
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-118" class="rowLink" href="#msg-118">
+                    [12:47]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    though I suspect poll API itself will be redesigned before the 0MQ is totally stabilized
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-119" class="rowLink" href="#msg-119">
+                    [12:47]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so the developer can pick his poison depending on the use-case etc.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-120" class="rowLink" href="#msg-120">
+                    [12:52]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-121" class="rowLink" href="#msg-121">
+                    [12:52]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    for the non blocking part I&#39;d argue it makes it even easier given the atomicity of messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-122" class="rowLink" href="#msg-122">
+                    [12:53]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    we had a lot of trouble w/ these callbacks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-123" class="rowLink" href="#msg-123">
+                    [12:54]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    one problem is that you are still in the library
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-124" class="rowLink" href="#msg-124">
+                    [12:54]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which leads to more or less well known constraints
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-125" class="rowLink" href="#msg-125">
+                    [12:55]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    threading issues etc.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-126" class="rowLink" href="#msg-126">
+                    [12:55]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i wouldn&#39;t go that route again
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-127" class="rowLink" href="#msg-127">
+                    [12:55]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the reactor pattern looks more sane
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-128" class="rowLink" href="#msg-128">
+                    [12:55]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieter_hintjens: oh yes!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-129" class="rowLink" href="#msg-129">
+                    [12:55]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    to both
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-130" class="rowLink" href="#msg-130">
+                    [12:55]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what i&#39;d love to make is a Libero/0MQ at some stage
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-131" class="rowLink" href="#msg-131">
+                    [12:56]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sorry, what would that be?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-132" class="rowLink" href="#msg-132">
+                    [12:56]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, something like that, anyhow: state machines where events are 0MQ messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-133" class="rowLink" href="#msg-133">
+                    [12:56]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you turn the loop inside out, the loop calls your code and feeds it incoming messages as events
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-134" class="rowLink" href="#msg-134">
+                    [12:56]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and your code goes through states
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-135" class="rowLink" href="#msg-135">
+                    [12:56]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    makes sense
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-136" class="rowLink" href="#msg-136">
+                    [12:57]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s a pattern that can be terribly useful but it can be hard to grok as well
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-137" class="rowLink" href="#msg-137">
+                    [12:57]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    only worth doing for more complex 0MQ apps but I suspect we&#39;re heading that way
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-138" class="rowLink" href="#msg-138">
+                    [12:57]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    devices that manage 3+ sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-139" class="rowLink" href="#msg-139">
+                    [12:57]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-140" class="rowLink" href="#msg-140">
+                    [12:59]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes this is what I was refering to. you give a socket a function to call upon receiving a message. this way you don&#39;t need to care about searching which sockets got a message after a poll
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-141" class="rowLink" href="#msg-141">
+                    [13:00]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zmq would do it for you and can therefor use the faster implementation possible for a given platform
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-142" class="rowLink" href="#msg-142">
+                    [13:00]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    icy: you can trivially build this on top
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-143" class="rowLink" href="#msg-143">
+                    [13:00]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    perhaps a fun thing to make
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-144" class="rowLink" href="#msg-144">
+                    [13:00]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    icy: as i said, it wasn&#39;t nice to use in a real world app
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-145" class="rowLink" href="#msg-145">
+                    [13:01]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i can see several problems with it, though
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-146" class="rowLink" href="#msg-146">
+                    [13:01]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    plus the problems comming from the product itself
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-147" class="rowLink" href="#msg-147">
+                    [13:01]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    passing control to a function means you can&#39;t e.g. work with multiple sockets at once
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-148" class="rowLink" href="#msg-148">
+                    [13:01]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so you can&#39;t do stuff like devices that read from one, write to the other
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-149" class="rowLink" href="#msg-149">
+                    [13:01]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or you need to create and pass around increasingly complex contexts
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-150" class="rowLink" href="#msg-150">
+                    [13:01]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can&#39;t even do a proper error handling :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-151" class="rowLink" href="#msg-151">
+                    [13:02]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which then slow you down even more
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-152" class="rowLink" href="#msg-152">
+                    [13:02]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but it could be fun to experiment with
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-153" class="rowLink" href="#msg-153">
+                    [13:02]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    icy: take a look at the various reactors people like Matt Weinstein and Chuck Remes have made
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-154" class="rowLink" href="#msg-154">
+                    [13:03]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://www.zeromq.org/docs:labs
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-155" class="rowLink" href="#msg-155">
+                    [13:04]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    of course you can do proper error handling. maybe your experience was because of a poor product, not the methodology itself guido_g
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-156" class="rowLink" href="#msg-156">
+                    [13:04]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but yea to handle multiple sockets you need to pass around also some additional data
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-157" class="rowLink" href="#msg-157">
+                    [13:05]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    callbacks are generally not the first choice, i did X11 and Motif and learned to avoid them
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-158" class="rowLink" href="#msg-158">
+                    [13:05]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then wllm, smame thing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-159" class="rowLink" href="#msg-159">
+                    [13:05]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    *same
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-160" class="rowLink" href="#msg-160">
+                    [13:05]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you want it, you should do it in the app
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-161" class="rowLink" href="#msg-161">
+                    [13:06]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    libs or frameworks can&#39;t know enough of the use-cases to provide a proper solution for every user
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-162" class="rowLink" href="#msg-162">
+                    [13:06]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this is why frameworks tend to become so big and bloated
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-163" class="rowLink" href="#msg-163">
+                    [13:09]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    icy: what i&#39;ve found with 0MQ is that theory is pretty useless :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-164" class="rowLink" href="#msg-164">
+                    [13:09]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    get your hands dirty with code and it becomes rapidly clear
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-165" class="rowLink" href="#msg-165">
+                    [13:09]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    happily what you learn is the same no matter what language you use
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-166" class="rowLink" href="#msg-166">
+                    [17:12]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    check out what Andrew Cholakian&#39;s just built with 0MQ: http://blog.andrewvc.com/learn-zeromq-by-building-an-http-load-tester
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-167" class="rowLink" href="#msg-167">
+                    [17:24]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    um, push/pull is not pub/sub, or did i confuse things?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-168" class="rowLink" href="#msg-168">
+                    [17:25]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah right
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-169" class="rowLink" href="#msg-169">
+                    [19:03]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    did this email go anywhere? http://lists.zeromq.org/pipermail/zeromq-dev/2010-July/004674.html
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-170" class="rowLink" href="#msg-170">
+                    [19:04]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I mean is it feasible
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-171" class="rowLink" href="#msg-171">
+                    [22:04]  psino
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is there any way to tell a socket to stop connecting to an endpoint, or stop listening on an endpoint?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-172" class="rowLink" href="#msg-172">
+                    [22:19]  psino
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and is there a way of gracefully shutting down a worker process that uses an incoming PULL socket?
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,986 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Monday January 3, 2011</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [00:47]  Skaag
+                    </a>
+                </td>
+                <td class="message-cell">
+                    shykes_: sounds like an important and also "classical" use case to me, sounds like you need a sort of a "broker"? :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [00:48]  shykes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Correct. Although I already use zmq_forwarder as a broker
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [00:50]  shykes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    But before I reinvent the wheel, I&#39;m trying to find out how much of it already exists
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [00:50]  shykes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m guessing a lot of people use zeromq for the same purpose as me. How did all these people implement this?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [00:55]  shykes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hum, I just found rabbitmq&#39;s rmq-0mq plugin. Maybe that can help
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [01:00]  Skaag
+                    </a>
+                </td>
+                <td class="message-cell">
+                    we are porting our system from rabbitmq to 0mq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [01:00]  Skaag
+                    </a>
+                </td>
+                <td class="message-cell">
+                    because of scaling issues
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [01:00]  shykes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Yeah, we were using rabbitmq too
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [01:00]  Skaag
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I think the case of a "dead" machine is handled well, but a misbehaving machine, that&#39;s another story
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [01:01]  Skaag
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you&#39;ll simply need to implement this yourself, or on the machine itself, decouple the process that receives the messages from the processes that do the actual work
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [01:01]  shykes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [01:01]  shykes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sounds like less work than putting rabbitmq back into the mix :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [01:01]  Skaag
+                    </a>
+                </td>
+                <td class="message-cell">
+                    why are you using 0mq instead of the wicked rabbit if I may ask?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [01:02]  Skaag
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, also in my opinion, it is less work.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [01:02]  shykes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    A few reasons
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [01:02]  shykes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    1. We encountered problems with our Celery+RabbitMQ setup
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [01:02]  Skaag
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I wish I knew about the shortcomings before I started implementing with rabbit...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [01:02]  shykes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    2. We hit a major bug in the persister, which made it crash and not come back. Had to recover by hand...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [01:03]  Skaag
+                    </a>
+                </td>
+                <td class="message-cell">
+                    crap
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [01:03]  Skaag
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (and now i&#39;m told that our 16 node cluster is considered "very large" in rabbitmq terms...)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [01:03]  shykes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    3. I hate amqp. It&#39;s too complicated
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [01:03]  Skaag
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well then we agree at least on 2 and 3, and about 1 is irrelevant to our own system
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [01:03]  shykes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    4. more freedom in the topology
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [01:04]  Skaag
+                    </a>
+                </td>
+                <td class="message-cell">
+                    right
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [01:04]  shykes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    for example, switch to multicast down the road
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [01:04]  Skaag
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok this gives me validation in my own path
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [01:04]  Skaag
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yep
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [01:04]  Skaag
+                    </a>
+                </td>
+                <td class="message-cell">
+                    at least within a single DC
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [01:04]  Skaag
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I believe multicast over WAN is not feasible and may never be
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [01:04]  shykes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, we&#39;re primarily on EC2 for now, so not relevant for us either
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [01:21]  Skaag
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I constantly fail to see how EC2 helps with anything other than temporarily huge computations
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [01:21]  Skaag
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s more expensive than standard hosting
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [01:21]  Skaag
+                    </a>
+                </td>
+                <td class="message-cell">
+                    by any calculation I made
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [03:01]  viraptor
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi all
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [03:02]  viraptor
+                    </a>
+                </td>
+                <td class="message-cell">
+                    could someone tell me where to look for information on zeromq + forking? the docs describe multithreading, but not how I should handle a fork (inherit the context or not)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [03:46]  viraptor
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ehh... found the answer after all... it&#39;s "don&#39;t share the context with fork"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [05:46]  jugg
+                    </a>
+                </td>
+                <td class="message-cell">
+                    with zmq 2.1.x, sockets can be shared between threads.  However, zmq_poll documentation still state that the sockets must belong to the same thread calling zmq_poll.   Is that still the case?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [06:09]  neopallium
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jugg: with zmq 2.1 sockets can be moved between threads, but you still can&#39;t send/recv from different threads on the same socket.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [06:57]  PeterTork
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Question regarding the Ruby bindings. I am creating a socket, and then trying to extend it with a module. This causes it to fail in ZM.select(arrayOfSockets, nil, nil, 30) with the error `select&#39;: uninitialized stream (IOError)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [06:57]  PeterTork
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Removing the s.extend(EmptyModule) fixes this.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [17:55]  Seta00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m having lots of problems building pyzmq :(
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [17:55]  Seta00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, only one problem, but I can&#39;t fix it :P
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [17:58]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what problem are you having?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [18:02]  Seta00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko, distutils couldn&#39;t find my vcvarsall, but I&#39;ve just fixed it by manually returning the absolute path to it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [18:02]  Seta00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    now I just need to put the include files on the right dirs
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [18:02]  Seta00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and everything is good to go (I think)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [18:06]  Seta00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    now I need a constants.pyd.manifest file
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [18:15]  Seta00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lol I had to manually create a bunch of manifest files
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [18:18]  Seta00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hehe finally working
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [18:25]  Seta00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    aaaand they don&#39;t work :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [18:26]  Seta00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    DLL load failed: The application has failed to start because its side-by-side configuration is incorrect.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [18:50]  Seta00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this thing is driving me nuts, I think I&#39;ll just use the C++ library
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [18:56]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Seta00: try asking on the mailing list, the pyzmq guys can possibly help you
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [19:29]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: build currently fails on sunos using gcc3
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [19:29]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not sure if that is big deal
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [19:38]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: there&#39;s lot of failures there...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [19:38]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what do you mean?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [19:38]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you mean sunos and gcc3 to begin with
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [19:39]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [19:39]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i see 8 red point on valokuva.org
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [19:39]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    points
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [19:39]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    have i broken something?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [19:39]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;ll check
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [19:40]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    github was unavailable it seems
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [19:40]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah, yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [19:40]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;ve noticed that myself
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [19:40]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so where should i look for console output?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [19:41]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://build.valokuva.org/job/ZeroMQ2-core-master-SunGCC-solaris10/4/console
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [19:41]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there at the end
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [19:42]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i looked at it last night, looks like compiler error to me
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [19:44]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yep
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [19:44]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    let me fix it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [19:49]  CIA-21
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Martin Sustrik 07master * r95eebbf 10/ src/sub.cpp :
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [19:49]  CIA-21
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: sunos/gcc3 compilation issue fixed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [19:49]  CIA-21
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: Signed-off-by: Martin Sustrik &lt;sustrik@250bpm.com&gt; - http://bit.ly/ezkv67
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [19:50]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: try now
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [21:07]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: i&#39;ll kick a build
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [21:08]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    building
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [21:16]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    passes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [21:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    great
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [21:26]  Thomas_aboutus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I have what I&#39;m sure is a super-noob question, but I&#39;ve been over the docs a hundred times and can&#39;t figure out what I&#39;m doing wrong. If someone can help me that would rock!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [21:26]  Thomas_aboutus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I am trying to make a simple pub/sub setup. I have the code here: https://gist.github.com/763990   For some reason, the subscriber never receives messages from the publisher. The code in the gist is as simple as I could make it for clarities sake.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [21:36]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Thomas_aboutus: both sockets connect
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [21:37]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    change the pub to bind and it should work
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [21:40]  Thomas_aboutus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Wow... Thank you.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [21:40]  Thomas_aboutus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :)
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

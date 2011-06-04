@@ -1,0 +1,1580 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Tuesday June 22, 2010</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [02:04]  stuarthalloway
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if I run either the latency/throughput tests from Java, but increase the roundtrip count by a factor of 10, I get an exception:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [02:05]  stuarthalloway
+                    </a>
+                </td>
+                <td class="message-cell">
+                    "Context was terminated" at org.zeromq.ZMQ$Socket.recv
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [02:05]  stuarthalloway
+                    </a>
+                </td>
+                <td class="message-cell">
+                    running with verbose:gc suggests that this happens immediately after the first garbage collection
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [02:06]  stuarthalloway
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ...which suggests a resource management issue, or maybe I have a bad build
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [02:06]  stuarthalloway
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I am using 2.0.7 plus the latest jzmq from git
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [10:52]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: Hi Martin.. are you available?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [10:55]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [10:55]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, i&#39;m here
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [10:58]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hi. I first want to appologize for the the email I (peter alexander) posted to the list last night. I was half asleep when I wrote it and didn&#39;t mean to suggest that I could know more about things than you do. I most certainly do not and I think thats the way my email may have come across.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [11:09]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    travlr: you very well may know more
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [11:09]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s the pipelining
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [11:09]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i haven&#39;t been involved with that much
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [11:09]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the existing behaviour is based on few cases we&#39;ve seen
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [11:09]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no theoretical beckground there
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [11:10]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, very well. but I am self taught and no where near your caliber of expertise. enough said.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [11:11]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    would you like to have a doxygen api representation for the zmq sources?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [11:12]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what would that require?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [11:12]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    adding formatted comments to the source?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [11:13]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    changing the comments from /* .. */ to /** .. */ and // to /// and then deciding on a suitable style sheet.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [11:15]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i could do a patch set or clone on github for you to decide.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [11:16]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that would be great
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [11:18]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok I&#39;ll start with that today and while doing so I&#39;ll familiarize myself with the sources so I can hopefully help the community to formulate more flexible/powerful load balancing/distribution and possibly resource management aspects of zmq.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [11:23]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    great
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [11:23]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    good luck :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [11:24]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    k. thanks.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [11:41]  sjampoo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ve written an introduction to ZeroMQ for my blog
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [11:41]  sjampoo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    It is currently in draft mode here: http://nichol.as/?p=606&amp;shareadraft=baba606_4c20a0df10298
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [11:41]  sjampoo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;d appreciate any feedback, especially if i am telling bullshit ;)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [11:43]  sjampoo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;ll be off for now, but would really like to hear if you think stuff is missing or wrong by email (to nicholas@nichol.as)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [11:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sjampoo: let me see
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [11:47]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the graphic design is awesome!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [11:52]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sjampoo: what tool do you use for drawing diagrams?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [11:52]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    they are really neat
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [11:57]  sjampoo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Thanks, its OmniGaffle for OSX, really one of my favorite tools
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [11:57]  sjampoo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Have to catch a train now!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [11:58]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    they are sweet. anything similar to omnigraffe on linux i wonder.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [12:00]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    doesn&#39;t look like :(
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [12:02]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah not as sweet from what i have found but here&#39; s a nice site for alternatives anyway. http://alternativeto.net/desktop/omnigraffle/?platform=linux
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [12:06]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I would switch for OmniGaffe if I had a Mac box
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [12:06]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but looks like I&#39;ll stay with Dia for now
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [12:07]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Dia is nice, i haven&#39;t used it in quite a while though. Aris Express looks like it might be cool. http://alternativeto.net/desktop/aris-express/about
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [12:08]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but its trial ware :(
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [12:09]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oh my mistake.. its not trial ware.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [12:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    maybe worth of trying - but it seems to be tied to a particular design methodology rather than being a generic drawing tool
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [12:24]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yup. i almost jumped on the koffice team a year ago to modernize kivio, but as usual time is always a problem
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [12:32]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: would you consider including an alternative cmake build system in zmq master if i told you i would be around to help maintain it?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [12:41]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    travlr: there&#39;s already a cmake build system here: git://github.com/PatrickCheng/zeromq2.git
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [12:41]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you want to help with it try speaking to the guy maintaining it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [12:44]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, i was aware of his fork. not a problem but merely a question. i&#39;m not big on autotools so i thought i&#39;d simply ask you.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [12:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, the state of affairs is that the autotools build works on all supported platforms
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [12:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if cmake build wants to become an alternative
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [12:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there&#39;s a lot of testing to do on different platforms
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [12:47]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i see. cmake is portable to all platforms though i believe. right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [12:49]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i think so, but you have to deal with petty details by hand
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [12:50]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    have a look here: http://github.com/zeromq/zeromq2/blob/master/configure.in
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [12:50]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    different things done on different platforms...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [12:50]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes. no prob. something for me to think about in the future maybe. i&#39;m not yet schooled on all platform intricacies so i&#39;ll just use it privately for now.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [15:40]  bapt
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hi alk
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [15:41]  bapt
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is it possible with using pubsub that only one client (randomly) get the published messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [15:41]  bapt
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [15:42]  bapt
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I mean the publisher send a message N clients subscribed to it but I want only one client to really do the treatment
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [15:56]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bapt: so you want all clients to receive the message but only 1 client to actually process the data?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [15:57]  bapt
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [15:58]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i would recommend looking at the butterfly example; it doesn&#39;t use pub/sub
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [15:58]  bapt
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in fact what I want is butterfly (I&#39;m looking at the tutorail right now)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [15:58]  bapt
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [15:58]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it uses downstream/upstream sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [15:58]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oh, then you are on the right track!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [15:59]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    do you have a specific question on that example?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [15:59]  bapt
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not currently
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [15:59]  bapt
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [16:00]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [16:11]  bapt
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s incredibly easy and powerfull
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [16:12]  bapt
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks a lot for 0mq, you saved a lot of my coding time :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [19:23]  jldupont
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi - is there an official apt repository? i.e. apt-get
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [19:25]  jldupont
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyone??
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [19:28]  mivert
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jldupont: 2.0.6 is in sid and maverick http://packages.debian.org/source/sid/zeromq https://launchpad.net/ubuntu/maverick/+source/zeromq iMatix does not produce debs though
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [19:29]  jldupont
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mivert: thanks.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [19:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jldupont: there are deb packaging scripts in debian subdirectory, so in theory you can build the package yourself
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [19:34]  jldupont
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: thanks.  Is there a problem if I package and publish on Launchpad?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [19:35]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no, no problem at all
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [19:35]  jldupont
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just one doubt:  can the Python bindings do non-blocking?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [19:36]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you mean async, right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [19:37]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the messages being sent on the background
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [19:37]  jldupont
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I guess.  I want to "recv" with timeout.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [19:37]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah, there&#39;s no timeout in recv
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [19:37]  jldupont
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i.e. no blocking in receive loop
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [19:37]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so you have to poll
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-89" class="rowLink" href="#msg-89">
+                    [19:37]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (that one has timeout)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-90" class="rowLink" href="#msg-90">
+                    [19:37]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and then recv
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-91" class="rowLink" href="#msg-91">
+                    [19:37]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    either blocking or non-blocking
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-92" class="rowLink" href="#msg-92">
+                    [19:38]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    all these features should be available in pyzmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-93" class="rowLink" href="#msg-93">
+                    [19:38]  jldupont
+                    </a>
+                </td>
+                <td class="message-cell">
+                    great.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-94" class="rowLink" href="#msg-94">
+                    [19:38]  jldupont
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so, if I want a "message fabric", I have to build one myself i.e. there isn&#39;t a "broker/switch" in the system as in AMQP. Right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-95" class="rowLink" href="#msg-95">
+                    [19:39]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there are so called "devices"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-96" class="rowLink" href="#msg-96">
+                    [19:40]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    they are like micro-brokers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-97" class="rowLink" href="#msg-97">
+                    [19:40]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    say an executable that is in fact a queue
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-98" class="rowLink" href="#msg-98">
+                    [19:40]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    single one
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-99" class="rowLink" href="#msg-99">
+                    [19:40]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (zmq_queue)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-100" class="rowLink" href="#msg-100">
+                    [19:40]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but you can build the fabric by hand if you wish so
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-101" class="rowLink" href="#msg-101">
+                    [19:41]  jldupont
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmmm... http://api.zeromq.org/zmq_forwarder.html ... sort of empty...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-102" class="rowLink" href="#msg-102">
+                    [19:42]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    have a look here http://github.com/zeromq/zeromq-chat/blob/master/README
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-103" class="rowLink" href="#msg-103">
+                    [19:43]  jldupont
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok thanks. I&#39;ll check it out later. Ciao.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-104" class="rowLink" href="#msg-104">
+                    [19:43]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cyl
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-105" class="rowLink" href="#msg-105">
+                    [19:49]  soren
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m wondering about a few things wrt to pub/sub using multicast.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-106" class="rowLink" href="#msg-106">
+                    [19:50]  soren
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I haven&#39;t completely wrapped my head around multicast yet, so please bear with me.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-107" class="rowLink" href="#msg-107">
+                    [19:50]  soren
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-108" class="rowLink" href="#msg-108">
+                    [19:51]  soren
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Ok, so say I have a bunch of publishers (let&#39;s say 100-ish) and a /lot/ of subscribers (let&#39;s say 100000-ish).
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-109" class="rowLink" href="#msg-109">
+                    [19:51]  soren
+                    </a>
+                </td>
+                <td class="message-cell">
+                    They all "connect" (is that even the correct term for multicast) to some multicast IP and port.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-110" class="rowLink" href="#msg-110">
+                    [19:51]  soren
+                    </a>
+                </td>
+                <td class="message-cell">
+                    The publishers have no idea how many subscribers there are, right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-111" class="rowLink" href="#msg-111">
+                    [19:52]  soren
+                    </a>
+                </td>
+                <td class="message-cell">
+                    The distribution is handled by... what? The networking infrastructure?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-112" class="rowLink" href="#msg-112">
+                    [19:52]  soren
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Like routers/switches or whatnot, I mean?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-113" class="rowLink" href="#msg-113">
+                    [19:54]  soren
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Furthermore, if the subscribers only set a message filter using ZMQ_SUBSRIBE, they still receive all the messages, they&#39;re just filtered by zmq and never reach my application, correct?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-114" class="rowLink" href="#msg-114">
+                    [19:57]  soren
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: Can I pick your brain on this ^^ for a few minutes? :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-115" class="rowLink" href="#msg-115">
+                    [19:58]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the right term is "to join a multicast group"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-116" class="rowLink" href="#msg-116">
+                    [19:58]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    publishers have no idea of subscribers and vice versa
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-117" class="rowLink" href="#msg-117">
+                    [19:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    data are distributed by your network switch
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-118" class="rowLink" href="#msg-118">
+                    [19:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in theory multicast traffic can pass via router to another subnet but don&#39;t try that at home
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-119" class="rowLink" href="#msg-119">
+                    [19:59]  soren
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Right.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-120" class="rowLink" href="#msg-120">
+                    [19:59]  soren
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Ok, so it requires a reasonably capable switch.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-121" class="rowLink" href="#msg-121">
+                    [20:00]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    look for switches with "IGMP snooping"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-122" class="rowLink" href="#msg-122">
+                    [20:00]  soren
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I mean... a $20 gigabit switch probably won&#39;t give me much multicast love.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-123" class="rowLink" href="#msg-123">
+                    [20:00]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    have a look at the specs
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-124" class="rowLink" href="#msg-124">
+                    [20:00]  soren
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Sure. Ok.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-125" class="rowLink" href="#msg-125">
+                    [20:01]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    for high-perf scenarios you should always keep in mind that the actual throughput is limited by switches backplane throughput
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-126" class="rowLink" href="#msg-126">
+                    [20:01]  soren
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Sure.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-127" class="rowLink" href="#msg-127">
+                    [20:01]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ~100Gb/sec for real switches
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-128" class="rowLink" href="#msg-128">
+                    [20:01]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (not toy switches)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-129" class="rowLink" href="#msg-129">
+                    [20:01]  soren
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-130" class="rowLink" href="#msg-130">
+                    [20:02]  soren
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I assume a multicast group is defined by the IP alone?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-131" class="rowLink" href="#msg-131">
+                    [20:03]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-132" class="rowLink" href="#msg-132">
+                    [20:03]  soren
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Ok.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-133" class="rowLink" href="#msg-133">
+                    [20:03]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s a range of IP addresses you can choose from
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-134" class="rowLink" href="#msg-134">
+                    [20:03]  soren
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Sure, sure, I&#39;m just thinkgin..
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-135" class="rowLink" href="#msg-135">
+                    [20:04]  soren
+                    </a>
+                </td>
+                <td class="message-cell">
+                    my connection string also includes a port number, but if the multicast group is defined by IP (and not the port), I want to make sure not to just use one IP with multiple ports.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-136" class="rowLink" href="#msg-136">
+                    [20:05]  soren
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ...Since I might as well let the switch help me filter messages.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-137" class="rowLink" href="#msg-137">
+                    [20:06]  soren
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Am I making sense? :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-138" class="rowLink" href="#msg-138">
+                    [20:09]  soren
+                    </a>
+                </td>
+                <td class="message-cell">
+                    brb
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-139" class="rowLink" href="#msg-139">
+                    [22:50]  jldupont
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is there more information on how to configure the "zmq_forwarder" application?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-140" class="rowLink" href="#msg-140">
+                    [22:58]  jldupont
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or there isn&#39;t much to configure else than what&#39;s up on http://www.zeromq.org/docs:cookbook#toc8 ?  I.e. can the forwarder discriminate against the "message type" and forward only to subscribers interested by a given "message type"?
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

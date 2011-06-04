@@ -1,0 +1,4869 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Tuesday September 7, 2010</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [05:57]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m having problems using fork() and making my parent process talk to the child processes via 0mq. I&#39;m getting segfaults after the child exits and while the parent is in recv()
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [05:57]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is this supposed to work?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [06:55]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: you there?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [09:51]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyone here felt that XREP and XREQ could use better names?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [09:52]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I just gave a talk to my coworkers about zeromq, and yes, better_names++
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [09:52]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I was thinking of ROUTE and FORWARD
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [09:53]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    XREP creates routing envelopes around incoming messages and uses these on output to route replies back to original clients
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [09:54]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    XREQ just forwards messages in both directions without touching them
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [09:55]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    XREP really looks like a router... it&#39;s the only socket type that lets you address specific connections
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [09:55]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I like &#39;route&#39; very much, not forward so much
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [09:55]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, forward wasn&#39;t inspired
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [09:55]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it has to be a verb
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [09:56]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that says "move stuff in both directions but don&#39;t mess with it"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [09:56]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    PORT
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [09:56]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    XFER
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [10:11]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    keffo: here&#39;s a thought: http://www.zeromq.org/sandbox:mudem
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [10:11]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lestrrat: does that ring a bell?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [10:13]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thinking
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [10:15]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm. I grok ROUTE, but not the mudem part :) but I don&#39;t have a great alternative plan either
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [10:15]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    naming is hard, eh.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [10:17]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, mudem is a play on modem, modulator/demodulator...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [10:17]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh, I have a &#39;route-codec&#39; in my code...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [10:17]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, I know
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [10:17]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i don&#39;t like invented words but if one has to invent them they should be expressive
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [10:18]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    whichi encodes/decodes routes for an xreq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [10:18]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    keffo: sounds right
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [10:18]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    creates and uses envelopes, right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [10:20]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it just handles them, contains a payload the &#39;enduser&#39; is interested in, and also has a sendroute function
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [10:20]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, an alternative to mudem: dispatch
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [10:21]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    naa, someone who implements any type of loadbalancing of messages is in essense a dispatcher, imo
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [10:21]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    true
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [10:22]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s the combo of fanout and fanin
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [10:23]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i think "multiplex" is wrong since that suggest copying whereas its distribution
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [10:23]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    *it&#39;s
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [10:23]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, I thought about multiplex, but it didn&#39;t quite fit
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [10:24]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in terms of use cases, xreq is like push+pull, it ventilates and sinks at once
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [10:25]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    one could create a nice pipeline pattern using just XREQ to XREQ
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [10:27]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how about... something more visual... 1TON
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [10:27]  lestrrat
+                    </a>
+                </td>
+                <td class="message-cell">
+                    1000kg!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [10:28]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [10:28]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    1-to-N for the pedantic of us
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [10:30]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://www.zeromq.org/sandbox:1ton
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [10:31]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it kind of feels more like a building block now
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [10:42]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I have an issue where my worker process simply dissapears, but I cant seem to trap it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [10:42]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no exceptions, no atexits are run.. nada..
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [10:42]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what OS?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [10:42]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    very annoying!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [10:43]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    win7
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [10:43]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah, that is a known problem
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [10:43]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hu?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [10:43]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the usual solution is to upgrade to Linux
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [10:43]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sorry :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [10:43]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    caused by zmq??
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [10:44]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    tossing away 98% of the global userbase is hardly an upgrade btw :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [10:44]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I was kidding, my bad
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [10:44]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what language are you using?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [10:44]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    c++, lua
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [10:44]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so you need a debug build of 0MQ IMO
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [10:44]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oh it&#39;s all debug, debugger is attached too :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [10:44]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    aw :-(
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [10:45]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    gives me nothing.. I&#39;ve tried all routes I can think of
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [10:45]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    abort()?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [10:45]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but why would that be called?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [10:45]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    DebugBreak() afair, then continue it in the debugger
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [10:45]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ... assertion failure?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [10:45]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nada :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [10:46]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no asserts. no breakpoints, simply dissapears.. windows event log shows nothing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [10:46]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pussling actually
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [10:46]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no exceptions are raised either
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [10:46]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    It&#39;s as if the app cleanly exits, except it cant since it"s a while(true)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [10:46]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it could exit in another thread I guess
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [10:47]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;ve not worked on win32 for ages... maybe someone else here can be more helpful
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [10:47]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    does zmq ever call exit?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [10:47]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (or abort)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [10:48]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nada
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [10:48]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    asserts, yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [10:48]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    98%? keffo, 2010 is the Year of Linux
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [10:48]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s no more than 97.85% by now
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [10:49]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if my mom could use any generic desktop linux without calling me, then I"d agree :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [10:50]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hah, my mum actually does use linux and has for years...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [10:51]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but then again she&#39;s currently asking me how to hide her IP address so she can troll Anonymous so perhaps she&#39;s not typical...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [10:51]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    keffo: if you can make a reproducible case, and chop it down, maybe we can reproduce it on another platform
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [10:52]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lord no, that would take ages :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [10:52]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I just want to somehow detect -when- it happens, and go from there, but so far I&#39;ve been unable to
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [10:52]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then, my friend, you might have to resort to...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [10:53]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if really you have no other option...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [10:53]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    print? =)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [10:53]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-89" class="rowLink" href="#msg-89">
+                    [10:53]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    don&#39;t forget the fflush (stdout);
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-90" class="rowLink" href="#msg-90">
+                    [10:54]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    It&#39;s remarkably reproducable though
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-91" class="rowLink" href="#msg-91">
+                    [10:55]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, that&#39;s always good
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-92" class="rowLink" href="#msg-92">
+                    [10:55]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    4th time I calculate pi, it dissapears
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-93" class="rowLink" href="#msg-93">
+                    [10:55]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hopefully it remains stable as you add hundreds of prints
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-94" class="rowLink" href="#msg-94">
+                    [10:55]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you&#39;re calculating pi?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-95" class="rowLink" href="#msg-95">
+                    [10:57]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    printing is not the problem, I generate ~250k of logs on each run :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-96" class="rowLink" href="#msg-96">
+                    [10:57]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pi yeah, easy and verifiable thing to calc distributed :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-97" class="rowLink" href="#msg-97">
+                    [10:58]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is there an algo for distributed pi calculation somewhere?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-98" class="rowLink" href="#msg-98">
+                    [10:59]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-99" class="rowLink" href="#msg-99">
+                    [10:59]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    tons of different I guess
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-100" class="rowLink" href="#msg-100">
+                    [10:59]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i had an idea for a supermassive 0MQ project... lol
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-101" class="rowLink" href="#msg-101">
+                    [10:59]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not original but who cares...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-102" class="rowLink" href="#msg-102">
+                    [10:59]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    as did I :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-103" class="rowLink" href="#msg-103">
+                    [10:59]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    for i=self.beginspan, self.endspan do
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-104" class="rowLink" href="#msg-104">
+                    [10:59]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    localpi = localpi + (1.0 / (i * 4.0 + 1.0) )
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-105" class="rowLink" href="#msg-105">
+                    [10:59]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    localpi = localpi - (1.0 / (i * 4.0 + 3.0) )
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-106" class="rowLink" href="#msg-106">
+                    [11:00]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    do that for each subspan of some arbitrary length, then sum them all up and the answer * 4 is pi :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-107" class="rowLink" href="#msg-107">
+                    [11:00]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not 42? weird...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-108" class="rowLink" href="#msg-108">
+                    [11:00]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hehe
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-109" class="rowLink" href="#msg-109">
+                    [11:00]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    aight, so if we have a server somewhere that distributes workloads, and a simple 0MQ client that accepts them...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-110" class="rowLink" href="#msg-110">
+                    [11:01]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    has surely been done dozens of times
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-111" class="rowLink" href="#msg-111">
+                    [11:02]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m doing a fairly more complicated scenario, but yeah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-112" class="rowLink" href="#msg-112">
+                    [11:05]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and I guess you can figure out why I want something a bit more flexibe than roundrobin :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-113" class="rowLink" href="#msg-113">
+                    [11:06]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    right now I&#39;m writing examples on how to use XREP to do routing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-114" class="rowLink" href="#msg-114">
+                    [11:06]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    good, it was messy :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-115" class="rowLink" href="#msg-115">
+                    [11:06]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how so?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-116" class="rowLink" href="#msg-116">
+                    [11:06]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you mean no documentation on the envelopes etc.?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-117" class="rowLink" href="#msg-117">
+                    [11:06]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just not very nicely explained
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-118" class="rowLink" href="#msg-118">
+                    [11:06]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    right...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-119" class="rowLink" href="#msg-119">
+                    [11:13]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I would explain it as a stack+req...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-120" class="rowLink" href="#msg-120">
+                    [11:13]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    push, push, push, payload, then pop,pop,pop, payload on the other side
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-121" class="rowLink" href="#msg-121">
+                    [11:14]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    btw, what happens in a queue device if a client never reconnects? will the msg linger indef.?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-122" class="rowLink" href="#msg-122">
+                    [11:21]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    btw, what happens in a queue device if a client never reconnects? will the msg linger indef.?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-123" class="rowLink" href="#msg-123">
+                    [11:21]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm, you mean a reply?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-124" class="rowLink" href="#msg-124">
+                    [11:21]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    with or without identity?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-125" class="rowLink" href="#msg-125">
+                    [11:22]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this is what 0MQ/2.1 is fixing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-126" class="rowLink" href="#msg-126">
+                    [11:22]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it will wait in some cases, discard in other cases
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-127" class="rowLink" href="#msg-127">
+                    [11:22]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in general, the whole reconnect business
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-128" class="rowLink" href="#msg-128">
+                    [11:22]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if it goes into the queue but never out, what happens to it?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-129" class="rowLink" href="#msg-129">
+                    [11:23]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, the queue is per socket, eventually
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-130" class="rowLink" href="#msg-130">
+                    [11:24]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there is not yet a proper explanation of how the 2.1 socket close semantics should work
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-131" class="rowLink" href="#msg-131">
+                    [11:24]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    afaik
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-132" class="rowLink" href="#msg-132">
+                    [11:24]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    client(100msgs) -&gt; queuedev -&gt; service, then back again, except the client is gone forever..
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-133" class="rowLink" href="#msg-133">
+                    [11:24]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anonymous clients -&gt; messages get thrown away
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-134" class="rowLink" href="#msg-134">
+                    [11:25]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    client with identity -&gt; messages persist as long as service is running
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-135" class="rowLink" href="#msg-135">
+                    [11:25]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-136" class="rowLink" href="#msg-136">
+                    [11:25]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    0MQ does have the concept of a connection going away
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-137" class="rowLink" href="#msg-137">
+                    [11:26]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    otherwise PUB sockets for example would end up with horrid resource leaks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-138" class="rowLink" href="#msg-138">
+                    [11:26]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I need to introduce some sort of session.. if I have (known)client A, does a bunch of test junk(like pi), but aborts prematurely, but then reconnects to start some other type of job, I dont want to receive a bunch of old pi results :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-139" class="rowLink" href="#msg-139">
+                    [11:27]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and I would need to be able to tell all parties involved to dump everything related to an "old" session as well
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-140" class="rowLink" href="#msg-140">
+                    [11:28]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    keffo: this starts to be industrial design work
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-141" class="rowLink" href="#msg-141">
+                    [11:29]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh, what do you mean?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-142" class="rowLink" href="#msg-142">
+                    [11:29]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i mean, what you&#39;re making is heavy duty...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-143" class="rowLink" href="#msg-143">
+                    [11:30]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oh very much :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-144" class="rowLink" href="#msg-144">
+                    [11:30]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it has fried my brain on may occasions.. Tons of papers of diagrams spread all over the place :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-145" class="rowLink" href="#msg-145">
+                    [11:30]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you have budget to throw at it, i can recommend an industrial 0MQ designer like Mato here
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-146" class="rowLink" href="#msg-146">
+                    [11:31]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the bulk of the work is not the transport &amp; topology though
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-147" class="rowLink" href="#msg-147">
+                    [11:31]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    although that needs to obviously be stable
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-148" class="rowLink" href="#msg-148">
+                    [11:31]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, you need an infrastructure that understands &#39;sessions&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-149" class="rowLink" href="#msg-149">
+                    [11:32]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Sure, but that"s already handled
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-150" class="rowLink" href="#msg-150">
+                    [11:32]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what do you still need then?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-151" class="rowLink" href="#msg-151">
+                    [11:32]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    apart from the thing not crashing...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-152" class="rowLink" href="#msg-152">
+                    [11:32]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hehe
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-153" class="rowLink" href="#msg-153">
+                    [11:32]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lingering data trying to reconnect for one.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-154" class="rowLink" href="#msg-154">
+                    [11:33]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oh and more liberal means of implementing loadbalancing, but I&#39;ve made that point already :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-155" class="rowLink" href="#msg-155">
+                    [11:34]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, load balancing using XREP routing is pretty clear, and will be nicely explained in Ch3 of the Guide
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-156" class="rowLink" href="#msg-156">
+                    [11:34]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    will be? =)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-157" class="rowLink" href="#msg-157">
+                    [11:34]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is in progress if I was not chatting here :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-158" class="rowLink" href="#msg-158">
+                    [11:34]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anything to do with maintaining overall state is a different kettle of chicken, though
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-159" class="rowLink" href="#msg-159">
+                    [11:34]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    But I think I know what that will say by now :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-160" class="rowLink" href="#msg-160">
+                    [11:35]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hopefully, yeah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-161" class="rowLink" href="#msg-161">
+                    [11:35]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what I&#39;m doing is something I&#39;ve thought about for years though, so it should work :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-162" class="rowLink" href="#msg-162">
+                    [11:35]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zmq solved a big gaping questionmark though :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-163" class="rowLink" href="#msg-163">
+                    [11:36]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I might be getting a job soon though, so dev on this wll sadly be sidetracked to weekends and evenings only though :/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-164" class="rowLink" href="#msg-164">
+                    [11:37]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is it open source?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-165" class="rowLink" href="#msg-165">
+                    [11:38]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it might be eventually!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-166" class="rowLink" href="#msg-166">
+                    [11:38]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    would benefit the lua community I guess
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-167" class="rowLink" href="#msg-167">
+                    [11:38]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well... i&#39;ve learned two relevant things here having done software for way too long
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-168" class="rowLink" href="#msg-168">
+                    [11:39]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    a. if it&#39;s not open source it will die
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-169" class="rowLink" href="#msg-169">
+                    [11:39]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    b. if you don&#39;t start as open source you can&#39;t make it work afterwards
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-170" class="rowLink" href="#msg-170">
+                    [11:40]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I dont agree, and I&#39;ve never done anything other than software :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-171" class="rowLink" href="#msg-171">
+                    [11:40]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cause it&#39;s not about building code but about building community...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-172" class="rowLink" href="#msg-172">
+                    [11:40]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    good luck, anyhow
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-173" class="rowLink" href="#msg-173">
+                    [11:41]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I wasnt thinking of opensource as in leveraging resources, but simply aiding someone else, when I&#39;m done with it :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-174" class="rowLink" href="#msg-174">
+                    [11:41]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nah, without people who helped make the code, it dies as soon as your evenings and weekends aren&#39;t available any more
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-175" class="rowLink" href="#msg-175">
+                    [11:42]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s not about leveraging resources but about software that lives past the "free time" of its creator
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-176" class="rowLink" href="#msg-176">
+                    [11:43]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    imho
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-177" class="rowLink" href="#msg-177">
+                    [11:43]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Oh, it&#39;s not free time at all, but I need to work for a bit to not starve :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-178" class="rowLink" href="#msg-178">
+                    [11:43]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    starving is not pleasant, no
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-179" class="rowLink" href="#msg-179">
+                    [11:44]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Not so much starving, but keeping girlfriend happier :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-180" class="rowLink" href="#msg-180">
+                    [11:45]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    when this is done, it will take me &amp; the other dude about 2-3 weeks to produce the actual product we&#39;ll eventually sell.. -That- part is already planned and so forth..
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-181" class="rowLink" href="#msg-181">
+                    [11:45]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    And ones that happens, there is no benefit to keep the code not opensource
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-182" class="rowLink" href="#msg-182">
+                    [11:46]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    err, once..
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-183" class="rowLink" href="#msg-183">
+                    [11:46]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :-) good spellng is hrad somtimes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-184" class="rowLink" href="#msg-184">
+                    [11:55]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    um, this is odd
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-185" class="rowLink" href="#msg-185">
+                    [11:56]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I wonder if lua might freak a little at some weird binary
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-186" class="rowLink" href="#msg-186">
+                    [13:51]  CIA-20
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Martin Sustrik 07master * r6d4ffd9 10/ (src/fq.cpp src/lb.cpp): Bug in fq_t and lb_t (when used via ZMQ_EVENTS option) fixed - http://bit.ly/cvOPzL
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-187" class="rowLink" href="#msg-187">
+                    [15:14]  CIA-20
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Martin Sustrik 07master * rf374431 10/ src/pipe.hpp : get rid of &#39;has virtual functions but non-virtual destructor&#39; warnings in pipe.hpp - http://bit.ly/9Relxm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-188" class="rowLink" href="#msg-188">
+                    [15:21]  Tasser
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes, it&#39;s more about the ruby part you wrote
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-189" class="rowLink" href="#msg-189">
+                    [15:21]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Tasser: i&#39;m around if you have questions
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-190" class="rowLink" href="#msg-190">
+                    [15:21]  Tasser
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes, oh, just asking for the big picture
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-191" class="rowLink" href="#msg-191">
+                    [15:22]  Tasser
+                    </a>
+                </td>
+                <td class="message-cell">
+                    aka what is where, how to stuff flows
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-192" class="rowLink" href="#msg-192">
+                    [15:22]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-193" class="rowLink" href="#msg-193">
+                    [15:22]  Tasser
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and probably write it down into your git
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-194" class="rowLink" href="#msg-194">
+                    [15:22]  Tasser
+                    </a>
+                </td>
+                <td class="message-cell">
+                    HACKING or something like that :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-195" class="rowLink" href="#msg-195">
+                    [15:22]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    whatever i write here, i&#39;ll clean up and add to the README
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-196" class="rowLink" href="#msg-196">
+                    [15:23]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ZM::Reactor is a thread that contains a single ZMQ context
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-197" class="rowLink" href="#msg-197">
+                    [15:23]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    from this context, you can create any kind of socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-198" class="rowLink" href="#msg-198">
+                    [15:23]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (stop me if i&#39;m not answering your question)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-199" class="rowLink" href="#msg-199">
+                    [15:24]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    during socket creation, you pass a ruby object that will act as that socket&#39;s handler
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-200" class="rowLink" href="#msg-200">
+                    [15:24]  Tasser
+                    </a>
+                </td>
+                <td class="message-cell">
+                    callback?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-201" class="rowLink" href="#msg-201">
+                    [15:24]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the handler should provide on_attach, on_writable and on_readable methods
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-202" class="rowLink" href="#msg-202">
+                    [15:25]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the on_attach method is called right away and lets you set things up (kind of like a constructor)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-203" class="rowLink" href="#msg-203">
+                    [15:25]  Tasser
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so why not #new ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-204" class="rowLink" href="#msg-204">
+                    [15:25]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the on_readable and on_writable methods are called when the socket is polled for those events and finds them to be true
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-205" class="rowLink" href="#msg-205">
+                    [15:26]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    explain what you mean by "not #new"?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-206" class="rowLink" href="#msg-206">
+                    [15:27]  Tasser
+                    </a>
+                </td>
+                <td class="message-cell">
+                    create a new instance per socket, so call #new and on that instance #on_writable, #on_readable
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-207" class="rowLink" href="#msg-207">
+                    [15:29]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the handler instance is just a regular ruby class that implements the 3 methods i mentioned
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-208" class="rowLink" href="#msg-208">
+                    [15:29]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it has a constructor (def initialize(*args) nil; end) just like any other class
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-209" class="rowLink" href="#msg-209">
+                    [15:30]  Tasser
+                    </a>
+                </td>
+                <td class="message-cell">
+                    less abstraction than EM
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-210" class="rowLink" href="#msg-210">
+                    [15:30]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you *could* use one instance of a class to manage multiple sockets; look at the one-handed-ping-pong example
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-211" class="rowLink" href="#msg-211">
+                    [15:30]  Tasser
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, having that one here atm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-212" class="rowLink" href="#msg-212">
+                    [15:30]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, EM is kind of confusing with the EM::Connection stuff
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-213" class="rowLink" href="#msg-213">
+                    [15:31]  Tasser
+                    </a>
+                </td>
+                <td class="message-cell">
+                    meh, gotta go :-(
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-214" class="rowLink" href="#msg-214">
+                    [15:31]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-215" class="rowLink" href="#msg-215">
+                    [15:31]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;m usually on irc from 8am to 5pm central standard time (gmt -6, i think)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-216" class="rowLink" href="#msg-216">
+                    [15:32]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ping me if you have more questions or send them to the 0mq ml
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-217" class="rowLink" href="#msg-217">
+                    [15:33]  bbigras
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Is there a way to build zeromq with mingw?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-218" class="rowLink" href="#msg-218">
+                    [15:33]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bbigras: luislavena (rubyinstaller.org guy) has been playing with that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-219" class="rowLink" href="#msg-219">
+                    [15:34]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    he opened an issue on github to fix a problem he encountered
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-220" class="rowLink" href="#msg-220">
+                    [15:34]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so as far as i know he succeeded
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-221" class="rowLink" href="#msg-221">
+                    [15:34]  bbigras
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: nice, thanks!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-222" class="rowLink" href="#msg-222">
+                    [15:35]  bbigras
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: Do you know if anyone had success using zeromq with Qt without having to disable Qt&#39;s signal/slot macros?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-223" class="rowLink" href="#msg-223">
+                    [15:36]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i haven&#39;t heard anything about that, so no
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-224" class="rowLink" href="#msg-224">
+                    [15:36]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you might try asking on the 0mq ML
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-225" class="rowLink" href="#msg-225">
+                    [15:38]  bbigras
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-226" class="rowLink" href="#msg-226">
+                    [18:17]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-227" class="rowLink" href="#msg-227">
+                    [18:17]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Is there anyone in here that has used google protobufs with zeromq? I&#39;m wondering what kind of throughput is normal when using google protobufs
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-228" class="rowLink" href="#msg-228">
+                    [18:20]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ModusPwnens: i recommend you write a small benchmark that serializes/deserializes your data
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-229" class="rowLink" href="#msg-229">
+                    [18:20]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and see what the upper limit is on your message rate
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-230" class="rowLink" href="#msg-230">
+                    [18:20]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then 0mq will have that as its upper limit for throughput
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-231" class="rowLink" href="#msg-231">
+                    [18:41]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah i did this cremes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-232" class="rowLink" href="#msg-232">
+                    [18:41]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I am just wondering whether or not my results are expected
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-233" class="rowLink" href="#msg-233">
+                    [18:42]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hmm, well actually, I benchmarked it with zeromq too
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-234" class="rowLink" href="#msg-234">
+                    [18:42]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so it&#39;s timing how long it takes to send messages as well
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-235" class="rowLink" href="#msg-235">
+                    [18:44]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ModusPwnens: yeah, take 0mq out of the equation to get an upper bound
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-236" class="rowLink" href="#msg-236">
+                    [18:44]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    *then* you can test with 0mq to see what kind of overhead it is introducing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-237" class="rowLink" href="#msg-237">
+                    [18:57]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hmm, another thing, I am having somewhat surprising results with the remote/local throughput tests
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-238" class="rowLink" href="#msg-238">
+                    [18:58]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I am just using localhost, but I only get around 200 Mb/s throughput, which seems low to me.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-239" class="rowLink" href="#msg-239">
+                    [18:59]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ModusPwnens: try increasing the message body size from 50 bytes (from the example you posted last week) to something larger
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-240" class="rowLink" href="#msg-240">
+                    [18:59]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    also, note that the remote/local tests are doing a ping pong with REQ/REP sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-241" class="rowLink" href="#msg-241">
+                    [19:00]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you could see higher throughput on a PUB socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-242" class="rowLink" href="#msg-242">
+                    [19:01]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Yeah, I have tried with larger message sizes. 5000 byte and 2500 count messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-243" class="rowLink" href="#msg-243">
+                    [19:01]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is 200mb/s normal on localhost? I would have thought it would be much much faster
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-244" class="rowLink" href="#msg-244">
+                    [19:01]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and what did you see?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-245" class="rowLink" href="#msg-245">
+                    [19:01]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    with the varying message sizes...?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-246" class="rowLink" href="#msg-246">
+                    [19:02]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I see about 200mb/s or 5000 messages/s
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-247" class="rowLink" href="#msg-247">
+                    [19:02]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so you see the same throughput regardless of message size?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-248" class="rowLink" href="#msg-248">
+                    [19:03]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not really, when the parameters are smaller I see different values
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-249" class="rowLink" href="#msg-249">
+                    [19:03]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    when i said 200 earlier i was using these paremeters
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-250" class="rowLink" href="#msg-250">
+                    [19:03]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so what does 200 MB/s represent? the *best* that you see, the *average* or the *worst*?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-251" class="rowLink" href="#msg-251">
+                    [19:04]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    about the average
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-252" class="rowLink" href="#msg-252">
+                    [19:04]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i see 180 sometimes, sometimes 220
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-253" class="rowLink" href="#msg-253">
+                    [19:04]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this is on windows, right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-254" class="rowLink" href="#msg-254">
+                    [19:04]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Yeah. I was wondering if it would be faster on linux
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-255" class="rowLink" href="#msg-255">
+                    [19:05]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sometimes; it&#39;s hard to draw conclusions because this stuff is so dependent on OS and the hardware
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-256" class="rowLink" href="#msg-256">
+                    [19:05]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Yeah. I notice that the official results on the zeromq website are ridiculously high
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-257" class="rowLink" href="#msg-257">
+                    [19:05]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but I&#39;m thinking that&#39;s because they have a godly computer with 12 gigs of ram and 4 cores
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-258" class="rowLink" href="#msg-258">
+                    [19:05]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i only have 1 core on this computer
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-259" class="rowLink" href="#msg-259">
+                    [19:06]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    as well as only 3 gigs of ram
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-260" class="rowLink" href="#msg-260">
+                    [19:06]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    size of ram does not matter, speed does
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-261" class="rowLink" href="#msg-261">
+                    [19:06]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I know that has an effect, but I&#39;m not sure how large an effect that would be.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-262" class="rowLink" href="#msg-262">
+                    [19:06]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that computer is ancient if it has only 1 core; i don&#39;t think intel has shipped a 1-core desktop cpu since around 2006
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-263" class="rowLink" href="#msg-263">
+                    [19:07]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s actually relatively new
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-264" class="rowLink" href="#msg-264">
+                    [19:07]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    amd sempron m100
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-265" class="rowLink" href="#msg-265">
+                    [19:07]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which i think has only 1 core
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-266" class="rowLink" href="#msg-266">
+                    [19:08]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    amd is behind the curve; sorry :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-267" class="rowLink" href="#msg-267">
+                    [19:09]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Heh, apparently.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-268" class="rowLink" href="#msg-268">
+                    [19:09]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Anyways, is that sort of throughput expected?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-269" class="rowLink" href="#msg-269">
+                    [19:09]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    again, it&#39;s dependent upon OS and hardware
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-270" class="rowLink" href="#msg-270">
+                    [19:09]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hmm. So it&#39;s at least not abnormal?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-271" class="rowLink" href="#msg-271">
+                    [19:10]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you have nothing to compare it to...?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-272" class="rowLink" href="#msg-272">
+                    [19:10]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://answers.yahoo.com/question/index?qid=20091030200427AAjvYJw  &lt;- "That is a pretty decent mobile single core processor."
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-273" class="rowLink" href="#msg-273">
+                    [19:10]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Ah, well there you go i guess.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-274" class="rowLink" href="#msg-274">
+                    [19:11]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, what cpu usage do you get while benchmarking?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-275" class="rowLink" href="#msg-275">
+                    [19:11]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    maybe it&#39;s just really slow ram :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-276" class="rowLink" href="#msg-276">
+                    [19:12]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i get 100% CPU usage
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-277" class="rowLink" href="#msg-277">
+                    [19:13]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Does that mean the RAM is just slow?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-278" class="rowLink" href="#msg-278">
+                    [19:13]  Steve-o
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what parameters are you using, I can compare with a single core Xeon right now
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-279" class="rowLink" href="#msg-279">
+                    [19:13]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-280" class="rowLink" href="#msg-280">
+                    [19:13]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    for the cpu usage test I just ran
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-281" class="rowLink" href="#msg-281">
+                    [19:13]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I used
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-282" class="rowLink" href="#msg-282">
+                    [19:14]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    5000 byte messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-283" class="rowLink" href="#msg-283">
+                    [19:14]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and 250,000 message count
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-284" class="rowLink" href="#msg-284">
+                    [19:14]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    all on localhost
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-285" class="rowLink" href="#msg-285">
+                    [19:15]  Steve-o
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I get 39,031 msgs/s and 1561 Mb/s
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-286" class="rowLink" href="#msg-286">
+                    [19:15]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ./local_thr tcp://127.0.0.1:5000 1024 100000
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-287" class="rowLink" href="#msg-287">
+                    [19:15]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    message size: 1024 [B]
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-288" class="rowLink" href="#msg-288">
+                    [19:15]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    message count: 100000
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-289" class="rowLink" href="#msg-289">
+                    [19:15]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mean throughput: 381327 [msg/s]
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-290" class="rowLink" href="#msg-290">
+                    [19:15]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mean throughput: 3123.831 [Mb/s]
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-291" class="rowLink" href="#msg-291">
+                    [19:15]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    also a notebook
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-292" class="rowLink" href="#msg-292">
+                    [19:16]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hmm, that is definitely much higher than what I am getting.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-293" class="rowLink" href="#msg-293">
+                    [19:16]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how much ram do you have and what kind of processor?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-294" class="rowLink" href="#msg-294">
+                    [19:16]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guido that is
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-295" class="rowLink" href="#msg-295">
+                    [19:16]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Intel(R) Core(TM)2 Duo CPU     P8700  @ 2.53GHz
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-296" class="rowLink" href="#msg-296">
+                    [19:17]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ram usage is not a problem at all
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-297" class="rowLink" href="#msg-297">
+                    [19:17]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s more a matter of cache and latency
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-298" class="rowLink" href="#msg-298">
+                    [19:17]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Latency shouldn&#39;t really be a problem on localhost though...right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-299" class="rowLink" href="#msg-299">
+                    [19:18]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ram latency
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-300" class="rowLink" href="#msg-300">
+                    [19:18]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    *sigh*
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-301" class="rowLink" href="#msg-301">
+                    [19:19]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and bandwidth
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-302" class="rowLink" href="#msg-302">
+                    [19:19]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Oh..sorry about that, i misunderstood..
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-303" class="rowLink" href="#msg-303">
+                    [19:19]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    message size: 1024 [B]
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-304" class="rowLink" href="#msg-304">
+                    [19:19]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    message count: 10000
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-305" class="rowLink" href="#msg-305">
+                    [19:19]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mean throughput: 98001 [msg/s]
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-306" class="rowLink" href="#msg-306">
+                    [19:19]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mean throughput: 802.824 [Mb/s]
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-307" class="rowLink" href="#msg-307">
+                    [19:20]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    via lan
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-308" class="rowLink" href="#msg-308">
+                    [19:20]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so obviously you&#39;re on a dog slow machine
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-309" class="rowLink" href="#msg-309">
+                    [19:20]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or windows :P
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-310" class="rowLink" href="#msg-310">
+                    [19:21]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hrhrhr
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-311" class="rowLink" href="#msg-311">
+                    [19:22]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nice webserver choice for zeromq.org
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-312" class="rowLink" href="#msg-312">
+                    [19:23]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hmm thanks. I will try to procure another computer to test this on.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-313" class="rowLink" href="#msg-313">
+                    [19:23]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    icy: you mean wikidot?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-314" class="rowLink" href="#msg-314">
+                    [19:24]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I mean the lighttpd part :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-315" class="rowLink" href="#msg-315">
+                    [19:31]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hm local_thr does not seem to do anything on my osx box
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-316" class="rowLink" href="#msg-316">
+                    [19:49]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    icy: you need to run local_thr and remote_thr as a pair; one is the client and the other is the server
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-317" class="rowLink" href="#msg-317">
+                    [19:49]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah right, thx
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-318" class="rowLink" href="#msg-318">
+                    [19:53]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ouf, this thing just sent me 1gb into swap
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-319" class="rowLink" href="#msg-319">
+                    [19:54]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sending 1000000 1kb messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-320" class="rowLink" href="#msg-320">
+                    [19:54]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I guess they get buffered in ram
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-321" class="rowLink" href="#msg-321">
+                    [19:57]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    icy: the receiver must not have pulled them off the queue fast enough
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-322" class="rowLink" href="#msg-322">
+                    [19:57]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    when i run those tests on my system, memory usage is constant (no queueing)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-323" class="rowLink" href="#msg-323">
+                    [19:58]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    why don&#39;t you pastie the arguments you passed to both programs so we can comment
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-324" class="rowLink" href="#msg-324">
+                    [19:59]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    tcp://127.0.0.1:5000 1024 1000000 for both
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-325" class="rowLink" href="#msg-325">
+                    [19:59]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    maybe I should start local_thr before remote_thr :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-326" class="rowLink" href="#msg-326">
+                    [20:00]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    try lowering the 1 million to 10 thousand and monitor the memory size of the programs
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-327" class="rowLink" href="#msg-327">
+                    [20:00]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, start order is important...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-328" class="rowLink" href="#msg-328">
+                    [20:01]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    doing that I get it to work even though it hits into swap briefly (understandable, the sender will always be faster)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-329" class="rowLink" href="#msg-329">
+                    [20:02]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    icy: not true; this test is using REQ/REP sockets so it should only have 1 message in flight at any given time
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-330" class="rowLink" href="#msg-330">
+                    [20:02]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    one sender should *not* be able to get ahead of the other
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-331" class="rowLink" href="#msg-331">
+                    [20:03]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (i was wrong in my statement from 2:57; no queueing should occur)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-332" class="rowLink" href="#msg-332">
+                    [20:03]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I get 40mb ram usage with 100k messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-333" class="rowLink" href="#msg-333">
+                    [20:03]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    are you running the C programs or using the samples from another language binding?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-334" class="rowLink" href="#msg-334">
+                    [20:04]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    perf/ &lt;- the ones in there which are C I think
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-335" class="rowLink" href="#msg-335">
+                    [20:05]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    did you modify the code at all?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-336" class="rowLink" href="#msg-336">
+                    [20:05]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no, downloaded tarball, ./configure, make and ran the apps
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-337" class="rowLink" href="#msg-337">
+                    [20:05]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    huh... what OS?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-338" class="rowLink" href="#msg-338">
+                    [20:05]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    osx
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-339" class="rowLink" href="#msg-339">
+                    [20:06]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    2.0.9?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-340" class="rowLink" href="#msg-340">
+                    [20:06]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    0mq, that is
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-341" class="rowLink" href="#msg-341">
+                    [20:06]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yea
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-342" class="rowLink" href="#msg-342">
+                    [20:06]  Samy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I see a lot of emphasis on lock-free algorithms on the ZeroMQ website.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-343" class="rowLink" href="#msg-343">
+                    [20:06]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    weird
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-344" class="rowLink" href="#msg-344">
+                    [20:06]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it should *not* have unbounded memory growth
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-345" class="rowLink" href="#msg-345">
+                    [20:06]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you should file a bug
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-346" class="rowLink" href="#msg-346">
+                    [20:06]  Samy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    What lock-free objects does ZeroMQ use? Where would the source-code be for them?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-347" class="rowLink" href="#msg-347">
+                    [20:07]  Samy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    The atomics interface seemed too simple to support more complex data structures, though I wasn&#39;t looking at the right thing.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-348" class="rowLink" href="#msg-348">
+                    [20:07]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Samy: check out the y_pipe stuff... i believe that is where the lock-free algorithms are used though sustrik would know better (he wrote it)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-349" class="rowLink" href="#msg-349">
+                    [20:07]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://singularity.cryosphere.de/pub/remote_thr.png (at this point local_thr is long gone already)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-350" class="rowLink" href="#msg-350">
+                    [20:07]  Samy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes, cool. Does sustrik IRC?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-351" class="rowLink" href="#msg-351">
+                    [20:08]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Samy: yes... he&#39;s usually in channel but he isn&#39;t here right now
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-352" class="rowLink" href="#msg-352">
+                    [20:08]  Samy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Ok, thank you.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-353" class="rowLink" href="#msg-353">
+                    [20:08]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the real mem does not show all the memory it uses as I&#39;m already several hundred mb into swap at the time the screenshot was made
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-354" class="rowLink" href="#msg-354">
+                    [20:08]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    icy: that shouldn&#39;t be; i would open a bug and describe the problem
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-355" class="rowLink" href="#msg-355">
+                    [20:09]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    make sure to include 0mq release, OS, OS release, etc
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-356" class="rowLink" href="#msg-356">
+                    [20:09]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    k
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-357" class="rowLink" href="#msg-357">
+                    [20:10]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    icy: hold on a sec...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-358" class="rowLink" href="#msg-358">
+                    [20:11]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    were you doing local_thr or local_lat as your perf test?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-359" class="rowLink" href="#msg-359">
+                    [20:14]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thr
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-360" class="rowLink" href="#msg-360">
+                    [20:16]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the local_thr/remote_thr examples don&#39;t make any sense
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-361" class="rowLink" href="#msg-361">
+                    [20:17]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the remote_thr program is using a REQ socket while the local_thr is using a SUB socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-362" class="rowLink" href="#msg-362">
+                    [20:17]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the two are not compatible
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-363" class="rowLink" href="#msg-363">
+                    [20:18]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m totally knew to zeromq, just saw this benchmark app in the src dir and thought I&#39;d give it a go :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-364" class="rowLink" href="#msg-364">
+                    [20:18]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nm... i&#39;m looking at the wrong stuff
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-365" class="rowLink" href="#msg-365">
+                    [20:18]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    argh...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-366" class="rowLink" href="#msg-366">
+                    [20:19]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    okay, so remote_thr uses a PUB socket while local_thr uses a SUB
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-367" class="rowLink" href="#msg-367">
+                    [20:19]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that is correct
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-368" class="rowLink" href="#msg-368">
+                    [20:19]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you need to start local_thr first
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-369" class="rowLink" href="#msg-369">
+                    [20:19]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    remote_thr will slam your system by publishing as fast as possible, so there *will* be queueing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-370" class="rowLink" href="#msg-370">
+                    [20:20]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (i was thinking of the local_lat/remote_lat examples which uses different socket types)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-371" class="rowLink" href="#msg-371">
+                    [20:20]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I did start local_thr first and even after that execited, remote_thr was allocating ram
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-372" class="rowLink" href="#msg-372">
+                    [20:21]  icy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    s/execited/exited/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-373" class="rowLink" href="#msg-373">
+                    [20:21]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, i&#39;m looking at it now...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-374" class="rowLink" href="#msg-374">
+                    [20:23]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if everything is working correctly, remote_thr should exit *first*
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-375" class="rowLink" href="#msg-375">
+                    [20:55]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m wondering if there&#39;s an easy way to monitor a queue size on a zeromq worker... It doesn&#39;t seems like there is anything in the API
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-376" class="rowLink" href="#msg-376">
+                    [20:55]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    on a zeromq broker I mean
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-377" class="rowLink" href="#msg-377">
+                    [20:55]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i.e. a device
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-378" class="rowLink" href="#msg-378">
+                    [21:02]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    whoa
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-379" class="rowLink" href="#msg-379">
+                    [21:02]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    im getting a strange error with the benchmarking tests now
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-380" class="rowLink" href="#msg-380">
+                    [21:04]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    my concern is that the PUSH workers may send more messages than can be processed by the PULL workers, eventually filling up the queue. This would be possible if the PULL workers sync their state to disk to avoid data loss...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-381" class="rowLink" href="#msg-381">
+                    [21:12]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hey does zeroMQ allocate memory for messages all at once?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-382" class="rowLink" href="#msg-382">
+                    [21:13]  ModusPwnens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Or maybe it is because I am using the publish subscribe topology so it just continuously creates messages and the receiving end is not fast enough..
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-383" class="rowLink" href="#msg-383">
+                    [22:23]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ModusPwnens: yes to the second thing you said; the publisher outpaces the subscriber
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-384" class="rowLink" href="#msg-384">
+                    [22:23]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dermoth: no, there is no way to fetch the queue size; check the mailing list for the reasons why
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-385" class="rowLink" href="#msg-385">
+                    [22:23]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that topic has been raised and answered a bunch of times (someone should add it to the FAQ)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-386" class="rowLink" href="#msg-386">
+                    [22:24]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dermoth: also, check out HWM (high water mark) settings for the PUSH sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-387" class="rowLink" href="#msg-387">
+                    [22:24]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    by setting HWM, it will block when the queue hits that message level (or return EAGAIN if you try sending with ZMQ_NOBLOCK)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-388" class="rowLink" href="#msg-388">
+                    [22:26]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, but I need to know berore i&#39;ll ve blocking... I guess I could test the latency though
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-389" class="rowLink" href="#msg-389">
+                    [22:26]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dermoth: what do you mean that you need to know before?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-390" class="rowLink" href="#msg-390">
+                    [22:26]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and what does latency have to do with it?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-391" class="rowLink" href="#msg-391">
+                    [22:27]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, if my queues start filling up at peak times I want to react before all pushers block... my primary goal in using zmq is to avoid blocking
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-392" class="rowLink" href="#msg-392">
+                    [22:28]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, then use send with ZMQ_NOBLOCK and test for EAGAIN; when you get it then you know you have hit your high water mark
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-393" class="rowLink" href="#msg-393">
+                    [22:28]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and you can take whatever action is necessary
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-394" class="rowLink" href="#msg-394">
+                    [22:29]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes, if the queue fill up on the device, then there will be some latency between the time I push to the queue and the time my worked gets the event. I can push a special message and have whichever worker gets it respond to me, then I know the latency. it it rises thern I need more workers downstream
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-395" class="rowLink" href="#msg-395">
+                    [22:29]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-396" class="rowLink" href="#msg-396">
+                    [22:30]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you could also have another pair of sockets where each worker tells the server/pusher that it has received a message
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-397" class="rowLink" href="#msg-397">
+                    [22:30]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    using this "out of band" communication, you could publish *only* those messages that can be immediately handled by a worker
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-398" class="rowLink" href="#msg-398">
+                    [22:31]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you would have at most 1 message in someone&#39;s queue because you would not push another one until each one had been acknowledged
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-399" class="rowLink" href="#msg-399">
+                    [22:31]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that seems better than trying to rely on some weird latency calculation that might not be trustworthy
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-400" class="rowLink" href="#msg-400">
+                    [22:31]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;ll implement XREQ/XREP for thing I need to make sure a worker is getting it... the rest is high-throghtput stuff that can suffer a small percentage loss...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-401" class="rowLink" href="#msg-401">
+                    [22:32]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    definitely take a look at HWM
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-402" class="rowLink" href="#msg-402">
+                    [22:32]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i think it does what you need
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-403" class="rowLink" href="#msg-403">
+                    [22:33]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the point is that I don&#39;t want to block on the sending side... HWM will be useful in logging error conditions, but I should never end up hitting this limit...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-404" class="rowLink" href="#msg-404">
+                    [22:34]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dermoth: sorry, but your requirements don&#39;t make sense to me
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-405" class="rowLink" href="#msg-405">
+                    [22:34]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you could get the queue length, you would probably prevent your pusher from sending more messages if it hit some threshold, right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-406" class="rowLink" href="#msg-406">
+                    [22:35]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if so, then this is exactly what you can do with HWM
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-407" class="rowLink" href="#msg-407">
+                    [22:35]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    couple HWM with NO_BLOCK and you&#39;ll get your "signal" that there aren&#39;t enough workers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-408" class="rowLink" href="#msg-408">
+                    [22:35]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well I don&#39;t really control the pusher... it logs as data comes it. I need to have enough pullers to absorb the data as it comes in
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-409" class="rowLink" href="#msg-409">
+                    [22:35]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    assuming you ever hit the HWM
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-410" class="rowLink" href="#msg-410">
+                    [22:36]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so you don&#39;t have any control over throttling the pusher?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-411" class="rowLink" href="#msg-411">
+                    [22:37]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    because if the pushers block, it&#39;s not goung to work anymore and I will loose data - the point is that the pushhers have to be non-blocking. But i&#39;ll figure out something... maybe even measuring the rss size of the process might work.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-412" class="rowLink" href="#msg-412">
+                    [22:37]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dermoth: let me say it again then.... use send with NO_BLOCK and test for EAGAIN
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-413" class="rowLink" href="#msg-413">
+                    [22:37]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this will NOT BLOCK
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-414" class="rowLink" href="#msg-414">
+                    [22:38]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes I get that ;)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-415" class="rowLink" href="#msg-415">
+                    [22:38]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so what&#39;s the problem then? ;)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-416" class="rowLink" href="#msg-416">
+                    [22:39]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what I mean, EAGIN is bad too - I will log it &amp; alert on it, but I want to know before that happens... If I start getting latency cpikes when I turn worn downstream workers, or during pikes, even before filling up the queues all the way up to the pushers, I want to know it. But that&#39;s fine, I&#39;ll work with what I have ;)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-417" class="rowLink" href="#msg-417">
+                    [22:40]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, i see
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-418" class="rowLink" href="#msg-418">
+                    [22:40]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    let us know what you come up with or add your solution to the wiki
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-419" class="rowLink" href="#msg-419">
+                    [22:41]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Sure. btw, it having multiple parallel devices wiorking well? i.e. if one crash will it nicely fall back to the other one? Will my XREQ/XREP suffer any latency? More that 2-3 seconds avg per requests may become problematic
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-420" class="rowLink" href="#msg-420">
+                    [22:42]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    here actually on the ends it more like a REQ/REP socket, byt the device will be XREQ/XREP to pass &amp; load-balance the messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-421" class="rowLink" href="#msg-421">
+                    [22:43]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    a device is just a fancy packaging for 2 sockets to aid with load balancing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-422" class="rowLink" href="#msg-422">
+                    [22:43]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you are worried about a device crashing, then messages in flight could be lost
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-423" class="rowLink" href="#msg-423">
+                    [22:43]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;ll probably be running some tests anyway... Thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-424" class="rowLink" href="#msg-424">
+                    [22:44]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you can&#39;t handle data loss, then you need to add some code around all of this to ack/nak messages and retry when things timeout or disappear
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-425" class="rowLink" href="#msg-425">
+                    [22:44]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    none of that is built in to 0mq; you have to build it on top
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-426" class="rowLink" href="#msg-426">
+                    [22:44]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes... a srever crashing is pretty rare, what i&#39;m concerned about it if the system will keep on working. the REQ/REP are for where I can&#39;t handle loss and I will loose the request if the device crash with my message
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-427" class="rowLink" href="#msg-427">
+                    [22:45]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and unless you have a really slow link or are sending *very* large messages, i can&#39;t imagine it would ever take 2-3 seconds to send a message
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-428" class="rowLink" href="#msg-428">
+                    [22:45]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you use XREQ/XREP and do explicit acks, then you could have things continue to work
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-429" class="rowLink" href="#msg-429">
+                    [22:46]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you use REQ/REP sockets, they enforce a very strict send/recv/send/recv pattern, so a crashed peer would not be recoverable
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-430" class="rowLink" href="#msg-430">
+                    [22:46]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, i&#39;m thinking possible tcp timeouts, etc. I would assube ZeroMQ is able to handle well peers, but I will test it anyway. Thanks!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-431" class="rowLink" href="#msg-431">
+                    [22:46]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, good luck
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-432" class="rowLink" href="#msg-432">
+                    [22:46]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    to handle well down peers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-433" class="rowLink" href="#msg-433">
+                    [22:47]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dermoth: TCP timeouts are not exposed to you via the 0mq api
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-434" class="rowLink" href="#msg-434">
+                    [22:48]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    0mq may see a connection disappear at the tcp level, but that doesn&#39;t mean that the socket is no good
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-435" class="rowLink" href="#msg-435">
+                    [22:48]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    because a 0mq socket can be bound or connected to multiple endpoints
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-436" class="rowLink" href="#msg-436">
+                    [22:48]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    one endpoint failure does not cause the whole 0mq socket to fail
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-437" class="rowLink" href="#msg-437">
+                    [22:49]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the 0mq socket will continue to load balance messages to any "surviving" endpoints
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-438" class="rowLink" href="#msg-438">
+                    [22:51]  dermoth
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, sounds good. FWIW, what I have in mind to mointor PUSH/PULL latency is to send a special message with an IP/port to reply withm and have the workers respond with an udp packet. I can release the check as a Nagios plugin like I usually do for my monitoring scripts, but obviously the other end is up to the developer to get right
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-439" class="rowLink" href="#msg-439">
+                    [22:53]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sounds neat
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

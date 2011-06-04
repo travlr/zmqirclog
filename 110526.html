@@ -1,0 +1,1173 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Thursday May 26, 2011</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [01:54]  xet
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [01:54]  xet
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I got a small question
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [01:57]  xet
+                    </a>
+                </td>
+                <td class="message-cell">
+                    any idea of what would be an optimal packet size to use for a real-time application?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [01:57]  xet
+                    </a>
+                </td>
+                <td class="message-cell">
+                    using req/rep
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [02:11]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i don&#39;t believe there is such thing as an optimal packet size.  I don&#39;t think there is a real answer to this.  but if I was to guess, i would imagine it to be dependent on the transport layer. if tcp, you probably want to keep it under MTU size (&lt; 1500) to avoid tcp fragmentation. If inproc, then I would imagine it to be under 4096 bytes.  but the best thing to do in these cases it to measure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [02:11]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    performance yourself and determine what is suitable for you.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [02:13]  xet
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks for the answer
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [02:13]  xet
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i am doing some measurements and found tcp rather slow using ~500 packets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [02:14]  xet
+                    </a>
+                </td>
+                <td class="message-cell">
+                    500 byte
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [02:16]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the problem with tcp and 500 byte packets is usually ngale, which has to be disabled in real-time applications.  don&#39;t know if zmq allows for this in setsockopt().  don&#39;t think so.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [02:16]  xet
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i will check setsockopt() reference
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [02:16]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    actually this is a good question for someone.  can ngale be disabled/enabled for the underlying tcp socket in zmq?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [02:17]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ngale can be avoided by oversizing the packet to about 4k.  but that is a very very lame way of doing so.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [02:17]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but if 4k packet is faster then 500 bytes, then it is ngale.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [02:17]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    TCP_NODELAY
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [02:23]  xet
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is that an option?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [02:25]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in tcp, donno about zmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [04:55]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    xet, ASY: 0mq disables nagle by default
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [05:37]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    xet: why would you want small packets?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [05:38]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the bigger the packet limit the better
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [05:38]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if there&#39;s not enough data to send the packets will be small anyway
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [05:38]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if latency is an issue, turn off packet coallescing in your NIC
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [09:34]  CIA-31
+                    </a>
+                </td>
+                <td class="message-cell">
+                    libzmq: 03Martin Sustrik 07bidi-pipes * r718885f 10/ (4 files): Pending messages are delivered even if connection doesn&#39;t exist yet ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [12:12]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    evax, I have a problem with making erlzmq on debian lenny
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [12:12]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    interested to take a look?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [12:26]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    has anyone compared ZeroMQ to netty for java
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [13:25]  ukandrewtaylor
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi, I have a quick question. I saw a 0mq talk by Ian Barber at #dpc11 and it seemed pretty neat. What I&#39;d like to do is create a queue that I can dump messages in and process without blocking on the initial request. What type of &#39;device&#39; am I trying to create, &#39;queue&#39; seems to be blocking by default?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [13:42]  asmodai
+                    </a>
+                </td>
+                <td class="message-cell">
+                    notukandrewtaylo: Be patient btw, people are travelling and whatnot, answers might be slow in coming, but they do come. :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [13:43]  asmodai
+                    </a>
+                </td>
+                <td class="message-cell">
+                    notukandrewtaylo: I&#39;m too much of a newbie myself to give an answer to that though.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [13:43]  notukandrewtaylo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yup no worries. I&#39;m on a flaky connection, so, I keep getting disconnected.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [13:44]  notukandrewtaylo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I get the principle, I&#39;m just not a software developer so I&#39;m struggling to get my head around the practice. In a traditional message queue system, the sender doesn&#39;t really care about the response, just sends the request and moves on. Here, in a non-threaded application, the receive is always going to be  blocking whilst it completes its task. I&#39;m not sure if I&#39;m right and trying to use zeromq wrong, or, I&#39;m just looking in the wrong p
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [13:44]  notukandrewtaylo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    for the answer :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [13:45]  notukandrewtaylo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i basically don&#39;t care how long the server process runs for or how much memory it uses, i just want it to keep processing requests and keep acting on them without blocking for more requests. If I lose data, or, messages get lost, I can handle that another way.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [13:49]  asmodai
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sounds like one of the scenarios zmq handles from what I understand of it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [13:50]  notukandrewtaylo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, i&#39;m sure it does; i got that impression. I just can&#39;t work out how to approach it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [15:50]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    notukandrewtaylo: check out the 0mq guide for the ROUTER/DEALER socket types
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [15:50]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the REQ/REP sockets are built on top of those other sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [15:50]  notukandrewtaylo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ROUTER/DEALER - thanks very much.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [15:50]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sounds more like push/pull afics
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [15:50]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ROUTER/DEALER do not block while waiting for a response
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [15:50]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    depends on whether you need responses from the workers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [15:50]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    notukandrewtaylo: definitely read the guide if you haven&#39;t yet... it may take a few read throughs to "click"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [15:51]  notukandrewtaylo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, i&#39;m just trying to put together a proof-of-concept to explain a theory; I&#39;m not a software developer and the guide is pretty hard going
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [15:51]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    notukandrewtaylo: okay, but oftentimes the answers we give will be from the guide
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [15:52]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: hey did you change the way identities are done in 2.1.6 such that PUB socket identities work differently?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [15:52]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you don&#39;t understand the guide, you likely won&#39;t understand our answers :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [15:52]  notukandrewtaylo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yup, I just needed some way of zoning in my reading
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [15:52]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: previously we could start 10 mongrel2 handlers, and they could all PUB using the same identity and the mongrel2 server would get it, but not only one of the handler&#39;s responses is going through.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [15:54]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zedas: i haven&#39;t deliberately changed anything
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [15:54]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there were few identity-related bug fixes though
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [15:55]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    having same identity with multiple peers doesn&#39;t seem ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [15:55]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what&#39;s the point?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [15:57]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    when i read the docs during the 2.0.x series they said that each sending handler had to use the same identity in order to publish so that the sub side would handle them.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [15:58]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and i just confirmed this used to work fine in the 2.0.x zmq but now doesn&#39;t work in 2.1.x.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [15:58]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s weird
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [15:58]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    do you have any idea where the text was located?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [15:58]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, i wouldn&#39;t have done it if it didn&#39;t work.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [15:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    afaics you can just not set the identities and everything should work ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [15:59]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, so to fix this, each handler PUB instance needs a totally new identity, or don&#39;t set the identity.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [15:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [15:59]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oh, but then does the PUB side get durability?  if you don&#39;t set an identity then it&#39;s not durable correct?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [15:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the whole point in identities is to let the peer know that you exist
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [16:00]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and have specific name
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [16:00]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well let the peer know you exist and have durability, you guys have sort of conflated the two
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [16:00]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the peer has to know who you are when you reconnect
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [16:01]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so that it can send you messages queued for you in the meantime
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [16:01]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    do you need durable messages?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [16:01]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i understand that now, so i&#39;ll change that, but how do i also get durability in the sender without setting an identity.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [16:01]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, people like knowing that their web requests will go through.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [16:01]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can&#39;t
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [16:01]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    because the sender has no idea it&#39;s you when you reconnect
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [16:02]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so it has no idea whether it should send you old messages or not
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [16:03]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, so you fixed identity bugs which changed the logic of how PUB socket identities work so that you can&#39;t have N handlers acting as one, they each have to have a different identity.  so, another way to say this is that zmq identities have replaced port numbers for identifying clients.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [16:03]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [16:04]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and it also looks like most of you use the XREQ/XREP for this kind of thing, side stepping the whole problem.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [16:04]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    think of identity as an permanent identifier of application instance
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [16:04]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it stays the same even if application is restarted
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [16:05]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yep that&#39;s what we were doing, but i was reading it as application, NOT process
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [16:05]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so 10 processes could share the identity and they would get them round-robin and so on.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [16:05]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [16:05]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which is how it worked previously.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [16:06]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in other words you changed the semantics of identity from "application abstract identity" to "exact per process identity, no duplicates allowed"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [16:06]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i wonder how the durability worked in such a scenario
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [16:06]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    as far as i can tell it worked great.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [16:06]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i guess we were just abusing a "feature" :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [16:07]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i would say i didn&#39;t work, but you never stumbled over the problem
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [16:08]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyway, if you use identity per instance is should work ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [16:09]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    btw, if you can identify the text that you mentioned, i&#39;ll fix it as it seems to be pretty misleading
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-89" class="rowLink" href="#msg-89">
+                    [16:11]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    stutter: oh it worked, i have an application running on 2.0.x still that&#39;s doing it right now.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-90" class="rowLink" href="#msg-90">
+                    [16:12]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: ok thanks i&#39;ll work up a fix for this in mongrel2.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-91" class="rowLink" href="#msg-91">
+                    [16:12]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-92" class="rowLink" href="#msg-92">
+                    [17:14]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    A ZMQ_PUSH can connect to multiple ZMQ_PULL sockets, but can a single ZMQ_PULL connect to multiple ZMQ_PUSH sockets?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-93" class="rowLink" href="#msg-93">
+                    [17:18]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ptrb: yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-94" class="rowLink" href="#msg-94">
+                    [17:18]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    taotetek: ah, neat. cool.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-95" class="rowLink" href="#msg-95">
+                    [17:19]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ptrb: it will fair queue all the incoming messages from all the push sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-96" class="rowLink" href="#msg-96">
+                    [23:27]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: hey so suggestion: http://zguide.zeromq.org/page:all#Transient-vs-Durable-Sockets   this is confusing because you only show one side of the communication, and don&#39;t really say what the identity identifies.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-97" class="rowLink" href="#msg-97">
+                    [23:27]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: i think a full example, with a client/server, both setting an identity, and then making it clear that the identity identifies a process that is making a connection, would help quite a lot.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-98" class="rowLink" href="#msg-98">
+                    [23:36]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: also, you say this, "What durable sockets give you is the promise that the ÃMQ transmit buffer is kept alive as long as the sender exists." But, in the examples that make a Durable pub/sub setup, the *receiver* is setting the identity so that the *sender* will use it to make a durable send socket.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-99" class="rowLink" href="#msg-99">
+                    [23:37]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what you have is kind of saying "If the *sender* sets an identity, then the transmit buffer will be durable."  but it&#39;s actualy, "If the *receiver* sets an identity, then the *sender* will use a durable transmit buffer."
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-100" class="rowLink" href="#msg-100">
+                    [23:37]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that means, is there a point for a receiver to be setting an identity?  by reading this and the code it looks like that won&#39;t to anything.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-101" class="rowLink" href="#msg-101">
+                    [23:55]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: ok i think I got a replacement for that sentence which clears it up, let me know if this works: "If a *receiver* (SUB, PULL, REQ) side of a socket sets an identity the the *sending* (PUB, PUSH, PULL) side will buffer messages when they aren&#39;t connected up to the HWM. The *sending* side does not need to set an identity for this to work.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-102" class="rowLink" href="#msg-102">
+                    [23:56]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: then, you could explain the mechanism as, "It&#39;s kind of like a session cookie in an HTTP web application, except the client/sender is picking the cookie it will use."
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-103" class="rowLink" href="#msg-103">
+                    [23:57]  zedas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    s/PUB, PUSH, PULL/PUB, PUSH, REP/g
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

@@ -1,0 +1,810 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Monday April 5, 2010</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [06:19]  Bakafish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hello group. I was hacking on the new "Butterfly" Example code and have an issue where I successfully send a message over an ipc channel but the blocked read side never seems to see it.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [06:26]  Bakafish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m referring to the final &#39;sync&#39; message indicating that all the test packets were received. The test packets are going across a similar channel just fine.  But the final sync packet to trigger the end of the timer is sent and the "Sending" process never seems to see it.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [06:30]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Bakafish: does the packet cross the network?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [06:30]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: re
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [06:31]  Bakafish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    It&#39;s using ipc (Pipes) so, no :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [06:31]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [06:33]  Bakafish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Is it a situation where the packet is below some threshold so it&#39;s being cached in a queue? I&#39;m reaching for straws here.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [06:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Bakafish: no
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [06:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it should be passed immediately
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [06:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so all the components are running on the same box
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [06:35]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    using IPC for communication
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [06:35]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [06:35]  Bakafish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m getting a good return on the send side. The blocking read blocks correctly, it just never sees the packet.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [06:35]  Bakafish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    That&#39;s correct.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [06:36]  Bakafish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    The other, seemingly identical connections are behaving correctly.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [06:36]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is the IPC filename same on the send and recv side?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [06:36]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (sanity check)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [06:38]  Bakafish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :-) I checked for that, and low and behold, one arg was ipc:///tmp/zmq/send_sync the other ipc://tmp/zmq/send_sync
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [06:38]  Bakafish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Way to introduce myself to the group :-(
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [06:39]  Bakafish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I was ls ing my tmp directory and saw the 3 expected files, didn&#39;t think to check for a missing slash. Thanks for the help!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [06:40]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no problem :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [07:29]  Bakafish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Okay, a question probably rivaling the level of stupidity of my prior one. In the case of more than one agent connecting to a ZMQ_DOWNSTREAM it round robins great, but if an agent goes away it doesn&#39;t seem to be aware and packets are seemingly queued or lost for that agent. How do you access the queue registry and manipulate it?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [07:43]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Bakafish: the messages already delivered to an application are lost once the application crashes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [07:43]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can limit the damage
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [07:43]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    by setting HWM socket option
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [07:43]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which specifies how much messages may be queued in any given moment
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [07:46]  Bakafish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    That&#39;s fair. But it&#39;s not what I mean. If I launch the &#39;Sender&#39; with two &#39;processor&#39; nodes and one &#39;results&#39; node and run 1000 checks, everything is fine. 500 each. Then I kill one processor node, so there is only a single node in the pipeline. The queue still thinks there are two (timeout not met yet?) and a second run will result in 500 checks sent to the single processor instance.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [07:47]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    let me see...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [07:48]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hm, i am not sure how UNIX domain sockets handle application crashes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [07:48]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    maybe it takes some time to notify the sender that the receiver is dead?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [07:49]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    can you try sleeping for a second after killing the app
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [07:49]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [07:49]  Bakafish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    If I have to write my own code to see if a process is alive or not that&#39;s fine, but how do I identify the processor nodes attached to a paticular queue?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [07:50]  Bakafish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    The server is dispatching these checks and so it has some knowledge of how many there are I&#39;d assume.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [07:50]  Bakafish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Ahh, this isn&#39;t a problem with TCP?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [07:51]  Bakafish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Meaning, if I was using TCP instead of sockets I shouldn&#39;t expect this behavior?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [07:51]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, i am not sure what&#39;s happening, however, the obvious explanation would be that there&#39;s an delay between receiver dying and sender being notified about the fact
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [07:52]  Bakafish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sockets, bah. Pipes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [07:52]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in the meantime the mesages will be dispatched to that receiver
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [07:52]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it applies to any communication channel (TCP, IPC, ...)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [07:53]  Bakafish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I see. I will check to see if it eventually times out. Is there a setting (I recall someone mentioning there was.)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [07:53]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nope, it&#39;s dependent on IPC implementation
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [07:53]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there&#39;s probably a timeout in the kernel somewhere
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [07:56]  Bakafish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Ahhh the HWM socket option was  what was discussed. I think someone was saying you could limit it but that there were all sorts of places where it could be queued along the path and reducing the number of messages in the queue had performance issues.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [07:58]  Bakafish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Let me play with it some more since I was using local pipes for convenience, I will be using TCP in production so it may behave better.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [13:34]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: did you notice the issue i opened at github over the hols?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [13:47]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: yes, i did
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [14:09]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cool
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [14:09]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i got zmq_poll soon implemented
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [14:09]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hopefully
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [14:15]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: seen you&#39;ve did ~20 commits a day during the holiday :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [14:21]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    open source is made by night
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [14:21]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [14:21]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    at least in my case
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [14:28]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: i&#39;ve linked the PHP wiki page from the main page
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [14:28]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [14:28]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you should announce availability of the binding on the mailing list
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [14:29]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: i&#39;ll announce as soon as the api stabilizes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [14:29]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    goodo
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [14:29]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    still need to add polling support
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [14:29]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [14:29]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    after that it&#39;s fairly complete
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [14:29]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    some of the tests are failing due to the zeromq2 / issue #12
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [14:32]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;ve reproduced the problem
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [14:32]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    trying to fix it...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [14:32]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    different errors with different socket types
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [14:32]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [14:37]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;m gonna take a short nap, been touring around berlin all day
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [14:37]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    laters
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [14:52]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    see you
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

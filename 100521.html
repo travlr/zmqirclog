@@ -1,0 +1,788 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Friday May 21, 2010</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [04:30]  CIA-15
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pyzmq: 03Brian Granger 07nocopy * r6250cb5 10/ (zmq/_zmq.c zmq/_zmq.pyx): Adding support for full non-copy send/recv using Message. - http://bit.ly/aoi0LX
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [09:59]  vincent00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi all
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [10:00]  vincent00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i have a design question about how to do requests inside a service architecture
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [10:00]  vincent00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is it recommended to create a socket for each rpc call or is it better to maintain connections to each service and use them when you need to?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [10:02]  vincent00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m thinking of wrapping the most used messages (protocol buffers) as python functions so they can easily be reused by the applications that are built by the researchers we support
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [10:03]  vincent00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that would be significantly easier if i could just create a req socket each time i want to send a message
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [10:08]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    vincent: you can do that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [10:08]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but obviously, you shouldn&#39;t expect it to be very efficient
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [10:09]  vincent00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi sustrik_
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [10:09]  vincent00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so an option i should think about is some way of managing connections?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [10:09]  vincent00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    indexed by service
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [10:09]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what are you trying to build
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [10:10]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    SOA?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [10:10]  vincent00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [10:10]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, then you need a shared queue in the middle
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [10:10]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik_: yo
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [10:10]  vincent00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    we have some services that process and generate sound
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [10:10]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [10:10]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik_: you&#39;re not watching your messages...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [10:11]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what messages?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [10:11]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik_: can i drop by to discuss some business stuff?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [10:11]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik_: private messages on irc
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [10:11]  vincent00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik_: so no direct connections to the services?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [10:11]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    a-ha, sure, drop by
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [10:11]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik_: when? isn&#39;t your sister arriving today?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [10:11]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    vincent: you can do that but that&#39;s not what&#39;s normally understood under the term "SOA"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [10:12]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: tomorrow
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [10:12]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;m at home today
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [10:12]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik_: ok, good, then i&#39;ll have lunch and go to your place...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [10:12]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [10:12]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik_: in an hour or so
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [10:13]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    vincent: the best way is to think a bit about what you want to achieve
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [10:14]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and put that down on paper
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [10:14]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then decide on setup of the network
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [10:14]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and finally map the setup diagram to 0MQ concepts
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [10:17]  vincent00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik_: ok, the design is ready to be mapped to zmq concepts i think, i&#39;ll take that approach :) thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [10:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    have a block diagram?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [10:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is there a node in the middle?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [10:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or are clients connected to services directly
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [10:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [10:19]  vincent00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    right now clients are connected directly to services, rpc style
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [10:19]  vincent00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    between the task scheduler and the workers we have a different approach
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [10:20]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so there&#39;s only one app instance for each server, right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [10:20]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no load-balancing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [10:20]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no failover
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [10:21]  vincent00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    multiple apps can be running on the same node, but never the same app twice on the network for now (except worker nodes, but we have that figured out, clients don&#39;t connect to them)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [10:21]  vincent00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nope
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [10:21]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then it&#39;s easy
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [10:21]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    REP socket in each service
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [10:22]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    REQ socket in each client
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [10:22]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    clients may close the socket after each RPC call
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [10:22]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    however, if you want to do lot of RPC calls efficiently
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [10:22]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s better to leave the connection open
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [10:23]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    rather than reopening it each time it&#39;s needed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [10:23]  vincent00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, that was what i wondering about, whether it was ok to create sockets on the fly many times over, i guess it&#39;s to be decided on a case by case basis
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [10:24]  vincent00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks :) very helpful :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [16:45]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    got the php extension windows builds in a minute
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [16:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    !
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [17:27]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    trying to script up the whole process
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [17:27]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but windows batch is not the most pleasant scripting language
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [17:40]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://valokuva.org/~mikko/builds/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [17:40]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    should update soon after my batch finishes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [17:47]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://valokuva.org/~mikko/builds/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [17:47]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bam
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [17:47]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    windows builds
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [19:31]  CIA-17
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pyzmq: 03Brian Granger 07nocopy * reb61ac5 10/ (perf/local_lat.py perf/local_thr.py perf/remote_lat.py): Adding non-copy capability for recv&#39;s in perf tests. - http://bit.ly/aAsfvh
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [20:03]  CIA-17
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pyzmq: 03Brian Granger 07nocopy * r42903ba 10/ (perf/remote_lat.py zmq/_zmq.c zmq/_zmq.pyx): Adding back Stopwatch for perf tests and modified lat test to use. - http://bit.ly/c9dOZ2
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [20:30]  CIA-17
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pyzmq: 03Brian Granger 07nocopy * r8d32972 10/ (zmq/_zmq.c zmq/_zmq.pyx): Fixing old memory leak in Stopwatch. - http://bit.ly/98nJmz
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

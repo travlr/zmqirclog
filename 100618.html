@@ -1,0 +1,634 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Friday June 18, 2010</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [00:54]  achew22
+                    </a>
+                </td>
+                <td class="message-cell">
+                    can anyone point me to a good introduction to zeromq that focuses on python?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [06:55]  umesh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I read some code in zeromq ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [06:55]  umesh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i have some queries related to it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [06:56]  umesh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I have observed that in zmq for req/rep ... it uses normal tcp/ip apis internally ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [06:56]  umesh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    like listen, bind, connect, accecp, recv and send etc ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [06:57]  umesh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but when we close the server generall read or recv returns 0 when server is shutdown using cntrl-c or exit or abort ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [06:58]  umesh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but in case of zmq recv does not return 0 when server is closed using exit or abort
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [06:58]  umesh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    why ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [07:55]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    becore there are N connections
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [07:55]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    because*
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [07:56]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    one failing doesn&#39;t make other unusable
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [08:17]  umesh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: I did not understood your answer very clearly
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [08:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    0mq sockets can have arbitrary number of BSD sockets under the hood
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [08:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if one of the BSD sockets fail
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [08:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the others are still up and kicking
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [08:20]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is there any way to know that send to one endpoint failed?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [08:20]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is there a need to know ever?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [08:20]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there&#39;s no such thing as "send to one endpoint"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [08:20]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you want that kind of stuff, use BSD sockets directly
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [08:21]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    maybe i misphrased
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [08:21]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i mean if i connect 0mq socket to three endpoints and one of them is unreachable. as a developer do i need/want to know about that?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [08:22]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the design of 0mq is such that you don&#39;t know
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [08:22]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s like speaking to a cloud
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [08:22]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you want to manage connections on one-by-one basis, that&#39;s what BSD sockets are for
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [08:23]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    fire and forget
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [08:24]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [08:25]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i started working on http device but got stuck on figuring out SLAs for different things at work
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [08:26]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no haste :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [08:29]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the thing i like about imatix page is that it lists prices for professional services
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [08:29]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that is nice and transparent
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [08:30]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    most of the companies have phone number and you need to go through hoops to get prices
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [08:30]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, experienced that myself
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [08:32]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    presumably, the price is not the same for everyone
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [08:32]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, that&#39;s what i assume
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [08:32]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the bigger company calling the bigger the price is
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [08:33]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    makes it very hard to calculate costs for a project especially under very strict NDA
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [08:39]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    true
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [10:44]  umesh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: you remember on that day we discussed about the  writing a sync 0mq client
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [10:44]  umesh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and you told discussion happended couple of times but no one really did it ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [10:44]  umesh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I can do it ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [10:44]  umesh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    can you give me some pointers ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [10:45]  umesh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    on this ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [10:45]  umesh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how can we do it etc ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [10:45]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    umesh: it&#39;s easy
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [10:45]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    have a look at zmq_tcp(7)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [10:45]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the wire format section
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [10:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s how 0mq messages look like on the wire
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [10:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so the only thing you have to do is to open a TCP socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [10:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and read/write such messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [10:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and report errors :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [10:49]  umesh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [15:13]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    going async to sync... i just don&#39;t see the point to doing that; async is perfect already
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [15:19]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    error handling i suppose
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [15:32]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pffftt; that&#39;s what error callbacks are for.
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

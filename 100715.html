@@ -1,0 +1,1294 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Thursday July 15, 2010</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [01:05]  sd88g93
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in what circumstances is it appropriate to have more than one context ?  i.e.  passing a value greater than 1 into zmq_init( )
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [02:09]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sd88g93: if you are producing under 1 Gb/sec, there is no reason for multiple i/o threads
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [02:09]  sd88g93
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oh ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [02:10]  sd88g93
+                    </a>
+                </td>
+                <td class="message-cell">
+                    do you know of a scenario when they are useful ?  just when over 1 gb/sec ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [04:30]  ditou
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Is it possible to have multiple publishers connected to the same endpoint in PUB/SUB scheme?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [04:30]  ditou
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I bind a first publisher then connect another and the connect two subscribers.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [04:30]  ditou
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Then I use second publisher to send message. I&#39;m neither receiving any messages nor getting any errors.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [04:31]  ditou
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Any ideas?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [04:32]  ditou
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ...using C API.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [06:46]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ditou: no, not directly
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [07:31]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hi, with pyzmq I am trying to use multiple zmq contexts in same application. It crashes when it tries to creates second context. the zmq api doc says we can create multiple contexts in 1 application. Is multiple context thing put in later release? I am using zeromq version 2.0.7. Or I am missing on something.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [07:33]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it shouldn&#39;t crash
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [07:33]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    still, there should be no point is using multiple contexts
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [07:33]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how does it crash?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [07:36]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    wait I will provide sample code and crahs details
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [07:54]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [07:54]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this is sample code
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [07:54]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    import zmq from threading import Thread   class Ser(Thread):     def __init__(self, url):         Thread.__init__(self)         self.ctx = zmq.Context(1)         self.sock = self.ctx.socket(zmq.REP)         self.url=url         self.sock.bind(url)      def run(self):         while True:             print &#39;watiting for read on: %s &#39; % self.url             msg = self.sock.recv()             print msg             self.sock.send(self.url)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [07:54]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ohh sorry
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [07:54]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    import zmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [07:55]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    from threading import Thread
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [07:55]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    should I copy pase code here?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [07:56]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or send you somewhere?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [07:56]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this is the error printed before crash
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [07:56]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Assertion failed: !pgm_supported () (zmq.cpp:239)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [07:58]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    aha, that&#39;s the problem with OpenPGM library
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [07:58]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it cannot be initialised twice
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [07:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thus, when compiling with --with-pgm, you cannot open two contexts
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [07:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this have been fixed in new version of OpenPGM but these were not yet merged into 0mq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [07:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyway, you shouldn&#39;t open two contexts
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [07:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    why are you doing that?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [08:00]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    actually this is sample code
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [08:00]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I am calling some other libs
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [08:00]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    using ctypes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [08:00]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which uses zmq there
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [08:00]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so we cant share the contexts
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [08:01]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thats where we have stuck
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [08:01]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i see
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [08:01]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    do you need PGM?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [08:01]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so if I ermove --with-pgm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [08:01]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it should work ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [08:01]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [08:01]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nopes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [08:01]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cool
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [08:01]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I will do that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [08:02]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Also can you tell me what is impact of no, of io threas we pass to zmq_init
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [08:02]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in most cases use 1
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [08:02]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    one of our eng. said he got crashes when he used more than 1
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [08:02]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ohh ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [08:02]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    more I/O threads may be useful if there&#39;s a lot of connections involved
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [08:02]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hundreds, thousands
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [08:03]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ohk
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [08:03]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    great
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [08:03]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I got my answers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [08:03]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks a lot
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [08:03]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    parsu: if you get crashes, please do report it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [08:03]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    otherwise it won&#39;t get fixed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [08:03]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yups
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [08:03]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [08:03]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I will ask him to give me core
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [08:03]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I will pass it to you
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [08:03]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thx
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [08:03]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks a lot :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [08:04]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you are welcome
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [08:46]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    &lt;sustrik&gt; thus, when compiling with --with-pgm, you cannot open two contexts [13:28] &lt;sustrik&gt; this have been fixed in new version of OpenPGM but these were not yet merged into 0mq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [08:46]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Do we have any plans to merge in 0mq?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [09:02]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, eventually
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [09:04]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    any estimated date?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [10:55]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    parsu: not really
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [10:55]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    do you need it?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [11:17]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yaa
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [11:28]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    parsu: try asking about the openpgm integration roadmap on the mailing list then
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [11:33]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ohk
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [11:33]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks a lot
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [11:33]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    for now this is ok, we can use tcp fanout instead
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [11:33]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but ya we will need it later
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [11:34]  parsu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thank bye
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [11:58]  jugg
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm, maybe I have erlang bindings working with zeromq finally...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [17:06]  sd88g93
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hello.  ok, i simplified my problem down to a simple case program, and managed to replicate the same error i am getting.  here is the code: http://pastebin.com/uk57UAB9
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [17:06]  sd88g93
+                    </a>
+                </td>
+                <td class="message-cell">
+                    basically, the subscriber recieves the first of the published messages from the publisher process,  but none of the following ones .
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [17:08]  sd88g93
+                    </a>
+                </td>
+                <td class="message-cell">
+                    It is a pretty simple case,  nothing fancy.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [17:35]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sd88g93: are use using single socket from multiple threads?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [17:36]  sd88g93
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik:  yes,  but this example uses just 1 thread.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [17:36]  sd88g93
+                    </a>
+                </td>
+                <td class="message-cell">
+                    its a publisher socket, so its a global variable accessed by a mutex
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [17:37]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    never use single socket from multiple threads
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [17:37]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but if it fails even when accessed from a single thread, then it&#39;s a bug
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [17:37]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;ll have a look
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [17:37]  sd88g93
+                    </a>
+                </td>
+                <td class="message-cell">
+                    even if its a publisher socket ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-89" class="rowLink" href="#msg-89">
+                    [17:39]  sd88g93
+                    </a>
+                </td>
+                <td class="message-cell">
+                    do you have any other suggestions as far as publishing message to one publisher socket,  from multiple threads ?    the ZMQ_FORWARDER device , or the QUEUE device doesnt seem to work for  publish sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-90" class="rowLink" href="#msg-90">
+                    [17:43]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ZMQ_FORWARDER should
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-91" class="rowLink" href="#msg-91">
+                    [17:43]  sd88g93
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it doesnt seem to like multiple pipes conneting to one pub socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-92" class="rowLink" href="#msg-92">
+                    [17:43]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-93" class="rowLink" href="#msg-93">
+                    [17:43]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    do you have the code?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-94" class="rowLink" href="#msg-94">
+                    [17:43]  sd88g93
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, in the pastebin
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-95" class="rowLink" href="#msg-95">
+                    [17:44]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i mean the one with forwarder device?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-96" class="rowLink" href="#msg-96">
+                    [17:44]  sd88g93
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not using the forwarder device, i&#39;ll have to alter that code  to try to use the forwarder then
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-97" class="rowLink" href="#msg-97">
+                    [17:44]  sd88g93
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i have it  but its not a simple case
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-98" class="rowLink" href="#msg-98">
+                    [17:44]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just paste it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-99" class="rowLink" href="#msg-99">
+                    [17:45]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if it doesn&#39;t work there&#39;s a bug somewhere
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-100" class="rowLink" href="#msg-100">
+                    [17:45]  sd88g93
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah,  i think the existing code uses the method in the pastebin right now,  i&#39;ll alter the example and see if i can get it to work wit the forwarder device, and then paste that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-101" class="rowLink" href="#msg-101">
+                    [17:46]  sd88g93
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;ll just take awhile
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-102" class="rowLink" href="#msg-102">
+                    [17:46]  sd88g93
+                    </a>
+                </td>
+                <td class="message-cell">
+                    actually, that code in the pastebin uses 2 threads, the main thread opens the socket, and the thread publishes to the socket,  i guess that counts as 2 then
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-103" class="rowLink" href="#msg-103">
+                    [17:46]  sd88g93
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i mean, just one thread to do the publishing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-104" class="rowLink" href="#msg-104">
+                    [17:57]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you cannot migrate sockets between threads
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-105" class="rowLink" href="#msg-105">
+                    [17:57]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyway, try with forwarder device and paste it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-106" class="rowLink" href="#msg-106">
+                    [18:15]  sd88g93
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik:  here&#39;s the code with the forwarder device: http://pastebin.com/gZJjYCky
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-107" class="rowLink" href="#msg-107">
+                    [18:15]  sd88g93
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it creates the first thread,  but the other threads cannot bind to it.  It continues to publish messages with that one thread, but the subscriber doesnt recive it.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-108" class="rowLink" href="#msg-108">
+                    [18:48]  sd88g93
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, also tried binding both ends in the main thread and then calling connect() in the worker threads,  same result.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-109" class="rowLink" href="#msg-109">
+                    [21:13]  sd88g93
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i think i found a real bug in the forwarding device
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-110" class="rowLink" href="#msg-110">
+                    [21:13]  sd88g93
+                    </a>
+                </td>
+                <td class="message-cell">
+                    here&#39;s the code that replicates the issue: http://pastebin.com/gZJjYCky
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-111" class="rowLink" href="#msg-111">
+                    [22:40]  veritos
+                    </a>
+                </td>
+                <td class="message-cell">
+                    In tcp_socket.cpp:213 of 2.0.7, ECONNRESET and ECONNREFUSED are handled, but not ETIMEDOUT. Timeouts thus cause the assertion failure a couple lines down. Doesn&#39;t this seem a bit harsh when just adding the test for ETIMEDOUT is so easy?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-112" class="rowLink" href="#msg-112">
+                    [22:45]  veritos
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Oh, hey, it&#39;s fixed in git :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-113" class="rowLink" href="#msg-113">
+                    [22:48]  sd88g93
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, this problem appears not to be confined to just the forwarder device, but publishing in general. when i publish a series of messages, only the first one gets through, the second one is all jumbled, i reproduced the code in simple form here: http://pastebin.com/SrmAz2V2
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-114" class="rowLink" href="#msg-114">
+                    [22:59]  sd88g93
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ohhhh ok,  you have to re init the msg and close each time you send,  i was calling zmq_msg_init_data  once and just changing the variables
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

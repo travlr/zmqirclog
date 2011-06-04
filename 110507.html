@@ -1,0 +1,436 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Saturday May 7, 2011</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [06:13]  cyball
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi .. does somebody know something about the "invalid argument (0x16)" Exception that could help solve that prolem ? thx a lot :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [06:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    check the manpages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [06:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    individual errors are explained there
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [06:19]  cyball
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: thx
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [06:25]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: there?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [09:21]  votz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Is there any way to send messages to a server and not expect any results back? Like sub-pub but the publisher connects to the subscriber, not the other way around
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [09:22]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    votz, there is nothing wrong with a pub connecting to a sub
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [09:22]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the sub can bind to the address
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [09:22]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and the pubs connect
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [09:23]  votz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Guthur: I tried that but it didn&#39;t work. I must have done something wrong
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [09:23]  votz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the sub blocked on socket.recv(&amp;request) forever, even though the publisher was publishing lots of messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [09:23]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    are you subscribing to the correct messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [09:23]  votz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Should be subscribed to all: socket.setsockopt( ZMQ_SUBSCRIBE, "", 0 ); // Subscribe to all messages.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [09:29]  votz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Guthur: let me pbin some skeleton example code
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [09:30]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure, i&#39;m just making some test good to sanity check my own understanding
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [09:30]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    good/code
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [09:34]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    votz, works fine for me
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [09:34]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    post some code
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [09:34]  votz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Guthur: something silly must be passing me by
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [09:34]  votz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sec, putting together the skeleton example
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [09:39]  votz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Guthur: it had something to do with the context getting screwed up
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [09:39]  votz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but got it!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [09:39]  votz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    though now &#39;working&#39; means calling zmq_init(1) for every message published
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [09:40]  votz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    now to fix that :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [10:02]  votz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Guthur: alright, time to hit the sack. Thanks very much for your help!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [10:03]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sorry was away there
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [10:04]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the context should not be getting screwed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [10:04]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you shouldn&#39;t need to call init
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [10:06]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ...more that once
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [16:54]  andrewvc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: around?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [17:55]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: there?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [17:55]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: windows builds for 2-1 and 2-2 currently broken
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [17:58]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: https://gist.github.com/9b93b26176994b659f2d
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [17:58]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that should fix it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [18:57]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: yes that patch was done on master, but i forgot to downstream it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [20:43]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    neopallium pm
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>

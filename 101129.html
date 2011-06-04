@@ -1,0 +1,2196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title></title>
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+</head>
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <img src="images/logo2.gif" alt="ZeroMq Logo"/>
+        </div>
+        <div id="header-left-bottom">
+            This is where the subtitle goes
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="text-align:right">
+            This is where the search box goes
+        </div>
+        <div id="header-right-bottom" style="text-align:right">
+            Something else goes here
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+</div>
+
+    <div class="content">
+        <h2>Monday November 29, 2010</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [03:09]  Steve-o
+                    </a>
+                </td>
+                <td class="message-cell">
+                    master is broken in msvc2010
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [04:26]  mgc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Steve-o: ping
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [04:55]  swills
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi, i&#39;m trying to port the perl bindings for zeromq to FreeBSD, but make test is failing:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [04:55]  swills
+                    </a>
+                </td>
+                <td class="message-cell">
+                    #     Error:  Can&#39;t load &#39;/usr/local/tinderbox/portstrees/FreeBSD/ports/net/p5-ZeroMQ/work/ZeroMQ-0.02_02/blib/arch/auto/ZeroMQ/ZeroMQ.so&#39; for module ZeroMQ: /usr/local/lib/libzmq.so.0: Undefined symbol "pthread_create" at /usr/local/lib/perl5/5.10.1/mach/DynaLoader.pm line 200.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [04:55]  swills
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pardon the aweful paths...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [04:55]  swills
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so i&#39;m guessing my problem is zmq is built threaded but my perl isn&#39;t. that sound right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [05:00]  Steve-o
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you need -pthread on the ZeroMQ.so build?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [05:01]  Steve-o
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mgc: pong
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [05:01]  mgc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Steve-o: what do the symptoms of https://github.com/zeromq/zeromq2/issues#issue/128  and https://github.com/zeromq/zeromq2/issues#issue/104 look like?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [05:01]  mgc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    am seeing epgm subscribers dying under load
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [05:02]  mgc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and/or losing my mind
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [05:02]  Steve-o
+                    </a>
+                </td>
+                <td class="message-cell">
+                    128 is pretty bad if you have a low rate limit
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [05:02]  Steve-o
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I saw performance drop from say 80mb/s to 800kb/s
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [05:03]  swills
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah, yes -lpthread makes the test work much better, thanks.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [05:03]  Steve-o
+                    </a>
+                </td>
+                <td class="message-cell">
+                    104 is to cover a special case if you have multiple senders on one host, it is impossible for them both to receive unicast NAKs
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [05:04]  Steve-o
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so you end up with unrecoverable data loss
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [05:04]  Steve-o
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you actually see any data loss that is
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [05:04]  mgc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    do things continue working after unrecoverable loss?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [05:05]  mgc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I see data loss, but then it is like the subscriber has been blacklisted
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [05:05]  mgc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and it never gets anything ever again
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [05:05]  mgc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    even if the load subsides
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [05:11]  Steve-o
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq will close the socket and try reconnecting later similar to TCP
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [05:13]  Steve-o
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if the receiver is too slow you are pretty much never going to see anything
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [05:30]  swills
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and the make test just hangs... great...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [05:31]  swills
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and the version from github needs a bunch of additional modules just to build... oh well..
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [09:39]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    howdy
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [09:39]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: there?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [09:41]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: btw, the patch you&#39;ve sent some time ago
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [09:41]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there was some discussion about it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [09:41]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik__: yes, still going on
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [09:41]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah, good
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [09:41]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik__: i&#39;ve been refactoring some stuff lately
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [09:42]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i was not sure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [09:42]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik__: waiting for mato to look if he is ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [09:42]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik__: the patch for checking if compiler supports visibility breaks in my local env
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [09:42]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, i won&#39;t apply it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [09:42]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i just need to figure out a way to break this refactoring into patches
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [09:43]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    https://github.com/mkoppanen/zeromq2/commit/b797da17f788534298e7cb6101c9c7dccb006ee5
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [09:43]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    currently it&#39;s one large blob of misc stuff
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [09:43]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: yes?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [09:43]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: the LT_COMPILER_FLAG breaks here for some reason
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [09:44]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    maybe autoconf version differences
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [09:44]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: autoconf or libtool, it&#39;s possible
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [09:44]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i had two days off last week and i wrote a couple of macros
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [09:44]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: but the autobuilds work ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [09:44]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: so what system does it break for you on?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [09:44]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: debian stable
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [09:44]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    daily builds are on debian testing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [09:44]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: oh, interesting
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [09:45]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: take a look at this https://github.com/mkoppanen/zeromq2/commit/b797da17f788534298e7cb6101c9c7dccb006ee5#diff-1
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [09:45]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: i&#39;m also on debian stable, but have a backported libtool 2.x
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [09:45]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i added a couple of maybe useful macros
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [09:45]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    AC_ZMQ_CHECK_LANG_FLAG checks if compiler supports given flag
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [09:45]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    AC_ZMQ_CHECK_LANG_PRAGMA checks if compiler supports given pragma
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [09:45]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    AC_ZMQ_CHECK_LANG_FLAG_PREPEND is same as AC_ZMQ_CHECK_LANG_FLAG but it prepends to CFLAGS or CPPFLAGS
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [09:46]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    also added macros for WERROR and WALL for different compilers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [09:49]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: wow, that looks good
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [09:49]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: one problem
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [09:49]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: it moves things more into direction that it checks if the flag is supported
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [09:50]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    rather than just adding
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [09:50]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: your changes to zmq.h/zmq_utils.h don&#39;t make sense
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [09:50]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: because a) ZMQ_HAVE_&lt;anything&gt; is not present and can&#39;t be tested against in zmq.h/zmq_utils.h
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [09:50]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: i can revert that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [09:50]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: that breaks clang on daily builds
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [09:50]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the visibility
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [09:50]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i know
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [09:50]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the problem is...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [09:50]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it poses as gcc
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [09:51]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    without supporting gcc things
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [09:51]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, and does a bad job :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [09:51]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    clang 2.2+ supports visibility ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [09:51]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, the problem is, AFAIK the visibility bits should be in the function declarations also
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [09:51]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i wonder if this is a non-issue
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [09:52]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the daily builds run with clang 1.1 (age old debian shipped version)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [09:52]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m not 100% sure about it, but Drepper&#39;s piece on shared libraries claims so and so does MSFT for __declspec
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [09:52]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I reckon it&#39;s a non-issue
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [09:52]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i could upgrade clang on daily build box
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [09:52]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    If clang is posing as GCC, then it better do that properly
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [09:52]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    to a version from this century :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [09:52]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [09:53]  CIA-20
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: 03Steven McCoy 07master * r28db150 10/ src/thread.cpp :
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [09:53]  CIA-20
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: Fix thread thunker scope for MSVC.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [09:53]  CIA-20
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq2: Signed-off-by: Steven McCoy &lt;steven.mccoy@miru.hk&gt; - http://bit.ly/hIM3js
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [09:53]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so, only check for -fvisibility compiler flag is needed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [09:53]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyhow, I like the overall idea (test for XXXX being supported, rather than enumerating all the combinations where it might/might not work)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [09:53]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i wrote a bashrc for myself to switch compilers / build zeromq for testing :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [09:53]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    built probably 100+ times during the weekend
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [09:53]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    reading further thru the patch ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-89" class="rowLink" href="#msg-89">
+                    [09:54]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s not obvious what the default outcome (and others) of AC_ZMQ_CHECK_ENABLE_DEBUG
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-90" class="rowLink" href="#msg-90">
+                    [09:54]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-91" class="rowLink" href="#msg-91">
+                    [09:54]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i.e. the comment block should probably say what the intended result is with the various autoconf settings that may affect that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-92" class="rowLink" href="#msg-92">
+                    [09:55]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it should also support [action-if-true], [action-if-false]
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-93" class="rowLink" href="#msg-93">
+                    [09:55]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just for reusability
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-94" class="rowLink" href="#msg-94">
+                    [09:55]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so that these macros can be used for example in ZFL build as well
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-95" class="rowLink" href="#msg-95">
+                    [09:55]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-96" class="rowLink" href="#msg-96">
+                    [09:56]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there&#39;s some bogus indentation in AC_ZMQ_CHECK_COMPILERS
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-97" class="rowLink" href="#msg-97">
+                    [09:57]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    why the different CHECK_LANG_FLAG and CHECK_LANG_FLAG_PREPEND?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-98" class="rowLink" href="#msg-98">
+                    [09:57]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: becuase the former takes a copy of CFLAGS
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-99" class="rowLink" href="#msg-99">
+                    [09:57]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and there&#39;s a typo in the comment on line 370
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-100" class="rowLink" href="#msg-100">
+                    [09:58]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you modify them in action-if-found its hard to know what flags have been modified
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-101" class="rowLink" href="#msg-101">
+                    [09:58]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, you say in the comment blocks to both not to do that anyway :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-102" class="rowLink" href="#msg-102">
+                    [09:58]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, thats why there is the prepend on
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-103" class="rowLink" href="#msg-103">
+                    [09:58]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    allows you to prepend to flags easily
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-104" class="rowLink" href="#msg-104">
+                    [09:59]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    um, so the non-prepend just checks for support but leaves the resulting flags alone?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-105" class="rowLink" href="#msg-105">
+                    [09:59]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-106" class="rowLink" href="#msg-106">
+                    [09:59]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    vs. the prepend that actually changes the resulting flags?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-107" class="rowLink" href="#msg-107">
+                    [09:59]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, it prepends to CFLAGS or CPPFLAGS
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-108" class="rowLink" href="#msg-108">
+                    [09:59]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, that was not obvious from reading the comment block or the function name
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-109" class="rowLink" href="#msg-109">
+                    [09:59]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    whatever is the given language
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-110" class="rowLink" href="#msg-110">
+                    [10:00]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i think i need to comment them all more clearly
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-111" class="rowLink" href="#msg-111">
+                    [10:00]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I haven&#39;t had enough coffee to attempt reading the actual Autoconf code :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-112" class="rowLink" href="#msg-112">
+                    [10:01]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyway, thanks for this, your patience with autoconf is impressive
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-113" class="rowLink" href="#msg-113">
+                    [10:02]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: i&#39;d say just submit the whole lot as a single patch once you&#39;re done reviewing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-114" class="rowLink" href="#msg-114">
+                    [10:02]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: just list all the separate bits in the commit message
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-115" class="rowLink" href="#msg-115">
+                    [10:02]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-116" class="rowLink" href="#msg-116">
+                    [10:02]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s all build-related anyway, so no point in splitting it up
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-117" class="rowLink" href="#msg-117">
+                    [10:03]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cool, i&#39;ll form a patch during today
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-118" class="rowLink" href="#msg-118">
+                    [10:04]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    im beginning to like sun studio as a compiler
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-119" class="rowLink" href="#msg-119">
+                    [10:04]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it seems to be the strictest of them all
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-120" class="rowLink" href="#msg-120">
+                    [10:04]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    when you enable -compat=5 +w -errwarn=%all (equals to -pedantic -Wall -Werror)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-121" class="rowLink" href="#msg-121">
+                    [10:10]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: what about the DSO visibility patch?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-122" class="rowLink" href="#msg-122">
+                    [10:10]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    should i apply it?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-123" class="rowLink" href="#msg-123">
+                    [10:11]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik__: mikko&#39;s work in progress supersedes that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-124" class="rowLink" href="#msg-124">
+                    [10:11]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-125" class="rowLink" href="#msg-125">
+                    [10:12]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: although... regarding the visibility stuff, we still have no way of testing ZMQ_HAVE_VISIBILITY in zmq.h
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-126" class="rowLink" href="#msg-126">
+                    [10:13]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: i think we can remove that part
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-127" class="rowLink" href="#msg-127">
+                    [10:13]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and just check for -fvisibility and rely on gcc version
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-128" class="rowLink" href="#msg-128">
+                    [10:13]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    clang 2.2+ handles that properly
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-129" class="rowLink" href="#msg-129">
+                    [10:13]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: yup, but keep the AC_ZMQ_CHECK_LANG_PRAGMA macro around anyway, it&#39;ll come in handy
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-130" class="rowLink" href="#msg-130">
+                    [10:14]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: yeah, i thought that too
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-131" class="rowLink" href="#msg-131">
+                    [10:14]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: incidentally, if you look in the openpgm source it also does symbol visibility for sun studio using their syntax
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-132" class="rowLink" href="#msg-132">
+                    [10:14]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: so you can try and make that work if you feel like it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-133" class="rowLink" href="#msg-133">
+                    [10:14]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: sure, i am getting into this autoconf stuff
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-134" class="rowLink" href="#msg-134">
+                    [10:14]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: the objective is that the DSO only exports the actual zmq_* API functions and nothing else.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-135" class="rowLink" href="#msg-135">
+                    [10:15]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: there are also various other ways to do it, but they&#39;re all more annoying (linker map files, etc.) so I picked -fvisibility as the least invasive approach for now
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-136" class="rowLink" href="#msg-136">
+                    [10:17]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mato: http://developers.sun.com/solaris/articles/symbol_scope.html
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-137" class="rowLink" href="#msg-137">
+                    [10:18]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i think i need to define ZMQ_EXPORT to __global using sun studio
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-138" class="rowLink" href="#msg-138">
+                    [10:18]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: hmm, right
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-139" class="rowLink" href="#msg-139">
+                    [10:19]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: in that case, we could skip the pragma and use the __attribute__ ((visibility("default")))
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-140" class="rowLink" href="#msg-140">
+                    [10:19]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: (for GCC)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-141" class="rowLink" href="#msg-141">
+                    [10:19]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: see e.g. http://gcc.gnu.org/wiki/Visibility
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-142" class="rowLink" href="#msg-142">
+                    [10:20]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: anyhow, you can verify the result both by running nm src/.libs/libzmq.so | grep &#39; T &#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-143" class="rowLink" href="#msg-143">
+                    [10:20]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: which should show only zmq_* (plus the _init , _fini and internal bits)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-144" class="rowLink" href="#msg-144">
+                    [10:23]  mato
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: and/or readelf --use-dynamic --syms src/.libs/libzmq.so
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-145" class="rowLink" href="#msg-145">
+                    [10:23]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i think -fvisibility=hidden works with ICC as well
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-146" class="rowLink" href="#msg-146">
+                    [10:24]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://software.intel.com/sites/products/documentation/studio/composer/en-us/2011/compiler_c/optaps/common/optaps_cmp_visib.htm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-147" class="rowLink" href="#msg-147">
+                    [10:24]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it also supports __attribute__ ((visibility ("default")));
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-148" class="rowLink" href="#msg-148">
+                    [11:21]  kobus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hi, I would appreciate some pointers on problem troubleshooting. I&#39;m running the weather update server and client (C++ code) and the server is sending, but the client is not receiving any messages.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-149" class="rowLink" href="#msg-149">
+                    [11:21]  kobus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m building the code on Windows with MinGW
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-150" class="rowLink" href="#msg-150">
+                    [11:35]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    kobus_: sure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-151" class="rowLink" href="#msg-151">
+                    [11:35]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    kobus_: is this PUB/SUB?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-152" class="rowLink" href="#msg-152">
+                    [11:36]  kobus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: Yes. I couldn&#39;t get my code to work, so I resorted to getting samples to work.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-153" class="rowLink" href="#msg-153">
+                    [11:38]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    kobus_: did you remember to subscribe to topics on the SUB side?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-154" class="rowLink" href="#msg-154">
+                    [11:42]  kobus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    The client conneccts directly to the server. https://github.com/imatix/zguide/blob/master/examples/C%2B%2B/wuclient.cpp
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-155" class="rowLink" href="#msg-155">
+                    [11:42]  kobus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: I think...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-156" class="rowLink" href="#msg-156">
+                    [11:43]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    kobus_: are you publishing in the topic ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-157" class="rowLink" href="#msg-157">
+                    [11:48]  kobus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: it is a client-server example
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-158" class="rowLink" href="#msg-158">
+                    [11:57]  kobus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: I&#39;m not sure how you publish in a topic. This example doesn&#39;t make use of a broker; looks like a tcp client &amp; server to me
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-159" class="rowLink" href="#msg-159">
+                    [12:10]  kobus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: as I understand this is the subscription: subscriber.setsockopt(ZMQ_SUBSCRIBE, filter, strlen (filter));
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-160" class="rowLink" href="#msg-160">
+                    [12:14]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    kobus_: yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-161" class="rowLink" href="#msg-161">
+                    [12:15]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    kobus_: the message you publish needs to start with that prefix
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-162" class="rowLink" href="#msg-162">
+                    [12:19]  kobus
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: I changed the server to prefix the message with the same "zipcode" as the client subscribes to and now it works. Thanks!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-163" class="rowLink" href="#msg-163">
+                    [12:24]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    kobus_: no problem
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-164" class="rowLink" href="#msg-164">
+                    [22:33]  magicblaze0071
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m trying to get a file transferred between two machines behind nat (without loading up a central server too much). Can this be done using zeromq?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-165" class="rowLink" href="#msg-165">
+                    [22:34]  magicblaze0071
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is anyone here using zeromq on windows with python?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-166" class="rowLink" href="#msg-166">
+                    [23:08]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    magicblaze0071: your question is one layer below zeromq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-167" class="rowLink" href="#msg-167">
+                    [23:09]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    magicblaze0071: it sounds more like a routing/networking questions
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-168" class="rowLink" href="#msg-168">
+                    [23:09]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    magicblaze0071: if you use tcp:// transport for example the semantics for the transfer are the same as with tcp socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-169" class="rowLink" href="#msg-169">
+                    [23:09]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    magicblaze0071: not sure about windows python zmq users
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-170" class="rowLink" href="#msg-170">
+                    [23:09]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    do you have a specific problem?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-171" class="rowLink" href="#msg-171">
+                    [23:38]  magicblaze0071
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: My first problem is installation on a windows 7 machine
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-172" class="rowLink" href="#msg-172">
+                    [23:38]  magicblaze0071
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I tried to copy the dll file in src\zmq directory and then point setup.cfg into that directory...but couldnt compile it.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-173" class="rowLink" href="#msg-173">
+                    [23:39]  magicblaze0071
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I would prefer to get a copy that I dont have to compile myself, because i&#39;ve to ship code to my users who cant compile things
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-174" class="rowLink" href="#msg-174">
+                    [23:41]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    magicblaze0071, you get the dll from the zmq/lib directory
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-175" class="rowLink" href="#msg-175">
+                    [23:41]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    follow the instructions for building libzmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-176" class="rowLink" href="#msg-176">
+                    [23:42]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then grab the dll, and follow the instructions for building pyzmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-177" class="rowLink" href="#msg-177">
+                    [23:42]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I haven&#39;t used the pyzmq binding so beyond that I can&#39;t say
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-178" class="rowLink" href="#msg-178">
+                    [23:43]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    There should be no reason for you to require your users to install libzmq, the dll is all you need
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-179" class="rowLink" href="#msg-179">
+                    [23:47]  magicblaze0071
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Guthur: what I dont know is, once i get the .dll file, how to import it in python...can i just say "import zmq"?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-180" class="rowLink" href="#msg-180">
+                    [23:47]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m not sure of pythons exact process for foreign func calls
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-181" class="rowLink" href="#msg-181">
+                    [23:48]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but pyzmq &#39;should&#39; take care of it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-182" class="rowLink" href="#msg-182">
+                    [23:48]  magicblaze0071
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it seems that pyzmq needs a C/cpp compiler to link the dll to something else perhaps?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-183" class="rowLink" href="#msg-183">
+                    [23:48]  magicblaze0071
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ve the pyzmq and the dll in the pyzmq src/zmq directory.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-184" class="rowLink" href="#msg-184">
+                    [23:48]  magicblaze0071
+                    </a>
+                </td>
+                <td class="message-cell">
+                    It seems pyzmq install needs the compilers as well...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-185" class="rowLink" href="#msg-185">
+                    [23:48]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    have you built pyzmq?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-186" class="rowLink" href="#msg-186">
+                    [23:49]  magicblaze0071
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-187" class="rowLink" href="#msg-187">
+                    [23:49]  magicblaze0071
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but if i build it, wont i have to build it on my users machines as well? or can i copy some files ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-188" class="rowLink" href="#msg-188">
+                    [23:49]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well then you aren&#39;t going to get very far, hehe
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-189" class="rowLink" href="#msg-189">
+                    [23:49]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you need to build it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-190" class="rowLink" href="#msg-190">
+                    [23:49]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nope you should get some sort of python lib I would imagine
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-191" class="rowLink" href="#msg-191">
+                    [23:50]  magicblaze0071
+                    </a>
+                </td>
+                <td class="message-cell">
+                    k, say i am able to build it, how do i ship the built copy?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-192" class="rowLink" href="#msg-192">
+                    [23:50]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it should be just a python lib, and you would most likely need to include the libzmq.dll as well
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-193" class="rowLink" href="#msg-193">
+                    [23:50]  magicblaze0071
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hasnt anyone here done that already? built pyzmq on windows? I was hoping to get the prebuilt files so that i cud ship the same thing to my users.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-194" class="rowLink" href="#msg-194">
+                    [23:51]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    to be honest I&#39;m surprised you haven&#39;t built it already
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-195" class="rowLink" href="#msg-195">
+                    [23:52]  magicblaze0071
+                    </a>
+                </td>
+                <td class="message-cell">
+                    k, lemme build it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap">
+                    <a name="msg-196" class="rowLink" href="#msg-196">
+                    [23:52]  Guthur
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s the spirit, hehe
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+</body>
+</html>
