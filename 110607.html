@@ -4759,6 +4759,875 @@
                 </td>
             </tr>
             
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-429" class="rowLink" href="#msg-429">
+                    [19:51]  yukonbob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so, doesn&#39;t necessarilly indicate error w/ my use, nor zmq per se...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-430" class="rowLink" href="#msg-430">
+                    [19:51]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    right
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-431" class="rowLink" href="#msg-431">
+                    [19:52]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can raise the number of files per process
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-432" class="rowLink" href="#msg-432">
+                    [19:52]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but you can still hit that by opening/closing sockets rapidly
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-433" class="rowLink" href="#msg-433">
+                    [19:52]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-434" class="rowLink" href="#msg-434">
+                    [19:53]  yukonbob
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: cool. Thx for feedback.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-435" class="rowLink" href="#msg-435">
+                    [19:54]  private_meta
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: ok, I&#39;ve pretty much assured myself that the signal sent is SIGTSTP, the same signal sent when debugging a program (and stepping) or pausing a program to move it to the background, and it definitely SHOULDN&#39;T cause this program termination
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-436" class="rowLink" href="#msg-436">
+                    [19:54]  private_meta
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: however, on RedHat it appears to do that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-437" class="rowLink" href="#msg-437">
+                    [19:54]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that sucks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-438" class="rowLink" href="#msg-438">
+                    [19:56]  private_meta
+                    </a>
+                </td>
+                <td class="message-cell">
+                    And I also looked it up
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-439" class="rowLink" href="#msg-439">
+                    [19:56]  private_meta
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it sends the same signal on Ubuntu as on RedHat
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-440" class="rowLink" href="#msg-440">
+                    [19:56]  private_meta
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s both SIGTSTP, it&#39;s both on ctrl+z or other program suspension functionality, but it just screws up rhel
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-441" class="rowLink" href="#msg-441">
+                    [19:57]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ve not used RHAT since 1997 or so, and am quite happy to not have to use it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-442" class="rowLink" href="#msg-442">
+                    [19:58]  private_meta
+                    </a>
+                </td>
+                <td class="message-cell">
+                    But imho that&#39;s still not a reason for it not to work on that operating system :/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-443" class="rowLink" href="#msg-443">
+                    [20:11]  jond
+                    </a>
+                </td>
+                <td class="message-cell">
+                    private_meta: what does info signals show in gdb
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-444" class="rowLink" href="#msg-444">
+                    [20:17]  private_meta
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jond: I can tell you tomorrow, after 13.5 hours today, I had to get home from work
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-445" class="rowLink" href="#msg-445">
+                    [20:23]  jond
+                    </a>
+                </td>
+                <td class="message-cell">
+                    private_meta: you might can use handle command to tell gdb to do different stuff, possibly handle SIGSTP nostop noprint pass would help I won&#39;t be around in the day (UK)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-446" class="rowLink" href="#msg-446">
+                    [20:23]  jond
+                    </a>
+                </td>
+                <td class="message-cell">
+                    s/might//g
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-447" class="rowLink" href="#msg-447">
+                    [20:24]  private_meta
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jond: I don&#39;t have access to the redhat server when I&#39;m at home, at least not without LogMeIn, which I want to avoid
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-448" class="rowLink" href="#msg-448">
+                    [20:25]  jond
+                    </a>
+                </td>
+                <td class="message-cell">
+                    private_meta: no problems, worth a try though
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-449" class="rowLink" href="#msg-449">
+                    [20:25]  private_meta
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I assume you mean SIGTSTP?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-450" class="rowLink" href="#msg-450">
+                    [20:25]  jond
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yep
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-451" class="rowLink" href="#msg-451">
+                    [20:25]  private_meta
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what does "handle SIGTSTP nostop noprint pass" actually do?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-452" class="rowLink" href="#msg-452">
+                    [20:26]  private_meta
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i mean, it seems it tells gdb to handle "SIGTSTP" in the following three ways
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-453" class="rowLink" href="#msg-453">
+                    [20:26]  private_meta
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but what do those count for?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-454" class="rowLink" href="#msg-454">
+                    [20:27]  jond
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it basically tells the debugger not to handle it, not to print it and to just pass it on.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-455" class="rowLink" href="#msg-455">
+                    [20:27]  private_meta
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so just to check if that makes the program continue as usual?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-456" class="rowLink" href="#msg-456">
+                    [20:28]  jond
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes. I&#39;ve had trouble with gdb debugging and signals before, but not SIGTSTP
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-457" class="rowLink" href="#msg-457">
+                    [20:29]  private_meta
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Will you be online over the day?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-458" class="rowLink" href="#msg-458">
+                    [20:29]  private_meta
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (I know you&#39;re not here, just asking about being online)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-459" class="rowLink" href="#msg-459">
+                    [20:30]  private_meta
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just interested if a hilight with my results will be ok, or if i have to wait ;9
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-460" class="rowLink" href="#msg-460">
+                    [20:30]  jond
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i don&#39;t know because I start a new position tomorrow and I am no clear what security is in place or if I have a desk even yet....
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-461" class="rowLink" href="#msg-461">
+                    [20:30]  private_meta
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-462" class="rowLink" href="#msg-462">
+                    [20:30]  private_meta
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, my client is online somewhere else, always on, so I&#39;m always unsure about others ;)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-463" class="rowLink" href="#msg-463">
+                    [20:31]  jond
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, we&#39;ll see tomorrow
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-464" class="rowLink" href="#msg-464">
+                    [20:32]  private_meta
+                    </a>
+                </td>
+                <td class="message-cell">
+                    indeed we will
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-465" class="rowLink" href="#msg-465">
+                    [20:37]  cwb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    If I specify a pattern of message passing over 0MQ -- sending data of type A to ppull socket 1 will result in data of type B = f(A) being pushed to socket 2 and so on -- would you call that an API specification or a protocol?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-466" class="rowLink" href="#msg-466">
+                    [20:38]  cwb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Are (well specified) 0MQ patterns generally protocols?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-467" class="rowLink" href="#msg-467">
+                    [20:42]  cwb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I guess what I&#39;m asking is: when should we say that a program that uses 0MQ for messaging has an API and when should we say that it implements a protocol? What&#39;s the distinction?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-468" class="rowLink" href="#msg-468">
+                    [20:46]  private_meta
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm... I guess many of the people who can help you with that are online during daytime (gmt/ust)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-469" class="rowLink" href="#msg-469">
+                    [20:46]  private_meta
+                    </a>
+                </td>
+                <td class="message-cell">
+                    @ cwb
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-470" class="rowLink" href="#msg-470">
+                    [20:52]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cwb: hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-471" class="rowLink" href="#msg-471">
+                    [20:53]  cwb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: hi!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-472" class="rowLink" href="#msg-472">
+                    [20:54]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    strictly speaking, the API tells you how to speak to objects like contexts and sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-473" class="rowLink" href="#msg-473">
+                    [20:54]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    whereas the protocols define how these talk to each other across some transport
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-474" class="rowLink" href="#msg-474">
+                    [20:54]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there is some overlap in semantics
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-475" class="rowLink" href="#msg-475">
+                    [20:55]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    e.g. &#39;send&#39; in the API can map to &#39;send&#39; at the transport level
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-476" class="rowLink" href="#msg-476">
+                    [20:55]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    does this help?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-477" class="rowLink" href="#msg-477">
+                    [20:56]  cwb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    But the protocol send might be implemented with something like "snd" or require a few other implementation specific things?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-478" class="rowLink" href="#msg-478">
+                    [20:56]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    let&#39;s say, the socket semantics might be implemented with various protocols
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-479" class="rowLink" href="#msg-479">
+                    [20:57]  cwb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Yep
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-480" class="rowLink" href="#msg-480">
+                    [20:57]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    e.g. if you&#39;re working over inproc, tcp, or pgm, a publisher send to subscribers will use different protocols
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-481" class="rowLink" href="#msg-481">
+                    [20:57]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    0MQ kind of pretends it has a single TCP protocol (for example) but that&#39;s a little inaccurate
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-482" class="rowLink" href="#msg-482">
+                    [20:57]  cwb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Ok..
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-483" class="rowLink" href="#msg-483">
+                    [20:58]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in fact the socket semantics create variations of the TCP protocol at some level
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-484" class="rowLink" href="#msg-484">
+                    [20:58]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this is not really documented in the formal protocol spec
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-485" class="rowLink" href="#msg-485">
+                    [20:58]  cwb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Yes, that makes sense.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-486" class="rowLink" href="#msg-486">
+                    [20:58]  cwb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Ok.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-487" class="rowLink" href="#msg-487">
+                    [20:59]  cwb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Actually, my question was more about things that get implemented *using* 0MQ -- i.e. applications.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-488" class="rowLink" href="#msg-488">
+                    [20:59]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so there are two classes of application
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-489" class="rowLink" href="#msg-489">
+                    [21:00]  cwb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    If my Python program uses 0MQ to talk to a C program -- would you say they are talking using APIs or a protocol?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-490" class="rowLink" href="#msg-490">
+                    [21:00]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    those that use the API and those that use the protocol
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-491" class="rowLink" href="#msg-491">
+                    [21:00]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    your Python and C programs are using both the API and the protocol
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-492" class="rowLink" href="#msg-492">
+                    [21:00]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there are some 0MQ stacks that don&#39;t use the same API at all
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-493" class="rowLink" href="#msg-493">
+                    [21:01]  cwb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Ok.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-494" class="rowLink" href="#msg-494">
+                    [21:01]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    e.g. http://www.zeromq.org/bindings:bash
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-495" class="rowLink" href="#msg-495">
+                    [21:01]  cwb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    There&#39;s a bash binding? That&#39;s cool.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-496" class="rowLink" href="#msg-496">
+                    [21:02]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Daniel Lundin made this, it just publishes a single message
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-497" class="rowLink" href="#msg-497">
+                    [21:03]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    its API is &#39;zmq_push&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-498" class="rowLink" href="#msg-498">
+                    [21:03]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and its protocol is http://rfc.zeromq.org/spec:13, same as libzmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-499" class="rowLink" href="#msg-499">
+                    [21:04]  cwb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Aha, that helps.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-500" class="rowLink" href="#msg-500">
+                    [21:04]  cwb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Excellent, thanks!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-501" class="rowLink" href="#msg-501">
+                    [21:05]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    app &lt;==&gt; API ---- protocol ---- API &lt;==&gt; app
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-502" class="rowLink" href="#msg-502">
+                    [21:06]  cwb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Perfect.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-503" class="rowLink" href="#msg-503">
+                    [21:19]  whack
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: haha, that &#39;bash&#39; binding is quite funny
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-504" class="rowLink" href="#msg-504">
+                    [21:20]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    whack: yeah, it&#39;s pretty cool
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-505" class="rowLink" href="#msg-505">
+                    [21:21]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    It actually fits into twitter
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-506" class="rowLink" href="#msg-506">
+                    [22:29]  jsimmons
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which of the github repos am I supposed to be using
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-507" class="rowLink" href="#msg-507">
+                    [22:58]  Seta00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jsimmons, zeromq2-1 or libzmq for 0MQ 3.0
+                </td>
+            </tr>
+            
         </table>
     </div>
     <div class="footer-container"><hr/>
