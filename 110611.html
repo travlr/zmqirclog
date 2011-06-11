@@ -84,6 +84,160 @@
                 </td>
             </tr>
             
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [18:31]  CIA-76
+                    </a>
+                </td>
+                <td class="message-cell">
+                    libzmq: 03Martin Sustrik 07bidi-pipes * rbd86def 10/ (7 files): Actual message filtering happens in XPUB socket ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [18:39]  kwagt
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Question to anyone who can help. I have three clients (in python) connected to a server, where the server is PUB and all clients are SUBSCRIBED (blocked on read). If the server machine crashes or restarts for some reason, after the restart, no client receives subscriptions messages, unless I restart all clients. Is there a workaround in zeromq for this, or do I need  failure detect in my clients?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [18:40]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    kwagt: the clients should reconnect automatically
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [18:41]  kwagt
+                    </a>
+                </td>
+                <td class="message-cell">
+                    @mikko: They do reconnect, if I just kill the server process, and restart it. However, if I restart  the server machine, and start the server process, they don&#39;t! I&#39;m able to reproduce this every time.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [18:41]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and you bind to same port etc?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [18:42]  kwagt
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Yes. Every time.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [18:42]  kwagt
+                    </a>
+                </td>
+                <td class="message-cell">
+                    BTW, this is in Python, with the python-static Zeromq library.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [18:42]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    can you check in what state the client sockets are when you shutdown the server?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [18:42]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    netstat on clients
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [18:43]  kwagt
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Haven&#39;t tested, but will see.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [18:45]  kwagt
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Have two clients. Just restarted (rebooted) the server, and netstat shows: ESTABLISHED on both clients I have running
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [20:10]  k0ral
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi guys, as we talked some time ago about a debug tool for zeromq, a commandline one that would make it possible to quickly manipulate a socket, I starteda new project called zmqat
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [20:11]  k0ral
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s written in haskell
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [20:12]  k0ral
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://hackage.haskell.org/package/zmqat
+                </td>
+            </tr>
+            
         </table>
     </div>
     <div class="footer-container"><hr/>
