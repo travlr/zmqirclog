@@ -106,6 +106,94 @@
                 </td>
             </tr>
             
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [05:14]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    This ridiculous multithreaded object pooled pipeline workflow engine nonsense
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [05:14]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    with signaling
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [05:15]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    now I&#39;m trying to decide if I ought to make my signaling bidirectional
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [05:16]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or rather, I need to make it bidirectional, and I&#39;m not sure the best topology to use
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [05:18]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hrm... right now master binds to a PUB, and workers are connecting to it via SUB, and the master sends out a message indicating that the context has fully loaded and processing can start
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [05:18]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    problem is, slow worker initialization could mean that some actions&#39; workers are not fully initialized when that message goes out
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [05:18]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and I&#39;d like to be able to guarantee that everything everywhere has completed initialization before any processing occurs
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [05:19]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the more I think about that, the more complex it gets
+                </td>
+            </tr>
+            
         </table>
     </div>
     <div class="footer-container"><hr/>
