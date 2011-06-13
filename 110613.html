@@ -249,6 +249,490 @@
                 </td>
             </tr>
             
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [09:01]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [09:02]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: sustrik: did we figure out why mingw32 didn&#39;t complain with Steve&#39;s patch?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [09:03]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: i don&#39;t know what the patch fixes really
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [09:03]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no idea
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [09:03]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    some kind on windows black magic
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [09:03]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;ve been slightly super-busy lately and haven&#39;t been able to pay much attention
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [09:03]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    order of includes can break things
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [09:04]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I don&#39;t like blindly applying / reverting patches
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [09:04]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i warned you about this one
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [09:04]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    let me boot up that old virtual XP
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [09:30]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: ok, I&#39;ve found the cause and the fix of the win32 build issue
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [09:30]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [09:31]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ve no idea why it worked before, it doesn&#39;t seem directly caused by Steve&#39;s patch
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [09:31]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    basically if you include winsock2.h and then later winsock.h, it&#39;ll do weird stuff
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [09:31]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    tries to redefine (some) of the same constants
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [09:32]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s the mswsock.h include, I think (will check)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [09:32]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the fix is, in windows.hpp, #define _WINSOCKAPI_    // stops windows.h including winsock.h
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [09:34]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, it&#39;s not that header... in fact I can&#39;t find which header is responsible :-/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [09:34]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but the fix does work, have tested that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [09:35]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you mean steve&#39;s fix?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [09:36]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it doesn&#39;t work for me
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [09:36]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    msvc2010 build failed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [09:36]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    when i reverted the patch it succeeded
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [09:36]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, agreed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [09:37]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there&#39;s something weird going on, when I define that macro in windows.hpp, at the start, it succeeds
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [09:37]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    otherwise, it fails
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [09:37]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yet the very first include file that is supposed to be called starts by defining that macro
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [09:37]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I think there&#39;s something broken in the Windows version number detection
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [09:38]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    do you have any idea what problem steve was fixing?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [09:38]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jenkins mingw builds seem to work ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [09:38]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it looks like he was fixing some errors, e.g. using "" to include system header files
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [09:39]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s definitely a problem with version detection, possibly provoked by that LEAN_AND_MEAN change
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [09:40]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the description of the patch is not very helpful: "Fix scope on Windows includes. Fix windows.h included before
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [09:40]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    winsock2.h. Remove definition of _WINSOCKAPI_.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [09:40]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    "
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [09:41]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: heh, "    Remove definition of _WINSOCKAPI_."
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [09:41]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    He could as well have said, "Cause major breakage at compile time"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [09:42]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, since the fix is apparently to revert the patch, I&#39;m going with that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [09:42]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [09:43]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the problem here is if you somehow include winsock.h and then include windows.h (which the code does, after his change), you get symbols defined again by winsock2.h
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [09:43]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or even if you include windows.h, then include winsock2.h, the same
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [09:44]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    does the unpatched version fail for you?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [09:44]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    let me revert, and check that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [09:47]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: it builds fine, after reverting the patch, though I see what Steve was aiming at
+                </td>
+            </tr>
+            
         </table>
     </div>
     <div class="footer-container"><hr/>
