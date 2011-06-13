@@ -5188,6 +5188,578 @@
                 </td>
             </tr>
             
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-468" class="rowLink" href="#msg-468">
+                    [22:04]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so does a PULL socket only have inbound messages if recv is being called?  Ie, no queueing at the PULL end ever happens?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-469" class="rowLink" href="#msg-469">
+                    [22:04]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    otherwise, wouldn&#39;t PULL also be able to fill up and need a HWM to signal the upstream node not to send anymore?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-470" class="rowLink" href="#msg-470">
+                    [22:08]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oshi I think I broke activemq&#39;s brain
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-471" class="rowLink" href="#msg-471">
+                    [22:09]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I tested my new jmsreceiver to zmq bridge with the new zmq pipeline, and ran 10 million small text messages through activemq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-472" class="rowLink" href="#msg-472">
+                    [22:09]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zmq side ate it up, but activemq gave up around 8.5M
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-473" class="rowLink" href="#msg-473">
+                    [22:21]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ssi, you should look into zmq_poll, i&#39;m not 100% positive on this but it will tell you when it&#39;s ok to push without blocking
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-474" class="rowLink" href="#msg-474">
+                    [22:21]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you register your socket with POLLOUT
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-475" class="rowLink" href="#msg-475">
+                    [22:22]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah "For 0MQ sockets, at least one message may be sent to the socket without blocking." that&#39;s for POLLOUT
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-476" class="rowLink" href="#msg-476">
+                    [22:22]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the man page is zmq_poll
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-477" class="rowLink" href="#msg-477">
+                    [22:23]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hrm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-478" class="rowLink" href="#msg-478">
+                    [22:23]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m using poll for receives
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-479" class="rowLink" href="#msg-479">
+                    [22:23]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    here&#39;s the issue I&#39;m facing:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-480" class="rowLink" href="#msg-480">
+                    [22:24]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I have a JmsReceiver component which pulls messages off a JMS queue, converts them to my internal message format, and puts them into the pipeline
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-481" class="rowLink" href="#msg-481">
+                    [22:24]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if I fire it up with more messages on the queue than heap in my jvm, it eagerly consumes them all and OOMs
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-482" class="rowLink" href="#msg-482">
+                    [22:25]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so I want to find a solid way of making sure that I&#39;m throttling everyone upstream while work is being done
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-483" class="rowLink" href="#msg-483">
+                    [22:25]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the more I dig in, the more I think most links in the chain are well-behaved
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-484" class="rowLink" href="#msg-484">
+                    [22:26]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m trying to print the backlog on all the sockets, but everything is coming back -1 so far
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-485" class="rowLink" href="#msg-485">
+                    [22:29]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    my arch is kinda complex, but basically each pipeline node is a streamer device which is bound on the upstream end to the address that other nodes can send messages in through, and on the downstream end to a worker address.  Each node has N workers which exist in a threadpool, consuming messages off the streamer and doing work.  When they&#39;re finished with the work, they send the message down the pipeline to the stable address of the next node(s) in the fl
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-486" class="rowLink" href="#msg-486">
+                    [22:30]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the JmsReceiver is a node which also happens to be an MDB.  onMessage, it creates a socket, connects to its own inbound stable address, sends that message, and closes the socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-487" class="rowLink" href="#msg-487">
+                    [22:30]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if queueing on push/pull is done at the push end, that may be my issue
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-488" class="rowLink" href="#msg-488">
+                    [22:30]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if I make that receiver maintain its socket, it may behave better
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-489" class="rowLink" href="#msg-489">
+                    [22:38]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    woah sorry, i&#39;m at work and not able to really pay enough attention to help you.  maybe just as a some general advice i&#39;d tell you to try and do what you want to do in a very small and simple test case first
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-490" class="rowLink" href="#msg-490">
+                    [22:38]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    without all the complexity
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-491" class="rowLink" href="#msg-491">
+                    [22:39]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    even in just some side code, or in a quick scripting language where you can experiment at will
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-492" class="rowLink" href="#msg-492">
+                    [22:39]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then translate that into your big project once you&#39;ve figured out where the misbehavior is
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-493" class="rowLink" href="#msg-493">
+                    [22:40]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    heheh sadly, this is the small test case :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-494" class="rowLink" href="#msg-494">
+                    [22:40]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s not as complex as it sounds, really
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-495" class="rowLink" href="#msg-495">
+                    [22:41]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and the problem is indeed that the jms consumer is eating everything on the queue as fast as possible
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-496" class="rowLink" href="#msg-496">
+                    [22:41]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I just need to figure out how to properly monitor the backlogs... everything reports -1 no matter what
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-497" class="rowLink" href="#msg-497">
+                    [22:47]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hrm backlog isn&#39;t what I think it is
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-498" class="rowLink" href="#msg-498">
+                    [22:47]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is there a way to get ahold of the number of messages that are queued?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-499" class="rowLink" href="#msg-499">
+                    [22:53]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ssi: hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-500" class="rowLink" href="#msg-500">
+                    [22:53]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how many processes is this split into?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-501" class="rowLink" href="#msg-501">
+                    [22:56]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this is all done with inproc, so it&#39;s a single process
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-502" class="rowLink" href="#msg-502">
+                    [22:56]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    threaded, of course
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-503" class="rowLink" href="#msg-503">
+                    [22:56]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, so a few things here...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-504" class="rowLink" href="#msg-504">
+                    [22:56]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can&#39;t measure the queue size, no
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-505" class="rowLink" href="#msg-505">
+                    [22:56]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    right, reading that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-506" class="rowLink" href="#msg-506">
+                    [22:56]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    wish that was possible but it&#39;s not
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-507" class="rowLink" href="#msg-507">
+                    [22:57]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    best you can do is set a lowish HWM everywhere and check for POLLOUT before writin
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-508" class="rowLink" href="#msg-508">
+                    [22:57]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    when you hit a HWM somewhere, you know you&#39;ve a problem
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-509" class="rowLink" href="#msg-509">
+                    [22:57]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I am setting low HWMs everywhere, but i&#39;m not checking pollout, so that&#39;s likely the part I&#39;m missing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-510" class="rowLink" href="#msg-510">
+                    [22:57]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I need to figure out how to do that (using the java bindings)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-511" class="rowLink" href="#msg-511">
+                    [22:58]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    second thing, this is presumably your first real 0MQ application?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-512" class="rowLink" href="#msg-512">
+                    [22:58]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-513" class="rowLink" href="#msg-513">
+                    [22:58]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, so plan to throw it away
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-514" class="rowLink" href="#msg-514">
+                    [22:58]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and I&#39;m not sure I&#39;d call it "real" yet, but it certainly has come together quicker than I expected
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-515" class="rowLink" href="#msg-515">
+                    [22:58]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    especially if you make it bigger than you can fully control
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-516" class="rowLink" href="#msg-516">
+                    [22:59]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s kind of too easy to put things together without really understanding what&#39;s going on
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-517" class="rowLink" href="#msg-517">
+                    [22:59]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well fortunately, it&#39;s complex but it&#39;s not big.  It&#39;s exactly one class of any significance
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-518" class="rowLink" href="#msg-518">
+                    [22:59]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-519" class="rowLink" href="#msg-519">
+                    [22:59]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    once you internalize the 0MQ semantics the complexity will go away
+                </td>
+            </tr>
+            
         </table>
     </div>
     <div class="footer-container"><hr/>
