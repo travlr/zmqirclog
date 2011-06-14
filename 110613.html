@@ -5760,6 +5760,831 @@
                 </td>
             </tr>
             
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-520" class="rowLink" href="#msg-520">
+                    [23:00]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    third, for success, you have to start with a small piece, make that work fully, then add one piece at a time
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-521" class="rowLink" href="#msg-521">
+                    [23:00]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, that&#39;s what I&#39;ve done... I just skipped over the HWM part I think
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-522" class="rowLink" href="#msg-522">
+                    [23:00]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    trying to go back and make that happen before I get too far along
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-523" class="rowLink" href="#msg-523">
+                    [23:00]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so assuming you&#39;re pretty close to having an accurate design
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-524" class="rowLink" href="#msg-524">
+                    [23:01]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I think you can see memory consumption per thread
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-525" class="rowLink" href="#msg-525">
+                    [23:01]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that may not be sufficient, you may need to break the app into multiple processes over tcp://
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-526" class="rowLink" href="#msg-526">
+                    [23:02]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you need to understand why messages are building up
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-527" class="rowLink" href="#msg-527">
+                    [23:02]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    HWM is not really the best tool IME for resolving message build up, it&#39;s more of an exceptional condition
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-528" class="rowLink" href="#msg-528">
+                    [23:02]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well I don&#39;t think I even have buildup
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-529" class="rowLink" href="#msg-529">
+                    [23:02]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which you can test for by doing non-blocking writes and checking for EAGAIN
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-530" class="rowLink" href="#msg-530">
+                    [23:03]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you said you have out-of-memory?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-531" class="rowLink" href="#msg-531">
+                    [23:03]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ve artificially slowed down my downstream processes to simulate it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-532" class="rowLink" href="#msg-532">
+                    [23:03]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, I have out of memory because I connected to a jms queue with 50 messages on it, each around 10MB in size
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-533" class="rowLink" href="#msg-533">
+                    [23:03]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and a 128MB heap in my jvm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-534" class="rowLink" href="#msg-534">
+                    [23:03]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah, so it actually works until you do breakage testing?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-535" class="rowLink" href="#msg-535">
+                    [23:03]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and my jms receiver is eagerly consuming EVERYTHING
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-536" class="rowLink" href="#msg-536">
+                    [23:03]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m trying to find a way to signal the jms receiver that yes, the downstream nodes can accept, or no they can&#39;t
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-537" class="rowLink" href="#msg-537">
+                    [23:03]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-538" class="rowLink" href="#msg-538">
+                    [23:03]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah everything works great
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-539" class="rowLink" href="#msg-539">
+                    [23:04]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how much of the guide have you read?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-540" class="rowLink" href="#msg-540">
+                    [23:04]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    all of it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-541" class="rowLink" href="#msg-541">
+                    [23:04]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not sure I fully internalized it all
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-542" class="rowLink" href="#msg-542">
+                    [23:04]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but I read it all :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-543" class="rowLink" href="#msg-543">
+                    [23:04]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so the pattern I&#39;m thinking you need is a least-recently used routing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-544" class="rowLink" href="#msg-544">
+                    [23:04]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    with some way to stop the JMS receiver in case of queue overflow
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-545" class="rowLink" href="#msg-545">
+                    [23:05]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s just a superficial opinion...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-546" class="rowLink" href="#msg-546">
+                    [23:05]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, that make sense
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-547" class="rowLink" href="#msg-547">
+                    [23:05]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I don&#39;t know if I necessarily need the LRU or not
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-548" class="rowLink" href="#msg-548">
+                    [23:05]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you don&#39;t have much traffic, so you can definitely synchronize between downstream and upstream
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-549" class="rowLink" href="#msg-549">
+                    [23:06]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I have a document I drew up explaining how my messaging works currently
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-550" class="rowLink" href="#msg-550">
+                    [23:06]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m trying to get my hands on it so I can show you
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-551" class="rowLink" href="#msg-551">
+                    [23:06]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, tbh it sounds like you do have it under control...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-552" class="rowLink" href="#msg-552">
+                    [23:07]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m just not sure how to make it respect the HWM
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-553" class="rowLink" href="#msg-553">
+                    [23:07]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    find the specific case where you think it doesn&#39;t respect the HWM
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-554" class="rowLink" href="#msg-554">
+                    [23:07]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no-one will help you debug anything more complex than a minimal test case
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-555" class="rowLink" href="#msg-555">
+                    [23:08]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    fair enough
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-556" class="rowLink" href="#msg-556">
+                    [23:08]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    can you point me at what you mean by "check pollout on the send"?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-557" class="rowLink" href="#msg-557">
+                    [23:08]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, what I&#39;d do is not use poll for that, it&#39;s painful
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-558" class="rowLink" href="#msg-558">
+                    [23:08]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    instead, use zmq_send with ZMQ_NOBLOCK
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-559" class="rowLink" href="#msg-559">
+                    [23:08]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and check for an error return with EAGAIN as error value
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-560" class="rowLink" href="#msg-560">
+                    [23:09]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I hope the Java binding exposes this error value, it must
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-561" class="rowLink" href="#msg-561">
+                    [23:09]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not sure I fully comprehend, but if I put together the simple test case it may come to me
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-562" class="rowLink" href="#msg-562">
+                    [23:10]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there&#39;s a lot still missing from the Guide, unfortunately
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-563" class="rowLink" href="#msg-563">
+                    [23:17]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    now, I&#39;m correct from my reading that only the PUSH side has an HWM, is that right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-564" class="rowLink" href="#msg-564">
+                    [23:18]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    both sides will apply a queue limit
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-565" class="rowLink" href="#msg-565">
+                    [23:18]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m not sure what the semantics are for HWM at the receiver side
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-566" class="rowLink" href="#msg-566">
+                    [23:19]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it will, I assume, cause the PULL socket to stop reading from the network, which will cause the PUSH socket to eventually stop sending to that PULL socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-567" class="rowLink" href="#msg-567">
+                    [23:19]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that means the actual queued data = queues at both sides plus network buffers at both sides plus whatever&#39;s in transit over the network
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-568" class="rowLink" href="#msg-568">
+                    [23:19]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s fine, not entirely concerned with how much
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-569" class="rowLink" href="#msg-569">
+                    [23:19]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just as long as I can make sure that something stops it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-570" class="rowLink" href="#msg-570">
+                    [23:20]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm, the docs don&#39;t specify any exception handling for PULL sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-571" class="rowLink" href="#msg-571">
+                    [23:20]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and are they entirely a function of message count?  or does message size come into play at all
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-572" class="rowLink" href="#msg-572">
+                    [23:20]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so let&#39;s assume they&#39;re accurate, and only the PUSH side counts
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-573" class="rowLink" href="#msg-573">
+                    [23:20]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-574" class="rowLink" href="#msg-574">
+                    [23:20]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s only a messsage count
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-575" class="rowLink" href="#msg-575">
+                    [23:20]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no byte counts
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-576" class="rowLink" href="#msg-576">
+                    [23:20]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-577" class="rowLink" href="#msg-577">
+                    [23:21]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;ll need to be tuned individually then... cause I have to be able to deal with enormous messages and tiny messages both
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-578" class="rowLink" href="#msg-578">
+                    [23:21]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    one pattern I&#39;ve used successfully is credit-based flow control
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-579" class="rowLink" href="#msg-579">
+                    [23:21]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so receiver sends credit messages to sender
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-580" class="rowLink" href="#msg-580">
+                    [23:21]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which only sends when it has credit
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-581" class="rowLink" href="#msg-581">
+                    [23:21]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hrm that&#39;s interesting
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-582" class="rowLink" href="#msg-582">
+                    [23:22]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s fairly simple to implement, you need some basic command framing like all the toy protocols in the Guide have
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-583" class="rowLink" href="#msg-583">
+                    [23:22]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then receiver says &#39;ready&#39; by sending off credit, and tops up as it receives and processes data
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-584" class="rowLink" href="#msg-584">
+                    [23:22]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sender can route based on credit, as well as stop/start sending
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-585" class="rowLink" href="#msg-585">
+                    [23:23]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    for this you don&#39;t use PUSH/PULL any more, but ROUTER/DEALER
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-586" class="rowLink" href="#msg-586">
+                    [23:23]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    right
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-587" class="rowLink" href="#msg-587">
+                    [23:23]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and i worry about getting away from push/pull, because it so perfectly represents my flow
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-588" class="rowLink" href="#msg-588">
+                    [23:23]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (plus routing is still scary)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-589" class="rowLink" href="#msg-589">
+                    [23:23]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, dealer is push and pull combined
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-590" class="rowLink" href="#msg-590">
+                    [23:24]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and routing is scary but seems inevitable in many patterns
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-591" class="rowLink" href="#msg-591">
+                    [23:26]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ssi: ok, good luck, I&#39;m off now, it&#39;s 1.26am here :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-592" class="rowLink" href="#msg-592">
+                    [23:27]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, thanks for the help
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-593" class="rowLink" href="#msg-593">
+                    [23:27]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I hope to have this simple test case working tomorrow
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-594" class="rowLink" href="#msg-594">
+                    [23:30]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ...or right now... and it definitely behaves the same way. I just need to figure out how to respect the HWM, and I think I&#39;m good to go
+                </td>
+            </tr>
+            
         </table>
     </div>
     <div class="footer-container"><hr/>
