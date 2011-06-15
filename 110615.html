@@ -161,6 +161,226 @@
                 </td>
             </tr>
             
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [13:06]  drbobbeaty
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Has anyone heard of any kind of ZMQ-over-RDMA (on 10GbE)? I&#39;m being asked for some kind of RDMA/RoCE and wanted to know if there is anyone that has done something like this in the ZeroMQ-space.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [13:15]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    drbobbeaty: what message size, any idea?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [13:16]  drbobbeaty
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: The messages are all in the sub-1Kb size... all are exchange feed messages. So there are a lot of them, but none are all that big. Probably 80% are below 128bytes.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [13:17]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so the only benefit of RDMA would be latency, not throughput
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [13:18]  drbobbeaty
+                    </a>
+                </td>
+                <td class="message-cell">
+                    That, and the exchange feed socket reading and message decoding could be done on another box where the jumps to kernel space would be paid - leaving the other box just to "use" the data.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [13:19]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so to use as a superfast interconnect between two tasks on different boxes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [13:20]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it would mean changing the libzmq TCP transport to use RDMA
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [13:20]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no-one&#39;s done that to my knowledge
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [13:20]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or they haven&#39;t shared...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [13:21]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the VTX layer I&#39;m building could be another option
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [13:22]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you basically build an inprocess bridge that does weird stuff at one edge, and inproc at the other
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [13:22]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that then emulates a &#39;normal&#39; socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [13:22]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    would be fairly doable to get SUB socket emulation over VTX and RDMA, I reckon
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [13:31]  drbobbeaty
+                    </a>
+                </td>
+                <td class="message-cell">
+                    OK, can you please keep me up to date (or just announce it) when you have something like this I can look at and benchmark? I&#39;d really appreciate it.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [13:40]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    drbobbeaty: highly unlikely anyone will make this unless there&#39;s a pulling client
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [13:42]  drbobbeaty
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: Seems reasonable. The NYSE came by selling something like this, and it wasn&#39;t going to be cheap. I didn&#39;t see anything in a quick open source scan that would do this. So I think it&#39;s got to be demand-driven.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [13:43]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what we have is a plausible framework for integrating an eventual RDMA driver with 0MQ apps
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [13:43]  drbobbeaty
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: I&#39;ll see if they are interested in being that demand.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [13:43]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [13:43]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the VTX work is happening at http://zero.mq/vtx if you want details
+                </td>
+            </tr>
+            
         </table>
     </div>
     <div class="footer-container"><hr/>
