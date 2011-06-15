@@ -403,6 +403,776 @@
                 </td>
             </tr>
             
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [14:05]  john
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Is there a guide for best coding practices for distributed systems using 0mq?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [14:07]  drbobbeaty
+                    </a>
+                </td>
+                <td class="message-cell">
+                    john___: Good questions, all, but the point of ZMQ is that it&#39;s the transport layer to do all kinds of messaging things. Figuring out how to working messaging into an app is something you sort-of need to come to the party with. It&#39;s a far more general, and therefore, far more open-ended and complex topic than specifics about ZMQ.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [14:08]  drbobbeaty
+                    </a>
+                </td>
+                <td class="message-cell">
+                    john___: It&#39;s like using threads, in general. You have to have some basis of understanding why you&#39;d want to use them in the first place to *then* talk about the differences in the boost::thread library or the native pthreads, etc. See what I mean?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [14:08]  travlr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    john___: Reading the guide may inspire certain architectures though... http://zero.mq/zg
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [14:08]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    john___, i found that reading some erlang books helped me understand how to design applications in a message passing environment.  it&#39;s not perfect but it&#39;s a good start
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [14:09]  drbobbeaty
+                    </a>
+                </td>
+                <td class="message-cell">
+                    michelp: very good point. Erlang forces you to think in those terms.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [14:09]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lately i&#39;ve been selling 0mq to my colleagues by telling them "it&#39;s like erlang for all languages"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [14:11]  john
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Yeah I&#39;ll have to check out some erlang books. It&#39;s just a whole nother paradigm that I haven&#39;t yet got my head around.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [14:15]  john
+                    </a>
+                </td>
+                <td class="message-cell">
+                    The other issue I&#39;m having is since zmq doesn&#39;t force you to use any particular messaging protocol, is there any common one&#39;s out there?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [14:15]  john
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I guess it kind of depends on what kind of data is being passed.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [14:20]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well i&#39;m using python pickles :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [14:20]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but there&#39;s protocol buffers, and others like that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [14:21]  john
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah I&#39;ve been using pickles too.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [14:22]  john
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I suppose as long as everything is programmed in python, pickling things is okay.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [14:22]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if both ends of your project are pickles then it&#39;s a very flexible approach
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [14:22]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    er... s/pickles/python
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [14:22]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cuz protobuffs and stuf like that need to be declared and maintained
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [14:23]  john
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [14:25]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    john___: here&#39;s my under-intellectualized opinion on serialization: http://unprotocols.org/blog:9
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [14:32]  mrmermaid
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hello all, I&#39;m doing projects with ZMQ on Java. Can someone please tell me if there is anyway to limit a number of connection to a PULL socket, and notify when that limit is reached?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [14:33]  john
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so Cheap would be used to trigger a process or send small bits of information? And nasty would be for sending complex data structures in a serialized fashion like pickle?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [14:34]  john
+                    </a>
+                </td>
+                <td class="message-cell">
+                    to pieterh ^
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [14:34]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    john___: Cheap would be for low-volume complex messages, Nasty for high-volume simple messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [14:34]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in most distributed architectures, messages fall into these two categories
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [14:35]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    for example, you typically have control and data flows
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [14:35]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    where control is low volume and complex (e.g. logging statistics)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [14:36]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and data is high-volume and simple (e.g. market data)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [14:36]  john
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok so something like streaming video would be high volume
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [14:36]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [14:36]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and often you&#39;ll have multiple levels of encoding
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [14:39]  nicolas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I am currently using C structs for pub/sub fast data flow
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [14:39]  nicolas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and protocol buffers for commands req/rep
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [14:40]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    makes sense... formats like JSON are a real pain to work with in C
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [14:45]  john
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Protocol buffers seem interesting, and very simple
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [14:47]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: are you around for the next 5 min?  I would like to run few questions by you. trying to figure out the best way to structure ZMQ use in my alg.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [14:47]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ASY: I was actually about to leave but shoot...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [14:47]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks. 1 sec.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [14:48]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i have a very performance sensetive application that relays data from multiple threads to multiple ZMQ clients.  it needs to be stateful, i.e. each client uses dedicated push/pull pair.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [14:50]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [14:51]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    1st question:  i receive data from multiple threads.  each thread has associated zmq push socket.   I am looking at doing a blocking send() from within this thread, which means I am looking at creating a dedicated context for each thread.   Alternative solution is to channel everything down the single poll loop.  polls are difficult because I have SENDING socket but I can not signal a poll to
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [14:51]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pick up data and send it the second it is ready.  I could use another internal socket to cause poll loop to cycle.  it would be like a "data ready" event notifier. that would cause poll to examine senders and send out data immediately.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [14:52]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what is "performance" in your case?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [14:52]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how many clients, how many msg/sec
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [14:53]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the last one sounds like a correct approach.  just use another socket for messaging.  but that channels everything down to a single thread (that does polling) and I am wondering that this may endup being not very efficient. although efficiency is always a questionable factor.  I need to ensure that in my sending of data from multiple providers there is less then 1ms delay.  ---  I have a
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [14:53]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    millisecond clock(s) going out on the screen.  there can be let&#39;s say 10-20 data providers but one of them may be feeding clock updates every millisecond...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [14:54]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just use poll
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [14:54]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it sounds like you&#39;re making it much too complex
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [14:55]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    to solve performance problems you don&#39;t have
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [14:55]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so whenever data is ready on the thread, send it to an event socket, that causes poll rotation and upon rotation if will see that data is ready and send it when POLL_OUT state is available.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [14:55]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    also, it&#39;d help a lot if you start by explaining your use case
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [14:55]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    rather than the solution
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [14:55]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    since your solution is most likely wrong
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [14:55]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lol
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [14:55]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and I can&#39;t read your mind about what your design process was :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [14:56]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, i have different data providers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [14:56]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that send property updates from multiple directions/devices/sockets/pipes/threads  you name it.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-89" class="rowLink" href="#msg-89">
+                    [14:56]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s it?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-90" class="rowLink" href="#msg-90">
+                    [14:56]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    all of this goes into a single in-memory hash.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-91" class="rowLink" href="#msg-91">
+                    [14:56]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-92" class="rowLink" href="#msg-92">
+                    [14:57]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and needs to be distributed to clients
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-93" class="rowLink" href="#msg-93">
+                    [14:57]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    have you read the Guideclone pattern?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-94" class="rowLink" href="#msg-94">
+                    [14:57]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    *Guide clone pattern
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-95" class="rowLink" href="#msg-95">
+                    [14:58]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i am sure i did at some point.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-96" class="rowLink" href="#msg-96">
+                    [14:58]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it covers exactly this, property distribution to multiple clients
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-97" class="rowLink" href="#msg-97">
+                    [14:58]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    my problem is state
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-98" class="rowLink" href="#msg-98">
+                    [14:58]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ASY, I have to go, so please send an email to the list, with background and maybe a diagram
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-99" class="rowLink" href="#msg-99">
+                    [14:58]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    when client connects, he and only he because he connected needs a full state flush so that he can establish the state since further messages are only deltas
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-100" class="rowLink" href="#msg-100">
+                    [14:58]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cyl
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-101" class="rowLink" href="#msg-101">
+                    [14:59]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    k
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-102" class="rowLink" href="#msg-102">
+                    [14:59]  ASY
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cheers
+                </td>
+            </tr>
+            
         </table>
     </div>
     <div class="footer-container"><hr/>
