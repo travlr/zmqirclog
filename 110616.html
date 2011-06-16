@@ -4132,6 +4132,633 @@
                 </td>
             </tr>
             
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-372" class="rowLink" href="#msg-372">
+                    [19:06]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ssi: that&#39;s a good question, kind of strange, isn&#39;t it...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-373" class="rowLink" href="#msg-373">
+                    [19:06]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    IMO it was a change introduced to get over a limit in number of inproc connections
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-374" class="rowLink" href="#msg-374">
+                    [19:10]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    every socket uses a "mailbox" to communicate between application thread on i/o threads
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-375" class="rowLink" href="#msg-375">
+                    [19:10]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the mailbox is a socketpair
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-376" class="rowLink" href="#msg-376">
+                    [19:10]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thus it consists of 2 fds
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-377" class="rowLink" href="#msg-377">
+                    [19:10]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    for inproc, are they stream sockets?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-378" class="rowLink" href="#msg-378">
+                    [19:11]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s a socketpair
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-379" class="rowLink" href="#msg-379">
+                    [19:11]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    man socketpair
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-380" class="rowLink" href="#msg-380">
+                    [19:12]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it is not dependent on what underlying transports there are underneath the socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-381" class="rowLink" href="#msg-381">
+                    [19:12]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: just wondering, in some tests I get the same performance for inproc as for TCP
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-382" class="rowLink" href="#msg-382">
+                    [19:12]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    something like 6M events per second
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-383" class="rowLink" href="#msg-383">
+                    [19:13]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is that what you&#39;d expect?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-384" class="rowLink" href="#msg-384">
+                    [19:13]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;ve never tested IPC
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-385" class="rowLink" href="#msg-385">
+                    [19:13]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    inproc, not IPC...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-386" class="rowLink" href="#msg-386">
+                    [19:13]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-387" class="rowLink" href="#msg-387">
+                    [19:14]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    small messages, right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-388" class="rowLink" href="#msg-388">
+                    [19:14]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    presumably, yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-389" class="rowLink" href="#msg-389">
+                    [19:14]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    for small messages the network bandwidthe is not the limiting factor
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-390" class="rowLink" href="#msg-390">
+                    [19:15]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    understood, this is number of events per second, not bandwidth
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-391" class="rowLink" href="#msg-391">
+                    [19:15]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s per-message overhead instead
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-392" class="rowLink" href="#msg-392">
+                    [19:15]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I thought inproc didn&#39;t go through the kernel
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-393" class="rowLink" href="#msg-393">
+                    [19:15]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what&#39;s event?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-394" class="rowLink" href="#msg-394">
+                    [19:15]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    a recv or a send
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-395" class="rowLink" href="#msg-395">
+                    [19:15]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it does not
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-396" class="rowLink" href="#msg-396">
+                    [19:15]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i.e. pure reader can do 6M, device can do 3M per second
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-397" class="rowLink" href="#msg-397">
+                    [19:16]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the bottlenect in case of small messages is synchronisation
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-398" class="rowLink" href="#msg-398">
+                    [19:16]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not the actual transport mechanism
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-399" class="rowLink" href="#msg-399">
+                    [19:16]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there seems to be some batching effect, but not massive
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-400" class="rowLink" href="#msg-400">
+                    [19:16]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so it&#39;s likely to be the same for all transports
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-401" class="rowLink" href="#msg-401">
+                    [19:17]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    where&#39;s the synchronization bottleneck?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-402" class="rowLink" href="#msg-402">
+                    [19:17]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    atomic ops to pass messages between threads
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-403" class="rowLink" href="#msg-403">
+                    [19:17]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-404" class="rowLink" href="#msg-404">
+                    [19:17]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    amount of work done per message
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-405" class="rowLink" href="#msg-405">
+                    [19:17]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    right
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-406" class="rowLink" href="#msg-406">
+                    [19:17]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which is ~150ns
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-407" class="rowLink" href="#msg-407">
+                    [19:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    given that an CPU tick is 0.3 ns
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-408" class="rowLink" href="#msg-408">
+                    [19:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s pretty good
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-409" class="rowLink" href="#msg-409">
+                    [19:18]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so the advantage of inproc over tcp is less copying, I guess?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-410" class="rowLink" href="#msg-410">
+                    [19:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-411" class="rowLink" href="#msg-411">
+                    [19:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but that&#39;s irrelevant for small messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-412" class="rowLink" href="#msg-412">
+                    [19:19]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    does it make sense then to batch at the application level, if using inproc?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-413" class="rowLink" href="#msg-413">
+                    [19:19]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    unlikely you can do it better than 0mq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-414" class="rowLink" href="#msg-414">
+                    [19:19]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you are free to try though
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-415" class="rowLink" href="#msg-415">
+                    [19:20]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    indeed, but these are questions people ask
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-416" class="rowLink" href="#msg-416">
+                    [19:20]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in any case getting per message overhead below 150 ns in not easy
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-417" class="rowLink" href="#msg-417">
+                    [19:20]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    every single CPU instruction takes couple of ns
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-418" class="rowLink" href="#msg-418">
+                    [19:20]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    indeed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-419" class="rowLink" href="#msg-419">
+                    [19:20]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is there an upper limit on single msg size?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-420" class="rowLink" href="#msg-420">
+                    [19:21]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    imposed or practical?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-421" class="rowLink" href="#msg-421">
+                    [19:21]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    2^64
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-422" class="rowLink" href="#msg-422">
+                    [19:21]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ssi: available memory
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-423" class="rowLink" href="#msg-423">
+                    [19:21]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-424" class="rowLink" href="#msg-424">
+                    [19:21]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-425" class="rowLink" href="#msg-425">
+                    [19:58]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hrm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-426" class="rowLink" href="#msg-426">
+                    [19:58]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the way I&#39;m constructing my socket identities is by using my thread name (which is unique per worker)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-427" class="rowLink" href="#msg-427">
+                    [19:59]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so my identity might be something like W-showMessage-worker-1234
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-428" class="rowLink" href="#msg-428">
+                    [19:59]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is it possible that there&#39;s an identity size limit and it&#39;s getting clipped, causing duplicates?
+                </td>
+            </tr>
+            
         </table>
     </div>
     <div class="footer-container"><hr/>
