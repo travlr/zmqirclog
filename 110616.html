@@ -4759,6 +4759,237 @@
                 </td>
             </tr>
             
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-429" class="rowLink" href="#msg-429">
+                    [20:00]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    man page says 255 bytes, so I guess not
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-430" class="rowLink" href="#msg-430">
+                    [20:00]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    why do you do it at all?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-431" class="rowLink" href="#msg-431">
+                    [20:01]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    0mq generates an identity automatically for you if you don&#39;t set one
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-432" class="rowLink" href="#msg-432">
+                    [20:01]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I originally set the identities to make debugging the pattern easier
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-433" class="rowLink" href="#msg-433">
+                    [20:01]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and it seems like I get the assertion failure if I take the identities OUT
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-434" class="rowLink" href="#msg-434">
+                    [20:01]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    because I think I&#39;d rather NOT have identities... I don&#39;t want it to do anything crazy across restarts
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-435" class="rowLink" href="#msg-435">
+                    [20:02]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hrm no, got the assertion failure there and I have identities
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-436" class="rowLink" href="#msg-436">
+                    [20:02]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s very intermittent :/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-437" class="rowLink" href="#msg-437">
+                    [20:03]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    retport the bug then
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-438" class="rowLink" href="#msg-438">
+                    [20:03]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    report
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-439" class="rowLink" href="#msg-439">
+                    [20:04]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;d need a test case to do that, and it&#39;s likely that I&#39;m just doing something wrong
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-440" class="rowLink" href="#msg-440">
+                    [20:05]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you shouldn&#39;t be able to cause assert
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-441" class="rowLink" href="#msg-441">
+                    [20:05]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I probably just need to spend the time studying the zmq so I can figure out how to print the identity of the socket that&#39;s failing the assertion check, so that I can debug what my code is doing stupidly
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-442" class="rowLink" href="#msg-442">
+                    [20:05]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you see an assert its 0mq bug
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-443" class="rowLink" href="#msg-443">
+                    [20:05]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    unless you use sockets from multiple threads that is
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-444" class="rowLink" href="#msg-444">
+                    [20:06]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s possible!  I have gone out of my way not to, but I may be screwing it up
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-445" class="rowLink" href="#msg-445">
+                    [20:07]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah there&#39;s one other place where I&#39;m closing and reopening a socket... lemme change that back
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-446" class="rowLink" href="#msg-446">
+                    [20:10]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that may have done it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-447" class="rowLink" href="#msg-447">
+                    [20:45]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: you recall that patch I sent that logged the identity for this error, instead of asserting?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-448" class="rowLink" href="#msg-448">
+                    [20:46]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ssi: here&#39;s code that prints the identity (it&#39;s from an old patch that got slashed)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-449" class="rowLink" href="#msg-449">
+                    [20:46]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    https://gist.github.com/1030232
+                </td>
+            </tr>
+            
         </table>
     </div>
     <div class="footer-container"><hr/>
