@@ -3934,6 +3934,204 @@
                 </td>
             </tr>
             
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-354" class="rowLink" href="#msg-354">
+                    [18:08]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ssi: re
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-355" class="rowLink" href="#msg-355">
+                    [18:08]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this assert is caused by more than one client connecting with the same identity
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-356" class="rowLink" href="#msg-356">
+                    [18:08]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that can only happen if you&#39;re (mis)using explicit identities
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-357" class="rowLink" href="#msg-357">
+                    [18:09]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ergo, you&#39;re still running code that&#39;s using explicit identities
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-358" class="rowLink" href="#msg-358">
+                    [18:09]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you want to double-check, just add a printf to libzmq before it asserts
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-359" class="rowLink" href="#msg-359">
+                    [18:09]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this is one of those useless asserts that tells you absolutely nothing... :-/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-360" class="rowLink" href="#msg-360">
+                    [18:13]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    peer_identity_, is that a string that I can print directly?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-361" class="rowLink" href="#msg-361">
+                    [18:14]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    doesn&#39;t look like it...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-362" class="rowLink" href="#msg-362">
+                    [18:16]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok so lemme ask you this... can I create a socket, set its identity, and then connect/close it as needed?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-363" class="rowLink" href="#msg-363">
+                    [18:16]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or does close destroy it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-364" class="rowLink" href="#msg-364">
+                    [18:17]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m running into open file limits pretty quickly, and I want to be able to keep only as many sockets open as absolutely necessary
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-365" class="rowLink" href="#msg-365">
+                    [18:29]  john
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Does anyone here use Protocol Buffers in Python? I&#39;ve been reading a bit about it and in the README it claims to be fairly slow and buggy in the Python implementation. Have any of you experienced bugs or slowness?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-366" class="rowLink" href="#msg-366">
+                    [18:30]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ssi: you can raise the file limits, depends on the OS
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-367" class="rowLink" href="#msg-367">
+                    [18:30]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you should usually not be opening/closing sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-368" class="rowLink" href="#msg-368">
+                    [18:31]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    once you close a socket, you destroy it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-369" class="rowLink" href="#msg-369">
+                    [18:31]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    *not be opening and closing sockets all the time
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-370" class="rowLink" href="#msg-370">
+                    [18:32]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-371" class="rowLink" href="#msg-371">
+                    [18:53]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    out of curiosity, why do inproc sockets use file handles?
+                </td>
+            </tr>
+            
         </table>
     </div>
     <div class="footer-container"><hr/>
