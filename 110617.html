@@ -1910,6 +1910,435 @@
                 </td>
             </tr>
             
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-170" class="rowLink" href="#msg-170">
+                    [18:02]  nishttal2
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i just found this.. Publisher Side Message Filtering on http://www.zeromq.org/topics:new-topics so does that mean this is not implemented yet?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-171" class="rowLink" href="#msg-171">
+                    [18:03]  Seta00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nishttal2, right now you can only subscribe on the subscriber side
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-172" class="rowLink" href="#msg-172">
+                    [18:03]  Seta00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    er. filter on the subscriber
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-173" class="rowLink" href="#msg-173">
+                    [18:03]  nishttal2
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there is no way for the publisher to split the feed ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-174" class="rowLink" href="#msg-174">
+                    [18:03]  Seta00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not yet, unfortunately
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-175" class="rowLink" href="#msg-175">
+                    [18:04]  Seta00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh would know more
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-176" class="rowLink" href="#msg-176">
+                    [18:04]  nishttal2
+                    </a>
+                </td>
+                <td class="message-cell">
+                    like trade data to one channel and Quote data on another channel
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-177" class="rowLink" href="#msg-177">
+                    [18:04]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    use 2 sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-178" class="rowLink" href="#msg-178">
+                    [18:04]  nishttal2
+                    </a>
+                </td>
+                <td class="message-cell">
+                    can this be simulated with different sockets though
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-179" class="rowLink" href="#msg-179">
+                    [18:04]  nishttal2
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-180" class="rowLink" href="#msg-180">
+                    [18:05]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Ã¸mq is not a replacement for activemq or other messaging products
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-181" class="rowLink" href="#msg-181">
+                    [18:05]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nishttal2: there&#39;s publisher-side filtering in the trunk
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-182" class="rowLink" href="#msg-182">
+                    [18:05]  nishttal2
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is there a limit to # of sockets i can use
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-183" class="rowLink" href="#msg-183">
+                    [18:06]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but it&#39;s just couple of days old
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-184" class="rowLink" href="#msg-184">
+                    [18:06]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so it&#39;s something like alpha
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-185" class="rowLink" href="#msg-185">
+                    [18:07]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nishttal2: see src/config.hpp, max_sockets=512
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-186" class="rowLink" href="#msg-186">
+                    [18:07]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can increase the limit if you need to
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-187" class="rowLink" href="#msg-187">
+                    [18:09]  nishttal2
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i see.. so potentially i could simulate multiple topics by publishing on different sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-188" class="rowLink" href="#msg-188">
+                    [18:09]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-189" class="rowLink" href="#msg-189">
+                    [18:09]  nishttal2
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the only issue would be for subscribers to figure out what socket has what data
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-190" class="rowLink" href="#msg-190">
+                    [18:10]  nishttal2
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i could publish that information on a standard fixed socket so all clients know which socket has the data they are interested in
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-191" class="rowLink" href="#msg-191">
+                    [18:10]  nishttal2
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik, does that make sense?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-192" class="rowLink" href="#msg-192">
+                    [18:11]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there are pitfalls there
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-193" class="rowLink" href="#msg-193">
+                    [18:11]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what if "master feed" is broken
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-194" class="rowLink" href="#msg-194">
+                    [18:11]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    etc.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-195" class="rowLink" href="#msg-195">
+                    [18:11]  nishttal2
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i could put the master feed over Active MQ, although that would be too many moving pieces
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-196" class="rowLink" href="#msg-196">
+                    [18:12]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-197" class="rowLink" href="#msg-197">
+                    [18:12]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    alternatively, publisher side filtering is the real solution, but as i said, it&#39;s in alpha phase
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-198" class="rowLink" href="#msg-198">
+                    [18:12]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    btw, whitepaper about pub-side filtering: http://www.250bpm.com/pubsub
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-199" class="rowLink" href="#msg-199">
+                    [18:13]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cya
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-200" class="rowLink" href="#msg-200">
+                    [18:13]  nishttal2
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm.. when do you anticipate the pub-side filtering to be release
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-201" class="rowLink" href="#msg-201">
+                    [18:13]  nishttal2
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-202" class="rowLink" href="#msg-202">
+                    [18:23]  nishttal2
+                    </a>
+                </td>
+                <td class="message-cell">
+                    does anyone know how I download the code from trunk that sustrik mentioned above
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-203" class="rowLink" href="#msg-203">
+                    [18:32]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    use git clone
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-204" class="rowLink" href="#msg-204">
+                    [18:34]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    https://github.com/zeromq/libzmq  &lt;- repo
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-205" class="rowLink" href="#msg-205">
+                    [18:34]  nishttal2
+                    </a>
+                </td>
+                <td class="message-cell">
+                    got it thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-206" class="rowLink" href="#msg-206">
+                    [18:36]  nishttal2
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there is no configure script
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-207" class="rowLink" href="#msg-207">
+                    [18:36]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    use autogen.sh
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-208" class="rowLink" href="#msg-208">
+                    [18:39]  nishttal2
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that worked.. thanks
+                </td>
+            </tr>
+            
         </table>
     </div>
     <div class="footer-container"><hr/>
