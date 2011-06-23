@@ -3417,6 +3417,1029 @@
                 </td>
             </tr>
             
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-307" class="rowLink" href="#msg-307">
+                    [09:20]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-308" class="rowLink" href="#msg-308">
+                    [12:36]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    does anyone know wether JZMQ is thread-safe?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-309" class="rowLink" href="#msg-309">
+                    [12:52]  eintr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mile: it should be. but sockets are not.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-310" class="rowLink" href="#msg-310">
+                    [12:52]  eintr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mile: as a rule, don&#39;t share sockets between threads
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-311" class="rowLink" href="#msg-311">
+                    [12:53]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, so either a socket per thread, or synchronize per socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-312" class="rowLink" href="#msg-312">
+                    [12:53]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-313" class="rowLink" href="#msg-313">
+                    [12:53]  eintr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    socket per thread definitely.. then aggregate using an inproc device
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-314" class="rowLink" href="#msg-314">
+                    [12:53]  john
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I want to be able to send a message out from one point to many nodes at the same time and I want to be able to ensure the delivery of the message to all the nodes. Is there a way you can esure the delivery of a message using pub/sub?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-315" class="rowLink" href="#msg-315">
+                    [12:54]  eintr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    john__: only by sending an ack back (through another socket, presumably)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-316" class="rowLink" href="#msg-316">
+                    [12:55]  john
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah that&#39;s how I have it set up now. I was just wondering if pub/sub has some feature I didn&#39;t know about.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-317" class="rowLink" href="#msg-317">
+                    [12:55]  eintr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mile: it&#39;s very convenient to use zmq as an "actor" library, relying on it for concurrency and sharing immutable structures... it lends itself very well to this.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-318" class="rowLink" href="#msg-318">
+                    [12:56]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that would speak for one socket per thread?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-319" class="rowLink" href="#msg-319">
+                    [12:56]  eintr
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mile: definitely.. a socket is also a queue / mailbox, so it&#39;s a 1-1 match w/actor design
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-320" class="rowLink" href="#msg-320">
+                    [16:57]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    another huge backscroll morning :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-321" class="rowLink" href="#msg-321">
+                    [16:57]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    always fun to see what happens overnight
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-322" class="rowLink" href="#msg-322">
+                    [17:01]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    good morning :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-323" class="rowLink" href="#msg-323">
+                    [17:02]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    for some reason xchat paints you and pieterh as the same color, and you have the same number of chars in your names, reading your conversations is a little eye-crossing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-324" class="rowLink" href="#msg-324">
+                    [17:02]  whack
+                    </a>
+                </td>
+                <td class="message-cell">
+                    any recommendations on doing authentication? On both req/req and pub/sub? I&#39;d guess encryption and key rotation, but any alternatives?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-325" class="rowLink" href="#msg-325">
+                    [17:02]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmac?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-326" class="rowLink" href="#msg-326">
+                    [17:02]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s what i&#39;ve been using
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-327" class="rowLink" href="#msg-327">
+                    [17:03]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    whack: have a read here: http://www.zeromq.org/topics:pubsub-security
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-328" class="rowLink" href="#msg-328">
+                    [17:03]  whack
+                    </a>
+                </td>
+                <td class="message-cell">
+                    michelp: that would just produce signatures, so I hold it under the crypto umbrella with encryption
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-329" class="rowLink" href="#msg-329">
+                    [17:03]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    michelp: I hope it&#39;s &#39;neocortex red&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-330" class="rowLink" href="#msg-330">
+                    [17:03]  whack
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: ahh cool
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-331" class="rowLink" href="#msg-331">
+                    [17:03]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    heh, unfortunately i don&#39;t think xchat is that configureable, and if it were i wouldn&#39;t waste my time figuring it out
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-332" class="rowLink" href="#msg-332">
+                    [17:03]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    whack: we could use some constructive criticism of that design
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-333" class="rowLink" href="#msg-333">
+                    [17:04]  whack
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: I remember you talking about something similar at the sf zmq meetup
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-334" class="rowLink" href="#msg-334">
+                    [17:04]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    whack: yes, this is the Salt design, somewhat generalized
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-335" class="rowLink" href="#msg-335">
+                    [17:08]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i had a look at that, other than the comments already made nothing much occurred - it even fairly naturally extends to a multi-master tree afaics
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-336" class="rowLink" href="#msg-336">
+                    [17:11]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so we think it&#39;ll work?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-337" class="rowLink" href="#msg-337">
+                    [17:13]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    +1
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-338" class="rowLink" href="#msg-338">
+                    [17:17]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    whack: do you have a use case that needs pubsub security?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-339" class="rowLink" href="#msg-339">
+                    [17:19]  whack
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: yep; I&#39;m working on a process runner similar to daemontools/supervisord/runit/etc, and I&#39;d like clients to be able to subscribe to events (log messages, state changes, etc)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-340" class="rowLink" href="#msg-340">
+                    [17:20]  whack
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but only allowing that information to authenticated (and authorized) clients
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-341" class="rowLink" href="#msg-341">
+                    [17:20]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    whack: the ideal would be to test that security design with real code, and when we are happy with it, turn it into an rfc
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-342" class="rowLink" href="#msg-342">
+                    [17:21]  whack
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: nod, I&#39;ll try to implement the pubsub-security thing you pointed me at
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-343" class="rowLink" href="#msg-343">
+                    [17:21]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, that&#39;d be great... as you do so, you&#39;ll find gaps in the text, which I&#39;ll fill in
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-344" class="rowLink" href="#msg-344">
+                    [17:21]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    at the end we should have a reference implementation and a proven draft
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-345" class="rowLink" href="#msg-345">
+                    [17:21]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you&#39;ll be making your implementation open source?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-346" class="rowLink" href="#msg-346">
+                    [17:21]  whack
+                    </a>
+                </td>
+                <td class="message-cell">
+                    perhaps with extensions, since I&#39;d prefer to have only one pubsub socket open for sanity with N clients, which means each event type may need it&#39;s own key
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-347" class="rowLink" href="#msg-347">
+                    [17:21]  whack
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: yep
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-348" class="rowLink" href="#msg-348">
+                    [17:21]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lovely
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-349" class="rowLink" href="#msg-349">
+                    [17:22]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;d like to cover any extensions etc. so we have real interoperability
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-350" class="rowLink" href="#msg-350">
+                    [17:22]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in the few cases where we&#39;ve properly documented protocols, we do get people reusing stacks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-351" class="rowLink" href="#msg-351">
+                    [17:22]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or reimplementing and interoperating
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-352" class="rowLink" href="#msg-352">
+                    [17:23]  whack
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I think the use case I&#39;m targeting is multiple channels on the same pubsub (with one rotating key per channel)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-353" class="rowLink" href="#msg-353">
+                    [17:24]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    whack: you might find the whitepaper at http://whaleshark.zeromq.org/ helpful
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-354" class="rowLink" href="#msg-354">
+                    [17:25]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this is the security model proposed for that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-355" class="rowLink" href="#msg-355">
+                    [17:25]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (there is no software for whaleshark but we&#39;re collecting the pieces slowly)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-356" class="rowLink" href="#msg-356">
+                    [17:27]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    whack, just out of curiosity, why are you writing your own instead of using one of the ones you mentioned?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-357" class="rowLink" href="#msg-357">
+                    [17:27]  whack
+                    </a>
+                </td>
+                <td class="message-cell">
+                    michelp: using one of the what?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-358" class="rowLink" href="#msg-358">
+                    [17:27]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    process runner
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-359" class="rowLink" href="#msg-359">
+                    [17:28]  whack
+                    </a>
+                </td>
+                <td class="message-cell">
+                    michelp: because they&#39;re all piles of meh
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-360" class="rowLink" href="#msg-360">
+                    [17:28]  whack
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ve used supervisord and daemontools for years; supervisord has terrible design flaws and daemontools is missing features
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-361" class="rowLink" href="#msg-361">
+                    [17:28]  whack
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and because I really like coding and want to see what I can come up with that&#39;s better :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-362" class="rowLink" href="#msg-362">
+                    [17:28]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah daemontools was never my friend.  i&#39;ve had luck with supervisord, but haven&#39;t strained it too hard
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-363" class="rowLink" href="#msg-363">
+                    [17:29]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    adding 0mq event publishing to it was pretty trivial
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-364" class="rowLink" href="#msg-364">
+                    [17:29]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (to supervisor)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-365" class="rowLink" href="#msg-365">
+                    [17:29]  whack
+                    </a>
+                </td>
+                <td class="message-cell">
+                    michelp: supervisord, for example, implements &#39;restart&#39; as "stop, start" - so if the stop stalls, and the &#39;restart&#39; times out, your process never starts again.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-366" class="rowLink" href="#msg-366">
+                    [17:30]  whack
+                    </a>
+                </td>
+                <td class="message-cell">
+                    among other bugfeatures ;)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-367" class="rowLink" href="#msg-367">
+                    [17:30]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    we have seen some very slow restart performance when we do rolls
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-368" class="rowLink" href="#msg-368">
+                    [17:31]  whack
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I also like some of the neater features of upstart/systemd, but both of those are terrible, so I&#39;ll cherrypick features
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-369" class="rowLink" href="#msg-369">
+                    [17:32]  whack
+                    </a>
+                </td>
+                <td class="message-cell">
+                    afk for a bit
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-370" class="rowLink" href="#msg-370">
+                    [17:51]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    whack, well when you come up with something usable let me know, if you want other people to kick the tires on it, i use supervisor to run a cluster of 0mq peers and wouldn&#39;t mind something more.... native.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-371" class="rowLink" href="#msg-371">
+                    [17:51]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    currently using supervisor event listener processes to publish 0mq events to brokers when workers die, and it&#39;s definitely not elegant
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-372" class="rowLink" href="#msg-372">
+                    [22:55]  al_nunn
+                    </a>
+                </td>
+                <td class="message-cell">
+                    can someone help setup zeromq for use with c#?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-373" class="rowLink" href="#msg-373">
+                    [22:55]  al_nunn
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I am stuck with "N.B. The ZeroMQ library file will need to be made available for the binding to work."
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-374" class="rowLink" href="#msg-374">
+                    [22:55]  al_nunn
+                    </a>
+                </td>
+                <td class="message-cell">
+                    when trying to build the clrzmq project
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-375" class="rowLink" href="#msg-375">
+                    [22:58]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    al_nunn, i can&#39;t help you specifically, sorry.  is that an error message your getting?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-376" class="rowLink" href="#msg-376">
+                    [22:59]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in general any binding that uses 0mq will need to have access to the libzmq file, which on unix, for example, would probably be someplace like /usr/lib (or wherever you told it to install)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-377" class="rowLink" href="#msg-377">
+                    [22:59]  al_nunn
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Ordinarily i would have thought you would just "reference" the library
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-378" class="rowLink" href="#msg-378">
+                    [23:00]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what platform are you running on?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-379" class="rowLink" href="#msg-379">
+                    [23:00]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    C#, i presume, windows?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-380" class="rowLink" href="#msg-380">
+                    [23:00]  al_nunn
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but i am getting errors when i try to do that from MS Visual C# 2010 Express that it is not a valid .net or COM library (which i imagine is correct so it fails)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-381" class="rowLink" href="#msg-381">
+                    [23:01]  al_nunn
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but i dont see how to make use of the library from any C# code
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-382" class="rowLink" href="#msg-382">
+                    [23:01]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm.. sorry that whole platform is pretty much all alien to me.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-383" class="rowLink" href="#msg-383">
+                    [23:02]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but someone might chime in with some helpful advice
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-384" class="rowLink" href="#msg-384">
+                    [23:02]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    as a totally wild ass guess, i would presume it would be looking for some .DLL file somewhere in a well known path
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-385" class="rowLink" href="#msg-385">
+                    [23:03]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the &#39;reference&#39; you were talking about might just be telling the development environment file you are using where that file is
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-386" class="rowLink" href="#msg-386">
+                    [23:03]  al_nunn
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i have tried putting it in C:\Windows\System32
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-387" class="rowLink" href="#msg-387">
+                    [23:04]  al_nunn
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thats what i meant by reference
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-388" class="rowLink" href="#msg-388">
+                    [23:04]  al_nunn
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but it wont allow me to add it as i would a normal .net assembly
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-389" class="rowLink" href="#msg-389">
+                    [23:05]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there&#39;s probably a few .net users about, but you might get more platform specific help in a .net specific channel
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-390" class="rowLink" href="#msg-390">
+                    [23:05]  al_nunn
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i would think it is something very simple. but i cannot find any simple documentation for getting it all built and started
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-391" class="rowLink" href="#msg-391">
+                    [23:05]  al_nunn
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how can i change channels
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-392" class="rowLink" href="#msg-392">
+                    [23:05]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that depends on your client, but you could try someting like &#39;/j #somechannel&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-393" class="rowLink" href="#msg-393">
+                    [23:06]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    whatever the .net channel might be
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-394" class="rowLink" href="#msg-394">
+                    [23:06]  al_nunn
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I am just using the web client on the zeromq site...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-395" class="rowLink" href="#msg-395">
+                    [23:06]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oh i see
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-396" class="rowLink" href="#msg-396">
+                    [23:06]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sorry can&#39;t help you there then
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-397" class="rowLink" href="#msg-397">
+                    [23:06]  al_nunn
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks for trying anyway
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-398" class="rowLink" href="#msg-398">
+                    [23:07]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;m sure there are .net channel on this network, try downloading an irc client and reconnecting
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-399" class="rowLink" href="#msg-399">
+                    [23:07]  al_nunn
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i will plod on and see if i can find some infor
+                </td>
+            </tr>
+            
         </table>
     </div>
     <div class="footer-container"><hr/>
