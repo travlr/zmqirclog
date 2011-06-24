@@ -359,6 +359,919 @@
                 </td>
             </tr>
             
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [16:18]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ianbarber: my only requirement is to keep all the logic in my app (er, instances of my app)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [16:19]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ianbarber: but yes, broadcast (I think)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [16:20]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I must profess stunning ignorance in the state of the art. The problem is: start N instances of myapp on the same network. Wait T seconds. All N instances should know about all the other ones.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [16:33]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, that&#39;s pretty common. you either need something that can do broadcast/anycast and rely on being on the same net segment, or you need a central authority or similar
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [16:33]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can delegate the location of that central authority to another system (e.g DNS)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [16:33]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or DNS-equivalents like Bonjour, sure.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [16:34]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [16:35]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I like the idea of pushing the complexity of failover/HA/etc. to a layer that&#39;s designed to handle it... but at the same time, I like the simplicity of doing a (at least trivial) implementation of that in my app.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [16:35]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I think "being on the same net segment" is an OK restriction.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [16:36]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you could use a multicast on a known multicast IP/port
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [16:36]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so you would connect a SUB socket on PGM or EPGM on a known address/port to listen for existance messages, and do similar PUBs
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [16:37]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then occasionally pub your existance, and perhaps the existance of other nodes you know about
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [16:37]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    could be a bit chatty, you might have to play with it to get the protocol right
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [16:38]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ianbarber: great, that&#39;s exactly what I wanted to know. thanks.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [18:24]  tartine
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hello all
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [18:45]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [18:50]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [18:52]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: hey thanks for the retweet
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [19:08]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s your article?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [19:10]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: on batch acking with push/pull? yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [19:10]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nice
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [19:11]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    been talking to Ken about getting the ability to batch ack worked into the zeromq rsyslog plugin which would be wonderful
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [19:19]  al_nunn
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Is anyone a C# zmq user?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [19:21]  al_nunn
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i need some help starting out using zmq in C#
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [19:22]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    taotetek: got a link to the article/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [19:22]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [19:23]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ssi: oh sure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [19:23]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ssi: http://blog.aggregateknowledge.com/2011/06/23/batch-acknowledged-pipelines-with-zeromq/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [19:25]  al_nunn
+                    </a>
+                </td>
+                <td class="message-cell">
+                    can anyone point me in the direction of how to use the libzmq.dll within my C# code
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [19:25]  al_nunn
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i cannot reference it or anything
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [19:25]  al_nunn
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and make use of the objects within the library
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [19:25]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [19:26]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    al_nunn: sorry al, not a c# programmer at all
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [19:27]  al_nunn
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no worries, i just cant find anything online about getting started with c# and i really want to get experimenting with the zmq library
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [19:27]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    taotetek: I ran into the same issue you&#39;re descrbing... my ventilators were pulling off a jms broker, and they&#39;d suck the entire contents of the queue down before the workers had gotten through one message
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [19:27]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    taotetek: I ended up going to a LRU queue, where the workers REQ "READY" to become eligible for messages, and then get another message every time they ack
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [19:39]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ssi: yup. in my case acking every message produces unacceptable performance, so I worked on a way to choose trade offs between durability and performance
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [19:40]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ssi: we have another experiment doing similar but with XREP / XREQ
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [19:42]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m sorta surprised it was that much of a performance hit
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [19:43]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I haven&#39;t done any serious tests with mine yet tho
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [19:43]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ssi: in my particular use we are doing statistical analysis and a 1% or so error rate is acceptable and doesn&#39;t skew the results. so being able to say it&#39;s ok to drop 100 mesages or 1000 messages is an acceptable trade off
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [19:43]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ahh ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [19:43]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mine is a pipelining workflow engine
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [19:44]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    messages in, messages out
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [19:44]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    can&#39;t drop any
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [19:44]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ssi: we&#39;re looking at hundreds of millions of datapoints so 1000 messages isn&#39;t a big deal
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [19:44]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ssi: but with a straight push / pull we were noticing ~ 60k to 70k messages in the pipeline even with a HWM of 1 because of the internal queueing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [19:45]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, that&#39;s pretty much my experience
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [19:45]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ssi: ah yes, I&#39;d definitely go REP / REQ if I couldn&#39;t lose a message
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [19:45]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    except the tipoff was a bit different...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [19:45]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I hooked up to a JMS queue with 50 messages in it, all around 15MB
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [19:45]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and immediately OOM&#39;d
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [19:45]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    my ventilator would happily pull them off one at a time and throw them downstream, and there was no flow control
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [19:46]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ssi: ah yes or messages are only around 200 bytes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [19:46]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so I&#39;m using the LRU queue as flow control
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [19:46]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    s/or/our
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [19:46]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mine has to handle very many small messages as well as fewer large messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [19:46]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it also will soon need to handle very large content, like raw video
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [19:46]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but I&#39;m going to be doing that with references
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [19:46]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ssi: we&#39;re currently handling around 500 million to 1 billion messages a day, and that should go up to ~ 3 billion soon
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-89" class="rowLink" href="#msg-89">
+                    [19:47]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    looking at using the new version of the framework that&#39;s zmq based for a video syndication pipeline
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-90" class="rowLink" href="#msg-90">
+                    [19:47]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ssi: so had to find the sweet spot as far as durability / performance
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-91" class="rowLink" href="#msg-91">
+                    [19:47]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-92" class="rowLink" href="#msg-92">
+                    [19:47]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ssi: nice!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-93" class="rowLink" href="#msg-93">
+                    [19:47]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ssi: I have a friend I work with who used to be a broadcast engineer
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-94" class="rowLink" href="#msg-94">
+                    [19:47]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I work for TBS
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-95" class="rowLink" href="#msg-95">
+                    [19:47]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ssi: he&#39;s probably be really interested in what you&#39;re doing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-96" class="rowLink" href="#msg-96">
+                    [19:47]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    most of the stuff I work on is sports data, and we use the legacy version of this framework for syndication of stats data
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-97" class="rowLink" href="#msg-97">
+                    [19:48]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    btw, there&#39;s a ticket in bug tracker to build acking directly into push/pull pattern, which would solve this kind of issues
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-98" class="rowLink" href="#msg-98">
+                    [19:48]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: yup!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-99" class="rowLink" href="#msg-99">
+                    [19:48]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    we&#39;ll get xml feeds in from stats providers, and we use the workflows to cut it all up into formats that our CDNs and frontend websites need and syndicate
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-100" class="rowLink" href="#msg-100">
+                    [19:48]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no idea when it gets done though :|
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-101" class="rowLink" href="#msg-101">
+                    [19:48]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: this was a relatively painless work around for the moment
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-102" class="rowLink" href="#msg-102">
+                    [19:48]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, i know
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-103" class="rowLink" href="#msg-103">
+                    [19:48]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: I&#39;ll pester Ken and see if I can get him to contribute some code
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-104" class="rowLink" href="#msg-104">
+                    [19:48]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: as he&#39;s been looking into the queuing / buffering already I know
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-105" class="rowLink" href="#msg-105">
+                    [19:49]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i can help him with advice if he decides to do the work
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-106" class="rowLink" href="#msg-106">
+                    [19:49]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the related code is a bit complex
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-107" class="rowLink" href="#msg-107">
+                    [19:50]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: excellent. it would be a boon to us as well, so if he thought he could take a stab at it I bet we&#39;d foot the bill.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-108" class="rowLink" href="#msg-108">
+                    [19:50]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    great!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-109" class="rowLink" href="#msg-109">
+                    [19:50]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: he&#39;s unfortuantely out today but I should be talking to him by the latest by next thursday; I&#39;ll float the idea of him working on it and see if I can get anything to come of it.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-110" class="rowLink" href="#msg-110">
+                    [20:10]  tartine
+                    </a>
+                </td>
+                <td class="message-cell">
+                    question : does a slow node could slower a previos node ( node1---&gt;node2 , node2 have a heavy dutty, is node1 adapting its speed to node 2 ? )?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-111" class="rowLink" href="#msg-111">
+                    [20:12]  tartine
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or is the Ã¸mq buffer will make the node1 to store in its "zmq stack" and the node1 continue working normally ?
+                </td>
+            </tr>
+            
         </table>
     </div>
     <div class="footer-container"><hr/>
