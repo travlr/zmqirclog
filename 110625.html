@@ -1,0 +1,277 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title>ZeroMq IRC Log</title>
+<!--    <base href="http://travlr.github.com/zmqirclog/index.html" target="_self"/>-->
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+
+</head>
+
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <a href="http://travlr.github.com/zmqirclog/index.html" target="_blank">
+            <img src="images/zeromq1-300x115.png" alt="ZeroMq Logo" border="0"/>
+            </a>
+        </div>
+        <div id="header-left-bottom" style="padding-left:200px;">
+            IRC Log
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="float:right; vertical-align:text-top; padding-top:5px">
+            <form action="http://travlr.github.com/zmqirclog/search-results.html" id="cse-search-box">
+  <div>
+    <input type="hidden" name="cx" value="017268610037587914919:goqutszmb5o" />
+    <input type="hidden" name="cof" value="FORID:9" />
+    <input type="hidden" name="ie" value="UTF-8" />
+    <input type="text" name="q" size="31" />
+    <input type="submit" name="sa" value="Search" />
+  </div>
+</form>
+<script type="text/javascript" src="http://www.google.com/cse/brand?form=cse-search-box&lang=en"></script>
+
+        </div>
+        <div style="clear:right;"></div>
+        <div id="header-right-bottom" style="text-align:right; vertical-align:text-bottom; padding-right:30px; padding-top:75px;">
+            <a href="http://www.zeromq.org/" target="_blank">ZeroMq Home</a>
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+    <hr/>
+</div>
+
+    <div class="content">
+        <h2>Saturday June 25, 2011</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [11:59]  Moc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :( Can&#39;t get pyzeromq to work
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [12:00]  Moc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I keep getting a : zmq.core.error.ZMQError: Invalid argument
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [12:04]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    from what function?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [12:07]  Moc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    socket.bind(addr)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [12:11]  Moc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    File "socket.pyx", line 390, in zmq.core.socket.Socket.bind (zmq/core/socket.c:3613)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [12:18]  Moc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bah never mind, giving up... trying to install it on server this time but it complaint about things probably because it find the perl version too old... I&#39;m not going to hack my stuff so I can use zmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [12:19]  Seta00
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [12:33]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Moc: i would guess you connection string was wrong
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [12:33]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what string are you asing as an argument to bind?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [16:37]  vikstrous
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hey guys, I&#39;m having difficulties building zeromq. After I run .configure, make can&#39;t find a makefile. This is my conf.log: http://pastebay.com/127127
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [16:38]  so_solid_moo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    vikstrous: you have an error - no uuid-dev installed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [16:39]  vikstrous
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so_solid_moo: Oh, alright, thanks. I&#39;ll try installing it and running it again.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [16:40]  vikstrous
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so_solid_moo: Awesome. It worked. Thanks a lot.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [20:33]  bfig
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what&#39;s a good book on distributed computing?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [20:53]  tproa
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i don&#39;t know of books, but i recently came across this page and have put it in my queue to read: http://www.quora.com/What-are-the-seminal-papers-in-distributed-systems
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [21:40]  bfig
+                    </a>
+                </td>
+                <td class="message-cell">
+                    tproa, do you read in FIFO? :p. i&#39;m so accustomed to a stack that i don&#39;t know how you could do it =)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [21:40]  tproa
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s less a FIFO and more a heap
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [21:41]  bfig
+                    </a>
+                </td>
+                <td class="message-cell">
+                    tproa, well, thanks for the reference, i&#39;ll check it.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [21:42]  tproa
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no problem. some of the papers in there i&#39;ve read, or at least heard of. the rest for the most part look interesting
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+    <div class="footer-container"><hr/>
+    <p style="color:#a9a9a9; font-size:0.75em; text-align:center; margin:5px 5%;">
+       Web site design and content is copyright &copy; 2010-2011 Peter Alexander, ProDataLab. Site content licensed under the Creative Commons Attribution-Share Alike 3.0 License.
+       &Oslash;MQ is copyright &copy; Copyright &copy; 2007-2011 iMatix Corporation and Contributors.
+       <a href="http://www.imatix.com/contact">Contact us for professional support.</a>
+       &Oslash;MQ is free software licensed under the LGPL. &Oslash;MQ, ZeroMQ, and 0MQ are trademarks of iMatix Corporation.
+       <a href="http://www.zeromq.org/legal:terms-of-use">Terms of Use</a> ?
+       <a href="http://www.zeromq.org/legal:privacy-policy">Privacy Policy</a>
+    </p>
+</div>
+
+</body>
+</html>
