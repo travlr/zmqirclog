@@ -205,6 +205,226 @@
                 </td>
             </tr>
             
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [14:10]  bcg
+                    </a>
+                </td>
+                <td class="message-cell">
+                    czmq and libzfl seem to overlap quite a bit, is there a reason there are two high level C libraries being developed in parallel?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [14:11]  bcg
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I am starting a C zmq app and was thinking of using one of these libraries
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [14:14]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s a question for pieter hintejns
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [14:14]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    try asking on the mailing list
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [14:17]  bcg
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah it appears libzfl now depends on czmq https://github.com/zeromq/libzfl/commit/daf5cc1f6d9daaf0edce7cf33833dd93b2f6ec1e
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [15:38]  ninjaspounced
+                    </a>
+                </td>
+                <td class="message-cell">
+                    join #archlinux
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [16:30]  Steve-o
+                    </a>
+                </td>
+                <td class="message-cell">
+                    IOCP doesn&#39;t appear too difficult to integrate into 0mq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [17:56]  nicolas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is it correct to use multiple publishers to a single sink subscriber?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [18:06]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ve got a long-running process that ZMQ_SUBs to a ton of data. It&#39;s growing in memory reliably, and valgrind reports the vast majority in "still reachable" blocks - http://pastebin.com/PfSDkeZH
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [18:06]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nicolas_: it works, if that&#39;s what you mean.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [18:13]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I guess my question re: above -- is it keeping this memory wired deliberately? if so, is there some way to signal it should be released?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [18:26]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ptrb: are you sure the subscriber is all caught up?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [18:26]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: I see. No, I&#39;m not.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [18:26]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then that memory is holding queued up messages (likely)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [18:26]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Interesting. Thanks for the insight.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [18:27]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is that surprising to you?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [18:27]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    No, it makes a lot of sense. I just didn&#39;t think about that being a possible culprit :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [18:27]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oh, ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [18:27]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if your publishers are faster than your subscribers, you&#39;ll eventually exhaust memory
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [18:27]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i think this was the original reason for adding HWM
+                </td>
+            </tr>
+            
         </table>
     </div>
     <div class="footer-container"><hr/>
