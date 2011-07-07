@@ -216,6 +216,1249 @@
                 </td>
             </tr>
             
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [15:25]  katkee
+                    </a>
+                </td>
+                <td class="message-cell">
+                    reuben: zmq_queue is present in the ubuntu package zeromq-bin
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [15:25]  reuben
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ..
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [15:27]  katkee
+                    </a>
+                </td>
+                <td class="message-cell">
+                    reuben: i am looking for zmq_queue and it is referenced here https://github.com/zeromq/zeromq2-1/blob/master/debian/zeromq-bin.install
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [15:28]  reuben
+                    </a>
+                </td>
+                <td class="message-cell">
+                    when you build zmq they get built too
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [15:28]  reuben
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not sure if they are installed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [15:28]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    they are
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [15:28]  katkee
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i looked in /usr/local/bin/ but don&#39;t find them...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [15:29]  reuben
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what prefix did you use when configuring?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [15:29]  katkee
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i just did ./configure make make install
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [15:32]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    they&#39;re really gone from 2.1
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [15:33]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, it&#39;s stated in the NEWS file for the 2.1.3 release from 2011-03-30
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [15:34]  katkee
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guido_g: ok, how can i get it back, i need to get an older release?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [15:35]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what happens if a client connects to my socket, and I don&#39;t poll it because I have no data available, and the client times it out?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [15:35]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or more specifically, if client A and client B connect in that order
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [15:35]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and A times out before I poll
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [15:35]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    will I read B&#39;s request on the next poll?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [15:36]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    katkee: if you really need these exact programs, yes that seems to be the only way
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [15:37]  katkee
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, i will look in older releases
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [15:42]  katkee
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guido_g: found it here 7d9603d722c9c2752dccd0c51f470e68d0e0c48c in zeromq2-1
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [15:42]  katkee
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks guido_g
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [17:13]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    katkee: hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [17:23]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: if I have two separate applications running on one machine using the same inproc:// addresses, do those namespaces collide?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [17:23]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ssi: different contexts = different namespaces for inproc
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [17:23]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yay!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [17:26]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: do you see my question about client timeouts in the backscroll from 2 hours ago?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [17:27]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what socket types? does A send a message?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [17:27]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s REQ/REP, and yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [17:27]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there&#39;s no notion of timeout in REQ/REP
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [17:27]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nor anywhere else, unless you add it on top
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [17:27]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hrm, that might be an issue
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [17:28]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    given the way you explain it, yes, I assume you want to build your own heartbeating
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [17:28]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well my application is that I&#39;m building a stripped down JMS provider that uses 0mq as a transport
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [17:28]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    a MessageConsumer has the option to receive blocking indefinitely, or receive nowait, or with a specified timeout
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [17:29]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if a consumer tries to receive from an empty queue with a timeout, and another tries to receive behind that one with no timeout,
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [17:29]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I need a way for the first consumer to timeout without screwing up my message handling
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [17:29]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I have control of both ends, but maybe REQ/REP isn&#39;t the right way to go
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [17:30]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    maybe the consumer end needs to be a DEALER instead
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [17:31]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in that case, the timeout would need to be sent along with the request... if the broker doesn&#39;t get to it before the timeout expires, when it does get to it it&#39;ll just ignore it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [17:31]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    although that&#39;d require clock sync, which is probably the wrong way to handle it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [17:34]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    for a start I&#39;d use a router-dealer pattern
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [17:35]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the broker itself is router-dealer
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [17:35]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    when the broker receives a request, specifically a consumer request, it passes it off to a worker which handles the specific destination
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [17:35]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the reason for that is an empty queue can have blocking requests
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [17:35]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and between client and broker you have req/rep?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [17:35]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well broker frontend is router
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [17:36]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    client I intended to use req
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [17:36]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so client sends a req to broker, which routes it to a worker
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [17:36]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bleh, req is really limited to straight request/response
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [17:36]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s fine, I can use dealer in the client instead with practically no impact
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [17:36]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    for sure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [17:36]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you create a compatible envelope
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [17:37]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    will I need to add the empty frame if I switch from REQ to DEALER?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [17:37]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the client address gets added in the router socket if I remember correctly
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [17:37]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, if your downstream code expects it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [17:38]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you&#39;re in control of all the code and don&#39;t need the REP stack handling you can forget the empty frame
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [17:38]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and then you probably want to empty your router socket as input arrives
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [17:38]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and store requests explicitly in your own queues until they can be processed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [17:41]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what would I replace the workers&#39; REP socket with?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [17:41]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    another DEALER?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [17:41]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s usually how it seems to turn out
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [17:41]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dealer at both ends so you can do async work like heartbeats
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [17:41]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    right
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [17:41]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    router for broker frontend and backend
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [17:42]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not sure I even need it for backend
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [17:42]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I don&#39;t care for the client to get a worker&#39;s address
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [17:42]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you need worker heartbeating, for instance, that means a ROUTER
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [17:42]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [17:42]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    clients should never see workers, period
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [17:43]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you&#39;ve looked at the pirate examples in ch4?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [17:43]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ya
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [17:43]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this is pretty much majordomo, I think
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [17:46]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you are correct!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [17:52]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah I think you&#39;re right... it&#39;s very close to majordomo pattern
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-89" class="rowLink" href="#msg-89">
+                    [17:56]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok here&#39;s what I&#39;m unclear on
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-90" class="rowLink" href="#msg-90">
+                    [17:56]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m looking at the asynchronous majordomo example
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-91" class="rowLink" href="#msg-91">
+                    [17:56]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it has a timeout in its receive
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-92" class="rowLink" href="#msg-92">
+                    [17:56]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but what exactly happens in the case of timeout?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-93" class="rowLink" href="#msg-93">
+                    [17:56]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the broker&#39;s unaware that it&#39;s timed out, yes?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-94" class="rowLink" href="#msg-94">
+                    [17:57]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in my application, the broker needs to be timeout aware, somehow... otherwise it&#39;s gonna dequeue and send a message to someone who&#39;s either not listening or not expecting
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-95" class="rowLink" href="#msg-95">
+                    [17:57]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and that JMS-layer message will be lost
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-96" class="rowLink" href="#msg-96">
+                    [17:58]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    client timesout, creates a new socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-97" class="rowLink" href="#msg-97">
+                    [17:58]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this is the lazy pirate approach
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-98" class="rowLink" href="#msg-98">
+                    [17:58]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    broker routes back any replies to that client, they are silently discarded
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-99" class="rowLink" href="#msg-99">
+                    [17:58]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    a client never gets a reply it was not expecting
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-100" class="rowLink" href="#msg-100">
+                    [17:59]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    right, but the broker consumed a message from the queue and sent it to a client that discards it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-101" class="rowLink" href="#msg-101">
+                    [17:59]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this is the one way I was able to use REQ sockets successfully in a reliability scenario
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-102" class="rowLink" href="#msg-102">
+                    [17:59]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so that message is lost
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-103" class="rowLink" href="#msg-103">
+                    [17:59]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the majordomo pattern is for handling client requests
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-104" class="rowLink" href="#msg-104">
+                    [17:59]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    clients do not consume messages from a queue
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-105" class="rowLink" href="#msg-105">
+                    [17:59]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    your scenario is somewhat different, I guess
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-106" class="rowLink" href="#msg-106">
+                    [17:59]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sorry, we&#39;re speaking in different layers here
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-107" class="rowLink" href="#msg-107">
+                    [17:59]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-108" class="rowLink" href="#msg-108">
+                    [17:59]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sorry, have a meeting, have to go, cyl
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-109" class="rowLink" href="#msg-109">
+                    [18:28]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thinking about it more, I don&#39;t think I actually need to handle timeout at all!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-110" class="rowLink" href="#msg-110">
+                    [19:16]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ssi: if not, that makes things simpler
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-111" class="rowLink" href="#msg-111">
+                    [19:27]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, through the magic of zeromq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-112" class="rowLink" href="#msg-112">
+                    [19:27]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if the broker responds to a client request after the client has timed out, it&#39;ll just queue on the client side at the zmq layer
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-113" class="rowLink" href="#msg-113">
+                    [19:27]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then when the client goes to receive again, it just needs to try receiving off the socket before it sends out a request
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-114" class="rowLink" href="#msg-114">
+                    [19:27]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if there&#39;s a message already waiting, it reads that and returns immediately
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-115" class="rowLink" href="#msg-115">
+                    [19:28]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the only downside to that is the case where the broker sends a reply, but the client is timed out, and then the client dies without ever actually reading it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-116" class="rowLink" href="#msg-116">
+                    [19:28]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but I&#39;m not worried about that edge case right now :D
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-117" class="rowLink" href="#msg-117">
+                    [20:06]  damien
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-118" class="rowLink" href="#msg-118">
+                    [20:06]  damien
+                    </a>
+                </td>
+                <td class="message-cell">
+                    quick question
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-119" class="rowLink" href="#msg-119">
+                    [20:06]  damien
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the changelog for stable says 2.1.8
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-120" class="rowLink" href="#msg-120">
+                    [20:06]  damien
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but the webpage says 2.1.7
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-121" class="rowLink" href="#msg-121">
+                    [20:07]  damien
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is 2.1.8 anywhere?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-122" class="rowLink" href="#msg-122">
+                    [20:15]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    here&#39;s a new one
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-123" class="rowLink" href="#msg-123">
+                    [20:15]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Assertion failed: rc == 0 (zmq_connecter.cpp:48)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-124" class="rowLink" href="#msg-124">
+                    [20:23]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    k so, this is actually my first time doing zmq with anything but inproc sockets...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-125" class="rowLink" href="#msg-125">
+                    [20:24]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m binding to "tcp://*:62626", should I see it show up as listening in netstat?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-126" class="rowLink" href="#msg-126">
+                    [20:24]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cause I don&#39;t
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-127" class="rowLink" href="#msg-127">
+                    [20:52]  whack
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ssi: pastebin your code sample?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-128" class="rowLink" href="#msg-128">
+                    [21:18]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I got it figured out
+                </td>
+            </tr>
+            
         </table>
     </div>
     <div class="footer-container"><hr/>
