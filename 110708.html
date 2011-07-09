@@ -711,6 +711,303 @@
                 </td>
             </tr>
             
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [12:05]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anubhaw: if you need absolute reliability you might want to look into some of the various request / reply patterns possible rather than push / pull in my experience
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [12:07]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anubhaw: the problem you will run into currently is that even if you set a high water mark, you&#39;ll end up with messages buffered in both the pull socket and push socket before the high water mark is hit and enforced
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [19:46]  nishttal2
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how do i have 2 publishers on the same socket?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [19:49]  nishttal2
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyone here?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [20:09]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bind the consumer
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [20:09]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    connect the publishers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [20:10]  nishttal2
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik, sorry i was just trying make it a simple example by focussing on the publishers.. ideally i would want multiple consumers as well
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [20:11]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then place a device into the middle
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [20:12]  nishttal2
+                    </a>
+                </td>
+                <td class="message-cell">
+                    to copy msgs from one port to another?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [20:12]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [20:12]  nishttal2
+                    </a>
+                </td>
+                <td class="message-cell">
+                    would that not become a bottleneck (in a large system)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [20:12]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [20:12]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you want to avoid the bottleneck
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [20:13]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can connect each consumer to each publisher
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [20:13]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    still, if it&#39;s on LAN, the switch will become the bottleneck sooner or later
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [20:14]  nishttal2
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i see
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [20:14]  nishttal2
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks for the insight.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [20:14]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you are welcome
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [20:27]  dale
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hi. Is there a recommended way to do RPC over zeromq? I&#39;m looking at using protocol buffers to format the message and either use its RPC style or simply have a field for the function and another for the parameters (encoded using json). Any thoughts?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [20:44]  whack
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dale: I use msgpack, but protobufs would work fine, too
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [20:45]  whack
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dale: a protobuf with a request field and a union for the request object would work
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [20:46]  whack
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I use a &#39;map&#39; in msgpack (similar to json but packs better) with "request" field and the rest of the object given to the handler for that request
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [20:46]  dale
+                    </a>
+                </td>
+                <td class="message-cell">
+                    whack: Ok. Haven&#39;t seen msgpack, will have a look at it.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [20:47]  dale
+                    </a>
+                </td>
+                <td class="message-cell">
+                    whack: Sounds like a simple yet effective method
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [21:51]  hbnguy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [21:52]  hbnguy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    was wondering if somebody could help me with something
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [22:02]  Guest59853
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyone here use zmq on windows and multiplex stdin with zmq sockets in zmq_poll?
+                </td>
+            </tr>
+            
         </table>
     </div>
     <div class="footer-container"><hr/>
