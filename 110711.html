@@ -1734,6 +1734,336 @@
                 </td>
             </tr>
             
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-154" class="rowLink" href="#msg-154">
+                    [14:08]  Moc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    k, hope no one else will get my getting started issue hehe
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-155" class="rowLink" href="#msg-155">
+                    [15:57]  Fade
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is it generally accepted that zeromq should not be exposed to the internet? I&#39;m reading through this thread: http://news.ycombinator.com/item?id=2428004
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-156" class="rowLink" href="#msg-156">
+                    [15:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Fade: it can fail because of intentionally malformed messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-157" class="rowLink" href="#msg-157">
+                    [15:59]  Fade
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, that&#39;s what I was wondering.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-158" class="rowLink" href="#msg-158">
+                    [15:59]  Fade
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so zmq tends to only be used in closed domains?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-159" class="rowLink" href="#msg-159">
+                    [15:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    people use it even over internet
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-160" class="rowLink" href="#msg-160">
+                    [16:00]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but it&#39;s not 100% safe
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-161" class="rowLink" href="#msg-161">
+                    [16:02]  Fade
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so a message like [5][s][m][c] will cause bad things to happen?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-162" class="rowLink" href="#msg-162">
+                    [16:10]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Fade: what it means is that 0mq doesn&#39;t currently do proper validation of the wire protocol format
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-163" class="rowLink" href="#msg-163">
+                    [16:10]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Fade: it just asserts when it sees bad data instead of discarding it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-164" class="rowLink" href="#msg-164">
+                    [16:11]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so if you ran 0mq through a fuzzer, it would assert when the wire format was wrong
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-165" class="rowLink" href="#msg-165">
+                    [16:11]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the devs are working on fixing that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-166" class="rowLink" href="#msg-166">
+                    [16:13]  Fade
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, first of all: thanks for the interesting system
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-167" class="rowLink" href="#msg-167">
+                    [16:13]  Fade
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: do you have any idea when the wire protocol will have validation?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-168" class="rowLink" href="#msg-168">
+                    [16:14]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Fade: nope but it&#39;s likely getting some attention in the 3.0 codebase
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-169" class="rowLink" href="#msg-169">
+                    [16:15]  Fade
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is that the current development branch?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-170" class="rowLink" href="#msg-170">
+                    [16:31]  fan
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hello.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-171" class="rowLink" href="#msg-171">
+                    [16:33]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-172" class="rowLink" href="#msg-172">
+                    [16:38]  fan
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Have question about poll. I am using poll method and in case of using a timeout with it, poll returns if i press a key in console, where i started my application. Do You know if it is a bug, or i miss smth?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-173" class="rowLink" href="#msg-173">
+                    [16:42]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what version is that?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-174" class="rowLink" href="#msg-174">
+                    [16:42]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and what OS?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-175" class="rowLink" href="#msg-175">
+                    [16:43]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    fan: and what language are you using 0mq from?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-176" class="rowLink" href="#msg-176">
+                    [16:45]  fan
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Current ÃMQ version is 2.2.0
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-177" class="rowLink" href="#msg-177">
+                    [16:45]  fan
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Linux tos-66 2.6.35-28-generic #50-Ubuntu SMP Fri Mar 18 19:00:26 UTC 2011 i686 GNU/Linux
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-178" class="rowLink" href="#msg-178">
+                    [16:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what about language?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-179" class="rowLink" href="#msg-179">
+                    [16:46]  fan
+                    </a>
+                </td>
+                <td class="message-cell">
+                    c++
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-180" class="rowLink" href="#msg-180">
+                    [16:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that should not happen
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-181" class="rowLink" href="#msg-181">
+                    [16:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    can you report in the bug tracker
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-182" class="rowLink" href="#msg-182">
+                    [16:47]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    attaching your test program, presumably
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-183" class="rowLink" href="#msg-183">
+                    [16:50]  fan
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it is now not a test program (: it is too large to send. ok. will try to post a bug, but i think it is bug in my code. Because some time ago, before i made some changes the behavior was perfect.
+                </td>
+            </tr>
+            
         </table>
     </div>
     <div class="footer-container"><hr/>
