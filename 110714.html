@@ -6123,6 +6123,4186 @@
                 </td>
             </tr>
             
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-553" class="rowLink" href="#msg-553">
+                    [14:45]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what do you consider as a &#39;disconnection&#39;?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-554" class="rowLink" href="#msg-554">
+                    [14:46]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there is TCP disconnect, bound peer treating other as &#39;gone away&#39;, connected peer treating other as &#39;gone away&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-555" class="rowLink" href="#msg-555">
+                    [14:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    true
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-556" class="rowLink" href="#msg-556">
+                    [14:47]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the actual requirements are:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-557" class="rowLink" href="#msg-557">
+                    [14:47]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    explicit identities and thus the notion of session surviving disconnection would have to be removed before creating the new socket type
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-558" class="rowLink" href="#msg-558">
+                    [14:47]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    - client mostly never wants a disconnect, but in some cases may want, via heartbeating
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-559" class="rowLink" href="#msg-559">
+                    [14:47]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    - server wants to define a configurable timeout after which it can kick dead clients
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-560" class="rowLink" href="#msg-560">
+                    [14:48]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, so it&#39;s TCP connection (or whatever the transport layer is)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-561" class="rowLink" href="#msg-561">
+                    [14:48]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ack, way for explicit disconnection would have to be added
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-562" class="rowLink" href="#msg-562">
+                    [14:48]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    indeed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-563" class="rowLink" href="#msg-563">
+                    [14:48]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    forget heartbeats, that can be added on top
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-564" class="rowLink" href="#msg-564">
+                    [14:49]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-565" class="rowLink" href="#msg-565">
+                    [14:49]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so I assume when doing an outbound connect, client would get a &#39;connected&#39; message when that succeeded?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-566" class="rowLink" href="#msg-566">
+                    [14:49]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-567" class="rowLink" href="#msg-567">
+                    [14:50]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    one more question: what should be the behaviour on HWM?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-568" class="rowLink" href="#msg-568">
+                    [14:50]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    block, i presume
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-569" class="rowLink" href="#msg-569">
+                    [14:50]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hang on, one other thought
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-570" class="rowLink" href="#msg-570">
+                    [14:50]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    for notifications and commands
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-571" class="rowLink" href="#msg-571">
+                    [14:51]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    we probably need a reserved identity that is actually the socket itself
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-572" class="rowLink" href="#msg-572">
+                    [14:51]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sys://socket or whatever
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-573" class="rowLink" href="#msg-573">
+                    [14:51]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    good question
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-574" class="rowLink" href="#msg-574">
+                    [14:51]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    working out-of-band would also be doable
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-575" class="rowLink" href="#msg-575">
+                    [14:51]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i would rather pass them directly via the socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-576" class="rowLink" href="#msg-576">
+                    [14:52]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but that requires some thinking about how to distinguish commands from data
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-577" class="rowLink" href="#msg-577">
+                    [14:52]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I mean, frame 0 = "sys://socket", frame 1 = "CLOSE", frame 2 = "identity of peer"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-578" class="rowLink" href="#msg-578">
+                    [14:52]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that could go in both directions
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-579" class="rowLink" href="#msg-579">
+                    [14:52]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    close command same as close notification
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-580" class="rowLink" href="#msg-580">
+                    [14:52]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    open command? for consistency? bleh...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-581" class="rowLink" href="#msg-581">
+                    [14:53]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;ll operate on hop-by-hop level anyway
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-582" class="rowLink" href="#msg-582">
+                    [14:53]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    labels/commands are visible at that layer anyway
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-583" class="rowLink" href="#msg-583">
+                    [14:54]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    e.g. "subscribe" command
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-584" class="rowLink" href="#msg-584">
+                    [14:54]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can recv() it from XPUB socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-585" class="rowLink" href="#msg-585">
+                    [14:54]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and forward it to XSUB socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-586" class="rowLink" href="#msg-586">
+                    [14:54]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is this documented somewhere?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-587" class="rowLink" href="#msg-587">
+                    [14:55]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zmq_socket(3)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-588" class="rowLink" href="#msg-588">
+                    [14:55]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    also in form of whitepaper: 250bpm.com/pubsub
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-589" class="rowLink" href="#msg-589">
+                    [14:55]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it should probably get into the guide later on
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-590" class="rowLink" href="#msg-590">
+                    [14:56]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the guide will always cover the stable version... so eventually it&#39;ll get there
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-591" class="rowLink" href="#msg-591">
+                    [14:57]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ack
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-592" class="rowLink" href="#msg-592">
+                    [14:58]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, so you use a simple binary framing for commands...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-593" class="rowLink" href="#msg-593">
+                    [14:58]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    possibly
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-594" class="rowLink" href="#msg-594">
+                    [14:58]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if router socket always sends/recvs address+message
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-595" class="rowLink" href="#msg-595">
+                    [14:58]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then you need an address that means "the socket itself not some other peer"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-596" class="rowLink" href="#msg-596">
+                    [14:58]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or labal with no data = command ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-597" class="rowLink" href="#msg-597">
+                    [14:58]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    label
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-598" class="rowLink" href="#msg-598">
+                    [14:59]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then you can use the same approach for commands in the message, e.g. a byte 1 for connect, byte 2 for disconnect
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-599" class="rowLink" href="#msg-599">
+                    [14:59]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    labels aren&#39;t visible to the application, are they?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-600" class="rowLink" href="#msg-600">
+                    [14:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    for example
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-601" class="rowLink" href="#msg-601">
+                    [14:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    they are visible on hop-by-hop layer
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-602" class="rowLink" href="#msg-602">
+                    [14:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    invisible on end-to-end layer
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-603" class="rowLink" href="#msg-603">
+                    [14:59]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you said we&#39;d use this socket at end-to-end as well as hop-by-hop
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-604" class="rowLink" href="#msg-604">
+                    [15:00]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you are mixing a lot of concepts here, it feels like mayonnaise
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-605" class="rowLink" href="#msg-605">
+                    [15:00]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    with ketchup
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-606" class="rowLink" href="#msg-606">
+                    [15:00]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no, what i mean was that the "generic" socket can be a hop-by-hop concept
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-607" class="rowLink" href="#msg-607">
+                    [15:00]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that has no meaning to me
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-608" class="rowLink" href="#msg-608">
+                    [15:00]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can build whatever end-to-end layer on top
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-609" class="rowLink" href="#msg-609">
+                    [15:00]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the goal is to allow custom patterns afterall
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-610" class="rowLink" href="#msg-610">
+                    [15:01]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    on top = in user space
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-611" class="rowLink" href="#msg-611">
+                    [15:01]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there is a scaling disconnect here
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-612" class="rowLink" href="#msg-612">
+                    [15:01]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sorry?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-613" class="rowLink" href="#msg-613">
+                    [15:01]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the only problems we&#39;re solving with router are where hop-by-hop == end-to-end
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-614" class="rowLink" href="#msg-614">
+                    [15:02]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-615" class="rowLink" href="#msg-615">
+                    [15:02]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so you are making a distinction that makes no sense to the problem
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-616" class="rowLink" href="#msg-616">
+                    [15:02]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;d say we&#39;re several years away from understanding how e.g. to do multiple hops for the more complex patterns
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-617" class="rowLink" href="#msg-617">
+                    [15:02]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    analogous to doing federation in AMQP, that took years to figure out
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-618" class="rowLink" href="#msg-618">
+                    [15:03]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    at least the design it&#39;s future proof, you can use generic socket to create even complex scalable patterns on top of 0mq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-619" class="rowLink" href="#msg-619">
+                    [15:03]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but you don&#39;t have to
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-620" class="rowLink" href="#msg-620">
+                    [15:03]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    power isn&#39;t profitable
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-621" class="rowLink" href="#msg-621">
+                    [15:03]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    simplicity is
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-622" class="rowLink" href="#msg-622">
+                    [15:03]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    simplicity at scale is magic
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-623" class="rowLink" href="#msg-623">
+                    [15:04]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    power at scale is just a mess
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-624" class="rowLink" href="#msg-624">
+                    [15:04]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you have any idea how the end-to-end layer on top of genric socket should look like
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-625" class="rowLink" href="#msg-625">
+                    [15:04]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    propose it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-626" class="rowLink" href="#msg-626">
+                    [15:04]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;d say you construct that on top
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-627" class="rowLink" href="#msg-627">
+                    [15:04]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    out of multiple hops
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-628" class="rowLink" href="#msg-628">
+                    [15:05]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    we do that already, e.g. where a client is actually a server for a set of local workers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-629" class="rowLink" href="#msg-629">
+                    [15:05]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s just not one pattern, it&#39;s different patterns, interconnected
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-630" class="rowLink" href="#msg-630">
+                    [15:06]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyhow, this is mostly philosophy
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-631" class="rowLink" href="#msg-631">
+                    [15:06]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyway, i&#39;ll implement the hop-by-hop layer first
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-632" class="rowLink" href="#msg-632">
+                    [15:06]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then we can discuss what should be on top of iot
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-633" class="rowLink" href="#msg-633">
+                    [15:06]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    "label with no data part means a command" is just confusing several things IMO
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-634" class="rowLink" href="#msg-634">
+                    [15:06]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-635" class="rowLink" href="#msg-635">
+                    [15:06]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    possibly
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-636" class="rowLink" href="#msg-636">
+                    [15:06]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    command = simplest possible way for application to pass connection meta data to/from socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-637" class="rowLink" href="#msg-637">
+                    [15:07]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i have no opinion on framing commands atm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-638" class="rowLink" href="#msg-638">
+                    [15:07]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    does "subscribe" command fit the definition?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-639" class="rowLink" href="#msg-639">
+                    [15:07]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so for HWM
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-640" class="rowLink" href="#msg-640">
+                    [15:07]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it should block, yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-641" class="rowLink" href="#msg-641">
+                    [15:07]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ack
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-642" class="rowLink" href="#msg-642">
+                    [15:08]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i think the rest of ROUTER semantics are accurate, e.g. sending to non-connection means &#39;discard&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-643" class="rowLink" href="#msg-643">
+                    [15:08]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    as you wish
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-644" class="rowLink" href="#msg-644">
+                    [15:08]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it can report an error though
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-645" class="rowLink" href="#msg-645">
+                    [15:08]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no idea what&#39;s better
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-646" class="rowLink" href="#msg-646">
+                    [15:08]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that would be nicer, yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-647" class="rowLink" href="#msg-647">
+                    [15:09]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sending to a non-existent peer is bad enough to possibly warrant an assertion even
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-648" class="rowLink" href="#msg-648">
+                    [15:09]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-649" class="rowLink" href="#msg-649">
+                    [15:09]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    an error would be good
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-650" class="rowLink" href="#msg-650">
+                    [15:09]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    actually, error
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-651" class="rowLink" href="#msg-651">
+                    [15:09]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how about naming the socket type?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-652" class="rowLink" href="#msg-652">
+                    [15:10]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dunno
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-653" class="rowLink" href="#msg-653">
+                    [15:10]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ZMQ_GENERIC
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-654" class="rowLink" href="#msg-654">
+                    [15:10]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    whatever
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-655" class="rowLink" href="#msg-655">
+                    [15:10]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, it could be an evolution of ROUTER
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-656" class="rowLink" href="#msg-656">
+                    [15:10]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which replaces ROUTER and DEALER
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-657" class="rowLink" href="#msg-657">
+                    [15:10]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    a REALER
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-658" class="rowLink" href="#msg-658">
+                    [15:10]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or DOUTER
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-659" class="rowLink" href="#msg-659">
+                    [15:10]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the problem is backward compatibility
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-660" class="rowLink" href="#msg-660">
+                    [15:11]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zmq_setsockopt
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-661" class="rowLink" href="#msg-661">
+                    [15:11]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-662" class="rowLink" href="#msg-662">
+                    [15:11]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ZMQ_RAW
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-663" class="rowLink" href="#msg-663">
+                    [15:11]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, it&#39;s not raw
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-664" class="rowLink" href="#msg-664">
+                    [15:11]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    actually, PEER would work here IMO
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-665" class="rowLink" href="#msg-665">
+                    [15:12]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    maybe
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-666" class="rowLink" href="#msg-666">
+                    [15:12]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if this works, we can eventually kill router &amp; dealer
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-667" class="rowLink" href="#msg-667">
+                    [15:13]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that would be nice, but would break backward comaptibility :|
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-668" class="rowLink" href="#msg-668">
+                    [15:13]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyway, we can figure that out later on
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-669" class="rowLink" href="#msg-669">
+                    [15:13]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, "kill" in the sense of sending to a far island and pretending we never heard of them...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-670" class="rowLink" href="#msg-670">
+                    [15:13]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    right
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-671" class="rowLink" href="#msg-671">
+                    [15:14]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    last question: is usign generic socket any simpler that using raw TCP?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-672" class="rowLink" href="#msg-672">
+                    [15:14]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    using*
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-673" class="rowLink" href="#msg-673">
+                    [15:14]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so, suggestion... why not make this as an extension of router, enabled by setsockopt
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-674" class="rowLink" href="#msg-674">
+                    [15:14]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oh, far far far simpler
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-675" class="rowLink" href="#msg-675">
+                    [15:14]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-676" class="rowLink" href="#msg-676">
+                    [15:14]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    message delimitation
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-677" class="rowLink" href="#msg-677">
+                    [15:14]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there&#39;s about 5,000 lines of code saved
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-678" class="rowLink" href="#msg-678">
+                    [15:14]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what else?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-679" class="rowLink" href="#msg-679">
+                    [15:15]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you mean, apart from framing, multiparts, async i/o, error handling, portability, epoll/kpoll/select, ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-680" class="rowLink" href="#msg-680">
+                    [15:16]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    framing, multipart and portability
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-681" class="rowLink" href="#msg-681">
+                    [15:16]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    apart from working over multiple transports invisibly
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-682" class="rowLink" href="#msg-682">
+                    [15:16]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bingo
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-683" class="rowLink" href="#msg-683">
+                    [15:16]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    performance
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-684" class="rowLink" href="#msg-684">
+                    [15:16]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    muliple transports is a killer feature
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-685" class="rowLink" href="#msg-685">
+                    [15:16]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-686" class="rowLink" href="#msg-686">
+                    [15:16]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-687" class="rowLink" href="#msg-687">
+                    [15:16]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    actually, it won&#39;t work over multicast
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-688" class="rowLink" href="#msg-688">
+                    [15:17]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but so it the rest, I know cause I&#39;m reimplementing a lot of it in VTX
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-689" class="rowLink" href="#msg-689">
+                    [15:17]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    *is the rest
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-690" class="rowLink" href="#msg-690">
+                    [15:17]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    true
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-691" class="rowLink" href="#msg-691">
+                    [15:17]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    asynchronous connects
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-692" class="rowLink" href="#msg-692">
+                    [15:18]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    reconnects, from the client out to the server
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-693" class="rowLink" href="#msg-693">
+                    [15:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-694" class="rowLink" href="#msg-694">
+                    [15:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there&#39;s value in it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-695" class="rowLink" href="#msg-695">
+                    [15:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you are right
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-696" class="rowLink" href="#msg-696">
+                    [15:19]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i can actually tell you how many days 0MQ saves in a realistic TCP client-to-server case
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-697" class="rowLink" href="#msg-697">
+                    [15:19]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    without TCP, minimal cost to make a scalable client-server design is about 3 months
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-698" class="rowLink" href="#msg-698">
+                    [15:19]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    without *0MQ, sorrt
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-699" class="rowLink" href="#msg-699">
+                    [15:20]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    with 0MQ, about 4 hours
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-700" class="rowLink" href="#msg-700">
+                    [15:20]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in C, right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-701" class="rowLink" href="#msg-701">
+                    [15:20]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in C, on one single platform (Linux)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-702" class="rowLink" href="#msg-702">
+                    [15:20]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you were copying a lot of code, make that 2-3 weeks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-703" class="rowLink" href="#msg-703">
+                    [15:20]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, makes sense
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-704" class="rowLink" href="#msg-704">
+                    [15:21]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    0MQ still has big holes but we assume these can be fixed without hurting the apps
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-705" class="rowLink" href="#msg-705">
+                    [15:21]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    e.g. paranoia about ... oh, I have a great idea...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-706" class="rowLink" href="#msg-706">
+                    [15:21]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    we could make just this socket paranoid, to start with
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-707" class="rowLink" href="#msg-707">
+                    [15:21]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in what sense?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-708" class="rowLink" href="#msg-708">
+                    [15:21]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    max clients, max message size, max queue memory used, etc.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-709" class="rowLink" href="#msg-709">
+                    [15:21]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m not sure if that&#39;s easier on a per-socket basis or globally
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-710" class="rowLink" href="#msg-710">
+                    [15:22]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    globally is better
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-711" class="rowLink" href="#msg-711">
+                    [15:22]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, I didn&#39;t say anything
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-712" class="rowLink" href="#msg-712">
+                    [15:22]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the infrastructure for that is shared
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-713" class="rowLink" href="#msg-713">
+                    [15:22]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    also the real magic with 0MQ sockets over TCP is that you use them both for talking to the outside world
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-714" class="rowLink" href="#msg-714">
+                    [15:22]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and for internal multithreading
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-715" class="rowLink" href="#msg-715">
+                    [15:23]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s the real killer feature IMO
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-716" class="rowLink" href="#msg-716">
+                    [15:23]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    have you seen that use case in the wild?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-717" class="rowLink" href="#msg-717">
+                    [15:24]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    every single advanced use case is multithreaded
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-718" class="rowLink" href="#msg-718">
+                    [15:24]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in the Guide too
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-719" class="rowLink" href="#msg-719">
+                    [15:24]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s inevitable
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-720" class="rowLink" href="#msg-720">
+                    [15:24]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and it would be impossible if we had one loop for inter-thread events and one for inter-process events
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-721" class="rowLink" href="#msg-721">
+                    [15:24]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah, that way
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-722" class="rowLink" href="#msg-722">
+                    [15:24]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    s/impossible/horribly painful/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-723" class="rowLink" href="#msg-723">
+                    [15:24]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    right
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-724" class="rowLink" href="#msg-724">
+                    [15:25]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    coffee, brb
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-725" class="rowLink" href="#msg-725">
+                    [15:37]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I have a pretty good internal multithreading application with 0MQ
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-726" class="rowLink" href="#msg-726">
+                    [15:37]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s kind of like a pipeline pattern, but with LRU queue for flow control
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-727" class="rowLink" href="#msg-727">
+                    [15:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what i originally imagined people moving pieces of functionality from inside the process (threads) into separate applications
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-728" class="rowLink" href="#msg-728">
+                    [15:46]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what pieter had in mind was that in-process and remote logic can be monitored in a single event loop
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-729" class="rowLink" href="#msg-729">
+                    [15:47]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the in-process transport itself is definitely useful as such though
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-730" class="rowLink" href="#msg-730">
+                    [16:10]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: i use inproc for inter-thread communications in my programs instead of mutexes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-731" class="rowLink" href="#msg-731">
+                    [16:10]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    works great
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-732" class="rowLink" href="#msg-732">
+                    [16:11]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and its conceptually much simpler for me to understand
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-733" class="rowLink" href="#msg-733">
+                    [16:11]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: yes, understood
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-734" class="rowLink" href="#msg-734">
+                    [16:18]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: we have both use cases
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-735" class="rowLink" href="#msg-735">
+                    [16:18]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in CZMQ I call these &#39;detached&#39; and &#39;attached&#39; threads
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-736" class="rowLink" href="#msg-736">
+                    [16:19]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    detached threads use their own context, and communicate over IPC or TCP or PGM
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-737" class="rowLink" href="#msg-737">
+                    [16:19]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    attached threads share the parent context and talk to the parent thread over an inproc &#39;pipe&#39; (a pair of PAIR/inproc sockets CZMQ creates automatically)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-738" class="rowLink" href="#msg-738">
+                    [16:19]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this is cleaner than saying things like "create one context per process"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-739" class="rowLink" href="#msg-739">
+                    [16:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: what we are going to do about the SIGPIPE thing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-740" class="rowLink" href="#msg-740">
+                    [16:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i have nowhere to test it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-741" class="rowLink" href="#msg-741">
+                    [16:34]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah, right, got a little distracted
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-742" class="rowLink" href="#msg-742">
+                    [16:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    do you have a mac?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-743" class="rowLink" href="#msg-743">
+                    [16:34]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    we have a user with a reproducible case
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-744" class="rowLink" href="#msg-744">
+                    [16:35]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Bill Hathaway
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-745" class="rowLink" href="#msg-745">
+                    [16:35]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ll make a patch, send it to him, ask him to try it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-746" class="rowLink" href="#msg-746">
+                    [16:35]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-747" class="rowLink" href="#msg-747">
+                    [16:35]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there&#39;s one place we set options on new sockets, right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-748" class="rowLink" href="#msg-748">
+                    [16:36]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you mean tcp sockets?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-749" class="rowLink" href="#msg-749">
+                    [16:36]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-750" class="rowLink" href="#msg-750">
+                    [16:36]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    tcp_socket.cpp
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-751" class="rowLink" href="#msg-751">
+                    [16:36]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-752" class="rowLink" href="#msg-752">
+                    [16:36]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    goodo
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-753" class="rowLink" href="#msg-753">
+                    [16:41]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: ok, patched, we&#39;ll see what Bill says.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-754" class="rowLink" href="#msg-754">
+                    [18:24]  wailupe2k
+                    </a>
+                </td>
+                <td class="message-cell">
+                    So have a queue that pulls from a zmq and broadcasts to another, and periodically after a few million events it will display Assertion failed: nbytes == sizeof (command_t) (mailbox.cpp:194), The publisher is perl, and the subscriber is node.js.... Any ideas?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-755" class="rowLink" href="#msg-755">
+                    [18:36]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hrm this is annoying... trying to map my workers by socket identity, and the socket identity is coming back empty
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-756" class="rowLink" href="#msg-756">
+                    [18:36]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s after the socket&#39;s been created, connected, and a message sent
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-757" class="rowLink" href="#msg-757">
+                    [18:40]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hrm, nm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-758" class="rowLink" href="#msg-758">
+                    [18:41]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://api.zeromq.org/2-1:zmq-getsockopt   &lt;- see ZMQ_IDENTITY
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-759" class="rowLink" href="#msg-759">
+                    [18:41]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it was some kind of goofiness in constructing a string from the byte[] that identity returns
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-760" class="rowLink" href="#msg-760">
+                    [18:41]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (jzmq)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-761" class="rowLink" href="#msg-761">
+                    [18:41]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ahh ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-762" class="rowLink" href="#msg-762">
+                    [18:42]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oh twitter says pieterh is happy with amqp/1.0   ]:-&gt;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-763" class="rowLink" href="#msg-763">
+                    [18:43]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    guido_g: happy in the sense that watching other peoples&#39; disasters makes us all feel more alive, yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-764" class="rowLink" href="#msg-764">
+                    [18:43]  ssi
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hahah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-765" class="rowLink" href="#msg-765">
+                    [18:43]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    13 states
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-766" class="rowLink" href="#msg-766">
+                    [18:44]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sounds like a bad movie :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-767" class="rowLink" href="#msg-767">
+                    [18:46]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    A bad Czech movie from 1993, "13 States of Connection"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-768" class="rowLink" href="#msg-768">
+                    [18:46]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Starring Ivan N. Terpryze
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-769" class="rowLink" href="#msg-769">
+                    [18:47]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://www.imdb.com/title/tt1473773/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-770" class="rowLink" href="#msg-770">
+                    [18:47]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Drama 2010
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-771" class="rowLink" href="#msg-771">
+                    [18:47]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Not yet released
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-772" class="rowLink" href="#msg-772">
+                    [18:47]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so true :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-773" class="rowLink" href="#msg-773">
+                    [18:47]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sweet lord it actually exists?!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-774" class="rowLink" href="#msg-774">
+                    [18:47]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what are the chances of that?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-775" class="rowLink" href="#msg-775">
+                    [18:48]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Quotes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-776" class="rowLink" href="#msg-776">
+                    [18:48]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Matthew O&#39;Connor: We need someone who&#39;s professional and reliable - &#39;cos we&#39;re not.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-777" class="rowLink" href="#msg-777">
+                    [18:48]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    omg
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-778" class="rowLink" href="#msg-778">
+                    [19:54]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    wailupe2k: what version of libzmq and what OS?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-779" class="rowLink" href="#msg-779">
+                    [19:56]  wailupe2k
+                    </a>
+                </td>
+                <td class="message-cell">
+                    BSD, ZMQ 2.1.7
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-780" class="rowLink" href="#msg-780">
+                    [19:57]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s the old problem with socketpair buffer limits
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-781" class="rowLink" href="#msg-781">
+                    [19:57]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is solved in 3.0
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-782" class="rowLink" href="#msg-782">
+                    [19:57]  wailupe2k
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hum
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-783" class="rowLink" href="#msg-783">
+                    [19:57]  wailupe2k
+                    </a>
+                </td>
+                <td class="message-cell">
+                    do you know of a BSD port for 3?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-784" class="rowLink" href="#msg-784">
+                    [19:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can just build it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-785" class="rowLink" href="#msg-785">
+                    [19:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the problem is rather with bindings
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-786" class="rowLink" href="#msg-786">
+                    [19:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    3.0 was released day before yesterday
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-787" class="rowLink" href="#msg-787">
+                    [19:59]  wailupe2k
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah,
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-788" class="rowLink" href="#msg-788">
+                    [19:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and binding haven&#39;t caught up yet
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-789" class="rowLink" href="#msg-789">
+                    [19:59]  reuben
+                    </a>
+                </td>
+                <td class="message-cell">
+                    3.0 was released?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-790" class="rowLink" href="#msg-790">
+                    [19:59]  wailupe2k
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this is on a prod sys :(
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-791" class="rowLink" href="#msg-791">
+                    [20:00]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, i can point you to the patch
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-792" class="rowLink" href="#msg-792">
+                    [20:00]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can try to backpoty it to 2.1.7
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-793" class="rowLink" href="#msg-793">
+                    [20:00]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    backport*
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-794" class="rowLink" href="#msg-794">
+                    [20:00]  wailupe2k
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cool
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-795" class="rowLink" href="#msg-795">
+                    [20:01]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    wait a sec
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-796" class="rowLink" href="#msg-796">
+                    [20:02]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this is the patch: https://github.com/zeromq/libzmq/commit/7c0c79812075459765440ca26bad56f4f7ddbe52
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-797" class="rowLink" href="#msg-797">
+                    [20:03]  wailupe2k
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hum,,, lots got cut out there.....
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-798" class="rowLink" href="#msg-798">
+                    [20:03]  wailupe2k
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Thanks though!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-799" class="rowLink" href="#msg-799">
+                    [20:03]  wailupe2k
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik++
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-800" class="rowLink" href="#msg-800">
+                    [20:11]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    wailupe2k: look up the faq and tuning guides on zeromq.org
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-801" class="rowLink" href="#msg-801">
+                    [20:11]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    wailupe2k: and adjust your system socket buffers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-802" class="rowLink" href="#msg-802">
+                    [20:12]  wailupe2k
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: oh, cool I&#39;ll check that out right now
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-803" class="rowLink" href="#msg-803">
+                    [20:12]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    0mq 2.x uses a socketpair internally for signaling so the small bsd defaults cause problems like what you are seeing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-804" class="rowLink" href="#msg-804">
+                    [20:16]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: do you have a Jira issue for that pipes problem?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-805" class="rowLink" href="#msg-805">
+                    [20:16]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m trying a backport right now
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-806" class="rowLink" href="#msg-806">
+                    [20:16]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hm, let me see
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-807" class="rowLink" href="#msg-807">
+                    [20:22]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    probably not
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-808" class="rowLink" href="#msg-808">
+                    [20:22]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i can&#39;t find it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-809" class="rowLink" href="#msg-809">
+                    [20:23]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    perhaps https://zeromq.jira.com/browse/LIBZMQ-166?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-810" class="rowLink" href="#msg-810">
+                    [20:23]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    php extension should be up to date with 3.0 soonish
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-811" class="rowLink" href="#msg-811">
+                    [20:23]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s a mix of several issues
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-812" class="rowLink" href="#msg-812">
+                    [20:23]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the third one seems to fit
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-813" class="rowLink" href="#msg-813">
+                    [20:23]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: nice
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-814" class="rowLink" href="#msg-814">
+                    [20:24]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: you mean with 3.0 support?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-815" class="rowLink" href="#msg-815">
+                    [20:24]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-816" class="rowLink" href="#msg-816">
+                    [20:24]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    should work with both
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-817" class="rowLink" href="#msg-817">
+                    [20:24]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: very nice
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-818" class="rowLink" href="#msg-818">
+                    [20:25]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: it&#39;ll have to do then, I need an issue for any change in 2.1...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-819" class="rowLink" href="#msg-819">
+                    [20:25]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure, create one
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-820" class="rowLink" href="#msg-820">
+                    [20:25]  xristos
+                    </a>
+                </td>
+                <td class="message-cell">
+                    can someone take a look at this: http://paste.lisp.org/display/123275
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-821" class="rowLink" href="#msg-821">
+                    [20:25]  xristos
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it is very short
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-822" class="rowLink" href="#msg-822">
+                    [20:25]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i guess it was never recorded in the bug tracker
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-823" class="rowLink" href="#msg-823">
+                    [20:25]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    do we have a test case for this? does the shutdown stress test do it ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-824" class="rowLink" href="#msg-824">
+                    [20:25]  xristos
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i start a server that binds to a pub socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-825" class="rowLink" href="#msg-825">
+                    [20:26]  xristos
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then start 1000 clients that subscribe to it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-826" class="rowLink" href="#msg-826">
+                    [20:26]  xristos
+                    </a>
+                </td>
+                <td class="message-cell">
+                    most of the time i get # Assertion failed: new_sndbuf &gt; old_sndbuf (mailbox.cpp:183)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-827" class="rowLink" href="#msg-827">
+                    [20:26]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: try shutdown_stress + increase number of parallel threads (THREAD_COUNT)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-828" class="rowLink" href="#msg-828">
+                    [20:26]  xristos
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sometimes it works
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-829" class="rowLink" href="#msg-829">
+                    [20:26]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: is xristos&#39; example not the socketpair exhaustion?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-830" class="rowLink" href="#msg-830">
+                    [20:26]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    basically, to reproduce it you need an application thread that is evented but doesn&#39;t process the events
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-831" class="rowLink" href="#msg-831">
+                    [20:27]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so, for example you can create a socket, bind it and never touch it again
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-832" class="rowLink" href="#msg-832">
+                    [20:27]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then create a destroy peers quickly
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-833" class="rowLink" href="#msg-833">
+                    [20:27]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: is this is? # Assertion failed: new_sndbuf &gt; old_sndbuf (mailbox.cpp:183)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-834" class="rowLink" href="#msg-834">
+                    [20:27]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-835" class="rowLink" href="#msg-835">
+                    [20:27]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lol
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-836" class="rowLink" href="#msg-836">
+                    [20:28]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    xristos: we&#39;re actually looking for you and your test case... welcome!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-837" class="rowLink" href="#msg-837">
+                    [20:28]  xristos
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cool
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-838" class="rowLink" href="#msg-838">
+                    [20:28]  xristos
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i use 256 clients in production
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-839" class="rowLink" href="#msg-839">
+                    [20:28]  xristos
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and it works fine
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-840" class="rowLink" href="#msg-840">
+                    [20:28]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    literally, the line before you posted was asking if we had such a test case
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-841" class="rowLink" href="#msg-841">
+                    [20:28]  xristos
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but if i could pump them up to 1000+
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-842" class="rowLink" href="#msg-842">
+                    [20:28]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what language is this?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-843" class="rowLink" href="#msg-843">
+                    [20:29]  xristos
+                    </a>
+                </td>
+                <td class="message-cell">
+                    python
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-844" class="rowLink" href="#msg-844">
+                    [20:29]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    xristos, can I ask you to create an issue for this, with your test case, at https://zeromq.jira.com
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-845" class="rowLink" href="#msg-845">
+                    [20:29]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then when/if we have a fix I&#39;ll ask you to test it for us
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-846" class="rowLink" href="#msg-846">
+                    [20:30]  xristos
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://paste.lisp.org/display/123275#2
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-847" class="rowLink" href="#msg-847">
+                    [20:30]  xristos
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this should be better
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-848" class="rowLink" href="#msg-848">
+                    [20:30]  xristos
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-849" class="rowLink" href="#msg-849">
+                    [20:30]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    actually a plain C testcase would be best
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-850" class="rowLink" href="#msg-850">
+                    [20:30]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if I can I&#39;ll make one, based on your Python code
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-851" class="rowLink" href="#msg-851">
+                    [20:31]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks for coming to IRC, you can&#39;t know what perfect timing that was
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-852" class="rowLink" href="#msg-852">
+                    [20:31]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: should be easy to reproduce, you can use inproc for that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-853" class="rowLink" href="#msg-853">
+                    [20:31]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    s = socket (ZMQ_PUB);
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-854" class="rowLink" href="#msg-854">
+                    [20:31]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    s.bind ("inproc://a")&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-855" class="rowLink" href="#msg-855">
+                    [20:32]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    while (true) {
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-856" class="rowLink" href="#msg-856">
+                    [20:32]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    s2 = socket (ZMQ_SUB);
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-857" class="rowLink" href="#msg-857">
+                    [20:32]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    s2.connect ("inproc://a");
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-858" class="rowLink" href="#msg-858">
+                    [20:32]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    s2.close ();
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-859" class="rowLink" href="#msg-859">
+                    [20:32]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    }
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-860" class="rowLink" href="#msg-860">
+                    [20:33]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ll try it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-861" class="rowLink" href="#msg-861">
+                    [20:37]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: ack, that kills it, after 430 sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-862" class="rowLink" href="#msg-862">
+                    [20:38]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    xristos: I&#39;ve got a native C test case working
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-863" class="rowLink" href="#msg-863">
+                    [20:38]  xristos
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-864" class="rowLink" href="#msg-864">
+                    [20:39]  xristos
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s only for PUB/SUB from what i see here
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-865" class="rowLink" href="#msg-865">
+                    [20:39]  xristos
+                    </a>
+                </td>
+                <td class="message-cell">
+                    PULL/PUSH works fine up to 5k
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-866" class="rowLink" href="#msg-866">
+                    [20:39]  xristos
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that i&#39;ve tried
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-867" class="rowLink" href="#msg-867">
+                    [20:55]  xristos
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: will you file the issue yourself?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-868" class="rowLink" href="#msg-868">
+                    [20:55]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: well, I have a test case but it dies at 510 sockets with &#39;too many open files&#39; (after the change)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-869" class="rowLink" href="#msg-869">
+                    [20:56]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    xristos: I&#39;d prefer if you file the issue, and test the eventual change
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-870" class="rowLink" href="#msg-870">
+                    [20:56]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it is better that way
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-871" class="rowLink" href="#msg-871">
+                    [21:02]  xristos
+                    </a>
+                </td>
+                <td class="message-cell">
+                    filed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-872" class="rowLink" href="#msg-872">
+                    [21:02]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cool!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-873" class="rowLink" href="#msg-873">
+                    [21:02]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, I think I have a fix for it, seems to work in 2.1.x
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-874" class="rowLink" href="#msg-874">
+                    [21:03]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    xristos: are you up to building 2.1.x from git master?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-875" class="rowLink" href="#msg-875">
+                    [21:07]  xristos
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i will, tomorrow, i&#39;m leaving work atm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-876" class="rowLink" href="#msg-876">
+                    [21:10]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, I&#39;ll post some comments the jira issue
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-877" class="rowLink" href="#msg-877">
+                    [21:23]  benwaine
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hello
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-878" class="rowLink" href="#msg-878">
+                    [21:24]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    benwaine: hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-879" class="rowLink" href="#msg-879">
+                    [21:25]  benwaine
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ve been reading through &#39;the guide&#39; and have a question. Early on it mentions &#39;if you are opening lots of sockets all the time your probably doing it wrong&#39; (paraphrase)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-880" class="rowLink" href="#msg-880">
+                    [21:26]  benwaine
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I wanted to ask - i&#39;m thinking of having a fixed queue which messages are pushed into.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-881" class="rowLink" href="#msg-881">
+                    [21:27]  benwaine
+                    </a>
+                </td>
+                <td class="message-cell">
+                    A user would enter a term into the ui and on the server side a socket would be connected to the queue and that once message would be sent.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-882" class="rowLink" href="#msg-882">
+                    [21:27]  benwaine
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thats a lot of connects. Is this wrong?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-883" class="rowLink" href="#msg-883">
+                    [21:28]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    benwaine: you&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-884" class="rowLink" href="#msg-884">
+                    [21:28]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you&#39;d probably want to keep server processes running
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-885" class="rowLink" href="#msg-885">
+                    [21:28]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and only open / connect sockets the first time
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-886" class="rowLink" href="#msg-886">
+                    [21:29]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if only because opening / connecting a socket over TCP takes a small while and that&#39;ll add latency to your UI for nothing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-887" class="rowLink" href="#msg-887">
+                    [21:31]  benwaine
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm ok. I&#39;m writting this in PHP. Can you suggest how I should send the message to the queue without using a connect. Some kind of wrapper round the push socket?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-888" class="rowLink" href="#msg-888">
+                    [21:33]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    doesn&#39;t php let you keep server processes alive?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-889" class="rowLink" href="#msg-889">
+                    [21:33]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this is like database handles, I guess
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-890" class="rowLink" href="#msg-890">
+                    [21:34]  benwaine
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I could run a  script in a big loop (this is what i&#39;m doing for the actual queue) but i think the connect would have to be on a per request basis. I&#39;m still knew to this thought. Open to suggestions :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-891" class="rowLink" href="#msg-891">
+                    [21:34]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I don&#39;t know PHP in this regard
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-892" class="rowLink" href="#msg-892">
+                    [21:35]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    my advice is to open sockets only when you need to, cache them, reuse them
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-893" class="rowLink" href="#msg-893">
+                    [21:35]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;ll give you best performance
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-894" class="rowLink" href="#msg-894">
+                    [21:35]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    however if you need to get started simply, just open them on demand, close when done
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-895" class="rowLink" href="#msg-895">
+                    [21:35]  benwaine
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok. I&#39;ll have a play round and keep reading the guide. Thanks for your time.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-896" class="rowLink" href="#msg-896">
+                    [21:35]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    np
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-897" class="rowLink" href="#msg-897">
+                    [21:36]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: ok, backported the socketpairs changes to 2.1...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-898" class="rowLink" href="#msg-898">
+                    [21:36]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it was quite a lot of changes, more than that single commit
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-899" class="rowLink" href="#msg-899">
+                    [21:36]  dontfudge
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hey all.  I&#39;m trying to get zmq/lua/zmsg going.  I can&#39;t seem to find anywhere czmq for lua.  Any clues?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-900" class="rowLink" href="#msg-900">
+                    [21:36]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dontfudge: czmq is for C, not Lua
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-901" class="rowLink" href="#msg-901">
+                    [21:37]  dontfudge
+                    </a>
+                </td>
+                <td class="message-cell">
+                    There&#39;s a example of Asynchronous client-server in Lua on zguide that requires zmsg, but I can&#39;t figure out where to get it.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-902" class="rowLink" href="#msg-902">
+                    [21:38]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    benwaine: yeah, you&#39;d likely create and drop a socket each time in that model with php. The overhead is pretty low.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-903" class="rowLink" href="#msg-903">
+                    [21:38]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dontfudge: it&#39;s usually in the same examples directory
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-904" class="rowLink" href="#msg-904">
+                    [21:39]  benwaine
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks Ian
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-905" class="rowLink" href="#msg-905">
+                    [21:39]  dontfudge
+                    </a>
+                </td>
+                <td class="message-cell">
+                    It&#39;s not found in the git, but is here http://zguide.zeromq.org/lua:asyncsrv
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-906" class="rowLink" href="#msg-906">
+                    [21:39]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    https://github.com/imatix/zguide/blob/master/examples/Lua/zmsg.lua
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-907" class="rowLink" href="#msg-907">
+                    [21:39]  dontfudge
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, saw that - but that&#39;s just an example on how to use zmsg in lua
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-908" class="rowLink" href="#msg-908">
+                    [21:40]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no, that&#39;s it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-909" class="rowLink" href="#msg-909">
+                    [21:40]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zmsg started life as a helper for the guide examples in C, it got ported along with those examples
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-910" class="rowLink" href="#msg-910">
+                    [21:40]  dontfudge
+                    </a>
+                </td>
+                <td class="message-cell">
+                    &lt;sheepish grin&gt; ok thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-911" class="rowLink" href="#msg-911">
+                    [21:40]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-912" class="rowLink" href="#msg-912">
+                    [21:40]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ianbarber: thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-913" class="rowLink" href="#msg-913">
+                    [21:41]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-914" class="rowLink" href="#msg-914">
+                    [21:41]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what are you porting down?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-915" class="rowLink" href="#msg-915">
+                    [21:41]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the protocol bits for 2.2?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-916" class="rowLink" href="#msg-916">
+                    [21:41]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ianbarber: removing the socketpair limitations
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-917" class="rowLink" href="#msg-917">
+                    [21:41]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah, cool
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-918" class="rowLink" href="#msg-918">
+                    [21:42]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    surprisingly it all seems to work after I&#39;ve been at it with a hammer
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-919" class="rowLink" href="#msg-919">
+                    [21:43]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you&#39;ll be a converted C++er by the end of the year :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-920" class="rowLink" href="#msg-920">
+                    [21:43]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ianbarber: sigh, it&#39;s looking that way... :-(
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-921" class="rowLink" href="#msg-921">
+                    [21:44]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ianbarber: does the notion of using 2.2 as a stepping stone between 2.1 and 3.0 seem reasonable?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-922" class="rowLink" href="#msg-922">
+                    [21:45]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah, i think it&#39;s good, means 3.0 can stay clear of b/c code, and people can bridge their infrastructure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-923" class="rowLink" href="#msg-923">
+                    [21:45]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    good
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-924" class="rowLink" href="#msg-924">
+                    [21:45]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, I&#39;m off for the weekend, be back Monday
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-925" class="rowLink" href="#msg-925">
+                    [21:46]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    meetup in Geneva on Saturday, in case anyone&#39;s in that zone
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-926" class="rowLink" href="#msg-926">
+                    [21:47]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cool, have a good one, say hi to alvaro
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-927" class="rowLink" href="#msg-927">
+                    [21:48]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    for sure!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-928" class="rowLink" href="#msg-928">
+                    [22:32]  gdan
+                    </a>
+                </td>
+                <td class="message-cell">
+                    has anyone tested to see which is faster: inproc or ipc?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-929" class="rowLink" href="#msg-929">
+                    [22:50]  cloudhead
+                    </a>
+                </td>
+                <td class="message-cell">
+                    gdan: I&#39;d assume inproc is faster, seeing as it&#39;s limited to a single process
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-930" class="rowLink" href="#msg-930">
+                    [22:55]  whack
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cloudhead_: and wouldn&#39;t copy from process -&gt; kernel and back again, probably also less syscalls
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-931" class="rowLink" href="#msg-931">
+                    [22:56]  whack
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but at the point where your maxing out a tcp/inproc/ipc thing you&#39;re probably hitting limits on cpu cache misses, etc
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-932" class="rowLink" href="#msg-932">
+                    [22:57]  cloudhead
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yea ipc will have some overhead
+                </td>
+            </tr>
+            
         </table>
     </div>
     <div class="footer-container"><hr/>
