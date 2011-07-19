@@ -47,982 +47,1191 @@
 </div>
 
     <div class="content">
-        <h2>Monday July 18, 2011</h2>
+        <h2>Tuesday July 19, 2011</h2>
         <table class="message-table">
             <th>[Time]&nbsp;Name</th><th>Message</th>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-1" class="rowLink" href="#msg-1">
-                    [07:19]  CIA-32
+                    [01:29]  rev
                     </a>
                 </td>
                 <td class="message-cell">
-                    libzmq: 03Martin Sustrik 07master * rbf78e23 10/ (5 files in 2 dirs): GENERIC socket type and COMMAND flag added ...
+                    whoever set up this irc client on the zmq webpage - thanks a lot!  my office won&#39;t let me install an irc client so this is great.
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-2" class="rowLink" href="#msg-2">
-                    [07:37]  CIA-32
+                    [01:55]  michelp
                     </a>
                 </td>
                 <td class="message-cell">
-                    libzmq: 03Martin Sustrik 07master * r89daa57 10/ (src/generic.cpp src/generic.hpp): Missing files for GENERIC socket implementation added ...
+                    rev, glad you could join us :)
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-3" class="rowLink" href="#msg-3">
-                    [07:37]  CIA-32
+                    [13:46]  ptrb
                     </a>
                 </td>
                 <td class="message-cell">
-                    libzmq: 03Martin Sustrik 07master * r1a40880 10/ (doc/zmq_getsockopt.txt doc/zmq_setsockopt.txt): ZMQ_IDENTITY option removed from the documentation ...
+                    any problem to re-close an already closed socket?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-4" class="rowLink" href="#msg-4">
-                    [07:43]  CIA-32
+                    [13:47]  mikko
                     </a>
                 </td>
                 <td class="message-cell">
-                    libzmq: 03Martin Sustrik 07master * rf97f50c 10/ src/signaler.cpp : Signaler timeout bug on Windows fixed ...
+                    why does it need to be re-closed?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-5" class="rowLink" href="#msg-5">
-                    [08:00]  CIA-32
+                    [13:47]  sustrik
                     </a>
                 </td>
                 <td class="message-cell">
-                    libzmq: 03Martin Sustrik 07master * r66ff99c 10/ MAINTAINERS : Martin Lucina remove from MAINTAINERS file ...
+                    sure, it&#39;s a problem
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-6" class="rowLink" href="#msg-6">
-                    [08:04]  CIA-32
+                    [13:47]  sustrik
                     </a>
                 </td>
                 <td class="message-cell">
-                    libzmq: 03Martin Sustrik 07master * rac20e17 10/ doc/zmq.txt : Reference to C++ binding removed from zmq(7) ...
+                    the socket is deallocated during first close
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-7" class="rowLink" href="#msg-7">
-                    [08:56]  CIA-32
+                    [13:48]  sustrik
                     </a>
                 </td>
                 <td class="message-cell">
-                    libzmq: 03Steven McCoy 07master * r18d8be5 10/ (src/signaler.cpp src/zmq.cpp): Fix pollin on Cygwin. ...
+                    second close accesses non-existent object
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-8" class="rowLink" href="#msg-8">
-                    [09:24]  pieterh
+                    [13:48]  ptrb
                     </a>
                 </td>
                 <td class="message-cell">
-                    hi guys
+                    I see. Does C++ destructor trigger a close()?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-9" class="rowLink" href="#msg-9">
-                    [09:31]  sustrik
+                    [13:48]  sustrik
                     </a>
                 </td>
                 <td class="message-cell">
-                    hi
+                    yes
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-10" class="rowLink" href="#msg-10">
-                    [09:31]  sustrik
+                    [13:48]  ptrb
                     </a>
                 </td>
                 <td class="message-cell">
-                    any reason why not to enable the option on freebsd?
+                    I see.
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-11" class="rowLink" href="#msg-11">
-                    [09:40]  pieterh
+                    [13:49]  sustrik
                     </a>
                 </td>
                 <td class="message-cell">
-                    just minimalism, we don&#39;t know it&#39;s needed
+                    however, in C++ binding destructor tests whether socket was closed explicitly before
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-12" class="rowLink" href="#msg-12">
-                    [09:41]  sustrik
+                    [13:49]  sustrik
                     </a>
                 </td>
                 <td class="message-cell">
-                    given that the option exists
+                    and if so, it doesn do zmq_close()
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-13" class="rowLink" href="#msg-13">
-                    [09:41]  sustrik
+                    [13:49]  ptrb
                     </a>
                 </td>
                 <td class="message-cell">
-                    i would assume SIGPIPE happens
+                    So, assuming RAII ownership model of a socket, I should never clo... oh, alright.
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-14" class="rowLink" href="#msg-14">
-                    [09:41]  sustrik
+                    [13:50]  ptrb
                     </a>
                 </td>
                 <td class="message-cell">
-                    will add it
+                    Very good! Thanks.
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-15" class="rowLink" href="#msg-15">
-                    [09:42]  sustrik
+                    [14:27]  amirpc
                     </a>
                 </td>
                 <td class="message-cell">
-                    next autobuild will show whether it builds ok
+                    Hey guys I&#39;m putting together an architecture document for a proposal at work and one thing I&#39;m looking to put in there is current production use cases, to try to head of dissenters before they can raise the issue - does anyone know where I can find some good examples?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-16" class="rowLink" href="#msg-16">
-                    [09:42]  pieterh
+                    [14:28]  mikko
                     </a>
                 </td>
                 <td class="message-cell">
-                    ok, I&#39;ll do the same on 2.1 and 2.2 then
+                    amirpc_: you have read the guide i assume?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-17" class="rowLink" href="#msg-17">
-                    [09:43]  sustrik
+                    [14:28]  mikko
                     </a>
                 </td>
                 <td class="message-cell">
-                    wait till next autobuild to be sure it works ok
+                    one company i know using zeromq is loggly
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-18" class="rowLink" href="#msg-18">
-                    [09:43]  sustrik
+                    [14:28]  mikko
                     </a>
                 </td>
                 <td class="message-cell">
-                    btw 2.1 and 2.2 are broken on win32 now
+                    they speak quite openly about it
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-19" class="rowLink" href="#msg-19">
-                    [09:43]  sustrik
+                    [14:28]  amirpc
                     </a>
                 </td>
                 <td class="message-cell">
-                    sent you the patch
+                    mikko: Yep, I have read the guide but I read code samples, etc a long time ago - is there prod info in it? gonna go check
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-20" class="rowLink" href="#msg-20">
-                    [09:44]  sustrik
+                    [14:29]  mikko
                     </a>
                 </td>
                 <td class="message-cell">
-                    same for 3.0.0
+                    what sort of info are you looking for?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-21" class="rowLink" href="#msg-21">
-                    [09:50]  pieterh
+                    [14:29]  mikko
                     </a>
                 </td>
                 <td class="message-cell">
-                    how did they break on win32?
+                    just people using zeromq in production?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-22" class="rowLink" href="#msg-22">
-                    [09:56]  sustrik
+                    [14:30]  amirpc
                     </a>
                 </td>
                 <td class="message-cell">
-                    use of select() in signaler.cpp doesn&#39;t set the infinite timeout correctly
+                    Yeah, if I don&#39;t have examples then the change fearers will rapidly take the conversation in a bad direction
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-23" class="rowLink" href="#msg-23">
-                    [09:56]  pieterh
+                    [14:30]  amirpc
                     </a>
                 </td>
                 <td class="message-cell">
-                    ok
+                    just other people I can say who are using it
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-24" class="rowLink" href="#msg-24">
-                    [09:58]  CIA-32
+                    [14:33]  mikko
                     </a>
                 </td>
                 <td class="message-cell">
-                    libzmq: 03Martin Sustrik 07master * r7298b57 10/ src/zmq.cpp : Includes in zmq.cpp cleaned-up ...
+                    you can probbaly spot such a companies from mailing-lists
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-25" class="rowLink" href="#msg-25">
-                    [10:48]  pieterh
+                    [14:34]  amirpc
                     </a>
                 </td>
                 <td class="message-cell">
-                    sustrik: small question
+                    okay I&#39;ll give that a  shot
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-26" class="rowLink" href="#msg-26">
-                    [10:48]  pieterh
+                    [14:34]  taotetek
                     </a>
                 </td>
                 <td class="message-cell">
-                    is it possible that ROUTER in 3.0 doesn&#39;t set MORE when providing the identity frame?
+                    amirpc_: we (aggregate knowledge) use zeromq in production
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-27" class="rowLink" href="#msg-27">
-                    [10:50]  sustrik
+                    [14:34]  taotetek
                     </a>
                 </td>
                 <td class="message-cell">
-                    nope, it&#39;s exact copy of 2.1 ROUTER, for backward comaptibility
+                    amirpc_: we have a few blog posts up about it on our corporate blog if that&#39;s helpful
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-28" class="rowLink" href="#msg-28">
-                    [10:51]  pieterh
+                    [14:35]  taotetek
                     </a>
                 </td>
                 <td class="message-cell">
-                    I have something weird happening, will make a test case...
+                    amirpc_: http://blog.aggregateknowledge.com/
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-29" class="rowLink" href="#msg-29">
-                    [10:52]  sustrik
+                    [14:36]  taotetek
                     </a>
                 </td>
                 <td class="message-cell">
-                    ok
+                    amirpc_: we use rsyslog as an "artery" to steam log data to services that then distribute log data to various parsing and analaysis systems via zeromq
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-30" class="rowLink" href="#msg-30">
-                    [10:54]  CIA-32
+                    [14:36]  taotetek
                     </a>
                 </td>
                 <td class="message-cell">
-                    libzmq: 03Pieter Hintjens 07master * ra33a275 10/ src/tcp_socket.cpp : Fixed issue 230 ...
+                    s/steam/stream
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-31" class="rowLink" href="#msg-31">
-                    [11:01]  pieterh
+                    [14:37]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    sustrik: OK, I&#39;ve confirmed it, ROUTER doesn&#39;t set RCVMORE on the identity frame
+                    amirpc_: there are a number of &#39;stories&#39; on the zeromq.org site: http://www.zeromq.org/story:_start
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-32" class="rowLink" href="#msg-32">
-                    [11:01]  pieterh
+                    [14:37]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    https://zeromq.jira.com/browse/LIBZMQ-232
+                    there could be more, we&#39;ve not been very good about collecting them
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-33" class="rowLink" href="#msg-33">
-                    [11:02]  sustrik
+                    [14:37]  taotetek
                     </a>
                 </td>
                 <td class="message-cell">
-                    ok, let me see
+                    oh hi pieterh :)
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-34" class="rowLink" href="#msg-34">
-                    [11:14]  sustrik
+                    [14:37]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    pieterh: that&#39;s the mailbox.cpp assert patch you backported from unstable
+                    hi Brian!
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-35" class="rowLink" href="#msg-35">
-                    [11:15]  pieterh
+                    [14:38]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    hmm, it was quite a complex backport, that explains it
+                    ohai
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-36" class="rowLink" href="#msg-36">
-                    [11:15]  pieterh
+                    [14:38]  taotetek
                     </a>
                 </td>
                 <td class="message-cell">
-                    hang on, hang on
+                    pieterh: just sitting down to work on some prototypes and play more with jruby + zeromq
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-37" class="rowLink" href="#msg-37">
-                    [11:15]  pieterh
+                    [14:38]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    this problem affects 3.0, not 2.1
+                    saw that, nice...
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-38" class="rowLink" href="#msg-38">
-                    [11:16]  pieterh
+                    [14:38]  taotetek
                     </a>
                 </td>
                 <td class="message-cell">
-                    allow me to test libzmq master...
+                    pieterh: heading out to HQ in california in a couple of weeks trying to get some good examples together for the dev team
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-39" class="rowLink" href="#msg-39">
-                    [11:17]  sustrik
+                    [14:39]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    yes, it affects 3.0
+                    how many devs?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-40" class="rowLink" href="#msg-40">
-                    [11:17]  sustrik
+                    [14:40]  amirpc
                     </a>
                 </td>
                 <td class="message-cell">
-                    but it was backported to 2.1 as well
+                    pieterh: Do you know what our largest scale deployment is? They&#39;ll ask about that, we&#39;ve got a few million users a day and this will be spread across prob 200 individual nodes, ever seen anything that big?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-41" class="rowLink" href="#msg-41">
-                    [11:17]  sustrik
+                    [14:40]  taotetek
                     </a>
                 </td>
                 <td class="message-cell">
-                    let me check once again
+                    pieterh: we&#39;ve got hmmm.. just 4 engineers in the dev group, well plus the cto does a lot of coding and I do a lot of coding
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-42" class="rowLink" href="#msg-42">
-                    [11:18]  pieterh
+                    [14:40]  taotetek
                     </a>
                 </td>
                 <td class="message-cell">
-                    it affects libzmq master, as I&#39;d expect
+                    pieterh: so I guess 6 or so of us writing code on a regular basis
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-43" class="rowLink" href="#msg-43">
-                    [11:21]  sustrik
+                    [14:41]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    here&#39;s the relevant code in 2-1:
+                    amirpc_: no idea what the largest scale 0MQ deployment is, but I know for a fact some people are aiming at 10M+node networks
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-44" class="rowLink" href="#msg-44">
-                    [11:21]  sustrik
+                    [14:41]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    https://github.com/zeromq/zeromq2-1/blob/master/src/signaler.cpp#L164
+                    taotetek: have you read http://unprotocols.org/blog:13?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-45" class="rowLink" href="#msg-45">
-                    [11:22]  pieterh
+                    [14:41]  amirpc
                     </a>
                 </td>
                 <td class="message-cell">
-                    oh, we&#39;re talking about two different issues...
+                    okay if I wanted to find more info about that, mailing list is best or?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-46" class="rowLink" href="#msg-46">
-                    [11:22]  pieterh
+                    [14:41]  taotetek
                     </a>
                 </td>
                 <td class="message-cell">
-                    you&#39;re referring to the win32 problems, ok, makes sense
+                    pieterh: oh and ken writes code of course when he&#39;s contracting for us
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-47" class="rowLink" href="#msg-47">
-                    [11:25]  sustrik
+                    [14:41]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    oops, you meant the rcvmore thing?
+                    amirpc_: ask on zeromq-dev... but many large deployments are discrete about their use of 0MQ
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-48" class="rowLink" href="#msg-48">
-                    [11:25]  sustrik
+                    [14:42]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    i am on that
+                    taotetek: sounds fun... :)
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-49" class="rowLink" href="#msg-49">
-                    [11:56]  sustrik
+                    [14:42]  taotetek
                     </a>
                 </td>
                 <td class="message-cell">
-                    pieterh: this issue: assert error on very simple C client/server example
+                    pieterh: yup! it was a nice article
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-50" class="rowLink" href="#msg-50">
-                    [11:56]  sustrik
+                    [14:42]  amirpc
                     </a>
                 </td>
                 <td class="message-cell">
-                    is already solved
+                    okay well I just really want to use zeromq in my project but I&#39;m going up against a decent number of people who are afraid of change, so any advice you can give would be helpful :)
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-51" class="rowLink" href="#msg-51">
-                    [11:56]  sustrik
+                    [14:42]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    it&#39;s the win issue i&#39;ve sent the patch for recently (2.1, 2.2, 3.0)
+                    i&#39;ve used this approach a few times now, it works well to go from hello world to real prototypes
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-52" class="rowLink" href="#msg-52">
-                    [11:57]  pieterh
+                    [14:43]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    the backport wasn&#39;t in any released package
+                    amirpc_: if you are fighting emotional arguments (fear), don&#39;t come with technical answers
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-53" class="rowLink" href="#msg-53">
-                    [11:58]  sustrik
+                    [14:43]  taotetek
                     </a>
                 </td>
                 <td class="message-cell">
-                    it&#39;s natively in 3.0
+                    pieterh: we used a version of "urban protocol" for our first workflow system speaking of unprotocols ;)
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-54" class="rowLink" href="#msg-54">
-                    [11:58]  sustrik
+                    [14:44]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    later on ported to 2.1 and 2.2
+                    taotetek: :-) nice
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-55" class="rowLink" href="#msg-55">
-                    [11:58]  pieterh
+                    [14:44]  taotetek
                     </a>
                 </td>
                 <td class="message-cell">
-                    Marc was testing 3.0, right
+                    pieterh: experimenting with majordomo now
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-56" class="rowLink" href="#msg-56">
-                    [11:58]  sustrik
+                    [14:44]  amirpc
                     </a>
                 </td>
                 <td class="message-cell">
-                    the guy played with 3.0 and reported the error
+                    lol I appreciate that, but it&#39;s from technical people so they fear-monger using antiquated examples of how change has introduced instaiblities before
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-57" class="rowLink" href="#msg-57">
-                    [11:59]  pieterh
+                    [14:44]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    we should be stricter about asking people to log issues in Jira
+                    I did this with a team, wrote a protocol and we then made stacks
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-58" class="rowLink" href="#msg-58">
-                    [11:59]  pieterh
+                    [14:44]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    lack of issues makes it harder than it should be to manage such changes
+                    and then we switched to a OHAI form for the protocol and they loved it
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-59" class="rowLink" href="#msg-59">
-                    [12:29]  CIA-32
+                    [14:45]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    libzmq: 03Martin Sustrik 07master * ra808431 10/ MAINTAINERS : Fixed email addresses in the MAITAINERS file ...
+                    amirpc_: there are some _very_ large firms starting to use 0MQ
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-60" class="rowLink" href="#msg-60">
-                    [12:52]  creanyx
+                    [14:45]  taotetek
                     </a>
                 </td>
                 <td class="message-cell">
-                    Hi
+                    pieterh: yup. it made people laugh and got some "ICANHAZ?" jokes flying around for a few days
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-61" class="rowLink" href="#msg-61">
-                    [12:53]  creanyx
+                    [14:45]  taotetek
                     </a>
                 </td>
                 <td class="message-cell">
-                    Does anyone have problems with php bindings in windows?
+                    amirpc_: we don&#39;t have a "wide" system (not a lot of nodes), but we run a lot of data through it
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-62" class="rowLink" href="#msg-62">
-                    [13:24]  mikko
+                    [14:45]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    creanyx: most likely
+                    amirpc_: the truth is that technical change is always risky
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-63" class="rowLink" href="#msg-63">
-                    [13:43]  sustrik
+                    [14:46]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    pieterh: still there?
+                    there is no point in arguing otherwise, accept it, work with it
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-64" class="rowLink" href="#msg-64">
-                    [13:43]  pieterh
+                    [14:46]  taotetek
                     </a>
                 </td>
                 <td class="message-cell">
-                    sustrik: yup
+                    amirpc_: 500 to 700 million "events" a day
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-65" class="rowLink" href="#msg-65">
-                    [13:43]  pieterh
+                    [14:46]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    did you find it?
+                    so to reduce the risk of change, you need a number of strategies
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-66" class="rowLink" href="#msg-66">
-                    [13:43]  sustrik
+                    [14:46]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    the RCVMORE problem
+                    such as rapid prototyping, portability of OS and language, and wide, supportive community of users
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-67" class="rowLink" href="#msg-67">
-                    [13:44]  sustrik
+                    [14:47]  taotetek
                     </a>
                 </td>
                 <td class="message-cell">
-                    the thing is that in 3.0 there&#39;s the LABEL flag introduced
+                    amirpc_: I&#39;ll tell you this - it hasn&#39;t been as entirely smooth as we&#39;d hoped (what ever is), and we did run into a surprise here or there in the library that threw us a curve ball or two
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-68" class="rowLink" href="#msg-68">
-                    [13:44]  sustrik
+                    [14:47]  taotetek
                     </a>
                 </td>
                 <td class="message-cell">
-                    which is used for envelopes instead of MORE
+                    amirpc_: but we&#39;ve not yet ever regretted the decision to go with zeromq as a core technology
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-69" class="rowLink" href="#msg-69">
-                    [13:45]  sustrik
+                    [14:47]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    you can get it the same way as more flag, just use ZMQ_RCVLABEL
+                    amirpc_: essentially, a message-based architecture is extremely good at reducing risk
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-70" class="rowLink" href="#msg-70">
-                    [13:45]  pieterh
+                    [14:48]  amirpc
                     </a>
                 </td>
                 <td class="message-cell">
-                    right, but the identity is generated by the ROUTER socket
+                    taotetek: Are you allowed to say what company it is, and/or what curve balls you&#39;ve seen?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-71" class="rowLink" href="#msg-71">
-                    [13:45]  sustrik
+                    [14:48]  taotetek
                     </a>
                 </td>
                 <td class="message-cell">
-                    yes
+                    amirpc_: http://blog.aggregateknowledge.com/ that&#39;s us
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-72" class="rowLink" href="#msg-72">
-                    [13:46]  pieterh
+                    [14:48]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    how does the application send back an identity frame then?
+                    amirpc_: where are you based?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-73" class="rowLink" href="#msg-73">
-                    [13:46]  sustrik
+                    [14:49]  amirpc
                     </a>
                 </td>
                 <td class="message-cell">
-                    ZMQ_SNDLABEL
+                    SF
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-74" class="rowLink" href="#msg-74">
-                    [13:46]  pieterh
+                    [14:49]  taotetek
                     </a>
                 </td>
                 <td class="message-cell">
-                    oh dear
+                    amirpc_: one of the curves was just conceptual. it took a little bit to fully grok that zeromq is not a messaging solution so much as it is a toolkit to enable you to build your solutions
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-75" class="rowLink" href="#msg-75">
-                    [13:47]  sustrik
+                    [14:50]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    the other option was to disable user-space multipart messages
+                    You might want to contact dotcloud, they&#39;re quite large 0MQ users in SF
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-76" class="rowLink" href="#msg-76">
-                    [13:47]  pieterh
+                    [14:50]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    I thought that was a WLP issue
+                    they built their cloud architecture using AMQP/RabbitMQ and then moved to 0MQ
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-77" class="rowLink" href="#msg-77">
-                    [13:47]  pieterh
+                    [14:50]  taotetek
                     </a>
                 </td>
                 <td class="message-cell">
-                    but it changes the semantics of multipart messages
+                    amirpc_: the second was that the "high water mark" settings don&#39;t quite do entirely what we first thought
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-78" class="rowLink" href="#msg-78">
-                    [13:48]  pieterh
+                    [14:50]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    it&#39;s not documented in zmq_socket (how ROUTER works with labels)
+                    taotetek: if you need it, I have a good little credit-based flow control model working
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-79" class="rowLink" href="#msg-79">
-                    [13:48]  pieterh
+                    [14:51]  taotetek
                     </a>
                 </td>
                 <td class="message-cell">
-                    this breaks pretty much every ROUTER example in the guide
+                    amirpc_: e.g. with push / pull pipeline you will still end up with quite a few messages in transit in the buffers no matter what you set the HWM at
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-80" class="rowLink" href="#msg-80">
-                    [13:48]  pieterh
+                    [14:51]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    it breaks the CZMQ api
+                    avoids the need for HWMs on router-based architectures
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-81" class="rowLink" href="#msg-81">
-                    [13:48]  sustrik
+                    [14:51]  taotetek
                     </a>
                 </td>
                 <td class="message-cell">
-                    well, given that router is a backwards-compatibility feature
+                    pieterh: I&#39;d be interested in seeing it
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-82" class="rowLink" href="#msg-82">
-                    [13:48]  sustrik
+                    [14:51]  taotetek
                     </a>
                 </td>
                 <td class="message-cell">
-                    let&#39;s make it use MORE instead of label
+                    pieterh: the latest things we&#39;re working on are using REQ / REP and just allowing the workers to ask for more jobs when they want them
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-83" class="rowLink" href="#msg-83">
-                    [13:49]  pieterh
+                    [14:51]  taotetek
                     </a>
                 </td>
                 <td class="message-cell">
-                    that would solve things, yes
+                    pieterh: avoids routing, avoids HWM issues, etc
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-84" class="rowLink" href="#msg-84">
-                    [13:49]  sustrik
+                    [14:52]  amirpc
                     </a>
                 </td>
                 <td class="message-cell">
-                    that way it&#39;ll be identical to 2.1`
+                    What I want to use it for is less for the queue and more for the durability
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-85" class="rowLink" href="#msg-85">
-                    [13:49]  pieterh
+                    [14:52]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    well, the LABEL is meant for internal use isn&#39;t it...
+                    taotetek: yes, Majordomo
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-86" class="rowLink" href="#msg-86">
-                    [13:49]  pieterh
+                    [14:52]  amirpc
                     </a>
                 </td>
                 <td class="message-cell">
-                    there&#39;s still the issue of routing messages with envelopes, but that&#39;s a mixed use case we can IMO drop
+                    and flexibility to allow novel architectures to arrise
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-87" class="rowLink" href="#msg-87">
-                    [13:49]  sustrik
+                    [14:52]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    yes, it&#39;s used by hop-by-hop layer
+                    amirpc_: you do need to read the Guide and internalize the "language"
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-88" class="rowLink" href="#msg-88">
-                    [13:49]  sustrik
+                    [14:53]  taotetek
                     </a>
                 </td>
                 <td class="message-cell">
-                    and should be invisible at end-to-end layer
+                    pieterh: yup, the next step we&#39;re taking is majordomo - allowing workers to register the services they can handle, etc
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-89" class="rowLink" href="#msg-89">
-                    [13:49]  pieterh
+                    [14:53]  amirpc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ve read the guide and implemented several projects with zeromq already actually
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-90" class="rowLink" href="#msg-90">
+                    [14:53]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: our first production system was a bunch of task workers that all perform the exact same task so it was a good, simple place to start.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-91" class="rowLink" href="#msg-91">
+                    [14:53]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: now that people feel comfortable with that we&#39;ll evolve
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-92" class="rowLink" href="#msg-92">
+                    [14:54]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    taotetek: I&#39;m posting that CBFC example now, with some explanation
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-93" class="rowLink" href="#msg-93">
+                    [14:54]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    amirpc_: if you get to the stage where you need some evangelism / explanation, I&#39;m sometimes in SFO, and happy to travel there
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-94" class="rowLink" href="#msg-94">
+                    [14:55]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: excellent, looking forward to reading it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-95" class="rowLink" href="#msg-95">
+                    [14:56]  amirpc
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: That&#39;s good to hear. I probably will either sink or swim today @ 5pm cst, hehe. If they don&#39;t get hung up on zeromq, this project has 10s of millions of dollars behind it and staggering reach
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-96" class="rowLink" href="#msg-96">
+                    [14:59]  chrismurf
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hello all.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-97" class="rowLink" href="#msg-97">
+                    [15:00]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    taotetek: http://unprotocols.org/blog:15
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-98" class="rowLink" href="#msg-98">
+                    [15:02]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    chrismurf: hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-99" class="rowLink" href="#msg-99">
+                    [15:02]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    excellent, thanks pieterh
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-100" class="rowLink" href="#msg-100">
+                    [15:03]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it requires bidirectional sockets, so router-dealer is the usual choice
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-101" class="rowLink" href="#msg-101">
+                    [15:03]  chrismurf
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Are there architectural obstacles to implementing a *non-reliable* multicast protocol in zeroMQ? I would like the option to use UDP Multicast for some messages, and wonder if that&#39;s something that can be done /in/ 0mq.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-102" class="rowLink" href="#msg-102">
+                    [15:03]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    with the new generic sockets in 0MQ/3.x, this will work even better
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-103" class="rowLink" href="#msg-103">
+                    [15:03]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    chrismurf: no, there&#39;s no real problem
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-104" class="rowLink" href="#msg-104">
+                    [15:04]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    chrismurf: I have a UDP framework but it&#39;s rather complex still - https://github.com/imatix/vtx/tree/master/v3
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-105" class="rowLink" href="#msg-105">
+                    [15:04]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: lol
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-106" class="rowLink" href="#msg-106">
+                    [15:04]  chrismurf
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik, we have been using LCM (code.google.com/p/lcm/) which is UDPM based
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-107" class="rowLink" href="#msg-107">
+                    [15:04]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is that UDP multicast
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-108" class="rowLink" href="#msg-108">
+                    [15:04]  chrismurf
                     </a>
                 </td>
                 <td class="message-cell">
@@ -1032,1233 +1241,518 @@
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-90" class="rowLink" href="#msg-90">
-                    [13:50]  pieterh
-                    </a>
-                </td>
-                <td class="message-cell">
-                    how did you make it work for PEER sockets?
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-91" class="rowLink" href="#msg-91">
-                    [13:50]  pieterh
-                    </a>
-                </td>
-                <td class="message-cell">
-                    using MORE?
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-92" class="rowLink" href="#msg-92">
-                    [13:51]  sustrik
-                    </a>
-                </td>
-                <td class="message-cell">
-                    nope LABELs
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-93" class="rowLink" href="#msg-93">
-                    [13:51]  sustrik
-                    </a>
-                </td>
-                <td class="message-cell">
-                    peer socket work at hop-by-hop level
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-94" class="rowLink" href="#msg-94">
-                    [13:51]  sustrik
-                    </a>
-                </td>
-                <td class="message-cell">
-                    there&#39;s no concept of multiple hops
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-95" class="rowLink" href="#msg-95">
-                    [13:52]  sustrik
-                    </a>
-                </td>
-                <td class="message-cell">
-                    wait a sec
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-96" class="rowLink" href="#msg-96">
-                    [13:57]  sustrik
-                    </a>
-                </td>
-                <td class="message-cell">
-                    pieterh: try thisL
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-97" class="rowLink" href="#msg-97">
-                    [13:57]  sustrik
-                    </a>
-                </td>
-                <td class="message-cell">
-                    https://gist.github.com/1089590
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-98" class="rowLink" href="#msg-98">
-                    [13:58]  espen
-                    </a>
-                </td>
-                <td class="message-cell">
-                    Hi! zeromq (2.1.7) has been installed (in Lucid) from tarball with configure --prefix=/opt/. PKG_CONFIG_PATH is set to /opt/zeromq-2.1.7/lib/pkgconfig/. pecl install zero.mq/zmq-beta returns &#39;configure: error: Unable to find libzmq installation&#39;. Tips?
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-99" class="rowLink" href="#msg-99">
-                    [14:00]  pieterh
-                    </a>
-                </td>
-                <td class="message-cell">
-                    sustrik: that still reports more=0, :-/
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-100" class="rowLink" href="#msg-100">
-                    [14:02]  pieterh
-                    </a>
-                </td>
-                <td class="message-cell">
-                    I&#39;ll check if it&#39;s reporting LABEL on that part
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-101" class="rowLink" href="#msg-101">
-                    [14:03]  pieterh
-                    </a>
-                </td>
-                <td class="message-cell">
-                    "Got first message part: size=17 more=0 label=4196459"
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-102" class="rowLink" href="#msg-102">
-                    [14:03]  pieterh
-                    </a>
-                </td>
-                <td class="message-cell">
-                    I guess 4196459 means &#39;true&#39;
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-103" class="rowLink" href="#msg-103">
-                    [14:05]  sustrik
-                    </a>
-                </td>
-                <td class="message-cell">
-                    that&#39;s strange
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-104" class="rowLink" href="#msg-104">
-                    [14:05]  sustrik
-                    </a>
-                </td>
-                <td class="message-cell">
-                    let me have a look
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-105" class="rowLink" href="#msg-105">
-                    [14:06]  sustrik
-                    </a>
-                </td>
-                <td class="message-cell">
-                    hm, reports 1 here
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-106" class="rowLink" href="#msg-106">
-                    [14:06]  sustrik
-                    </a>
-                </td>
-                <td class="message-cell">
-                    same test program as before?
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-107" class="rowLink" href="#msg-107">
-                    [14:31]  mikko
-                    </a>
-                </td>
-                <td class="message-cell">
-                    espen_: hmm
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-108" class="rowLink" href="#msg-108">
-                    [14:32]  mikko
-                    </a>
-                </td>
-                <td class="message-cell">
-                    espen_: interesting enough that looks like an error on my side
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-109" class="rowLink" href="#msg-109">
-                    [14:32]  fintler
+                    [15:04]  sustrik
                     </a>
                 </td>
                 <td class="message-cell">
-                    has anyone heard of someone using zmq to write an impl of paxos?
+                    pieter: i though it was UDP unicast
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-110" class="rowLink" href="#msg-110">
-                    [14:32]  espen
+                    [15:05]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    mikko: Installing via pear?
+                    sustrik: that&#39;s UDP unicast but it&#39;s not that different
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-111" class="rowLink" href="#msg-111">
-                    [14:33]  mikko
+                    [15:05]  chrismurf
                     </a>
                 </td>
                 <td class="message-cell">
-                    espen_: dowload the package and use --with-zmq
+                    considering switching to 0mq and google protobuf, but I&#39;m not sure of all the consequences
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-112" class="rowLink" href="#msg-112">
-                    [14:33]  mikko
+                    [15:05]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    espen_: it ignores PKG_CONFIG_PATH
+                    it already for example does broadcast connects (i.e. connect to any IP address)
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-113" class="rowLink" href="#msg-113">
-                    [14:34]  pieterh
+                    [15:05]  sustrik
                     </a>
                 </td>
                 <td class="message-cell">
-                    sustrik: re, was having lunch... same test case as before, and I&#39;ve rebuilt several times
+                    chrismurf: you can take src/pgm_sender.hpp/.cpp and src/pgm_receiver.hpp/.cpp as a template
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-114" class="rowLink" href="#msg-114">
-                    [14:34]  espen
+                    [15:05]  sustrik
                     </a>
                 </td>
                 <td class="message-cell">
-                    mikko: ./configure --with-zmq -&gt; configure: error: Unable to find libzmq installation
+                    remove the PGM stuff and replace it by UDP
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-115" class="rowLink" href="#msg-115">
-                    [14:34]  mikko
+                    [15:05]  sustrik
                     </a>
                 </td>
                 <td class="message-cell">
-                    ./configure --with-zmq=/opt/zeromq-2.1.7
+                    should be easy
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-116" class="rowLink" href="#msg-116">
-                    [14:34]  espen
+                    [15:05]  chrismurf
                     </a>
                 </td>
                 <td class="message-cell">
-                    Works like a charm ;)
+                    sustrik, thanks - perfect.
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-117" class="rowLink" href="#msg-117">
-                    [14:35]  mikko
+                    [15:06]  fintler
                     </a>
                 </td>
                 <td class="message-cell">
-                    i&#39;ll fix the pkg-config-path issue in next release
+                    chrismurf: if you plan on doing a ton of rpc, consider thrift
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-118" class="rowLink" href="#msg-118">
-                    [14:35]  espen
+                    [15:06]  chrismurf
                     </a>
                 </td>
                 <td class="message-cell">
-                    Thanks a lot :)
+                    fintler, I&#39;ll look at it, but I&#39;m not RPC-heavy
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-119" class="rowLink" href="#msg-119">
-                    [15:13]  screen-dsuch
+                    [15:06]  chrismurf
                     </a>
                 </td>
                 <td class="message-cell">
-                    fintler: I haven&#39;t but would be interested in hearing more if someone started doing it
+                    mostly just data sharing
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-120" class="rowLink" href="#msg-120">
-                    [15:31]  fintler
+                    [15:07]  chrismurf
                     </a>
                 </td>
                 <td class="message-cell">
-                    screen-dsuch: my boss may be interested in putting together a few people to work on it, it&#39;s still very much up in the air tho
+                    IPC on an autonomous underwater robot
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-121" class="rowLink" href="#msg-121">
-                    [15:31]  fintler
+                    [15:07]  fintler
                     </a>
                 </td>
                 <td class="message-cell">
-                    I&#39;ve been asking around so we don&#39;t duplicate effort :)
+                    proto buffers is probably better for just data
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-122" class="rowLink" href="#msg-122">
-                    [15:35]  screen-dsuch
+                    [15:09]  chrismurf
                     </a>
                 </td>
                 <td class="message-cell">
-                    sure, I get it
+                    pieterh, sustrik, fintler, thanks!
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-123" class="rowLink" href="#msg-123">
-                    [16:10]  Odipides
+                    [15:09]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    Anyone know if there&#39;s been any development on a failover mechanism for ZMQ?
+                    chrismurf: what kind of traffic volume are you doing?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-124" class="rowLink" href="#msg-124">
-                    [16:12]  mikko
+                    [15:09]  chrismurf
                     </a>
                 </td>
                 <td class="message-cell">
-                    what sort of failover mechanism?
+                    well, the problem is that some of the network cables go through wet-mateable cables
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-125" class="rowLink" href="#msg-125">
-                    [16:14]  pieterh
+                    [15:10]  chrismurf
                     </a>
                 </td>
                 <td class="message-cell">
-                    Odipides: there are a number of failover patterns in the Guide
+                    which can have HORRIBLE SNR
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-126" class="rowLink" href="#msg-126">
-                    [16:21]  cremes
+                    [15:10]  chrismurf
                     </a>
                 </td>
                 <td class="message-cell">
-                    fintler: ooh, a distributed state machine... if such a project starts up i&#39;d like to know about it
+                    and we have gigabit ethernet based cameras, trying to go through a 100Mb link, through wet-mated connectors, toss in a little seawater...
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-127" class="rowLink" href="#msg-127">
-                    [16:27]  pieterh
+                    [15:11]  chrismurf
                     </a>
                 </td>
                 <td class="message-cell">
-                    sustrik: ok, that fixes it, the test code was using &#39;socket&#39; instead of &#39;pipeout&#39;... :-/
+                    steady state traffic isn&#39;t huge
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-128" class="rowLink" href="#msg-128">
-                    [16:53]  traviscline
+                    [15:11]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    tips on debugging a epgm recv not returning? simply modifying the weather pub/sub example from zguide to test (e)pgm. I&#39;m guessing lack of hardware support but how do I verify that?
+                    do you need pubsub, or is point-to-point OK?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-129" class="rowLink" href="#msg-129">
-                    [16:53]  traviscline
+                    [15:12]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    connect and bind (and send)succeed but a recv never completes
+                    so look at the vtx_test_udp.c source in that project I pointed to
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-130" class="rowLink" href="#msg-130">
-                    [16:54]  pieterh
+                    [15:12]  chrismurf
                     </a>
                 </td>
                 <td class="message-cell">
-                    traviscline: sorry, have not tried epgm...
+                    it&#39;s a research vehicle, so we&#39;re trying to switch to pubsub, so that it is easy to write standalone applications that can consume data without running in a critical process
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-131" class="rowLink" href="#msg-131">
-                    [16:54]  Odipides
+                    [15:12]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    Thanks for the pointer. I&#39;ll check the guide
+                    it demonstrates all the 0MQ socket types over UDP
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-132" class="rowLink" href="#msg-132">
-                    [17:12]  guido_g
+                    [15:12]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    traviscline: can you show the exact bind/connect strings you&#39;re using?
+                    including pub-sub, which is lossy
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-133" class="rowLink" href="#msg-133">
-                    [17:12]  traviscline
+                    [15:12]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    i&#39;m seeing the same failure with pgmrecv pgmsend directly, so investigating there
+                    request-reply will do basic reliability
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-134" class="rowLink" href="#msg-134">
-                    [17:15]  guido_g
+                    [15:13]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    ah then good luck
+                    it should be simple to plug into your code:
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-135" class="rowLink" href="#msg-135">
-                    [18:21]  mikko
+                    [15:13]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    traviscline: are you testing on loopback?
+                    #include "vtx.c"
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-136" class="rowLink" href="#msg-136">
-                    [18:26]  traviscline
+                    [15:13]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    mikko: fails on loopback with a warning (zmq) pgmsend/pgmrecv with -l works locally
+                    #include "vtx_udp.c"
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-137" class="rowLink" href="#msg-137">
-                    [18:26]  traviscline
+                    [15:13]  chrismurf
                     </a>
                 </td>
                 <td class="message-cell">
-                    mikko: I&#39;ve given up. I think there are hardware requirements I don&#39;t have met
+                    pieterh, thanks
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-138" class="rowLink" href="#msg-138">
-                    [18:27]  traviscline
+                    [15:13]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    Was trying on Rackspace machines
+                    it is really not meant for public use yet, but it handles nicely in tests
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-139" class="rowLink" href="#msg-139">
-                    [18:27]  traviscline
+                    [15:13]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    mikko: Tried all interfaces
+                    also it&#39;s not fast, does blocking writes
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-140" class="rowLink" href="#msg-140">
-                    [18:28]  mikko
+                    [15:14]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    what was the send and recv strings?
+                    however it effectively gives you 0MQ sockets connected via UDP in all the different patterns
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-141" class="rowLink" href="#msg-141">
-                    [18:28]  mikko
+                    [15:14]  chrismurf
                     </a>
                 </td>
                 <td class="message-cell">
-                    were*
+                    okay
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-142" class="rowLink" href="#msg-142">
-                    [18:29]  mikko
+                    [15:15]  chrismurf
                     </a>
                 </td>
                 <td class="message-cell">
-                    openpgm has env variable for larger debug level as well
+                    I have been happy with the way LCM handles UDPM (ie - invisibly) so I may also look at how complex their implementation is (both are LGPL)
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-143" class="rowLink" href="#msg-143">
-                    [18:29]  mikko
+                    [15:16]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    let me look that up
+                    I guess the benefit of using 0MQ would be you get a single API and framework for all different kinds of transport
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-144" class="rowLink" href="#msg-144">
-                    [18:32]  mikko
+                    [15:16]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    PGM_MIN_LOG_LEVEL=TRACE
+                    UDP to your seawater cameras, TCP to other boxes on the network, inproc to other threads in the process
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-145" class="rowLink" href="#msg-145">
-                    [18:47]  traviscline
+                    [15:17]  chrismurf
                     </a>
                 </td>
                 <td class="message-cell">
-                    mikko: I was using that. The send looks fine but the tech doesn&#39;t get anything
+                    pieterh, sort of, yeah - we&#39;re looking at using TCP for some critical messaging (ABORT!) but generally udpm/pubsub for message passing so things remain modular
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-146" class="rowLink" href="#msg-146">
-                    [18:47]  traviscline
+                    [15:18]  chrismurf
                     </a>
                 </td>
                 <td class="message-cell">
-                    Recv* not tech (on my phone atm)
+                    we have a mass-o-threads right now, which is impossible to test, debug, and develop for
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-147" class="rowLink" href="#msg-147">
-                    [18:48]  traviscline
+                    [15:18]  chrismurf
                     </a>
                 </td>
                 <td class="message-cell">
-                    Only works if it&#39;s local and I use the -l flag
+                    and message passing is a mix of UDP and TCP and shared memory
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-148" class="rowLink" href="#msg-148">
-                    [18:48]  traviscline
+                    [15:18]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    Couldn&#39;t get any other combination to work
+                    chrismurf: 0MQ makes that really simple
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-149" class="rowLink" href="#msg-149">
-                    [18:49]  mikko
+                    [15:18]  chrismurf
                     </a>
                 </td>
                 <td class="message-cell">
-                    is multicast available in your environment?
+                    so tracking data flow is impossible
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-150" class="rowLink" href="#msg-150">
-                    [18:49]  traviscline
+                    [15:18]  pieterh
                     </a>
                 </td>
                 <td class="message-cell">
-                    I was hoping openpgm meant I didn&#39;t need hardware support but I guess that&#39;s the case
+                    indeed
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-151" class="rowLink" href="#msg-151">
-                    [18:49]  mikko
+                    [15:19]  chrismurf
                     </a>
                 </td>
                 <td class="message-cell">
-                    not necessarily hardware support
+                    so we want to switch to a bunch of separate processes, with pubsub between them.
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-152" class="rowLink" href="#msg-152">
-                    [18:49]  mikko
+                    [15:19]  chrismurf
                     </a>
                 </td>
                 <td class="message-cell">
-                    but your environment might not allow multicast
+                    but udpm falls down nicely as traffic goes up, and I don&#39;t know enough about pgm
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-153" class="rowLink" href="#msg-153">
-                    [18:49]  traviscline
+                    [15:19]  chrismurf
                     </a>
                 </td>
                 <td class="message-cell">
-                    well. Network configuration support
+                    and there are scary sounding caveats about loopback interfaces and the like on the 0mq website ;-)
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-154" class="rowLink" href="#msg-154">
-                    [18:50]  traviscline
+                    [15:20]  chrismurf
                     </a>
                 </td>
                 <td class="message-cell">
-                    Ec2 and Rackspace disable it because it would cause lots of load apparently
+                    I&#39;ve found we start running code on one pc, and then it&#39;s on two, and then it&#39;s on one again, etc...  udpm pub/sub means we don&#39;t have to care.
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-155" class="rowLink" href="#msg-155">
-                    [18:50]  mikko
+                    [15:21]  chrismurf
                     </a>
                 </td>
                 <td class="message-cell">
-                    yeah, there is no way around it
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-156" class="rowLink" href="#msg-156">
-                    [18:50]  traviscline
-                    </a>
-                </td>
-                <td class="message-cell">
-                    was unclear as to if openpgm would get around that. I see that now
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-157" class="rowLink" href="#msg-157">
-                    [18:50]  mikko
-                    </a>
-                </td>
-                <td class="message-cell">
-                    openpgm still uses multicast
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-158" class="rowLink" href="#msg-158">
-                    [18:51]  mikko
-                    </a>
-                </td>
-                <td class="message-cell">
-                    i think especially in ec2 it would be easy to flood the whole network with malicious multicast
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-159" class="rowLink" href="#msg-159">
-                    [18:51]  traviscline
-                    </a>
-                </td>
-                <td class="message-cell">
-                    yeah
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-160" class="rowLink" href="#msg-160">
-                    [18:51]  traviscline
-                    </a>
-                </td>
-                <td class="message-cell">
-                    ill just have to come up with something custom
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-161" class="rowLink" href="#msg-161">
-                    [18:52]  mikko
-                    </a>
-                </td>
-                <td class="message-cell">
-                    do you have a large amount of subscribers?
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-162" class="rowLink" href="#msg-162">
-                    [18:52]  mikko
-                    </a>
-                </td>
-                <td class="message-cell">
-                    that all receive all messages
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-163" class="rowLink" href="#msg-163">
-                    [18:52]  traviscline
-                    </a>
-                </td>
-                <td class="message-cell">
-                    I wouldn&#39;t say large
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-164" class="rowLink" href="#msg-164">
-                    [18:53]  traviscline
-                    </a>
-                </td>
-                <td class="message-cell">
-                    &lt;100
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-165" class="rowLink" href="#msg-165">
-                    [19:20]  michelp
-                    </a>
-                </td>
-                <td class="message-cell">
-                    howdy folks
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-166" class="rowLink" href="#msg-166">
-                    [19:21]  mikko
-                    </a>
-                </td>
-                <td class="message-cell">
-                    i
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-167" class="rowLink" href="#msg-167">
-                    [19:21]  mikko
-                    </a>
-                </td>
-                <td class="message-cell">
-                    hi
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-168" class="rowLink" href="#msg-168">
-                    [19:53]  michelp
-                    </a>
-                </td>
-                <td class="message-cell">
-                    i would definitely take an interest in a 0mq based paxos implementation, fintler what language are you looking to implement in?
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-169" class="rowLink" href="#msg-169">
-                    [19:54]  traviscline
-                    </a>
-                </td>
-                <td class="message-cell">
-                    michelp: heh, i was just thinking about the same thing
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-170" class="rowLink" href="#msg-170">
-                    [19:55]  fintler
-                    </a>
-                </td>
-                <td class="message-cell">
-                    michelp: probably C or C++
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-171" class="rowLink" href="#msg-171">
-                    [19:55]  fintler
-                    </a>
-                </td>
-                <td class="message-cell">
-                    I&#39;m half thinking C++ just for google protocol buffers
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-172" class="rowLink" href="#msg-172">
-                    [19:55]  fintler
-                    </a>
-                </td>
-                <td class="message-cell">
-                    https://github.com/fintler/libagree/blob/master/src/paxos.proto
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-173" class="rowLink" href="#msg-173">
-                    [19:55]  fintler
-                    </a>
-                </td>
-                <td class="message-cell">
-                    I just made a draft protocol a few mins ago
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-174" class="rowLink" href="#msg-174">
-                    [19:55]  fintler
-                    </a>
-                </td>
-                <td class="message-cell">
-                    it&#39;s probably way way off, but it&#39;s something to start with :)
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-175" class="rowLink" href="#msg-175">
-                    [19:57]  michelp
-                    </a>
-                </td>
-                <td class="message-cell">
-                    nice, what are you looking to do with it? distributed data? processing?
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-176" class="rowLink" href="#msg-176">
-                    [19:57]  fintler
-                    </a>
-                </td>
-                <td class="message-cell">
-                    working towards a distributed priority queue to use for launching parallel jobs on a cluster
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-177" class="rowLink" href="#msg-177">
-                    [19:57]  fintler
-                    </a>
-                </td>
-                <td class="message-cell">
-                    so, paxos to handle a distributed lock to build the queue on
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-178" class="rowLink" href="#msg-178">
-                    [19:57]  fintler
-                    </a>
-                </td>
-                <td class="message-cell">
-                    kinda like chubby/zookeeper
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-179" class="rowLink" href="#msg-179">
-                    [19:58]  michelp
-                    </a>
-                </td>
-                <td class="message-cell">
-                    nice, i&#39;ve been pretty underwhelmed by a lot of the cluster job managment tools i&#39;ve seen
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-180" class="rowLink" href="#msg-180">
-                    [19:58]  fintler
-                    </a>
-                </td>
-                <td class="message-cell">
-                    same here
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-181" class="rowLink" href="#msg-181">
-                    [19:58]  fintler
-                    </a>
-                </td>
-                <td class="message-cell">
-                    most of them are heap based queues, which really suck for scaling
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-182" class="rowLink" href="#msg-182">
-                    [19:58]  fintler
-                    </a>
-                </td>
-                <td class="message-cell">
-                    I was thinking of taking a skiplist/skipnet/skipweb path, but thought this might be a bit more fun
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-183" class="rowLink" href="#msg-183">
-                    [19:59]  michelp
-                    </a>
-                </td>
-                <td class="message-cell">
-                    well keep us posted, i can certainly help out a little once you&#39;ve got something spiked out, at least to kick the tires :)
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-184" class="rowLink" href="#msg-184">
-                    [19:59]  fintler
-                    </a>
-                </td>
-                <td class="message-cell">
-                    sounds good
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-185" class="rowLink" href="#msg-185">
-                    [19:59]  michelp
-                    </a>
-                </td>
-                <td class="message-cell">
-                    or if you need a python binding :)
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-186" class="rowLink" href="#msg-186">
-                    [20:00]  fintler
-                    </a>
-                </td>
-                <td class="message-cell">
-                    I&#39;ll post back when I have something compiling :)
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-187" class="rowLink" href="#msg-187">
-                    [20:01]  fintler
-                    </a>
-                </td>
-                <td class="message-cell">
-                    does anyone have a name better than libagree?
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-188" class="rowLink" href="#msg-188">
-                    [20:09]  cremes
-                    </a>
-                </td>
-                <td class="message-cell">
-                    libpaxos
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-189" class="rowLink" href="#msg-189">
-                    [20:09]  fintler
-                    </a>
-                </td>
-                <td class="message-cell">
-                    it seems like someone else is using it for a research project :\
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-190" class="rowLink" href="#msg-190">
-                    [20:09]  taotetek
-                    </a>
-                </td>
-                <td class="message-cell">
-                    hello zeromq&#39;ers
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-191" class="rowLink" href="#msg-191">
-                    [20:09]  fintler
-                    </a>
-                </td>
-                <td class="message-cell">
-                    also, I don&#39;t really plan on locking things to paxos
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-192" class="rowLink" href="#msg-192">
-                    [20:10]  fintler
-                    </a>
-                </td>
-                <td class="message-cell">
-                    any consensus algo that works well will do :)
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-193" class="rowLink" href="#msg-193">
-                    [20:10]  cremes
-                    </a>
-                </td>
-                <td class="message-cell">
-                    libconcensus
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-194" class="rowLink" href="#msg-194">
-                    [20:10]  cremes
-                    </a>
-                </td>
-                <td class="message-cell">
-                    :)
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-195" class="rowLink" href="#msg-195">
-                    [20:10]  fintler
-                    </a>
-                </td>
-                <td class="message-cell">
-                    that&#39;s not a bad one
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-196" class="rowLink" href="#msg-196">
-                    [21:30]  whack
-                    </a>
-                </td>
-                <td class="message-cell">
-                    fintler: libdemocracy ;)
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-197" class="rowLink" href="#msg-197">
-                    [22:07]  jdempster
-                    </a>
-                </td>
-                <td class="message-cell">
-                    Hello friends, I&#39;m trying to compile the php module for zeromq, having zero luck at the moment, is there anyone who can possibly help pls
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-198" class="rowLink" href="#msg-198">
-                    [22:07]  jdempster
-                    </a>
-                </td>
-                <td class="message-cell">
-                    I get "mach-o, but wrong architecture"
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-199" class="rowLink" href="#msg-199">
-                    [22:31]  fintler
-                    </a>
-                </td>
-                <td class="message-cell">
-                    jdempster: trying to compile a 64 bit zeromq into a 32 bit php?
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-200" class="rowLink" href="#msg-200">
-                    [22:31]  fintler
-                    </a>
-                </td>
-                <td class="message-cell">
-                    erm, nmâ¦ he left
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-201" class="rowLink" href="#msg-201">
-                    [23:35]  cremes
-                    </a>
-                </td>
-                <td class="message-cell">
-                    fintler, whack: libdemocracy... brilliant!
+                    why are there no unreliable transports in 0mq now?  Just lack of need by the developers?
                 </td>
             </tr>
             
