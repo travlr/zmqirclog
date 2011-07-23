@@ -920,6 +920,875 @@
                 </td>
             </tr>
             
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [13:03]  neale1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hi, I&#39;m trying to fix the s390x build - in particular the buildslave - and, apart from having to update automake, m4, autoconf, have found that -std=gnu99 is creating grief when used with gcc-4.3.2. Where grief is defined as: math.c:(.text+0x98): multiple definition of `gnu_dev_makedev&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [13:03]  neale1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ./.libs/libpgm_noinst.a(libpgm_noinst_la-thread.o):thread.c:(.text+0x98): first defined here
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [13:03]  neale1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ./.libs/libpgm_noinst.a(libpgm_noinst_la-math.o): In function `stat&#39;:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [13:03]  neale1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Getting rid of the autoconf AC_PROG_CC_C99 check circumvents the problem but I&#39;m not sure that&#39;s a correct fix
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [13:07]  xristos
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: 2-1 master works fine
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [13:07]  screen-dsuch
+                    </a>
+                </td>
+                <td class="message-cell">
+                    neale1: I&#39;ve no idea how to help you but would like to say thanks for taking your time to make sure it works on z :-) (just a user here, not a dev)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [13:07]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    xristos: yay! :-) thanks for the confirmation
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [13:24]  neale1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    The problem relates to the following change in gcc: When compiling with -std=c99 or -std=gnu99, the extern inline keywords changes meaning. GCC 4.3 conforms to the ISO C99 specification, where extern inline is very different thing than the GNU extern inline extension. For the following code compiled with -std=c99
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [13:53]  samBiotic
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi all, is there a simple way of doing lan service discovery using zeromq without using zeroconf/bonjour/mdns?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-89" class="rowLink" href="#msg-89">
+                    [13:57]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    samBiotic: no, there&#39;s no such in-build functionality in 0mq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-90" class="rowLink" href="#msg-90">
+                    [13:57]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    of course you can create one using 0mq itself
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-91" class="rowLink" href="#msg-91">
+                    [13:57]  samBiotic
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik, thanks, that&#39;s a shame
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-92" class="rowLink" href="#msg-92">
+                    [13:57]  samBiotic
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes sure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-93" class="rowLink" href="#msg-93">
+                    [13:57]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    say pub/sub on top of multicast
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-94" class="rowLink" href="#msg-94">
+                    [13:58]  samBiotic
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;m using the mdns library in node.js at the mo and it&#39;s a little sketchy
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-95" class="rowLink" href="#msg-95">
+                    [13:58]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    samBiotic: there is a way but it&#39;s not really simple
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-96" class="rowLink" href="#msg-96">
+                    [13:58]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in the VTX project I have a UDP discovery service that integrates into 0MQ
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-97" class="rowLink" href="#msg-97">
+                    [13:59]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    https://github.com/imatix/vtx/blob/master/v3/vtx_locate.c is an example of use
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-98" class="rowLink" href="#msg-98">
+                    [14:00]  samBiotic
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh, thanks... looking
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-99" class="rowLink" href="#msg-99">
+                    [14:00]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it would be fairly simple to reimplement in JS, if you have UDP sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-100" class="rowLink" href="#msg-100">
+                    [14:00]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    https://github.com/imatix/vtx/tree/master/v1 shows a minimal client/server
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-101" class="rowLink" href="#msg-101">
+                    [14:01]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it uses UDP broadcast to locate a listening server anywhere on the network
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-102" class="rowLink" href="#msg-102">
+                    [14:11]  samBiotic
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh, hmm look pretty good for my needs, thanks.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-103" class="rowLink" href="#msg-103">
+                    [14:11]  samBiotic
+                    </a>
+                </td>
+                <td class="message-cell">
+                    looks*
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-104" class="rowLink" href="#msg-104">
+                    [14:11]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    samBiotic: nice, let me know how you get on with it...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-105" class="rowLink" href="#msg-105">
+                    [14:14]  samBiotic
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh, i will, if I choose to move to a different transport protocol.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-106" class="rowLink" href="#msg-106">
+                    [14:21]  screen-dsuch
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: on a (not so) related note, what have you been using for drawing the diagrams, such as the one at https://github.com/imatix/vtx/raw/master/images/README_1.png ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-107" class="rowLink" href="#msg-107">
+                    [14:22]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ditaa
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-108" class="rowLink" href="#msg-108">
+                    [14:22]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    also, gitdown, which wraps that up
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-109" class="rowLink" href="#msg-109">
+                    [14:22]  screen-dsuch
+                    </a>
+                </td>
+                <td class="message-cell">
+                    aha, cheers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-110" class="rowLink" href="#msg-110">
+                    [14:25]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    neale1: hi, still here?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-111" class="rowLink" href="#msg-111">
+                    [14:33]  neale1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-112" class="rowLink" href="#msg-112">
+                    [14:33]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-113" class="rowLink" href="#msg-113">
+                    [14:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: here by chance?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-114" class="rowLink" href="#msg-114">
+                    [14:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyway
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-115" class="rowLink" href="#msg-115">
+                    [14:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    where&#39;s are the extern inlines?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-116" class="rowLink" href="#msg-116">
+                    [14:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i am not aware of such construct in 0mq codebase
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-117" class="rowLink" href="#msg-117">
+                    [14:36]  neale1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    THey&#39;re not in 0mq or pgm. They are in std headers. I&#39;m using gcc 4.3.2 on a SLES10 SP3 system. The glibc it uses has headers that cause the problem. I&#39;m just wondering if the C99 check is actually required, otherwise I&#39;ll try and find a SLES11 system that should be ok.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-118" class="rowLink" href="#msg-118">
+                    [14:36]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-119" class="rowLink" href="#msg-119">
+                    [14:36]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    partially
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-120" class="rowLink" href="#msg-120">
+                    [14:36]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: just discussing a build problem
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-121" class="rowLink" href="#msg-121">
+                    [14:36]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just though you may have some insight
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-122" class="rowLink" href="#msg-122">
+                    [14:38]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    looks like a very odd build error
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-123" class="rowLink" href="#msg-123">
+                    [14:38]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which distro is this?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-124" class="rowLink" href="#msg-124">
+                    [14:39]  neale1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    SLES10 SP3 s390x.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-125" class="rowLink" href="#msg-125">
+                    [14:39]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    does this happen with all code compiled with std=gnu99 ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-126" class="rowLink" href="#msg-126">
+                    [14:42]  neale1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    It has happened with other packages I&#39;ve built (I had to build m4 the other day because 0MQ requires autoconf/automake at a higher level than comes with SLES10 SP3 and it required me to get rid of the std=gnu99 or std=c99 stuff)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-127" class="rowLink" href="#msg-127">
+                    [14:43]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm, should this issue be fixed in sles10 or zeromq ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-128" class="rowLink" href="#msg-128">
+                    [14:43]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it looks like a bug the shipped compiler
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-129" class="rowLink" href="#msg-129">
+                    [14:44]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    does openpgm compile without c99?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-130" class="rowLink" href="#msg-130">
+                    [14:45]  neale1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    No, it&#39;s a case of 4.3.2 not being the compiler for SLES10 SP3 with the level of GLIBC that comes with it.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-131" class="rowLink" href="#msg-131">
+                    [14:45]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-132" class="rowLink" href="#msg-132">
+                    [14:45]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i think the C99 is for openpgm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-133" class="rowLink" href="#msg-133">
+                    [14:45]  neale1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Unfortunately not. mem.c: In function âpgm_parse_debug_stringâ:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-134" class="rowLink" href="#msg-134">
+                    [14:45]  neale1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mem.c:84: error: âforâ loop initial declaration used outside C99 mode
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-135" class="rowLink" href="#msg-135">
+                    [14:45]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there is no code in zeromq that is compiled with c compiler
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-136" class="rowLink" href="#msg-136">
+                    [14:47]  neale1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Yes, it appears to be openpgm only (although 0MQ does include the C99 check in configure)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-137" class="rowLink" href="#msg-137">
+                    [14:49]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    maybe tests are C
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-138" class="rowLink" href="#msg-138">
+                    [14:49]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    can&#39;t remember
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-139" class="rowLink" href="#msg-139">
+                    [14:49]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no, cpp
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-140" class="rowLink" href="#msg-140">
+                    [14:49]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, they actually look like c code
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-141" class="rowLink" href="#msg-141">
+                    [14:53]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: they are C code
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-142" class="rowLink" href="#msg-142">
+                    [14:53]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but are compiled as C++
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-143" class="rowLink" href="#msg-143">
+                    [14:54]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    to make the build system simpler iirc
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-144" class="rowLink" href="#msg-144">
+                    [14:57]  neale1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Just gonna have to move build system to SLES11 I guess. May take some time so s390x autobuilds will fail for some time to come
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-145" class="rowLink" href="#msg-145">
+                    [14:57]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    neale1: thats fine
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-146" class="rowLink" href="#msg-146">
+                    [14:57]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i can put the node on scheduled maintenance
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-147" class="rowLink" href="#msg-147">
+                    [15:02]  neale1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    k
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-148" class="rowLink" href="#msg-148">
+                    [15:08]  neale1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I have another build option. A fedora 14 system running behind a firewall. I&#39;m attempting to fire it up to see if can get to your system.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-149" class="rowLink" href="#msg-149">
+                    [15:09]  neale1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Apparently it can
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-150" class="rowLink" href="#msg-150">
+                    [15:15]  neale1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ll see if this build works okay or if I have to update some things on that system too
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-151" class="rowLink" href="#msg-151">
+                    [15:17]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cool
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-152" class="rowLink" href="#msg-152">
+                    [15:18]  neale1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    This is a MUCH slower machine than the previous box so build time will blow out considerably
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-153" class="rowLink" href="#msg-153">
+                    [15:58]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is 3.x planned to print better error messages users accidentally try to connect mismatched sockets? e.g. PUSH/SUB, PULL/PULL, etc
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-154" class="rowLink" href="#msg-154">
+                    [15:58]  ianbarber
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that should be doable now there is the type in the wire format
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-155" class="rowLink" href="#msg-155">
+                    [16:00]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    good to hear... i&#39;m hoping some of these details are taken care of with the big 3.x change
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-156" class="rowLink" href="#msg-156">
+                    [16:00]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    since we&#39;ve been living with these problems since 2.0.x
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-157" class="rowLink" href="#msg-157">
+                    [20:09]  neale1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: Looks like we&#39;re back in business with s390x builds. 1st one completed ok.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-158" class="rowLink" href="#msg-158">
+                    [20:10]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    great!
+                </td>
+            </tr>
+            
         </table>
     </div>
     <div class="footer-container"><hr/>
