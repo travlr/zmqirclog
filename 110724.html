@@ -1,0 +1,431 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title>ZeroMq IRC Log</title>
+<!--    <base href="http://travlr.github.com/zmqirclog/index.html" target="_self"/>-->
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+
+</head>
+
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <a href="http://travlr.github.com/zmqirclog/index.html" target="_blank">
+            <img src="images/zeromq1-300x115.png" alt="ZeroMq Logo" border="0"/>
+            </a>
+        </div>
+        <div id="header-left-bottom" style="padding-left:200px;">
+            IRC Log
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="float:right; vertical-align:text-top; padding-top:5px">
+            <form action="http://travlr.github.com/zmqirclog/search-results.html" id="cse-search-box">
+  <div>
+    <input type="hidden" name="cx" value="017268610037587914919:goqutszmb5o" />
+    <input type="hidden" name="cof" value="FORID:9" />
+    <input type="hidden" name="ie" value="UTF-8" />
+    <input type="text" name="q" size="31" />
+    <input type="submit" name="sa" value="Search" />
+  </div>
+</form>
+<script type="text/javascript" src="http://www.google.com/cse/brand?form=cse-search-box&lang=en"></script>
+
+        </div>
+        <div style="clear:right;"></div>
+        <div id="header-right-bottom" style="text-align:right; vertical-align:text-bottom; padding-right:30px; padding-top:75px;">
+            <a href="http://www.zeromq.org/" target="_blank">ZeroMq Home</a>
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+    <hr/>
+</div>
+
+    <div class="content">
+        <h2>Sunday July 24, 2011</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [00:38]  samBiotic
+                    </a>
+                </td>
+                <td class="message-cell">
+                    could anyone please give me a heads up on what sort of latency sizes one can expect from epgm?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [10:07]  Guest55679
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m currently designing the best way to use 0MQ in a cluster
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [10:08]  Guest55679
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Two main questions: 1) Endpoint configurations 2) Connection pooling
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [10:09]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [10:09]  Guest55679
+                    </a>
+                </td>
+                <td class="message-cell">
+                    For sure some custom implementations for these two are possible, but maybe some existing frameworks/plugins for 0MQ are present already to address these ones?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [10:11]  Guest55679
+                    </a>
+                </td>
+                <td class="message-cell">
+                    So the client code will not depend upon the actual endpoint addresses, while having active pools of endpoint instances
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [10:11]  Guest55679
+                    </a>
+                </td>
+                <td class="message-cell">
+                    First thought - to use JNDI + Spring configurations for these needs
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [10:12]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pooling connections is not a good idea
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [10:12]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it ties individual flow into a single unit
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [10:12]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so, for example, if one of the flows applies backpressure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [10:13]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    say because the service takes some time to process requests
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [10:13]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it stall all the unrelated flows in the same connection
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [10:13]  Guest55679
+                    </a>
+                </td>
+                <td class="message-cell">
+                    But we will end up with some performance hits for establishing new connections, instead of pooling, right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [10:15]  Guest55679
+                    </a>
+                </td>
+                <td class="message-cell">
+                    OK, I see. So the socket should be opened all the time, within the application&#39;s lifetime, right? No need to establish one connection per every request-response cycle, correct?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [10:18]  Guest55679
+                    </a>
+                </td>
+                <td class="message-cell">
+                    But again, let&#39;s say I have one serving endpoint, which receives the requests from a frontend layer. This frontend layer can handle up to 1000+ concurrent HTTP requests.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [10:19]  Guest55679
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Should I have 1000+ opened client sockets for 0MQ in this case?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [10:20]  Guest55679
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Or having just 1 opened socket? But in this case another queueing mechanism should be introduced between this opened socket and all those 1000+ HTTP sessions.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [10:27]  Guest55679
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Maybe requirement clarifications will help here:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [10:27]  Guest55679
+                    </a>
+                </td>
+                <td class="message-cell">
+                    1. Replacing JMS and REST based integration of the internal tiers/component of a large web application with 0MQ
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [10:30]  Guest55679
+                    </a>
+                </td>
+                <td class="message-cell">
+                    2. Components should not be tied to 0MQ specifics - no endpoint configurations in the code, no socket creations/bindings
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [10:30]  Guest55679
+                    </a>
+                </td>
+                <td class="message-cell">
+                    So for now I&#39;ve ended up with the following approach:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [10:31]  Guest55679
+                    </a>
+                </td>
+                <td class="message-cell">
+                    1. Spring proxies for encapsulating all 0MQ-related invocations
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [10:31]  Guest55679
+                    </a>
+                </td>
+                <td class="message-cell">
+                    2. Centralized registry of endpoint configurations, which is accessable via JNDI
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [10:33]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Guest55679: how much of the Guide have you read?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [11:12]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: people like that trying to fit 0MQ into "stick your random messaging layer here"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [11:13]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I want to make a video "Why 0MQ is not Yet Another Messaging Layer"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [14:55]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieter_hintjens: great idea
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [14:56]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that would be useful
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [14:56]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you need any help with that, just shout
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [15:52]  CIA-32
+                    </a>
+                </td>
+                <td class="message-cell">
+                    libzmq: 03Martin Sustrik 07master * r837451e 10/ (4 files): Remove blob_t class ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [16:08]  CIA-32
+                    </a>
+                </td>
+                <td class="message-cell">
+                    libzmq: 03Martin Sustrik 07master * r11e21d0 10/ (src/Makefile.am src/ctx.hpp src/semaphore.hpp): semaphore_t class removed ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [16:11]  CIA-32
+                    </a>
+                </td>
+                <td class="message-cell">
+                    libzmq: 03Martin Sustrik 07master * r0e71b11 10/ src/ctx.hpp : Obsolete include in ctx.hpp removed ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [16:16]  CIA-32
+                    </a>
+                </td>
+                <td class="message-cell">
+                    libzmq: 03Martin Sustrik 07master * rf716b57 10/ (11 files): Only one polling mechanism is compiled ...
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+    <div class="footer-container"><hr/>
+    <p style="color:#a9a9a9; font-size:0.75em; text-align:center; margin:5px 5%;">
+       Web site design and content is copyright &copy; 2010-2011 Peter Alexander, ProDataLab. Site content licensed under the Creative Commons Attribution-Share Alike 3.0 License.
+       &Oslash;MQ is copyright &copy; Copyright &copy; 2007-2011 iMatix Corporation and Contributors.
+       <a href="http://www.imatix.com/contact">Contact us for professional support.</a>
+       &Oslash;MQ is free software licensed under the LGPL. &Oslash;MQ, ZeroMQ, and 0MQ are trademarks of iMatix Corporation.
+       <a href="http://www.zeromq.org/legal:terms-of-use">Terms of Use</a> ?
+       <a href="http://www.zeromq.org/legal:privacy-policy">Privacy Policy</a>
+    </p>
+</div>
+
+</body>
+</html>
