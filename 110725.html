@@ -47,392 +47,645 @@
 </div>
 
     <div class="content">
-        <h2>Sunday July 24, 2011</h2>
+        <h2>Monday July 25, 2011</h2>
         <table class="message-table">
             <th>[Time]&nbsp;Name</th><th>Message</th>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-1" class="rowLink" href="#msg-1">
-                    [00:38]  samBiotic
+                    [13:17]  hogu
                     </a>
                 </td>
                 <td class="message-cell">
-                    could anyone please give me a heads up on what sort of latency sizes one can expect from epgm?
+                    Is there a way to do a pub/sub pattern but only route certain messages to certain subscribers?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-2" class="rowLink" href="#msg-2">
-                    [10:07]  Guest55679
+                    [13:18]  pieter_hintjens
                     </a>
                 </td>
                 <td class="message-cell">
-                    I&#39;m currently designing the best way to use 0MQ in a cluster
+                    hogu: depends on how selective you are
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-3" class="rowLink" href="#msg-3">
-                    [10:08]  Guest55679
+                    [13:18]  pieter_hintjens
                     </a>
                 </td>
                 <td class="message-cell">
-                    Two main questions: 1) Endpoint configurations 2) Connection pooling
+                    any subscriber can filter the messages it gets
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-4" class="rowLink" href="#msg-4">
-                    [10:09]  sustrik
+                    [13:19]  pieter_hintjens
                     </a>
                 </td>
                 <td class="message-cell">
-                    yes?
+                    if you want rough-grained routing you can use multiple pub sockets (i.e. break the data into streams)
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-5" class="rowLink" href="#msg-5">
-                    [10:09]  Guest55679
+                    [13:19]  pieter_hintjens
                     </a>
                 </td>
                 <td class="message-cell">
-                    For sure some custom implementations for these two are possible, but maybe some existing frameworks/plugins for 0MQ are present already to address these ones?
+                    you can also use 0MQ/3.x which does publisher-side filtering
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-6" class="rowLink" href="#msg-6">
-                    [10:11]  Guest55679
+                    [13:22]  hogu
                     </a>
                 </td>
                 <td class="message-cell">
-                    So the client code will not depend upon the actual endpoint addresses, while having active pools of endpoint instances
+                    i definitely want the filtering to be publisher side
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-7" class="rowLink" href="#msg-7">
-                    [10:11]  Guest55679
+                    [13:22]  hogu
                     </a>
                 </td>
                 <td class="message-cell">
-                    First thought - to use JNDI + Spring configurations for these needs
+                    i didn&#39;t realize 3.0 had that
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-8" class="rowLink" href="#msg-8">
-                    [10:12]  sustrik
+                    [13:22]  hogu
                     </a>
                 </td>
                 <td class="message-cell">
-                    pooling connections is not a good idea
+                    sounds like whati need, thank
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-9" class="rowLink" href="#msg-9">
-                    [10:12]  sustrik
+                    [13:22]  hogu
                     </a>
                 </td>
                 <td class="message-cell">
-                    it ties individual flow into a single unit
+                    s
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-10" class="rowLink" href="#msg-10">
-                    [10:12]  sustrik
+                    [13:26]  hogu
                     </a>
                 </td>
                 <td class="message-cell">
-                    so, for example, if one of the flows applies backpressure
+                    so I&#39;m currently doing this with websockets, a client connects, and sends authentication credentials over that socket. then I can route messages to cleints depending on their credentials.  Is there a way to do that with zeromq?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-11" class="rowLink" href="#msg-11">
-                    [10:13]  sustrik
+                    [13:28]  sustrik
                     </a>
                 </td>
                 <td class="message-cell">
-                    say because the service takes some time to process requests
+                    pieter_hinjens: still want to make a video?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-12" class="rowLink" href="#msg-12">
-                    [10:13]  sustrik
+                    [13:28]  hogu
                     </a>
                 </td>
                 <td class="message-cell">
-                    it stall all the unrelated flows in the same connection
+                    specifically, i mean the ability to have multiple bi-directional channels with one bind?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-13" class="rowLink" href="#msg-13">
-                    [10:13]  Guest55679
+                    [13:29]  sustrik
                     </a>
                 </td>
                 <td class="message-cell">
-                    But we will end up with some performance hits for establishing new connections, instead of pooling, right?
+                    what&#39;s so special about that?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-14" class="rowLink" href="#msg-14">
-                    [10:15]  Guest55679
+                    [13:29]  sustrik
                     </a>
                 </td>
                 <td class="message-cell">
-                    OK, I see. So the socket should be opened all the time, within the application&#39;s lifetime, right? No need to establish one connection per every request-response cycle, correct?
+                    even TCP gives you multiple channels per bind
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-15" class="rowLink" href="#msg-15">
-                    [10:18]  Guest55679
+                    [13:31]  hogu
                     </a>
                 </td>
                 <td class="message-cell">
-                    But again, let&#39;s say I have one serving endpoint, which receives the requests from a frontend layer. This frontend layer can handle up to 1000+ concurrent HTTP requests.
+                    no it&#39;s not special, I&#39;m just asking how to do that with zeromq
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-16" class="rowLink" href="#msg-16">
-                    [10:19]  Guest55679
+                    [13:33]  sustrik
                     </a>
                 </td>
                 <td class="message-cell">
-                    Should I have 1000+ opened client sockets for 0MQ in this case?
+                    zmq_bind()
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-17" class="rowLink" href="#msg-17">
-                    [10:20]  Guest55679
+                    [13:33]  sustrik
                     </a>
                 </td>
                 <td class="message-cell">
-                    Or having just 1 opened socket? But in this case another queueing mechanism should be introduced between this opened socket and all those 1000+ HTTP sessions.
+                    that&#39;s it
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-18" class="rowLink" href="#msg-18">
-                    [10:27]  Guest55679
+                    [13:33]  hogu
                     </a>
                 </td>
                 <td class="message-cell">
-                    Maybe requirement clarifications will help here:
+                    REQ-REP seems close to what I want except I&#39;d like to be able to send data to specific clients without the request
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-19" class="rowLink" href="#msg-19">
-                    [10:27]  Guest55679
+                    [13:34]  sustrik
                     </a>
                 </td>
                 <td class="message-cell">
-                    1. Replacing JMS and REST based integration of the internal tiers/component of a large web application with 0MQ
+                    that&#39;s sounds more like TCP use case
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-20" class="rowLink" href="#msg-20">
-                    [10:30]  Guest55679
+                    [13:34]  sustrik
                     </a>
                 </td>
                 <td class="message-cell">
-                    2. Components should not be tied to 0MQ specifics - no endpoint configurations in the code, no socket creations/bindings
+                    although if you are interested there are examples of doing this using ROUTER socekts in the guide
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-21" class="rowLink" href="#msg-21">
-                    [10:30]  Guest55679
+                    [13:34]  hogu
                     </a>
                 </td>
                 <td class="message-cell">
-                    So for now I&#39;ve ended up with the following approach:
+                    hm ok , let me look at that
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-22" class="rowLink" href="#msg-22">
-                    [10:31]  Guest55679
+                    [13:40]  pieter_hintjens
                     </a>
                 </td>
                 <td class="message-cell">
-                    1. Spring proxies for encapsulating all 0MQ-related invocations
+                    sustrik: yeah, but I don&#39;t have the bandwidth right now, will work on some ideas first
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-23" class="rowLink" href="#msg-23">
-                    [10:31]  Guest55679
+                    [13:41]  pieter_hintjens
                     </a>
                 </td>
                 <td class="message-cell">
-                    2. Centralized registry of endpoint configurations, which is accessable via JNDI
+                    sustrik: also I realized that if people come to 0MQ for "messaging", that&#39;s fine in fact
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-24" class="rowLink" href="#msg-24">
-                    [10:33]  pieter_hintjens
+                    [13:50]  sustrik
                     </a>
                 </td>
                 <td class="message-cell">
-                    Guest55679: how much of the Guide have you read?
+                    messaging?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-25" class="rowLink" href="#msg-25">
-                    [11:12]  pieter_hintjens
+                    [13:51]  sustrik
                     </a>
                 </td>
                 <td class="message-cell">
-                    sustrik: people like that trying to fit 0MQ into "stick your random messaging layer here"
+                    like MOM?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-26" class="rowLink" href="#msg-26">
-                    [11:13]  pieter_hintjens
+                    [13:58]  pieter_hintjens
                     </a>
                 </td>
                 <td class="message-cell">
-                    I want to make a video "Why 0MQ is not Yet Another Messaging Layer"
+                    yeah
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-27" class="rowLink" href="#msg-27">
-                    [14:55]  sustrik
+                    [13:59]  pieter_hintjens
                     </a>
                 </td>
                 <td class="message-cell">
-                    pieter_hintjens: great idea
+                    a typical sign of confusion is "let&#39;s make an abstraction layer that hides 0MQ"
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-28" class="rowLink" href="#msg-28">
-                    [14:56]  sustrik
+                    [13:59]  pieter_hintjens
                     </a>
                 </td>
                 <td class="message-cell">
-                    that would be useful
+                    this is sane if you treat messaging as a generic layer
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-29" class="rowLink" href="#msg-29">
-                    [14:56]  sustrik
+                    [13:59]  pieter_hintjens
                     </a>
                 </td>
                 <td class="message-cell">
-                    if you need any help with that, just shout
+                    but 0MQ works more like a scalability design language
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-30" class="rowLink" href="#msg-30">
-                    [15:52]  CIA-32
+                    [14:04]  sustrik
                     </a>
                 </td>
                 <td class="message-cell">
-                    libzmq: 03Martin Sustrik 07master * r837451e 10/ (4 files): Remove blob_t class ...
+                    i see
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-31" class="rowLink" href="#msg-31">
-                    [16:08]  CIA-32
+                    [14:04]  sustrik
                     </a>
                 </td>
                 <td class="message-cell">
-                    libzmq: 03Martin Sustrik 07master * r11e21d0 10/ (src/Makefile.am src/ctx.hpp src/semaphore.hpp): semaphore_t class removed ...
+                    and the conclusion is?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-32" class="rowLink" href="#msg-32">
-                    [16:11]  CIA-32
+                    [14:04]  pieter_hintjens
                     </a>
                 </td>
                 <td class="message-cell">
-                    libzmq: 03Martin Sustrik 07master * r0e71b11 10/ src/ctx.hpp : Obsolete include in ctx.hpp removed ...
+                    sustrik: don&#39;t know yet :-) RTFG?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-33" class="rowLink" href="#msg-33">
-                    [16:16]  CIA-32
+                    [14:05]  sustrik
                     </a>
                 </td>
                 <td class="message-cell">
-                    libzmq: 03Martin Sustrik 07master * rf716b57 10/ (11 files): Only one polling mechanism is compiled ...
+                    maybe
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-34" class="rowLink" href="#msg-34">
-                    [16:28]  CIA-32
+                    [14:05]  sustrik
                     </a>
                 </td>
                 <td class="message-cell">
-                    libzmq: 03Martin Sustrik 07master * r7c1dca5 10/ (20 files): Session classes merged into a single class ...
+                    i guess we don&#39;t communicate this side of the problem well yet
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-35" class="rowLink" href="#msg-35">
-                    [16:33]  CIA-32
+                    [14:05]  sustrik
                     </a>
                 </td>
                 <td class="message-cell">
-                    libzmq: 03Martin Sustrik 07master * r43b5b34 10/ src/pgm_sender.cpp : PGM subscription forwarding fixed ...
+                    i have no idea how to do it though
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [14:06]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there&#39;s a big issue with perception
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [14:06]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    maybe it&#39;s just matter of time
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [14:06]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how people perceive communications
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [14:06]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i think the shift will take time
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [14:07]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s architecture, and that takes years to learn
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [14:07]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ack
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [14:07]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    time for a 2.1.8 and 3.0.1 IMO
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [14:07]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    great
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [14:07]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    any pending issues?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [14:07]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nope, and some nice fixes in there
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [14:07]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [14:08]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thursday or so, depending on the weather
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [14:12]  hogu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so I&#39;m looking at the router, it looks like i have to use that with request reply patterns?  can I get bi directional channels without having to adhere to teh request reply pattern?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [14:13]  hogu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    something like that PAIR except, with multiple connections per bind
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [14:13]  hogu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is this a stupid thing to want?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [14:15]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can use ROUTER-to-ROUTER pattern
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [14:15]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that way each endpoint is able to say which message goes to whom
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [14:16]  hogu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [14:16]  hogu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [14:17]  pieter_hintjens
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hogu: how much of the Guide have you read?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [14:19]  hogu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the first 2 chapters
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [14:19]  hogu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and bit of 4
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [14:19]  hogu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i mean 5
                 </td>
             </tr>
             
