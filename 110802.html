@@ -1,0 +1,970 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title>ZeroMq IRC Log</title>
+<!--    <base href="http://travlr.github.com/zmqirclog/index.html" target="_self"/>-->
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+
+</head>
+
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <a href="http://travlr.github.com/zmqirclog/index.html" target="_blank">
+            <img src="images/zeromq1-300x115.png" alt="ZeroMq Logo" border="0"/>
+            </a>
+        </div>
+        <div id="header-left-bottom" style="padding-left:200px;">
+            IRC Log
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="float:right; vertical-align:text-top; padding-top:5px">
+            <form action="http://travlr.github.com/zmqirclog/search-results.html" id="cse-search-box">
+  <div>
+    <input type="hidden" name="cx" value="017268610037587914919:goqutszmb5o" />
+    <input type="hidden" name="cof" value="FORID:9" />
+    <input type="hidden" name="ie" value="UTF-8" />
+    <input type="text" name="q" size="31" />
+    <input type="submit" name="sa" value="Search" />
+  </div>
+</form>
+<script type="text/javascript" src="http://www.google.com/cse/brand?form=cse-search-box&lang=en"></script>
+
+        </div>
+        <div style="clear:right;"></div>
+        <div id="header-right-bottom" style="text-align:right; vertical-align:text-bottom; padding-right:30px; padding-top:75px;">
+            <a href="http://www.zeromq.org/" target="_blank">ZeroMq Home</a>
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+    <hr/>
+</div>
+
+    <div class="content">
+        <h2>Tuesday August 2, 2011</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [00:24]  krainboltgreene
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m getting this  error: LoadError: libzmq.so.1: cannot open shared object file: No such file or directory - /home/fredo/.rvm/gems/ruby-1.9.2-p290@rails31/gems/zmq-2.1.3/lib/zmq.so Any ideas?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [00:24]  krainboltgreene
+                    </a>
+                </td>
+                <td class="message-cell">
+                    The file exists, and is in that exact location.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [04:42]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik could this be useful https://github.com/joyent/libuv ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [04:42]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    towards iocp in windows
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [04:44]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nevermind saw your answer in email
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [06:55]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    iFire: how exactly would that be useful?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [06:56]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Yourself
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [06:56]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    We need to consider the following facts:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [06:56]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    * 0MQ works OK with basically any polling system except for IOCP.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [06:56]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    * Using any of the above libraries thus makes sense only as far as it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [06:56]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    allows to use IOCP. Portability of the libraries is irrelevant as all
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [06:56]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the non-IOCP code is already in 0MQ.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [06:56]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    * The question is how much easier (if at all) would be to use IOCP via
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [06:56]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    one of the libraries as opposed to using it directly.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [06:56]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    * And does the increased simplicity outweight dragging in dependency on
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [06:57]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    an external project?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [06:57]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [06:57]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    exactly
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [06:58]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    why do you believe using libuv is in any way easier than using iocp itself?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [06:59]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it already exists?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [07:00]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    libuv exists?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [07:00]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this relates to your last point * And does the increased simplicity outweight dragging in dependency on
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [07:00]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    an external project?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [07:00]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    does it?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [07:01]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I have no idea
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [07:01]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    neither do i :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [07:01]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyways joyent and micrsoft are working on getting libev/nodejs to work on windows
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [07:02]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    here&#39;s the API:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [07:02]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    https://github.com/joyent/libuv/blob/master/include/uv.h
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [07:02]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    doesn&#39;t look much simpler that raw IOCP
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [07:05]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    reading through http://tinyclouds.org/iocp-links.html
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [07:05]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the first part is a intro
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [07:06]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    to iocp and unix but you know that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [07:07]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nope I don&#39;t think this is useful :/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [07:07]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i see
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [07:08]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well it&#39;s a description and links page
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [07:10]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    someone more qualified should read it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [07:10]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the libuv repo
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [07:12]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    from my point of view, there&#39;s not much difference between using libuv API or using raw IOCP API, except that with the former you have an additional dependency project
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [07:20]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://tinyclouds.org/iocp-links.html is a good summary of the iocp situation though
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [07:20]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well.. well written
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [07:23]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    libuv does have a pipes abstraction
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [07:30]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yup
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [07:34]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you have to rewrite the (tcp) stream code
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [07:36]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    https://github.com/joyent/libuv/blob/master/src/win/stream.c
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [07:37]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zip is 900kb
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [07:44]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    iFire: well, give it a try if you are interested, however, i would guess going with raw iocp would be simpler
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [07:45]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyways we can use their approach if it works right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [07:46]  iFire
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s getting late
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [07:48]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [07:48]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    see you
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [12:07]  sekon
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hello can/advisable you use zeromq in HA applications, if yes which "pattern" should i use ??
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [12:11]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it completely depends on the application
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [12:12]  sekon
+                    </a>
+                </td>
+                <td class="message-cell">
+                    a simple two node HA test app
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [12:12]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what does HA mean in this case?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [12:12]  sekon
+                    </a>
+                </td>
+                <td class="message-cell">
+                    one master generates about 1 MB of data per minute that needs to be synced with the slave
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [12:13]  sekon
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that should be a guarentee
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [12:13]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    does master need to be duplicated as well?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [12:13]  sekon
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not the syncing but delivery of data along with an ACK if possible
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [12:13]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    do the slaves need to handle duplicate detection?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [12:13]  sekon
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: nope
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [12:13]  sekon
+                    </a>
+                </td>
+                <td class="message-cell">
+                    overwriting would also do
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [12:13]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so if master goes down, everything goes down?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [12:14]  sekon
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nope .. if the master goes down slave takes over
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [12:14]  sekon
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: but my main question is about guarenteed delivery along with an optional ACK
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [12:14]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you would do request reply
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [12:14]  sekon
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [12:15]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the slave would reply after receiving the message
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [12:17]  sekon
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: also can you specify a timeout for a Request-reply transaction in the master after which the master assumes that slave/sync has failed ??
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [12:21]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can handle that in your client code
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [12:21]  sekon
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: so master is blocker until somone gets the data ??
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [12:22]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [12:22]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can buffer the data on master as well
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [12:22]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    depends on the application
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [12:23]  sekon
+                    </a>
+                </td>
+                <td class="message-cell">
+                    can you flush the master&#39;s buffer after timeout, since the data in the buffer would stale by design of app ??
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [12:26]  sekon
+                    </a>
+                </td>
+                <td class="message-cell">
+                    s/flush/flush _OR_ invalidate
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [12:31]  sekon
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in other words : can you have unbuffered and blocking with time out request reply transactions ??
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [12:33]  sekon
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: ah your post in mailing list , alarm or polling right ?? :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [12:35]  sekon
+                    </a>
+                </td>
+                <td class="message-cell">
+                    brb after some more RFTM
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [18:29]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Is there a way to inspect the queue size for a given socket?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [18:30]  guido_g
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [18:30]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Balls.
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+    <div class="footer-container"><hr/>
+    <p style="color:#a9a9a9; font-size:0.75em; text-align:center; margin:5px 5%;">
+       Web site design and content is copyright &copy; 2010-2011 Peter Alexander, ProDataLab. Site content licensed under the Creative Commons Attribution-Share Alike 3.0 License.
+       &Oslash;MQ is copyright &copy; Copyright &copy; 2007-2011 iMatix Corporation and Contributors.
+       <a href="http://www.imatix.com/contact">Contact us for professional support.</a>
+       &Oslash;MQ is free software licensed under the LGPL. &Oslash;MQ, ZeroMQ, and 0MQ are trademarks of iMatix Corporation.
+       <a href="http://www.zeromq.org/legal:terms-of-use">Terms of Use</a> ?
+       <a href="http://www.zeromq.org/legal:privacy-policy">Privacy Policy</a>
+    </p>
+</div>
+
+</body>
+</html>
