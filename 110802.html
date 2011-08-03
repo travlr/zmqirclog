@@ -953,6 +953,600 @@
                 </td>
             </tr>
             
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [19:04]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ptrb: data could be in the queue, socket buffer of the sender, on the wire, in the socket buffer of the receiver, or the receiver&#39;s queue
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [19:05]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how would you ever get a number you could trust without destroying end-to-end latency?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [19:05]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: indeed. but I would settle for introspection of even one of those places.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [19:06]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    as it stands now I&#39;m going to have to swap out a rather pleasant inproc push/pull for my own custom queue, because we&#39;re having what we think are throughput issues, but no way to diagnose the ZMQ link in the chain
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [19:06]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ptrb: you can fake it with a HWM and waiting for a send to block; you could then guess what the lower-bound is on messages in queue
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [19:06]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: can I detect if a send blocks?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-89" class="rowLink" href="#msg-89">
+                    [19:07]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ptrb: yes; send with ZM_NOBLOCK and see if it returns EAGAIN
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-90" class="rowLink" href="#msg-90">
+                    [19:07]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hmm. This is worth investigating...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-91" class="rowLink" href="#msg-91">
+                    [19:09]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hmm, interesting. OK, thanks for the pointer.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-92" class="rowLink" href="#msg-92">
+                    [19:14]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i use that technique in one or two places (but not necessarily for getting a queue&#39;s size)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-93" class="rowLink" href="#msg-93">
+                    [19:25]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi, anyone have success using easy_install for pyzmq?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-94" class="rowLink" href="#msg-94">
+                    [19:25]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    It fails on my Ubuntu box:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-95" class="rowLink" href="#msg-95">
+                    [19:25]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zmq/core/constants.c:4: fatal error: Python.h: No such file or directory compilation terminated. error: Setup script exited with error: command &#39;gcc&#39; failed with exit status 1
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-96" class="rowLink" href="#msg-96">
+                    [19:33]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    found it, need to install python-dev first
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-97" class="rowLink" href="#msg-97">
+                    [20:05]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Seems that no matter what I set my PUSH HWM to, I can&#39;t get the sender to return EAGAIN when it&#39;s NOBLOCK. The PULL side is doing real work. Anything I might be overlooking?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-98" class="rowLink" href="#msg-98">
+                    [20:18]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Oh, probably because it&#39;s an inproc. Any special semantics for inproc+PUSH/PULL?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-99" class="rowLink" href="#msg-99">
+                    [20:21]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ptrb: it&#39;s just too fast; the semantics are exactly the same
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-100" class="rowLink" href="#msg-100">
+                    [20:21]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ptrb: btw, did you set HWM on the PUSH *before* you called zmq_bind()/zmq_connect() ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-101" class="rowLink" href="#msg-101">
+                    [20:21]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it only takes effect for subsequent binds/connects
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-102" class="rowLink" href="#msg-102">
+                    [20:23]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: yes; setsockopt before bind
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-103" class="rowLink" href="#msg-103">
+                    [20:23]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: correct me if I&#39;m wrong, but..
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-104" class="rowLink" href="#msg-104">
+                    [20:23]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ptrb: ok, good
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-105" class="rowLink" href="#msg-105">
+                    [20:24]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if the HWM is 1, and the PULLer thread only does 1 recv() every 250ms, then shouldn&#39;t the send(..., ZMQ_NOBLOCK) give me an error if I dump like a thousand messages at once?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-106" class="rowLink" href="#msg-106">
+                    [20:25]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-107" class="rowLink" href="#msg-107">
+                    [20:25]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Well, it&#39;s not. :|
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-108" class="rowLink" href="#msg-108">
+                    [20:25]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ptrb: let&#39;s make sure it&#39;s not a bug with HWM &amp; inproc
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-109" class="rowLink" href="#msg-109">
+                    [20:25]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    change the transport to tcp and try your code
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-110" class="rowLink" href="#msg-110">
+                    [20:25]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    A good idea.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-111" class="rowLink" href="#msg-111">
+                    [20:25]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    One moment.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-112" class="rowLink" href="#msg-112">
+                    [20:27]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Same results.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-113" class="rowLink" href="#msg-113">
+                    [20:27]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    something else is wrong
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-114" class="rowLink" href="#msg-114">
+                    [20:27]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what version of the lib? and what bindings are you using?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-115" class="rowLink" href="#msg-115">
+                    [20:27]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Oops. It wasn&#39;t ZMQ_NOBLOCK. One moment.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-116" class="rowLink" href="#msg-116">
+                    [20:29]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Yep. tcp gives me the EAGAIN I expect; inproc doesn&#39;t.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-117" class="rowLink" href="#msg-117">
+                    [20:29]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    So, does this mean I file a bug report?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-118" class="rowLink" href="#msg-118">
+                    [20:29]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ptrb: yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-119" class="rowLink" href="#msg-119">
+                    [20:29]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Whee.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-120" class="rowLink" href="#msg-120">
+                    [20:29]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    though i suspect that they&#39;ll kick it back as "won&#39;t fix"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-121" class="rowLink" href="#msg-121">
+                    [20:31]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Er, really?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-122" class="rowLink" href="#msg-122">
+                    [20:31]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ptrb: yes, lately there&#39;s been some pushback about inproc being "special" and not mimicking the same semantics
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-123" class="rowLink" href="#msg-123">
+                    [20:31]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    as the other transports; i think that it *should* but the core guys may feel differently
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-124" class="rowLink" href="#msg-124">
+                    [20:32]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i mean, that&#39;s the whole point of being able to swap transports and *not* have to change any other code
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-125" class="rowLink" href="#msg-125">
+                    [20:32]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I see.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-126" class="rowLink" href="#msg-126">
+                    [20:32]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the semantics should be the same every time otherwise you need to special-case certain transports (which i don&#39;t like)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-127" class="rowLink" href="#msg-127">
+                    [20:32]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    What would you suggest as the ideal drop-in "real" transport replacement for inproc? TCP is probably not it.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-128" class="rowLink" href="#msg-128">
+                    [20:32]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ptrb: sure, tcp is fine
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-129" class="rowLink" href="#msg-129">
+                    [20:33]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    test it yourself and you&#39;ll see
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-130" class="rowLink" href="#msg-130">
+                    [20:33]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    perf is almost identical between the two when they&#39;re on the same box &amp; same process
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-131" class="rowLink" href="#msg-131">
+                    [20:53]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: interesting stuff.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-132" class="rowLink" href="#msg-132">
+                    [20:53]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, I filed.. https://zeromq.jira.com/browse/LIBZMQ-237
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-133" class="rowLink" href="#msg-133">
+                    [22:06]  Dilshod
+                    </a>
+                </td>
+                <td class="message-cell">
+                    @dilshod
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-134" class="rowLink" href="#msg-134">
+                    [23:07]  jonnydee
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: Hi, I&#39;ve done a re-implementation of zeromqt called nzmqt, which is based on zmq&#39;s c++ binding, has multi-part message support, and is licensed under the simplified BSD license.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-135" class="rowLink" href="#msg-135">
+                    [23:07]  jonnydee
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Maybe you might want to list this project in thab project lab?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-136" class="rowLink" href="#msg-136">
+                    [23:08]  jonnydee
+                    </a>
+                </td>
+                <td class="message-cell">
+                    https://github.com/jonnydee/nzmqt
+                </td>
+            </tr>
+            
         </table>
     </div>
     <div class="footer-container"><hr/>
