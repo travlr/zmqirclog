@@ -1943,6 +1943,149 @@
                 </td>
             </tr>
             
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-173" class="rowLink" href="#msg-173">
+                    [21:36]  wink
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyone around that can help me wrap my head around which socket types / configuration im looking for?  i&#39;d like to have a server with N clients, whenever a given client sends a message it gets broadcast to all other clients.  whats the best topology to accomplish that?  i&#39;d prefer a client only need to open one socket (which would eliminate pub/sub)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-174" class="rowLink" href="#msg-174">
+                    [21:38]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    wink_: you need two sockets most likely
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-175" class="rowLink" href="#msg-175">
+                    [21:38]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    server pub (possibly openpgm, depends)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-176" class="rowLink" href="#msg-176">
+                    [21:38]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and separate PULL socket for client messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-177" class="rowLink" href="#msg-177">
+                    [21:38]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    clients PUSH the messages to server
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-178" class="rowLink" href="#msg-178">
+                    [21:38]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which shovels them over to PUB socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-179" class="rowLink" href="#msg-179">
+                    [21:38]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and clients again receive these through SUB sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-180" class="rowLink" href="#msg-180">
+                    [21:39]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    anyway, sleep time
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-181" class="rowLink" href="#msg-181">
+                    [21:39]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    -&gt;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-182" class="rowLink" href="#msg-182">
+                    [21:40]  wink
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: thanks
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-183" class="rowLink" href="#msg-183">
+                    [21:41]  wink
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i may just use a normal bidirectional dealer socket and manually rebroadcast to them
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-184" class="rowLink" href="#msg-184">
+                    [21:41]  wink
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;ll have to see how bad that sucks though :p
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-185" class="rowLink" href="#msg-185">
+                    [22:25]  jhawk28
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: what is the best way to close down a socket that is blocking on recv?
+                </td>
+            </tr>
+            
         </table>
     </div>
     <div class="footer-container"><hr/>
