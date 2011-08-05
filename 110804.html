@@ -381,6 +381,1106 @@
                 </td>
             </tr>
             
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [19:06]  deleriu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    does 0mq do better when its strictly talking to other instantiations of itself across the web?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [19:07]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    deleriu: i don&#39;t understand your question... are you trying to get 0mq to talk to non-0mq sockets?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [19:12]  deleriu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hey cremes, we&#39;re building a db around a distributed multidemensional tree index. the tree is technically distributable, but we need the means to connect one instantation to another across the web. looking at 0mq to do this... from what I understand 0mq behaves less reliably when it doesnt know what the data its sending out is being used for/how its beings parsed and handled (?)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [19:13]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oh, i see what you are asking
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [19:13]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    as of the latest 2.1.x release, 0mq isn&#39;t recommended for use over a public internet because
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [19:13]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it doesn&#39;t validate that all incoming data conforms to its wire protocol
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [19:13]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    right now some "garbage" data could cause the library to assert and exit
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [19:14]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this is being fixed for the 3.0 release (which is in alpha release right now)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [19:14]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so, i recommend that you use 3.0 or later for your testing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [19:14]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if you find that bad data (like produced from a fuzzer) causes a crash, file a bug report with a testcase
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [19:14]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    deleriu: does that help?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [19:18]  deleriu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes, good to know thank you, helps a lot. however, in our case, although data would be travelling over the web, its all structured the same way because its coming from other instantiations of the same software - so perhaps 0mq would be suitable even over the web
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [19:18]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    deleriu: hmmm... i think you misunderstand how 0mq works that this is even a worry for you
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [19:19]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it just passes opaque data blobs around; it&#39;s up to your application to interpret them
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [19:19]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    why would 0mq care how your data blob is structured?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [19:28]  deleriu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it wouldn&#39;t, but &#39;garbage&#39; data can cause it to exit. I guess I&#39;m answering my own question here. Stock markets use this system (or its predecessor at least) reliably because they are able to ensure data integrity (ie, no garbage from node to node).. if we can ensure data integrity from node to node in our network then there&#39;s no reason why we can&#39;t use the internet as its public infrastructure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [19:31]  deleriu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    btw, when&#39;s 3.0 slated for beta?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [19:38]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hi all, I&#39;m hoping someone can help me with some installation issues I&#39;m having with uuid
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [19:39]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m trying to install zmq on a basic ec2 amazon linux ami
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [19:39]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    deleriu: 3.0 will keep getting releases until all bugs are sussed out; run it and help us!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [19:40]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bebodebo: what is your error? can you pastie the output?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [19:40]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [19:40]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    In file included from socket_base.cpp:50: uuid.hpp:31:23: error: uuid/uuid.h: No such file or directory In file included from socket_base.cpp:50: uuid.hpp:92: error: &#39;uuid_t&#39; in namespace &#39;::&#39; does not name a type make[2]: *** [libzmq_la-socket_base.lo] Error 1 make[2]: Leaving directory `/home/this/infrastructure/zeromq2-2/src&#39; make[1]: *** [all] Error 2 make[1]: Leaving directory `/home/this/infrastructure/zeromq2-2/src&#39; make: ***
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [19:40]  deleriu
+                    </a>
+                </td>
+                <td class="message-cell">
+                    likes this
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [19:41]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (this is the result of creating a symlink from /lib64/libuuid.so --&gt; /lib64/libuuid.so.1.3.0)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [19:42]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which I did when ./configure would fail with the "install uuid-dev" error
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [19:43]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that first error was : "checking for uuid_generate in -luuid... no configure: error: cannot link with -luuid, install uuid-dev. "
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [19:45]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i have installed both the linux-utils and e2fsprogs-devel packages via yum
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [19:48]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bebodebo: yeah... i can&#39;t help; i don&#39;t know how to fix that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [19:51]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    right. well, I appreciate you&#39;re looking at it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [19:51]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    your
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [19:52]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bebodebo: btw, next time you have a large error message, i recommend you use pastie.org or gist.github.com to make reading it easier
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [19:55]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    haha, yes, embarrassingly, I realized that issue right after posting that gibberish
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [19:57]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bebodebo: sounds like you&#39;re missing uuid-devel
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [19:57]  taotetek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bebodebo: if it&#39;s a fedora box - if it&#39;s another distro whatever the equivalent package is
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [20:04]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    taotetex: It&#39;s an amazon linux box
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [20:05]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and i&#39;ve installed linux-utils, and e2fsprogs-devel, which I was lead to believe contain uuid-devel
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [20:05]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    though I certainly am no expert on the issue
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [20:09]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bebodebo: what happens if you try to install uuid-devel with yum?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [20:15]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I just tried this
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [20:15]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and it doesn&#39;t have any effect
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [20:15]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I even blew away the zmq repo and the symlink and started over
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [20:16]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and i get the same results
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [20:20]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;ve also posted this question on stack overflow: http://stackoverflow.com/questions/6948032/problem-installing-zmq-on-amazon-linux-unable-to-find-uuid
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [20:20]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which I hope will make it a little easier to follow
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [21:50]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not to be a pain, but if anyone else has any thoughts on this, I&#39;d be eternally grateful: http://stackoverflow.com/questions/6948032/problem-installing-zmq-on-amazon-linux-unable-to-find-uuid
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [21:53]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what does config.log say
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [21:53]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is this rhel6?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [21:55]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which flavor of linux is this?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [21:56]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bebodebo: ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [22:01]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s amazon linux
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [22:01]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    on an ec2 micro linux
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [22:01]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    here&#39;s the config log
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [22:01]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://pastebin.com/0QMQtbg2
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [22:01]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so, yum whatprovides /usr/include/uuid/uuid.h
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [22:01]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i believe so
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [22:01]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    though I&#39;m no linux package pro, here
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [22:02]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (I don&#39;t know what rhel6 is)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-89" class="rowLink" href="#msg-89">
+                    [22:02]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    redhat enterprise linux 6
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-90" class="rowLink" href="#msg-90">
+                    [22:02]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ahhh
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-91" class="rowLink" href="#msg-91">
+                    [22:02]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what does this command give you: yum whatprovides /usr/include/uuid/uuid.h
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-92" class="rowLink" href="#msg-92">
+                    [22:07]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, i have to admit that _now_ it gives me a python module error
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-93" class="rowLink" href="#msg-93">
+                    [22:08]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    since I seem to have messed up the python installation as part of another issue...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-94" class="rowLink" href="#msg-94">
+                    [22:13]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-95" class="rowLink" href="#msg-95">
+                    [22:19]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, mikko:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-96" class="rowLink" href="#msg-96">
+                    [22:19]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    resolved the python thing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-97" class="rowLink" href="#msg-97">
+                    [22:19]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cool, what does the command output?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-98" class="rowLink" href="#msg-98">
+                    [22:19]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and what I get is this: libuuid-devel-2.17.2-6.12.amzn1.x86_64 : Universally unique ID library Repo
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-99" class="rowLink" href="#msg-99">
+                    [22:20]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    : amzn-main Matched from: Filename
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-100" class="rowLink" href="#msg-100">
+                    [22:20]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    : /usr/include/uuid/uuid.h
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-101" class="rowLink" href="#msg-101">
+                    [22:20]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is that package installed?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-102" class="rowLink" href="#msg-102">
+                    [22:21]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-103" class="rowLink" href="#msg-103">
+                    [22:21]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I just installed it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-104" class="rowLink" href="#msg-104">
+                    [22:21]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    now try to rebuild and see what happend
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-105" class="rowLink" href="#msg-105">
+                    [22:21]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    happens*
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-106" class="rowLink" href="#msg-106">
+                    [22:22]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    alright-- fingers crossed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-107" class="rowLink" href="#msg-107">
+                    [22:24]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    also, the symlink you did in the earlier post
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-108" class="rowLink" href="#msg-108">
+                    [22:24]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can use ldconfig -p to print runtime linkers cache
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-109" class="rowLink" href="#msg-109">
+                    [22:24]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ldconfig -p | grep uuid etc
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-110" class="rowLink" href="#msg-110">
+                    [22:27]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, well, make and make install both exited successfully
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-111" class="rowLink" href="#msg-111">
+                    [22:27]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so that&#39;s awesome
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-112" class="rowLink" href="#msg-112">
+                    [22:27]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what&#39;d be the best way to test the installation?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-113" class="rowLink" href="#msg-113">
+                    [22:28]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    make check
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-114" class="rowLink" href="#msg-114">
+                    [22:28]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, all 8 tests pass
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-115" class="rowLink" href="#msg-115">
+                    [22:28]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sweet, thanks!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-116" class="rowLink" href="#msg-116">
+                    [22:28]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ldconfig &amp;&amp; ldconfig -p | grep zmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-117" class="rowLink" href="#msg-117">
+                    [22:28]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    should be there as well
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-118" class="rowLink" href="#msg-118">
+                    [22:29]  jonnydee
+                    </a>
+                </td>
+                <td class="message-cell">
+                    travlr,sustrik: I just would like to let  you know that &#39;zmqt&#39; supports PUSH-PULL as well. I&#39;ve added an implementation of the ventilator-worker-sink sample to the project...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-119" class="rowLink" href="#msg-119">
+                    [22:29]  jonnydee
+                    </a>
+                </td>
+                <td class="message-cell">
+                    s/zmqt/nzmqt/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-120" class="rowLink" href="#msg-120">
+                    [22:29]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what&#39;s nzmqt?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-121" class="rowLink" href="#msg-121">
+                    [22:29]  jonnydee
+                    </a>
+                </td>
+                <td class="message-cell">
+                    travlr, sorry -- typo
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-122" class="rowLink" href="#msg-122">
+                    [22:30]  jonnydee
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: It&#39;s an integration of zeromq into Qt
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-123" class="rowLink" href="#msg-123">
+                    [22:30]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah, that&#39;s nice
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-124" class="rowLink" href="#msg-124">
+                    [22:31]  jonnydee
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there has already been one (zeromqt) but it only supports push-pup yet... and it&#39;s not released officially under a concrete license
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-125" class="rowLink" href="#msg-125">
+                    [22:34]  jonnydee
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bye and good night :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-126" class="rowLink" href="#msg-126">
+                    [22:34]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nn
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-127" class="rowLink" href="#msg-127">
+                    [22:49]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko, I seem to have some lingering problems
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-128" class="rowLink" href="#msg-128">
+                    [22:50]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    namely, when I run ldcongfig -p | grep zmq, I don&#39;t see any lines returned
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-129" class="rowLink" href="#msg-129">
+                    [22:50]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which seems to fit with the error I get when installing Mongrel2, in which it complains that it can&#39;t find libzmq.so
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-130" class="rowLink" href="#msg-130">
+                    [23:13]  bebodebo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i figured it out! I just needed to add usr/local/lib to my ldconfig.so.conf file in /etc
+                </td>
+            </tr>
+            
         </table>
     </div>
     <div class="footer-container"><hr/>
