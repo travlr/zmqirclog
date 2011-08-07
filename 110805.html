@@ -1844,6 +1844,303 @@
                 </td>
             </tr>
             
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-164" class="rowLink" href="#msg-164">
+                    [20:59]  scarboy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just a little feedback on multi-part messages from someone who&#39;s new to zeromq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-165" class="rowLink" href="#msg-165">
+                    [20:59]  scarboy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this line from the zguide "When you send a multipart message, the first part (and all following parts) are only sent when you send the final part." should probably be in the zmq_send docs
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-166" class="rowLink" href="#msg-166">
+                    [21:00]  scarboy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I was trying to split up a large file for transfer and couldn&#39;t figure out why my process was using so much ram even though I had a tiny buffer
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-167" class="rowLink" href="#msg-167">
+                    [21:09]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    scarboy: ah yes... sending multi-part is an "atomic" operation
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-168" class="rowLink" href="#msg-168">
+                    [21:09]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    feel free to write a documentation patch and submit it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-169" class="rowLink" href="#msg-169">
+                    [22:14]  sakella
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi all, i have a quick question.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-170" class="rowLink" href="#msg-170">
+                    [22:16]  sakella
+                    </a>
+                </td>
+                <td class="message-cell">
+                    setsockopt call in send function of mailbox.cpp is failing casing an assert ( line 177)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-171" class="rowLink" href="#msg-171">
+                    [22:18]  sakella
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is it same as the identity/ rmem_max issue mentioned in the FAQ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-172" class="rowLink" href="#msg-172">
+                    [22:18]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sakella: please pastie (pastie.org) the whole error; line numbers change with each release
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-173" class="rowLink" href="#msg-173">
+                    [22:20]  sakella
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just a sec, will do that.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-174" class="rowLink" href="#msg-174">
+                    [22:24]  sakella
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://pastie.org/2327436
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-175" class="rowLink" href="#msg-175">
+                    [22:24]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sakella: i have to run now... leave more details here and i&#39;ll take a look in a few hours when i get back
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-176" class="rowLink" href="#msg-176">
+                    [22:24]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sakella: please pastie the *error* too
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-177" class="rowLink" href="#msg-177">
+                    [22:24]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    along with the version of zmq you are using, what bindings, OS, etc
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-178" class="rowLink" href="#msg-178">
+                    [22:24]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    see ya
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-179" class="rowLink" href="#msg-179">
+                    [22:26]  sakella
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zmq 2.1.0 version
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-180" class="rowLink" href="#msg-180">
+                    [22:26]  sakella
+                    </a>
+                </td>
+                <td class="message-cell">
+                    C++ bindings
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-181" class="rowLink" href="#msg-181">
+                    [22:27]  sakella
+                    </a>
+                </td>
+                <td class="message-cell">
+                    The code asserts. Unfortunately the setsockopt error is not logged.  The stack trace is at http://pastie.org/2327446
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-182" class="rowLink" href="#msg-182">
+                    [22:27]  sakella
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-183" class="rowLink" href="#msg-183">
+                    [22:27]  sakella
+                    </a>
+                </td>
+                <td class="message-cell">
+                    OS is linux
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-184" class="rowLink" href="#msg-184">
+                    [22:27]  sakella
+                    </a>
+                </td>
+                <td class="message-cell">
+                    centos 32bit
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-185" class="rowLink" href="#msg-185">
+                    [22:35]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    have you tried upgrading?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-186" class="rowLink" href="#msg-186">
+                    [22:35]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    2.1.8 is out
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-187" class="rowLink" href="#msg-187">
+                    [22:41]  sakella
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Its in production so we cant upgrade currently
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-188" class="rowLink" href="#msg-188">
+                    [23:04]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sakella: this is a known error
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-189" class="rowLink" href="#msg-189">
+                    [23:04]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    fixed in 2.1.8
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-190" class="rowLink" href="#msg-190">
+                    [23:35]  sakella
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Is there any way I can mitigate it? I cant migrate to 2.1.8 currently.
+                </td>
+            </tr>
+            
         </table>
     </div>
     <div class="footer-container"><hr/>
