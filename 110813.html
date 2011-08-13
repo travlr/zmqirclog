@@ -47,271 +47,271 @@
 </div>
 
     <div class="content">
-        <h2>Friday August 12, 2011</h2>
+        <h2>Saturday August 13, 2011</h2>
         <table class="message-table">
             <th>[Time]&nbsp;Name</th><th>Message</th>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-1" class="rowLink" href="#msg-1">
-                    [06:54]  the_hulk
+                    [00:11]  zedas
                     </a>
                 </td>
                 <td class="message-cell">
-                    hi, if i publish from older version of zmq, and try to subscribe on latest version, will there be any problem
+                    so i&#39;m getting: Assertion failed: inpipes [current_in].active (xrep.cpp:244)
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-2" class="rowLink" href="#msg-2">
-                    [06:55]  the_hulk
+                    [00:11]  zedas
                     </a>
                 </td>
                 <td class="message-cell">
-                    ?
+                    when i use a xrep/xreq combo.  there some kind of cleanup i&#39;m not doing?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-3" class="rowLink" href="#msg-3">
-                    [13:35]  cremes
+                    [03:32]  freakazoid
                     </a>
                 </td>
                 <td class="message-cell">
-                    the_hulk: 2.1.x and 3.x are not compatible; the wire protocols are different so it&#39;s unlikely they will work together
+                    So let&#39;s say you&#39;re building Erlang on top of ZeroMQ, with 100k processes multiplexed onto one thread per core. Would it be advisable to use "pure" ZeroMQ for this purpose, with one socket per process?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-4" class="rowLink" href="#msg-4">
-                    [13:40]  the_hulk
+                    [03:32]  freakazoid
                     </a>
                 </td>
                 <td class="message-cell">
-                    cremes, currently 3.x is not release as stable na?
+                    Or, if not, what would be a good way to do it?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-5" class="rowLink" href="#msg-5">
-                    [14:26]  mikko
+                    [03:32]  freakazoid
                     </a>
                 </td>
                 <td class="message-cell">
-                    you can use multipart messages
+                    I&#39;ve been thinking about maybe pub/sub sockets using a topic for each proces
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-6" class="rowLink" href="#msg-6">
-                    [14:32]  mikko
+                    [03:32]  freakazoid
                     </a>
                 </td>
                 <td class="message-cell">
-                    have you read the guide?
+                    s
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-7" class="rowLink" href="#msg-7">
-                    [23:12]  freakazoid
+                    [03:40]  xristos
                     </a>
                 </td>
                 <td class="message-cell">
-                    Nils^: you have to be able to serialize the data in some way
+                    i&#39;ve used pub/sub and push/pull for something similar
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-8" class="rowLink" href="#msg-8">
-                    [23:13]  freakazoid
+                    [03:40]  xristos
                     </a>
                 </td>
                 <td class="message-cell">
-                    Nils^: because fundamentally a message is just an array of bytes
+                    had some issues but they have been fixed in git
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-9" class="rowLink" href="#msg-9">
-                    [23:14]  freakazoid
+                    [03:41]  freakazoid
                     </a>
                 </td>
                 <td class="message-cell">
-                    If you&#39;re inproc you could send pointers as long as you can cast a byte array back to a pointer, but that&#39;s dangerous
+                    How fast is the matching?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-10" class="rowLink" href="#msg-10">
-                    [23:39]  mikko
+                    [03:41]  freakazoid
                     </a>
                 </td>
                 <td class="message-cell">
-                    freakazoid: i would say in some cases sending pointers over inproc is preferred over the actual data
+                    is it going to scale well to 100k topics?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-11" class="rowLink" href="#msg-11">
-                    [23:39]  mikko
+                    [03:41]  xristos
                     </a>
                 </td>
                 <td class="message-cell">
-                    especially when dealing with larger chunks of data
+                    don&#39;t know but isn&#39;t on the radar with 5k
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-12" class="rowLink" href="#msg-12">
-                    [23:40]  mikko
+                    [03:41]  freakazoid
                     </a>
                 </td>
                 <td class="message-cell">
-                    the cast is just void * and back
+                    ah, great
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-13" class="rowLink" href="#msg-13">
-                    [23:40]  freakazoid
+                    [03:42]  freakazoid
                     </a>
                 </td>
                 <td class="message-cell">
-                    mikko: Yeah, I&#39;m making use of it
+                    I&#39;ll have to look at the implementation
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-14" class="rowLink" href="#msg-14">
-                    [23:40]  freakazoid
+                    [03:42]  xristos
                     </a>
                 </td>
                 <td class="message-cell">
-                    mikko; but then you have to make sure you also transfer ownership and don&#39;t touch the thing you sent again
+                    i&#39;m using processes not threads
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-15" class="rowLink" href="#msg-15">
-                    [23:40]  mikko
+                    [03:42]  xristos
                     </a>
                 </td>
                 <td class="message-cell">
-                    of course
+                    so can&#39;t really go up to hundreds of thousands
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-16" class="rowLink" href="#msg-16">
-                    [23:40]  freakazoid
+                    [03:42]  freakazoid
                     </a>
                 </td>
                 <td class="message-cell">
-                    I should make a smart pointer that does that
+                    well, there will just be 1 thread per core
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-17" class="rowLink" href="#msg-17">
-                    [23:41]  freakazoid
+                    [03:43]  freakazoid
                     </a>
                 </td>
                 <td class="message-cell">
-                    sends itself as a message and then clears itself
+                    so if I use pub/sub where the process subscribes to a topic representing its own mailbox, it&#39;ll just be the number of topics that needs to scale
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-18" class="rowLink" href="#msg-18">
-                    [23:41]  mikko
+                    [03:43]  xristos
                     </a>
                 </td>
                 <td class="message-cell">
-                    i think there is room for more elegant C++ api
+                    so by processes you mean coroutines?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-19" class="rowLink" href="#msg-19">
-                    [23:41]  mikko
+                    [03:43]  xristos
                     </a>
                 </td>
                 <td class="message-cell">
-                    more C++ish
+                    you schedule them yourself
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-20" class="rowLink" href="#msg-20">
-                    [23:41]  mikko
+                    [03:43]  xristos
                     </a>
                 </td>
                 <td class="message-cell">
-                    this is one of the reasons c++ api is moving out from source
+                    should be easy to test
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-21" class="rowLink" href="#msg-21">
-                    [23:42]  mikko
+                    [04:11]  freakazoid
                     </a>
                 </td>
                 <td class="message-cell">
-                    the goal is to have separately maintained C++ api
+                    xristos: yeah, coroutines, though no shared memory
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-22" class="rowLink" href="#msg-22">
-                    [23:44]  freakazoid
+                    [04:11]  freakazoid
                     </a>
                 </td>
                 <td class="message-cell">
-                    Sounds like a good idea
+                    software isolation ala erlang
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-23" class="rowLink" href="#msg-23">
-                    [23:44]  freakazoid
+                    [04:11]  freakazoid
                     </a>
                 </td>
                 <td class="message-cell">
-                    I like how lightweight it is now
+                    they&#39;ll also be preemptively scheduled
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-24" class="rowLink" href="#msg-24">
-                    [23:44]  freakazoid
+                    [04:12]  freakazoid
                     </a>
                 </td>
                 <td class="message-cell">
-                    But there&#39;s certainly room for some nifty abstractions
+                    "preemptively" from the user&#39;s perspective anyway
                 </td>
             </tr>
             
