@@ -47,370 +47,238 @@
 </div>
 
     <div class="content">
-        <h2>Saturday August 13, 2011</h2>
+        <h2>Sunday August 14, 2011</h2>
         <table class="message-table">
             <th>[Time]&nbsp;Name</th><th>Message</th>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-1" class="rowLink" href="#msg-1">
-                    [00:11]  zedas
+                    [11:48]  CIA-32
                     </a>
                 </td>
                 <td class="message-cell">
-                    so i&#39;m getting: Assertion failed: inpipes [current_in].active (xrep.cpp:244)
+                    libzmq: 03Martin Sustrik 07master * r6dc3b2a 10/ src/ip.cpp : Compilation error on FreeBSD fixed ...
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-2" class="rowLink" href="#msg-2">
-                    [00:11]  zedas
+                    [11:54]  grzesieq
                     </a>
                 </td>
                 <td class="message-cell">
-                    when i use a xrep/xreq combo.  there some kind of cleanup i&#39;m not doing?
+                    If I want to build durable work distribution with many task producers, I should use a ZMQ_STREAMER device, with producers connected on one end and workers on the other, right? And then I should set identity on the producers, different identity on the workers, HWM and swap on the producers and the PUSH socket of the streamer. Does that make sense?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-3" class="rowLink" href="#msg-3">
-                    [03:32]  freakazoid
+                    [12:07]  CIA-32
                     </a>
                 </td>
                 <td class="message-cell">
-                    So let&#39;s say you&#39;re building Erlang on top of ZeroMQ, with 100k processes multiplexed onto one thread per core. Would it be advisable to use "pure" ZeroMQ for this purpose, with one socket per process?
+                    libzmq: 03Martin Sustrik 07master * r9380098 10/ src/ip.cpp : Compilation error on HP-UX and AIX fixed ...
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-4" class="rowLink" href="#msg-4">
-                    [03:32]  freakazoid
+                    [12:24]  CIA-32
                     </a>
                 </td>
                 <td class="message-cell">
-                    Or, if not, what would be a good way to do it?
+                    libzmq: 03Martin Sustrik 07master * r9196c48 10/ src/zmq.cpp : select version zmq_poll reports invalid FDs ...
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-5" class="rowLink" href="#msg-5">
-                    [03:32]  freakazoid
+                    [15:35]  mandar1978
                     </a>
                 </td>
                 <td class="message-cell">
-                    I&#39;ve been thinking about maybe pub/sub sockets using a topic for each proces
+                    hello
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-6" class="rowLink" href="#msg-6">
-                    [03:32]  freakazoid
+                    [15:35]  mandar1978
                     </a>
                 </td>
                 <td class="message-cell">
-                    s
+                    I am new to 0mq and was trying to get php samples working
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-7" class="rowLink" href="#msg-7">
-                    [03:40]  xristos
+                    [18:05]  michie1
                     </a>
                 </td>
                 <td class="message-cell">
-                    i&#39;ve used pub/sub and push/pull for something similar
+                    just a quick question, is there a layer in ZMQ that allows for "virtual" addresses that transparently route messages to the appropriate processes (either on another computer, or on the same, choosing, say, PGM/TCP/IPC depending on what&#39;s most efficient)?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-8" class="rowLink" href="#msg-8">
-                    [03:40]  xristos
+                    [18:34]  mikko
                     </a>
                 </td>
                 <td class="message-cell">
-                    had some issues but they have been fixed in git
+                    michie1: not sure what you mean
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-9" class="rowLink" href="#msg-9">
-                    [03:41]  freakazoid
+                    [18:38]  michie1
                     </a>
                 </td>
                 <td class="message-cell">
-                    How fast is the matching?
+                    well, comparing it to tibco RV, I might address a message to "DatabaseServers.Transactions.Customers", and it&#39;ll be automatically forwarded to any processes that listen to that "address".
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-10" class="rowLink" href="#msg-10">
-                    [03:41]  freakazoid
+                    [18:39]  michie1
                     </a>
                 </td>
                 <td class="message-cell">
-                    is it going to scale well to 100k topics?
+                    (cleverly using the dots as a facsimile of subnetting)
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-11" class="rowLink" href="#msg-11">
-                    [03:41]  xristos
+                    [18:39]  michie1
                     </a>
                 </td>
                 <td class="message-cell">
-                    don&#39;t know but isn&#39;t on the radar with 5k
+                    all the zmq examples I&#39;ve seen use addresses that are bound to the underlying protocol
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-12" class="rowLink" href="#msg-12">
-                    [03:41]  freakazoid
+                    [18:40]  michie1
                     </a>
                 </td>
                 <td class="message-cell">
-                    ah, great
+                    which is fine--zmq is supposed to be lightweight, after all--but made me wonder if a seperate addressing layer exists.
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-13" class="rowLink" href="#msg-13">
-                    [03:42]  freakazoid
+                    [19:19]  mikko
                     </a>
                 </td>
                 <td class="message-cell">
-                    I&#39;ll have to look at the implementation
+                    michie1: no, there has been talks about it
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-14" class="rowLink" href="#msg-14">
-                    [03:42]  xristos
+                    [19:19]  mikko
                     </a>
                 </td>
                 <td class="message-cell">
-                    i&#39;m using processes not threads
+                    michie1: but noone has stepped up to implement one
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-15" class="rowLink" href="#msg-15">
-                    [03:42]  xristos
+                    [19:19]  michie1
                     </a>
                 </td>
                 <td class="message-cell">
-                    so can&#39;t really go up to hundreds of thousands
+                    mikko: ah, thanks
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-16" class="rowLink" href="#msg-16">
-                    [03:42]  freakazoid
+                    [19:19]  mikko
                     </a>
                 </td>
                 <td class="message-cell">
-                    well, there will just be 1 thread per core
+                    i would like to see gossip protocol style implementation
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-17" class="rowLink" href="#msg-17">
-                    [03:43]  freakazoid
+                    [19:20]  mikko
                     </a>
                 </td>
                 <td class="message-cell">
-                    so if I use pub/sub where the process subscribes to a topic representing its own mailbox, it&#39;ll just be the number of topics that needs to scale
+                    or concencus
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-18" class="rowLink" href="#msg-18">
-                    [03:43]  xristos
+                    [19:20]  michie1
                     </a>
                 </td>
                 <td class="message-cell">
-                    so by processes you mean coroutines?
+                    not familiar with either, I&#39;m afraid
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-19" class="rowLink" href="#msg-19">
-                    [03:43]  xristos
+                    [19:20]  mikko
                     </a>
                 </td>
                 <td class="message-cell">
-                    you schedule them yourself
+                    are you interested in the field of distributed computing?
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-20" class="rowLink" href="#msg-20">
-                    [03:43]  xristos
+                    [19:20]  mikko
                     </a>
                 </td>
                 <td class="message-cell">
-                    should be easy to test
+                    there is amazing resource here: http://www.quora.com/What-are-the-seminal-papers-in-distributed-systems-Why
                 </td>
             </tr>
             
             <tr>
                 <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
                     <a name="msg-21" class="rowLink" href="#msg-21">
-                    [04:11]  freakazoid
+                    [19:23]  michie1
                     </a>
                 </td>
                 <td class="message-cell">
-                    xristos: yeah, coroutines, though no shared memory
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-22" class="rowLink" href="#msg-22">
-                    [04:11]  freakazoid
-                    </a>
-                </td>
-                <td class="message-cell">
-                    software isolation ala erlang
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-23" class="rowLink" href="#msg-23">
-                    [04:11]  freakazoid
-                    </a>
-                </td>
-                <td class="message-cell">
-                    they&#39;ll also be preemptively scheduled
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-24" class="rowLink" href="#msg-24">
-                    [04:12]  freakazoid
-                    </a>
-                </td>
-                <td class="message-cell">
-                    "preemptively" from the user&#39;s perspective anyway
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-25" class="rowLink" href="#msg-25">
-                    [13:00]  jimy
-                    </a>
-                </td>
-                <td class="message-cell">
-                    hi all, i am a newcomer in 0Mq and trying to run the code in zguide/examples/ c# /asyncserv.cs but client.PollInHandler in line 33 throws an error as pollInhandler is not in ZMQ.Socket. any help please
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-26" class="rowLink" href="#msg-26">
-                    [13:43]  keffo
-                    </a>
-                </td>
-                <td class="message-cell">
-                    during build or runtime?
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-27" class="rowLink" href="#msg-27">
-                    [13:59]  jimy
-                    </a>
-                </td>
-                <td class="message-cell">
-                    during build, I can&#39;t compile
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-28" class="rowLink" href="#msg-28">
-                    [14:35]  keffo
-                    </a>
-                </td>
-                <td class="message-cell">
-                    have you added the binding?
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-29" class="rowLink" href="#msg-29">
-                    [14:41]  jimy
-                    </a>
-                </td>
-                <td class="message-cell">
-                    yes I&#39;ve added the binding and the PollInHandler method is not in Socket class as in the example but in the PollItem class.
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-30" class="rowLink" href="#msg-30">
-                    [14:42]  keffo
-                    </a>
-                </td>
-                <td class="message-cell">
-                    odd
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-31" class="rowLink" href="#msg-31">
-                    [14:43]  jimy
-                    </a>
-                </td>
-                <td class="message-cell">
-                    yes odd. Is there someone with a chunk of asynchroneous request reply? I want to send messages out and display replies as they arrive
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-32" class="rowLink" href="#msg-32">
-                    [15:05]  guido_g
-                    </a>
-                </td>
-                <td class="message-cell">
-                    most of these things are covered in the guide
-                </td>
-            </tr>
-            
-            <tr>
-                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
-                    <a name="msg-33" class="rowLink" href="#msg-33">
-                    [15:11]  jimy
-                    </a>
-                </td>
-                <td class="message-cell">
-                    I&#39;ve got my head into the guide, what I can&#39;t figure out is to used 2 threads in the client. one sending message and the second displaying replies
+                    thanks--that link looks very interesting.  But I suspect I&#39;m more interested in a system to get messages to the right destination than a system to ensure any kind of global consistency
                 </td>
             </tr>
             
