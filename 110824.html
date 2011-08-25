@@ -1,0 +1,1036 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title>ZeroMq IRC Log</title>
+<!--    <base href="http://travlr.github.com/zmqirclog/index.html" target="_self"/>-->
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+
+</head>
+
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <a href="http://travlr.github.com/zmqirclog/index.html" target="_blank">
+            <img src="images/zeromq1-300x115.png" alt="ZeroMq Logo" border="0"/>
+            </a>
+        </div>
+        <div id="header-left-bottom" style="padding-left:200px;font-weight:bold">
+            IRC Log
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="float:right; vertical-align:text-top; padding-top:5px">
+            <form action="http://travlr.github.com/zmqirclog/search-results.html" id="cse-search-box">
+  <div>
+    <input type="hidden" name="cx" value="017268610037587914919:goqutszmb5o" />
+    <input type="hidden" name="cof" value="FORID:9" />
+    <input type="hidden" name="ie" value="UTF-8" />
+    <input type="text" name="q" size="31" />
+    <input type="submit" name="sa" value="Search" />
+  </div>
+</form>
+<script type="text/javascript" src="http://www.google.com/cse/brand?form=cse-search-box&lang=en"></script>
+
+        </div>
+        <div style="clear:right;"></div>
+        <div id="header-right-bottom" style="text-align:right; vertical-align:text-bottom; padding-right:30px; padding-top:75px;">
+            <h2><a href="http://www.zeromq.org/" target="_blank">ZeroMq Home</a></h2>
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+    <hr/>
+</div>
+
+    <div class="content">
+        <h2>Wednesday August 24, 2011</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [09:09]  ntelford
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko, sup?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [20:09]  MattH
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I have a design question about how to best coordinate two different processes. Let&#39;s say I have two steams of data, Data Stream A which is pub-sub and Data Stream B which is request reply. Data Stream A contains updates to meta data that determines how Data Stream B should be processed. In certain cases, I need to ensure  that Data Stream A is received and processed before Data Stream B if Data Stream A was sent before B - otherwise
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [20:13]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    MattH_: posting a large paragraph like that gets truncated by a lot of irc clients
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [20:13]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i only see the first few lines... and i saw your question on the ML
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [20:14]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    MattH_: your description on the mailing list is a bit ambiguous
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [20:14]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you want to make sure data from datastreamA is received and processed before datastreamB "in certain circumstances"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [20:15]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    does that mean you don&#39;t need A processed before B *every* time, just the *first* time?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [20:16]  MattH
+                    </a>
+                </td>
+                <td class="message-cell">
+                    The incoming data will typically be flagged as to whether A needs to be processed before B
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [20:16]  MattH
+                    </a>
+                </td>
+                <td class="message-cell">
+                    its not just the first time...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [20:16]  MattH
+                    </a>
+                </td>
+                <td class="message-cell">
+                    its per request
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [20:17]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    MattH_: are you using timestamps in the A and B message streams to determine order?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [20:17]  MattH
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I dont have anything right now, i am pretty new to Zeromq and am just trying to come up with the correct strategy
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [20:18]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, then yes, you&#39;ll probably want to use timestamps on the messages to help determine which data came first (A or B)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [20:19]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    here&#39;s one technique that may be suitable...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [20:19]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    1. read a request from streamB
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [20:19]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    2. before processing the request, try a non-blocking read from streamA
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [20:20]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    2a. if streamA returns EAGAIN, no data is waiting; continue processing B
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [20:20]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    2b. if streamA returns a message, update your metadata; then continue processing B
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [20:20]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    MattH_: does that make sense?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [20:21]  glguy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I suspect that you won&#39;t be able to guarantee that the control message on streamA will arrive before the broadcast message on streamB, even if you sent the message on A first
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [20:22]  glguy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so having EAGAIN on streamA doesn&#39;t necessarily mean that there isn&#39;t a relevant control message (based on my skimming of what just happened in channel)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [20:22]  MattH
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Right, thats a good observation
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [20:22]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    of course there is no guarantee
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [20:23]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    true
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [20:23]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the original problem sounds like a best effort though
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [20:23]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    why not simply send a "switch to the other stream" message
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [20:23]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if A has a metadata update, apply it; if not, process B
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [20:24]  MattH
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Sustrik: How do you mean by "switch to the other stream"?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [20:24]  glguy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I think that that solution makes sense given what I&#39;ve read so far. I was just making sure that MattH_ was considering that case
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [20:24]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i mean send a special message on A saying "start processing B"
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [20:24]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: i don&#39;t think that fits his problem; it&#39;s not a flip-flop back and forth between A and B
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [20:24]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and vice vesa
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [20:24]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    B should *always* be processed even if A has no new data
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [20:25]  MattH
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Cremes: I think your plan is good, but would also be open to ideas that would increase confidence that A would be processed before B
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [20:25]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    MattH_: you need to change A to a REQ/REP socket pattern then
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [20:25]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is there a strict ordering on all messages?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [20:25]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    since you can&#39;t rely on best effort timing
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [20:26]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in such case you can tag each message with a sequence number
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [20:26]  MattH
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Humm, how would REQ/REP function if there are multiple workers though? I am using PUB/SUB because i have multi subscribers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [20:27]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it would load balance
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [20:27]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so i guess that&#39;s not what you want
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [20:27]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    maybe passing everything throug a simple pub/sub?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [20:27]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    MattH_: you would use REQ/REP for each subscriber
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [20:28]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    actually, that still doesn&#39;t solve your ordering issue
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [20:28]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you will need to coordinate some kind of global sequence no as sustrik suggested
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [20:28]  MattH
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Right, but each worker is taking part of the work that needs to be done from stream B where as all workers need to know about Stream A
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [20:28]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    your worker will get message 2 and not process it until it has received message 1 from A
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [20:28]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how could you coordinate that?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [20:29]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    worker get only some messages from B and all from A, right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [20:29]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    MattH_: i don&#39;t understand your problem; i suggest writing up a lot more detail (and use cases) on the mailing list
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [20:29]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    +1
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [20:30]  MattH
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Sustrick that is correct
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [20:30]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then you just can&#39;t coordinate that, you have no guarantee how many B&#39;s you are going to receive
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [20:30]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it depends on overal number of workers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [20:31]  MattH
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Perhaps I can further describe: I have an incoming messages that need to be processed by X number of workers.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [20:31]  MattH
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I have another feed that contains information that will change the way the workers process the messages.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [20:32]  MattH
+                    </a>
+                </td>
+                <td class="message-cell">
+                    So the workers need to make the change in their processing routines before continuaing to process messages that were sent after the update
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [20:33]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    however, if you load balance the B&#39;s
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [20:33]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    only one of the workers is going to get any particular B
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [20:33]  MattH
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Correct
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [20:33]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you don&#39;t know which one
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [20:34]  keffo
+                    </a>
+                </td>
+                <td class="message-cell">
+                    lol, loadbalanced bee&#39;s :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [20:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if there&#39;s a lot of workers some of them may not get B for a long time
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [20:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [20:34]  MattH
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [20:34]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    aha
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [20:34]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    MattH_: so let&#39;s say A publishes an update at time t1
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [20:35]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and a worker gets a B request at time t2
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [20:35]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and the worker gets the A update at time t3
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [20:35]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    do you want the worker to wait around for an A update?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [20:36]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or should the worker process B?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [20:36]  MattH
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Worker should process B only if it was sent before A
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [20:36]  MattH
+                    </a>
+                </td>
+                <td class="message-cell">
+                    What if stream A is more of a continous stream of update messages (whether there are updates or not) and messages are only processed if their timestamp is after stream A?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [20:36]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    MattH_: okay, so how do you plan on ordering these events?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [20:37]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sequence number should do
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [20:37]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    exactly, from a central source
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [20:37]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (which will limit the scalability of this system)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [20:38]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so whoever is producing messages for stream A and stream B will first need to request the next sequence no from service C
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [20:38]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and use it to stamp all outgoing messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [20:39]  MattH
+                    </a>
+                </td>
+                <td class="message-cell">
+                    How will next sequence number work though since the workers are distributed? That seems like it only works if there is 1 worker
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [20:40]  MattH
+                    </a>
+                </td>
+                <td class="message-cell">
+                    If some type of time stamp were used instead of a sequence number, then it seems like that would work across all the workers
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [20:44]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    MattH_: what&#39;s the difference between comparing two integers and using timestamps? they&#39;re functionally the same, right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [20:45]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if t1 &lt; t2 do_something else do_something_else
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [20:45]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    where t1 is a sequence no or a timestamp
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [20:46]  MattH
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Say that Stream A ID is 49 and Stream B ID is 50. How does the worker know there should have been a 49? Since the workload is distributed, the numbers wont be sequential...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [20:48]  MattH
+                    </a>
+                </td>
+                <td class="message-cell">
+                    If stream A is a continous heartbeat to all workers then all of them know their processing routines are current as of X
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [20:49]  MattH
+                    </a>
+                </td>
+                <td class="message-cell">
+                    stream B would continue to be processed as long as its timestamp &lt; X
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [21:47]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    evenin
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+    <div class="footer-container"><hr/>
+    <p style="color:#a9a9a9; font-size:0.75em; text-align:center; margin:5px 5%;">
+       Web site design and content is copyright &copy; 2010-2011 Peter Alexander, ProDataLab. Site content licensed under the Creative Commons Attribution-Share Alike 3.0 License.
+       &Oslash;MQ is copyright &copy; Copyright &copy; 2007-2011 iMatix Corporation and Contributors.
+       <a href="http://www.imatix.com/contact">Contact us for professional support.</a>
+       &Oslash;MQ is free software licensed under the LGPL. &Oslash;MQ, ZeroMQ, and 0MQ are trademarks of iMatix Corporation.
+       <a href="http://www.zeromq.org/legal:terms-of-use">Terms of Use</a> ?
+       <a href="http://www.zeromq.org/legal:privacy-policy">Privacy Policy</a>
+    </p>
+</div>
+
+</body>
+</html>
