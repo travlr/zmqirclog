@@ -1051,7 +1051,1349 @@
                     libzmq: 03Martin Sustrik 07master * r82ab08d 10/ src/xsub.cpp : Premature deallocation bug in XSUB fixed (issue 244) ...
                 </td>
             </tr>
-            
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [16:31]  sigmonsay
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Will zmq use epoll if possible?
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [16:49]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sigmonsay: yes.. take a look https://github.com/zeromq/zeromq3-0/blob/master/src/epoll.cpp
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [16:56]  sigmonsay
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks felipejcruz. Have you used the python zmq lib? It seems rather unstable
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [16:56]  sigmonsay
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Ie, i&#39;ve segfaulted python twice doing the "wrong thing"
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [16:58]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes..
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [16:59]  Plouj-
+                    </a>
+                </td>
+                <td class="message-cell">
+                    wait, zmq is written in C++??
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [16:59]  Plouj-
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (as opposed to C)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [16:59]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sigmonsay: if you pastebin your code maybe someone can help.. :)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [17:00]  sigmonsay
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m good at debugging, so I Figured it out. It&#39;s just not cool to segfault =P
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [17:01]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sigmonsay: I&#39;m workin on a zmq python lib using ctypes on top of czmq
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [17:01]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but still in early development
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [17:01]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    felipejcruz, nice
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [17:01]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    seems like that would be a good fit
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [17:02]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    michelp: great learning experience
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [17:02]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    plus i&#39;ll work with pypy
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [17:02]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it will*
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [17:02]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;ve always wanted to do a ctypes project but haven&#39;t had the opportunity (or time)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [17:03]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    do you have time nowdays?
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [17:03]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i suppose the api would look more like czmq than the current pyzmq api?
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [17:03]  sigmonsay
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Nice
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [17:03]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m trying to follow pyzmq.. so far, i got some tests from pyzmq running
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [17:04]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but i&#39;m facing a "problem" now.. czmq has a zloop approach insted of a poller approach
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [17:04]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    felipejcruz, i&#39;d certainly be willing to try it with some of my code if the api isn&#39;t too incredibly different
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [17:04]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if your code only send/recv strings, maybe it will work
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [17:05]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm, is the problem that it&#39;s hard for zloop to callback to python functions?
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [17:05]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    my code uses poller extensively
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [17:05]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i can emulate a poll creating a thread and creating this loop on this thread
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [17:06]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    because zloop take the control of running program..
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [17:06]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but it can be changed to expose zmq_poll func
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [17:06]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;ll probably do that
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [17:06]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm... yeah, i&#39;m not against that paradigm, i&#39;ve used Twisted a lot in the past and have enjoyed it
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [17:06]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;m not agains, but i don&#39;t really like.. matter os taste to me :)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [17:06]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    seems like exposing a zmq_poll wouldn&#39;t be that hard... but obviously I&#39;m not speaking from experience
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [17:07]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you have a public repo?
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [17:09]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not yet.. but if you really want I can share with you.. I want implement zmq.Poll before publish (i don&#39;t know if this word is the right one:) )
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [17:10]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    good thing about using czmq is that it hides differences between different zmq versions
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [17:10]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so it should work with 2.x to 3.x (maybe with libzmq 4.0 unstable too) but I&#39;m not sure
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [17:10]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i would encourage you to push to a repo, no one is going to judge your code :)  it would make it easier for sharing
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [17:11]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    michelp: i&#39;m afraid of judging :D
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [17:12]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but since at least one person got interested, i&#39;ll put on my github
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [17:12]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [17:13]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    awesome, i don&#39;t think you&#39;ll regret it, the more people can see that it is out there, the more help you&#39;ll get
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [17:14]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    also there&#39;s no saying that maybe the pyzmq authors will get ideas from your code like you&#39;ve gotten ideas from theirs, that&#39;s the beauty of shared code.  mixing ideas.
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [17:17]  dcolish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ctypes are not a good choice for a performance oriented python module
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [17:19]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dcolish: pypy jit optimize ctypes calls now
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [17:20]  dcolish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    not everyone is using pypy
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [17:20]  dcolish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;d say most applications are still using cpython
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [17:20]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    fair.. but some people are
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [17:20]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    :)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [17:20]  dcolish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [17:21]  dcolish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    however, i&#39;ve yet to see an actual comparison of ctypes in pypy vs cython
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [17:21]  dcolish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    using the C-API has benefits
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [17:21]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if I got sometime maybe I&#39;ll do that
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [17:22]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but if you you have some heavy python processing, you can benefit of using pypy.. even if cython zmq is faster than ctypes on pypy..
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [17:23]  dcolish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure, depends on where your bottleneck is
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [17:23]  Plouj-
+                    </a>
+                </td>
+                <td class="message-cell">
+                    felipejcruz: you should use cython
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [17:23]  dcolish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you could easily have issues with the marshaling of datatypes if you have a high message volume
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [17:23]  dcolish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thats why i&#39;d avoid ctypes
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [17:24]  Plouj-
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oh
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [17:24]  Plouj-
+                    </a>
+                </td>
+                <td class="message-cell">
+                    felipejcruz: what is the benefit of using ctypes over cython for you?
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [17:25]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    as I said.. to me, this is a learning experience
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [17:25]  Plouj-
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, nvm
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [17:28]  dcolish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah all that said, ctypes are a great way to experiment
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [17:28]  dcolish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and if that new pypy stackless branch lands you might really have something there
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [17:29]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Plouj-: to me it that cython isn&#39;t compatible with pypy
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [17:29]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it = is
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [17:31]  Plouj-
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I see
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [17:31]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    plus it&#39;s fun :)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [17:48]  kilpatds
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ve perhaps a stupid question (yes, I&#39;ve read the guide) if someone could help me figure it out...
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [17:48]  kilpatds
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ve got a router socket to handle serveral clients.  A given client request could generate a ... large amount of response (split over many messages).
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [17:48]  kilpatds
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;d like to throttle my replies.  The source data ain&#39;t going anywhere.
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [17:48]  kilpatds
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Any obvious way to do that?  Or is this just the wrong connection pattern?
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [17:55]  kilpatds
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (er, to clarify.  I&#39;d like to get blocking behavior, but I have multiple clients and need to be able to route messages correctly)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [18:13]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    kilpatds: you want to block all yours server send() until this specific client gets this large reply?
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [18:14]  kilpatds
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I want to know to stop sending to the client right now (cause not all the data&#39;s gotten there yet), and I want to know when a good time to start sending again would be
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [18:15]  kilpatds
+                    </a>
+                </td>
+                <td class="message-cell">
+                    while still handling other clients
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [18:16]  kilpatds
+                    </a>
+                </td>
+                <td class="message-cell">
+                    basically, I&#39;ve got, say 4G of stuff here that I need to send to client, in nice 64k chunks.  I&#39;d rather not duplicate it in zmq buffers, or cause 4G of ram to be allocated, or drop the last 3G onto the floor
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [18:19]  felipejcruz
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i really don&#39;t know how to help you with this.. sorry
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [18:33]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    kilpatds: this may help: http://unprotocols.org/blog:15
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [18:48]  sigmonsay
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Is there UDP support in 0MQ?
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [19:00]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sigmonsay: there&#39;s provisional support via the VTX project in https://github.com/imatix/vtx/v3.
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [19:07]  ParadoxG
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Would performance be better if you had many ZMQ threads doing blocking IO, or have a single thread with non-blocking IO?
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [19:14]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ParadoxG: you won&#39;t get extraordinary performance if you increase the number of threads
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [19:15]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but it&#39;s not smart to (try to) optimize a design for performance until you actually have testable code
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [19:23]  ParadoxG
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I would think it would be easier to write an application that uses blocking io with ZMQ threads, than it would be to write a fancy non-blocking one
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [19:44]  sigmonsay
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh, interesting. Thanks for that. imma watching that project
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [19:56]  kilpatds
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: yes, that looks like it could be helpful.  Thanks
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [22:09]  ahbritto
+                    </a>
+                </td>
+                <td class="message-cell">
+                    How can I use ssl with pyzmq?
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-89" class="rowLink" href="#msg-89">
+                    [22:11]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ahbritto, you could use openvpn or stunnel
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-90" class="rowLink" href="#msg-90">
+                    [22:11]  ahbritto
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Ow. :(
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-91" class="rowLink" href="#msg-91">
+                    [22:11]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or even ssh port forwarding
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-92" class="rowLink" href="#msg-92">
+                    [22:12]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what were you expecting?
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-93" class="rowLink" href="#msg-93">
+                    [22:12]  ahbritto
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ssl is such an easy thing in python.  You just specify a cert when opening a socket.
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-94" class="rowLink" href="#msg-94">
+                    [22:16]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah i see what you&#39;re saying.  you can still use pyopenssl to encrypt your messages before sending them over the wire
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-95" class="rowLink" href="#msg-95">
+                    [22:19]  xristos
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pyopenssl is a pain in the ass tho ;p
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-96" class="rowLink" href="#msg-96">
+                    [22:21]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, maybe the core devs would entertain the idea of a patch adding optional support that&#39;s as simple as what python&#39;s socket module provides
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-97" class="rowLink" href="#msg-97">
+                    [22:21]  ahbritto
+                    </a>
+                </td>
+                <td class="message-cell">
+                    michelp: It would be better all communication was encrypted, I could use the other parties ssl cert for authenticaton too.
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-98" class="rowLink" href="#msg-98">
+                    [22:21]  ahbritto
+                    </a>
+                </td>
+                <td class="message-cell">
+                    michelp: But all bindings would need to support it. :/
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-99" class="rowLink" href="#msg-99">
+                    [22:22]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yeah it would be a pain.  and honestly i don&#39;t want all my traffic encrypted for my use cases, it would be much better if it were optional
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-100" class="rowLink" href="#msg-100">
+                    [22:30]  ahbritto
+                    </a>
+                </td>
+                <td class="message-cell">
+                    What I&#39;d like to see is something like websocket that let me ride https so that I would not need to worry about firewalls.
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-101" class="rowLink" href="#msg-101">
+                    [22:33]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;m no expert, but as i understand it websockets are binary clean, the data frames contain utf-8 data.  maybe the technology has advanced beyond my understanding of it
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-102" class="rowLink" href="#msg-102">
+                    [22:33]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    &#39;are not binary clean&#39;
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-103" class="rowLink" href="#msg-103">
+                    [22:34]  ahbritto
+                    </a>
+                </td>
+                <td class="message-cell">
+                    michelp: I think that has been resolved.
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-104" class="rowLink" href="#msg-104">
+                    [22:34]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i should probably shut up since this gets into levels of stack i have less knowledge of ;)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-105" class="rowLink" href="#msg-105">
+                    [22:35]  ahbritto
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Trying to find the right combination of features in a single solution is turning out to be a night mare for me. :/
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-106" class="rowLink" href="#msg-106">
+                    [22:35]  ahbritto
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq looked so good.
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-107" class="rowLink" href="#msg-107">
+                    [22:35]  ahbritto
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ll probably use it internally.
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-108" class="rowLink" href="#msg-108">
+                    [22:35]  ahbritto
+                    </a>
+                </td>
+                <td class="message-cell">
+                    A real shame I can&#39;t use it public facing.
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-109" class="rowLink" href="#msg-109">
+                    [22:40]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah "while binary frames use a length prefix."
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-110" class="rowLink" href="#msg-110">
+                    [22:40]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    wikipedia is not as up to date as websocket.org
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-111" class="rowLink" href="#msg-111">
+                    [22:41]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    maybe websocket isn&#39;t such a crazy idea, depending on if your client can support it
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-112" class="rowLink" href="#msg-112">
+                    [22:41]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or use something like Mongrel2 to translate the http part of your protocol into 0mq messages
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-113" class="rowLink" href="#msg-113">
+                    [22:41]  ahbritto
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;d love to use socket.io, but it seems little imature with no client side python support.
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-114" class="rowLink" href="#msg-114">
+                    [22:41]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Mongrel2 grew ssl support recently IIRC
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-115" class="rowLink" href="#msg-115">
+                    [22:42]  ahbritto
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;d like clients to easily be javascript or python.
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-116" class="rowLink" href="#msg-116">
+                    [22:42]  ahbritto
+                    </a>
+                </td>
+                <td class="message-cell">
+                    And, I&#39;d like to do this with stable technology. ;)
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-117" class="rowLink" href="#msg-117">
+                    [22:42]  ahbritto
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m thinking about what would have to happen to zeromq to do ssl...
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-118" class="rowLink" href="#msg-118">
+                    [22:43]  ahbritto
+                    </a>
+                </td>
+                <td class="message-cell">
+                    You need to know the identity of a message sender.
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-119" class="rowLink" href="#msg-119">
+                    [22:43]  ahbritto
+                    </a>
+                </td>
+                <td class="message-cell">
+                    So, you&#39;d want to put the ssl finger print in messages.
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-120" class="rowLink" href="#msg-120">
+                    [22:43]  ahbritto
+                    </a>
+                </td>
+                <td class="message-cell">
+                    This is after the stunnel connection.
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-121" class="rowLink" href="#msg-121">
+                    [22:58]  ahbritto
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Is zeromq easily runnable with Apache (poll integration)?
+                </td>
+            </tr>
+
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-122" class="rowLink" href="#msg-122">
+                    [22:59]  ahbritto
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Nevermind, mongrel2 might be fine.
+                </td>
+            </tr>
+
         </table>
     </div>
     <div class="footer-container"><hr/>

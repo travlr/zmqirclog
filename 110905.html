@@ -1,0 +1,519 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title>ZeroMq IRC Log</title>
+<!--    <base href="http://travlr.github.com/zmqirclog/index.html" target="_self"/>-->
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+
+</head>
+
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <a href="http://travlr.github.com/zmqirclog/index.html" target="_blank">
+            <img src="images/zeromq1-300x115.png" alt="ZeroMq Logo" border="0"/>
+            </a>
+        </div>
+        <div id="header-left-bottom" style="padding-left:200px;font-weight:bold">
+            IRC Log
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="float:right; vertical-align:text-top; padding-top:5px">
+            <form action="http://travlr.github.com/zmqirclog/search-results.html" id="cse-search-box">
+  <div>
+    <input type="hidden" name="cx" value="017268610037587914919:goqutszmb5o" />
+    <input type="hidden" name="cof" value="FORID:9" />
+    <input type="hidden" name="ie" value="UTF-8" />
+    <input type="text" name="q" size="31" />
+    <input type="submit" name="sa" value="Search" />
+  </div>
+</form>
+<script type="text/javascript" src="http://www.google.com/cse/brand?form=cse-search-box&lang=en"></script>
+
+        </div>
+        <div style="clear:right;"></div>
+        <div id="header-right-bottom" style="text-align:right; vertical-align:text-bottom; padding-right:30px; padding-top:75px;">
+            <h2><a href="http://www.zeromq.org/" target="_blank">ZeroMq Home</a></h2>
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+    <hr/>
+</div>
+
+    <div class="content">
+        <h2>Monday September 5, 2011</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [06:54]  ekontsevoy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how do I stop a device? (I am talking about built-in devices, like a streamer in my case)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [07:13]  ekontsevoy
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if I don&#39;t stop it and keep it running on a different thread, I can only force it to stop by closing some of device sockets, and in that case I get segfaults (but not always)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [14:24]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: there?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [15:57]  crashanddie
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hey guys, I&#39;ve asked one of my guys to analyze 0mq, he came back to me saying that it was "useless because you have to exclusively use 0mq sockets", babbling on about the fact that we wouldn&#39;t be able to use MongoDB at the same time. This is very difficult for me to believe, any expert opinion on this?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [16:00]  crashanddie
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I understand that a 0MQ socket will have to talk exclusive to another 0MQ socket, but I don&#39;t see how this would impact any other type of socket we may use in the system.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [16:05]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    crashanddie: yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [16:06]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zeromq socket will talk to any socket talking with the same framing protocol
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [16:06]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which is mainly zeromq sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [16:06]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    people who need to talk to other kind of protocols usually use intermediates in between that convert between different formats
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [16:06]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    maybe he would like to connect zeromq socket directly to mongodb?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [16:07]  crashanddie
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nha
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [16:08]  crashanddie
+                    </a>
+                </td>
+                <td class="message-cell">
+                    he&#39;s trying to find arguments to push 0mq off the grid
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [16:08]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what sort of application are you looking to use it in?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [16:09]  crashanddie
+                    </a>
+                </td>
+                <td class="message-cell">
+                    basically, he&#39;s arguing that the 0mq implementation only supports 0mq sockets. Right. But then again, if we make our own proprietary message queue, then we can only talk our own proprietary sockets anyway... so, moot point
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [16:09]  crashanddie
+                    </a>
+                </td>
+                <td class="message-cell">
+                    high performance, low latency voip
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [16:09]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i would also think that building your own message queue is fairly large amount of pain
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [16:10]  crashanddie
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this guy wrote 450k lines of code by himself, reimplementing everything from xml parsers to IDls.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [16:10]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    interesting
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [16:10]  crashanddie
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and zip compression, yada yada.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [16:10]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    he doesn&#39;t like to use other people&#39;s code?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [16:10]  crashanddie
+                    </a>
+                </td>
+                <td class="message-cell">
+                    he hates it.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [16:11]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well, im not against reinventing the wheel in some cases
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [16:11]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but often it adds quite a lot of maintenance burdeon
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [16:11]  crashanddie
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Aye, and considering my team is now a grand total of 6.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [16:12]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and especially all things that come with the code: documentation, tests, build systems etc
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [16:14]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but you are right, the zeromq sockets wouldn&#39;t have impact to other sockets
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [16:30]  crashanddie
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Is the polling overloaded?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [16:52]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    crashanddie: i use 0mq sockets and talk to mongodb in my production apps
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [16:52]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    w
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [16:52]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    orks great
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [16:52]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the use of 0mq sockets does not preclude the use of regular bsd sockets within the same process, thread or whatever
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [16:52]  crashanddie
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I know, the guy in question is using strawman arguments
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [16:53]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    perhaps you could suggest he join this channel for a day or two and ask some questions
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [16:53]  crashanddie
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I got him in here a week ago
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [16:53]  crashanddie
+                    </a>
+                </td>
+                <td class="message-cell">
+                    he said it was "too noisy".
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [16:54]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what? he sounds like a nut (sorry)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [16:54]  crashanddie
+                    </a>
+                </td>
+                <td class="message-cell">
+                    he is
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [16:54]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then tell him to join the mailing list and ask questions there... daily traffic is about 10 msgs
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [17:09]  crashanddie
+                    </a>
+                </td>
+                <td class="message-cell">
+                    done just that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [22:05]  tproa
+                    </a>
+                </td>
+                <td class="message-cell">
+                    w/indow 13
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [22:05]  tproa
+                    </a>
+                </td>
+                <td class="message-cell">
+                    feh
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+    <div class="footer-container"><hr/>
+    <p style="color:#a9a9a9; font-size:0.75em; text-align:center; margin:5px 5%;">
+       Web site design and content is copyright &copy; 2010-2011 Peter Alexander, ProDataLab. Site content licensed under the Creative Commons Attribution-Share Alike 3.0 License.
+       &Oslash;MQ is copyright &copy; Copyright &copy; 2007-2011 iMatix Corporation and Contributors.
+       <a href="http://www.imatix.com/contact">Contact us for professional support.</a>
+       &Oslash;MQ is free software licensed under the LGPL. &Oslash;MQ, ZeroMQ, and 0MQ are trademarks of iMatix Corporation.
+       <a href="http://www.zeromq.org/legal:terms-of-use">Terms of Use</a> ?
+       <a href="http://www.zeromq.org/legal:privacy-policy">Privacy Policy</a>
+    </p>
+</div>
+
+</body>
+</html>
