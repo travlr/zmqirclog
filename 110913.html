@@ -1,0 +1,1861 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title>ZeroMq IRC Log</title>
+<!--    <base href="http://travlr.github.com/zmqirclog/index.html" target="_self"/>-->
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+
+</head>
+
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <a href="http://travlr.github.com/zmqirclog/index.html" target="_blank">
+            <img src="images/zeromq1-300x115.png" alt="ZeroMq Logo" border="0"/>
+            </a>
+        </div>
+        <div id="header-left-bottom" style="padding-left:200px;font-weight:bold">
+            IRC Log
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="float:right; vertical-align:text-top; padding-top:5px">
+            <form action="http://travlr.github.com/zmqirclog/search-results.html" id="cse-search-box">
+  <div>
+    <input type="hidden" name="cx" value="017268610037587914919:goqutszmb5o" />
+    <input type="hidden" name="cof" value="FORID:9" />
+    <input type="hidden" name="ie" value="UTF-8" />
+    <input type="text" name="q" size="31" />
+    <input type="submit" name="sa" value="Search" />
+  </div>
+</form>
+<script type="text/javascript" src="http://www.google.com/cse/brand?form=cse-search-box&lang=en"></script>
+
+        </div>
+        <div style="clear:right;"></div>
+        <div id="header-right-bottom" style="text-align:right; vertical-align:text-bottom; padding-right:30px; padding-top:75px;">
+            <h2><a href="http://www.zeromq.org/" target="_blank">ZeroMq Home</a></h2>
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+    <hr/>
+</div>
+
+    <div class="content">
+        <h2>Tuesday September 13, 2011</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [00:57]  mascool
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how can I pass ZMQ_NOBLOCK to the recv method in PHP ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [00:58]  mascool
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I tried $jobResponse = $statsResponse-&gt;recv(ZMQ_NOBLOCK);
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [00:58]  mascool
+                    </a>
+                </td>
+                <td class="message-cell">
+                    where $statsResponse = new ZMQSocket( $context, ZMQ::SOCKET_PULL );
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [00:58]  mascool
+                    </a>
+                </td>
+                <td class="message-cell">
+                    $statsResponse-&gt;connect( "tcp://localhost:6557" );
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [00:59]  mascool
+                    </a>
+                </td>
+                <td class="message-cell">
+                    comes back saying ZMQ_NOBLOCK is not defined
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [00:59]  mascool
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which I understand why
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [01:04]  dcolish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the constant for noblock is ZMQ::MODE_NOBLOCK
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [01:05]  mascool
+                    </a>
+                </td>
+                <td class="message-cell">
+                    dcolish: thanks! that worked!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [01:05]  mascool
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is there a place where I can find this info next time ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [01:05]  mascool
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I checked the documentation but couldn&#39;t find php specifics
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [01:06]  dcolish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no prob, yeah the php binding docs have a good example for sending/receiving using NO_BLOCK: http://php.zero.mq/zmqsocket.recv.html
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [01:06]  dcolish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;m not really a php hacker, but it looks straightforward enough
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [01:06]  mascool
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this is perfect, thanks again!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [01:07]  dcolish
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you bet
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [06:23]  awainzin
+                    </a>
+                </td>
+                <td class="message-cell">
+                    howdy
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [06:24]  awainzin
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks much for the zmq guide.  going through it in python, was thinking it would be cool to link to the other zhelpers source (right now it says it&#39;s only required by C, but it&#39;s used in e.g. rtmama example)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [08:36]  Sil4nc4
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi guys, a quick question, i use the request - reply broker message form, but when my worker dies after sending the request, the server replies but the message gets lost because the worker is not there, any suggestions?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [08:53]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you have to timeout
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [08:53]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then you can either report error
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [08:53]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or resend the request
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [09:30]  Sil4nc4
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok thx sustrik
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [10:02]  Sil4nc4
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://pastebin.com/kRCbaS9T The problem is when the worker stops and restarts the jobs don&#39;t get processed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [10:02]  Sil4nc4
+                    </a>
+                </td>
+                <td class="message-cell">
+                    any suggestions
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [10:03]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    timeout at the client, then either report the error to the user or resend the request
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [10:07]  poison
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi sustrik, we don&#39;t quite get it: if we take out the broker and connect the worker to the queuer then when either one crashes and we start the scripts again they are able to continue, but with that broker in between it has a different behaviour so it seems
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [10:08]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    what exactly happens?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [10:08]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    does it not reconnect?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [10:08]  poison
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well the worker is designed to do 1000 runs and stops then
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [10:09]  poison
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so the queuer hangs, which is OK
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [10:09]  poison
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but when I start a new worker
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [10:09]  poison
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then the worker doesn&#39;t get the jobs
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [10:09]  poison
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it should say &#39;Received work: Do this job&#39;
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [10:09]  poison
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but it doesn&#39;t
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [10:10]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    how many requests do you send?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [10:10]  poison
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s a loop which never stops
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [10:10]  poison
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (it&#39;s on the pastebin: http://pastebin.com/kRCbaS9T)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [10:11]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    a the messages don&#39;t get to a worker after the dispatcher restart, right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [10:16]  Sil4nc4
+                    </a>
+                </td>
+                <td class="message-cell">
+                    indeed suste
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [10:16]  Sil4nc4
+                    </a>
+                </td>
+                <td class="message-cell">
+                    indeed sustrik
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [10:17]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    then it&#39;s a bug
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [10:17]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    please do create issue in the bug tracker
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [10:17]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and attach a minimal test case to the ticket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [10:17]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    also, mention the version of 0mq you are using
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [10:18]  Sil4nc4
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oh the dispatcher is fine, only when restarting the working the working does not receive jobs
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [10:18]  Sil4nc4
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sorry for the misread sustrik
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [10:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so you restart the worker
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [10:18]  Sil4nc4
+                    </a>
+                </td>
+                <td class="message-cell">
+                    /working/worker/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [10:18]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and it doesn&#39;t get any messages afterwards
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [10:19]  Sil4nc4
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nope
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [10:19]  Sil4nc4
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which it should no? since after stuff is queued
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [10:19]  Sil4nc4
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or does the dispatcher queue stuff for a certain worker
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [10:19]  Sil4nc4
+                    </a>
+                </td>
+                <td class="message-cell">
+                    id bound
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [10:20]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it should get the new messages
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [10:20]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if it doesn&#39;t, it&#39;s a bug
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [10:20]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    report the problem using the bug tracker
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [10:20]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mention what&#39;s the expected behaviour and what are you seeing instead
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [10:40]  poison
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: we created a bug: https://zeromq.jira.com/browse/LIBZMQ-253
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [10:41]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [10:42]  Sil4nc4
+                    </a>
+                </td>
+                <td class="message-cell">
+                    weird stuff
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [10:58]  poison
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: I&#39;ll try to use the 3.0 release, you think this is something usefull that might be fixed?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [10:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    definetely
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [10:59]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if it&#39;s a bug it should be fixed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [11:00]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    btw bug report says the affected version is 2.1.9
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [11:00]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is it so?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [11:06]  poison
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [11:06]  poison
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ZMQ extension =&gt; enabled
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [11:06]  poison
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ZMQ extension version =&gt; @PACKAGE_VERSION@
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [11:06]  poison
+                    </a>
+                </td>
+                <td class="message-cell">
+                    libzmq version =&gt; 2.1.9
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [11:06]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [11:07]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i misunderstood your question
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [11:07]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    as for 3.0, the problem may have been fixed, but i am not sure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [11:08]  Sil4nc4
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but still, more people should have had this problem no? :) since it is kinda basic behavior
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [11:10]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yep
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [11:10]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i have to reproduce the problem and have a look what&#39;s going on
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [11:19]  Sil4nc4
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thx, in the meanwhile i&#39;ll test latests 3.0
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [11:48]  poison
+                    </a>
+                </td>
+                <td class="message-cell">
+                    damnz, we have issues with getting the php binding to work with the 3.0 beta
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [11:56]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the 3.0 branch seems to be merged into phpzmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [11:56]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko is the right person to ask
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [11:59]  poison
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok sorry, it&#39;s my bad, I got it to work, but it seems that I experience the same issue there
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [12:01]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [12:55]  CIA-121
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jzmq: 03Joshua Foster 07master * r3c8b652 10/ src/org/zeromq/ZMQ.java : Add correct checks for version number ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [12:55]  CIA-121
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jzmq: 03Gonzalo Diethelm 07master * r6da1142 10/ (.gitignore src/Socket.cpp src/org/zeromq/ZMQ.java): Merge pull request #72 from jhawk28/master ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [12:55]  CIA-121
+                    </a>
+                </td>
+                <td class="message-cell">
+                    jzmq: 03Joshua Foster 07master * r15a0a86 10/ (.gitignore src/Socket.cpp src/org/zeromq/ZMQ.java): Add new 3.0.0 socket options ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-84" class="rowLink" href="#msg-84">
+                    [13:49]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    poison: i will look at the bug when i get home
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-85" class="rowLink" href="#msg-85">
+                    [14:27]  CIA-121
+                    </a>
+                </td>
+                <td class="message-cell">
+                    libzmq: 03Mikko Koppanen 07master * r8f8bfca 10/ (src/req.cpp tests/Makefile.am tests/test_invalid_rep.cpp): Fixed issue with req assertions (issue 252) ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-86" class="rowLink" href="#msg-86">
+                    [14:27]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: i&#39;ve committed your patch to the master
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-87" class="rowLink" href="#msg-87">
+                    [14:27]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s up to pieter to apply it to 2.x and 3.x
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-88" class="rowLink" href="#msg-88">
+                    [14:29]  pieterh_1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: hi...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-89" class="rowLink" href="#msg-89">
+                    [14:29]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-90" class="rowLink" href="#msg-90">
+                    [14:29]  pieterh_1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I wasn&#39;t sure which patch to apply, there are two attached to the issue
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-91" class="rowLink" href="#msg-91">
+                    [14:29]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the newer one
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-92" class="rowLink" href="#msg-92">
+                    [14:29]  pieterh_1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    presumably it&#39;s the second one but I was waiting for confirmation
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-93" class="rowLink" href="#msg-93">
+                    [14:29]  pieterh_1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-94" class="rowLink" href="#msg-94">
+                    [14:29]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can apply just the fix (~3 lines)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-95" class="rowLink" href="#msg-95">
+                    [14:29]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the rest is a test program
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-96" class="rowLink" href="#msg-96">
+                    [14:30]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    which you may or may not include
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-97" class="rowLink" href="#msg-97">
+                    [14:30]  pieterh_1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah... indeed, ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-98" class="rowLink" href="#msg-98">
+                    [14:30]  pieterh_1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ll apply the full patch to 3.0
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-99" class="rowLink" href="#msg-99">
+                    [14:30]  sustrik
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thx!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-100" class="rowLink" href="#msg-100">
+                    [14:31]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh_1: thanks pieter
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-101" class="rowLink" href="#msg-101">
+                    [14:31]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    two assertions nailed
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-102" class="rowLink" href="#msg-102">
+                    [14:36]  pieterh_1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: nice... :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-103" class="rowLink" href="#msg-103">
+                    [15:22]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: applied to 2.1 (partial), 2.2 (full) and 3.0 (back ported from libzmq) :-)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-104" class="rowLink" href="#msg-104">
+                    [15:33]  nicolas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is it possible to use two PUB sockets connect to the same endpoint ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-105" class="rowLink" href="#msg-105">
+                    [15:34]  nicolas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    like many to one instead of one to many ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-106" class="rowLink" href="#msg-106">
+                    [15:40]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    nicolas_: yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-107" class="rowLink" href="#msg-107">
+                    [15:40]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    if the SUB socket has called zmq_bind() on the socket, you can have multiple PUB
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-108" class="rowLink" href="#msg-108">
+                    [15:41]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sockets connect to it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-109" class="rowLink" href="#msg-109">
+                    [15:45]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh: nice!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-110" class="rowLink" href="#msg-110">
+                    [19:45]  calvin
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hi all, I was wondering if anyone has ever experienced an issue with reconnecting subscriber crashing the server in a pub/sub pattern
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-111" class="rowLink" href="#msg-111">
+                    [19:46]  calvin
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Specifically using a C++ server and a C# client
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-112" class="rowLink" href="#msg-112">
+                    [20:20]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    calvin: hi... do you have a reproducible crash?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-113" class="rowLink" href="#msg-113">
+                    [20:20]  calvin
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Not really, it seemingly happens maybe 1/4 or 1/5 times
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-114" class="rowLink" href="#msg-114">
+                    [20:20]  calvin
+                    </a>
+                </td>
+                <td class="message-cell">
+                    More likely if the server had been running longer before I restarted the client
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-115" class="rowLink" href="#msg-115">
+                    [20:21]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    can you get a backtrace?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-116" class="rowLink" href="#msg-116">
+                    [20:21]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    we would need to make a reproducible test case, in C
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-117" class="rowLink" href="#msg-117">
+                    [20:22]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can already create a Jira issue, with the back trace, then we can work together to make a test case
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-118" class="rowLink" href="#msg-118">
+                    [20:22]  calvin
+                    </a>
+                </td>
+                <td class="message-cell">
+                    alright, let me see if i can find one
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-119" class="rowLink" href="#msg-119">
+                    [20:23]  calvin
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it might take me up to 24 hours though
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-120" class="rowLink" href="#msg-120">
+                    [20:27]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh_: is there a wiki page detailing the purpose/roadmap for 4.0 like there is for 3.0?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-121" class="rowLink" href="#msg-121">
+                    [20:27]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this weekend i&#39;m doing some work to add 3.0 support to the ruby ffi bindings, so i&#39;d like
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-122" class="rowLink" href="#msg-122">
+                    [20:27]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    to stub in 4.x support too but i can&#39;t find any details on it
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-123" class="rowLink" href="#msg-123">
+                    [20:29]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    from the mailing list archives, it looks like 4.0 is different *only* in that it drops support for ZMQ_IDENTITY
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-124" class="rowLink" href="#msg-124">
+                    [20:30]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    confirmed? or are there other differences?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-125" class="rowLink" href="#msg-125">
+                    [20:44]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: sorry, was out
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-126" class="rowLink" href="#msg-126">
+                    [20:44]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    there is no roadmap for 4.0 yet
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-127" class="rowLink" href="#msg-127">
+                    [20:44]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it&#39;s an excellent idea to put one together
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-128" class="rowLink" href="#msg-128">
+                    [20:45]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the other changes are: new ROUTER socket, no more DEALER socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-129" class="rowLink" href="#msg-129">
+                    [20:46]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pieterh_: which one is sustrik actively working on? 3.0 or 4.0?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-130" class="rowLink" href="#msg-130">
+                    [20:47]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    4.0
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-131" class="rowLink" href="#msg-131">
+                    [20:47]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    as in, making proactive changes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-132" class="rowLink" href="#msg-132">
+                    [20:47]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-133" class="rowLink" href="#msg-133">
+                    [20:48]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;d have preferred it was called 3.1 but he insisted, mainly to allow space for major changes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-134" class="rowLink" href="#msg-134">
+                    [20:48]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;m rereading the ML discussion on 3.0/4.0... looks like 3.0 is meant to be a short-term place-holder
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-135" class="rowLink" href="#msg-135">
+                    [20:48]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    in theory the WLP and API is the same as 3.0
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-136" class="rowLink" href="#msg-136">
+                    [20:48]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and introduces 1) new wire protocol, 2) new api
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-137" class="rowLink" href="#msg-137">
+                    [20:48]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yup
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-138" class="rowLink" href="#msg-138">
+                    [20:48]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    great
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-139" class="rowLink" href="#msg-139">
+                    [20:48]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this is what I tried to cover in the planning: http://www.zeromq.org/topics:planning
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-140" class="rowLink" href="#msg-140">
+                    [20:49]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    we are maybe being over-cautious in the rate of change
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-141" class="rowLink" href="#msg-141">
+                    [20:49]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    to be seen
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-142" class="rowLink" href="#msg-142">
+                    [20:50]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;ll have formal support for 3.0 and 4.0 in the ruby ffi bindings soon; hopefully that will help encourage
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-143" class="rowLink" href="#msg-143">
+                    [20:51]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    some broader adoption
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-144" class="rowLink" href="#msg-144">
+                    [20:51]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thanks for answering my questions
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-145" class="rowLink" href="#msg-145">
+                    [20:52]  pieterh
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm, nice, I&#39;ve also added 4.0 support to CZMQ (mainly in the get/setsockopts API)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-146" class="rowLink" href="#msg-146">
+                    [21:08]  errordeveloper
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m really desperate to figure out the difference between what&#39;s under &#39;czmq&#39; and &#39;libzmq&#39; repos on github!!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-147" class="rowLink" href="#msg-147">
+                    [21:09]  errordeveloper
+                    </a>
+                </td>
+                <td class="message-cell">
+                    also zdevice is an odd one .. but I can see it&#39;s just something that takes a json file as a description, right ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-148" class="rowLink" href="#msg-148">
+                    [21:30]  ketralnis
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;d like to have servers reporting logs via zmq to a central collector, but for fault tolerance I&#39;d like to have more than one collector and withstand the loss of a collector without losing many messages (a few is okay but 100% is not)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-149" class="rowLink" href="#msg-149">
+                    [21:31]  ketralnis
+                    </a>
+                </td>
+                <td class="message-cell">
+                    If I just specify more than one receiver in the clients, it round-robins among the collectors, but when I lose one I drop 1/N messages until the collector returns
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-150" class="rowLink" href="#msg-150">
+                    [21:31]  ketralnis
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Is there an in-built fault tolerance feature that I&#39;m missing?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-151" class="rowLink" href="#msg-151">
+                    [21:49]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ketralnis, what kind of sockets are you using? PUSH/PULL?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-152" class="rowLink" href="#msg-152">
+                    [21:50]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sounds like you might want to use PUB/SUB instead
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-153" class="rowLink" href="#msg-153">
+                    [21:50]  ketralnis
+                    </a>
+                </td>
+                <td class="message-cell">
+                    michelp: yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-154" class="rowLink" href="#msg-154">
+                    [21:50]  ketralnis
+                    </a>
+                </td>
+                <td class="message-cell">
+                    michelp: how does that help for fault tolerance?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-155" class="rowLink" href="#msg-155">
+                    [21:51]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you can have more than one subscriber that can act as a backup if another subscriber fails
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-156" class="rowLink" href="#msg-156">
+                    [21:51]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    PUSH&#39;s send() will also block if there are no recipients iirc
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-157" class="rowLink" href="#msg-157">
+                    [21:52]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    whereas PUB will never block
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-158" class="rowLink" href="#msg-158">
+                    [21:53]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;m not really following why you would want round robin behavior in a log collector, wouldn&#39;t you then need to merge the collected data afterwards?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-159" class="rowLink" href="#msg-159">
+                    [21:57]  ketralnis
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I don&#39;t necessarily want round-robin, that&#39;s just the default behaviour of multiple receivers to a PUSH socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-160" class="rowLink" href="#msg-160">
+                    [21:57]  ketralnis
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I just want fault tolerance
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-161" class="rowLink" href="#msg-161">
+                    [22:01]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i see what you&#39;re saying, when a collector goes away, you want the sender to skip over the missing receiver and send the message to the next collector in line
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-162" class="rowLink" href="#msg-162">
+                    [22:04]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ketralnis, are you setting an identity on the receiver?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-163" class="rowLink" href="#msg-163">
+                    [22:05]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the guide says "If a receiver (SUB, PULL, REQ) side of a socket sets an identity, then the sending (PUB, PUSH, PULL) side will buffer messages when they aren&#39;t connected up to the HWM"
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+    <div class="footer-container"><hr/>
+    <p style="color:#a9a9a9; font-size:0.75em; text-align:center; margin:5px 5%;">
+       Web site design and content is copyright &copy; 2010-2011 Peter Alexander, ProDataLab. Site content licensed under the Creative Commons Attribution-Share Alike 3.0 License.
+       &Oslash;MQ is copyright &copy; Copyright &copy; 2007-2011 iMatix Corporation and Contributors.
+       <a href="http://www.imatix.com/contact">Contact us for professional support.</a>
+       &Oslash;MQ is free software licensed under the LGPL. &Oslash;MQ, ZeroMQ, and 0MQ are trademarks of iMatix Corporation.
+       <a href="http://www.zeromq.org/legal:terms-of-use">Terms of Use</a> ?
+       <a href="http://www.zeromq.org/legal:privacy-policy">Privacy Policy</a>
+    </p>
+</div>
+
+</body>
+</html>
