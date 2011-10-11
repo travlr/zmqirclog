@@ -1,0 +1,981 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title>ZeroMq IRC Log</title>
+<!--    <base href="http://travlr.github.com/zmqirclog/index.html" target="_self"/>-->
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+
+</head>
+
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <a href="http://travlr.github.com/zmqirclog/index.html" target="_blank">
+            <img src="images/zeromq1-300x115.png" alt="ZeroMq Logo" border="0"/>
+            </a>
+        </div>
+        <div id="header-left-bottom" style="padding-left:200px;font-weight:bold">
+            IRC Log
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="float:right; vertical-align:text-top; padding-top:5px">
+            <form action="http://travlr.github.com/zmqirclog/search-results.html" id="cse-search-box">
+  <div>
+    <input type="hidden" name="cx" value="017268610037587914919:goqutszmb5o" />
+    <input type="hidden" name="cof" value="FORID:9" />
+    <input type="hidden" name="ie" value="UTF-8" />
+    <input type="text" name="q" size="31" />
+    <input type="submit" name="sa" value="Search" />
+  </div>
+</form>
+<script type="text/javascript" src="http://www.google.com/cse/brand?form=cse-search-box&lang=en"></script>
+
+        </div>
+        <div style="clear:right;"></div>
+        <div id="header-right-bottom" style="text-align:right; vertical-align:text-bottom; padding-right:30px; padding-top:75px;">
+            <h2><a href="http://www.zeromq.org/" target="_blank">ZeroMq Home</a></h2>
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+    <hr/>
+</div>
+
+    <div class="content">
+        <h2>Friday October 7, 2011</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [00:05]  bar4ka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i modified the sink class: http://codepad.org/K64CqPbB
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [00:06]  bar4ka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so it prints when the thread start
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [00:07]  bar4ka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i got no prints, just the &#39;zmq::error_t&#39;   what():  Socket operation on non-socket
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [00:33]  minrk1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    something weird is definitely going on
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [00:33]  minrk1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    If I remove the close/delete, the ~Sink desctructor is getting called 8 times per constructor
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [00:38]  bar4ka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i modified the Sink: http://codepad.org/EJPLl5ll
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [00:38]  bar4ka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i could see the copy ctor got called 4 times
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [00:38]  minrk1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    So you need to make sure that close is called only once
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [00:39]  minrk1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    It would help if, instead of passing the socket to Sink, you passed the context and addr, then creating the socket in the thread
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [00:40]  bar4ka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i was trying that but socket_t class ctor is private
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [00:41]  bar4ka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    this is the output when i run: http://codepad.org/YzEaXmBH
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [00:42]  minrk1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, because you are trying to close the same socket several times
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [00:42]  minrk1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (I count 8)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [01:00]  bar4ka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it really would be better creating the socket in the thread, the ctors and dtor is driving me crazy
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [01:08]  bar4ka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i got free of the socket error
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [01:08]  bar4ka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and thread finally started
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [01:09]  bar4ka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    now i got another zmq exception
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [01:11]  bar4ka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    terminate called after throwing an instance of &#39;zmq::error_t&#39;   what():  Operation not supported
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [01:12]  bar4ka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    new Sink: http://codepad.org/zJ0CkFzf
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [01:15]  minrk1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you have sink/source backwards
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [01:15]  minrk1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sink==output, source==input
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [01:16]  minrk1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so you are trying to recv on a PUSH socket, which is not supported
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [01:17]  minrk1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    What zmq are you using, btw?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [01:21]  bar4ka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    2.1.7
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [01:27]  minrk1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    did swapping sink/source get you any further?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [01:28]  bar4ka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [01:28]  bar4ka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the inproc is working fine
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [01:29]  bar4ka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the tcp server did not receive, but it is a good progress
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [01:30]  bar4ka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    maybe it is something with the rebuild method
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [01:31]  minrk1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Are you sure you want to call rebuild?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [01:31]  minrk1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    rebuild closes and reinitializes the message
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [01:31]  minrk1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i.e. it discards any data that was there before
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [01:32]  bar4ka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that is the problem
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [01:32]  minrk1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and gives you a clean new message to work with
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [01:32]  bar4ka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i will comment that part
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [01:33]  bar4ka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    now its working
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [01:34]  bar4ka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i just need to address memory so it does not leak
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [01:35]  bar4ka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i will try to pass the context plus addr
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [01:37]  bar4ka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    minrk1: thank you for all the help
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [01:37]  minrk1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no problem
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [02:18]  bar4ka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    minrk1: do you know how can i use copy ctor with zmq::socket_t ?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [02:19]  bar4ka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i created another class: http://codepad.org/Sj60Homg
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [02:20]  bar4ka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but cant compile cause of the copy ctor: http://codepad.org/nOG4y3T9
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [02:29]  bar4ka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    looks like zmq::socket_t::socket_t(const zmq::socket_t&amp;) is private
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [02:30]  bar4ka
+                    </a>
+                </td>
+                <td class="message-cell">
+                    andrewhavck: hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [03:49]  abraxas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    good morning
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [03:50]  abraxas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Does anyone know if it&#39;s possible to have identity-like behavior, but not for the entire connection. Instead, I&#39;d really love to use it on a per-subscription basis.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [03:50]  abraxas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    The subscription itself can move around my data center.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [03:50]  abraxas
+                    </a>
+                </td>
+                <td class="message-cell">
+                    But if publishers would keep a backlog, until the subscription is back (regardless of the machine that subscription comes from), that would solve my problem.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [06:34]  aalok
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Greetings!
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [09:55]  lupine_85
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so, I&#39;m still reading through http://zguide.zeromq.org/page:all , but I was wondering if there&#39;s a common pattern for individual nodes to advertise presence to their upstream
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [09:56]  lupine_85
+                    </a>
+                </td>
+                <td class="message-cell">
+                    regular pings are an obvious one,  I guess
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [09:57]  lupine_85
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (say I have 20 client nodes connected to one server, and the server is making decisions about who to send messages to based on somthing other than simple round-robin - it needs to know which nodes are connected "now", surely?)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [10:13]  lupine_85
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmm, ROUTER&lt;-&gt;REP
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [10:31]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    howdy
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [11:57]  jd10
+                    </a>
+                </td>
+                <td class="message-cell">
+                    https://github.com/kro/zeromq-scala-binding      has now a JZMQ like API
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [13:51]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    any idea how to make a listener listen to two ports with Cowboy?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [13:55]  mile
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sorry, wrong channel
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [17:21]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sustrik: there will be a few mails about failed builds as i am rebuilding the machines
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [18:18]  adymitruk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    socket per request?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [18:18]  adymitruk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    too heavy?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [18:18]  adymitruk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    for a web app..
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [18:30]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    adymitruk: sockets are pretty light; one per request is probably fine
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [18:30]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just make sure you have enough file descriptors
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [18:43]  przemek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    Hello everyone, I&#39;m trying to use 0MQ on Windows Server using Java
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [18:44]  przemek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m following the Windows instructions here: http://www.zeromq.org/bindings:java
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [18:44]  przemek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ve opened the project in VS2008 as instructed but I&#39;m unsure what the following statement means
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [18:44]  przemek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ote that ÃMQ and JDK header file has to be on "include path" (Tools|Options|Projects and Solutions|VC++ Directories|Include files) and ÃMQ libraries have to be on "library path" (Tools|Options|Projects and Solutions|VC++ Directories|Library files):
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [18:45]  przemek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;m assuming that if I Build this correctly I should get a jar file that I can then use in my Java project?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [19:44]  przemek
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hello
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [20:01]  nag
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi przemek_
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [20:03]  nag
+                    </a>
+                </td>
+                <td class="message-cell">
+                    bye przemek_
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [21:31]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    evening
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [21:46]  michelp
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yo
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [22:48]  mattbillenstein
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi all
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [22:49]  mattbillenstein
+                    </a>
+                </td>
+                <td class="message-cell">
+                    building an rpc client where i have multiple backend rpc servers I could connect to â I&#39;m trying to figure out how to manage failure conditions â like if one of the servers is down
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [22:50]  mattbillenstein
+                    </a>
+                </td>
+                <td class="message-cell">
+                    using XREQ/XREP, I can always connect if a given server isn&#39;t alive, but sending a message will just hang infinitely
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [22:51]  mattbillenstein
+                    </a>
+                </td>
+                <td class="message-cell">
+                    or rather, the receive is hanging
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [22:58]  mattbillenstein
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is there a way to tell if I can even connect to a particular server?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [23:50]  espeed
+                    </a>
+                </td>
+                <td class="message-cell">
+                    In the taskevent model (ventilator/worker/sink), what&#39;s the right way for a *worker* to add additional tasks?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [23:53]  espeed
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I&#39;ve tried having the worker connect to the PUSH socket the ventilator is bound to, but that doesn&#39;t seem to work.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [23:59]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [23:59]  espeed
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hi
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+    <div class="footer-container"><hr/>
+    <p style="color:#a9a9a9; font-size:0.75em; text-align:center; margin:5px 5%;">
+       Web site design and content is copyright &copy; 2010-2011 Peter Alexander, ProDataLab. Site content licensed under the Creative Commons Attribution-Share Alike 3.0 License.
+       &Oslash;MQ is copyright &copy; Copyright &copy; 2007-2011 iMatix Corporation and Contributors.
+       <a href="http://www.imatix.com/contact">Contact us for professional support.</a>
+       &Oslash;MQ is free software licensed under the LGPL. &Oslash;MQ, ZeroMQ, and 0MQ are trademarks of iMatix Corporation.
+       <a href="http://www.zeromq.org/legal:terms-of-use">Terms of Use</a> ?
+       <a href="http://www.zeromq.org/legal:privacy-policy">Privacy Policy</a>
+    </p>
+</div>
+
+</body>
+</html>
