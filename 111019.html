@@ -1,0 +1,266 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title>ZeroMq IRC Log</title>
+<!--    <base href="http://travlr.github.com/zmqirclog/index.html" target="_self"/>-->
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+
+</head>
+
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <a href="http://travlr.github.com/zmqirclog/index.html" target="_blank">
+            <img src="images/zeromq1-300x115.png" alt="ZeroMq Logo" border="0"/>
+            </a>
+        </div>
+        <div id="header-left-bottom" style="padding-left:200px;font-weight:bold">
+            IRC Log
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="float:right; vertical-align:text-top; padding-top:5px">
+            <form action="http://travlr.github.com/zmqirclog/search-results.html" id="cse-search-box">
+  <div>
+    <input type="hidden" name="cx" value="017268610037587914919:goqutszmb5o" />
+    <input type="hidden" name="cof" value="FORID:9" />
+    <input type="hidden" name="ie" value="UTF-8" />
+    <input type="text" name="q" size="31" />
+    <input type="submit" name="sa" value="Search" />
+  </div>
+</form>
+<script type="text/javascript" src="http://www.google.com/cse/brand?form=cse-search-box&lang=en"></script>
+
+        </div>
+        <div style="clear:right;"></div>
+        <div id="header-right-bottom" style="text-align:right; vertical-align:text-bottom; padding-right:30px; padding-top:75px;">
+            <h2><a href="http://www.zeromq.org/" target="_blank">ZeroMq Home</a></h2>
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+    <hr/>
+</div>
+
+    <div class="content">
+        <h2>Wednesday October 19, 2011</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [00:02]  streamer
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the conversation initiates from one side.  Would that be the dealer end in your setup?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [00:04]  streamer
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I have [router A] and [router B] on the right end, how would dealer send the message to the right one?  I think I really need a [router - router] in the middle for that reason. but that&#39;s what&#39;s causing me the difficulty.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [00:08]  streamer
+                    </a>
+                </td>
+                <td class="message-cell">
+                    minrk: any thoughts?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [00:09]  minrk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, dealer should be the first to communicate
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [00:09]  minrk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah, if you have multiple endpoints, then you really do want ROUTER-ROUTER
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [00:10]  minrk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but you can&#39;t use a QUEUE
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [00:10]  streamer
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok, then what do i use instead?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [00:10]  minrk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you have to use a queue that swaps the first two message parts in order to fix the identity prefix
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [00:10]  minrk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    otherwise identical to the existing queue
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [00:11]  streamer
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i could do that with custom PollIn handlers, right?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [00:11]  minrk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [00:11]  minrk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    just look for the source of zmq_device
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [00:11]  minrk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and edit it to always recv the first *two* message parts, and forward them out of order
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [00:12]  minrk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    The MonitoredQueue device in pyzmq does exactly this
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [00:12]  streamer
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cool, I&#39;ll look up both of those.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [00:12]  minrk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (in addition to also sending every message over a side socket for monitoring, hence the name)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [00:13]  streamer
+                    </a>
+                </td>
+                <td class="message-cell">
+                    should only the backend pollIn do that swap, or both ends?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [00:15]  streamer
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I see that you&#39;re one of the authors of MonitoredQueue. thanks for the tip!
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+    <div class="footer-container"><hr/>
+    <p style="color:#a9a9a9; font-size:0.75em; text-align:center; margin:5px 5%;">
+       Web site design and content is copyright &copy; 2010-2011 Peter Alexander, ProDataLab. Site content licensed under the Creative Commons Attribution-Share Alike 3.0 License.
+       &Oslash;MQ is copyright &copy; Copyright &copy; 2007-2011 iMatix Corporation and Contributors.
+       <a href="http://www.imatix.com/contact">Contact us for professional support.</a>
+       &Oslash;MQ is free software licensed under the LGPL. &Oslash;MQ, ZeroMQ, and 0MQ are trademarks of iMatix Corporation.
+       <a href="http://www.zeromq.org/legal:terms-of-use">Terms of Use</a> ?
+       <a href="http://www.zeromq.org/legal:privacy-policy">Privacy Policy</a>
+    </p>
+</div>
+
+</body>
+</html>

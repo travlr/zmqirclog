@@ -1,0 +1,981 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+                        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"></meta>
+    <title>ZeroMq IRC Log</title>
+<!--    <base href="http://travlr.github.com/zmqirclog/index.html" target="_self"/>-->
+    <link rel="stylesheet" href="css/base.css"></link>
+    <link rel="shortcut icon" href="images/favicon.gif">
+
+</head>
+
+<body>
+    <a name="pagetop" id="pagetop"></a>
+    <div id="header-container">
+    <div id="header-left" style="float: left;">
+        <div id="header-left-top">
+            <a href="http://travlr.github.com/zmqirclog/index.html" target="_blank">
+            <img src="images/zeromq1-300x115.png" alt="ZeroMq Logo" border="0"/>
+            </a>
+        </div>
+        <div id="header-left-bottom" style="padding-left:200px;font-weight:bold">
+            IRC Log
+        </div>
+    </div>
+    <div id="header-right">
+        <div id="header-right-top" style="float:right; vertical-align:text-top; padding-top:5px">
+            <form action="http://travlr.github.com/zmqirclog/search-results.html" id="cse-search-box">
+  <div>
+    <input type="hidden" name="cx" value="017268610037587914919:goqutszmb5o" />
+    <input type="hidden" name="cof" value="FORID:9" />
+    <input type="hidden" name="ie" value="UTF-8" />
+    <input type="text" name="q" size="31" />
+    <input type="submit" name="sa" value="Search" />
+  </div>
+</form>
+<script type="text/javascript" src="http://www.google.com/cse/brand?form=cse-search-box&lang=en"></script>
+
+        </div>
+        <div style="clear:right;"></div>
+        <div id="header-right-bottom" style="text-align:right; vertical-align:text-bottom; padding-right:30px; padding-top:75px;">
+            <h2><a href="http://www.zeromq.org/" target="_blank">ZeroMq Home</a></h2>
+        </div>
+    </div>
+    <div style="clear: both;"></div>
+    <hr/>
+</div>
+
+    <div class="content">
+        <h2>Saturday October 15, 2011</h2>
+        <table class="message-table">
+            <th>[Time]&nbsp;Name</th><th>Message</th>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-1" class="rowLink" href="#msg-1">
+                    [03:16]  aroman1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    zmq.eventloop.ioloop is supposed to be a drop-in replacement for tornado&#39;s ioloop, yeah?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-2" class="rowLink" href="#msg-2">
+                    [03:16]  aroman1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    because it&#39;s not working with tornado&#39;s AsyncHTTPClient for me.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-3" class="rowLink" href="#msg-3">
+                    [03:19]  minrk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    When using the zmq ioloop, you have to be careful to install the ioloop before creating any tornado objects
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-4" class="rowLink" href="#msg-4">
+                    [03:19]  aroman1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    minrk: &#39;install the ioloop&#39;?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-5" class="rowLink" href="#msg-5">
+                    [03:20]  minrk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    otherwise calls to IOLoop.instance() can result in both ioloops being initialized
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-6" class="rowLink" href="#msg-6">
+                    [03:20]  minrk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    yes, you have to replace tornado&#39;s ioloop with zmq&#39;s
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-7" class="rowLink" href="#msg-7">
+                    [03:20]  aroman1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i could post my code if that&#39;d be helpful.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-8" class="rowLink" href="#msg-8">
+                    [03:20]  minrk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    sure
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-9" class="rowLink" href="#msg-9">
+                    [03:20]  aroman1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    great, thanks, one second.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-10" class="rowLink" href="#msg-10">
+                    [03:21]  minrk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    The first thing you should call is: zmq.eventloop.ioloop.install()
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-11" class="rowLink" href="#msg-11">
+                    [03:22]  minrk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    so that tornado.ioloop.IOLoop *is* zmq.eventloop.ioloop.IOLoop
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-12" class="rowLink" href="#msg-12">
+                    [03:22]  aroman1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    http://dpaste.org/rnmty/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-13" class="rowLink" href="#msg-13">
+                    [03:22]  aroman1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    well that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-14" class="rowLink" href="#msg-14">
+                    [03:22]  aroman1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s the thing -- I never even import tornado&#39;s ioloop.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-15" class="rowLink" href="#msg-15">
+                    [03:23]  minrk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but AsyncHTTP does
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-16" class="rowLink" href="#msg-16">
+                    [03:23]  aroman1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ah
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-17" class="rowLink" href="#msg-17">
+                    [03:23]  aroman1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ...wow
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-18" class="rowLink" href="#msg-18">
+                    [03:24]  aroman1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    and now it works :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-19" class="rowLink" href="#msg-19">
+                    [03:24]  minrk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    excellent
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-20" class="rowLink" href="#msg-20">
+                    [03:24]  aroman1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    thank god. I was beginning to think there were no decent async http clients for python I could use with zmq
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-21" class="rowLink" href="#msg-21">
+                    [03:25]  minrk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    We use tornado+zmq pretty extensively for the IPython notebook, so it definitely works
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-22" class="rowLink" href="#msg-22">
+                    [03:25]  aroman1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that&#39;s really awesome :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-23" class="rowLink" href="#msg-23">
+                    [03:25]  aroman1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    you might want to update this then, methinks: https://github.com/hhuuggoo/pyzmq/blob/master/examples/eventloop/web.py
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-24" class="rowLink" href="#msg-24">
+                    [03:25]  aroman1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (to use the install() function rather than the &#39;hack&#39;)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-25" class="rowLink" href="#msg-25">
+                    [03:26]  minrk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    good call, I had forgotten about that
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-26" class="rowLink" href="#msg-26">
+                    [04:06]  CIA-79
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pyzmq: 03MinRK 07 * rc8c2353 10/ docs/autogen_api.py : update autodoc exclusions for eventloop.platform - http://git.io/54-9-w
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-27" class="rowLink" href="#msg-27">
+                    [04:06]  CIA-79
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pyzmq: 03MinRK 07 * r95cb804 10/ (docs/source/eventloop.rst examples/eventloop/web.py): update tornado docs and example ...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-28" class="rowLink" href="#msg-28">
+                    [04:09]  CIA-79
+                    </a>
+                </td>
+                <td class="message-cell">
+                    pyzmq: 03MinRK 07 * rf978634 10/ (6 files in 4 dirs): update eventloop doc with install() - http://git.io/l72neQ
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-29" class="rowLink" href="#msg-29">
+                    [05:40]  aroman1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    minrk: hey, would you happen to be able to field a question about Tornado? #tornadoweb is asleep :/
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-30" class="rowLink" href="#msg-30">
+                    [05:41]  aroman1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    minrk: I&#39;m trying to submit a form with AsyncHTTPClient, and I&#39;m getting back 302 Found, despite setting follow_redirects=True.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-31" class="rowLink" href="#msg-31">
+                    [05:41]  minrk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    possibly - my experience is rather limited
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-32" class="rowLink" href="#msg-32">
+                    [05:42]  minrk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    possibly max_redirects is it?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-33" class="rowLink" href="#msg-33">
+                    [05:43]  minrk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    I think the default is 5
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-34" class="rowLink" href="#msg-34">
+                    [05:43]  minrk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    *is hit
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-35" class="rowLink" href="#msg-35">
+                    [05:44]  aroman1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    minrk: hmm yep,
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-36" class="rowLink" href="#msg-36">
+                    [05:45]  aroman1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i just monkeypatched Tornado&#39;s httpclient to let me know when it&#39;s following a redirect (and it&#39;s using up the max of 5)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-37" class="rowLink" href="#msg-37">
+                    [05:45]  aroman1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that said, what doesn&#39;t make any sense is *why* it&#39;s redirecting more than once
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-38" class="rowLink" href="#msg-38">
+                    [05:45]  aroman1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;m just trying to submit a login wform
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-39" class="rowLink" href="#msg-39">
+                    [05:46]  aroman1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    form*
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-40" class="rowLink" href="#msg-40">
+                    [05:46]  minrk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    can I ask, to where?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-41" class="rowLink" href="#msg-41">
+                    [05:46]  aroman1
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;ll PM you the link.
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-42" class="rowLink" href="#msg-42">
+                    [14:35]  ptrb
+                    </a>
+                </td>
+                <td class="message-cell">
+                    my pyzmq subscriber throws a Resource temporarily unavailable every time I recv() with a timeout. Ideas?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-43" class="rowLink" href="#msg-43">
+                    [17:22]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    good evening
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-44" class="rowLink" href="#msg-44">
+                    [17:35]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: there?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-45" class="rowLink" href="#msg-45">
+                    [17:37]  aroman
+                    </a>
+                </td>
+                <td class="message-cell">
+                    minrk: hey
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-46" class="rowLink" href="#msg-46">
+                    [17:37]  minrk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hello
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-47" class="rowLink" href="#msg-47">
+                    [17:38]  aroman
+                    </a>
+                </td>
+                <td class="message-cell">
+                    minrk: just wanted to let you know that everything is going better than I could have imagined with zeromq + tornado :)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-48" class="rowLink" href="#msg-48">
+                    [17:38]  minrk
+                    </a>
+                </td>
+                <td class="message-cell">
+                    excellent
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-49" class="rowLink" href="#msg-49">
+                    [17:38]  aroman
+                    </a>
+                </td>
+                <td class="message-cell">
+                    (If you&#39;re curious as to what I&#39;m building: https://github.com/aroman/akiba-node)
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-50" class="rowLink" href="#msg-50">
+                    [18:03]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: for a little while; what&#39;s up?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-51" class="rowLink" href="#msg-51">
+                    [18:03]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    now i got it running:
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-52" class="rowLink" href="#msg-52">
+                    [18:03]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    https://build.zero.mq/job/ffi-rzmq-master_libzmq2-1_GCC-debian/27/console
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-53" class="rowLink" href="#msg-53">
+                    [18:03]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    but the tests get stuck with no output
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-54" class="rowLink" href="#msg-54">
+                    [18:04]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    the rspec issue was gems directory not being in PATH
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-55" class="rowLink" href="#msg-55">
+                    [18:04]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    hmmm
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-56" class="rowLink" href="#msg-56">
+                    [18:04]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    it has to be something with the environment
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-57" class="rowLink" href="#msg-57">
+                    [18:05]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    wait, i see output
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-58" class="rowLink" href="#msg-58">
+                    [18:05]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    oh, you must have sent it a kill signal
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-59" class="rowLink" href="#msg-59">
+                    [18:06]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: i did
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-60" class="rowLink" href="#msg-60">
+                    [18:06]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: it was stuck for ~20 minutes
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-61" class="rowLink" href="#msg-61">
+                    [18:07]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: are you running the specs against 2.1, 3.0 or 4.0?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-62" class="rowLink" href="#msg-62">
+                    [18:07]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i can reproduce the failures against 4.0 but i was told not to worry since that is experimental
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-63" class="rowLink" href="#msg-63">
+                    [18:07]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cremes: not yet
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-64" class="rowLink" href="#msg-64">
+                    [18:07]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    testing with 2.1 now
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-65" class="rowLink" href="#msg-65">
+                    [18:07]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    ok
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-66" class="rowLink" href="#msg-66">
+                    [18:07]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    that should be clean
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-67" class="rowLink" href="#msg-67">
+                    [18:07]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    3.x should be clean too
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-68" class="rowLink" href="#msg-68">
+                    [18:08]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    3.0 building here https://build.zero.mq/view/ffi-rzmq/job/ffi-rzmq-master_libzmq3-0_GCC-debian/1/console
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-69" class="rowLink" href="#msg-69">
+                    [18:08]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    stuck as well
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-70" class="rowLink" href="#msg-70">
+                    [18:08]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    strange
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-71" class="rowLink" href="#msg-71">
+                    [18:09]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is there a long running test there?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-72" class="rowLink" href="#msg-72">
+                    [18:09]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    am i canceling it too quick?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-73" class="rowLink" href="#msg-73">
+                    [18:10]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    https://gist.github.com/00482d1e3c41465668df
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-74" class="rowLink" href="#msg-74">
+                    [18:10]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    let me time them here...
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-75" class="rowLink" href="#msg-75">
+                    [18:14]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;m getting a hang against 2.1.10 too
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-76" class="rowLink" href="#msg-76">
+                    [18:14]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    i&#39;ll have to debug this later; sorry
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-77" class="rowLink" href="#msg-77">
+                    [18:15]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    no worries
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-78" class="rowLink" href="#msg-78">
+                    [18:26]  cremes
+                    </a>
+                </td>
+                <td class="message-cell">
+                    mikko: i had a free 5m so i just fixed it and pushed the changes to github
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-79" class="rowLink" href="#msg-79">
+                    [18:33]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    cool, running tests now
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-80" class="rowLink" href="#msg-80">
+                    [18:34]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    https://build.zero.mq/view/ffi-rzmq/job/ffi-rzmq-master_libzmq2-1_GCC-debian/29/console
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-81" class="rowLink" href="#msg-81">
+                    [18:34]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    2.1 running here
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-82" class="rowLink" href="#msg-82">
+                    [18:59]  user4987
+                    </a>
+                </td>
+                <td class="message-cell">
+                    is there somewhere I can read about how zeromq differs from twisted?  How are their roles different?
+                </td>
+            </tr>
+            
+            <tr>
+                <td class="name-cell" nowrap="nowrap" style="vertical-align:text-top;">
+                    <a name="msg-83" class="rowLink" href="#msg-83">
+                    [19:15]  mikko
+                    </a>
+                </td>
+                <td class="message-cell">
+                    user4987: isn&#39;t twisted more of an event loop?
+                </td>
+            </tr>
+            
+        </table>
+    </div>
+    <div class="footer-container"><hr/>
+    <p style="color:#a9a9a9; font-size:0.75em; text-align:center; margin:5px 5%;">
+       Web site design and content is copyright &copy; 2010-2011 Peter Alexander, ProDataLab. Site content licensed under the Creative Commons Attribution-Share Alike 3.0 License.
+       &Oslash;MQ is copyright &copy; Copyright &copy; 2007-2011 iMatix Corporation and Contributors.
+       <a href="http://www.imatix.com/contact">Contact us for professional support.</a>
+       &Oslash;MQ is free software licensed under the LGPL. &Oslash;MQ, ZeroMQ, and 0MQ are trademarks of iMatix Corporation.
+       <a href="http://www.zeromq.org/legal:terms-of-use">Terms of Use</a> ?
+       <a href="http://www.zeromq.org/legal:privacy-policy">Privacy Policy</a>
+    </p>
+</div>
+
+</body>
+</html>
